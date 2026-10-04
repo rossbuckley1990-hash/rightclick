@@ -1,3 +1,4 @@
+import CryptoKit
 import Darwin
 import Foundation
 import MCP
@@ -8,6 +9,7 @@ public enum RightClickMCPMain {
         let http = args.contains("--http")
         let port = UInt16(flag(args, "--port") ?? "") ?? 8765
         let token = flag(args, "--token") ?? ProcessInfo.processInfo.environment["RIGHTCLICK_MCP_TOKEN"]
+        StartupLog.record(transport: http ? "http" : "stdio")
         let box = EngineBox(CapabilityEngine())
         if http {
             guard let token, !token.isEmpty else {
@@ -24,6 +26,39 @@ public enum RightClickMCPMain {
     private static func flag(_ args: [String], _ name: String) -> String? {
         guard let index = args.firstIndex(of: name), index + 1 < args.count else { return nil }
         return args[index + 1]
+    }
+}
+
+enum StartupLog {
+    static func record(transport: String) {
+        let path = executablePath()
+        let stamp = ISO8601DateFormatter().string(from: Date())
+        let line = "\(stamp) pid=\(getpid()) transport=\(transport) path=\(path) sha256=\(sha256File(path))\n"
+        let directory = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Library/Logs/RIGHTCLICK", isDirectory: true)
+        let file = directory.appendingPathComponent("startup.log")
+        try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        if let data = line.data(using: .utf8) {
+            if FileManager.default.fileExists(atPath: file.path), let handle = try? FileHandle(forWritingTo: file) {
+                _ = try? handle.seekToEnd()
+                try? handle.write(contentsOf: data)
+                try? handle.close()
+            } else {
+                try? data.write(to: file)
+            }
+        }
+    }
+
+    private static func executablePath() -> String {
+        let raw = CommandLine.arguments[0]
+        if raw.hasPrefix("/") { return raw }
+        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(raw).standardizedFileURL.path
+    }
+
+    private static func sha256File(_ path: String) -> String {
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else { return "unreadable" }
+        let digest = SHA256.hash(data: data)
+        return digest.map { String(format: "%02x", $0) }.joined()
     }
 }
 

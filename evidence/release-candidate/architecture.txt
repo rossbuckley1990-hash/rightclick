@@ -1,0 +1,20 @@
+ARCHITECTURE
+
+Release binary:
+/Users/ross/spawn/rightclick-mcp/.build/release/rightclick
+Mach-O 64-bit executable arm64
+Apple Silicon: VERIFIED
+This is the binary used for Cursor, the remote server, and the clean-environment commands.
+
+Intel cross build:
+/tmp/rightclick-x86/x86_64-apple-macosx/release/rightclick
+Mach-O 64-bit executable x86_64
+Built with:
+swift build -c release --triple x86_64-apple-macosx26.0 --scratch-path /tmp/rightclick-x86 --product rightclick
+
+Executed under Rosetta on this Apple Silicon Mac:
+arch -x86_64 rightclick version → 0.1.0
+arch -x86_64 rightclick doctor → sharing PASS, services PASS, 47 registrations, 1 action extension
+arch -x86_64 rightclick actions /Users/ross/Desktop/test.jpg → the same 11 capabilities
+
+No separate Intel Mac was used. The x86_64 binary is not the release-candidate artifact and is not a universal binary.

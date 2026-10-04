@@ -1,0 +1,14 @@
+AUTOMATED TESTS: PASS
+
+swift test
+test count: 27
+pass count: 27
+fail count: 0
+skipped count: 0
+
+Release build after the tests:
+scripts/build-release.sh
+SHA256 a64c9107052d7b5c23a0261f9a5c8a1544c1aeb81f86a6b4dbe1bf505ae7d00e
+architecture: Mach-O 64-bit executable arm64
+
+The hash matches the binary used for the Cursor, remote, Homebrew, and clean-environment checks.

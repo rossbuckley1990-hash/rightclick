@@ -40,7 +40,7 @@ Binary name: `rightclick`. Legacy command names `capabilities` and `mcp` still w
 
 ## Packaging
 
-`scripts/build-release.sh` builds the release binary. `packaging/homebrew/rightclick.rb` is an unpublished formula template. No Developer ID signature. Built for Apple Silicon on the development Mac. Intel is not produced here.
+`scripts/build-release.sh` builds the arm64 release binary. `packaging/homebrew/rightclick.rb` is an unpublished formula template. A local tap install of that release binary was verified and then uninstalled. No Developer ID signature. Gatekeeper rejects the ad-hoc signature. An x86_64 binary was cross-built and executed under Rosetta on this Mac; it is not the release artifact and was not run on Intel hardware.
 
 ## Tests
 
@@ -53,5 +53,6 @@ Binary name: `rightclick`. Legacy command names `capabilities` and `mcp` still w
 - `NSPerformService` true is not proof that a workflow changed the requested file or setting. Set Desktop Picture returned true and left the wallpaper unchanged.
 - Service acquisition was proven for `NSServices`, not for every kind of installed app.
 - Execution status is in memory inside the serving process. `rightclick status` in another process does not see it.
-- Cursor must be restarted before it loads a newly written MCP config. This session did not observe Cursor call the tools.
+- Cursor loads MCP config changes by respawning the server. The release binary was invoked from Cursor; see `evidence/release-candidate/cursor.txt`.
+- `rightclick setup` writes `~/.cursor/mcp.json` through `FileManager.homeDirectoryForCurrentUser`, which is the account home rather than a temporary HOME override.
 - The HTTP server is one machine, one user, and the bearer token is a shared secret.

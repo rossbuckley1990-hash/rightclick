@@ -1,0 +1,37 @@
+CLEAN-ENVIRONMENT ACCEPTANCE: PASS
+
+Isolated directory: /tmp/rightclick-acceptance-home
+Binary copy: /tmp/rightclick-acceptance-home/bin/rightclick
+Working directory for the commands: /tmp
+HOME was set to /tmp/rightclick-acceptance-home
+
+rightclick version
+0.1.0
+
+rightclick doctor
+sharing discovery PASS
+services discovery PASS, 47 registrations
+quick actions discovery PASS, execution UNAVAILABLE, 1 extension
+
+rightclick actions /Users/ross/Desktop/test.jpg
+11 capabilities: Set Desktop Picture, Add to Photos, AirDrop, Freeform, Journal, Mail, Messages, Notes, Reminders, Simulator, Markup
+
+The copied binary does not need the Git checkout. These commands were run with cwd /tmp.
+
+setup
+`rightclick setup` uses FileManager.homeDirectoryForCurrentUser. On this Mac that is the account home, not the HOME environment variable. The isolated HOME therefore did not receive a Cursor config. The command wrote the real /Users/ross/.cursor/mcp.json and reported:
+
+Cursor configuration written:
+/Users/ross/.cursor/mcp.json
+
+That write merged the rightclick key and left the existing screenpipe server in place. Because the binary under test was the /tmp copy, the command path briefly became that copy. It was restored to:
+
+/Users/ross/spawn/rightclick-mcp/.build/release/rightclick
+args: ["mcp"]
+
+The temporary MCP process for the /tmp binary was stopped. The screenpipe entry was not removed.
+
+Files created under /tmp/rightclick-acceptance-home:
+bin/rightclick
+
+No repository-relative path was required to version, doctor, or list actions.

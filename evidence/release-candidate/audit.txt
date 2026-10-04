@@ -1,0 +1,20 @@
+PACKAGING AUDIT
+
+Source scan of Sources, scripts, packaging, and README:
+- no hard-coded /Users/ross paths in product source
+- no test provider bundle id in product source
+- no bearer token in tracked source or git history
+- trycloudflare appears only as the URL pattern serve uses to print a tunnel address
+- default port 8765 remains the documented serve default; acceptance used 8767
+- packaging/homebrew/rightclick.rb is an unpublished template and still contains https://example.invalid
+- docs/EXPERIMENTS.md and docs/BUILD_STATE.md still describe the earlier port 8765 tunnel; they are experiment notes, not the install instructions
+
+The previously used bearer token is not in Git. The Application Support token file was rotated before the release-candidate server started. The new bearer token is not in this evidence directory.
+
+Startup log records pid, transport, executable path, and sha256. It does not record the bearer token.
+
+README claims checked:
+- compatible macOS Service, not every installed app
+- NSPerformService true means the service was accepted
+- Action extensions are not described as executable
+- the sidecar result is explicitly the RIGHTCLICK-004 Services experiment

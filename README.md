@@ -2,16 +2,16 @@
 
 ## Give your AI the capabilities already installed on your Mac.
 
-Install an app. Your AI learns what it can do.
+Installing a compatible macOS Service can make a new capability appear without changing RIGHTCLICK.
 
 ```text
-Install an app.
+Install a compatible macOS Service.
       ↓
-macOS gains capabilities.
+macOS exposes a contextual capability.
       ↓
-RIGHTCLICK discovers them.
+RIGHTCLICK discovers it.
       ↓
-Your AI can use them.
+Your AI can use it.
 ```
 
 RIGHTCLICK is not a catalogue of hard-coded Mac automations. It discovers compatible contextual capabilities exposed by installed software and makes them available to MCP clients.

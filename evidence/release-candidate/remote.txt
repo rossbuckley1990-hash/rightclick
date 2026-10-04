@@ -1,0 +1,22 @@
+GROK RELEASE MCP: WAITING_FOR_EXTERNAL_TEST
+
+Server command:
+/Users/ross/spawn/rightclick-mcp/.build/release/rightclick serve --port 8767 --tunnel
+
+PID: 68265
+cloudflared PID: 68266
+binary SHA256: a64c9107052d7b5c23a0261f9a5c8a1544c1aeb81f86a6b4dbe1bf505ae7d00e
+startup log: 2026-10-04T21:55:32Z pid=68265 transport=http path=/Users/ross/spawn/rightclick-mcp/.build/release/rightclick sha256=a64c9107052d7b5c23a0261f9a5c8a1544c1aeb81f86a6b4dbe1bf505ae7d00e
+
+Local:
+http://127.0.0.1:8767/mcp
+
+Remote:
+https://interference-explicitly-servers-film.trycloudflare.com/mcp
+
+Local checks:
+- POST /mcp without a bearer token: HTTP 401 Unauthorized
+- POST /mcp initialize with the bearer token: HTTP 200, serverInfo name=rightclick version=0.1.0, protocolVersion=2025-03-26
+
+The bearer token was rotated before this process started. It is not stored in this file.
+The previous tunnel and port 8765 server were not used.

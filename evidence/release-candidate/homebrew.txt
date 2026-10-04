@@ -1,0 +1,35 @@
+LOCAL HOMEBREW: PASS
+
+Homebrew 7.0.7 rejects a formula that is not in a tap:
+`brew install --formula ./dist/rightclick.rb`
+Error: Homebrew requires formulae to be in a tap.
+
+Working local path, not published:
+
+1. Archive the release binary without relinking it:
+   dist/rightclick-0.1.0-arm64.tar.gz
+   sha256 4e71598e15271ae99ee0b2793de90e99c11583aa5c3e96a0d3ba573943e36c85
+2. Formula dist/rightclick.rb uses url file:// that archive and that sha256.
+   It does not use the placeholder https://example.invalid URL.
+3. brew tap-new --no-git local/rightclick
+4. Copy the formula to the tap's Formula/rightclick.rb
+5. HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_FROM_API=1 brew install local/rightclick/rightclick
+
+Installed:
+/opt/homebrew/bin/rightclick -> ../Cellar/rightclick/0.1.0/bin/rightclick
+SHA256 a64c9107052d7b5c23a0261f9a5c8a1544c1aeb81f86a6b4dbe1bf505ae7d00e
+That matches the release binary.
+
+which rightclick → /opt/homebrew/bin/rightclick
+rightclick version → 0.1.0
+rightclick doctor → sharing PASS, services PASS, 47 registrations, 1 action extension
+rightclick actions /Users/ross/Desktop/test.jpg → 11 capabilities
+
+Uninstall:
+brew uninstall rightclick
+rightclick absent from PATH
+Cellar directory and symlink removed
+brew untap local/rightclick
+
+The committed packaging/homebrew/rightclick.rb template still has a placeholder URL and was not used for this install.
+The local tap was not pushed.
