@@ -1,0 +1,113 @@
+item: /Users/ross/Desktop/test.jpg
+kind: image
+type: public.jpeg
+
+Markup
+  id: action:com.apple.MarkupUI.Markup
+  provider: Markup (com.apple.MarkupUI.Markup)
+  source: action_extension
+  inputs: public.jpeg
+  invocation: unsupported
+  safety: unknown
+  support: public_supported
+  confirmation: True
+
+Set Desktop Picture
+  id: service:com.apple.services.setDesktopPicture:runWorkflowAsService
+  provider: Set Desktop Picture (com.apple.services.setDesktopPicture)
+  source: service
+  inputs: public.image
+  invocation: interactive
+  safety: local_write
+  support: public_supported
+  confirmation: True
+
+Add to Photos
+  id: sharing:com.apple.share.System.add-to-iphoto
+  provider: Add to Photos (com.apple.share.System.add-to-iphoto)
+  source: sharing_service
+  inputs: NSPasteboardWriting
+  invocation: direct
+  safety: local_write
+  support: public_deprecated
+  confirmation: False
+
+AirDrop
+  id: sharing:com.apple.share.AirDrop.send
+  provider: AirDrop (com.apple.share.AirDrop.send)
+  source: sharing_service
+  inputs: NSPasteboardWriting
+  invocation: interactive
+  safety: external_share
+  support: public_deprecated
+  confirmation: True
+
+Freeform
+  id: sharing:title:freeform
+  provider: Freeform ()
+  source: sharing_service
+  inputs: NSPasteboardWriting
+  invocation: interactive
+  safety: external_share
+  support: public_deprecated
+  confirmation: True
+
+Journal
+  id: sharing:title:journal
+  provider: Journal ()
+  source: sharing_service
+  inputs: NSPasteboardWriting
+  invocation: interactive
+  safety: external_share
+  support: public_deprecated
+  confirmation: True
+
+Mail
+  id: sharing:com.apple.share.Mail.compose
+  provider: Mail (com.apple.share.Mail.compose)
+  source: sharing_service
+  inputs: NSPasteboardWriting
+  invocation: interactive
+  safety: external_share
+  support: public_deprecated
+  confirmation: True
+
+Messages
+  id: sharing:com.apple.messages.ShareExtension
+  provider: Messages (com.apple.messages.ShareExtension)
+  source: sharing_service
+  inputs: NSPasteboardWriting
+  invocation: interactive
+  safety: external_share
+  support: public_deprecated
+  confirmation: True
+
+Notes
+  id: sharing:title:notes
+  provider: Notes ()
+  source: sharing_service
+  inputs: NSPasteboardWriting
+  invocation: interactive
+  safety: external_share
+  support: public_deprecated
+  confirmation: True
+
+Reminders
+  id: sharing:title:reminders
+  provider: Reminders ()
+  source: sharing_service
+  inputs: NSPasteboardWriting
+  invocation: interactive
+  safety: external_share
+  support: public_deprecated
+  confirmation: True
+
+Simulator
+  id: sharing:title:simulator
+  provider: Simulator ()
+  source: sharing_service
+  inputs: NSPasteboardWriting
+  invocation: interactive
+  safety: external_share
+  support: public_deprecated
+  confirmation: True
