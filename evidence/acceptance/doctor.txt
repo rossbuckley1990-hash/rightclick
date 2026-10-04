@@ -1,0 +1,25 @@
+RIGHTCLICK doctor
+macOS 26.4.1 (25E253)
+
+SHARING
+  discovery     PASS
+  execution     API_PRESENT
+  support       public_deprecated
+
+SERVICES
+  discovery     PASS
+  execution     API_PRESENT
+  support       public_supported
+  registrations 48
+
+QUICK ACTIONS
+  discovery     PASS
+  execution     UNAVAILABLE
+  support       public_supported discovery, execution unavailable
+  extensions    1
+
+• Sharing discovery uses NSSharingService.sharingServices(forItems:), which is deprecated in macOS 13 and still returns the context-filtered catalog on this Mac.
+• NSSharingServicePicker.standardShareMenuItem does not enumerate services. It is a single Share menu item.
+• Services are read from the documented NSServices Info.plist key and invoked with NSPerformService.
+• Finder Action extensions are discovered from NSExtension metadata. Direct invocation is unsupported because NSExtension is not in the public SDK.
+• Private NSExtension runtime matching was probed and is not used by this product.

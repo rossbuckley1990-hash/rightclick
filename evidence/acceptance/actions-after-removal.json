@@ -1,118 +1,46 @@
 {
   "actions" : [
     {
-      "id" : "action:com.apple.MarkupUI.Markup",
-      "inputs" : [
-        "public.jpeg"
-      ],
-      "invocation" : "unsupported",
-      "metadata" : {
-        "activationRule" : "SUBQUERY(extensionItems, $extensionItem, ($extensionItem.attachments.@count == 1) AND (SUBQUERY($extensionItem.attachments, $attachment, NONE $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"com.adobe.pdf\" AND NONE $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"public.image\").@count == 0)).@count == 1",
-        "activationRuleKind" : "predicate",
-        "bundlePath" : "/System/Library/PrivateFrameworks/MarkupUI.framework/PlugIns/Markup.appex",
-        "discoverySource" : "NSExtension Info.plist",
-        "invocation" : "No public direct invocation API. NSExtension is not in the macOS SDK.",
-        "roleType" : "NSExtensionServiceRoleTypeEditor"
-      },
-      "output" : [
-
-      ],
-      "provider" : {
-        "bundleIdentifier" : "com.apple.MarkupUI.Markup",
-        "name" : "Markup"
-      },
-      "requiresConfirmation" : true,
-      "safety" : "unknown",
-      "source" : "action_extension",
-      "supportLevel" : "public_supported",
-      "title" : "Markup"
-    },
-    {
-      "id" : "service:dev.rightclick.test-provider:createSidecar",
-      "inputs" : [
-        "public.image"
-      ],
-      "invocation" : "interactive",
-      "metadata" : {
-        "bundlePath" : "/Users/ross/Library/Services/RIGHTCLICK Test Provider.app",
-        "discoverySource" : "NSServices Info.plist",
-        "message" : "createSidecar"
-      },
-      "output" : [
-
-      ],
-      "provider" : {
-        "bundleIdentifier" : "dev.rightclick.test-provider",
-        "name" : "RIGHTCLICK Test Provider"
-      },
-      "requiresConfirmation" : true,
-      "safety" : "unknown",
-      "source" : "service",
-      "supportLevel" : "public_supported",
-      "title" : "RIGHTCLICK Test — Create Sidecar"
-    },
-    {
+      "explanation" : "macOS Service “Set Desktop Picture”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
       "id" : "service:com.apple.services.setDesktopPicture:runWorkflowAsService",
-      "inputs" : [
+      "inputTypes" : [
         "public.image"
       ],
       "invocation" : "interactive",
-      "metadata" : {
-        "bundlePath" : "/System/Library/Services/Set Desktop Picture.workflow",
-        "discoverySource" : "NSServices Info.plist",
-        "message" : "runWorkflowAsService"
-      },
-      "output" : [
-
-      ],
       "provider" : {
         "bundleIdentifier" : "com.apple.services.setDesktopPicture",
         "name" : "Set Desktop Picture"
       },
       "requiresConfirmation" : true,
-      "safety" : "local_write",
+      "safety" : "unknown",
       "source" : "service",
       "supportLevel" : "public_supported",
       "title" : "Set Desktop Picture"
     },
     {
+      "explanation" : "Sharing service “Add to Photos”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
       "id" : "sharing:com.apple.share.System.add-to-iphoto",
-      "inputs" : [
+      "inputTypes" : [
         "NSPasteboardWriting"
       ],
-      "invocation" : "direct",
-      "metadata" : {
-        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
-        "menuItemTitle" : "Add to Photos",
-        "publicName" : "com.apple.share.System.add-to-iphoto"
-      },
-      "output" : [
-
-      ],
+      "invocation" : "interactive",
       "provider" : {
         "bundleIdentifier" : "com.apple.share.System.add-to-iphoto",
         "name" : "Add to Photos"
       },
-      "requiresConfirmation" : false,
-      "safety" : "local_write",
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
       "source" : "sharing_service",
       "supportLevel" : "public_deprecated",
       "title" : "Add to Photos"
     },
     {
+      "explanation" : "Sharing service “AirDrop”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
       "id" : "sharing:com.apple.share.AirDrop.send",
-      "inputs" : [
+      "inputTypes" : [
         "NSPasteboardWriting"
       ],
       "invocation" : "interactive",
-      "metadata" : {
-        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
-        "menuItemTitle" : "AirDrop",
-        "publicName" : "com.apple.share.AirDrop.send"
-      },
-      "output" : [
-
-      ],
       "provider" : {
         "bundleIdentifier" : "com.apple.share.AirDrop.send",
         "name" : "AirDrop"
@@ -124,18 +52,12 @@
       "title" : "AirDrop"
     },
     {
+      "explanation" : "Sharing service “Freeform”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
       "id" : "sharing:title:freeform",
-      "inputs" : [
+      "inputTypes" : [
         "NSPasteboardWriting"
       ],
       "invocation" : "interactive",
-      "metadata" : {
-        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
-        "menuItemTitle" : "Freeform"
-      },
-      "output" : [
-
-      ],
       "provider" : {
         "name" : "Freeform"
       },
@@ -146,18 +68,12 @@
       "title" : "Freeform"
     },
     {
+      "explanation" : "Sharing service “Journal”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
       "id" : "sharing:title:journal",
-      "inputs" : [
+      "inputTypes" : [
         "NSPasteboardWriting"
       ],
       "invocation" : "interactive",
-      "metadata" : {
-        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
-        "menuItemTitle" : "Journal"
-      },
-      "output" : [
-
-      ],
       "provider" : {
         "name" : "Journal"
       },
@@ -168,19 +84,12 @@
       "title" : "Journal"
     },
     {
+      "explanation" : "Sharing service “Mail”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
       "id" : "sharing:com.apple.share.Mail.compose",
-      "inputs" : [
+      "inputTypes" : [
         "NSPasteboardWriting"
       ],
       "invocation" : "interactive",
-      "metadata" : {
-        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
-        "menuItemTitle" : "Mail",
-        "publicName" : "com.apple.share.Mail.compose"
-      },
-      "output" : [
-
-      ],
       "provider" : {
         "bundleIdentifier" : "com.apple.share.Mail.compose",
         "name" : "Mail"
@@ -192,19 +101,12 @@
       "title" : "Mail"
     },
     {
+      "explanation" : "Sharing service “Messages”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
       "id" : "sharing:com.apple.messages.ShareExtension",
-      "inputs" : [
+      "inputTypes" : [
         "NSPasteboardWriting"
       ],
       "invocation" : "interactive",
-      "metadata" : {
-        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
-        "menuItemTitle" : "Messages",
-        "publicName" : "com.apple.messages.ShareExtension"
-      },
-      "output" : [
-
-      ],
       "provider" : {
         "bundleIdentifier" : "com.apple.messages.ShareExtension",
         "name" : "Messages"
@@ -216,18 +118,12 @@
       "title" : "Messages"
     },
     {
+      "explanation" : "Sharing service “Notes”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
       "id" : "sharing:title:notes",
-      "inputs" : [
+      "inputTypes" : [
         "NSPasteboardWriting"
       ],
       "invocation" : "interactive",
-      "metadata" : {
-        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
-        "menuItemTitle" : "Notes"
-      },
-      "output" : [
-
-      ],
       "provider" : {
         "name" : "Notes"
       },
@@ -238,18 +134,12 @@
       "title" : "Notes"
     },
     {
+      "explanation" : "Sharing service “Reminders”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
       "id" : "sharing:title:reminders",
-      "inputs" : [
+      "inputTypes" : [
         "NSPasteboardWriting"
       ],
       "invocation" : "interactive",
-      "metadata" : {
-        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
-        "menuItemTitle" : "Reminders"
-      },
-      "output" : [
-
-      ],
       "provider" : {
         "name" : "Reminders"
       },
@@ -260,18 +150,12 @@
       "title" : "Reminders"
     },
     {
+      "explanation" : "Sharing service “Simulator”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
       "id" : "sharing:title:simulator",
-      "inputs" : [
+      "inputTypes" : [
         "NSPasteboardWriting"
       ],
       "invocation" : "interactive",
-      "metadata" : {
-        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
-        "menuItemTitle" : "Simulator"
-      },
-      "output" : [
-
-      ],
       "provider" : {
         "name" : "Simulator"
       },
@@ -280,6 +164,23 @@
       "source" : "sharing_service",
       "supportLevel" : "public_deprecated",
       "title" : "Simulator"
+    },
+    {
+      "explanation" : "Action extension “Markup” was discovered from installed extension metadata. This Mac does not expose a public call to run it.",
+      "id" : "action:com.apple.MarkupUI.Markup",
+      "inputTypes" : [
+        "public.jpeg"
+      ],
+      "invocation" : "unsupported",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.MarkupUI.Markup",
+        "name" : "Markup"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "action_extension",
+      "supportLevel" : "public_supported",
+      "title" : "Markup"
     }
   ],
   "item" : {

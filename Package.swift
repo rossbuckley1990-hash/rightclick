@@ -8,7 +8,7 @@ let package = Package(
     ],
     products: [
         .library(name: "RightClickCore", targets: ["RightClickCore"]),
-        .executable(name: "rightclick-mcp", targets: ["RightClickCLI"]),
+        .executable(name: "rightclick", targets: ["RightClickCLI"]),
         .executable(name: "rightclick-probe", targets: ["RightClickProbe"]),
         .executable(name: "rightclick-marker", targets: ["RightClickMarker"]),
     ],
@@ -43,6 +43,7 @@ let package = Package(
             dependencies: ["RightClickCore", "RightClickMCP"],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
+                .unsafeFlags(["-parse-as-library"]),
             ]
         ),
         .target(

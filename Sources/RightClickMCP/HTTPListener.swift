@@ -5,13 +5,13 @@ import Network
 final class MCPHTTPListener: @unchecked Sendable {
     private let port: UInt16
     private let path: String
-    private let transport: StatefulHTTPServerTransport
+    private let handler: @Sendable (HTTPRequest) async -> HTTPResponse
     private var listener: NWListener?
 
-    init(port: UInt16, path: String, transport: StatefulHTTPServerTransport) {
+    init(port: UInt16, path: String, handler: @escaping @Sendable (HTTPRequest) async -> HTTPResponse) {
         self.port = port
         self.path = path
-        self.transport = transport
+        self.handler = handler
     }
 
     func start() throws {
@@ -44,7 +44,7 @@ final class MCPHTTPListener: @unchecked Sendable {
                 try await send(status: 404, headers: ["Content-Type": "text/plain"], body: Data("Not found".utf8), stream: nil, connection: connection)
                 return
             }
-            let response = await transport.handleRequest(HTTPRequest(
+            let response = await handler(HTTPRequest(
                 method: raw.method,
                 headers: raw.headers,
                 body: raw.body,

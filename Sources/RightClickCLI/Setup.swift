@@ -1,0 +1,192 @@
+import Foundation
+import RightClickCore
+import RightClickMCP
+import Security
+
+enum RightClickSetup {
+    static func run(json: Bool) -> Int {
+        let engine = CapabilityEngine()
+        let report = engine.doctor()
+        let rows = engine.providers()
+        let executable = executablePath()
+        let cursorResult = writeCursorConfig(executable: executable)
+        let selfTest = harmlessSelfTest(engine)
+        if json {
+            let payload: [String: String] = [
+                "version": RightClickVersion.current,
+                "macos": report.macosVersion,
+                "services": String(report.serviceRegistrationCount),
+                "actionExtensions": String(report.actionExtensionCount),
+                "providers": String(rows.count),
+                "cursor": cursorResult,
+                "selfTest": selfTest,
+            ]
+            print(RightClickJSON.encode(payload))
+            return report.servicesDiscovery == "FAIL" ? 1 : 0
+        }
+        let sharingNote = report.sharingDiscovery == "PASS" ? "ready" : report.sharingDiscovery
+        print("""
+        RIGHTCLICK
+
+        Mac: \(sharingNote) (\(report.macosVersion))
+        Services: \(report.serviceRegistrationCount) registrations
+        Providers: \(rows.count)
+        Action extensions: \(report.actionExtensionCount)
+        MCP: stdio command ready
+
+        \(cursorResult)
+
+        Test:
+        "What can my Mac do with ~/Desktop/example.jpg?"
+
+        Self-test: \(selfTest)
+        """)
+        return report.servicesDiscovery == "FAIL" ? 1 : 0
+    }
+
+    private static func writeCursorConfig(executable: String) -> String {
+        let directory = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".cursor", isDirectory: true)
+        let file = directory.appendingPathComponent("mcp.json")
+        let entry: [String: Any] = [
+            "command": executable,
+            "args": ["mcp"],
+        ]
+        do {
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            var root: [String: Any] = [:]
+            if FileManager.default.fileExists(atPath: file.path) {
+                let data = try Data(contentsOf: file)
+                if let existing = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    root = existing
+                } else {
+                    return "Cursor configuration was not changed because ~/.cursor/mcp.json is not a JSON object."
+                }
+            }
+            var servers = root["mcpServers"] as? [String: Any] ?? [:]
+            servers["rightclick"] = entry
+            root["mcpServers"] = servers
+            let data = try JSONSerialization.data(withJSONObject: root, options: [.prettyPrinted, .sortedKeys])
+            try data.write(to: file)
+            return "Cursor configuration written:\n\(file.path)"
+        } catch {
+            return "Cursor configuration was not written: \(error.localizedDescription)"
+        }
+    }
+
+    private static func harmlessSelfTest(_ engine: CapabilityEngine) -> String {
+        let probe = "RIGHTCLICK setup probe"
+        do {
+            let item = try engine.inspect(probe)
+            return "inspect text → \(item.typeIdentifier ?? "unknown")"
+        } catch {
+            return "inspect failed: \(error.localizedDescription)"
+        }
+    }
+
+    static func executablePath() -> String {
+        let raw = CommandLine.arguments[0]
+        if raw.hasPrefix("/") { return raw }
+        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(raw).standardizedFileURL.path
+    }
+}
+
+enum RightClickAuth {
+    static func run(_ positional: [String]) -> Int {
+        guard positional.first == "rotate" else {
+            fputs("usage: rightclick auth rotate\n", stderr)
+            return 2
+        }
+        do {
+            try RightClickPaths.ensureSupportDirectory()
+            let token = randomToken()
+            try token.write(to: RightClickPaths.tokenFile, atomically: true, encoding: .utf8)
+            try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: RightClickPaths.tokenFile.path)
+            print("Token rotated. Restart rightclick serve to use it.")
+            print(token)
+            return 0
+        } catch {
+            fputs("\(error)\n", stderr)
+            return 1
+        }
+    }
+
+    static func randomToken() -> String {
+        var bytes = [UInt8](repeating: 0, count: 32)
+        _ = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+        return Data(bytes).base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
+    }
+}
+
+enum RightClickServe {
+    static func run(_ args: [String]) -> Int {
+        let port = UInt16(flag(args, "--port") ?? "") ?? 8765
+        let tunnel = args.contains("--tunnel")
+        let token = loadOrCreateToken()
+        print("""
+        RIGHTCLICK Remote MCP
+
+        Local:
+        http://127.0.0.1:\(port)/mcp
+
+        Authentication:
+        Bearer \(token)
+        """)
+        if tunnel {
+            startTunnel(port: port)
+        } else {
+            print("""
+
+            Remote exposure:
+            not enabled
+            """)
+        }
+        setenv("RIGHTCLICK_MCP_TOKEN", token, 1)
+        return RightClickMCPMain.run(["--http", "--port", String(port)])
+    }
+
+    private static func loadOrCreateToken() -> String {
+        if let existing = try? String(contentsOf: RightClickPaths.tokenFile, encoding: .utf8) {
+            let trimmed = existing.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !trimmed.isEmpty { return trimmed }
+        }
+        let token = RightClickAuth.randomToken()
+        try? RightClickPaths.ensureSupportDirectory()
+        try? token.write(to: RightClickPaths.tokenFile, atomically: true, encoding: .utf8)
+        try? FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: RightClickPaths.tokenFile.path)
+        return token
+    }
+
+    private static func startTunnel(port: UInt16) {
+        let candidates = ["/opt/homebrew/bin/cloudflared", "/usr/local/bin/cloudflared"]
+        guard let binary = candidates.first(where: { FileManager.default.isExecutableFile(atPath: $0) }) else {
+            print("\nRemote exposure:\ncloudflared is not installed")
+            return
+        }
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: binary)
+        process.arguments = ["tunnel", "--url", "http://127.0.0.1:\(port)", "--no-autoupdate"]
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        process.standardError = pipe
+        pipe.fileHandleForReading.readabilityHandler = { handle in
+            let data = handle.availableData
+            guard !data.isEmpty, let text = String(data: data, encoding: .utf8) else { return }
+            if let match = text.range(of: #"https://[A-Za-z0-9-]+\.trycloudflare\.com"#, options: .regularExpression) {
+                print("\nRemote:\n\(text[match])/mcp")
+            }
+        }
+        do {
+            try process.run()
+        } catch {
+            print("\nRemote exposure:\ncloudflared failed to start")
+        }
+    }
+
+    private static func flag(_ args: [String], _ name: String) -> String? {
+        guard let index = args.firstIndex(of: name), index + 1 < args.count else { return nil }
+        return args[index + 1]
+    }
+}

@@ -1,3 +1,4 @@
+import Darwin
 import Foundation
 import MCP
 import RightClickCore
@@ -26,6 +27,30 @@ public enum RightClickMCPMain {
     }
 }
 
+final class MainResultBox<T>: @unchecked Sendable {
+    private let lock = NSLock()
+    private let semaphore = DispatchSemaphore(value: 0)
+    private var result: Result<T, Error>?
+
+    func finish(_ result: Result<T, Error>) {
+        lock.lock()
+        self.result = result
+        lock.unlock()
+        semaphore.signal()
+    }
+
+    func wait() throws -> T {
+        semaphore.wait()
+        lock.lock()
+        let result = self.result
+        lock.unlock()
+        guard let result else {
+            throw RightClickError("Main-thread capability call produced no result.")
+        }
+        return try result.get()
+    }
+}
+
 final class StopFlag: @unchecked Sendable {
     var stop = false
 }
@@ -34,13 +59,18 @@ final class EngineBox: @unchecked Sendable {
     let engine: CapabilityEngine
     init(_ engine: CapabilityEngine) { self.engine = engine }
 
-    func call<T>(_ body: (CapabilityEngine) throws -> T) throws -> T {
-        if Thread.isMainThread {
+    func call<T>(_ body: @escaping (CapabilityEngine) throws -> T) throws -> T {
+        // ShareKit creates NSWindows during perform(withItems:). DispatchQueue.main.sync
+        // can run that block inline on the MCP worker, which AppKit then aborts.
+        if pthread_main_np() != 0 {
             return try body(engine)
         }
-        return try DispatchQueue.main.sync {
-            try body(engine)
+        let box = MainResultBox<T>()
+        let engine = self.engine
+        DispatchQueue.main.async {
+            box.finish(Result { try body(engine) })
         }
+        return try box.wait()
     }
 }
 
@@ -102,42 +132,124 @@ final class HTTPMCPServer {
                 ready.signal()
             }
         }
-        ready.wait()
-        dispatchMain()
+        RunLoop.main.run()
     }
 
     private static func serve(engine: EngineBox, port: UInt16, token: String, ready: DispatchSemaphore) async throws {
+        let broker = HTTPSessionBroker(engine: engine, token: token, port: port)
+        let listener = MCPHTTPListener(port: port, path: "/mcp") { request in
+            await broker.handle(request)
+        }
+        try listener.start()
+        fputs("RIGHTCLICK HTTP MCP listening on http://127.0.0.1:\(port)/mcp\n", stderr)
+        ready.signal()
+        try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
+    }
+}
+
+/// One Streamable HTTP session per initialize.
+///
+/// The SDK transport rejects a second initialize on the same instance with
+/// HTTP 400 "Session already initialized". Connectors retry initialize, so
+/// each initialize gets a new server and transport.
+private actor HTTPSessionBroker {
+    struct Session {
+        let server: Server
+        let transport: StatefulHTTPServerTransport
+    }
+
+    private let engine: EngineBox
+    private let token: String
+    private let resource: URL
+    private var sessions: [String: Session] = [:]
+    private var order: [String] = []
+
+    init(engine: EngineBox, token: String, port: UInt16) {
+        self.engine = engine
+        self.token = token
+        self.resource = URL(string: "http://127.0.0.1:\(port)/mcp")!
+    }
+
+    func handle(_ request: HTTPRequest) async -> HTTPResponse {
+        if requestIsInitialize(request) {
+            return await openSession(for: request)
+        }
+        if let sessionID = request.header(HTTPHeaderName.sessionID), let session = sessions[sessionID] {
+            return await session.transport.handleRequest(request)
+        }
+        return .error(
+            statusCode: 400,
+            .invalidRequest("Bad Request: Missing \(HTTPHeaderName.sessionID) header")
+        )
+    }
+
+    private func openSession(for request: HTTPRequest) async -> HTTPResponse {
+        let transport = StatefulHTTPServerTransport(validationPipeline: makePipeline())
         let server = Server(
             name: "rightclick",
             version: "0.1.0",
             capabilities: .init(tools: .init(listChanged: false))
         )
         await registerTools(on: server, engine: engine)
-        let resource = URL(string: "http://127.0.0.1:\(port)/mcp")!
+        do {
+            try await server.start(transport: transport)
+        } catch {
+            return .error(
+                statusCode: 500,
+                .internalError("Failed to start MCP session: \(error.localizedDescription)")
+            )
+        }
+        let response = await transport.handleRequest(request)
+        if response.statusCode == 200, let sessionID = sessionID(in: response) {
+            sessions[sessionID] = Session(server: server, transport: transport)
+            order.append(sessionID)
+            await trimOldSessions()
+        } else {
+            await server.stop()
+        }
+        return response
+    }
+
+    private func trimOldSessions() async {
+        while order.count > 8 {
+            let oldest = order.removeFirst()
+            if let session = sessions.removeValue(forKey: oldest) {
+                await session.server.stop()
+            }
+        }
+    }
+
+    private func makePipeline() -> StandardValidationPipeline {
         let bearer = BearerTokenValidator(
             resourceMetadataURL: resource,
             resourceIdentifier: resource,
-            tokenValidator: { presented, _, _ in
+            tokenValidator: { [token] presented, _, _ in
                 if presented == token {
                     return .valid(BearerTokenInfo())
                 }
                 return .invalidToken(errorDescription: "Bearer token was not accepted.")
             }
         )
-        let pipeline = StandardValidationPipeline(validators: [
+        return StandardValidationPipeline(validators: [
             bearer,
             AcceptHeaderValidator(mode: .sseRequired),
             ContentTypeValidator(),
             ProtocolVersionValidator(),
             SessionValidator(),
         ])
-        let transport = StatefulHTTPServerTransport(validationPipeline: pipeline)
-        try await server.start(transport: transport)
-        let listener = MCPHTTPListener(port: port, path: "/mcp", transport: transport)
-        try listener.start()
-        fputs("RIGHTCLICK HTTP MCP listening on http://127.0.0.1:\(port)/mcp\n", stderr)
-        ready.signal()
-        try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
+    }
+
+    private func requestIsInitialize(_ request: HTTPRequest) -> Bool {
+        guard request.method.uppercased() == "POST",
+              let body = request.body,
+              let json = try? JSONSerialization.jsonObject(with: body) as? [String: Any],
+              let method = json["method"] as? String
+        else { return false }
+        return method == "initialize"
+    }
+
+    private func sessionID(in response: HTTPResponse) -> String? {
+        response.headers.first { $0.key.caseInsensitiveCompare(HTTPHeaderName.sessionID) == .orderedSame }?.value
     }
 }
 
@@ -208,8 +320,27 @@ private func rightClickTools() -> [Tool] {
         ),
         Tool(
             name: "context_run",
-            description: "Invoke one capability discovered for this object. External, destructive, and unknown actions return CONFIRMATION_REQUIRED unless confirmed is true.",
+            description: "Invoke one capability discovered for this object. Sharing actions return immediately with executionId and state started. Services return the NSPerformService result in that same response. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
             inputSchema: .object(runSchema)
+        ),
+        Tool(
+            name: "context_run_status",
+            description: "Read a context_run execution. States: started, awaiting_user, succeeded, failed, cancelled, unknown.",
+            inputSchema: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "executionId": schemaString("executionId returned by context_run."),
+                ]),
+                "required": .array([.string("executionId")]),
+            ])
+        ),
+        Tool(
+            name: "context_providers",
+            description: "List the capability providers currently installed on this Mac.",
+            inputSchema: .object([
+                "type": .string("object"),
+                "properties": .object([:]),
+            ])
         ),
     ]
 }
@@ -222,24 +353,16 @@ private func handleTool(_ name: String, arguments: [String: Value]?, engine: Eng
         return RightClickJSON.encode(inspected)
     case "context_actions":
         let result = try engine.call { try $0.capabilities(for: item) }
-        let payload: [String: Any] = [
-            "item": result.item.display,
-            "kind": result.item.kind,
-            "contentType": result.item.typeIdentifier ?? "",
-            "actions": result.capabilities.map { capability in
-                [
-                    "id": capability.id,
-                    "title": capability.title,
-                    "source": capability.source.rawValue,
-                    "safety": capability.safety.rawValue,
-                    "invocation": capability.invocation.rawValue,
-                    "requiresConfirmation": capability.requiresConfirmation,
-                    "supportLevel": capability.supportLevel.rawValue,
-                ]
-            },
-        ]
-        let data = try JSONSerialization.data(withJSONObject: payload, options: [.prettyPrinted, .sortedKeys])
-        return String(data: data, encoding: .utf8) ?? "{}"
+        let payload = ContextActionsPayload(
+            item: result.item.display,
+            kind: result.item.kind,
+            contentType: result.item.typeIdentifier ?? "",
+            actions: result.capabilities.map(CapabilityView.init)
+        )
+        return RightClickJSON.encode(payload)
+    case "context_providers":
+        let rows = try engine.call { $0.providers() }
+        return RightClickJSON.encode(rows)
     case "context_explain":
         let action = arguments?["actionId"]?.stringValue ?? ""
         let capability = try engine.call { try $0.describe(id: action, item: item) }
@@ -247,11 +370,22 @@ private func handleTool(_ name: String, arguments: [String: Value]?, engine: Eng
     case "context_run":
         let action = arguments?["actionId"]?.stringValue ?? ""
         let confirmed = arguments?["confirmed"]?.boolValue ?? false
-        let result = try engine.call { try $0.run(id: action, item: item, confirmed: confirmed) }
-        return RightClickJSON.encode(result)
+        let record = try engine.call { try $0.begin(id: action, item: item, confirmed: confirmed) }
+        return RightClickJSON.encode(record)
+    case "context_run_status":
+        let executionId = arguments?["executionId"]?.stringValue ?? ""
+        let record = try engine.call { $0.executionStatus(executionId) }
+        return RightClickJSON.encode(record)
     default:
         throw RightClickError("Unknown tool \(name).")
     }
+}
+
+private struct ContextActionsPayload: Codable {
+    var item: String
+    var kind: String
+    var contentType: String
+    var actions: [CapabilityView]
 }
 
 private extension Value {

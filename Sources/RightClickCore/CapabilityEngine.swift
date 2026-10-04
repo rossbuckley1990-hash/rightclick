@@ -1,4 +1,5 @@
 import AppKit
+import Darwin
 import Foundation
 
 public struct ProviderSummary: Codable, Sendable {
@@ -44,9 +45,12 @@ public final class CapabilityEngine {
                 + ServiceCatalog.capabilities(for: item)
                 + ActionExtensionCatalog.capabilities(for: item)
         )
+        let order: [CapabilitySource: Int] = [.service: 0, .sharingService: 1, .actionExtension: 2, .system: 3]
         return (item, combined.sorted { lhs, rhs in
-            if lhs.source.rawValue == rhs.source.rawValue { return lhs.title < rhs.title }
-            return lhs.source.rawValue < rhs.source.rawValue
+            let left = order[lhs.source] ?? 9
+            let right = order[rhs.source] ?? 9
+            if left == right { return lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending }
+            return left < right
         })
     }
 
@@ -106,7 +110,19 @@ public final class CapabilityEngine {
         }
         switch capability.source {
         case .sharingService:
-            return SharingCatalog.perform(capabilityID: capability.id, item: item)
+            let started = try begin(id: capability.id, item: raw, confirmed: confirmed)
+            if pthread_main_np() != 0 {
+                let deadline = Date().addingTimeInterval(SharingExecutionModel.deadline + 2)
+                while Date() < deadline {
+                    let current = ExecutionStore.shared.get(started.executionId)
+                    if let current, current.state != .started, current.state != .awaitingUser {
+                        break
+                    }
+                    RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(0.05))
+                }
+            }
+            let final = ExecutionStore.shared.get(started.executionId) ?? started
+            return runResult(from: final)
         case .service:
             return ServiceCatalog.perform(capabilityID: capability.id, item: item)
         case .actionExtension, .system:
@@ -118,6 +134,100 @@ public final class CapabilityEngine {
                 supportLevel: capability.supportLevel
             )
         }
+    }
+
+    /// Starts an execution and returns without waiting for an asynchronous share callback.
+    /// `NSPerformService` is synchronous, so its Boolean result is stored before return.
+    public func begin(id: String, item raw: String, confirmed: Bool) throws -> ExecutionRecord {
+        let executionId = UUID().uuidString
+        let (item, capabilities) = try capabilities(for: raw)
+        guard let capability = capabilities.first(where: { $0.id == id || $0.title == id }) else {
+            let record = ExecutionRecord(executionId: executionId, actionId: id, state: .failed, message: "No discovered capability matches \(id) for this item.")
+            ExecutionStore.shared.put(record)
+            return record
+        }
+        if capability.invocation == .unsupported {
+            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .failed, message: "No public invocation API for \(capability.title).")
+            ExecutionStore.shared.put(record)
+            return record
+        }
+        if capability.requiresConfirmation && !confirmed {
+            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .awaitingUser, message: "CONFIRMATION_REQUIRED. \(capability.title) is \(capability.safety.rawValue).")
+            ExecutionStore.shared.put(record)
+            return record
+        }
+        switch capability.source {
+        case .sharingService:
+            let record = ExecutionRecord(
+                executionId: executionId,
+                actionId: capability.id,
+                title: capability.title,
+                state: .started,
+                message: "Sharing is in progress.",
+                events: ["execution created"]
+            )
+            ExecutionStore.shared.put(record)
+            let actionId = capability.id
+            let launch = {
+                SharingCatalog.launch(executionId: executionId, capabilityID: actionId, item: item)
+            }
+            if pthread_main_np() != 0 {
+                launch()
+            } else {
+                DispatchQueue.main.async(execute: launch)
+            }
+            return ExecutionStore.shared.get(executionId) ?? record
+        case .service:
+            let result = ServiceCatalog.perform(capabilityID: capability.id, item: item)
+            let record = ExecutionRecord(
+                executionId: executionId,
+                actionId: capability.id,
+                title: result.title,
+                state: result.status == .executed ? .succeeded : .failed,
+                message: result.message,
+                output: result.output
+            )
+            ExecutionStore.shared.put(record)
+            return record
+        case .actionExtension, .system:
+            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .failed, message: "Invocation is not supported.")
+            ExecutionStore.shared.put(record)
+            return record
+        }
+    }
+
+    private func runResult(from record: ExecutionRecord) -> RunResult {
+        let status: RunStatus
+        switch record.state {
+        case .succeeded:
+            status = .executed
+        case .awaitingUser:
+            status = .confirmationRequired
+        case .failed:
+            status = .failed
+        case .started, .cancelled, .unknown:
+            status = .unknown
+        }
+        return RunResult(
+            status: status,
+            actionID: record.actionId,
+            title: record.title,
+            message: record.message,
+            output: record.output
+        )
+    }
+
+    public func refresh() {
+        NSUpdateDynamicServices()
+    }
+
+    public func executionStatus(_ executionId: String) -> ExecutionRecord {
+        ExecutionStore.shared.get(executionId) ?? ExecutionRecord(
+            executionId: executionId,
+            actionId: "",
+            state: .unknown,
+            message: "No execution with that id."
+        )
     }
 
     public func providers() -> [ProviderSummary] {

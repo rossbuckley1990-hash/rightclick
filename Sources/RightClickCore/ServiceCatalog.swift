@@ -16,9 +16,13 @@ struct InstalledServiceRecord: Equatable {
 
 enum ServiceCatalog {
     static func records() -> [InstalledServiceRecord] {
+        records(roots: BundleScan.standardServiceRoots())
+    }
+
+    static func records(roots: [URL]) -> [InstalledServiceRecord] {
         var found: [InstalledServiceRecord] = []
         var seen = Set<String>()
-        for infoURL in BundleScan.infoPlists(roots: BundleScan.standardServiceRoots(), bundleExtensions: ["app", "service", "workflow"]) {
+        for infoURL in BundleScan.infoPlists(roots: roots, bundleExtensions: ["app", "service", "workflow"]) {
             guard let plist = loadPropertyList(at: infoURL),
                   let entries = plist["NSServices"] as? [[String: Any]]
             else { continue }
@@ -68,35 +72,42 @@ enum ServiceCatalog {
         let pasteboard = NSPasteboard.withUniqueName()
         declare(payload, on: pasteboard, record: record)
         let before = pasteboard.changeCount
+        let types = (pasteboard.types ?? []).map(\.rawValue).joined(separator: ",")
+        ExecutionLog.write("NSPerformService name=\(record.menuTitle) provider=\(record.bundleIdentifier ?? "") sendFileTypes=\(record.sendFileTypes) pasteboardTypes=\(types) main=\(Thread.isMainThread)")
         let box = ServiceCallBox()
-        DispatchQueue.global(qos: .userInitiated).async {
-            let returned = NSPerformService(record.menuTitle, pasteboard)
-            box.finish(returned)
+        if Thread.isMainThread {
+            box.finish(NSPerformService(record.menuTitle, pasteboard))
+        } else {
+            DispatchQueue.main.async {
+                box.finish(NSPerformService(record.menuTitle, pasteboard))
+            }
+            let deadline = Date().addingTimeInterval(20)
+            while !box.done && Date() < deadline {
+                RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(0.05))
+            }
         }
-        let deadline = Date().addingTimeInterval(8)
-        while !box.done && Date() < deadline {
-            RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(0.05))
-        }
-        let ok = box.done && box.ok
         let output = bestString(on: pasteboard)
         let after = pasteboard.changeCount
         pasteboard.releaseGlobally()
+        _ = before
         if !box.done {
+            ExecutionLog.write("NSPerformService timed out")
             return RunResult(
                 status: .failed,
                 actionID: capabilityID,
                 title: record.menuTitle,
-                message: "NSPerformService(\"\(record.menuTitle)\") did not return within 8 seconds.",
+                message: "NSPerformService(\"\(record.menuTitle)\") did not return within 20 seconds.",
                 supportLevel: .publicSupported
             )
         }
-        let changed = after != before || (output != nil && output != payload.text)
-        if !ok && !changed {
+        ExecutionLog.write("NSPerformService returned \(box.ok) changeCount \(before)->\(after)")
+        if !box.ok {
             return RunResult(
                 status: .failed,
                 actionID: capabilityID,
                 title: record.menuTitle,
                 message: "NSPerformService(\"\(record.menuTitle)\") returned false.",
+                output: output,
                 supportLevel: .publicSupported
             )
         }
@@ -104,7 +115,7 @@ enum ServiceCatalog {
             status: .executed,
             actionID: capabilityID,
             title: record.menuTitle,
-            message: "NSPerformService invoked \(record.menuTitle).",
+            message: "NSPerformService(\"\(record.menuTitle)\") returned true.",
             output: output,
             supportLevel: .publicSupported
         )
@@ -196,8 +207,11 @@ enum ServiceCatalog {
         }
         if let path = payload.filePath {
             let url = URL(fileURLWithPath: path)
+            let filenames = NSPasteboard.PasteboardType("NSFilenamesPboardType")
             pasteboard.clearContents()
             pasteboard.writeObjects([url as NSURL])
+            pasteboard.addTypes([filenames], owner: nil)
+            pasteboard.setPropertyList([path], forType: filenames)
             _ = record
         }
     }

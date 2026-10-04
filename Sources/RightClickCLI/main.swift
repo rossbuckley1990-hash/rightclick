@@ -30,14 +30,29 @@ struct CLI {
             return emit(CapabilityEngine().doctor(), json: json)
         case "inspect":
             return inspect(positional, json: json)
-        case "capabilities":
+        case "actions", "capabilities":
             return capabilities(positional, json: json)
-        case "describe":
+        case "describe", "explain":
             return describe(positional, json: json)
         case "run":
             return runCapability(rest, positional: positional, json: json)
+        case "status":
+            return status(positional, json: json)
         case "providers":
-            return emit(CapabilityEngine().providers(), json: json || true)
+            return providers(json: json)
+        case "refresh":
+            CapabilityEngine().refresh()
+            print("Refreshed macOS Services registrations. The next query scans installed providers again.")
+            return 0
+        case "version":
+            print(RightClickVersion.current)
+            return 0
+        case "setup":
+            return RightClickSetup.run(json: json)
+        case "auth":
+            return RightClickAuth.run(positional)
+        case "serve":
+            return RightClickServe.run(rest)
         case "mcp":
             return RightClickMCPMain.run(Array(args.dropFirst()))
         default:
@@ -68,11 +83,10 @@ struct CLI {
         do {
             let result = try CapabilityEngine().capabilities(for: raw)
             if json {
-                let payload = CapabilityList(item: result.item, actions: result.capabilities)
-                print(RightClickJSON.encode(payload))
+                print(RightClickJSON.encode(ActionList(item: result.item, actions: result.capabilities)))
                 return 0
             }
-            print(renderCapabilities(item: result.item, capabilities: result.capabilities))
+            print(CLIRender.renderCapabilities(item: result.item, capabilities: result.capabilities))
             return 0
         } catch {
             fputs("\(error)\n", stderr)
@@ -112,13 +126,14 @@ struct CLI {
             if json {
                 print(RightClickJSON.encode(result))
             } else {
-                print(renderRun(result))
+                print(CLIRender.renderRun(result))
             }
             switch result.status {
             case .executed: return 0
             case .confirmationRequired: return 3
             case .unsupported: return 4
             case .failed: return 1
+            case .unknown: return 1
             }
         } catch {
             fputs("\(error)\n", stderr)
@@ -130,9 +145,9 @@ struct CLI {
         if json {
             print(RightClickJSON.encode(value))
         } else if let report = value as? DoctorReport {
-            print(renderDoctor(report))
+            print(CLIRender.renderDoctor(report))
         } else if let item = value as? ContentItem {
-            print(renderItem(item))
+            print(CLIRender.renderItem(item))
         } else {
             print(RightClickJSON.encode(value))
         }
@@ -144,34 +159,64 @@ struct CLI {
         return args[index + 1]
     }
 
+    private func status(_ positional: [String], json: Bool) -> Int {
+        guard let id = positional.first else {
+            fputs("status needs an execution id.\n", stderr)
+            return 2
+        }
+        let record = CapabilityEngine().executionStatus(id)
+        if json {
+            print(RightClickJSON.encode(record))
+        } else {
+            print(record.state.rawValue)
+            print(record.message)
+            for event in record.events {
+                print("  \(event)")
+            }
+        }
+        return record.state == .unknown && record.actionId.isEmpty ? 1 : 0
+    }
+
+    private func providers(json: Bool) -> Int {
+        let rows = CapabilityEngine().providers()
+        if json {
+            print(RightClickJSON.encode(rows))
+            return 0
+        }
+        var lines = ["Provider                     Capabilities", String(repeating: "─", count: 42)]
+        for row in rows {
+            let name = row.name.padding(toLength: 28, withPad: " ", startingAt: 0)
+            lines.append("\(name) \(row.capabilityTitles.count)")
+        }
+        print(lines.joined(separator: "\n"))
+        return 0
+    }
+
     private func usage() -> String {
         """
-        RIGHTCLICK MCP
-        If you can right-click it, your AI can do it.
+        RIGHTCLICK
+        Give your AI the capabilities already installed on your Mac.
 
-        Usage:
-          rightclick-mcp doctor
-          rightclick-mcp inspect <item>
-          rightclick-mcp capabilities <item>
-          rightclick-mcp describe <capability-id> [item]
-          rightclick-mcp run <capability-id> <item> [--yes]
-          rightclick-mcp run --item <item> --action <capability-id-or-title> [--yes]
-          rightclick-mcp providers
-          rightclick-mcp mcp
-          rightclick-mcp mcp --http --port 8765 --token <bearer>
+        rightclick doctor
+        rightclick inspect <item>
+        rightclick actions <item>
+        rightclick run <action-id> <item> [--yes]
+        rightclick status <execution-id>
+        rightclick providers
+        rightclick refresh
+        rightclick setup
+        rightclick serve [--tunnel] [--port 8765]
+        rightclick auth rotate
+        rightclick mcp
+        rightclick version
 
-        Add --json for machine-readable output.
-        Items may be file paths, http(s) URLs, or plain text.
+        --json prints machine-readable output.
         """
     }
 }
 
-private struct CapabilityList: Codable {
-    var item: ContentItem
-    var actions: [Capability]
-}
-
-private func renderItem(_ item: ContentItem) -> String {
+private enum CLIRender {
+static func renderItem(_ item: ContentItem) -> String {
     """
     \(item.display)
 
@@ -182,7 +227,7 @@ private func renderItem(_ item: ContentItem) -> String {
     """
 }
 
-private func renderDoctor(_ report: DoctorReport) -> String {
+static func renderDoctor(_ report: DoctorReport) -> String {
     """
     RIGHTCLICK doctor
     macOS \(report.macosVersion) (\(report.macosBuild))
@@ -208,39 +253,42 @@ private func renderDoctor(_ report: DoctorReport) -> String {
     """
 }
 
-private func renderCapabilities(item: ContentItem, capabilities: [Capability]) -> String {
-    var lines: [String] = []
-    lines.append(item.display)
-    lines.append("\(item.kind)  ·  \(item.typeIdentifier ?? "unknown")")
-    lines.append("")
-    let groups: [(String, CapabilitySource)] = [
-        ("SHARING", .sharingService),
-        ("SERVICES", .service),
-        ("QUICK ACTIONS", .actionExtension),
+static func renderCapabilities(item: ContentItem, capabilities: [Capability]) -> String {
+    let name = URL(fileURLWithPath: item.display).lastPathComponent
+    var lines = [
+        "RIGHTCLICK",
+        item.path == nil ? item.display : name,
+        "\(item.typeDescription ?? item.kind) · \(item.typeIdentifier ?? "unknown")",
+        "",
+        "AVAILABLE ACTIONS",
+        "",
     ]
-    var any = false
+    let groups: [(String, CapabilitySource)] = [
+        ("LOCAL", .service),
+        ("SHARE", .sharingService),
+        ("EXTENSIONS", .actionExtension),
+    ]
+    var shown = 0
     for (title, source) in groups {
         let rows = capabilities.filter { $0.source == source }
         if rows.isEmpty { continue }
-        any = true
         lines.append(title)
-        lines.append(String(repeating: "─", count: 44))
         for row in rows {
-            let gate = row.requiresConfirmation ? "confirmation" : "allowed"
-            let invoke = row.invocation == .unsupported ? "not invokable" : row.invocation.rawValue
             lines.append("  \(row.title)")
-            lines.append("    \(row.id)")
-            lines.append("    \(row.safety.rawValue) · \(invoke) · \(gate) · \(row.supportLevel.rawValue)")
+            shown += 1
         }
         lines.append("")
     }
-    if !any {
+    if shown == 0 {
         lines.append("No applicable capabilities were discovered.")
+        lines.append("")
     }
+    let providers = Set(capabilities.compactMap { $0.provider?.bundleIdentifier ?? $0.provider?.name }).count
+    lines.append("\(shown) capabilities from \(providers) providers")
     return lines.joined(separator: "\n")
 }
 
-private func renderRun(_ result: RunResult) -> String {
+static func renderRun(_ result: RunResult) -> String {
     var lines = [
         result.status.rawValue,
         result.title ?? result.actionID,
@@ -251,4 +299,5 @@ private func renderRun(_ result: RunResult) -> String {
         lines.append(output)
     }
     return lines.joined(separator: "\n")
+}
 }

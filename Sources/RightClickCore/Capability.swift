@@ -9,9 +9,11 @@ public enum CapabilitySource: String, Codable, Sendable {
 
 public enum CapabilitySafety: String, Codable, Sendable {
     case read
+    case localReversible = "local_reversible"
     case localWrite = "local_write"
     case externalShare = "external_share"
     case destructive
+    case financial
     case unknown
 }
 
@@ -113,6 +115,72 @@ public enum RunStatus: String, Codable, Sendable {
     case confirmationRequired = "CONFIRMATION_REQUIRED"
     case unsupported = "UNSUPPORTED"
     case failed = "FAILED"
+    case unknown = "UNKNOWN"
+}
+
+public enum ExecutionState: String, Codable, Sendable {
+    case started
+    case awaitingUser = "awaiting_user"
+    case succeeded
+    case failed
+    case cancelled
+    case unknown
+}
+
+public struct ExecutionRecord: Codable, Sendable {
+    public var executionId: String
+    public var actionId: String
+    public var title: String?
+    public var state: ExecutionState
+    public var message: String
+    public var output: String?
+    public var events: [String]
+
+    public init(
+        executionId: String,
+        actionId: String,
+        title: String? = nil,
+        state: ExecutionState,
+        message: String,
+        output: String? = nil,
+        events: [String] = []
+    ) {
+        self.executionId = executionId
+        self.actionId = actionId
+        self.title = title
+        self.state = state
+        self.message = message
+        self.output = output
+        self.events = events
+    }
+}
+
+public final class ExecutionStore: @unchecked Sendable {
+    public static let shared = ExecutionStore()
+    private let lock = NSLock()
+    private var records: [String: ExecutionRecord] = [:]
+
+    public func put(_ record: ExecutionRecord) {
+        lock.lock()
+        records[record.executionId] = record
+        lock.unlock()
+    }
+
+    public func get(_ executionId: String) -> ExecutionRecord? {
+        lock.lock()
+        let record = records[executionId]
+        lock.unlock()
+        return record
+    }
+
+    public func update(_ executionId: String, _ body: (inout ExecutionRecord) -> Void) {
+        lock.lock()
+        if var record = records[executionId] {
+            body(&record)
+            records[executionId] = record
+        }
+        lock.unlock()
+    }
 }
 
 public struct RunResult: Codable, Sendable {

@@ -1,84 +1,81 @@
-# RIGHTCLICK MCP
+# RIGHTCLICK
 
-## If you can right-click it, your AI can do it.
+## Give your AI the capabilities already installed on your Mac.
+
+Install an app. Your AI learns what it can do.
 
 ```text
-photo.jpg
-    ↓
-RIGHTCLICK
-    ↓
-What can this Mac do with it?
-    ↓
-Markup
-Set Desktop Picture
-Add to Photos
-AirDrop
-Mail
-...
+Install an app.
+      ↓
+macOS gains capabilities.
+      ↓
+RIGHTCLICK discovers them.
+      ↓
+Your AI can use them.
 ```
 
-RIGHTCLICK exposes contextual macOS capabilities from supported system capability surfaces. It asks the operating system what applies to a specific object, then lets an agent invoke the actions that have a real API.
+RIGHTCLICK is not a catalogue of hard-coded Mac automations. It discovers compatible contextual capabilities exposed by installed software and makes them available to MCP clients.
 
-It does not claim parity with every Finder context-menu item. On this Mac, sharing services and the Services menu can be discovered and invoked. Finder Action extensions such as Markup can be discovered from extension metadata and cannot be invoked directly.
+```text
+You:
+What can my Mac do with test.jpg?
 
-## What this Mac actually returns
+AI:
+I found 12 contextual actions, including Add to Photos, AirDrop, Mail, Markup,
+and RIGHTCLICK Test — Create Sidecar.
 
-A JPEG, a PDF, a movie, and a text file do not get the same list. Sharing discovery uses `NSSharingService.sharingServices(forItems:)`, which Apple marks deprecated and which still returns the filtered catalog here. Services come from the documented `NSServices` Info.plist key and run through `NSPerformService`. Action extensions come from `NSExtension` metadata. Their invocation field stays `unsupported`.
+You:
+Run Create Sidecar.
 
-External sharing, destructive actions, and anything unclassified return `CONFIRMATION_REQUIRED` instead of running.
+AI:
+Done.
+```
 
-## Build
+That sidecar case is the RIGHTCLICK-004 experiment: an independent macOS Service was installed, RIGHTCLICK listed it without any provider-specific code, local and remote execution wrote `test.jpg.rightclick-test.txt`, and removing the provider removed the action. See `docs/PROOF.md`. The result is for the Services mechanism that was tested, not a claim about every Mac app.
+
+## What RIGHTCLICK is not
+
+- not screen clicking
+- not generic Accessibility automation
+- not a static tool list
+- not an App Store replacement
+- not evidence that every Finder menu item can be invoked
+
+## Use
 
 ```bash
-swift build
-swift test
+swift build -c release --product rightclick
 ```
 
-The binary is `.build/debug/rightclick-mcp`.
+The binary is `.build/release/rightclick`. A Homebrew formula template is in `packaging/homebrew/rightclick.rb`. It is not published.
 
 ```bash
-rightclick-mcp doctor
-rightclick-mcp inspect fixtures/fixture.jpg
-rightclick-mcp capabilities fixtures/fixture.jpg
-rightclick-mcp capabilities "https://example.com"
-rightclick-mcp describe service:com.apple.ChineseTextConverterService:convertTextToFullWidth "RightClick"
-rightclick-mcp run service:com.apple.ChineseTextConverterService:convertTextToFullWidth "RightClick"
-rightclick-mcp providers
-rightclick-mcp mcp
+rightclick doctor
+rightclick setup
+rightclick actions ~/Desktop/photo.jpg
+rightclick run <action-id> <item> --yes
+rightclick providers
+rightclick refresh
+rightclick serve
 ```
 
-`run` accepts `--yes` when an action requires confirmation. Add `--json` for machine-readable output.
+`rightclick mcp` speaks MCP over stdio. `rightclick serve` listens for Streamable HTTP. Add `--json` to machine-readable commands.
 
-## MCP
+External shares, destructive actions, financial actions, and anything unclassified return confirmation instead of running. `NSPerformService` returning true means the service was accepted. A sharing action stays in progress until `didShareItems`, `didFailToShareItems`, or the deadline.
 
-Stdio, for Cursor:
+## Cursor
+
+`rightclick setup` writes or updates the `rightclick` entry in `~/.cursor/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "rightclick": {
-      "command": "/Users/ross/spawn/rightclick-mcp/.build/debug/rightclick-mcp",
+      "command": "/path/to/rightclick",
       "args": ["mcp"]
     }
   }
 }
 ```
 
-That configuration is in `.cursor/mcp.json`. Tools:
-
-- `context_inspect`
-- `context_actions`
-- `context_explain`
-- `context_run`
-
-Streamable HTTP uses the same tools:
-
-```bash
-rightclick-mcp mcp --http --port 8765 --token "$RIGHTCLICK_MCP_TOKEN"
-```
-
-Send `Authorization: Bearer <token>`, `Content-Type: application/json`, and `Accept: application/json, text/event-stream`.
-
-## Evidence
-
-`docs/EXPERIMENTS.md` records what was run. `docs/DECISIONS.md` records why the deprecated sharing API is still the discovery path. `docs/BUILD_STATE.md` is the current gate table.
+Tools: `context_inspect`, `context_actions`, `context_run`, `context_run_status`, `context_explain`, `context_providers`.

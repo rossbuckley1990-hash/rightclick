@@ -1,0 +1,21 @@
+Add to Photos
+item: /Users/ross/Desktop/test.jpg
+discovered id: sharing:com.apple.share.System.add-to-iphoto
+canPerform(withItems:): true
+thread: isMainThread=true pthread_main_np=1
+delegate: ShareSession retainedCount=1
+perform(withItems:) called
+willShareItems count=1 main=true
+didShareItems count=1 main=true
+Photos media items before: 8536
+Photos media items after: 8537
+Photos media item 8537: test.jpg | Sunday, 4 October 2026 at 21:55:18
+
+Set Desktop Picture
+discovered id: service:com.apple.services.setDesktopPicture:runWorkflowAsService
+provider: com.apple.services.setDesktopPicture
+input: public.image file URL plus NSFilenamesPboardType
+NSPerformService("Set Desktop Picture") returned true
+desktop before: /Users/ross/Library/Application Support/com.apple.mobileAssetDesktop/The Lake.heic
+desktop after: /Users/ross/Library/Application Support/com.apple.mobileAssetDesktop/The Lake.heic
+workflow metadata serviceProcessesInput: 0

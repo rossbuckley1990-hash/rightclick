@@ -14,6 +14,10 @@ public enum SafetyPolicy {
 
         let haystack = ([title, publicName ?? ""] + sendTypes).joined(separator: " ").lowercased()
 
+        if containsAny(haystack, ["purchase", "checkout", "subscribe", "apple pay"]) {
+            return (.financial, .interactive, true)
+        }
+
         if containsAny(haystack, ["delete", "trash", "erase", "overwrite", "empty trash"]) {
             return (.destructive, .interactive, true)
         }
@@ -24,14 +28,6 @@ public enum SafetyPolicy {
             "freeform", "reminders", "simulator", "bluetooth",
         ]) {
             return (.externalShare, .interactive, true)
-        }
-
-        if containsAny(haystack, ["desktop picture", "account picture"]) {
-            return (.localWrite, .interactive, true)
-        }
-
-        if containsAny(haystack, ["reading list", "add to photos", "add to iphoto"]) {
-            return (.localWrite, .direct, false)
         }
 
         let textSend = sendTypes.contains { type in
