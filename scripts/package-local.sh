@@ -9,9 +9,8 @@ ARCHIVE="$(pwd)/dist/rightclick-0.1.0-arm64.tar.gz"
 cat > dist/rightclick.rb << EOF
 class Rightclick < Formula
   desc "Give your AI the capabilities already installed on your Mac"
-  homepage "https://github.com/ross-buckley/rightclick"
+  homepage "https://example.invalid/rightclick"
   version "0.1.0"
-  license "MIT"
   url "file://${ARCHIVE}"
   sha256 "${SHA}"
 

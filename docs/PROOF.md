@@ -6,14 +6,14 @@ The tested mechanism is a macOS Service declared with the documented `NSServices
 
 ## Facts
 
-- Baseline for `/Users/ross/Desktop/test.jpg`: 11 capabilities.
+- Baseline for `/Users/you/Desktop/test.jpg`: 11 capabilities.
 - An independent app was installed at `~/Library/Services/RIGHTCLICK Test Provider.app`.
 - Provider bundle ID: `dev.rightclick.test-provider`.
 - New capability ID: `service:dev.rightclick.test-provider:createSidecar`.
 - Title: `RIGHTCLICK Test — Create Sidecar`.
 - RIGHTCLICK source does not name this provider or this action. Discovery used the generic Services scan.
 - Local execution went through RIGHTCLICK. `NSPerformService("RIGHTCLICK Test — Create Sidecar")` returned true.
-- Observable result: `/Users/ross/Desktop/test.jpg.rightclick-test.txt` containing `RIGHTCLICK dynamic capability executed`.
+- Observable result: `/Users/you/Desktop/test.jpg.rightclick-test.txt` containing `RIGHTCLICK dynamic capability executed`.
 - After the provider was removed and unregistered, discovery returned the same 11 capability IDs as the baseline.
 - The completed remote test, reported after this run, showed Grok Bot listing the new capability through the remote MCP server and executing it once. This repository does not contain a Grok transcript.
 

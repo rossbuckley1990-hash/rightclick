@@ -13,20 +13,20 @@ sharing discovery PASS
 services discovery PASS, 47 registrations
 quick actions discovery PASS, execution UNAVAILABLE, 1 extension
 
-rightclick actions /Users/ross/Desktop/test.jpg
+rightclick actions /Users/you/Desktop/test.jpg
 11 capabilities: Set Desktop Picture, Add to Photos, AirDrop, Freeform, Journal, Mail, Messages, Notes, Reminders, Simulator, Markup
 
 The copied binary does not need the Git checkout. These commands were run with cwd /tmp.
 
 setup
-`rightclick setup` uses FileManager.homeDirectoryForCurrentUser. On this Mac that is the account home, not the HOME environment variable. The isolated HOME therefore did not receive a Cursor config. The command wrote the real /Users/ross/.cursor/mcp.json and reported:
+`rightclick setup` uses FileManager.homeDirectoryForCurrentUser. On this Mac that is the account home, not the HOME environment variable. The isolated HOME therefore did not receive a Cursor config. The command wrote the real /Users/you/.cursor/mcp.json and reported:
 
 Cursor configuration written:
-/Users/ross/.cursor/mcp.json
+/Users/you/.cursor/mcp.json
 
 That write merged the rightclick key and left the existing screenpipe server in place. Because the binary under test was the /tmp copy, the command path briefly became that copy. It was restored to:
 
-/Users/ross/spawn/rightclick-mcp/.build/release/rightclick
+/Users/you/spawn/rightclick-mcp/.build/release/rightclick
 args: ["mcp"]
 
 The temporary MCP process for the /tmp binary was stopped. The screenpipe entry was not removed.

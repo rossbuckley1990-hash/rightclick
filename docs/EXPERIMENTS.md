@@ -1,6 +1,6 @@
 # Experiments
 
-Commands were run on macOS 26.4.1 (25E253) from `/Users/ross/spawn/rightclick-mcp`. Raw JSON is in `evidence/`.
+Commands were run on macOS 26.4.1 (25E253) from `/Users/you/spawn/rightclick-mcp`. Raw JSON is in `evidence/`.
 
 ## RIGHTCLICK-000A — Sharing discovery
 
@@ -136,7 +136,7 @@ Stdio client: `initialize`, `tools/list` returned `context_inspect`, `context_ac
 
 Local HTTP on port 8765: missing bearer token returned 401. A valid token initialized a session and ran the same service.
 
-Tunnel `https://notification-darwin-nav-careful.trycloudflare.com/mcp`: unauthenticated POST returned 401 from this server (`WWW-Authenticate: Bearer`). Authenticated `context_actions` for `fixtures/manual/fixture.jpg` returned Markup, Set Desktop Picture, Add to Photos, and AirDrop. Authenticated `context_run` of the full-width service returned `ＲｉｇｈｔＣｌｉｃｋ`.
+Tunnel `https://<ephemeral-tunnel>.trycloudflare.com/mcp`: unauthenticated POST returned 401 from this server (`WWW-Authenticate: Bearer`). Authenticated `context_actions` for `fixtures/manual/fixture.jpg` returned Markup, Set Desktop Picture, Add to Photos, and AirDrop. Authenticated `context_run` of the full-width service returned `ＲｉｇｈｔＣｌｉｃｋ`.
 
 Grok Bot was not called. RIGHTCLICK-007 stays BLOCKED on that point.
 

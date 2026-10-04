@@ -1,0 +1,151 @@
+{
+  "binary": "/Users/you/spawn/rightclick-mcp/.build/release/rightclick",
+  "binarySHA256": "017964186add32a2ee591e263001671434e580b01e1f3cb29253aa5dbfb70ddb",
+  "version": "0.1.0",
+  "scannedRoots": [
+    "/Applications",
+    "/Users/you/Applications",
+    "/Library/Services",
+    "/Users/you/Library/Services"
+  ],
+  "thirdPartyServiceBundles": 4,
+  "thirdPartyActionExtensions": 0,
+  "productionSourceSpecialCases": false,
+  "productionSourceSearch": {
+    "paths": [
+      "Sources/RightClickCore",
+      "Sources/RightClickCLI",
+      "Sources/RightClickMCP",
+      "Sources/RightClickMarker"
+    ],
+    "terms": [
+      "ZCode",
+      "Claude",
+      "dev.zcode",
+      "anthropic",
+      "Ask Claude",
+      "Send to Claude",
+      "New Claude Code"
+    ],
+    "matches": 0
+  },
+  "testedInputs": {
+    "jpeg": {
+      "item": "/Users/you/Desktop/test.jpg",
+      "appleCapabilities": 11,
+      "thirdPartyCapabilities": 0
+    },
+    "text": {
+      "item": "RightClick third party capability test",
+      "appleCapabilities": 36,
+      "thirdPartyCapabilities": 0
+    },
+    "url": {
+      "item": "https://example.com",
+      "appleCapabilities": 14,
+      "thirdPartyCapabilities": 0
+    }
+  },
+  "candidates": [
+    {
+      "app": "ZCode",
+      "vendor": "ZCode",
+      "appBundleIdentifier": "dev.zcode.app",
+      "bundleIdentifier": "dev.zcode.app.finder-open-workflow",
+      "installedPath": "/Users/you/Library/Services/Open in ZCode.workflow",
+      "appPath": "/Applications/ZCode.app",
+      "installedBeforeThisInventory": true,
+      "capabilityTitle": "Open in ZCode",
+      "capabilityID": "service:dev.zcode.app.finder-open-workflow:runWorkflowAsService",
+      "sourceType": "service",
+      "sourceMechanism": "NSServices Info.plist",
+      "message": "runWorkflowAsService",
+      "acceptedInputTypes": ["public.folder", "public.directory"],
+      "outputTypes": [],
+      "requiredContext": {"NSApplicationIdentifier": "com.apple.finder"},
+      "invocation": "interactive",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "providerSpecificRightClickCode": false,
+      "mcpIntegration": false,
+      "returnedByActionsForJpegTextOrUrl": false,
+      "returnedByActionsForFolder": true,
+      "qualifies": true
+    },
+    {
+      "app": "Claude",
+      "vendor": "Anthropic",
+      "appBundleIdentifier": "com.anthropic.claudefordesktop",
+      "bundleIdentifier": null,
+      "installedPath": "/Users/you/Library/Services/Claude - ask.workflow",
+      "appPath": "/Applications/Claude.app",
+      "installedBeforeThisInventory": true,
+      "capabilityTitle": "Ask Claude",
+      "capabilityID": null,
+      "sourceType": "service",
+      "sourceMechanism": "NSServices Info.plist",
+      "message": "runWorkflowAsService",
+      "acceptedInputTypes": [],
+      "outputTypes": [],
+      "invocation": "interactive",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "providerSpecificRightClickCode": false,
+      "mcpIntegration": false,
+      "listedByProviders": true,
+      "returnedByActions": false,
+      "qualifies": false,
+      "disqualification": "NSServices entry declares no NSSendTypes or NSSendFileTypes, so the release binary does not return it from actions."
+    },
+    {
+      "app": "Claude",
+      "vendor": "Anthropic",
+      "appBundleIdentifier": "com.anthropic.claudefordesktop",
+      "bundleIdentifier": null,
+      "installedPath": "/Users/you/Library/Services/Claude - codeHere.workflow",
+      "appPath": "/Applications/Claude.app",
+      "installedBeforeThisInventory": true,
+      "capabilityTitle": "New Claude Code Session Here",
+      "capabilityID": null,
+      "sourceType": "service",
+      "sourceMechanism": "NSServices Info.plist",
+      "message": "runWorkflowAsService",
+      "acceptedInputTypes": [],
+      "outputTypes": [],
+      "invocation": "interactive",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "providerSpecificRightClickCode": false,
+      "mcpIntegration": false,
+      "listedByProviders": true,
+      "returnedByActions": false,
+      "qualifies": false,
+      "disqualification": "NSServices entry declares no NSSendTypes or NSSendFileTypes, so the release binary does not return it from actions."
+    },
+    {
+      "app": "Claude",
+      "vendor": "Anthropic",
+      "appBundleIdentifier": "com.anthropic.claudefordesktop",
+      "bundleIdentifier": null,
+      "installedPath": "/Users/you/Library/Services/Claude - send.workflow",
+      "appPath": "/Applications/Claude.app",
+      "installedBeforeThisInventory": true,
+      "capabilityTitle": "Send to Claude",
+      "capabilityID": null,
+      "sourceType": "service",
+      "sourceMechanism": "NSServices Info.plist",
+      "message": "runWorkflowAsService",
+      "acceptedInputTypes": [],
+      "outputTypes": [],
+      "invocation": "interactive",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "providerSpecificRightClickCode": false,
+      "mcpIntegration": false,
+      "listedByProviders": true,
+      "returnedByActions": false,
+      "qualifies": false,
+      "disqualification": "NSServices entry declares no NSSendTypes or NSSendFileTypes, so the release binary does not return it from actions. The title is also an external send."
+    }
+  ]
+}

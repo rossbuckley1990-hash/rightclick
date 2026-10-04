@@ -25,6 +25,38 @@ final class AcquisitionTests: XCTestCase {
         XCTAssertTrue(gone.isEmpty)
     }
 
+    func testTextPasteboardTypesFollowDeclaredSendTypes() {
+        let types = ServiceCatalog.pasteboardTypesForText(declaredSendTypes: [
+            "NSStringPboardType",
+            "public.plain-text",
+        ]).map(\.rawValue)
+        XCTAssertEqual(types, ["NSStringPboardType", "public.plain-text"])
+    }
+
+    func testDeclaredTextRepresentationsRoundTripOnThePasteboard() {
+        let fixture = "RIGHTCLICK BBEdit payload proof 84721"
+        let record = InstalledServiceRecord(
+            menuTitle: "Example Text",
+            message: "openSelection",
+            bundleIdentifier: "dev.example.text",
+            bundleName: "Example",
+            bundlePath: "/tmp/Example.app",
+            sendTypes: ["NSStringPboardType", "public.plain-text"],
+            sendFileTypes: [],
+            returnTypes: [],
+            requiredContext: nil
+        )
+        let pasteboard = NSPasteboard.withUniqueName()
+        ServiceCatalog.prepareTextPasteboard(pasteboard, text: fixture, declaredSendTypes: record.sendTypes)
+        let written = (pasteboard.types ?? []).map(\.rawValue)
+        XCTAssertTrue(written.contains("NSStringPboardType"))
+        XCTAssertTrue(written.contains("public.plain-text"))
+        for raw in ["NSStringPboardType", "public.plain-text"] {
+            XCTAssertEqual(pasteboard.string(forType: NSPasteboard.PasteboardType(raw)), fixture, raw)
+        }
+        pasteboard.releaseGlobally()
+    }
+
     func testImageServiceDoesNotApplyToPlainText() throws {
         let record = InstalledServiceRecord(
             menuTitle: "Example Sidecar",

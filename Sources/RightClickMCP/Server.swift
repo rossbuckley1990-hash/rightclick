@@ -171,9 +171,9 @@ final class HTTPMCPServer {
     }
 
     private static func serve(engine: EngineBox, port: UInt16, token: String, ready: DispatchSemaphore) async throws {
-        let broker = HTTPSessionBroker(engine: engine, token: token, port: port)
+        let dispatcher = HTTPRequestDispatcher(engine: engine, token: token, port: port)
         let listener = MCPHTTPListener(port: port, path: "/mcp") { request in
-            await broker.handle(request)
+            await dispatcher.handle(request)
         }
         try listener.start()
         fputs("RIGHTCLICK HTTP MCP listening on http://127.0.0.1:\(port)/mcp\n", stderr)
@@ -182,22 +182,12 @@ final class HTTPMCPServer {
     }
 }
 
-/// One Streamable HTTP session per initialize.
-///
-/// The SDK transport rejects a second initialize on the same instance with
-/// HTTP 400 "Session already initialized". Connectors retry initialize, so
-/// each initialize gets a new server and transport.
-private actor HTTPSessionBroker {
-    struct Session {
-        let server: Server
-        let transport: StatefulHTTPServerTransport
-    }
-
+/// Stateless Streamable HTTP. Each request gets a new MCP server and transport.
+/// The shared engine keeps execution records across those requests.
+private actor HTTPRequestDispatcher {
     private let engine: EngineBox
     private let token: String
     private let resource: URL
-    private var sessions: [String: Session] = [:]
-    private var order: [String] = []
 
     init(engine: EngineBox, token: String, port: UInt16) {
         self.engine = engine
@@ -206,20 +196,7 @@ private actor HTTPSessionBroker {
     }
 
     func handle(_ request: HTTPRequest) async -> HTTPResponse {
-        if requestIsInitialize(request) {
-            return await openSession(for: request)
-        }
-        if let sessionID = request.header(HTTPHeaderName.sessionID), let session = sessions[sessionID] {
-            return await session.transport.handleRequest(request)
-        }
-        return .error(
-            statusCode: 400,
-            .invalidRequest("Bad Request: Missing \(HTTPHeaderName.sessionID) header")
-        )
-    }
-
-    private func openSession(for request: HTTPRequest) async -> HTTPResponse {
-        let transport = StatefulHTTPServerTransport(validationPipeline: makePipeline())
+        let transport = StatelessHTTPServerTransport(validationPipeline: makePipeline())
         let server = Server(
             name: "rightclick",
             version: "0.1.0",
@@ -231,27 +208,12 @@ private actor HTTPSessionBroker {
         } catch {
             return .error(
                 statusCode: 500,
-                .internalError("Failed to start MCP session: \(error.localizedDescription)")
+                .internalError("Failed to start MCP request: \(error.localizedDescription)")
             )
         }
         let response = await transport.handleRequest(request)
-        if response.statusCode == 200, let sessionID = sessionID(in: response) {
-            sessions[sessionID] = Session(server: server, transport: transport)
-            order.append(sessionID)
-            await trimOldSessions()
-        } else {
-            await server.stop()
-        }
+        await server.stop()
         return response
-    }
-
-    private func trimOldSessions() async {
-        while order.count > 8 {
-            let oldest = order.removeFirst()
-            if let session = sessions.removeValue(forKey: oldest) {
-                await session.server.stop()
-            }
-        }
     }
 
     private func makePipeline() -> StandardValidationPipeline {
@@ -267,24 +229,10 @@ private actor HTTPSessionBroker {
         )
         return StandardValidationPipeline(validators: [
             bearer,
-            AcceptHeaderValidator(mode: .sseRequired),
+            AcceptHeaderValidator(mode: .jsonOnly),
             ContentTypeValidator(),
             ProtocolVersionValidator(),
-            SessionValidator(),
         ])
-    }
-
-    private func requestIsInitialize(_ request: HTTPRequest) -> Bool {
-        guard request.method.uppercased() == "POST",
-              let body = request.body,
-              let json = try? JSONSerialization.jsonObject(with: body) as? [String: Any],
-              let method = json["method"] as? String
-        else { return false }
-        return method == "initialize"
-    }
-
-    private func sessionID(in response: HTTPResponse) -> String? {
-        response.headers.first { $0.key.caseInsensitiveCompare(HTTPHeaderName.sessionID) == .orderedSame }?.value
     }
 }
 

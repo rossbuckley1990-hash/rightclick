@@ -72,8 +72,12 @@ enum ServiceCatalog {
         let pasteboard = NSPasteboard.withUniqueName()
         declare(payload, on: pasteboard, record: record)
         let before = pasteboard.changeCount
-        let types = (pasteboard.types ?? []).map(\.rawValue).joined(separator: ",")
-        ExecutionLog.write("NSPerformService name=\(record.menuTitle) provider=\(record.bundleIdentifier ?? "") sendFileTypes=\(record.sendFileTypes) pasteboardTypes=\(types) main=\(Thread.isMainThread)")
+        let written = (pasteboard.types ?? []).map(\.rawValue)
+        let readback = bestString(on: pasteboard) ?? ""
+        let utf8Bytes = readback.data(using: .utf8)?.count ?? 0
+        let utf16Bytes = readback.data(using: .utf16)?.count ?? 0
+        ExecutionLog.write("service payload declared=\(record.sendTypes.joined(separator: "|")) written=\(written.joined(separator: "|")) stringBytes=\(utf16Bytes) utf8Bytes=\(utf8Bytes) readback=\(readback)")
+        ExecutionLog.write("NSPerformService name=\(record.menuTitle) provider=\(record.bundleIdentifier ?? "") sendFileTypes=\(record.sendFileTypes) pasteboardTypes=\(written.joined(separator: ",")) main=\(Thread.isMainThread)")
         let box = ServiceCallBox()
         if Thread.isMainThread {
             box.finish(NSPerformService(record.menuTitle, pasteboard))
@@ -88,6 +92,11 @@ enum ServiceCatalog {
         }
         let output = bestString(on: pasteboard)
         let after = pasteboard.changeCount
+        if box.ok && after == before {
+            // NSPerformService can return before the provider reads the pasteboard.
+            ExecutionLog.write("service pasteboard retained after NSPerformService returned without a pasteboard result")
+            retain(pasteboard, seconds: 10)
+        }
         pasteboard.releaseGlobally()
         _ = before
         if !box.done {
@@ -196,12 +205,45 @@ enum ServiceCatalog {
         return nil
     }
 
+    static func pasteboardTypesForText(declaredSendTypes: [String]) -> [NSPasteboard.PasteboardType] {
+        var types: [NSPasteboard.PasteboardType] = []
+        for raw in declaredSendTypes where isTextType(raw) {
+            let type = pasteboardType(for: raw)
+            if !types.contains(type) {
+                types.append(type)
+            }
+        }
+        if types.isEmpty {
+            types = [.string, NSPasteboard.PasteboardType("public.utf8-plain-text")]
+        }
+        return types
+    }
+
+    static func prepareTextPasteboard(_ pasteboard: NSPasteboard, text: String, declaredSendTypes: [String]) {
+        let record = InstalledServiceRecord(
+            menuTitle: "text",
+            message: nil,
+            bundleIdentifier: nil,
+            bundleName: nil,
+            bundlePath: "",
+            sendTypes: declaredSendTypes,
+            sendFileTypes: [],
+            returnTypes: [],
+            requiredContext: nil
+        )
+        declare(ServicePayload(text: text, filePath: nil), on: pasteboard, record: record)
+    }
+
     private static func declare(_ payload: ServicePayload, on pasteboard: NSPasteboard, record: InstalledServiceRecord) {
         if let text = payload.text {
-            let types: [NSPasteboard.PasteboardType] = [.string, NSPasteboard.PasteboardType("public.utf8-plain-text")]
+            let types = pasteboardTypesForText(declaredSendTypes: record.sendTypes)
             pasteboard.declareTypes(types, owner: nil)
             for type in types {
-                pasteboard.setString(text, forType: type)
+                if isRichTextType(type) {
+                    pasteboard.setData(plainTextRTF(text), forType: type)
+                } else {
+                    pasteboard.setString(text, forType: type)
+                }
             }
             return
         }
@@ -212,7 +254,64 @@ enum ServiceCatalog {
             pasteboard.writeObjects([url as NSURL])
             pasteboard.addTypes([filenames], owner: nil)
             pasteboard.setPropertyList([path], forType: filenames)
-            _ = record
+            for raw in record.sendTypes where raw.lowercased().contains("url") || raw == "NSURLPboardType" {
+                let type = pasteboardType(for: raw)
+                pasteboard.addTypes([type], owner: nil)
+                pasteboard.setString(url.absoluteString, forType: type)
+            }
+        }
+    }
+
+    private static func pasteboardType(for raw: String) -> NSPasteboard.PasteboardType {
+        switch raw {
+        case "NSStringPboardType", "NSPasteboardTypeString":
+            return NSPasteboard.PasteboardType("NSStringPboardType")
+        case "NSRTFPboardType":
+            return .rtf
+        case "NSRTFDPboardType":
+            return NSPasteboard.PasteboardType("NSRTFDPboardType")
+        case "public.utf8-plain-text":
+            return .string
+        default:
+            return NSPasteboard.PasteboardType(raw)
+        }
+    }
+
+    private static func isRichTextType(_ type: NSPasteboard.PasteboardType) -> Bool {
+        let raw = type.rawValue.lowercased()
+        return raw == "public.rtf" || raw == "nsrtfpboardtype" || raw == NSPasteboard.PasteboardType.rtf.rawValue.lowercased()
+    }
+
+    private static func plainTextRTF(_ text: String) -> Data {
+        let escaped = text
+            .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "{", with: "\\{")
+            .replacingOccurrences(of: "}", with: "\\}")
+            .replacingOccurrences(of: "\n", with: "\\par ")
+        return Data("{\\rtf1\\ansi \(escaped)}".utf8)
+    }
+
+    private static func retain(_ pasteboard: NSPasteboard, seconds: TimeInterval) {
+        let deadline = Date().addingTimeInterval(seconds)
+        let hold = {
+            _ = NSApplication.shared
+            while Date() < deadline {
+                RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(0.05))
+            }
+            _ = pasteboard
+        }
+        if Thread.isMainThread {
+            hold()
+            return
+        }
+        let box = ServiceCallBox()
+        DispatchQueue.main.async {
+            hold()
+            box.finish(true)
+        }
+        let wait = Date().addingTimeInterval(seconds + 2)
+        while !box.done && Date() < wait {
+            RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(0.05))
         }
     }
 

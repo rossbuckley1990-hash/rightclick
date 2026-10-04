@@ -1,41 +1,37 @@
 # Demo
 
-The demo is RIGHTCLICK-004. It uses one JPEG and one independently installed macOS Service.
+Sixty seconds. One ordinary app. No RIGHTCLICK code changes.
 
-### Scene 1
+1. Query plain text.
 
 ```bash
-rightclick actions /Users/ross/Desktop/test.jpg
+rightclick actions "RightClick third party capability test"
 ```
 
-11 capabilities. Markup, Set Desktop Picture, Add to Photos, AirDrop, and the other share services that macOS returned for that file. No test provider.
+2. The development Mac returned 36 capabilities. None of them were third-party.
+3. Install ordinary BBEdit 16.0.3.
+4. Do not edit RIGHTCLICK. Run `rightclick refresh` if macOS has not registered the new Services yet.
+5. Run the same query again.
+6. The same Mac returned 41 capabilities.
+7. Five of them are new, and they come from BBEdit:
 
-### Scene 2
+- New BBEdit Document with Selection
+- New Note in BBEdit
+- Open File in BBEdit
+- Search Here in BBEdit
+- Append Selection to BBEdit Scratchpad
 
-Install `RIGHTCLICK Test Provider` (`dev.rightclick.test-provider`) as a normal Service that accepts `public.image`. Register it with `LSRegisterURL` and `NSUpdateDynamicServices`. Do not edit RIGHTCLICK.
+8. Invoke the discovered id for New BBEdit Document with Selection. On that Mac it was:
 
-### Scene 3
+```bash
+rightclick run --yes service:com.barebones.bbedit:openSelectionService "RIGHTCLICK generic service final proof 73194"
+```
 
-Run the same command.
+9. BBEdit's new document contains that exact text.
 
-12 capabilities. The new row is `RIGHTCLICK Test — Create Sidecar`, id `service:dev.rightclick.test-provider:createSidecar`.
+```text
+BBEdit-specific RIGHTCLICK code:
+NONE
+```
 
-### Scene 4
-
-Ask the remote Grok Bot what the Mac can do with `test.jpg`.
-
-Grok sees the new capability through the same MCP server.
-
-### Scene 5
-
-Ask Grok to execute `RIGHTCLICK Test — Create Sidecar` once.
-
-`NSPerformService` returns true. `test.jpg.rightclick-test.txt` contains `RIGHTCLICK dynamic capability executed`.
-
-### Scene 6
-
-Remove the provider and query again.
-
-The list returns to the original 11 capability IDs.
-
-Evidence: `evidence/rightclick-004/` and `docs/PROOF.md`.
+Details: `docs/BBEDIT-PROOF.md`.

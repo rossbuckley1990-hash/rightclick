@@ -43,7 +43,7 @@ Installing `RightClick Marker.app` into `~/Library/Services` made `RightClick Ma
 Streamable HTTP with bearer authentication is running for this session:
 
 - Local: `http://127.0.0.1:8765/mcp`
-- Tunnel: `https://notification-darwin-nav-careful.trycloudflare.com/mcp`
+- Tunnel: `https://<ephemeral-tunnel>.trycloudflare.com/mcp`
 
 A protocol client, not Grok Bot, called `context_actions` on `fixtures/manual/fixture.jpg` through that tunnel and then `context_run` for Convert Text to Full Width. The pasteboard result was `ＲｉｇｈｔＣｌｉｃｋ`. Unauthenticated calls received HTTP 401.
 

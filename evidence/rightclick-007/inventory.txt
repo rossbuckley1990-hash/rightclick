@@ -1,0 +1,73 @@
+RIGHTCLICK-007 local inventory
+
+Release binary: /Users/you/spawn/rightclick-mcp/.build/release/rightclick
+SHA256: 017964186add32a2ee591e263001671434e580b01e1f3cb29253aa5dbfb70ddb
+Version: 0.1.0
+
+Scanned /Applications, ~/Applications, /Library/Services, and ~/Library/Services, including nested PlugIns and Extensions. No third-party Action Extensions were found. No third-party sharing-service bundle identifiers were returned for the tested inputs.
+
+Installed third-party NSServices:
+
+1. Open in ZCode
+   App: ZCode 3.2.2
+   Vendor bundle: dev.zcode.app
+   Service bundle: dev.zcode.app.finder-open-workflow
+   Path: ~/Library/Services/Open in ZCode.workflow
+   Installed: 2026-07-01
+   Message: runWorkflowAsService
+   Inputs: public.folder, public.directory
+   Outputs: none declared
+   Capability ID returned for a real folder: service:dev.zcode.app.finder-open-workflow:runWorkflowAsService
+   Invocation: interactive
+   Safety: unknown
+   Confirmation: required
+   RIGHTCLICK provider-specific code: NO
+
+2. Ask Claude
+   App: Claude 2.19675.0
+   Vendor bundle: com.anthropic.claudefordesktop
+   Service bundle: none
+   Path: ~/Library/Services/Claude - ask.workflow
+   Installed: 2026-09-10
+   Message: runWorkflowAsService
+   Inputs: none declared
+   Outputs: none declared
+   Listed by `rightclick providers`: yes
+   Returned by `rightclick actions`: no
+   RIGHTCLICK provider-specific code: NO
+
+3. New Claude Code Session Here
+   App: Claude
+   Path: ~/Library/Services/Claude - codeHere.workflow
+   Installed: 2026-09-10
+   Inputs: none declared
+   Listed by `rightclick providers`: yes
+   Returned by `rightclick actions`: no
+   RIGHTCLICK provider-specific code: NO
+
+4. Send to Claude
+   App: Claude
+   Path: ~/Library/Services/Claude - send.workflow
+   Installed: 2026-09-10
+   Inputs: none declared
+   Listed by `rightclick providers`: yes
+   Returned by `rightclick actions`: no
+   RIGHTCLICK provider-specific code: NO
+
+Release-binary discovery, no capabilities executed:
+
+/Users/you/Desktop/test.jpg
+  11 capabilities, 0 third-party
+  Apple: Set Desktop Picture, Add to Photos, AirDrop, Freeform, Journal, Mail, Messages, Notes, Reminders, Simulator, Markup
+
+Plain text "RightClick third party capability test"
+  36 capabilities, 0 third-party
+
+https://example.com
+  14 capabilities, 0 third-party
+
+A real directory, fixtures/, was also queried only to check the folder service.
+  Open in ZCode was returned.
+  The three Claude services were not returned.
+
+Production source search of RightClickCore, RightClickCLI, RightClickMCP, and RightClickMarker found no ZCode, Claude, Anthropic, or dev.zcode references.

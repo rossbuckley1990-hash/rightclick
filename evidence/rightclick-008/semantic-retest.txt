@@ -1,0 +1,33 @@
+RIGHTCLICK-008 semantic retest
+
+Fixture: RIGHTCLICK BBEdit payload proof 84721
+Capability discovered: service:com.barebones.bbedit:openSelectionService
+Title: BBEdit/New BBEdit Document with Selection
+
+Declared send types:
+NSStringPboardType
+public.plain-text
+
+Pasteboard types written before NSPerformService:
+public.utf8-plain-text
+NSStringPboardType
+public.plain-text
+
+stringBytes: 76
+utf8Bytes: 37
+read-back: RIGHTCLICK BBEdit payload proof 84721
+
+NSPerformService("BBEdit/New BBEdit Document with Selection") returned true.
+changeCount 1->1
+
+BBEdit observation after that single call:
+documents=2
+text windows=1
+front window name=untitled text 3
+front document text=[	]
+
+The fixture text was not in the opened document.
+
+SEMANTIC EXECUTION: FAIL
+
+No second invocation was made.
