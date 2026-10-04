@@ -1,0 +1,26 @@
+[
+  {
+    "id": "service:dev.rightclick.marker:mark",
+    "inputs": [
+      "public.utf8-plain-text"
+    ],
+    "invocation": "direct",
+    "metadata": {
+      "bundlePath": "/Users/ross/Library/Services/RightClick Marker.app",
+      "discoverySource": "NSServices Info.plist",
+      "message": "mark"
+    },
+    "output": [
+      "public.utf8-plain-text"
+    ],
+    "provider": {
+      "bundleIdentifier": "dev.rightclick.marker",
+      "name": "RightClick Marker"
+    },
+    "requiresConfirmation": false,
+    "safety": "read",
+    "source": "service",
+    "supportLevel": "public_supported",
+    "title": "RightClick Marker"
+  }
+]

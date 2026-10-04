@@ -1,0 +1,248 @@
+{
+  "actions": [
+    {
+      "id": "action:com.apple.MarkupUI.Markup",
+      "inputs": [
+        "public.jpeg"
+      ],
+      "invocation": "unsupported",
+      "metadata": {
+        "activationRule": "SUBQUERY(extensionItems, $extensionItem, ($extensionItem.attachments.@count == 1) AND (SUBQUERY($extensionItem.attachments, $attachment, NONE $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"com.adobe.pdf\" AND NONE $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"public.image\").@count == 0)).@count == 1",
+        "activationRuleKind": "predicate",
+        "bundlePath": "/System/Library/PrivateFrameworks/MarkupUI.framework/PlugIns/Markup.appex",
+        "discoverySource": "NSExtension Info.plist",
+        "invocation": "No public direct invocation API. NSExtension is not in the macOS SDK.",
+        "roleType": "NSExtensionServiceRoleTypeEditor"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.MarkupUI.Markup",
+        "name": "Markup"
+      },
+      "requiresConfirmation": true,
+      "safety": "unknown",
+      "source": "action_extension",
+      "supportLevel": "public_supported",
+      "title": "Markup"
+    },
+    {
+      "id": "service:com.apple.services.setDesktopPicture:runWorkflowAsService",
+      "inputs": [
+        "public.image"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "bundlePath": "/System/Library/Services/Set Desktop Picture.workflow",
+        "discoverySource": "NSServices Info.plist",
+        "message": "runWorkflowAsService"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.services.setDesktopPicture",
+        "name": "Set Desktop Picture"
+      },
+      "requiresConfirmation": true,
+      "safety": "local_write",
+      "source": "service",
+      "supportLevel": "public_supported",
+      "title": "Set Desktop Picture"
+    },
+    {
+      "id": "sharing:com.apple.share.System.add-to-iphoto",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "direct",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Add to Photos",
+        "publicName": "com.apple.share.System.add-to-iphoto"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.share.System.add-to-iphoto",
+        "name": "Add to Photos"
+      },
+      "requiresConfirmation": false,
+      "safety": "local_write",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Add to Photos"
+    },
+    {
+      "id": "sharing:com.apple.share.AirDrop.send",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "AirDrop",
+        "publicName": "com.apple.share.AirDrop.send"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.share.AirDrop.send",
+        "name": "AirDrop"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "AirDrop"
+    },
+    {
+      "id": "sharing:title:freeform",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Freeform"
+      },
+      "output": [],
+      "provider": {
+        "name": "Freeform"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Freeform"
+    },
+    {
+      "id": "sharing:title:journal",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Journal"
+      },
+      "output": [],
+      "provider": {
+        "name": "Journal"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Journal"
+    },
+    {
+      "id": "sharing:com.apple.share.Mail.compose",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Mail",
+        "publicName": "com.apple.share.Mail.compose"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.share.Mail.compose",
+        "name": "Mail"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Mail"
+    },
+    {
+      "id": "sharing:com.apple.messages.ShareExtension",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Messages",
+        "publicName": "com.apple.messages.ShareExtension"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.messages.ShareExtension",
+        "name": "Messages"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Messages"
+    },
+    {
+      "id": "sharing:title:notes",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Notes"
+      },
+      "output": [],
+      "provider": {
+        "name": "Notes"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Notes"
+    },
+    {
+      "id": "sharing:title:reminders",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Reminders"
+      },
+      "output": [],
+      "provider": {
+        "name": "Reminders"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Reminders"
+    },
+    {
+      "id": "sharing:title:simulator",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Simulator"
+      },
+      "output": [],
+      "provider": {
+        "name": "Simulator"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Simulator"
+    }
+  ],
+  "item": {
+    "byteCount": 1106,
+    "display": "/Users/ross/spawn/rightclick-mcp/fixtures/fixture.jpg",
+    "isDirectory": false,
+    "kind": "image",
+    "path": "/Users/ross/spawn/rightclick-mcp/fixtures/fixture.jpg",
+    "typeDescription": "JPEG image",
+    "typeIdentifier": "public.jpeg"
+  }
+}

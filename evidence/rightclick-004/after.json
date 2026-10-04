@@ -1,0 +1,933 @@
+{
+  "actions" : [
+    {
+      "id" : "service:com.apple.services.addToiTunesAsSpokenTrack:runWorkflowAsService",
+      "inputs" : [
+        "public.utf8-plain-text"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/Add to Music as a Spoken Track.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "runWorkflowAsService"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.services.addToiTunesAsSpokenTrack",
+        "name" : "Add to Music as a Spoken Track"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Add to Music as a Spoken Track"
+    },
+    {
+      "id" : "service:com.apple.ChineseTextConverterService:convertTextToTraditionalChinese",
+      "inputs" : [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation" : "direct",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/ChineseTextConverterService.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "convertTextToTraditionalChinese",
+        "requiredContext" : "{\"NSTextTransformation\":\"Simplified-Traditional\"}"
+      },
+      "output" : [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.ChineseTextConverterService",
+        "name" : "ChineseTextConverterService"
+      },
+      "requiresConfirmation" : false,
+      "safety" : "read",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Convert Text from Simplified to Traditional Chinese"
+    },
+    {
+      "id" : "service:com.apple.ChineseTextConverterService:convertTextToSimplifiedChinese",
+      "inputs" : [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation" : "direct",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/ChineseTextConverterService.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "convertTextToSimplifiedChinese",
+        "requiredContext" : "{\"NSTextTransformation\":\"Traditional-Simplified\"}"
+      },
+      "output" : [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.ChineseTextConverterService",
+        "name" : "ChineseTextConverterService"
+      },
+      "requiresConfirmation" : false,
+      "safety" : "read",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Convert Text from Traditional to Simplified Chinese"
+    },
+    {
+      "id" : "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+      "inputs" : [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation" : "direct",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/ChineseTextConverterService.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "convertTextToFullWidth"
+      },
+      "output" : [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.ChineseTextConverterService",
+        "name" : "ChineseTextConverterService"
+      },
+      "requiresConfirmation" : false,
+      "safety" : "read",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Convert Text to Full Width"
+    },
+    {
+      "id" : "service:com.apple.ChineseTextConverterService:convertTextToHalfWidth",
+      "inputs" : [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation" : "direct",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/ChineseTextConverterService.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "convertTextToHalfWidth"
+      },
+      "output" : [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.ChineseTextConverterService",
+        "name" : "ChineseTextConverterService"
+      },
+      "requiresConfirmation" : false,
+      "safety" : "read",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Convert Text to Half Width"
+    },
+    {
+      "id" : "service:com.apple.Automator:makeNewServiceWithPasteboard",
+      "inputs" : [
+        "NSStringPboardType",
+        "NSFilenamesPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Automator.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "makeNewServiceWithPasteboard"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.Automator",
+        "name" : "Automator"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Create Service"
+    },
+    {
+      "id" : "service:com.apple.Automator:makeNewWorkflowServiceWithPasteboard",
+      "inputs" : [
+        "NSStringPboardType",
+        "NSFilenamesPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Automator.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "makeNewWorkflowServiceWithPasteboard"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.Automator",
+        "name" : "Automator"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Create Workflow"
+    },
+    {
+      "id" : "service:com.apple.dt.Xcode:batchFind",
+      "inputs" : [
+        "NSStringPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/Applications/Xcode.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "batchFind"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.dt.Xcode",
+        "name" : "Xcode"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Find in Xcode"
+    },
+    {
+      "id" : "service:com.apple.finder:open",
+      "inputs" : [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/CoreServices/Finder.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "open"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.finder",
+        "name" : "Finder"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Finder/Open"
+    },
+    {
+      "id" : "service:com.apple.finder:reveal",
+      "inputs" : [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/CoreServices/Finder.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "reveal"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.finder",
+        "name" : "Finder"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Finder/Reveal"
+    },
+    {
+      "id" : "service:com.apple.finder:showInfo",
+      "inputs" : [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/CoreServices/Finder.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "showInfo"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.finder",
+        "name" : "Finder"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Finder/Show Info"
+    },
+    {
+      "id" : "service:com.apple.Dictionary:doLookupService",
+      "inputs" : [
+        "NSStringPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Dictionary.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "doLookupService"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.Dictionary",
+        "name" : "Dictionary"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Look Up in Dictionary"
+    },
+    {
+      "id" : "service:com.apple.mail:mailTo",
+      "inputs" : [
+        "NSPasteboardTypeString"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Mail.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "mailTo"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.mail",
+        "name" : "Mail"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Mail/New Email To Address"
+    },
+    {
+      "id" : "service:com.apple.mail:mailSelection",
+      "inputs" : [
+        "NSPasteboardTypeRTFD",
+        "NSPasteboardTypeRTF",
+        "NSPasteboardTypeString",
+        "Apple Web Archive pasteboard type"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Mail.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "mailSelection"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.mail",
+        "name" : "Mail"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Mail/New Email With Selection"
+    },
+    {
+      "id" : "service:com.apple.Stickies:makeStickyFromTextService",
+      "inputs" : [
+        "public.plain-text",
+        "public.rtf",
+        "com.apple.flat-rtfd"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Stickies.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "makeStickyFromTextService"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.Stickies",
+        "name" : "Stickies"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Make Sticky"
+    },
+    {
+      "id" : "service:com.apple.Terminal:newTerminalAtFolder",
+      "inputs" : [
+        "public.plain-text",
+        "public.directory",
+        "com.apple.resolvable"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Utilities/Terminal.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "newTerminalAtFolder",
+        "requiredContext" : "{\"NSTextContent\":\"FilePath\"}"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.Terminal",
+        "name" : "Terminal"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "New Terminal Tab at Folder"
+    },
+    {
+      "id" : "service:com.apple.TextEdit:openSelection",
+      "inputs" : [
+        "com.apple.flat-rtfd",
+        "public.rtf",
+        "public.plain-text"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/TextEdit.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "openSelection"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.TextEdit",
+        "name" : "TextEdit"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "New TextEdit Window Containing Selection"
+    },
+    {
+      "id" : "service:com.apple.dt.Xcode:openQuickly",
+      "inputs" : [
+        "NSStringPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/Applications/Xcode.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "openQuickly"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.dt.Xcode",
+        "name" : "Xcode"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Open Quickly in Xcode"
+    },
+    {
+      "id" : "service:com.apple.TextEdit:openFile",
+      "inputs" : [
+        "public.plain-text"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/TextEdit.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "openFile",
+        "requiredContext" : "{\"NSTextContent\":\"FilePath\"}"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.TextEdit",
+        "name" : "TextEdit"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Open Selected File in TextEdit"
+    },
+    {
+      "id" : "service:com.apple.systemuiserver:openURL",
+      "inputs" : [
+        "NSURLPboardType",
+        "NSStringPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/CoreServices/SystemUIServer.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "openURL"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.systemuiserver",
+        "name" : "SystemUIServer"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Open URL"
+    },
+    {
+      "id" : "service:com.apple.Terminal:openManPage",
+      "inputs" : [
+        "public.plain-text"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Utilities/Terminal.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "openManPage",
+        "requiredContext" : "{\"NSWordLimit\":20}"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.Terminal",
+        "name" : "Terminal"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Open man Page in Terminal"
+    },
+    {
+      "id" : "service:dev.rightclick.marker:mark",
+      "inputs" : [
+        "public.utf8-plain-text"
+      ],
+      "invocation" : "direct",
+      "metadata" : {
+        "bundlePath" : "/Users/ross/Library/Services/RightClick Marker.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "mark"
+      },
+      "output" : [
+        "public.utf8-plain-text"
+      ],
+      "provider" : {
+        "bundleIdentifier" : "dev.rightclick.marker",
+        "name" : "RightClick Marker"
+      },
+      "requiresConfirmation" : false,
+      "safety" : "read",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "RightClick Marker"
+    },
+    {
+      "id" : "service:com.apple.SpotlightService:doSearchWithSpotlight",
+      "inputs" : [
+        "NSStringPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/Spotlight.service",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "doSearchWithSpotlight"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.SpotlightService",
+        "name" : "SpotlightService"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "SEARCH_WITH_SPOTLIGHT"
+    },
+    {
+      "id" : "service:com.apple.ScriptEditor2:runAsAppleScript",
+      "inputs" : [
+        "NSStringPboardType"
+      ],
+      "invocation" : "direct",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Utilities/Script Editor.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "runAsAppleScript"
+      },
+      "output" : [
+        "NSRTFDPboardType",
+        "NSRTFPboardType",
+        "NSStringPboardType"
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.ScriptEditor2",
+        "name" : "Script Editor"
+      },
+      "requiresConfirmation" : false,
+      "safety" : "read",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Script Editor/Get Result of AppleScript"
+    },
+    {
+      "id" : "service:com.apple.ScriptEditor2:makeNewAppleScript",
+      "inputs" : [
+        "NSStringPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Utilities/Script Editor.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "makeNewAppleScript"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.ScriptEditor2",
+        "name" : "Script Editor"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Script Editor/Make New AppleScript"
+    },
+    {
+      "id" : "service:com.apple.Terminal:searchManPages",
+      "inputs" : [
+        "public.plain-text"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Utilities/Terminal.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "searchManPages",
+        "requiredContext" : "{\"NSWordLimit\":20}"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.Terminal",
+        "name" : "Terminal"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Search man Page Index in Terminal"
+    },
+    {
+      "id" : "service:com.apple.BluetoothFileExchange:sendFileUsingBluetoothOBEXService",
+      "inputs" : [
+        "public.plain-text",
+        "NSFilenamesPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Applications/Utilities/Bluetooth File Exchange.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "sendFileUsingBluetoothOBEXService",
+        "requiredContext" : "{\"NSTextContent\":\"FilePath\"}"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.BluetoothFileExchange",
+        "name" : "Bluetooth File Exchange"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Send File To Bluetooth Device"
+    },
+    {
+      "id" : "service:com.apple.services.showMap:runWorkflowAsService",
+      "inputs" : [
+        "public.utf8-plain-text"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/Show Map.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "runWorkflowAsService",
+        "requiredContext" : "{\"NSTextContent\":\"Address\"}"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.services.showMap",
+        "name" : "Show Map"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Show Map"
+    },
+    {
+      "id" : "service:com.apple.speech.SpeechService:doSpeakSelectedText",
+      "inputs" : [
+        "NSStringPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/SpeechService.service",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "doSpeakSelectedText"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.speech.SpeechService",
+        "name" : "Speech Service"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Speech/Start Speaking Text"
+    },
+    {
+      "id" : "service:com.apple.speech.SpeechService:doStopSpeaking",
+      "inputs" : [
+        "NSStringPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/SpeechService.service",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "doStopSpeaking"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.speech.SpeechService",
+        "name" : "Speech Service"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Speech/Stop Speaking"
+    },
+    {
+      "id" : "service:com.apple.SummaryService:doSummarization",
+      "inputs" : [
+        "NSStringPboardType"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "bundlePath" : "/System/Library/Services/Summary Service.app",
+        "discoverySource" : "NSServices Info.plist",
+        "message" : "doSummarization"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.SummaryService",
+        "name" : "Summary Service"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Summarize"
+    },
+    {
+      "id" : "sharing:title:freeform",
+      "inputs" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle" : "Freeform"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "name" : "Freeform"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Freeform"
+    },
+    {
+      "id" : "sharing:title:journal",
+      "inputs" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle" : "Journal"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "name" : "Journal"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Journal"
+    },
+    {
+      "id" : "sharing:com.apple.share.Mail.compose",
+      "inputs" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle" : "Mail",
+        "publicName" : "com.apple.share.Mail.compose"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.share.Mail.compose",
+        "name" : "Mail"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Mail"
+    },
+    {
+      "id" : "sharing:com.apple.messages.ShareExtension",
+      "inputs" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle" : "Messages",
+        "publicName" : "com.apple.messages.ShareExtension"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "bundleIdentifier" : "com.apple.messages.ShareExtension",
+        "name" : "Messages"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Messages"
+    },
+    {
+      "id" : "sharing:title:notes",
+      "inputs" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle" : "Notes"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "name" : "Notes"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Notes"
+    },
+    {
+      "id" : "sharing:title:reminders",
+      "inputs" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "metadata" : {
+        "discoveryAPI" : "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle" : "Reminders"
+      },
+      "output" : [
+
+      ],
+      "provider" : {
+        "name" : "Reminders"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Reminders"
+    }
+  ],
+  "item" : {
+    "byteCount" : 22,
+    "display" : "acquire-baseline-token",
+    "isDirectory" : false,
+    "kind" : "text",
+    "text" : "acquire-baseline-token",
+    "typeDescription" : "text",
+    "typeIdentifier" : "public.plain-text"
+  }
+}

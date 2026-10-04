@@ -1,0 +1,204 @@
+{
+  "actions": [
+    {
+      "id": "service:com.apple.services.encodeSelectedVideoFiles:runWorkflowAsService",
+      "inputs": [
+        "public.movie"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "bundlePath": "/System/Library/Services/Encode Selected Video Files.workflow",
+        "discoverySource": "NSServices Info.plist",
+        "message": "runWorkflowAsService",
+        "requiredContext": "{\"NSApplicationIdentifier\":\"com.apple.finder\"}"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.services.encodeSelectedVideoFiles",
+        "name": "Encode Selected Video Files"
+      },
+      "requiresConfirmation": true,
+      "safety": "unknown",
+      "source": "service",
+      "supportLevel": "public_supported",
+      "title": "Encode Selected Video Files"
+    },
+    {
+      "id": "sharing:com.apple.share.System.add-to-iphoto",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "direct",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Add to Photos",
+        "publicName": "com.apple.share.System.add-to-iphoto"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.share.System.add-to-iphoto",
+        "name": "Add to Photos"
+      },
+      "requiresConfirmation": false,
+      "safety": "local_write",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Add to Photos"
+    },
+    {
+      "id": "sharing:com.apple.share.AirDrop.send",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "AirDrop",
+        "publicName": "com.apple.share.AirDrop.send"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.share.AirDrop.send",
+        "name": "AirDrop"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "AirDrop"
+    },
+    {
+      "id": "sharing:title:freeform",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Freeform"
+      },
+      "output": [],
+      "provider": {
+        "name": "Freeform"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Freeform"
+    },
+    {
+      "id": "sharing:title:journal",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Journal"
+      },
+      "output": [],
+      "provider": {
+        "name": "Journal"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Journal"
+    },
+    {
+      "id": "sharing:com.apple.share.Mail.compose",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Mail",
+        "publicName": "com.apple.share.Mail.compose"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.share.Mail.compose",
+        "name": "Mail"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Mail"
+    },
+    {
+      "id": "sharing:com.apple.messages.ShareExtension",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Messages",
+        "publicName": "com.apple.messages.ShareExtension"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.messages.ShareExtension",
+        "name": "Messages"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Messages"
+    },
+    {
+      "id": "sharing:title:notes",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Notes"
+      },
+      "output": [],
+      "provider": {
+        "name": "Notes"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Notes"
+    },
+    {
+      "id": "sharing:title:simulator",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Simulator"
+      },
+      "output": [],
+      "provider": {
+        "name": "Simulator"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Simulator"
+    }
+  ],
+  "item": {
+    "byteCount": 1121,
+    "display": "/Users/ross/spawn/rightclick-mcp/fixtures/fixture.mov",
+    "isDirectory": false,
+    "kind": "video",
+    "path": "/Users/ross/spawn/rightclick-mcp/fixtures/fixture.mov",
+    "typeDescription": "QuickTime movie",
+    "typeIdentifier": "com.apple.quicktime-movie"
+  }
+}

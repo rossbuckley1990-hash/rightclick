@@ -1,0 +1,164 @@
+{
+  "actions": [
+    {
+      "id": "action:com.apple.MarkupUI.Markup",
+      "inputs": [
+        "com.adobe.pdf"
+      ],
+      "invocation": "unsupported",
+      "metadata": {
+        "activationRule": "SUBQUERY(extensionItems, $extensionItem, ($extensionItem.attachments.@count == 1) AND (SUBQUERY($extensionItem.attachments, $attachment, NONE $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"com.adobe.pdf\" AND NONE $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"public.image\").@count == 0)).@count == 1",
+        "activationRuleKind": "predicate",
+        "bundlePath": "/System/Library/PrivateFrameworks/MarkupUI.framework/PlugIns/Markup.appex",
+        "discoverySource": "NSExtension Info.plist",
+        "invocation": "No public direct invocation API. NSExtension is not in the macOS SDK.",
+        "roleType": "NSExtensionServiceRoleTypeEditor"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.MarkupUI.Markup",
+        "name": "Markup"
+      },
+      "requiresConfirmation": true,
+      "safety": "unknown",
+      "source": "action_extension",
+      "supportLevel": "public_supported",
+      "title": "Markup"
+    },
+    {
+      "id": "sharing:com.apple.share.AirDrop.send",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "AirDrop",
+        "publicName": "com.apple.share.AirDrop.send"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.share.AirDrop.send",
+        "name": "AirDrop"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "AirDrop"
+    },
+    {
+      "id": "sharing:title:freeform",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Freeform"
+      },
+      "output": [],
+      "provider": {
+        "name": "Freeform"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Freeform"
+    },
+    {
+      "id": "sharing:com.apple.share.Mail.compose",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Mail",
+        "publicName": "com.apple.share.Mail.compose"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.share.Mail.compose",
+        "name": "Mail"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Mail"
+    },
+    {
+      "id": "sharing:com.apple.messages.ShareExtension",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Messages",
+        "publicName": "com.apple.messages.ShareExtension"
+      },
+      "output": [],
+      "provider": {
+        "bundleIdentifier": "com.apple.messages.ShareExtension",
+        "name": "Messages"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Messages"
+    },
+    {
+      "id": "sharing:title:notes",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Notes"
+      },
+      "output": [],
+      "provider": {
+        "name": "Notes"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Notes"
+    },
+    {
+      "id": "sharing:title:simulator",
+      "inputs": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "discoveryAPI": "NSSharingService.sharingServices(forItems:)",
+        "menuItemTitle": "Simulator"
+      },
+      "output": [],
+      "provider": {
+        "name": "Simulator"
+      },
+      "requiresConfirmation": true,
+      "safety": "external_share",
+      "source": "sharing_service",
+      "supportLevel": "public_deprecated",
+      "title": "Simulator"
+    }
+  ],
+  "item": {
+    "byteCount": 2148,
+    "display": "/Users/ross/spawn/rightclick-mcp/fixtures/fixture.pdf",
+    "isDirectory": false,
+    "kind": "pdf",
+    "path": "/Users/ross/spawn/rightclick-mcp/fixtures/fixture.pdf",
+    "typeDescription": "PDF document",
+    "typeIdentifier": "com.adobe.pdf"
+  }
+}

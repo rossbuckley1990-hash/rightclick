@@ -1,0 +1,2321 @@
+{
+  "fixtureDirectory" : "/Users/ross/spawn/rightclick-mcp/fixtures",
+  "gates" : {
+    "quickActionDiscovery" : "PASS",
+    "quickActionExecution" : "FAIL",
+    "quickActionSupportLevel" : "PUBLIC_SUPPORTED discovery, execution UNAVAILABLE",
+    "reasons" : [
+      "Sharing sets for JPG, PDF, and URL differ and were returned by macOS sharing APIs.",
+      "Sharing execution did not run.",
+      "Discovered 53 services from NSServices Info.plist metadata.",
+      "NSPerformService did not return an observable result. Last error: none.",
+      "Discovered 1 content-specific action extensions from appex metadata. Invocation remains unsupported.",
+      "Quick Action execution is FAIL because no public direct invocation API succeeded. Discovery and execution are separate."
+    ],
+    "rightclick000" : "PARTIAL",
+    "servicesDiscovery" : "PASS",
+    "servicesExecution" : "FAIL",
+    "servicesSupportLevel" : "PUBLIC_SUPPORTED",
+    "sharingDiscovery" : "PASS",
+    "sharingExecution" : "FAIL",
+    "sharingSupportLevel" : "PUBLIC_SUPPORTED via picker menu or delegate; deprecated sharingServices(forItems:) also returned services"
+  },
+  "generatedAt" : "2026-10-04T20:15:51Z",
+  "macosBuild" : "25E253",
+  "macosVersion" : "26.4.1",
+  "quickActions" : {
+    "applicabilityMatrix" : {
+      "Markup" : {
+        "jpg" : "applies",
+        "mov" : "doesNotApply",
+        "pdf" : "applies",
+        "txt" : "doesNotApply",
+        "url" : "doesNotApply"
+      }
+    },
+    "discoverySource" : "Documented NSExtension / NSExtensionPointIdentifier / NSExtensionAttributes keys in installed .appex Info.plist bundles. Enumeration is a read-only bundle scan because the public SDK has no NSExtension matching API.",
+    "discoverySupportLevel" : "PUBLIC_SUPPORTED",
+    "executionSupportLevel" : "UNAVAILABLE",
+    "extensions" : [
+      {
+        "activationRule" : "SUBQUERY(extensionItems, $extensionItem, ($extensionItem.attachments.@count == 1) AND (SUBQUERY($extensionItem.attachments, $attachment, NONE $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"com.adobe.pdf\" AND NONE $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO \"public.image\").@count == 0)).@count == 1",
+        "activationRuleKind" : "predicate",
+        "allowsToolbarItem" : true,
+        "applicability" : {
+          "jpg" : "applies",
+          "mov" : "doesNotApply",
+          "pdf" : "applies",
+          "txt" : "doesNotApply",
+          "url" : "doesNotApply"
+        },
+        "applicabilityMethod" : "uti_token_heuristic",
+        "bundleIdentifier" : "com.apple.MarkupUI.Markup",
+        "bundlePath" : "/System/Library/PrivateFrameworks/MarkupUI.framework/PlugIns/Markup.appex",
+        "extensionPointIdentifier" : "com.apple.ui-services",
+        "invocation" : "unsupported",
+        "name" : "Markup",
+        "roleType" : "NSExtensionServiceRoleTypeEditor",
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      }
+    ],
+    "notes" : [
+      "Skipped 237 appex bundles whose NSExtensionPointIdentifier was not com.apple.ui-services.",
+      "Applicability for dictionary activation rules follows the documented NSExtensionActivationSupports* keys. Predicate-string rules are matched by a UTI token scan and are labelled as a heuristic.",
+      "DISCOVERED is not treated as EXECUTABLE. invocation is unsupported unless a later public call succeeds. None did.",
+      "No public SDK type for invoking an Action extension directly was found in the macOS SDK (NSExtension.h is absent). Direct execution is therefore not claimed.",
+      "Extensions whose point identifier is not com.apple.ui-services are not treated as Finder Action extensions, even if a template key such as NSExtensionServiceAllowsFinderPreviewItem is present."
+    ],
+    "pluginkit" : "+    com.apple.MarkupUI.Markup(1.0)\t3169840D-C094-54B5-9396-CE359F8CA574\t2026-04-23 09:22:00 +0000\t/System/Library/PrivateFrameworks/MarkupUI.framework/PlugIns/Markup.appex\n+    com.apple.sharing.ShareSheetUI(1.0)\t6EA8822B-66E9-5054-A704-553DF0058D03\t2026-04-23 09:22:04 +0000\t/System/Library/PrivateFrameworks/ShareKit.framework/Versions/A/PlugIns/ShareSheetUI.appex\n (2 plug-ins)",
+    "privateRuntime" : {
+      "matchAttempts" : [
+
+      ],
+      "methodNames" : [
+
+      ],
+      "nsExtensionClassPresent" : false,
+      "productUse" : "Private NSExtension runtime is probe-only and is not used for product execution."
+    }
+  },
+  "services" : {
+    "alternateAttempts" : [
+
+    ],
+    "count" : 53,
+    "discoverySource" : "Documented Info.plist key NSServices, read from installed .app, .service, and .workflow bundles. There is no public enumeration API; NSPerformService and NSUpdateDynamicServices are public.",
+    "discoverySupportLevel" : "PUBLIC_SUPPORTED",
+    "executionSupportLevel" : "PUBLIC_SUPPORTED",
+    "notes" : [
+      "Service execution skipped by flag."
+    ],
+    "services" : [
+      {
+        "bundleIdentifier" : "com.apple.AppleSpell",
+        "bundleName" : "AppleSpell",
+        "bundlePath" : "/System/Library/Services/AppleSpell.service",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "",
+        "portName" : "AppleSpell",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.OpenSpell",
+        "bundleName" : "OpenSpell",
+        "bundlePath" : "/System/Library/Services/OpenSpell.service",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "",
+        "portName" : "OpenSpell",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.Instruments",
+        "bundleName" : "Instruments",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/Instruments.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Activity Monitor",
+        "message" : "targetFrontAppWithTemplate",
+        "requiredContext" : "{\"NSServiceCategory\":\"public.source-code\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.services.addToiTunesAsSpokenTrack",
+        "bundleName" : "Add to Music as a Spoken Track",
+        "bundlePath" : "/System/Library/Services/Add to Music as a Spoken Track.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Add to Music as a Spoken Track",
+        "message" : "runWorkflowAsService",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.utf8-plain-text"
+        ],
+        "serviceInputTypeIdentifier" : "com.apple.Automator.text",
+        "supportLevel" : "PUBLIC_SUPPORTED",
+        "workflowTypeIdentifier" : "com.apple.Automator.servicesMenu"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.Instruments",
+        "bundleName" : "Instruments",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/Instruments.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Allocations & Leaks",
+        "message" : "targetFrontAppWithTemplate",
+        "requiredContext" : "{\"NSServiceCategory\":\"public.source-code\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundlePath" : "/Users/ross/Library/Services/Claude - ask.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Ask Claude",
+        "message" : "runWorkflowAsService",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "serviceInputTypeIdentifier" : "com.apple.Automator.text",
+        "supportLevel" : "PUBLIC_SUPPORTED",
+        "workflowTypeIdentifier" : "com.apple.Automator.servicesMenu"
+      },
+      {
+        "bundleIdentifier" : "com.apple.ChineseTextConverterService",
+        "bundleName" : "ChineseTextConverterService",
+        "bundlePath" : "/System/Library/Services/ChineseTextConverterService.app",
+        "discoverySource" : "NSServices Info.plist",
+        "keyEquivalent" : "$^@C",
+        "menuTitle" : "Convert Text from Simplified to Traditional Chinese",
+        "message" : "convertTextToTraditionalChinese",
+        "portName" : "ChineseTextConverterService",
+        "requiredContext" : "{\"NSTextTransformation\":\"Simplified-Traditional\"}",
+        "returnTypes" : [
+          "public.rtf",
+          "public.utf8-plain-text"
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.rtf",
+          "public.utf8-plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.ChineseTextConverterService",
+        "bundleName" : "ChineseTextConverterService",
+        "bundlePath" : "/System/Library/Services/ChineseTextConverterService.app",
+        "discoverySource" : "NSServices Info.plist",
+        "keyEquivalent" : "$^~@C",
+        "menuTitle" : "Convert Text from Traditional to Simplified Chinese",
+        "message" : "convertTextToSimplifiedChinese",
+        "portName" : "ChineseTextConverterService",
+        "requiredContext" : "{\"NSTextTransformation\":\"Traditional-Simplified\"}",
+        "returnTypes" : [
+          "public.rtf",
+          "public.utf8-plain-text"
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.rtf",
+          "public.utf8-plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.ChineseTextConverterService",
+        "bundleName" : "ChineseTextConverterService",
+        "bundlePath" : "/System/Library/Services/ChineseTextConverterService.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Convert Text to Full Width",
+        "message" : "convertTextToFullWidth",
+        "portName" : "ChineseTextConverterService",
+        "returnTypes" : [
+          "public.rtf",
+          "public.utf8-plain-text"
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.rtf",
+          "public.utf8-plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.ChineseTextConverterService",
+        "bundleName" : "ChineseTextConverterService",
+        "bundlePath" : "/System/Library/Services/ChineseTextConverterService.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Convert Text to Half Width",
+        "message" : "convertTextToHalfWidth",
+        "portName" : "ChineseTextConverterService",
+        "returnTypes" : [
+          "public.rtf",
+          "public.utf8-plain-text"
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.rtf",
+          "public.utf8-plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.Automator",
+        "bundleName" : "Automator",
+        "bundlePath" : "/System/Applications/Automator.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Create Service",
+        "message" : "makeNewServiceWithPasteboard",
+        "portName" : "Automator",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType",
+          "NSFilenamesPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.Automator",
+        "bundleName" : "Automator",
+        "bundlePath" : "/System/Applications/Automator.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Create Workflow",
+        "message" : "makeNewWorkflowServiceWithPasteboard",
+        "portName" : "Automator",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType",
+          "NSFilenamesPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.QuickTime.service.encodeSelectedAudioFiles",
+        "bundleName" : "Encode Selected Audio Files",
+        "bundlePath" : "/System/Library/Services/Encode Selected Audio Files.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Encode Selected Audio Files",
+        "message" : "runWorkflowAsService",
+        "requiredContext" : "{\"NSApplicationIdentifier\":\"com.apple.finder\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+          "public.audio"
+        ],
+        "sendTypes" : [
+
+        ],
+        "serviceInputTypeIdentifier" : "com.apple.Automator.fileSystemObject.music",
+        "supportLevel" : "PUBLIC_SUPPORTED",
+        "workflowTypeIdentifier" : "com.apple.Automator.servicesMenu"
+      },
+      {
+        "bundleIdentifier" : "com.apple.services.encodeSelectedVideoFiles",
+        "bundleName" : "Encode Selected Video Files",
+        "bundlePath" : "/System/Library/Services/Encode Selected Video Files.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Encode Selected Video Files",
+        "message" : "runWorkflowAsService",
+        "requiredContext" : "{\"NSApplicationIdentifier\":\"com.apple.finder\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+          "public.movie"
+        ],
+        "sendTypes" : [
+
+        ],
+        "serviceInputTypeIdentifier" : "com.apple.Automator.fileSystemObject.movie",
+        "supportLevel" : "PUBLIC_SUPPORTED",
+        "workflowTypeIdentifier" : "com.apple.Automator.servicesMenu"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.Instruments",
+        "bundleName" : "Instruments",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/Instruments.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "File Activity",
+        "message" : "targetFrontAppWithTemplate",
+        "requiredContext" : "{\"NSServiceCategory\":\"public.source-code\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.FileMerge",
+        "bundleName" : "FileMerge",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/FileMerge.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "FileMerge/Compare Files",
+        "message" : "diffFilesService",
+        "portName" : "FileMerge",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSFilenamesPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.FileMerge",
+        "bundleName" : "FileMerge",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/FileMerge.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "FileMerge/Compare To Main",
+        "message" : "diffVersusMasterService",
+        "portName" : "FileMerge",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSFilenamesPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.Xcode",
+        "bundleName" : "Xcode",
+        "bundlePath" : "/Applications/Xcode.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Find in Xcode",
+        "message" : "batchFind",
+        "portName" : "Xcode",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.finder",
+        "bundleName" : "Finder",
+        "bundlePath" : "/System/Library/CoreServices/Finder.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Finder/Open",
+        "message" : "open",
+        "portName" : "Finder",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType",
+          "NSFilenamesPboardType",
+          "NSURLPboardType",
+          "NSMultipleTextSelectionPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.finder",
+        "bundleName" : "Finder",
+        "bundlePath" : "/System/Library/CoreServices/Finder.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Finder/Reveal",
+        "message" : "reveal",
+        "portName" : "Finder",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType",
+          "NSFilenamesPboardType",
+          "NSURLPboardType",
+          "NSMultipleTextSelectionPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.finder",
+        "bundleName" : "Finder",
+        "bundlePath" : "/System/Library/CoreServices/Finder.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Finder/Show Info",
+        "message" : "showInfo",
+        "portName" : "Finder",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType",
+          "NSFilenamesPboardType",
+          "NSURLPboardType",
+          "NSMultipleTextSelectionPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.FolderActionsSetup",
+        "bundleName" : "Folder Actions Setup",
+        "bundlePath" : "/System/Library/CoreServices/Applications/Folder Actions Setup.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Folder Actions Setup",
+        "message" : "openFilesFromPasteboard",
+        "portName" : "Folder Actions Setup",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSFilenamesPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.Dictionary",
+        "bundleName" : "Dictionary",
+        "bundlePath" : "/System/Applications/Dictionary.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Look Up in Dictionary",
+        "message" : "doLookupService",
+        "portName" : "Dictionary",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.mail",
+        "bundleName" : "Mail",
+        "bundlePath" : "/System/Applications/Mail.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Mail/New Email To Address",
+        "message" : "mailTo",
+        "portName" : "Mail",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSPasteboardTypeString"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.mail",
+        "bundleName" : "Mail",
+        "bundlePath" : "/System/Applications/Mail.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Mail/New Email With Selection",
+        "message" : "mailSelection",
+        "portName" : "Mail",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSPasteboardTypeRTFD",
+          "NSPasteboardTypeRTF",
+          "NSPasteboardTypeString",
+          "Apple Web Archive pasteboard type"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.Stickies",
+        "bundleName" : "Stickies",
+        "bundlePath" : "/System/Applications/Stickies.app",
+        "discoverySource" : "NSServices Info.plist",
+        "keyEquivalent" : "Y",
+        "menuTitle" : "Make Sticky",
+        "message" : "makeStickyFromTextService",
+        "portName" : "Stickies",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.plain-text",
+          "public.rtf",
+          "com.apple.flat-rtfd"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundlePath" : "/Users/ross/Library/Services/Claude - codeHere.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "New Claude Code Session Here",
+        "message" : "runWorkflowAsService",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "serviceInputTypeIdentifier" : "com.apple.Automator.fileSystemObject.folder",
+        "supportLevel" : "PUBLIC_SUPPORTED",
+        "workflowTypeIdentifier" : "com.apple.Automator.servicesMenu"
+      },
+      {
+        "bundleIdentifier" : "com.apple.Terminal",
+        "bundleName" : "Terminal",
+        "bundlePath" : "/System/Applications/Utilities/Terminal.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "New Terminal Tab at Folder",
+        "message" : "newTerminalAtFolder",
+        "portName" : "Terminal",
+        "requiredContext" : "{\"NSTextContent\":\"FilePath\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+          "public.directory",
+          "com.apple.resolvable"
+        ],
+        "sendTypes" : [
+          "public.plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.Terminal",
+        "bundleName" : "Terminal",
+        "bundlePath" : "/System/Applications/Utilities/Terminal.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "New Terminal at Folder",
+        "message" : "newTerminalAtFolder",
+        "portName" : "Terminal",
+        "requiredContext" : "{\"NSTextContent\":\"FilePath\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+          "public.directory",
+          "com.apple.resolvable"
+        ],
+        "sendTypes" : [
+          "public.plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.TextEdit",
+        "bundleName" : "TextEdit",
+        "bundlePath" : "/System/Applications/TextEdit.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "New TextEdit Window Containing Selection",
+        "message" : "openSelection",
+        "portName" : "TextEdit",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "com.apple.flat-rtfd",
+          "public.rtf",
+          "public.plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.Xcode",
+        "bundleName" : "Xcode",
+        "bundlePath" : "/Applications/Xcode.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Open Quickly in Xcode",
+        "message" : "openQuickly",
+        "portName" : "Xcode",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.TextEdit",
+        "bundleName" : "TextEdit",
+        "bundlePath" : "/System/Applications/TextEdit.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Open Selected File in TextEdit",
+        "message" : "openFile",
+        "portName" : "TextEdit",
+        "requiredContext" : "{\"NSTextContent\":\"FilePath\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.systemuiserver",
+        "bundleName" : "SystemUIServer",
+        "bundlePath" : "/System/Library/CoreServices/SystemUIServer.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Open URL",
+        "message" : "openURL",
+        "portName" : "SystemUIServer",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSURLPboardType",
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "dev.zcode.app.finder-open-workflow",
+        "bundleName" : "Open in ZCode",
+        "bundlePath" : "/Users/ross/Library/Services/Open in ZCode.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Open in ZCode",
+        "message" : "runWorkflowAsService",
+        "requiredContext" : "{\"NSApplicationIdentifier\":\"com.apple.finder\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+          "public.folder",
+          "public.directory"
+        ],
+        "sendTypes" : [
+
+        ],
+        "serviceInputTypeIdentifier" : "com.apple.Automator.fileSystemObject.folder",
+        "supportLevel" : "PUBLIC_SUPPORTED",
+        "workflowTypeIdentifier" : "com.apple.Automator.servicesMenu"
+      },
+      {
+        "bundleIdentifier" : "com.apple.Terminal",
+        "bundleName" : "Terminal",
+        "bundlePath" : "/System/Applications/Utilities/Terminal.app",
+        "discoverySource" : "NSServices Info.plist",
+        "keyEquivalent" : "M",
+        "menuTitle" : "Open man Page in Terminal",
+        "message" : "openManPage",
+        "portName" : "Terminal",
+        "requiredContext" : "{\"NSWordLimit\":20}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.Preview",
+        "bundleName" : "Preview",
+        "bundlePath" : "/System/Applications/Preview.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Preview/Open images",
+        "message" : "serviceOpenImage",
+        "portName" : "Preview",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSPasteboardTypeTIFF"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.SpotlightService",
+        "bundleName" : "SpotlightService",
+        "bundlePath" : "/System/Library/Services/Spotlight.service",
+        "discoverySource" : "NSServices Info.plist",
+        "keyEquivalent" : "F",
+        "menuTitle" : "SEARCH_WITH_SPOTLIGHT",
+        "message" : "doSearchWithSpotlight",
+        "portName" : "SpotlightService",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.ScriptEditor2",
+        "bundleName" : "Script Editor",
+        "bundlePath" : "/System/Applications/Utilities/Script Editor.app",
+        "discoverySource" : "NSServices Info.plist",
+        "keyEquivalent" : "*",
+        "menuTitle" : "Script Editor/Get Result of AppleScript",
+        "message" : "runAsAppleScript",
+        "portName" : "Script Editor",
+        "returnTypes" : [
+          "NSRTFDPboardType",
+          "NSRTFPboardType",
+          "NSStringPboardType"
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.ScriptEditor2",
+        "bundleName" : "Script Editor",
+        "bundlePath" : "/System/Applications/Utilities/Script Editor.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Script Editor/Make New AppleScript",
+        "message" : "makeNewAppleScript",
+        "portName" : "Script Editor",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.ScriptEditor2",
+        "bundleName" : "Script Editor",
+        "bundlePath" : "/System/Applications/Utilities/Script Editor.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Script Editor/Run as AppleScript",
+        "message" : "runAsAppleScript",
+        "portName" : "Script Editor",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.Terminal",
+        "bundleName" : "Terminal",
+        "bundlePath" : "/System/Applications/Utilities/Terminal.app",
+        "discoverySource" : "NSServices Info.plist",
+        "keyEquivalent" : "A",
+        "menuTitle" : "Search man Page Index in Terminal",
+        "message" : "searchManPages",
+        "portName" : "Terminal",
+        "requiredContext" : "{\"NSWordLimit\":20}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.plain-text"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.BluetoothFileExchange",
+        "bundleName" : "Bluetooth File Exchange",
+        "bundlePath" : "/System/Applications/Utilities/Bluetooth File Exchange.app",
+        "discoverySource" : "NSServices Info.plist",
+        "keyEquivalent" : "B",
+        "menuTitle" : "Send File To Bluetooth Device",
+        "message" : "sendFileUsingBluetoothOBEXService",
+        "portName" : "BluetoothFileExchange",
+        "requiredContext" : "{\"NSTextContent\":\"FilePath\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.plain-text",
+          "NSFilenamesPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundlePath" : "/Users/ross/Library/Services/Claude - send.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Send to Claude",
+        "message" : "runWorkflowAsService",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "serviceInputTypeIdentifier" : "com.apple.Automator.fileSystemObject",
+        "supportLevel" : "PUBLIC_SUPPORTED",
+        "workflowTypeIdentifier" : "com.apple.Automator.servicesMenu"
+      },
+      {
+        "bundleIdentifier" : "com.apple.services.setDesktopPicture",
+        "bundleName" : "Set Desktop Picture",
+        "bundlePath" : "/System/Library/Services/Set Desktop Picture.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Set Desktop Picture",
+        "message" : "runWorkflowAsService",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+          "public.image"
+        ],
+        "sendTypes" : [
+
+        ],
+        "serviceInputTypeIdentifier" : "com.apple.Automator.fileSystemObject.image",
+        "supportLevel" : "PUBLIC_SUPPORTED",
+        "workflowTypeIdentifier" : "com.apple.Automator.servicesMenu"
+      },
+      {
+        "bundleIdentifier" : "com.apple.services.showMap",
+        "bundleName" : "Show Map",
+        "bundlePath" : "/System/Library/Services/Show Map.workflow",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Show Map",
+        "message" : "runWorkflowAsService",
+        "requiredContext" : "{\"NSTextContent\":\"Address\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "public.utf8-plain-text"
+        ],
+        "serviceInputTypeIdentifier" : "com.apple.Automator.text.address",
+        "supportLevel" : "PUBLIC_SUPPORTED",
+        "workflowTypeIdentifier" : "com.apple.Automator.servicesMenu"
+      },
+      {
+        "bundleIdentifier" : "com.apple.speech.SpeechService",
+        "bundleName" : "Speech Service",
+        "bundlePath" : "/System/Library/Services/SpeechService.service",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Speech/Start Speaking Text",
+        "message" : "doSpeakSelectedText",
+        "portName" : "ComAppleSpeechSpeechService",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.speech.SpeechService",
+        "bundleName" : "Speech Service",
+        "bundlePath" : "/System/Library/Services/SpeechService.service",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Speech/Stop Speaking",
+        "message" : "doStopSpeaking",
+        "portName" : "ComAppleSpeechSpeechService",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.SummaryService",
+        "bundleName" : "Summary Service",
+        "bundlePath" : "/System/Library/Services/Summary Service.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Summarize",
+        "message" : "doSummarization",
+        "portName" : "SummaryService",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+          "NSStringPboardType"
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.Instruments",
+        "bundleName" : "Instruments",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/Instruments.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "System Trace",
+        "message" : "targetFrontAppWithTemplate",
+        "requiredContext" : "{\"NSServiceCategory\":\"public.source-code\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.instruments.backgroundinstruments",
+        "bundleName" : "backgroundinstruments",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Helpers/backgroundinstruments.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Time Profile Active Application",
+        "message" : "timeProfileFrontMost",
+        "requiredContext" : "{\"NSServiceCategory\":\"public.source-code\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.instruments.backgroundinstruments",
+        "bundleName" : "backgroundinstruments",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Helpers/backgroundinstruments.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Time Profile App Under Mouse",
+        "message" : "timeProfileUnderMouse",
+        "requiredContext" : "{\"NSServiceCategory\":\"public.source-code\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.instruments.backgroundinstruments",
+        "bundleName" : "backgroundinstruments",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Helpers/backgroundinstruments.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Time Profile Entire System",
+        "message" : "timeProfileSystem",
+        "requiredContext" : "{\"NSServiceCategory\":\"public.source-code\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      },
+      {
+        "bundleIdentifier" : "com.apple.dt.instruments.backgroundinstruments",
+        "bundleName" : "backgroundinstruments",
+        "bundlePath" : "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Helpers/backgroundinstruments.app",
+        "discoverySource" : "NSServices Info.plist",
+        "menuTitle" : "Toggle Instruments Recording",
+        "message" : "toggleRecordingState",
+        "requiredContext" : "{\"NSServiceCategory\":\"public.source-code\"}",
+        "returnTypes" : [
+
+        ],
+        "sendFileTypes" : [
+
+        ],
+        "sendTypes" : [
+
+        ],
+        "supportLevel" : "PUBLIC_SUPPORTED"
+      }
+    ]
+  },
+  "sharing" : {
+    "discoverySupportLevel" : "PUBLIC_SUPPORTED via picker menu or delegate; deprecated sharingServices(forItems:) also returned services",
+    "executionSupportLevel" : "PUBLIC_SUPPORTED",
+    "notes" : [
+      "Sharing execution skipped by flag.",
+      "NSSharingService.sharingServices(forItems:) is marked API_DEPRECATED as of macOS 13 in NSSharingService.h, with the replacement -[NSSharingServicePicker standardShareMenuItem].",
+      "perform(withItems:) remains a public, non-deprecated method.",
+      "Public service name constants are used only to label services that were already returned by discovery. They are not the discovery source."
+    ],
+    "samples" : [
+      {
+        "deprecatedAPIServices" : [
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f0830> [com.apple.share.AirDrop.send] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c2d285d26f2ccd4f66ecc01046dd587e55c6fdf20bd2c77dbbc6b137247d90f8",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.AirDrop.send",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "AirDrop",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "AirDrop"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f1770> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c20b27d836e56b793a533e63134b57e58bb2b22d7f70e38d30c844e73d4ea400",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f17b0> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "b5184c35ace64ed23435a3dbef1b57835a25df65b6e10d277c987d40d2b13b8d",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f17d0> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "89d726b03b3c90a7f8bb88892d4d1e355bf35ba9cb4903cf72fe92e170498db1",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f17f0> [com.apple.share.System.add-to-iphoto] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "e460436bf717ce3e1e83067435c832251554eea68ca965d2d7979efb99fa775c",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.System.add-to-iphoto",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Add to Photos",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Add to Photos"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f1810> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "004f35e0400515a8cd63433c7fb551ffeb17f52e545722459a47a72be9208036",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f1820> [com.apple.iphonesimulator.ShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "6ff530f14099c41cca3e62109be859f7a5d4afa1d8960270d32f832fce487b1d",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Simulator",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Simulator"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f1830> [com.apple.journal.JournalShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "fc27063128fd98db43183b07484d937cb7ffe4c00a07d8d880b4e84204c05e5f",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Journal",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Journal"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f1840> [com.apple.reminders.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "7f24b97e3e47381287b3fb0b47316920f7d0feb49c40f7fdf45769cf946d41cb",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Reminders",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Reminders"
+          }
+        ],
+        "errors" : [
+
+        ],
+        "input" : "/Users/ross/spawn/rightclick-mcp/fixtures/sample.jpg",
+        "label" : "jpg",
+        "menuAPIServices" : [
+
+        ],
+        "menuTree" : [
+          {
+            "action" : "_performStandardShareMenuItem:",
+            "children" : [
+
+            ],
+            "isEnabled" : true,
+            "isSeparator" : false,
+            "representedDescription" : "<NSSharingServicePicker: 0x756434180>",
+            "representedType" : "NSSharingServicePicker",
+            "title" : "Share…"
+          }
+        ],
+        "pickerDelegateServices" : [
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x7568f3f60> [com.apple.share.System.add-to-safari-reading-list] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.System.add-to-safari-reading-list",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Add to Reading List",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Add to Reading List"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f3f70> [com.apple.share.AirDrop.send] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.AirDrop.send",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "AirDrop",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "AirDrop"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f3f80> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f3f90> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f3fa0> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x7568f3fb0> [com.apple.news.openinnews] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Open in News",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Open in News"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f3fc0> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f3fd0> [com.apple.iphonesimulator.ShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Simulator",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Simulator"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f3fe0> [com.apple.journal.JournalShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Journal",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Journal"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7568f3ff0> [com.apple.reminders.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Reminders",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Reminders"
+          }
+        ]
+      },
+      {
+        "deprecatedAPIServices" : [
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756620980> [com.apple.share.AirDrop.send] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c2d285d26f2ccd4f66ecc01046dd587e55c6fdf20bd2c77dbbc6b137247d90f8",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.AirDrop.send",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "AirDrop",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "AirDrop"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756621050> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c20b27d836e56b793a533e63134b57e58bb2b22d7f70e38d30c844e73d4ea400",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756621070> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "b5184c35ace64ed23435a3dbef1b57835a25df65b6e10d277c987d40d2b13b8d",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756621080> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "89d726b03b3c90a7f8bb88892d4d1e355bf35ba9cb4903cf72fe92e170498db1",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756621090> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "004f35e0400515a8cd63433c7fb551ffeb17f52e545722459a47a72be9208036",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756621030> [com.apple.iphonesimulator.ShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "6ff530f14099c41cca3e62109be859f7a5d4afa1d8960270d32f832fce487b1d",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Simulator",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Simulator"
+          }
+        ],
+        "errors" : [
+
+        ],
+        "input" : "/Users/ross/spawn/rightclick-mcp/fixtures/sample.pdf",
+        "label" : "pdf",
+        "menuAPIServices" : [
+
+        ],
+        "menuTree" : [
+          {
+            "action" : "_performStandardShareMenuItem:",
+            "children" : [
+
+            ],
+            "isEnabled" : true,
+            "isSeparator" : false,
+            "representedDescription" : "<NSSharingServicePicker: 0x756435da0>",
+            "representedType" : "NSSharingServicePicker",
+            "title" : "Share…"
+          }
+        ],
+        "pickerDelegateServices" : [
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x756622350> [com.apple.share.System.add-to-safari-reading-list] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.System.add-to-safari-reading-list",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Add to Reading List",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Add to Reading List"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622360> [com.apple.share.AirDrop.send] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.AirDrop.send",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "AirDrop",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "AirDrop"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622370> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622380> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622390> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x7566223a0> [com.apple.news.openinnews] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Open in News",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Open in News"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7566223b0> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7566223c0> [com.apple.iphonesimulator.ShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Simulator",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Simulator"
+          },
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x7566223d0> [com.apple.journal.JournalShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Journal",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Journal"
+          },
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x7566223e0> [com.apple.reminders.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Reminders",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Reminders"
+          }
+        ]
+      },
+      {
+        "deprecatedAPIServices" : [
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7566223c0> [com.apple.share.AirDrop.send] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c2d285d26f2ccd4f66ecc01046dd587e55c6fdf20bd2c77dbbc6b137247d90f8",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.AirDrop.send",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "AirDrop",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "AirDrop"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622d90> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c20b27d836e56b793a533e63134b57e58bb2b22d7f70e38d30c844e73d4ea400",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622db0> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "b5184c35ace64ed23435a3dbef1b57835a25df65b6e10d277c987d40d2b13b8d",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622dc0> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "89d726b03b3c90a7f8bb88892d4d1e355bf35ba9cb4903cf72fe92e170498db1",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622dd0> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "004f35e0400515a8cd63433c7fb551ffeb17f52e545722459a47a72be9208036",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622d70> [com.apple.iphonesimulator.ShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "6ff530f14099c41cca3e62109be859f7a5d4afa1d8960270d32f832fce487b1d",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Simulator",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Simulator"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622d50> [com.apple.journal.JournalShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "fc27063128fd98db43183b07484d937cb7ffe4c00a07d8d880b4e84204c05e5f",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Journal",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Journal"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756622d60> [com.apple.reminders.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "7f24b97e3e47381287b3fb0b47316920f7d0feb49c40f7fdf45769cf946d41cb",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Reminders",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Reminders"
+          }
+        ],
+        "errors" : [
+
+        ],
+        "input" : "/Users/ross/spawn/rightclick-mcp/fixtures/sample.txt",
+        "label" : "txt",
+        "menuAPIServices" : [
+
+        ],
+        "menuTree" : [
+          {
+            "action" : "_performStandardShareMenuItem:",
+            "children" : [
+
+            ],
+            "isEnabled" : true,
+            "isSeparator" : false,
+            "representedDescription" : "<NSSharingServicePicker: 0x756436100>",
+            "representedType" : "NSSharingServicePicker",
+            "title" : "Share…"
+          }
+        ],
+        "pickerDelegateServices" : [
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x7567449c0> [com.apple.share.System.add-to-safari-reading-list] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.System.add-to-safari-reading-list",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Add to Reading List",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Add to Reading List"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567449d0> [com.apple.share.AirDrop.send] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.AirDrop.send",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "AirDrop",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "AirDrop"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567449e0> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567449f0> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756744a00> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x756744a10> [com.apple.news.openinnews] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Open in News",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Open in News"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756744a20> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756744a30> [com.apple.iphonesimulator.ShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Simulator",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Simulator"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756744a40> [com.apple.journal.JournalShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Journal",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Journal"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756744a50> [com.apple.reminders.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Reminders",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Reminders"
+          }
+        ]
+      },
+      {
+        "deprecatedAPIServices" : [
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756744a30> [com.apple.share.AirDrop.send] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c2d285d26f2ccd4f66ecc01046dd587e55c6fdf20bd2c77dbbc6b137247d90f8",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.AirDrop.send",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "AirDrop",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "AirDrop"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756745660> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c20b27d836e56b793a533e63134b57e58bb2b22d7f70e38d30c844e73d4ea400",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756745680> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "b5184c35ace64ed23435a3dbef1b57835a25df65b6e10d277c987d40d2b13b8d",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756745690> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "89d726b03b3c90a7f8bb88892d4d1e355bf35ba9cb4903cf72fe92e170498db1",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567456a0> [com.apple.share.System.add-to-iphoto] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "e460436bf717ce3e1e83067435c832251554eea68ca965d2d7979efb99fa775c",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.System.add-to-iphoto",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Add to Photos",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Add to Photos"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756745640> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "004f35e0400515a8cd63433c7fb551ffeb17f52e545722459a47a72be9208036",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756745620> [com.apple.iphonesimulator.ShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "6ff530f14099c41cca3e62109be859f7a5d4afa1d8960270d32f832fce487b1d",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Simulator",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Simulator"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756745630> [com.apple.journal.JournalShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "fc27063128fd98db43183b07484d937cb7ffe4c00a07d8d880b4e84204c05e5f",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Journal",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Journal"
+          }
+        ],
+        "errors" : [
+
+        ],
+        "input" : "/Users/ross/spawn/rightclick-mcp/fixtures/sample.mov",
+        "label" : "mov",
+        "menuAPIServices" : [
+
+        ],
+        "menuTree" : [
+          {
+            "action" : "_performStandardShareMenuItem:",
+            "children" : [
+
+            ],
+            "isEnabled" : true,
+            "isSeparator" : false,
+            "representedDescription" : "<NSSharingServicePicker: 0x756436700>",
+            "representedType" : "NSSharingServicePicker",
+            "title" : "Share…"
+          }
+        ],
+        "pickerDelegateServices" : [
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x756746e30> [com.apple.share.System.add-to-safari-reading-list] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.System.add-to-safari-reading-list",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Add to Reading List",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Add to Reading List"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756746e40> [com.apple.share.AirDrop.send] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.AirDrop.send",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "AirDrop",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "AirDrop"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756746e50> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756746e60> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756746e70> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x756746e80> [com.apple.news.openinnews] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Open in News",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Open in News"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756746e90> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756746ea0> [com.apple.iphonesimulator.ShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Simulator",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Simulator"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756746eb0> [com.apple.journal.JournalShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Journal",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Journal"
+          },
+          {
+            "canPerform" : false,
+            "debugDescription" : "<NSSharingService: 0x756746ec0> [com.apple.reminders.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageWidth" : 16,
+            "menuItemTitle" : "Reminders",
+            "sourceAPI" : "NSSharingServicePickerDelegate.proposedSharingServices PUBLIC_SUPPORTED",
+            "title" : "Reminders"
+          }
+        ]
+      },
+      {
+        "deprecatedAPIServices" : [
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756746ea0> [com.apple.share.System.add-to-safari-reading-list] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "2bffb67d3bd0792af22c24fe7c6029bbb559d6bcdfdf191bc115544646062e03",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.System.add-to-safari-reading-list",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Add to Reading List",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Add to Reading List"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756747b20> [com.apple.share.AirDrop.send] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c2d285d26f2ccd4f66ecc01046dd587e55c6fdf20bd2c77dbbc6b137247d90f8",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.AirDrop.send",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "AirDrop",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "AirDrop"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756747b40> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c20b27d836e56b793a533e63134b57e58bb2b22d7f70e38d30c844e73d4ea400",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756747b50> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "b5184c35ace64ed23435a3dbef1b57835a25df65b6e10d277c987d40d2b13b8d",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756747b60> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "89d726b03b3c90a7f8bb88892d4d1e355bf35ba9cb4903cf72fe92e170498db1",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756747b00> [com.apple.news.openinnews] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "220eef9db9ceabcdace52382882839dab9dbea50bfa41f4d27dbe6b3b94c5a69",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Open in News",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Open in News"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756747ae0> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "004f35e0400515a8cd63433c7fb551ffeb17f52e545722459a47a72be9208036",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756747af0> [com.apple.iphonesimulator.ShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "6ff530f14099c41cca3e62109be859f7a5d4afa1d8960270d32f832fce487b1d",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Simulator",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Simulator"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756747ad0> [com.apple.journal.JournalShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "fc27063128fd98db43183b07484d937cb7ffe4c00a07d8d880b4e84204c05e5f",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Journal",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Journal"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x756747ab0> [com.apple.reminders.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "7f24b97e3e47381287b3fb0b47316920f7d0feb49c40f7fdf45769cf946d41cb",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Reminders",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Reminders"
+          }
+        ],
+        "errors" : [
+          "Picker delegate was not invoked or returned no services. show(relativeTo:of:preferredEdge:) documents that it must be called from mouseDown."
+        ],
+        "input" : "https://example.com/rightclick-probe",
+        "label" : "url",
+        "menuAPIServices" : [
+
+        ],
+        "menuTree" : [
+          {
+            "action" : "_performStandardShareMenuItem:",
+            "children" : [
+
+            ],
+            "isEnabled" : true,
+            "isSeparator" : false,
+            "representedDescription" : "<NSSharingServicePicker: 0x756436ac0>",
+            "representedType" : "NSSharingServicePicker",
+            "title" : "Share…"
+          }
+        ],
+        "pickerDelegateServices" : [
+
+        ]
+      },
+      {
+        "deprecatedAPIServices" : [
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567d9eb0> [com.apple.share.Mail.compose] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "c20b27d836e56b793a533e63134b57e58bb2b22d7f70e38d30c844e73d4ea400",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.share.Mail.compose",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Mail",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Mail"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567da790> [com.apple.share.Messages.window] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "b5184c35ace64ed23435a3dbef1b57835a25df65b6e10d277c987d40d2b13b8d",
+            "imageWidth" : 16,
+            "matchedPublicName" : "com.apple.messages.ShareExtension",
+            "matchedPublicStatus" : "PUBLIC_SUPPORTED",
+            "menuItemTitle" : "Messages",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Messages"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567da7b0> [com.apple.Notes.SharingExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "89d726b03b3c90a7f8bb88892d4d1e355bf35ba9cb4903cf72fe92e170498db1",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Notes",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Notes"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567da7c0> [com.apple.freeform.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "004f35e0400515a8cd63433c7fb551ffeb17f52e545722459a47a72be9208036",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Freeform",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Freeform"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567da7d0> [com.apple.journal.JournalShareExtension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "fc27063128fd98db43183b07484d937cb7ffe4c00a07d8d880b4e84204c05e5f",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Journal",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Journal"
+          },
+          {
+            "canPerform" : true,
+            "debugDescription" : "<NSSharingService: 0x7567da770> [com.apple.reminders.sharingextension] - enabled:YES",
+            "imageHeight" : 16,
+            "imageIsTemplate" : false,
+            "imageSHA256" : "7f24b97e3e47381287b3fb0b47316920f7d0feb49c40f7fdf45769cf946d41cb",
+            "imageWidth" : 16,
+            "menuItemTitle" : "Reminders",
+            "sourceAPI" : "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED",
+            "title" : "Reminders"
+          }
+        ],
+        "errors" : [
+          "Picker delegate was not invoked or returned no services. show(relativeTo:of:preferredEdge:) documents that it must be called from mouseDown."
+        ],
+        "input" : "RIGHTCLICK plain text selection",
+        "label" : "plain-text",
+        "menuAPIServices" : [
+
+        ],
+        "menuTree" : [
+          {
+            "action" : "_performStandardShareMenuItem:",
+            "children" : [
+
+            ],
+            "isEnabled" : true,
+            "isSeparator" : false,
+            "representedDescription" : "<NSSharingServicePicker: 0x756437240>",
+            "representedType" : "NSSharingServicePicker",
+            "title" : "Share…"
+          }
+        ],
+        "pickerDelegateServices" : [
+
+        ]
+      }
+    ]
+  },
+  "swiftVersion" : "swift-driver version: 1.148.6 Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0"
+}
