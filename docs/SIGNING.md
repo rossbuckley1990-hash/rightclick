@@ -38,31 +38,47 @@ codesign --force --sign - .build/release/rightclick
 
 This signature is not trusted by Gatekeeper on other Macs.
 
-## Public release
+Checked again on 2026-10-05. `security find-identity -p codesigning -v` still reports `0 valid identities found`. `spctl --assess --type execute` still returns `rejected` for the release binary.
 
-1. Enroll in the Apple Developer Program.
-2. Create a Developer ID Application certificate.
-3. Sign the release binary:
+## What Ross does once
 
-```bash
-codesign --force --options runtime --timestamp \
-  --sign "Developer ID Application: <Team Name> (<TEAMID>)" \
-  rightclick
-```
-
-4. Zip the signed binary.
-5. Submit the zip for notarization:
+1. Enrol in the Apple Developer Program at https://developer.apple.com/programs/.
+2. On the developer account, create a Developer ID Application certificate. Request it from this Mac with Keychain Access, Certificate Assistant, Request a Certificate From a Certificate Authority, then upload the request and download the certificate.
+3. Double-click the downloaded certificate so it lands in the login keychain. Confirm it with:
 
 ```bash
-xcrun notarytool submit rightclick.zip --apple-id <apple-id> --team-id <TEAMID> --wait
-xcrun stapler staple rightclick
+security find-identity -p codesigning -v
 ```
 
-6. Verify:
+The matching line must contain `Developer ID Application:`.
+4. Store a notary credential in the keychain. An app-specific password is created at https://account.apple.com.
 
 ```bash
-spctl --assess --type execute -v rightclick
-codesign --verify --verbose=4 rightclick
+xcrun notarytool store-credentials RIGHTCLICK_NOTARY \
+  --apple-id <apple-id> \
+  --team-id <TEAMID> \
+  --password <app-specific-password>
 ```
 
-Without that certificate and a successful notarization ticket, do not distribute the binary as a public download.
+## Deterministic release sequence
+
+`scripts/sign-release.sh` stops if no Developer ID Application identity exists. It does not ad-hoc sign.
+
+```bash
+scripts/make-release-archive.sh
+NOTARY_KEYCHAIN_PROFILE=RIGHTCLICK_NOTARY scripts/sign-release.sh .build/release/rightclick
+```
+
+That script runs:
+
+```text
+release build is produced separately by scripts/make-release-archive.sh or scripts/build-release.sh
+→ codesign --options runtime --timestamp
+→ codesign --verify --strict
+→ zip the signed binary
+→ xcrun notarytool submit --wait
+→ xcrun stapler staple
+→ spctl --assess --type execute
+```
+
+`stapler` accepts app bundles, disk images, and installer packages. If it refuses a naked executable, the script exits and does not treat the binary as stapled. Gatekeeper is not bypassed.

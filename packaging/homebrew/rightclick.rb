@@ -1,19 +1,20 @@
-# Unpublished Homebrew formula template.
-# Do not brew tap or brew install this until a release URL exists.
+# Production formula for the planned tap ross-buckley/tap.
+# Do not publish this file until the deferred fields below are real.
 class Rightclick < Formula
-  desc "Give your AI the capabilities already installed on your Mac"
-  # No public project URL yet. This template is not installable.
-  homepage "https://example.invalid/rightclick"
+  desc "Install an app. Your AI learns what it can do."
+  homepage "https://github.com/ross-buckley/rightclick"
   version "0.1.0"
-  # No release archive exists. Do not publish or install from this template.
-  url "https://example.invalid/rightclick-0.1.0.tar.gz"
-  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
+  # DEFERRED: GitHub Release asset URL for v0.1.0.
+  # DEFERRED: sha256 of that exact asset.
+  # scripts/fill-homebrew-formula.sh writes both after the release asset exists.
+  # No URL is invented here.
 
   depends_on :macos => :sonoma
+  depends_on arch: :arm64
 
   def install
-    system "swift", "build", "-c", "release", "--product", "rightclick", "--disable-sandbox"
-    bin.install ".build/release/rightclick"
+    odie "Blocked: the v0.1.0 release asset URL and sha256 are not filled in yet."
+    bin.install "rightclick"
   end
 
   test do

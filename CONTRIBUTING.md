@@ -8,4 +8,4 @@ New capability-family support should be generic: one discovery path, one invocat
 
 Action Extensions are discovered and are not generically executable. Do not call private `NSExtension` methods from the product to pretend otherwise.
 
-There is no chosen open-source licence yet. Do not add one on a contributor's behalf.
+RIGHTCLICK is licensed under Apache-2.0. See `LICENSE`.

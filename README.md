@@ -1,5 +1,7 @@
 # RIGHTCLICK
 
+Licensed under [Apache-2.0](LICENSE).
+
 ## Install an app. Your AI learns what it can do.
 
 RIGHTCLICK discovers contextual capabilities exposed by software already installed on macOS and makes the applicable ones available to MCP clients.
@@ -141,10 +143,10 @@ External shares, destructive actions, financial actions, and anything unclassifi
 
 ## Later
 
-A public Homebrew install is not available yet. The intended command, once a real archive and tap exist, is:
+A public Homebrew install is not available yet. The intended command, once the v0.1.0 release asset and tap exist, is:
 
 ```bash
-brew install <tap>/rightclick
+brew install ross-buckley/tap/rightclick
 ```
 
-`packaging/homebrew/rightclick.rb` is an unpublished template. It is not a working install. See `SECURITY.md` and `docs/SIGNING.md`.
+The asset URL and sha256 in `packaging/homebrew/rightclick.rb` are deferred until that release exists. See `docs/RELEASE.md`, `SECURITY.md`, and `docs/SIGNING.md`.
