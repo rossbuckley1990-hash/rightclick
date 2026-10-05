@@ -121,8 +121,39 @@ struct CLI {
         }
         let resolvedItem = itemFlag ?? (positional.count >= 2 ? positional[1] : item)
         let resolvedAction = actionFlag ?? positional[0]
+
+        let verification: VerificationSpec?
+
+        if let raw = flag(args, "--verify-json") {
+            guard let data = raw.data(using: .utf8) else {
+                fputs("Invalid --verify-json: value is not UTF-8.\n", stderr)
+                return 2
+            }
+
+            do {
+                verification = try JSONDecoder().decode(
+                    VerificationSpec.self,
+                    from: data
+                )
+            } catch {
+                fputs(
+                    "Invalid --verify-json VerificationSpec: \(error)\n",
+                    stderr
+                )
+                return 2
+            }
+        } else {
+            verification = nil
+        }
+
         do {
-            let result = try CapabilityEngine().run(id: resolvedAction, item: resolvedItem, confirmed: confirmed, expectedOutput: flag(args, "--expect-output"))
+            let result = try CapabilityEngine().run(
+                id: resolvedAction,
+                item: resolvedItem,
+                confirmed: confirmed,
+                expectedOutput: flag(args, "--expect-output"),
+                verification: verification
+            )
             if json {
                 print(RightClickJSON.encode(result))
             } else {
@@ -202,7 +233,7 @@ struct CLI {
         rightclick doctor
         rightclick inspect <item>
         rightclick actions <item>
-        rightclick run <action-id> <item> [--yes] [--expect-output <exact-text>]
+        rightclick run <action-id> <item> [--yes] [--expect-output <exact-text>] [--verify-json <VerificationSpec JSON>]
         rightclick status <execution-id>
         rightclick providers
         rightclick refresh
@@ -213,6 +244,7 @@ struct CLI {
         rightclick version
 
         --json prints machine-readable output.
+        --verify-json supplies provider-independent semantic postconditions.
         """
     }
 }
