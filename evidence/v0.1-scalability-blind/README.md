@@ -16,6 +16,7 @@ Constraints honored: no provider-specific RIGHTCLICK code; no app-specific MCP; 
 | Image conversion intent (PNG→JPEG, AI chooses capability) | **SEMANTIC PASS** | [`png2jpeg-intent/`](png2jpeg-intent/) |
 | Privacy / xattr hygiene intent (remove synthetic xattr, image intact) | **SEMANTIC PASS** | [`privacy-intent/`](privacy-intent/) |
 | Compress intent (smaller JPEG, AI chooses capability; MCP meta-routing) | **SEMANTIC PASS** | [`compress-intent/`](compress-intent/) |
+| Multi-app composition (PNG→JPEG via GC, then ImageOptim compress) | **COMPOSITION + SEMANTIC PASS** | [`composition-png-jpeg-optim/`](composition-png-jpeg-optim/) |
 
 Related earlier v0.1 semantic / acquisition evidence (already in repo):
 - `evidence/v0.1-coteditor/`
@@ -24,7 +25,7 @@ Related earlier v0.1 semantic / acquisition evidence (already in repo):
 
 ## North-star claim these tests support
 
-An AI can discover useful capabilities from ordinary installed Mac software via RIGHTCLICK reflection **without** being told the app name or a capability ID, and (for convert / privacy hygiene / compress) produce an independently observed semantic outcome.
+An AI can discover useful capabilities from ordinary installed Mac software via RIGHTCLICK reflection **without** being told the app name or a capability ID, and (for convert / privacy hygiene / compress / multi-app composition) produce an independently observed semantic outcome.
 
 ## What is *not* claimed
 
