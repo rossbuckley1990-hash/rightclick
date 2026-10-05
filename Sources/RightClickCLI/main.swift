@@ -44,7 +44,7 @@ struct CLI {
             CapabilityEngine().refresh()
             print("Refreshed macOS Services registrations. The next query scans installed providers again.")
             return 0
-        case "version":
+        case "version", "--version":
             print(RightClickVersion.current)
             return 0
         case "setup":

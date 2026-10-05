@@ -67,4 +67,31 @@ final class ServiceContextTests: XCTestCase {
         XCTAssertEqual(actions.count, 2)
         XCTAssertTrue(actions.allSatisfy { $0.invocation == .unsupported })
     }
+
+    func testBundlelessWorkflowPathsPreventSharedMessageIdentityCollision() {
+        var first = record(nil)
+        first.menuTitle = "Workflow One"
+        first.message = "runWorkflowAsService"
+        first.bundleIdentifier = nil
+        first.bundleName = nil
+        first.bundlePath = "/tmp/Workflow One.workflow"
+
+        var second = first
+        second.menuTitle = "Workflow Two"
+        second.bundlePath = "/tmp/Workflow Two.workflow"
+
+        let actions = ServiceCatalog.capabilities(
+            for: text("hello"),
+            records: [first, second]
+        )
+
+        XCTAssertEqual(actions.count, 2)
+
+        // Different installed providers must have different capability identities,
+        // even when Automator gives both the same NSMessage.
+        XCTAssertEqual(Set(actions.map(\.id)).count, 2)
+
+        // Different titles + different provider paths are safely distinguishable.
+        XCTAssertTrue(actions.allSatisfy { $0.invocation != .unsupported })
+    }
 }

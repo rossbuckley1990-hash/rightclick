@@ -96,10 +96,11 @@ final class SetupStateTests: XCTestCase {
         XCTAssertEqual(first, second)
     }
 
-    func testMCPContractContainsCurrentSixTools() {
+    func testMCPContractContainsCurrentSevenTools() {
         XCTAssertEqual(
             Set(RightClickMCPContract.toolNames()),
             Set([
+                "context_runtime",
                 "context_inspect",
                 "context_actions",
                 "context_explain",

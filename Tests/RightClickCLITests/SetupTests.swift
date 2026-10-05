@@ -403,4 +403,28 @@ extension SetupTests {
             explicit
         )
     }
+
+    func testLongVersionFlagIsAccepted() {
+        XCTAssertEqual(CLI().run(["--version"]), 0)
+    }
+
+
+    func testExplicitServeTokenOverridesStoredToken() {
+        XCTAssertEqual(
+            RightClickServe.selectedToken(
+                args: ["--token", "explicit-token"],
+                fallback: { "stored-token" }
+            ),
+            "explicit-token"
+        )
+
+        XCTAssertEqual(
+            RightClickServe.selectedToken(
+                args: [],
+                fallback: { "stored-token" }
+            ),
+            "stored-token"
+        )
+    }
+
 }

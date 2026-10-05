@@ -10,7 +10,9 @@ public enum RightClickMCPMain {
         let port = UInt16(flag(args, "--port") ?? "") ?? 8765
         let token = flag(args, "--token") ?? ProcessInfo.processInfo.environment["RIGHTCLICK_MCP_TOKEN"]
         StartupLog.record(transport: http ? "http" : "stdio")
-        let box = EngineBox(CapabilityEngine())
+        let box = EngineBox(
+            CapabilityRuntimeDefaults.makeEngine()
+        )
         if http {
             guard let token, !token.isEmpty else {
                 fputs("HTTP MCP requires --token or RIGHTCLICK_MCP_TOKEN.\n", stderr)
@@ -31,34 +33,38 @@ public enum RightClickMCPMain {
 
 enum StartupLog {
     static func record(transport: String) {
-        let path = executablePath()
+        let runtime = RightClickRuntime.identity(transport: transport)
         let stamp = ISO8601DateFormatter().string(from: Date())
-        let line = "\(stamp) pid=\(getpid()) transport=\(transport) path=\(path) sha256=\(sha256File(path))\n"
+
+        let line = """
+        \(stamp) pid=\(runtime.pid) transport=\(runtime.transport) version=\(runtime.version) path=\(runtime.executablePath) realpath=\(runtime.executableRealPath) sha256=\(runtime.executableSHA256)
+        """
+
         let directory = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Logs/RIGHTCLICK", isDirectory: true)
+            .appendingPathComponent(
+                "Library/Logs/RIGHTCLICK",
+                isDirectory: true
+            )
+
         let file = directory.appendingPathComponent("startup.log")
-        try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        if let data = line.data(using: .utf8) {
-            if FileManager.default.fileExists(atPath: file.path), let handle = try? FileHandle(forWritingTo: file) {
-                _ = try? handle.seekToEnd()
-                try? handle.write(contentsOf: data)
-                try? handle.close()
-            } else {
-                try? data.write(to: file)
-            }
+
+        try? FileManager.default.createDirectory(
+            at: directory,
+            withIntermediateDirectories: true
+        )
+
+        guard let data = (line + "\n").data(using: .utf8) else {
+            return
         }
-    }
 
-    private static func executablePath() -> String {
-        let raw = CommandLine.arguments[0]
-        if raw.hasPrefix("/") { return raw }
-        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(raw).standardizedFileURL.path
-    }
-
-    private static func sha256File(_ path: String) -> String {
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else { return "unreadable" }
-        let digest = SHA256.hash(data: data)
-        return digest.map { String(format: "%02x", $0) }.joined()
+        if FileManager.default.fileExists(atPath: file.path),
+           let handle = try? FileHandle(forWritingTo: file) {
+            _ = try? handle.seekToEnd()
+            try? handle.write(contentsOf: data)
+            try? handle.close()
+        } else {
+            try? data.write(to: file)
+        }
     }
 }
 
@@ -136,7 +142,11 @@ final class StdioMCPServer {
             version: RightClickVersion.current,
             capabilities: .init(tools: .init(listChanged: false))
         )
-        await registerTools(on: server, engine: engine)
+        await registerTools(
+            on: server,
+            engine: engine,
+            transport: "stdio"
+        )
         let transport = ModernMCPStdioTransport()
         try await server.start(transport: transport)
         try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
@@ -202,7 +212,7 @@ private actor HTTPRequestDispatcher {
             version: RightClickVersion.current,
             capabilities: .init(tools: .init(listChanged: false))
         )
-        await registerTools(on: server, engine: engine)
+        await registerTools(on: server, engine: engine, transport: "http")
         do {
             try await server.start(transport: transport)
         } catch {
@@ -236,13 +246,22 @@ private actor HTTPRequestDispatcher {
     }
 }
 
-private func registerTools(on server: Server, engine: EngineBox) async {
+private func registerTools(
+    on server: Server,
+    engine: EngineBox,
+    transport: String
+) async {
     await server.withMethodHandler(ListTools.self) { _ in
         .init(tools: rightClickTools())
     }
     await server.withMethodHandler(CallTool.self) { params in
         do {
-            let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+            let text = try handleTool(
+                params.name,
+                arguments: params.arguments,
+                engine: engine,
+                transport: transport
+            )
             return .init(content: [.text(text)], isError: false)
         } catch {
             return .init(content: [.text(String(describing: error))], isError: true)
@@ -345,13 +364,21 @@ private func rightClickTools() -> [Tool] {
     ]
     return [
         Tool(
+            name: "context_runtime",
+            description: "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            inputSchema: .object([
+                "type": .string("object"),
+                "properties": .object([:]),
+            ])
+        ),
+        Tool(
             name: "context_inspect",
             description: "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
             inputSchema: .object(itemSchema)
         ),
         Tool(
             name: "context_actions",
-            description: "Ask macOS which contextual capabilities apply to this object right now. Returns only applicable sharing services, Services, and Finder Action extensions.",
+            description: "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
             inputSchema: .object(itemSchema)
         ),
         Tool(
@@ -377,7 +404,7 @@ private func rightClickTools() -> [Tool] {
         ),
         Tool(
             name: "context_providers",
-            description: "List the capability providers currently installed on this Mac.",
+            description: "List capability providers currently reflected by RIGHTCLICK from this environment.",
             inputSchema: .object([
                 "type": .string("object"),
                 "properties": .object([:]),
@@ -386,9 +413,18 @@ private func rightClickTools() -> [Tool] {
     ]
 }
 
-private func handleTool(_ name: String, arguments: [String: Value]?, engine: EngineBox) throws -> String {
+private func handleTool(
+    _ name: String,
+    arguments: [String: Value]?,
+    engine: EngineBox,
+    transport: String
+) throws -> String {
     let item = arguments?["item"]?.stringValue ?? ""
     switch name {
+    case "context_runtime":
+        return RightClickJSON.encode(
+            RightClickRuntime.identity(transport: transport)
+        )
     case "context_inspect":
         let inspected = try engine.call { try $0.inspect(item) }
         return RightClickJSON.encode(inspected)

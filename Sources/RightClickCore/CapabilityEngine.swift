@@ -27,10 +27,86 @@ public struct DoctorReport: Codable, Sendable {
 }
 
 public final class CapabilityEngine {
-    public init() {
+    private let fixedReflectors:
+        [any CapabilityReflector]
+
+    private let reflectorSources:
+        [any CapabilityReflectorSource]
+
+    /// Existing construction path.
+    ///
+    /// No argument preserves RIGHTCLICK's built-in macOS reflectors.
+    /// Passing reflectors explicitly preserves the existing explicit
+    /// reflector-injection model.
+    public init(
+        reflectors: [any CapabilityReflector]? = nil
+    ) {
+        self.fixedReflectors =
+            reflectors
+            ?? CapabilityReflectorDefaults.all()
+
+        self.reflectorSources = []
+
+        Self.prepareApplication()
+    }
+
+    /// Dynamic environment-source construction path.
+    ///
+    /// Sources are queried for their current reflector snapshot whenever
+    /// RIGHTCLICK evaluates the live capability graph.
+    public init(
+        reflectors: [any CapabilityReflector] = [],
+        reflectorSources:
+            [any CapabilityReflectorSource]
+    ) {
+        self.fixedReflectors =
+            reflectors
+
+        self.reflectorSources =
+            reflectorSources
+
+        Self.prepareApplication()
+    }
+
+    private static func prepareApplication() {
         let app = NSApplication.shared
+
         if app.activationPolicy() == .prohibited {
             app.setActivationPolicy(.accessory)
+        }
+    }
+
+    /// Produce the reflector snapshot for this observation.
+    ///
+    /// Fixed reflectors remain present. Source-owned reflectors are
+    /// re-read every time, so the same CapabilityEngine instance can
+    /// observe environment churn without being recreated.
+    ///
+    /// Duplicate reflector identities fail closed: if more than one
+    /// currently visible reflector claims the same id, none of those
+    /// ambiguous reflectors enter the live graph.
+    private func currentReflectors()
+        -> [any CapabilityReflector]
+    {
+        var candidates =
+            fixedReflectors
+
+        for source in reflectorSources {
+            candidates.append(
+                contentsOf:
+                    source.reflectors()
+            )
+        }
+
+        var counts:
+            [String: Int] = [:]
+
+        for reflector in candidates {
+            counts[reflector.id, default: 0] += 1
+        }
+
+        return candidates.filter {
+            counts[$0.id] == 1
         }
     }
 
@@ -40,11 +116,29 @@ public final class CapabilityEngine {
 
     public func capabilities(for raw: String) throws -> (item: ContentItem, capabilities: [Capability]) {
         let item = try ContentParser.parse(raw)
-        let combined = dedupeCapabilities(
-            SharingCatalog.capabilities(for: item)
-                + ServiceCatalog.capabilities(for: item)
-                + ActionExtensionCatalog.capabilities(for: item)
-        )
+        var reflected: [Capability] = []
+
+        for reflector in currentReflectors() {
+            var capabilities =
+                try reflector.capabilities(
+                    for: item
+                )
+
+            // Ownership is assigned by the engine, not trusted from
+            // provider metadata. A reflector therefore cannot spoof
+            // another reflector's execution route.
+            for index in capabilities.indices {
+                capabilities[index].reflectorID =
+                    reflector.id
+            }
+
+            reflected.append(
+                contentsOf: capabilities
+            )
+        }
+
+        let combined =
+            dedupeCapabilities(reflected)
         let order: [CapabilitySource: Int] = [.service: 0, .sharingService: 1, .actionExtension: 2, .system: 3]
         return (item, combined.sorted { lhs, rhs in
             let left = order[lhs.source] ?? 9
@@ -62,7 +156,12 @@ public final class CapabilityEngine {
             }
             throw RightClickError("No capability \(id) applies to this item.")
         }
-        let services = ServiceCatalog.capabilities(for: ContentItem(kind: "text", display: "", text: " ", typeIdentifier: "public.plain-text"))
+        var services = ServiceCatalog.capabilities(for: ContentItem(kind: "text", display: "", text: " ", typeIdentifier: "public.plain-text"))
+
+        for index in services.indices {
+            services[index].reflectorID =
+                CapabilityReflectorID.macOSService
+        }
         let actions = ActionExtensionCatalog.records()
         if let match = services.first(where: { $0.id == id }) {
             return match
@@ -72,6 +171,7 @@ public final class CapabilityEngine {
                 id: id,
                 title: record.name ?? id,
                 source: .actionExtension,
+                reflectorID: CapabilityReflectorID.macOSActionExtension,
                 provider: CapabilityProvider(name: record.name, bundleIdentifier: record.bundleIdentifier),
                 safety: .unknown,
                 invocation: .unsupported,
@@ -90,86 +190,181 @@ public final class CapabilityEngine {
         expectedOutput: String? = nil,
         verification: VerificationSpec? = nil
     ) throws -> RunResult {
-        let (item, capabilities) = try capabilities(for: raw)
-        guard let capability = capabilities.first(where: { $0.id == id || $0.title == id }) else {
-            return RunResult(status: .unavailable, actionID: id, message: "No discovered capability matches \(id) for this item.")
+        let executionId = UUID().uuidString
+        let (item, capabilities) =
+            try capabilities(for: raw)
+
+        guard let capability =
+            capabilities.first(where: {
+                $0.id == id || $0.title == id
+            })
+        else {
+            return RunResult(
+                status: .unavailable,
+                actionID: id,
+                message:
+                    "No discovered capability matches \(id) for this item."
+            )
         }
+
         if capability.invocation == .unsupported {
             return RunResult(
                 status: .unsupported,
                 actionID: capability.id,
                 title: capability.title,
-                message: capability.metadata["invocationLimitation"] ?? "No supported public invocation is available for \(capability.title).",
+                message:
+                    capability.metadata[
+                        "invocationLimitation"
+                    ]
+                    ?? "No supported public invocation is available for \(capability.title).",
                 requiresConfirmation: true,
-                supportLevel: capability.supportLevel
+                supportLevel:
+                    capability.supportLevel
             )
         }
-        if capability.requiresConfirmation && !confirmed {
+
+        if capability.requiresConfirmation
+            && !confirmed
+        {
             return RunResult(
                 status: .confirmationRequired,
                 actionID: capability.id,
                 title: capability.title,
-                message: "CONFIRMATION_REQUIRED. \(capability.title) is classified as \(capability.safety.rawValue). Re-run with confirmation to invoke it.",
+                message:
+                    "CONFIRMATION_REQUIRED. \(capability.title) is classified as \(capability.safety.rawValue). Re-run with confirmation to invoke it.",
                 requiresConfirmation: true,
-                supportLevel: capability.supportLevel
+                supportLevel:
+                    capability.supportLevel
             )
         }
-        switch capability.source {
-        case .sharingService:
-            let started = try begin(id: capability.id, item: raw, confirmed: confirmed)
-            if pthread_main_np() != 0 {
-                let deadline = Date().addingTimeInterval(SharingExecutionModel.deadline + 2)
-                while Date() < deadline {
-                    let current = ExecutionStore.shared.get(started.executionId)
-                    if let current, current.state != .started, current.state != .awaitingUser {
-                        break
-                    }
-                    RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(0.05))
+
+        guard
+            let reflector =
+                reflector(for: capability)
+        else {
+            return RunResult(
+                status: .unavailable,
+                actionID: capability.id,
+                title: capability.title,
+                message:
+                    "The reflector that discovered \(capability.title) is no longer available.",
+                supportLevel:
+                    capability.supportLevel
+            )
+        }
+
+        let before = try verification.map {
+            _ in
+            try OutcomeVerifier.snapshot(
+                item: item
+            )
+        }
+
+        let initial = ExecutionRecord(
+            executionId: executionId,
+            actionId: capability.id,
+            title: capability.title,
+            state: .started,
+            message: "Execution started.",
+            events: [
+                "execution created",
+                "reflector \(reflector.id)"
+            ]
+        )
+
+        ExecutionStore.shared.put(initial)
+
+        var started = try reflector.begin(
+            capability: capability,
+            item: item,
+            executionID: executionId
+        )
+
+        // The engine owns execution identity even if a reflector
+        // returns malformed bookkeeping.
+        started.executionId = executionId
+        started.actionId = capability.id
+
+        if started.title == nil {
+            started.title = capability.title
+        }
+
+        ExecutionStore.shared.put(started)
+
+        if reflector.completionWaitSeconds > 0,
+           pthread_main_np() != 0,
+           started.state == .started
+        {
+            let deadline =
+                Date().addingTimeInterval(
+                    reflector
+                        .completionWaitSeconds
+                )
+
+            while Date() < deadline {
+                let current =
+                    ExecutionStore.shared.get(
+                        executionId
+                    )
+
+                if let current,
+                   current.state != .started,
+                   current.state
+                    != .awaitingUser
+                {
+                    break
                 }
-            }
-            let final = ExecutionStore.shared.get(started.executionId) ?? started
-            return runResult(from: final)
-        case .service:
-            let before = try verification.map {
-                _ in try OutcomeVerifier.snapshot(
-                    item: item
+
+                RunLoop.current.run(
+                    mode: .default,
+                    before:
+                        Date()
+                        .addingTimeInterval(
+                            0.05
+                        )
                 )
             }
+        }
 
-            // Generic verification is authoritative when supplied.
-            // Preserve the legacy exact-output path only when no
-            // VerificationSpec was supplied.
-            let providerResult = ServiceCatalog.perform(
-                capabilityID: capability.id,
-                item: item,
-                expectedOutput:
-                    verification == nil
-                    ? expectedOutput
-                    : nil
-            )
+        let final =
+            ExecutionStore.shared.get(
+                executionId
+            ) ?? started
 
-            guard
-                let verification,
-                let before
-            else {
-                return providerResult
-            }
+        var providerResult =
+            runResult(from: final)
 
+        providerResult.supportLevel =
+            capability.supportLevel
+
+        providerResult.requiresConfirmation =
+            capability.requiresConfirmation
+
+        if providerResult.title == nil {
+            providerResult.title =
+                capability.title
+        }
+
+        if let verification,
+           let before
+        {
             return try applyingVerification(
                 verification,
                 before: before,
                 item: item,
                 to: providerResult
             )
-        case .actionExtension, .system:
-            return RunResult(
-                status: .unsupported,
-                actionID: capability.id,
-                title: capability.title,
-                message: "Invocation is not supported for \(capability.source.rawValue).",
-                supportLevel: capability.supportLevel
+        }
+
+        if let expectedOutput {
+            return applyingReturnedTextPostcondition(
+                expectedOutput,
+                item: item,
+                to: providerResult
             )
         }
+
+        return providerResult
     }
 
     /// Starts an execution and returns without waiting for an asynchronous share callback.
@@ -182,91 +377,248 @@ public final class CapabilityEngine {
         verification: VerificationSpec? = nil
     ) throws -> ExecutionRecord {
         let executionId = UUID().uuidString
-        let (item, capabilities) = try capabilities(for: raw)
-        guard let capability = capabilities.first(where: { $0.id == id || $0.title == id }) else {
-            let record = ExecutionRecord(executionId: executionId, actionId: id, state: .unavailable, message: "No discovered capability matches \(id) for this item.")
-            ExecutionStore.shared.put(record)
+        let (item, capabilities) =
+            try capabilities(for: raw)
+
+        guard let capability =
+            capabilities.first(where: {
+                $0.id == id || $0.title == id
+            })
+        else {
+            let record = ExecutionRecord(
+                executionId: executionId,
+                actionId: id,
+                state: .unavailable,
+                message:
+                    "No discovered capability matches \(id) for this item."
+            )
+
+            ExecutionStore.shared.put(
+                record
+            )
+
             return record
         }
+
         if capability.invocation == .unsupported {
-            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .unsupported, message: "No public invocation API for \(capability.title).")
-            ExecutionStore.shared.put(record)
-            return record
-        }
-        if capability.requiresConfirmation && !confirmed {
-            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .awaitingUser, message: "CONFIRMATION_REQUIRED. \(capability.title) is \(capability.safety.rawValue).")
-            ExecutionStore.shared.put(record)
-            return record
-        }
-        switch capability.source {
-        case .sharingService:
             let record = ExecutionRecord(
                 executionId: executionId,
                 actionId: capability.id,
                 title: capability.title,
-                state: .started,
-                message: "Sharing is in progress.",
-                events: ["execution created"]
-            )
-            ExecutionStore.shared.put(record)
-            let actionId = capability.id
-            let launch = {
-                SharingCatalog.launch(executionId: executionId, capabilityID: actionId, item: item)
-            }
-            if pthread_main_np() != 0 {
-                launch()
-            } else {
-                DispatchQueue.main.async(execute: launch)
-            }
-            return ExecutionStore.shared.get(executionId) ?? record
-        case .service:
-            let before = try verification.map {
-                _ in try OutcomeVerifier.snapshot(
-                    item: item
-                )
-            }
-
-            let providerResult = ServiceCatalog.perform(
-                capabilityID: capability.id,
-                item: item,
-                expectedOutput:
-                    verification == nil
-                    ? expectedOutput
-                    : nil
+                state: .unsupported,
+                message:
+                    "No public invocation API for \(capability.title)."
             )
 
-            let result: RunResult
+            ExecutionStore.shared.put(
+                record
+            )
 
-            if let verification,
-               let before
-            {
-                result = try applyingVerification(
-                    verification,
-                    before: before,
-                    item: item,
-                    to: providerResult
-                )
-            } else {
-                result = providerResult
-            }
+            return record
+        }
 
+        if capability.requiresConfirmation
+            && !confirmed
+        {
             let record = ExecutionRecord(
                 executionId: executionId,
                 actionId: capability.id,
-                title: result.title,
-                state: executionState(for: result.status),
-                message: result.message,
-                output: result.output,
-                evidence: result.evidence,
-                verification: result.verification
+                title: capability.title,
+                state: .awaitingUser,
+                message:
+                    "CONFIRMATION_REQUIRED. \(capability.title) is \(capability.safety.rawValue)."
             )
-            ExecutionStore.shared.put(record)
-            return record
-        case .actionExtension, .system:
-            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .unsupported, message: "Invocation is not supported.")
-            ExecutionStore.shared.put(record)
+
+            ExecutionStore.shared.put(
+                record
+            )
+
             return record
         }
+
+        guard
+            let reflector =
+                reflector(for: capability)
+        else {
+            let record = ExecutionRecord(
+                executionId: executionId,
+                actionId: capability.id,
+                title: capability.title,
+                state: .unavailable,
+                message:
+                    "The reflector that discovered \(capability.title) is no longer available."
+            )
+
+            ExecutionStore.shared.put(
+                record
+            )
+
+            return record
+        }
+
+        let before = try verification.map {
+            _ in
+            try OutcomeVerifier.snapshot(
+                item: item
+            )
+        }
+
+        let initial = ExecutionRecord(
+            executionId: executionId,
+            actionId: capability.id,
+            title: capability.title,
+            state: .started,
+            message: "Execution started.",
+            events: [
+                "execution created",
+                "reflector \(reflector.id)"
+            ]
+        )
+
+        ExecutionStore.shared.put(initial)
+
+        var providerRecord =
+            try reflector.begin(
+                capability: capability,
+                item: item,
+                executionID: executionId
+            )
+
+        providerRecord.executionId =
+            executionId
+
+        providerRecord.actionId =
+            capability.id
+
+        if providerRecord.title == nil {
+            providerRecord.title =
+                capability.title
+        }
+
+        ExecutionStore.shared.put(
+            providerRecord
+        )
+
+        // Asynchronous reflectors remain started. Verification
+        // cannot adjudicate an outcome that has not reached an
+        // accepted/terminal provider boundary yet.
+        if providerRecord.state == .started
+            || providerRecord.state
+                == .awaitingUser
+        {
+            return providerRecord
+        }
+
+        var result =
+            runResult(
+                from: providerRecord
+            )
+
+        result.supportLevel =
+            capability.supportLevel
+
+        result.requiresConfirmation =
+            capability.requiresConfirmation
+
+        if let verification,
+           let before
+        {
+            result = try applyingVerification(
+                verification,
+                before: before,
+                item: item,
+                to: result
+            )
+        } else if let expectedOutput {
+            result =
+                applyingReturnedTextPostcondition(
+                    expectedOutput,
+                    item: item,
+                    to: result
+                )
+        }
+
+        let final = ExecutionRecord(
+            executionId: executionId,
+            actionId: capability.id,
+            title:
+                result.title
+                ?? capability.title,
+            state:
+                executionState(
+                    for: result.status
+                ),
+            message: result.message,
+            output: result.output,
+            events: providerRecord.events,
+            evidence: result.evidence,
+            verification:
+                result.verification
+        )
+
+        ExecutionStore.shared.put(final)
+
+        return final
+    }
+
+    private func reflector(
+        for capability: Capability
+    ) -> (any CapabilityReflector)? {
+        currentReflectors().first {
+            $0.id == capability.reflectorID
+        }
+    }
+
+    private func applyingReturnedTextPostcondition(
+        _ expectedOutput: String,
+        item: ContentItem,
+        to providerResult: RunResult
+    ) -> RunResult {
+        guard
+            providerResult.status == .accepted
+                || providerResult.status
+                    == .verified
+        else {
+            return providerResult
+        }
+
+        var result = providerResult
+
+        guard
+            let output = result.output,
+            let inputText = item.text,
+            output != inputText
+        else {
+            result.message =
+                "Provider accepted the request but supplied no non-echoed declared text output with known input; the postcondition is unverified."
+
+            return result
+        }
+
+        let matched =
+            output == expectedOutput
+
+        result.status =
+            matched
+            ? .verified
+            : .failed
+
+        result.evidence =
+            OutcomeEvidence(
+                type:
+                    "returned_text_postcondition",
+                boundary:
+                    "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
+                outcomeVerified:
+                    matched
+            )
+
+        result.message =
+            matched
+            ? "Returned text matches the explicit postcondition."
+            : "Returned text does not match the explicit postcondition."
+
+        return result
     }
 
     private func executionState(for status: RunStatus) -> ExecutionState {
@@ -388,28 +740,27 @@ public final class CapabilityEngine {
     }
 
     public func providers() -> [ProviderSummary] {
-        var grouped: [String: ProviderSummary] = [:]
-        for record in ServiceCatalog.records() {
-            let key = "service:\(record.bundleIdentifier ?? record.bundlePath)"
-            var summary = grouped[key] ?? ProviderSummary(
-                name: record.bundleName ?? record.bundleIdentifier ?? record.bundlePath,
-                bundleIdentifier: record.bundleIdentifier,
-                source: CapabilitySource.service.rawValue,
-                capabilityTitles: []
-            )
-            summary.capabilityTitles.append(record.menuTitle)
-            grouped[key] = summary
+        var seen = Set<String>()
+        var rows: [ProviderSummary] = []
+
+        for reflector in currentReflectors() {
+            for provider
+                in reflector.providers()
+            {
+                let key =
+                    "\(reflector.id)|\(provider.source)|\(provider.bundleIdentifier ?? "")|\(provider.name)"
+
+                if seen.insert(key).inserted {
+                    rows.append(provider)
+                }
+            }
         }
-        for record in ActionExtensionCatalog.records() {
-            let key = "action:\(record.bundleIdentifier ?? record.bundlePath)"
-            grouped[key] = ProviderSummary(
-                name: record.name ?? record.bundleIdentifier ?? record.bundlePath,
-                bundleIdentifier: record.bundleIdentifier,
-                source: CapabilitySource.actionExtension.rawValue,
-                capabilityTitles: [record.name ?? "Action"]
-            )
+
+        return rows.sorted {
+            $0.name.localizedCaseInsensitiveCompare(
+                $1.name
+            ) == .orderedAscending
         }
-        return grouped.values.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
     }
 
     public func doctor() -> DoctorReport {

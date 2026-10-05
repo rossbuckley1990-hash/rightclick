@@ -156,7 +156,12 @@ enum ServiceCatalog {
         if let message = record.message { metadata["message"] = message }
         if let required = record.requiredContext { metadata["requiredContext"] = required }
         return Capability(
-            id: CapabilityID.service(bundleIdentifier: record.bundleIdentifier, message: record.message, menuTitle: record.menuTitle),
+            id: CapabilityID.service(
+                bundleIdentifier: record.bundleIdentifier,
+                bundlePath: record.bundlePath,
+                message: record.message,
+                menuTitle: record.menuTitle
+            ),
             title: record.menuTitle,
             source: .service,
             provider: CapabilityProvider(name: record.bundleName, bundleIdentifier: record.bundleIdentifier),

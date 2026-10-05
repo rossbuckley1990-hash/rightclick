@@ -358,24 +358,7 @@ enum RightClickSetup {
     }
 
     static func executablePath() -> String {
-        let raw = CommandLine.arguments[0]
-        if raw.hasPrefix("/") { return raw }
-        let directory = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-        if !raw.contains("/") {
-            let path = ProcessInfo.processInfo.environment["PATH"] ?? ""
-            for component in path.split(separator: ":", omittingEmptySubsequences: false) {
-                let base = component.isEmpty ? directory : URL(fileURLWithPath: String(component), relativeTo: directory)
-                let candidate = base.appendingPathComponent(raw).standardizedFileURL.path
-                var isDirectory: ObjCBool = false
-                if FileManager.default.fileExists(atPath: candidate, isDirectory: &isDirectory),
-                   !isDirectory.boolValue, FileManager.default.isExecutableFile(atPath: candidate) {
-                    return candidate
-                }
-            }
-            // A launcher may provide an argv[0] that is absent from PATH.
-            if let executable = Bundle.main.executableURL { return executable.path }
-        }
-        return directory.appendingPathComponent(raw).standardizedFileURL.path
+        RightClickRuntime.executablePath()
     }
 }
 
@@ -413,7 +396,10 @@ enum RightClickServe {
     static func run(_ args: [String]) -> Int {
         let port = UInt16(flag(args, "--port") ?? "") ?? 8765
         let tunnel = args.contains("--tunnel")
-        let token = loadOrCreateToken()
+        let token = selectedToken(
+            args: args,
+            fallback: loadOrCreateToken
+        )
         print("""
         RIGHTCLICK Remote MCP
 
@@ -434,6 +420,18 @@ enum RightClickServe {
         }
         setenv("RIGHTCLICK_MCP_TOKEN", token, 1)
         return RightClickMCPMain.run(["--http", "--port", String(port)])
+    }
+
+    static func selectedToken(
+        args: [String],
+        fallback: () -> String
+    ) -> String {
+        if let explicit = flag(args, "--token"),
+           !explicit.isEmpty {
+            return explicit
+        }
+
+        return fallback()
     }
 
     private static func loadOrCreateToken() -> String {
