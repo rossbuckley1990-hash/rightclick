@@ -598,6 +598,49 @@ enum RightClickBridgeCLI {
                     keyStore: keyStore
                 )
 
+        case ["activate"]:
+            let result =
+                RightClickChatGPTBridgeInstaller
+                    .activate()
+
+            if result.success {
+                print(result.message)
+                return 0
+            }
+
+            fputs(
+                "\(result.message)\n",
+                stderr
+            )
+
+            return 1
+
+        case ["status"]:
+            let result =
+                RightClickChatGPTBridgeInstaller
+                    .status()
+
+            print(result.message)
+
+            return result.success ? 0 : 1
+
+        case ["deactivate"]:
+            let result =
+                RightClickChatGPTBridgeInstaller
+                    .deactivate()
+
+            if result.success {
+                print(result.message)
+                return 0
+            }
+
+            fputs(
+                "\(result.message)\n",
+                stderr
+            )
+
+            return 1
+
         case ["key", "set"]:
             guard
                 let value = input(),
@@ -666,6 +709,9 @@ enum RightClickBridgeCLI {
                 """
                 usage:
                   rightclick bridge run
+                  rightclick bridge activate
+                  rightclick bridge status
+                  rightclick bridge deactivate
                   rightclick bridge key set
                   rightclick bridge key status
                   rightclick bridge key delete

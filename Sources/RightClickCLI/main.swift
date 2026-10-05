@@ -244,6 +244,7 @@ struct CLI {
         rightclick refresh
         rightclick setup [--chatgpt-tunnel-id tunnel_...]
         rightclick bridge run
+        rightclick bridge activate|status|deactivate
         rightclick bridge key set|status|delete
         rightclick serve [--tunnel] [--port 8765]
         rightclick auth rotate

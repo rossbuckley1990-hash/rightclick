@@ -59,6 +59,32 @@ enum RightClickChatGPTBridge {
             )
     }
 
+    static func runtimeLogDirectory(
+        home: URL = FileManager.default.homeDirectoryForCurrentUser
+    ) -> URL {
+        home
+            .appendingPathComponent(
+                "Library/Logs/RIGHTCLICK",
+                isDirectory: true
+            )
+    }
+
+    static func ensureRuntimeDirectories(
+        home: URL = FileManager.default.homeDirectoryForCurrentUser
+    ) throws {
+        try FileManager.default.createDirectory(
+            at: runtimeLogDirectory(home: home),
+            withIntermediateDirectories: true
+        )
+
+        try FileManager.default.createDirectory(
+            at:
+                healthURLFile(home: home)
+                    .deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+    }
+
     static func tunnelLogFile(
         home: URL = FileManager.default.homeDirectoryForCurrentUser
     ) -> URL {
@@ -169,6 +195,10 @@ enum RightClickChatGPTBridge {
         rightclickExecutable: String,
         home: URL = FileManager.default.homeDirectoryForCurrentUser
     ) throws -> URL {
+        try ensureRuntimeDirectories(
+            home: home
+        )
+
         let file = profileFile(home: home)
 
         let data = Data(
@@ -192,6 +222,10 @@ enum RightClickChatGPTBridge {
         rightclickExecutable: String,
         home: URL = FileManager.default.homeDirectoryForCurrentUser
     ) throws -> URL {
+        try ensureRuntimeDirectories(
+            home: home
+        )
+
         let file = launchAgentFile(home: home)
 
         let data = try launchAgentPlist(

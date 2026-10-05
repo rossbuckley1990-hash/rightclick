@@ -372,3 +372,104 @@ enum RightClickChatGPTBridgeInstaller {
         )
     }
 }
+
+extension RightClickChatGPTBridgeInstaller {
+    static func status(
+        uid: uid_t = getuid(),
+        runner:
+            any RightClickCommandRunning =
+            SystemRightClickCommandRunner()
+    ) -> RightClickSetup.Check {
+        let service =
+            "gui/\(uid)/\(RightClickChatGPTBridge.launchAgentLabel)"
+
+        let result =
+            runner.run(
+                executable:
+                    "/bin/launchctl",
+                arguments: [
+                    "print",
+                    service,
+                ]
+            )
+
+        if result.status == 0 {
+            return .init(
+                success: true,
+                message:
+                    "ChatGPT bridge: RUNNING"
+            )
+        }
+
+        return .init(
+            success: false,
+            message:
+                "ChatGPT bridge: NOT RUNNING"
+        )
+    }
+
+    static func deactivate(
+        home: URL =
+            FileManager.default
+                .homeDirectoryForCurrentUser,
+        uid: uid_t = getuid(),
+        runner:
+            any RightClickCommandRunning =
+            SystemRightClickCommandRunner()
+    ) -> RightClickSetup.Check {
+        let plist =
+            RightClickChatGPTBridge
+                .launchAgentFile(
+                    home: home
+                )
+
+        let domain =
+            "gui/\(uid)"
+
+        let service =
+            "\(domain)/\(RightClickChatGPTBridge.launchAgentLabel)"
+
+        let current =
+            runner.run(
+                executable:
+                    "/bin/launchctl",
+                arguments: [
+                    "print",
+                    service,
+                ]
+            )
+
+        if current.status != 0 {
+            return .init(
+                success: true,
+                message:
+                    "ChatGPT bridge already stopped."
+            )
+        }
+
+        let result =
+            runner.run(
+                executable:
+                    "/bin/launchctl",
+                arguments: [
+                    "bootout",
+                    domain,
+                    plist.path,
+                ]
+            )
+
+        guard result.status == 0 else {
+            return .init(
+                success: false,
+                message:
+                    "launchctl bootout failed: \(result.output)"
+            )
+        }
+
+        return .init(
+            success: true,
+            message:
+                "ChatGPT bridge stopped."
+        )
+    }
+}

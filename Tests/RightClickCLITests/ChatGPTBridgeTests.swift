@@ -221,3 +221,55 @@ final class ChatGPTBridgeTests: XCTestCase {
         }
     }
 }
+
+extension ChatGPTBridgeTests {
+    func testBridgeWritingCreatesRuntimeDirectories()
+        throws
+    {
+        let home =
+            FileManager.default
+                .temporaryDirectory
+                .appendingPathComponent(
+                    "rightclick-runtime-dirs-\(UUID().uuidString)",
+                    isDirectory: true
+                )
+
+        defer {
+            try? FileManager.default
+                .removeItem(at: home)
+        }
+
+        _ = try RightClickChatGPTBridge
+            .writeLaunchAgent(
+                rightclickExecutable:
+                    "/opt/homebrew/bin/rightclick",
+                home:
+                    home
+            )
+
+        XCTAssertTrue(
+            FileManager.default
+                .fileExists(
+                    atPath:
+                        RightClickChatGPTBridge
+                            .runtimeLogDirectory(
+                                home: home
+                            )
+                            .path
+                )
+        )
+
+        XCTAssertTrue(
+            FileManager.default
+                .fileExists(
+                    atPath:
+                        RightClickChatGPTBridge
+                            .healthURLFile(
+                                home: home
+                            )
+                            .deletingLastPathComponent()
+                            .path
+                )
+        )
+    }
+}

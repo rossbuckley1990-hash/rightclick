@@ -495,3 +495,134 @@ final class ChatGPTBridgeInstallerTests:
         )
     }
 }
+
+extension ChatGPTBridgeInstallerTests {
+    final class LifecycleRunner:
+        RightClickCommandRunning
+    {
+        var loaded = false
+
+        var invocations:
+            [FakeRunner.Invocation] = []
+
+        func run(
+            executable: String,
+            arguments: [String]
+        ) -> RightClickCommandResult {
+            invocations.append(
+                .init(
+                    executable:
+                        executable,
+                    arguments:
+                        arguments
+                )
+            )
+
+            if arguments.first == "print" {
+                return .init(
+                    status:
+                        loaded ? 0 : 3,
+                    output: ""
+                )
+            }
+
+            if arguments.first == "bootout" {
+                loaded = false
+
+                return .init(
+                    status: 0,
+                    output: ""
+                )
+            }
+
+            return .init(
+                status: 0,
+                output: ""
+            )
+        }
+    }
+
+    func testBridgeStatusReportsLoadedService() {
+        let runner = LifecycleRunner()
+        runner.loaded = true
+
+        let result =
+            RightClickChatGPTBridgeInstaller
+                .status(
+                    uid: 501,
+                    runner: runner
+                )
+
+        XCTAssertTrue(result.success)
+
+        XCTAssertEqual(
+            result.message,
+            "ChatGPT bridge: RUNNING"
+        )
+    }
+
+    func testBridgeStatusReportsStoppedService() {
+        let runner = LifecycleRunner()
+
+        let result =
+            RightClickChatGPTBridgeInstaller
+                .status(
+                    uid: 501,
+                    runner: runner
+                )
+
+        XCTAssertFalse(result.success)
+
+        XCTAssertEqual(
+            result.message,
+            "ChatGPT bridge: NOT RUNNING"
+        )
+    }
+
+    func testDeactivateBootsOutLoadedBridge()
+        throws
+    {
+        let home =
+            FileManager.default
+                .temporaryDirectory
+                .appendingPathComponent(
+                    "rightclick-deactivate-\(UUID().uuidString)",
+                    isDirectory: true
+                )
+
+        defer {
+            try? FileManager.default
+                .removeItem(at: home)
+        }
+
+        _ = try RightClickChatGPTBridge
+            .writeLaunchAgent(
+                rightclickExecutable:
+                    "/opt/homebrew/bin/rightclick",
+                home:
+                    home
+            )
+
+        let runner = LifecycleRunner()
+        runner.loaded = true
+
+        let result =
+            RightClickChatGPTBridgeInstaller
+                .deactivate(
+                    home: home,
+                    uid: 501,
+                    runner: runner
+                )
+
+        XCTAssertTrue(result.success)
+        XCTAssertFalse(runner.loaded)
+
+        XCTAssertTrue(
+            runner.invocations
+                .contains {
+                    $0.arguments.first
+                        == "bootout"
+                }
+        )
+    }
+}
