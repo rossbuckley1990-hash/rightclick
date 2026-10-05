@@ -79,5 +79,10 @@ let package = Package(
                 .swiftLanguageMode(.v5),
             ]
         ),
+        .testTarget(
+            name: "RightClickCLITests",
+            dependencies: ["RightClickCLI"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
     ]
 )

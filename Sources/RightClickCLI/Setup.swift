@@ -4,6 +4,15 @@ import RightClickMCP
 import Security
 
 enum RightClickSetup {
+    struct Check {
+        let success: Bool
+        let message: String
+    }
+
+    static func succeeded(discovery: String, cursorWritten: Bool, selfTestPassed: Bool) -> Bool {
+        discovery == "PASS" && cursorWritten && selfTestPassed
+    }
+
     static func run(json: Bool) -> Int {
         let engine = CapabilityEngine()
         let report = engine.doctor()
@@ -18,11 +27,15 @@ enum RightClickSetup {
                 "services": String(report.serviceRegistrationCount),
                 "actionExtensions": String(report.actionExtensionCount),
                 "providers": String(rows.count),
-                "cursor": cursorResult,
-                "selfTest": selfTest,
+                "cursor": cursorResult.message,
+                "cursorStatus": cursorResult.success ? "PASS" : "FAIL",
+                "selfTest": selfTest.message,
+                "selfTestStatus": selfTest.success ? "PASS" : "FAIL",
+                "servicesDiscovery": report.servicesDiscovery,
+                "mcpConnection": "NOT_VERIFIED",
             ]
             print(RightClickJSON.encode(payload))
-            return report.servicesDiscovery == "FAIL" ? 1 : 0
+            return succeeded(discovery: report.servicesDiscovery, cursorWritten: cursorResult.success, selfTestPassed: selfTest.success) ? 0 : 1
         }
         let sharingNote = report.sharingDiscovery == "PASS" ? "ready" : report.sharingDiscovery
         print("""
@@ -32,21 +45,23 @@ enum RightClickSetup {
         Services: \(report.serviceRegistrationCount) registrations
         Providers: \(rows.count)
         Action extensions: \(report.actionExtensionCount)
-        MCP: stdio command ready
+        MCP: \(cursorResult.success ? "stdio command configured; connection not verified" : "configuration failed")
 
-        \(cursorResult)
+        \(cursorResult.message)
 
         Test:
         "What can my Mac do with ~/Desktop/example.jpg?"
 
-        Self-test: \(selfTest)
+        Self-test: \(selfTest.message)
         """)
-        return report.servicesDiscovery == "FAIL" ? 1 : 0
+        return succeeded(discovery: report.servicesDiscovery, cursorWritten: cursorResult.success, selfTestPassed: selfTest.success) ? 0 : 1
     }
 
-    private static func writeCursorConfig(executable: String) -> String {
-        let directory = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".cursor", isDirectory: true)
-        let file = directory.appendingPathComponent("mcp.json")
+    static func writeCursorConfig(
+        executable: String,
+        at file: URL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".cursor/mcp.json")
+    ) -> Check {
+        let directory = file.deletingLastPathComponent()
         let entry: [String: Any] = [
             "command": executable,
             "args": ["mcp"],
@@ -59,27 +74,33 @@ enum RightClickSetup {
                 if let existing = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
                     root = existing
                 } else {
-                    return "Cursor configuration was not changed because ~/.cursor/mcp.json is not a JSON object."
+                    return Check(success: false, message: "Cursor configuration was not changed because \(file.path) is not a JSON object.")
                 }
             }
-            var servers = root["mcpServers"] as? [String: Any] ?? [:]
+            var servers: [String: Any] = [:]
+            if let present = root["mcpServers"] {
+                guard let existing = present as? [String: Any] else {
+                    return Check(success: false, message: "Cursor configuration was not changed because mcpServers is not a JSON object.")
+                }
+                servers = existing
+            }
             servers["rightclick"] = entry
             root["mcpServers"] = servers
             let data = try JSONSerialization.data(withJSONObject: root, options: [.prettyPrinted, .sortedKeys])
             try data.write(to: file)
-            return "Cursor configuration written:\n\(file.path)"
+            return Check(success: true, message: "Cursor configuration written:\n\(file.path)")
         } catch {
-            return "Cursor configuration was not written: \(error.localizedDescription)"
+            return Check(success: false, message: "Cursor configuration was not written: \(error.localizedDescription)")
         }
     }
 
-    private static func harmlessSelfTest(_ engine: CapabilityEngine) -> String {
+    private static func harmlessSelfTest(_ engine: CapabilityEngine) -> Check {
         let probe = "RIGHTCLICK setup probe"
         do {
             let item = try engine.inspect(probe)
-            return "inspect text → \(item.typeIdentifier ?? "unknown")"
+            return Check(success: item.typeIdentifier == "public.plain-text", message: "inspect text → \(item.typeIdentifier ?? "unknown")")
         } catch {
-            return "inspect failed: \(error.localizedDescription)"
+            return Check(success: false, message: "inspect failed: \(error.localizedDescription)")
         }
     }
 

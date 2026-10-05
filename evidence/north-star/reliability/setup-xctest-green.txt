@@ -1,0 +1,42 @@
+[0/1] Planning build
+Building for debugging...
+[0/11] Write sources
+[2/11] Write swift-version--58304C5D6DBC2206.txt
+[4/9] Compiling RightClickCLI Setup.swift
+[5/9] Emitting module RightClickCLI
+[6/10] Compiling RightClickCLI main.swift
+[6/11] Write Objects.LinkFileList
+[7/11] Linking rightclick
+[8/11] Applying rightclick
+[10/13] Emitting module RightClickCLITests
+[11/13] Compiling RightClickCLITests SetupTests.swift
+[12/15] Emitting module rightclick_mcpPackageTests
+[13/15] Compiling rightclick_mcpPackageTests runner.swift
+[13/15] Write Objects.LinkFileList
+[14/15] Linking rightclick-mcpPackageTests
+Build complete! (42.57s)
+Test Suite 'Selected tests' started at 2026-10-05 11:52:49.633.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-05 11:52:49.697.
+Test Suite 'SetupTests' started at 2026-10-05 11:52:49.698.
+Test Case '-[RightClickCLITests.SetupTests testAbsentConfigurationIsCreated]' started.
+Test Case '-[RightClickCLITests.SetupTests testAbsentConfigurationIsCreated]' passed (0.045 seconds).
+Test Case '-[RightClickCLITests.SetupTests testEveryFailedStagePreventsSuccessfulExit]' started.
+Test Case '-[RightClickCLITests.SetupTests testEveryFailedStagePreventsSuccessfulExit]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.SetupTests testInvalidRootAndMalformedJSONRemainByteIdentical]' started.
+Test Case '-[RightClickCLITests.SetupTests testInvalidRootAndMalformedJSONRemainByteIdentical]' passed (0.105 seconds).
+Test Case '-[RightClickCLITests.SetupTests testInvalidServerContainersRemainByteIdentical]' started.
+Test Case '-[RightClickCLITests.SetupTests testInvalidServerContainersRemainByteIdentical]' passed (0.053 seconds).
+Test Case '-[RightClickCLITests.SetupTests testUnrelatedValuesAndOnlyOwnedEntryArePreserved]' started.
+Test Case '-[RightClickCLITests.SetupTests testUnrelatedValuesAndOnlyOwnedEntryArePreserved]' passed (0.035 seconds).
+Test Case '-[RightClickCLITests.SetupTests testWriteFailureIsReported]' started.
+Test Case '-[RightClickCLITests.SetupTests testWriteFailureIsReported]' passed (0.136 seconds).
+Test Suite 'SetupTests' passed at 2026-10-05 11:52:50.079.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.375 (0.382) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-05 11:52:50.079.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.375 (0.382) seconds
+Test Suite 'Selected tests' passed at 2026-10-05 11:52:50.079.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.375 (0.447) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

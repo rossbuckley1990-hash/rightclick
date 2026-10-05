@@ -1,0 +1,245 @@
+{
+  "scope": "Actual native setup enum with redirected temporary home and controlled engine doubles; not native capability acceptance",
+  "sourceSha256": "dd0215e753eb80f42b3622fd35fd21cc6ff41271210599050b97ebbb2227a310",
+  "compiler": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0",
+  "passed": 6,
+  "failed": 12,
+  "cases": [
+    {
+      "case": "absent config",
+      "mode": "json",
+      "passed": true,
+      "checks": {
+        "exit": true,
+        "command exists": true,
+        "arguments": true
+      },
+      "exitCode": 0,
+      "stdout": "{\"macos\":\"native-test\",\"selfTest\":\"inspect text \u2192 public.plain-text\",\"cursor\":\"Cursor configuration written:\\n\\/var\\/folders\\/tz\\/y04t4d0900xdbmz96jp608180000gn\\/T\\/rightclick-native-setup-i5nb773n\\/home-json-0\\/.cursor\\/mcp.json\",\"services\":\"1\",\"providers\":\"0\",\"actionExtensions\":\"0\",\"version\":\"0.1.0\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "valid config preserves others",
+      "mode": "json",
+      "passed": true,
+      "checks": {
+        "exit": true,
+        "command exists": true,
+        "arguments": true,
+        "unrelated root preserved": true,
+        "unrelated server preserved": true
+      },
+      "exitCode": 0,
+      "stdout": "{\"services\":\"1\",\"actionExtensions\":\"0\",\"cursor\":\"Cursor configuration written:\\n\\/var\\/folders\\/tz\\/y04t4d0900xdbmz96jp608180000gn\\/T\\/rightclick-native-setup-i5nb773n\\/home-json-1\\/.cursor\\/mcp.json\",\"macos\":\"native-test\",\"version\":\"0.1.0\",\"providers\":\"0\",\"selfTest\":\"inspect text \u2192 public.plain-text\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "array servers rejected intact",
+      "mode": "json",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": false
+      },
+      "exitCode": 0,
+      "stdout": "{\"macos\":\"native-test\",\"version\":\"0.1.0\",\"services\":\"1\",\"selfTest\":\"inspect text \u2192 public.plain-text\",\"actionExtensions\":\"0\",\"cursor\":\"Cursor configuration written:\\n\\/var\\/folders\\/tz\\/y04t4d0900xdbmz96jp608180000gn\\/T\\/rightclick-native-setup-i5nb773n\\/home-json-2\\/.cursor\\/mcp.json\",\"providers\":\"0\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "string servers rejected intact",
+      "mode": "json",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": false
+      },
+      "exitCode": 0,
+      "stdout": "{\"services\":\"1\",\"selfTest\":\"inspect text \u2192 public.plain-text\",\"actionExtensions\":\"0\",\"cursor\":\"Cursor configuration written:\\n\\/var\\/folders\\/tz\\/y04t4d0900xdbmz96jp608180000gn\\/T\\/rightclick-native-setup-i5nb773n\\/home-json-3\\/.cursor\\/mcp.json\",\"providers\":\"0\",\"macos\":\"native-test\",\"version\":\"0.1.0\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "null servers rejected intact",
+      "mode": "json",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": false
+      },
+      "exitCode": 0,
+      "stdout": "{\"cursor\":\"Cursor configuration written:\\n\\/var\\/folders\\/tz\\/y04t4d0900xdbmz96jp608180000gn\\/T\\/rightclick-native-setup-i5nb773n\\/home-json-4\\/.cursor\\/mcp.json\",\"version\":\"0.1.0\",\"selfTest\":\"inspect text \u2192 public.plain-text\",\"macos\":\"native-test\",\"services\":\"1\",\"providers\":\"0\",\"actionExtensions\":\"0\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "non-object root rejected intact",
+      "mode": "json",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": true
+      },
+      "exitCode": 0,
+      "stdout": "{\"actionExtensions\":\"0\",\"version\":\"0.1.0\",\"cursor\":\"Cursor configuration was not changed because ~\\/.cursor\\/mcp.json is not a JSON object.\",\"macos\":\"native-test\",\"providers\":\"0\",\"selfTest\":\"inspect text \u2192 public.plain-text\",\"services\":\"1\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "malformed JSON rejected intact",
+      "mode": "json",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": true
+      },
+      "exitCode": 0,
+      "stdout": "{\"cursor\":\"Cursor configuration was not written: The data couldn\u2019t be read because it isn\u2019t in the correct format.\",\"selfTest\":\"inspect text \u2192 public.plain-text\",\"macos\":\"native-test\",\"services\":\"1\",\"version\":\"0.1.0\",\"providers\":\"0\",\"actionExtensions\":\"0\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "inspection failure exits nonzero",
+      "mode": "json",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "command exists": true,
+        "arguments": true,
+        "unrelated root preserved": true,
+        "unrelated server preserved": true
+      },
+      "exitCode": 0,
+      "stdout": "{\"actionExtensions\":\"0\",\"providers\":\"0\",\"cursor\":\"Cursor configuration written:\\n\\/var\\/folders\\/tz\\/y04t4d0900xdbmz96jp608180000gn\\/T\\/rightclick-native-setup-i5nb773n\\/home-json-7\\/.cursor\\/mcp.json\",\"macos\":\"native-test\",\"services\":\"1\",\"version\":\"0.1.0\",\"selfTest\":\"inspect failed: The operation couldn\u2019t be completed. (main.SetupProbeError error 0.)\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "discovery failure exits nonzero",
+      "mode": "json",
+      "passed": true,
+      "checks": {
+        "exit": true,
+        "command exists": true,
+        "arguments": true,
+        "unrelated root preserved": true,
+        "unrelated server preserved": true
+      },
+      "exitCode": 1,
+      "stdout": "{\"selfTest\":\"inspect text \u2192 public.plain-text\",\"version\":\"0.1.0\",\"providers\":\"0\",\"cursor\":\"Cursor configuration written:\\n\\/var\\/folders\\/tz\\/y04t4d0900xdbmz96jp608180000gn\\/T\\/rightclick-native-setup-i5nb773n\\/home-json-8\\/.cursor\\/mcp.json\",\"macos\":\"native-test\",\"services\":\"1\",\"actionExtensions\":\"0\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "absent config",
+      "mode": "human",
+      "passed": true,
+      "checks": {
+        "exit": true,
+        "command exists": true,
+        "arguments": true
+      },
+      "exitCode": 0,
+      "stdout": "RIGHTCLICK\n\nMac: ready (native-test)\nServices: 1 registrations\nProviders: 0\nAction extensions: 0\nMCP: stdio command ready\n\nCursor configuration written:\n/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-native-setup-i5nb773n/home-human-0/.cursor/mcp.json\n\nTest:\n\"What can my Mac do with ~/Desktop/example.jpg?\"\n\nSelf-test: inspect text \u2192 public.plain-text\n",
+      "stderr": ""
+    },
+    {
+      "case": "valid config preserves others",
+      "mode": "human",
+      "passed": true,
+      "checks": {
+        "exit": true,
+        "command exists": true,
+        "arguments": true,
+        "unrelated root preserved": true,
+        "unrelated server preserved": true
+      },
+      "exitCode": 0,
+      "stdout": "RIGHTCLICK\n\nMac: ready (native-test)\nServices: 1 registrations\nProviders: 0\nAction extensions: 0\nMCP: stdio command ready\n\nCursor configuration written:\n/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-native-setup-i5nb773n/home-human-1/.cursor/mcp.json\n\nTest:\n\"What can my Mac do with ~/Desktop/example.jpg?\"\n\nSelf-test: inspect text \u2192 public.plain-text\n",
+      "stderr": ""
+    },
+    {
+      "case": "array servers rejected intact",
+      "mode": "human",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": false
+      },
+      "exitCode": 0,
+      "stdout": "RIGHTCLICK\n\nMac: ready (native-test)\nServices: 1 registrations\nProviders: 0\nAction extensions: 0\nMCP: stdio command ready\n\nCursor configuration written:\n/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-native-setup-i5nb773n/home-human-2/.cursor/mcp.json\n\nTest:\n\"What can my Mac do with ~/Desktop/example.jpg?\"\n\nSelf-test: inspect text \u2192 public.plain-text\n",
+      "stderr": ""
+    },
+    {
+      "case": "string servers rejected intact",
+      "mode": "human",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": false
+      },
+      "exitCode": 0,
+      "stdout": "RIGHTCLICK\n\nMac: ready (native-test)\nServices: 1 registrations\nProviders: 0\nAction extensions: 0\nMCP: stdio command ready\n\nCursor configuration written:\n/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-native-setup-i5nb773n/home-human-3/.cursor/mcp.json\n\nTest:\n\"What can my Mac do with ~/Desktop/example.jpg?\"\n\nSelf-test: inspect text \u2192 public.plain-text\n",
+      "stderr": ""
+    },
+    {
+      "case": "null servers rejected intact",
+      "mode": "human",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": false
+      },
+      "exitCode": 0,
+      "stdout": "RIGHTCLICK\n\nMac: ready (native-test)\nServices: 1 registrations\nProviders: 0\nAction extensions: 0\nMCP: stdio command ready\n\nCursor configuration written:\n/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-native-setup-i5nb773n/home-human-4/.cursor/mcp.json\n\nTest:\n\"What can my Mac do with ~/Desktop/example.jpg?\"\n\nSelf-test: inspect text \u2192 public.plain-text\n",
+      "stderr": ""
+    },
+    {
+      "case": "non-object root rejected intact",
+      "mode": "human",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": true
+      },
+      "exitCode": 0,
+      "stdout": "RIGHTCLICK\n\nMac: ready (native-test)\nServices: 1 registrations\nProviders: 0\nAction extensions: 0\nMCP: stdio command ready\n\nCursor configuration was not changed because ~/.cursor/mcp.json is not a JSON object.\n\nTest:\n\"What can my Mac do with ~/Desktop/example.jpg?\"\n\nSelf-test: inspect text \u2192 public.plain-text\n",
+      "stderr": ""
+    },
+    {
+      "case": "malformed JSON rejected intact",
+      "mode": "human",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "input intact": true
+      },
+      "exitCode": 0,
+      "stdout": "RIGHTCLICK\n\nMac: ready (native-test)\nServices: 1 registrations\nProviders: 0\nAction extensions: 0\nMCP: stdio command ready\n\nCursor configuration was not written: The data couldn\u2019t be read because it isn\u2019t in the correct format.\n\nTest:\n\"What can my Mac do with ~/Desktop/example.jpg?\"\n\nSelf-test: inspect text \u2192 public.plain-text\n",
+      "stderr": ""
+    },
+    {
+      "case": "inspection failure exits nonzero",
+      "mode": "human",
+      "passed": false,
+      "checks": {
+        "exit": false,
+        "command exists": true,
+        "arguments": true,
+        "unrelated root preserved": true,
+        "unrelated server preserved": true
+      },
+      "exitCode": 0,
+      "stdout": "RIGHTCLICK\n\nMac: ready (native-test)\nServices: 1 registrations\nProviders: 0\nAction extensions: 0\nMCP: stdio command ready\n\nCursor configuration written:\n/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-native-setup-i5nb773n/home-human-7/.cursor/mcp.json\n\nTest:\n\"What can my Mac do with ~/Desktop/example.jpg?\"\n\nSelf-test: inspect failed: The operation couldn\u2019t be completed. (main.SetupProbeError error 0.)\n",
+      "stderr": ""
+    },
+    {
+      "case": "discovery failure exits nonzero",
+      "mode": "human",
+      "passed": true,
+      "checks": {
+        "exit": true,
+        "command exists": true,
+        "arguments": true,
+        "unrelated root preserved": true,
+        "unrelated server preserved": true
+      },
+      "exitCode": 1,
+      "stdout": "RIGHTCLICK\n\nMac: ready (native-test)\nServices: 1 registrations\nProviders: 0\nAction extensions: 0\nMCP: stdio command ready\n\nCursor configuration written:\n/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-native-setup-i5nb773n/home-human-8/.cursor/mcp.json\n\nTest:\n\"What can my Mac do with ~/Desktop/example.jpg?\"\n\nSelf-test: inspect text \u2192 public.plain-text\n",
+      "stderr": ""
+    }
+  ]
+}
