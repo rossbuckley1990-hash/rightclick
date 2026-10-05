@@ -469,3 +469,28 @@ private extension Value {
         return nil
     }
 }
+
+public enum RightClickMCPContract {
+    public static let schemaVersion = 1
+
+    public static func toolSchemaSHA256() -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+
+        guard let data = try? encoder.encode(rightClickTools()) else {
+            return ""
+        }
+
+        let digest = SHA256.hash(data: data)
+
+        return digest
+            .map { String(format: "%02x", $0) }
+            .joined()
+    }
+
+    public static func toolNames() -> [String] {
+        rightClickTools()
+            .map(\.name)
+            .sorted()
+    }
+}

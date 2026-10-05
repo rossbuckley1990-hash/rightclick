@@ -78,6 +78,15 @@ final class SetupTests: XCTestCase {
             XCTAssertFalse(RightClickSetup.succeeded(discovery: discovery, cursorWritten: true, selfTestPassed: true))
         }
         XCTAssertFalse(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: false, selfTestPassed: true))
+        XCTAssertFalse(
+            RightClickSetup.succeeded(
+                discovery: "PASS",
+                cursorWritten: true,
+                openAIWritten: true,
+                stateWritten: false,
+                selfTestPassed: true
+            )
+        )
         XCTAssertFalse(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, openAIWritten: false, selfTestPassed: true))
         XCTAssertFalse(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, selfTestPassed: false))
         XCTAssertTrue(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, openAIWritten: true, selfTestPassed: true))

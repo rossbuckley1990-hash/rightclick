@@ -49,6 +49,8 @@ struct CLI {
             return 0
         case "setup":
             return RightClickSetup.run(json: json)
+        case "bridge":
+            return RightClickBridgeCLI.run(rest)
         case "auth":
             return RightClickAuth.run(positional)
         case "serve":
@@ -238,6 +240,8 @@ struct CLI {
         rightclick providers
         rightclick refresh
         rightclick setup
+        rightclick bridge run
+        rightclick bridge key set|status|delete
         rightclick serve [--tunnel] [--port 8765]
         rightclick auth rotate
         rightclick mcp

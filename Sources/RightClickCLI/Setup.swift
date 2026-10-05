@@ -13,9 +13,14 @@ enum RightClickSetup {
         discovery: String,
         cursorWritten: Bool,
         openAIWritten: Bool = true,
+        stateWritten: Bool = true,
         selfTestPassed: Bool
     ) -> Bool {
-        discovery == "PASS" && cursorWritten && openAIWritten && selfTestPassed
+        discovery == "PASS"
+            && cursorWritten
+            && openAIWritten
+            && stateWritten
+            && selfTestPassed
     }
 
     static func run(json: Bool) -> Int {
@@ -25,6 +30,7 @@ enum RightClickSetup {
         let executable = executablePath()
         let cursorResult = writeCursorConfig(executable: executable)
         let openAIResult = RightClickOpenAIPlugin.install(executable: executable)
+        let stateResult = RightClickSetupStateStore.reconcile(executable: executable)
         let selfTest = harmlessSelfTest(engine)
         if json {
             let payload: [String: String] = [
@@ -37,6 +43,9 @@ enum RightClickSetup {
                 "cursorStatus": cursorResult.success ? "PASS" : "FAIL",
                 "openAI": openAIResult.message,
                 "openAIStatus": openAIResult.success ? "PASS" : "FAIL",
+                "setupState": stateResult.message,
+                "setupStateStatus": stateResult.success ? "PASS" : "FAIL",
+                "mcpToolSchemaSHA256": stateResult.current?.mcpToolSchemaSHA256 ?? "",
                 "selfTest": selfTest.message,
                 "selfTestStatus": selfTest.success ? "PASS" : "FAIL",
                 "servicesDiscovery": report.servicesDiscovery,
@@ -47,6 +56,7 @@ enum RightClickSetup {
                 discovery: report.servicesDiscovery,
                 cursorWritten: cursorResult.success,
                 openAIWritten: openAIResult.success,
+            stateWritten: stateResult.success,
                 selfTestPassed: selfTest.success
             ) ? 0 : 1
         }
@@ -69,12 +79,15 @@ enum RightClickSetup {
         Test:
         "What can my Mac do with ~/Desktop/example.jpg?"
 
+        Setup state: \(stateResult.message)
+
         Self-test: \(selfTest.message)
         """)
         return succeeded(
                 discovery: report.servicesDiscovery,
                 cursorWritten: cursorResult.success,
                 openAIWritten: openAIResult.success,
+            stateWritten: stateResult.success,
                 selfTestPassed: selfTest.success
             ) ? 0 : 1
     }
