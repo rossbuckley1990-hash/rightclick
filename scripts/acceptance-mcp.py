@@ -24,7 +24,15 @@ expected_version = subprocess.check_output(
 ).strip()
 out.mkdir(parents=True, exist_ok=True)
 records = []
-expected_tools = {"context_inspect", "context_actions", "context_run", "context_run_status", "context_explain", "context_providers"}
+expected_tools = {
+    "context_runtime",
+    "context_inspect",
+    "context_actions",
+    "context_run",
+    "context_run_status",
+    "context_explain",
+    "context_providers",
+}
 fullwidth = "service:com.apple.ChineseTextConverterService:convertTextToFullWidth"
 
 def message(i, method, params=None):
@@ -44,6 +52,37 @@ def exercise(request, label):
     assert init["result"]["serverInfo"]["version"] == expected_version, init
     tools = request(message(2, "tools/list"))
     assert {t["name"] for t in tools["result"]["tools"]} == expected_tools
+
+    runtime = payload(
+        request(
+            message(
+                8,
+                "tools/call",
+                {
+                    "name": "context_runtime",
+                    "arguments": {},
+                },
+            )
+        )
+    )
+
+    expected_sha256 = hashlib.sha256(
+        pathlib.Path(binary).read_bytes()
+    ).hexdigest()
+
+    expected_transport = (
+        "stdio"
+        if label == "stdio"
+        else "http"
+    )
+
+    assert runtime["product"] == "RIGHTCLICK", runtime
+    assert runtime["version"] == expected_version, runtime
+    assert os.path.samefile(runtime["executablePath"], binary), runtime
+    assert os.path.samefile(runtime["executableRealPath"], binary), runtime
+    assert runtime["executableSHA256"] == expected_sha256, runtime
+    assert runtime["transport"] == expected_transport, runtime
+    assert isinstance(runtime["pid"], int) and runtime["pid"] > 0, runtime
     inspected = payload(request(message(7, "tools/call", {"name": "context_inspect", "arguments": {"item": "RightClick"}})))
     assert inspected["kind"] == "text" and inspected["text"] == "RightClick", inspected
     assert inspected["typeIdentifier"] == "public.plain-text" and inspected["byteCount"] == 10, inspected
@@ -58,8 +97,24 @@ def exercise(request, label):
     status = payload(request(message(6, "tools/call", {"name": "context_run_status", "arguments": {"executionId": result["executionId"]}})))
     assert status["output"] == "ＲｉｇｈｔＣｌｉｃｋ", status
     assert status["state"] == result["state"] and status["evidence"] == result["evidence"], status
-    records.append({"transport": label, "initialize": init, "tools": tools, "inspect": inspected, "actions": actions, "confirmation": gated, "fullWidth": result, "status": status, "OUTCOME_VERIFIED": "exact full-width pasteboard output"})
-    print(label + ": PASS — six tools, exact inspection, contextual discovery, confirmation, exact full-width output, retained status")
+    records.append({
+        "transport": label,
+        "initialize": init,
+        "tools": tools,
+        "runtime": runtime,
+        "inspect": inspected,
+        "actions": actions,
+        "confirmation": gated,
+        "fullWidth": result,
+        "status": status,
+        "OUTCOME_VERIFIED": "exact full-width pasteboard output",
+    })
+    print(
+        label
+        + ": PASS — seven tools, exact runtime identity, "
+        + "exact inspection, contextual discovery, confirmation, "
+        + "exact full-width output, retained status"
+    )
 
 with (out / "stdio.stderr.log").open("w") as err:
     process = subprocess.Popen([binary, "mcp"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=err, text=True, bufsize=1)
