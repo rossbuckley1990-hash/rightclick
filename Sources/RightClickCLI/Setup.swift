@@ -86,7 +86,22 @@ enum RightClickSetup {
     static func executablePath() -> String {
         let raw = CommandLine.arguments[0]
         if raw.hasPrefix("/") { return raw }
-        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(raw).standardizedFileURL.path
+        let directory = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        if !raw.contains("/") {
+            let path = ProcessInfo.processInfo.environment["PATH"] ?? ""
+            for component in path.split(separator: ":", omittingEmptySubsequences: false) {
+                let base = component.isEmpty ? directory : URL(fileURLWithPath: String(component), relativeTo: directory)
+                let candidate = base.appendingPathComponent(raw).standardizedFileURL.path
+                var isDirectory: ObjCBool = false
+                if FileManager.default.fileExists(atPath: candidate, isDirectory: &isDirectory),
+                   !isDirectory.boolValue, FileManager.default.isExecutableFile(atPath: candidate) {
+                    return candidate
+                }
+            }
+            // A launcher may provide an argv[0] that is absent from PATH.
+            if let executable = Bundle.main.executableURL { return executable.path }
+        }
+        return directory.appendingPathComponent(raw).standardizedFileURL.path
     }
 }
 
