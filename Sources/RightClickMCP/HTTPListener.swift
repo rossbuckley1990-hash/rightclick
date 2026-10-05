@@ -20,7 +20,8 @@ final class MCPHTTPListener: @unchecked Sendable {
         guard let nwPort = NWEndpoint.Port(rawValue: port) else {
             throw RightClickListenerError("Invalid port \(port).")
         }
-        let listener = try NWListener(using: parameters, on: nwPort)
+        parameters.requiredLocalEndpoint = .hostPort(host: .ipv4(.loopback), port: nwPort)
+        let listener = try NWListener(using: parameters)
         listener.newConnectionHandler = { [weak self] connection in
             guard let self else { return }
             connection.start(queue: .global(qos: .userInitiated))
@@ -91,12 +92,21 @@ final class MCPHTTPListener: @unchecked Sendable {
             let parts = line.split(separator: ":", maxSplits: 1)
             headers[String(parts[0]).trimmingCharacters(in: .whitespaces)] = String(parts[1]).trimmingCharacters(in: .whitespaces)
         }
-        let length = Int(headers.first { $0.key.lowercased() == "content-length" }?.value ?? "") ?? 0
+        // Validate framing before reading the body, including unauthenticated requests.
+        guard !headers.keys.contains(where: { $0.lowercased() == "transfer-encoding" }) else {
+            throw RightClickListenerError("Transfer encoding is unsupported.")
+        }
+        let declaredLength = headers.first { $0.key.lowercased() == "content-length" }?.value ?? "0"
+        guard !declaredLength.isEmpty, declaredLength.allSatisfy({ $0.isASCII && $0.isNumber }),
+              let length = Int(declaredLength), length <= 2_000_000 else {
+            throw RightClickListenerError("Invalid or excessive content length.")
+        }
         while body.count < length {
             let chunk = try await receive(connection)
             if chunk.isEmpty { break }
             body.append(chunk)
         }
+        guard body.count >= length else { throw RightClickListenerError("Incomplete request body.") }
         if body.count > length {
             body = body.prefix(length)
         }
