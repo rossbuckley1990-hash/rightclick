@@ -1,0 +1,191 @@
+{
+  "item": {
+    "display": "https://example.com",
+    "isDirectory": false,
+    "kind": "web_url",
+    "typeDescription": "URL",
+    "typeIdentifier": "public.url",
+    "url": "https://example.com"
+  },
+  "count": 14,
+  "actions": [
+    {
+      "title": "Finder/Open",
+      "id": "service:com.apple.finder:open",
+      "source": "service",
+      "bundleIdentifier": "com.apple.finder",
+      "providerName": "Finder",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Finder/Reveal",
+      "id": "service:com.apple.finder:reveal",
+      "source": "service",
+      "bundleIdentifier": "com.apple.finder",
+      "providerName": "Finder",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Finder/Show Info",
+      "id": "service:com.apple.finder:showInfo",
+      "source": "service",
+      "bundleIdentifier": "com.apple.finder",
+      "providerName": "Finder",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Open URL",
+      "id": "service:com.apple.systemuiserver:openURL",
+      "source": "service",
+      "bundleIdentifier": "com.apple.systemuiserver",
+      "providerName": "SystemUIServer",
+      "inputTypes": [
+        "NSURLPboardType",
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Add to Reading List",
+      "id": "sharing:com.apple.share.System.add-to-safari-reading-list",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.share.System.add-to-safari-reading-list",
+      "providerName": "Add to Reading List",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "AirDrop",
+      "id": "sharing:com.apple.share.AirDrop.send",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.share.AirDrop.send",
+      "providerName": "AirDrop",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Freeform",
+      "id": "sharing:title:freeform",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Freeform",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Journal",
+      "id": "sharing:title:journal",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Journal",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Mail",
+      "id": "sharing:com.apple.share.Mail.compose",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.share.Mail.compose",
+      "providerName": "Mail",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Messages",
+      "id": "sharing:com.apple.messages.ShareExtension",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.messages.ShareExtension",
+      "providerName": "Messages",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Notes",
+      "id": "sharing:title:notes",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Notes",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Open in News",
+      "id": "sharing:title:open-in-news",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Open in News",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Reminders",
+      "id": "sharing:title:reminders",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Reminders",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Simulator",
+      "id": "sharing:title:simulator",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Simulator",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    }
+  ]
+}

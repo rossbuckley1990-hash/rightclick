@@ -1,0 +1,146 @@
+{
+  "item": {
+    "byteCount": 1106,
+    "display": "/Users/you/Desktop/test.jpg",
+    "isDirectory": false,
+    "kind": "image",
+    "path": "/Users/you/Desktop/test.jpg",
+    "typeDescription": "JPEG image",
+    "typeIdentifier": "public.jpeg"
+  },
+  "count": 11,
+  "actions": [
+    {
+      "title": "Set Desktop Picture",
+      "id": "service:com.apple.services.setDesktopPicture:runWorkflowAsService",
+      "source": "service",
+      "bundleIdentifier": "com.apple.services.setDesktopPicture",
+      "providerName": "Set Desktop Picture",
+      "inputTypes": [
+        "public.image"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Add to Photos",
+      "id": "sharing:com.apple.share.System.add-to-iphoto",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.share.System.add-to-iphoto",
+      "providerName": "Add to Photos",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "AirDrop",
+      "id": "sharing:com.apple.share.AirDrop.send",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.share.AirDrop.send",
+      "providerName": "AirDrop",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Freeform",
+      "id": "sharing:title:freeform",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Freeform",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Journal",
+      "id": "sharing:title:journal",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Journal",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Mail",
+      "id": "sharing:com.apple.share.Mail.compose",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.share.Mail.compose",
+      "providerName": "Mail",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Messages",
+      "id": "sharing:com.apple.messages.ShareExtension",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.messages.ShareExtension",
+      "providerName": "Messages",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Notes",
+      "id": "sharing:title:notes",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Notes",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Reminders",
+      "id": "sharing:title:reminders",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Reminders",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Simulator",
+      "id": "sharing:title:simulator",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Simulator",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Markup",
+      "id": "action:com.apple.MarkupUI.Markup",
+      "source": "action_extension",
+      "bundleIdentifier": "com.apple.MarkupUI.Markup",
+      "providerName": "Markup",
+      "inputTypes": [
+        "public.jpeg"
+      ],
+      "invocation": "unsupported",
+      "safety": "unknown"
+    }
+  ]
+}

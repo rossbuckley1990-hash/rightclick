@@ -24,9 +24,9 @@ Installed `.appex` bundles with `NSExtensionPointIdentifier` `com.apple.ui-servi
 
 ## One engine, two transports
 
-The CLI and both MCP transports call `CapabilityEngine`. The MCP surface is four contextual tools: `context_inspect`, `context_actions`, `context_explain`, and `context_run`. There is no static tool per Mac action.
+The CLI and both MCP transports call `CapabilityEngine`. The MCP surface is six contextual tools: `context_inspect`, `context_actions`, `context_explain`, `context_run`, `context_run_status`, and `context_providers`. There is no static tool per Mac action.
 
-The MCP implementation uses the official Swift SDK 0.12.1 (`swift-sdk`), including `StdioTransport` and `StatefulHTTPServerTransport` (Streamable HTTP). HTTP requests require a bearer token. Origin checks are disabled for the development tunnel because the public Host header is not localhost; the bearer token is the access control.
+The MCP implementation uses the official Swift SDK 0.12.1 (`swift-sdk`), including `StdioTransport` and `StatelessHTTPServerTransport` (Streamable HTTP). HTTP requests require a bearer token. Origin checks are disabled for the development tunnel because the public Host header is not localhost; the bearer token is the access control.
 
 ## Safety
 
@@ -35,3 +35,7 @@ The MCP implementation uses the official Swift SDK 0.12.1 (`swift-sdk`), includi
 ## Language split
 
 AppKit code is compiled in Swift 5 language mode so it can touch AppKit without a MainActor rewrite. The same types are called from the MCP target. Handlers hop to the main thread because sharing and Services need the main run loop.
+
+## Freeze and outcome evidence
+
+The v0.1 engine retains the BBEdit-proven generic behaviour. The bounded Yojam AppKit control did not verify an outcome, so an inherited speculative lifecycle rewrite was preserved as evidence and removed from production. The legacy Services `succeeded` state denotes accepted invocation; independent results remain a separate evidentiary stage. See YOJAM-LIMITATION.md. Release-critical transport fixes restrict the listener to loopback and reject malformed request framing.

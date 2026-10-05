@@ -1,11 +1,11 @@
 # Contributing
 
-Do not add application-specific integrations when a capability can be discovered generically.
+RIGHTCLICK v0.1's capability engine is frozen. Accept release-critical fixes; defer platforms, new capability families, provider-specific integrations, Accessibility/AppleScript automation, devices, and network discovery.
 
-RIGHTCLICK asks macOS which capabilities apply to an object. A new app should show up because it publishes Services, sharing services, or Action Extension metadata, not because someone added its bundle id to this repository.
+RIGHTCLICK asks the environment which actions apply to an object. Preserve generic discovery and shared applicability/payload rules. Do not replace them with a hard-coded action catalogue. Services use documented `NSServices` metadata and `NSPerformService`. Sharing uses the deprecated context-filtered discovery API honestly. Action extensions remain unsupported for invocation; no private `NSExtension` calls belong in production.
 
-New capability-family support should be generic: one discovery path, one invocation path, and the same safety rules for every provider in that family.
+Before proposing a change, reproduce the problem, add a meaningful failing regression where appropriate, make the smallest generic repair, and run `swift test`. Do not weaken assertions or skip a failing regression to obtain green. Run `scripts/acceptance-mcp.py <absolute-binary> <evidence-directory>` for transport changes, and the relevant independent semantic control for execution changes. Never infer outcome verification from an accepted provider invocation.
 
-Action Extensions are discovered and are not generically executable. Do not call private `NSExtension` methods from the product to pretend otherwise.
+Build with `scripts/build-release.sh`; archive a development rehearsal with `scripts/package-local.sh`. Public archives require the validated Apple distribution pipeline in [docs/RELEASE.md](docs/RELEASE.md). Preserve evidence, keep credentials out of the tree, and describe exactly what a check proves.
 
-RIGHTCLICK is licensed under Apache-2.0. See `LICENSE`.
+Contributions use Apache-2.0. The distributable retains notices for pinned dependencies under `packaging/ThirdPartyLicenses/`.

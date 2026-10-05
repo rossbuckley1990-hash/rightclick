@@ -1,0 +1,23 @@
+==> Would install 1 formula:
+local/rightclick-v01/rightclick 0.1.0
+==> Fetching downloads for: rightclick
+✔︎ Formula rightclick (0.1.0)
+==> Installing rightclick from local/rightclick-v01
+Warning: A newer Command Line Tools release is available.
+Update them from Software Update in System Settings.
+
+If that doesn't show you any updates, run:
+  sudo rm -rf /Library/Developer/CommandLineTools
+  sudo xcode-select --install
+
+Alternatively, manually download them from:
+  https://developer.apple.com/download/all/.
+You should download the Command Line Tools for Xcode 26.6.
+Error: local/rightclick-v01/rightclick: An exception occurred within a child process:
+  Errno::ENOENT: No such file or directory - RIGHTCLICK.app
+
+This is a Tier 2 configuration:
+  https://docs.brew.sh/Support-Tiers#tier-2
+You can report issues with Tier 2 configurations to Homebrew/* repositories!
+  https://docs.brew.sh/Troubleshooting
+Read the above document before opening any issues or PRs.

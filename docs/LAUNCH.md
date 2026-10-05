@@ -1,29 +1,13 @@
-# Launch copy
+# Launch copy — prepared, unpublished
 
-Not published. Repository name: `rightclick`.
+Repository description: Install an app. Your AI learns what it can do.
 
-## GitHub description
+Show HN title: RIGHTCLICK — install a Mac app and your AI learns what it can do
 
-Install an app. Your AI learns what it can do.
+RIGHTCLICK lets an AI discover useful capabilities already exposed by software on your Mac. It reflects existing native contracts into a contextual capability layer, applies policy, and invokes supported actions. MCP connects that layer to your AI.
 
-## Topics
+The proof: the same plain-text query had 36 capabilities and none from third-party software. After installing ordinary BBEdit, it had 41, including five BBEdit capabilities. RIGHTCLICK needed zero BBEdit-specific acquisition changes. The generic executor then put the exact requested text into a new BBEdit document.
 
-mcp, ai-agents, macos, swift, model-context-protocol, automation, agents, appkit
+This is a bounded test of Capability Reflection, not universal Mac automation. Compatible apps must expose a supported native contract. Finder Action extensions are discovery-only. Some providers accept a call without delivering an independently verified result; Yojam is a documented example. A successful invocation is not enough to claim semantic success.
 
-## Show HN
-
-Show HN: RIGHTCLICK – install a Mac app and your AI learns what it can do
-
-RIGHTCLICK is a small MCP server for macOS. It does not ship a catalogue of hard-coded app tools. It asks the system which contextual capabilities already apply to a file, a piece of text, or a URL, and it exposes those as six MCP tools.
-
-The test I care about: plain text had 36 capabilities and no third-party ones. I installed ordinary BBEdit 16.0.3 and changed no RIGHTCLICK code. The same query returned 41 capabilities, five of them from BBEdit's normal macOS Services. One of those, New BBEdit Document with Selection, opened BBEdit with the exact text I sent.
-
-Action Extensions are discovered and are not generically executable. A successful service call is not the same thing as a proven side effect. v0.1 is an arm64 source build. A signed, notarised Homebrew install is not up yet.
-
-## Social
-
-RIGHTCLICK lets an AI use capabilities already installed on your Mac.
-
-Install ordinary BBEdit. Change no RIGHTCLICK code. Text capabilities go from 36 to 41, and five of the new ones are BBEdit Services. New BBEdit Document with Selection then opens BBEdit with the exact text.
-
-It is not a list of hard-coded app tools. v0.1 discovers macOS Services, sharing services, and Action Extension metadata. Action Extensions are not generically executable yet, and the signed download is still to come.
+v0.1.0 targets Apple Silicon/macOS 14+. Publication is pending real Developer ID signing, notarisation, and public Homebrew clean-install acceptance. Replace this status sentence with the verified release install commands only when those gates pass.

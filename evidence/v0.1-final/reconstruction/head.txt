@@ -1,0 +1,11 @@
+commit 980c05e895ef6108be76b32e17289ea85a9bdb17
+Author:     Ross Buckley <rossbuckley1990-hash@users.noreply.github.com>
+AuthorDate: Mon Oct 5 01:10:48 2026 +0100
+Commit:     Ross Buckley <rossbuckley1990-hash@users.noreply.github.com>
+CommitDate: Mon Oct 5 01:10:48 2026 +0100
+
+    Fix generic URL payload encoding for macOS Services.
+    
+    A web URL that discovery already treated as compatible can now be written onto the Service's declared URL and text pasteboard types.
+    
+    Co-authored-by: Cursor <cursoragent@cursor.com>

@@ -1,0 +1,95 @@
+[0/1] Planning build
+Building for debugging...
+[0/8] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (5.37s)
+Test Suite 'All tests' started at 2026-10-05 07:12:04.162.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-05 07:12:04.175.
+Test Suite 'AcquisitionTests' started at 2026-10-05 07:12:04.175.
+Test Case '-[RightClickCoreTests.AcquisitionTests testDeclaredTextRepresentationsRoundTripOnThePasteboard]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testDeclaredTextRepresentationsRoundTripOnThePasteboard]' passed (0.050 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testDirectoryAndURLClassification]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testDirectoryAndURLClassification]' passed (0.010 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testDuplicateIDsCollapse]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testDuplicateIDsCollapse]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testFinancialRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testFinancialRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testImageServiceDoesNotApplyToPlainText]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testImageServiceDoesNotApplyToPlainText]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testMalformedPathIsAnError]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testMalformedPathIsAnError]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testProofURLPayloadRoundTrip]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testProofURLPayloadRoundTrip]' passed (0.007 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testServiceAppearsAndDisappearsWithTheBundle]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testServiceAppearsAndDisappearsWithTheBundle]' passed (0.005 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testStaleServiceIDFails]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testStaleServiceIDFails]' passed (0.646 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testTextPasteboardTypesFollowDeclaredSendTypes]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testTextPasteboardTypesFollowDeclaredSendTypes]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testUnknownRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testUnknownRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadAbstainsForFileURLOnly]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadAbstainsForFileURLOnly]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredPlainTextType]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredPlainTextType]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredURLType]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredURLType]' passed (0.001 seconds).
+Test Suite 'AcquisitionTests' passed at 2026-10-05 07:12:04.903.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.724 (0.727) seconds
+Test Suite 'EngineTests' started at 2026-10-05 07:12:04.903.
+Test Case '-[RightClickCoreTests.EngineTests testExternalShareIsGated]' started.
+Test Case '-[RightClickCoreTests.EngineTests testExternalShareIsGated]' passed (6.078 seconds).
+Test Case '-[RightClickCoreTests.EngineTests testFixturesDifferentiateSharingAndQuickActions]' started.
+Test Case '-[RightClickCoreTests.EngineTests testFixturesDifferentiateSharingAndQuickActions]' passed (11.332 seconds).
+Test Case '-[RightClickCoreTests.EngineTests testFullWidthServiceRoundTrip]' started.
+2026-10-05T06:12:24Z service payload declared=public.rtf|public.utf8-plain-text written=public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=22 utf8Bytes=10 readback=RightClick
+2026-10-05T06:12:24Z NSPerformService name=Convert Text to Full Width provider=com.apple.ChineseTextConverterService sendFileTypes=[] pasteboardTypes=public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
+2026-10-05T06:12:24Z NSPerformService returned true changeCount 1->2
+Test Case '-[RightClickCoreTests.EngineTests testFullWidthServiceRoundTrip]' passed (2.575 seconds).
+Test Case '-[RightClickCoreTests.EngineTests testMarkupIsDiscoveredButNotInvokable]' started.
+Test Case '-[RightClickCoreTests.EngineTests testMarkupIsDiscoveredButNotInvokable]' passed (2.354 seconds).
+Test Suite 'EngineTests' passed at 2026-10-05 07:12:27.243.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 22.339 (22.341) seconds
+Test Suite 'PolicyTests' started at 2026-10-05 07:12:27.243.
+Test Case '-[RightClickCoreTests.PolicyTests testActionExtensionIsNotInvokable]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testActionExtensionIsNotInvokable]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testContentClassification]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testContentClassification]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testDedupeKeepsFirstIdentifier]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testDedupeKeepsFirstIdentifier]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testDestructiveRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testDestructiveRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testExternalShareRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testExternalShareRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testServiceIdentifierPrefersMessage]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testServiceIdentifierPrefersMessage]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierFallsBackToTitleSlug]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierFallsBackToTitleSlug]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierUsesPublicName]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierUsesPublicName]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testTextTransformDoesNotRequireConfirmation]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testTextTransformDoesNotRequireConfirmation]' passed (0.000 seconds).
+Test Suite 'PolicyTests' passed at 2026-10-05 07:12:27.246.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+Test Suite 'SharingExecutionTests' started at 2026-10-05 07:12:27.246.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineDoesNotOverrideATerminalCallback]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineDoesNotOverrideATerminalCallback]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineWithoutCallbackIsUnknown]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineWithoutCallbackIsUnknown]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDidFailToShareItemsFails]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDidFailToShareItemsFails]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDidShareItemsSucceeds]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDidShareItemsSucceeds]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testPerformReturnWithoutCallbackStaysStarted]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testPerformReturnWithoutCallbackStaysStarted]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testWillShareItemsDoesNotFailTheExecution]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testWillShareItemsDoesNotFailTheExecution]' passed (0.000 seconds).
+Test Suite 'SharingExecutionTests' passed at 2026-10-05 07:12:27.247.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-05 07:12:27.247.
+	 Executed 33 tests, with 0 failures (0 unexpected) in 23.065 (23.072) seconds
+Test Suite 'All tests' passed at 2026-10-05 07:12:27.247.
+	 Executed 33 tests, with 0 failures (0 unexpected) in 23.065 (23.085) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

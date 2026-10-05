@@ -1,152 +1,74 @@
 # RIGHTCLICK
 
-Licensed under [Apache-2.0](LICENSE).
-
 ## Install an app. Your AI learns what it can do.
 
-RIGHTCLICK discovers contextual capabilities exposed by software already installed on macOS and makes the applicable ones available to MCP clients.
+RIGHTCLICK reflects capabilities that software already exposes on your Mac. Give an AI a file, text, or a URL; it can ask which capabilities apply, inspect their safety and support, and invoke supported ones with confirmation where required. MCP carries those requests between your AI and RIGHTCLICK.
 
-```text
-Installed software
-       ↓
-native macOS capability metadata
-       ↓
-RIGHTCLICK
-       ↓
-contextual capability graph
-       ↓
-MCP
-       ↓
-AI
-```
+The v0.1 proof is ordinary BBEdit installation: the same text query changed from **36 capabilities, 0 third-party** to **41 capabilities, 5 BBEdit capabilities**, with **zero BBEdit-specific RIGHTCLICK changes**. Its “New BBEdit Document with Selection” Service received the exact fixture through the generic executor. See [the evidence](docs/BBEDIT-PROOF.md).
 
-```text
-install app
-→ capabilities appear
+Not every installed app exposes compatible native capabilities. RIGHTCLICK does not claim universal app compatibility or access to every right-click menu item.
 
-remove app
-→ capabilities disappear
-```
+### Installation status
 
-## The BBEdit experiment
-
-An ordinary copy of BBEdit 16.0.3 was installed after a frozen baseline. RIGHTCLICK was not changed.
-
-```text
-BEFORE BBEdit
-
-36 text capabilities
-0 third-party
-
-install ordinary BBEdit 16.0.3
-
-AFTER
-
-41 capabilities
-5 new third-party
-```
-
-The five new capabilities, read from BBEdit's own macOS Services metadata:
-
-- New BBEdit Document with Selection
-- New Note in BBEdit
-- Open File in BBEdit
-- Search Here in BBEdit
-- Append Selection to BBEdit Scratchpad
-
-```text
-BBEdit-specific RIGHTCLICK code:
-NONE
-```
-
-BBEdit is not an MCP server. BBEdit was not built for RIGHTCLICK. RIGHTCLICK derived those capabilities from normal `NSServices` metadata. The generic Services executor then transferred selected text into a new BBEdit document. The chronology is in `docs/BBEDIT-PROOF.md`.
-
-## Ask what this computer can do
-
-RIGHTCLICK does not publish hundreds of static MCP tools. The model asks:
-
-> What can this computer do with this thing?
-
-The MCP surface is six tools:
-
-- `context_inspect`
-- `context_actions`
-- `context_run`
-- `context_run_status`
-- `context_explain`
-- `context_providers`
-
-`context_actions` returns only the capabilities macOS currently exposes for that object. `context_run` invokes one of those discovered capabilities.
-
-## What v0.1 does
-
-Proven on the development Mac:
-
-- macOS Services discovery
-- generic Services invocation
-- Sharing Service discovery, and execution where the public API reports a terminal result
-- Action Extension discovery
-- contextual filtering by the object you pass in
-- local stdio MCP
-- remote Streamable HTTP MCP
-- confirmation and safety metadata
-
-Limits:
-
-- Action Extensions are discovered. They are not generically executable. `NSExtension` is not in the public SDK.
-- Not every Mac application exposes Services, sharing services, or Action Extensions.
-- A provider accepting an invocation is not the same as a verified semantic outcome. `NSPerformService` returning true means the service was accepted.
-- Some capabilities are interactive and need a person at the Mac.
-- Sharing discovery uses `NSSharingService.sharingServices(forItems:)`, which is deprecated and is still the call that returns a context-filtered catalog here.
-- Remote tunnel examples are for development and testing. Do not publish a tunnel without the bearer token.
-- A publicly signed and notarised download is not available yet. There is no Developer ID signature in this tree.
-
-RIGHTCLICK is not screen clicking, not a fixed catalogue of automations, and not a claim that every Finder menu item can be invoked.
-
-## Quickstart
-
-Build from source:
-
-```bash
-git clone <repo>
-cd rightclick
-swift build -c release --product rightclick
-.build/release/rightclick doctor
-```
-
-Cursor. `rightclick setup` merges only the `rightclick` entry in `~/.cursor/mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "rightclick": {
-      "command": "/Users/you/src/rightclick/.build/release/rightclick",
-      "args": ["mcp"]
-    }
-  }
-}
-```
-
-Other commands:
-
-```bash
-.build/release/rightclick actions ~/Desktop/photo.jpg
-.build/release/rightclick run <action-id> <item> --yes
-.build/release/rightclick providers
-.build/release/rightclick refresh
-.build/release/rightclick serve
-```
-
-`rightclick mcp` speaks MCP over stdio. `rightclick serve` listens for Streamable HTTP on `127.0.0.1`. Add `--json` for machine-readable output.
-
-External shares, destructive actions, financial actions, and anything unclassified return confirmation instead of running.
-
-## Later
-
-A public Homebrew install is not available yet. The intended command, once the v0.1.0 release asset and tap exist, is:
+v0.1.0 targets Apple Silicon and macOS 14 or later. The development package and local Homebrew rehearsal work. The public install is **blocked** on Developer ID signing, notarisation, publishing approval, and a public release asset/tap. The eventual commands are:
 
 ```bash
 brew install ross-buckley/tap/rightclick
+rightclick setup
 ```
 
-The asset URL and sha256 in `packaging/homebrew/rightclick.rb` are deferred until that release exists. See `docs/RELEASE.md`, `SECURITY.md`, and `docs/SIGNING.md`.
+Until publication, use a local source checkout with Xcode command-line tools and Swift 6:
+
+```bash
+swift test
+scripts/build-release.sh
+.build/release/rightclick version
+.build/release/rightclick doctor
+.build/release/rightclick setup
+```
+
+`setup` checks discovery and merges only the `rightclick` entry into `~/.cursor/mcp.json`, using the executable you ran. Enable the server in Cursor if your client requires it. Other MCP clients can launch that executable with argument `mcp`.
+
+```bash
+rightclick actions "RightClick third party capability test"
+rightclick actions fixtures/fixture.jpg
+rightclick providers
+rightclick run --yes service:com.barebones.bbedit:openSelectionService "RIGHTCLICK demo fixture"
+```
+
+Inspect the discovered action before confirming a run. Installed software and system preferences determine which actions appear; counts are observations from the proof Mac, not fixed product expectations.
+
+### Capability Reflection
+
+```text
+environment
+    ↓
+existing capability contracts
+    ↓
+generic reflection
+    ↓
+normalized contextual capability graph
+    ↓
+policy / permissions
+    ↓
+AI
+    ↓
+execution
+    ↓
+outcome verification
+```
+
+v0.1 tests this architecture using macOS Services, sharing services, and Finder Action extension metadata. The CLI and six MCP tools use the same engine: `context_inspect`, `context_actions`, `context_explain`, `context_run`, `context_run_status`, and `context_providers`.
+
+Services come from documented `NSServices` metadata and run through `NSPerformService`. Sharing discovery uses the deprecated `NSSharingService.sharingServices(forItems:)`; it still returns a context-filtered catalog on the proof Mac. Sharing invocation uses public `perform(withItems:)`. Finder Action extensions are discovered from metadata and marked unsupported for invocation because `NSExtension` is absent from the public SDK.
+
+### Evidence and limits
+
+- BBEdit acquisition and exact semantic execution pass.
+- Yojam acquisition, applicability, payload construction, and invocation pass. Its semantic result remains a [documented limitation](docs/YOJAM-LIMITATION.md); the one standalone AppKit control did not verify a browser result.
+- `NSPerformService == true` means invocation was accepted. The legacy execution state `succeeded` does **not** prove an external outcome. Verify returned data or an independent provider result before claiming completion.
+- External, destructive, financial, and unclassified actions require confirmation. Interactive actions may need someone at the Mac.
+- Execution status is retained in the serving process; it is lost on restart and is unavailable to a separate CLI process.
+- Authenticated Streamable HTTP works on loopback. `rightclick serve` prints a bearer secret; keep it private. Development tunnels are optional and require explicit, deliberate exposure.
+
+The capability engine is frozen for v0.1. New platforms and capability families are outside this release. [Completion evidence](docs/V0.1_COMPLETION_REPORT.md), [release procedure](docs/RELEASE.md), [security](SECURITY.md), [contributing](CONTRIBUTING.md), and [Apache-2.0 licence](LICENSE).

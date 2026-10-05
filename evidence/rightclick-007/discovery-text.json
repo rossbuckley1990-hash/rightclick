@@ -1,0 +1,472 @@
+{
+  "item": {
+    "byteCount": 38,
+    "display": "RightClick third party capability test",
+    "isDirectory": false,
+    "kind": "text",
+    "text": "RightClick third party capability test",
+    "typeDescription": "text",
+    "typeIdentifier": "public.plain-text"
+  },
+  "count": 36,
+  "actions": [
+    {
+      "title": "Add to Music as a Spoken Track",
+      "id": "service:com.apple.services.addToiTunesAsSpokenTrack:runWorkflowAsService",
+      "source": "service",
+      "bundleIdentifier": "com.apple.services.addToiTunesAsSpokenTrack",
+      "providerName": "Add to Music as a Spoken Track",
+      "inputTypes": [
+        "public.utf8-plain-text"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Convert Text from Simplified to Traditional Chinese",
+      "id": "service:com.apple.ChineseTextConverterService:convertTextToTraditionalChinese",
+      "source": "service",
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "providerName": "ChineseTextConverterService",
+      "inputTypes": [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "direct",
+      "safety": "read"
+    },
+    {
+      "title": "Convert Text from Traditional to Simplified Chinese",
+      "id": "service:com.apple.ChineseTextConverterService:convertTextToSimplifiedChinese",
+      "source": "service",
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "providerName": "ChineseTextConverterService",
+      "inputTypes": [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "direct",
+      "safety": "read"
+    },
+    {
+      "title": "Convert Text to Full Width",
+      "id": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+      "source": "service",
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "providerName": "ChineseTextConverterService",
+      "inputTypes": [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "direct",
+      "safety": "read"
+    },
+    {
+      "title": "Convert Text to Half Width",
+      "id": "service:com.apple.ChineseTextConverterService:convertTextToHalfWidth",
+      "source": "service",
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "providerName": "ChineseTextConverterService",
+      "inputTypes": [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "direct",
+      "safety": "read"
+    },
+    {
+      "title": "Create Service",
+      "id": "service:com.apple.Automator:makeNewServiceWithPasteboard",
+      "source": "service",
+      "bundleIdentifier": "com.apple.Automator",
+      "providerName": "Automator",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Create Workflow",
+      "id": "service:com.apple.Automator:makeNewWorkflowServiceWithPasteboard",
+      "source": "service",
+      "bundleIdentifier": "com.apple.Automator",
+      "providerName": "Automator",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Find in Xcode",
+      "id": "service:com.apple.dt.Xcode:batchFind",
+      "source": "service",
+      "bundleIdentifier": "com.apple.dt.Xcode",
+      "providerName": "Xcode",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Finder/Open",
+      "id": "service:com.apple.finder:open",
+      "source": "service",
+      "bundleIdentifier": "com.apple.finder",
+      "providerName": "Finder",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Finder/Reveal",
+      "id": "service:com.apple.finder:reveal",
+      "source": "service",
+      "bundleIdentifier": "com.apple.finder",
+      "providerName": "Finder",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Finder/Show Info",
+      "id": "service:com.apple.finder:showInfo",
+      "source": "service",
+      "bundleIdentifier": "com.apple.finder",
+      "providerName": "Finder",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Look Up in Dictionary",
+      "id": "service:com.apple.Dictionary:doLookupService",
+      "source": "service",
+      "bundleIdentifier": "com.apple.Dictionary",
+      "providerName": "Dictionary",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Mail/New Email To Address",
+      "id": "service:com.apple.mail:mailTo",
+      "source": "service",
+      "bundleIdentifier": "com.apple.mail",
+      "providerName": "Mail",
+      "inputTypes": [
+        "NSPasteboardTypeString"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Mail/New Email With Selection",
+      "id": "service:com.apple.mail:mailSelection",
+      "source": "service",
+      "bundleIdentifier": "com.apple.mail",
+      "providerName": "Mail",
+      "inputTypes": [
+        "NSPasteboardTypeRTFD",
+        "NSPasteboardTypeRTF",
+        "NSPasteboardTypeString",
+        "Apple Web Archive pasteboard type"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Make Sticky",
+      "id": "service:com.apple.Stickies:makeStickyFromTextService",
+      "source": "service",
+      "bundleIdentifier": "com.apple.Stickies",
+      "providerName": "Stickies",
+      "inputTypes": [
+        "public.plain-text",
+        "public.rtf",
+        "com.apple.flat-rtfd"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "New Terminal Tab at Folder",
+      "id": "service:com.apple.Terminal:newTerminalAtFolder",
+      "source": "service",
+      "bundleIdentifier": "com.apple.Terminal",
+      "providerName": "Terminal",
+      "inputTypes": [
+        "public.plain-text",
+        "public.directory",
+        "com.apple.resolvable"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "New TextEdit Window Containing Selection",
+      "id": "service:com.apple.TextEdit:openSelection",
+      "source": "service",
+      "bundleIdentifier": "com.apple.TextEdit",
+      "providerName": "TextEdit",
+      "inputTypes": [
+        "com.apple.flat-rtfd",
+        "public.rtf",
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Open man Page in Terminal",
+      "id": "service:com.apple.Terminal:openManPage",
+      "source": "service",
+      "bundleIdentifier": "com.apple.Terminal",
+      "providerName": "Terminal",
+      "inputTypes": [
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Open Quickly in Xcode",
+      "id": "service:com.apple.dt.Xcode:openQuickly",
+      "source": "service",
+      "bundleIdentifier": "com.apple.dt.Xcode",
+      "providerName": "Xcode",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Open Selected File in TextEdit",
+      "id": "service:com.apple.TextEdit:openFile",
+      "source": "service",
+      "bundleIdentifier": "com.apple.TextEdit",
+      "providerName": "TextEdit",
+      "inputTypes": [
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Open URL",
+      "id": "service:com.apple.systemuiserver:openURL",
+      "source": "service",
+      "bundleIdentifier": "com.apple.systemuiserver",
+      "providerName": "SystemUIServer",
+      "inputTypes": [
+        "NSURLPboardType",
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Script Editor/Get Result of AppleScript",
+      "id": "service:com.apple.ScriptEditor2:runAsAppleScript",
+      "source": "service",
+      "bundleIdentifier": "com.apple.ScriptEditor2",
+      "providerName": "Script Editor",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "direct",
+      "safety": "read"
+    },
+    {
+      "title": "Script Editor/Make New AppleScript",
+      "id": "service:com.apple.ScriptEditor2:makeNewAppleScript",
+      "source": "service",
+      "bundleIdentifier": "com.apple.ScriptEditor2",
+      "providerName": "Script Editor",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Search man Page Index in Terminal",
+      "id": "service:com.apple.Terminal:searchManPages",
+      "source": "service",
+      "bundleIdentifier": "com.apple.Terminal",
+      "providerName": "Terminal",
+      "inputTypes": [
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "SEARCH_WITH_SPOTLIGHT",
+      "id": "service:com.apple.SpotlightService:doSearchWithSpotlight",
+      "source": "service",
+      "bundleIdentifier": "com.apple.SpotlightService",
+      "providerName": "SpotlightService",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Send File To Bluetooth Device",
+      "id": "service:com.apple.BluetoothFileExchange:sendFileUsingBluetoothOBEXService",
+      "source": "service",
+      "bundleIdentifier": "com.apple.BluetoothFileExchange",
+      "providerName": "Bluetooth File Exchange",
+      "inputTypes": [
+        "public.plain-text",
+        "NSFilenamesPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Show Map",
+      "id": "service:com.apple.services.showMap:runWorkflowAsService",
+      "source": "service",
+      "bundleIdentifier": "com.apple.services.showMap",
+      "providerName": "Show Map",
+      "inputTypes": [
+        "public.utf8-plain-text"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Speech/Start Speaking Text",
+      "id": "service:com.apple.speech.SpeechService:doSpeakSelectedText",
+      "source": "service",
+      "bundleIdentifier": "com.apple.speech.SpeechService",
+      "providerName": "Speech Service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Speech/Stop Speaking",
+      "id": "service:com.apple.speech.SpeechService:doStopSpeaking",
+      "source": "service",
+      "bundleIdentifier": "com.apple.speech.SpeechService",
+      "providerName": "Speech Service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Summarize",
+      "id": "service:com.apple.SummaryService:doSummarization",
+      "source": "service",
+      "bundleIdentifier": "com.apple.SummaryService",
+      "providerName": "Summary Service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "safety": "unknown"
+    },
+    {
+      "title": "Freeform",
+      "id": "sharing:title:freeform",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Freeform",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Journal",
+      "id": "sharing:title:journal",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Journal",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Mail",
+      "id": "sharing:com.apple.share.Mail.compose",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.share.Mail.compose",
+      "providerName": "Mail",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Messages",
+      "id": "sharing:com.apple.messages.ShareExtension",
+      "source": "sharing_service",
+      "bundleIdentifier": "com.apple.messages.ShareExtension",
+      "providerName": "Messages",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Notes",
+      "id": "sharing:title:notes",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Notes",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    },
+    {
+      "title": "Reminders",
+      "id": "sharing:title:reminders",
+      "source": "sharing_service",
+      "bundleIdentifier": null,
+      "providerName": "Reminders",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "safety": "external_share"
+    }
+  ]
+}

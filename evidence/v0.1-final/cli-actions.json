@@ -1,0 +1,178 @@
+{
+  "actions" : [
+    {
+      "explanation" : "macOS Service “Set Desktop Picture”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.apple.services.setDesktopPicture:runWorkflowAsService",
+      "inputTypes" : [
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.services.setDesktopPicture",
+        "name" : "Set Desktop Picture"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Set Desktop Picture"
+    },
+    {
+      "explanation" : "Sharing service “Add to Photos”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:com.apple.share.System.add-to-iphoto",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.share.System.add-to-iphoto",
+        "name" : "Add to Photos"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Add to Photos"
+    },
+    {
+      "explanation" : "Sharing service “AirDrop”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:com.apple.share.AirDrop.send",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.share.AirDrop.send",
+        "name" : "AirDrop"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "AirDrop"
+    },
+    {
+      "explanation" : "Sharing service “Freeform”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:freeform",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Freeform"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Freeform"
+    },
+    {
+      "explanation" : "Sharing service “Journal”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:journal",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Journal"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Journal"
+    },
+    {
+      "explanation" : "Sharing service “Messages”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:com.apple.messages.ShareExtension",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.messages.ShareExtension",
+        "name" : "Messages"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Messages"
+    },
+    {
+      "explanation" : "Sharing service “Notes”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:notes",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Notes"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Notes"
+    },
+    {
+      "explanation" : "Sharing service “Reminders”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:reminders",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Reminders"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Reminders"
+    },
+    {
+      "explanation" : "Sharing service “Simulator”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:simulator",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Simulator"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Simulator"
+    },
+    {
+      "explanation" : "Action extension “Markup” was discovered from installed extension metadata. This Mac does not expose a public call to run it.",
+      "id" : "action:com.apple.MarkupUI.Markup",
+      "inputTypes" : [
+        "public.jpeg"
+      ],
+      "invocation" : "unsupported",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.MarkupUI.Markup",
+        "name" : "Markup"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "action_extension",
+      "supportLevel" : "public_supported",
+      "title" : "Markup"
+    }
+  ],
+  "item" : {
+    "byteCount" : 1106,
+    "display" : "/Users/ross/spawn/rightclick-mcp/fixtures/sample.jpg",
+    "isDirectory" : false,
+    "kind" : "image",
+    "path" : "/Users/ross/spawn/rightclick-mcp/fixtures/sample.jpg",
+    "typeDescription" : "JPEG image",
+    "typeIdentifier" : "public.jpeg"
+  }
+}

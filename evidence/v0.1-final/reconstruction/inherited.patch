@@ -1,0 +1,161 @@
+diff --git a/Sources/RightClickCore/ServiceCatalog.swift b/Sources/RightClickCore/ServiceCatalog.swift
+index c9b3cc0..b1e034b 100644
+--- a/Sources/RightClickCore/ServiceCatalog.swift
++++ b/Sources/RightClickCore/ServiceCatalog.swift
+@@ -78,28 +78,13 @@ enum ServiceCatalog {
+         let utf16Bytes = readback.data(using: .utf16)?.count ?? 0
+         ExecutionLog.write("service payload declared=\(record.sendTypes.joined(separator: "|")) written=\(written.joined(separator: "|")) stringBytes=\(utf16Bytes) utf8Bytes=\(utf8Bytes) readback=\(readback)")
+         ExecutionLog.write("NSPerformService name=\(record.menuTitle) provider=\(record.bundleIdentifier ?? "") sendFileTypes=\(record.sendFileTypes) pasteboardTypes=\(written.joined(separator: ",")) main=\(Thread.isMainThread)")
+-        let box = ServiceCallBox()
+-        if Thread.isMainThread {
+-            box.finish(NSPerformService(record.menuTitle, pasteboard))
+-        } else {
+-            DispatchQueue.main.async {
+-                box.finish(NSPerformService(record.menuTitle, pasteboard))
+-            }
+-            let deadline = Date().addingTimeInterval(20)
+-            while !box.done && Date() < deadline {
+-                RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(0.05))
+-            }
+-        }
++        let invoked = invokeService(named: record.menuTitle, pasteboard: pasteboard, changeCountBefore: before)
++        let boxOK = invoked.ok
++        let after = invoked.changeCountAfter
+         let output = bestString(on: pasteboard)
+-        let after = pasteboard.changeCount
+-        if box.ok && after == before {
+-            // NSPerformService can return before the provider reads the pasteboard.
+-            ExecutionLog.write("service pasteboard retained after NSPerformService returned without a pasteboard result")
+-            retain(pasteboard, seconds: 10)
+-        }
+         pasteboard.releaseGlobally()
+         _ = before
+-        if !box.done {
++        if !invoked.finished {
+             ExecutionLog.write("NSPerformService timed out")
+             return RunResult(
+                 status: .failed,
+@@ -109,8 +94,8 @@ enum ServiceCatalog {
+                 supportLevel: .publicSupported
+             )
+         }
+-        ExecutionLog.write("NSPerformService returned \(box.ok) changeCount \(before)->\(after)")
+-        if !box.ok {
++        ExecutionLog.write("NSPerformService returned \(boxOK) changeCount \(before)->\(after)")
++        if !boxOK {
+             return RunResult(
+                 status: .failed,
+                 actionID: capabilityID,
+@@ -339,6 +324,84 @@ enum ServiceCatalog {
+         return Data("{\\rtf1\\ansi \(escaped)}".utf8)
+     }
+ 
++    private struct ServiceInvocation {
++        var ok = false
++        var finished = false
++        var changeCountAfter = 0
++    }
++
++    /// Runs NSPerformService on the main thread inside a running NSApplication.
++    /// A command-line run loop is not the same lifecycle as a native Services client.
++    private static func invokeService(named name: String, pasteboard: NSPasteboard, changeCountBefore: Int) -> ServiceInvocation {
++        let call = {
++            let ok = NSPerformService(name, pasteboard)
++            var invocation = ServiceInvocation()
++            invocation.ok = ok
++            invocation.finished = true
++            invocation.changeCountAfter = pasteboard.changeCount
++            if ok && invocation.changeCountAfter == changeCountBefore {
++                ExecutionLog.write("service pasteboard retained after NSPerformService returned without a pasteboard result")
++                retain(pasteboard, seconds: 10)
++            }
++            return invocation
++        }
++        if Thread.isMainThread && NSApplication.shared.isRunning {
++            return call()
++        }
++        let app = NSApplication.shared
++        if app.activationPolicy() == .prohibited {
++            app.setActivationPolicy(.accessory)
++        }
++        let box = ServiceCallBox()
++        var invocation = ServiceInvocation()
++        final class ServiceApplication: NSObject, NSApplicationDelegate {
++            var work: (() -> Void)?
++            func applicationDidFinishLaunching(_ notification: Notification) {
++                work?()
++            }
++        }
++        let starter = ServiceApplication()
++        starter.work = {
++            invocation = call()
++            box.finish(invocation.ok)
++            DispatchQueue.main.async {
++                app.stop(nil)
++                if let event = NSEvent.otherEvent(
++                    with: .applicationDefined,
++                    location: .zero,
++                    modifierFlags: [],
++                    timestamp: 0,
++                    windowNumber: 0,
++                    context: nil,
++                    subtype: 0,
++                    data1: 0,
++                    data2: 0
++                ) {
++                    app.postEvent(event, atStart: true)
++                }
++            }
++        }
++        let previousDelegate = app.delegate
++        app.delegate = starter
++        if Thread.isMainThread {
++            app.run()
++        } else {
++            DispatchQueue.main.async {
++                app.run()
++            }
++            let deadline = Date().addingTimeInterval(40)
++            while !box.done && Date() < deadline {
++                RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(0.05))
++            }
++        }
++        app.delegate = previousDelegate
++        if !box.done {
++            invocation.finished = false
++            invocation.changeCountAfter = pasteboard.changeCount
++        }
++        return invocation
++    }
++
+     private static func retain(_ pasteboard: NSPasteboard, seconds: TimeInterval) {
+         let deadline = Date().addingTimeInterval(seconds)
+         let hold = {
+diff --git a/evidence/execution/share.log b/evidence/execution/share.log
+index 8102ce8..f05aba1 100644
+--- a/evidence/execution/share.log
++++ b/evidence/execution/share.log
+@@ -84,3 +84,23 @@
+ 2026-10-04T23:49:44Z NSPerformService name=BBEdit/New BBEdit Document with Selection provider=com.barebones.bbedit sendFileTypes=[] pasteboardTypes=public.utf8-plain-text,NSStringPboardType,public.plain-text main=true
+ 2026-10-04T23:49:46Z service pasteboard retained after NSPerformService returned without a pasteboard result
+ 2026-10-04T23:49:56Z NSPerformService returned true changeCount 1->1
++2026-10-05T00:01:45Z service payload declared=public.rtf|public.utf8-plain-text written=public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=22 utf8Bytes=10 readback=RightClick
++2026-10-05T00:01:45Z NSPerformService name=Convert Text to Full Width provider=com.apple.ChineseTextConverterService sendFileTypes=[] pasteboardTypes=public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
++2026-10-05T00:01:45Z NSPerformService returned true changeCount 1->2
++2026-10-05T00:06:54Z service payload declared=public.url|public.rtf|public.utf8-plain-text|NSStringPboardType|public.plain-text written=public.url|CorePasteboardFlavorType 0x75726C20|dyn.ah62d4rv4gu8yc6durvwwaznwmuuha2pxsvw0e55bsmwca7d3sbwu|Apple URL pasteboard type|public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.plain-text|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=86 utf8Bytes=42 readback=https://example.com/rightclick-yojam-proof
++2026-10-05T00:06:54Z NSPerformService name=Open in Yojam provider=com.yojam.app sendFileTypes=[] pasteboardTypes=public.url,CorePasteboardFlavorType 0x75726C20,dyn.ah62d4rv4gu8yc6durvwwaznwmuuha2pxsvw0e55bsmwca7d3sbwu,Apple URL pasteboard type,public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.plain-text,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
++2026-10-05T00:10:30Z service payload declared=public.rtf|public.utf8-plain-text written=public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=22 utf8Bytes=10 readback=RightClick
++2026-10-05T00:10:30Z NSPerformService name=Convert Text to Full Width provider=com.apple.ChineseTextConverterService sendFileTypes=[] pasteboardTypes=public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
++2026-10-05T00:10:30Z NSPerformService returned true changeCount 1->2
++2026-10-05T00:15:16Z service payload declared=public.url|public.rtf|public.utf8-plain-text|NSStringPboardType|public.plain-text written=public.url|CorePasteboardFlavorType 0x75726C20|dyn.ah62d4rv4gu8yc6durvwwaznwmuuha2pxsvw0e55bsmwca7d3sbwu|Apple URL pasteboard type|public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.plain-text|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=86 utf8Bytes=42 readback=https://example.com/rightclick-yojam-proof
++2026-10-05T00:15:16Z NSPerformService name=Open in Yojam provider=com.yojam.app sendFileTypes=[] pasteboardTypes=public.url,CorePasteboardFlavorType 0x75726C20,dyn.ah62d4rv4gu8yc6durvwwaznwmuuha2pxsvw0e55bsmwca7d3sbwu,Apple URL pasteboard type,public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.plain-text,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
++2026-10-05T00:15:17Z service pasteboard retained after NSPerformService returned without a pasteboard result
++2026-10-05T00:15:27Z NSPerformService returned true changeCount 1->1
++2026-10-05T00:23:22Z service payload declared=public.rtf|public.utf8-plain-text written=public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=22 utf8Bytes=10 readback=RightClick
++2026-10-05T00:23:22Z NSPerformService name=Convert Text to Full Width provider=com.apple.ChineseTextConverterService sendFileTypes=[] pasteboardTypes=public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
++2026-10-05T00:25:49Z service payload declared=public.rtf|public.utf8-plain-text written=public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=22 utf8Bytes=10 readback=RightClick
++2026-10-05T00:25:49Z NSPerformService name=Convert Text to Full Width provider=com.apple.ChineseTextConverterService sendFileTypes=[] pasteboardTypes=public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
++2026-10-05T00:25:49Z NSPerformService returned true changeCount 1->2
++2026-10-05T00:26:07Z service payload declared=public.rtf|public.utf8-plain-text written=public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=22 utf8Bytes=10 readback=RightClick
++2026-10-05T00:26:07Z NSPerformService name=Convert Text to Full Width provider=com.apple.ChineseTextConverterService sendFileTypes=[] pasteboardTypes=public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
++2026-10-05T00:26:07Z NSPerformService returned true changeCount 1->2

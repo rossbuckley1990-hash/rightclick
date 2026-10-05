@@ -9,3 +9,6 @@ evidence/grok-negotiation/
 evidence/http-session-bug/
 *.pid
 dist/
+
+# Per-user Codex configuration is not a release artifact.
+.codex/

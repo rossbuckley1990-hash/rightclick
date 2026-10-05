@@ -1,0 +1,21 @@
+{
+  "client": "Cursor Agents",
+  "chatTitle": "RightClick client acceptance test",
+  "observedAtLocal": "2026-10-05 08:12 Europe/London",
+  "installedBinarySHA256": "78a2b82d4924b775a75e243a2e3a3f811b2c96414d5bd0e96d471f05a81c7db1",
+  "tools": [
+    "context_actions",
+    "context_run",
+    "context_run_status"
+  ],
+  "item": "RightClick",
+  "actionId": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+  "executionId": "13B35784-37FD-4C7E-9A19-71DE5FCBB9E5",
+  "runOutput": "ＲｉｇｈｔＣｌｉｃｋ",
+  "statusOutput": "ＲｉｇｈｔＣｌｉｃｋ",
+  "result": "PASS",
+  "evidence": "Actual Cursor client native accessibility output: Explored 3 tools, PASS, exact run/status outputs. Cursor connection log and RIGHTCLICK startup PID/hash tie calls to final installed server.",
+  "qualification": "Earlier first client test ran against a retained 0397749f... process; superseded by a forced configuration-path change and fresh server acceptance.",
+  "serverPID": 76589,
+  "serverStartedAtUTC": "2026-10-05T07:11:38Z"
+}
