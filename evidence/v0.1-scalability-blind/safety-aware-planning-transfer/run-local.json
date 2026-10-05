@@ -1,0 +1,17 @@
+{
+  "step1": {
+    "actionID": "service:com.lemkesoft.graphicconverter12:serviceConvertJPEG85",
+    "executionId": "593D1A71-91B1-4E05-B102-BE9B54C29EC1",
+    "state": "succeeded",
+    "message": "NSPerformService returned true",
+    "semanticNote": "JPEG 39311 bytes > PNG 20814; not chosen as transfer package"
+  },
+  "step2": {
+    "actionID": "service:net.pornel.ImageOptim:handleServices",
+    "executionId": "48C3E7A8-FE8E-4A6F-9253-903E3848D03F",
+    "state": "succeeded",
+    "message": "NSPerformService(\"ImageOptimize\") returned true",
+    "semanticNote": "PNG bytes unchanged (already optimal)"
+  },
+  "external_runs": []
+}

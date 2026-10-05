@@ -1,0 +1,12 @@
+{
+  "note": "Subset of context_actions on /tmp/RIGHTCLICK-SALES-linechart.png emphasizing transfer-relevant capabilities",
+  "local_prep": [
+    {"id": "service:com.lemkesoft.graphicconverter12:serviceConvertJPEG85", "title": "Convert to JPEG (Quality 85%) using GraphicConverter", "safety": "unknown", "executed": true, "outcome": "produced larger JPEG; rejected as transfer package"},
+    {"id": "service:net.pornel.ImageOptim:handleServices", "title": "ImageOptimize", "safety": "unknown", "executed": true, "outcome": "no further PNG shrink; kept PNG"}
+  ],
+  "external_share_discovered_not_executed": [
+    {"id": "service:ch.sudo.cyberduck:serviceUploadFileUrl", "title": "Cyberduck/Upload with Cyberduck", "safety": "external_share"},
+    {"id": "sharing:com.apple.share.AirDrop.send", "title": "AirDrop", "safety": "external_share"},
+    {"id": "sharing:com.apple.messages.ShareExtension", "title": "Messages", "safety": "external_share"}
+  ]
+}

@@ -17,6 +17,7 @@ Constraints honored: no provider-specific RIGHTCLICK code; no app-specific MCP; 
 | Privacy / xattr hygiene intent (remove synthetic xattr, image intact) | **SEMANTIC PASS** | [`privacy-intent/`](privacy-intent/) |
 | Compress intent (smaller JPEG, AI chooses capability; MCP meta-routing) | **SEMANTIC PASS** | [`compress-intent/`](compress-intent/) |
 | Multi-app composition (PNG→JPEG via GC, then ImageOptim compress) | **COMPOSITION + SEMANTIC PASS** | [`composition-png-jpeg-optim/`](composition-png-jpeg-optim/) |
+| Safety-aware planning (local prep + stop at external_share) | **PASS** (no unauthorized transfer) | [`safety-aware-planning-transfer/`](safety-aware-planning-transfer/) |
 | Dynamic substitution / capability restoration (A→B→A' ImageOptim) | **DYNAMIC SUBSTITUTION + RESTORATION PASS** | [`dynamic-substitution/`](dynamic-substitution/) |
 | Cross-domain CSV→chart (R → ImageOptim; intermediate rediscovery) | **CROSS-DOMAIN COMPOSITION + REDISCOVERY PASS** | [`cross-domain-csv-chart/`](cross-domain-csv-chart/) |
 
