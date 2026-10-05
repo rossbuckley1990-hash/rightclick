@@ -9,52 +9,305 @@ enum RightClickSetup {
         let message: String
     }
 
-    static func succeeded(discovery: String, cursorWritten: Bool, selfTestPassed: Bool) -> Bool {
-        discovery == "PASS" && cursorWritten && selfTestPassed
+    static func succeeded(
+        discovery: String,
+        cursorWritten: Bool,
+        openAIWritten: Bool = true,
+        stateWritten: Bool = true,
+        chatGPTBridgePrepared: Bool = true,
+        selfTestPassed: Bool
+    ) -> Bool {
+        discovery == "PASS"
+            && cursorWritten
+            && openAIWritten
+            && stateWritten
+            && chatGPTBridgePrepared
+            && selfTestPassed
     }
 
-    static func run(json: Bool) -> Int {
+    static func run(
+        args: [String] = [],
+        json: Bool
+    ) -> Int {
         let engine = CapabilityEngine()
         let report = engine.doctor()
         let rows = engine.providers()
-        let executable = executablePath()
-        let cursorResult = writeCursorConfig(executable: executable)
-        let selfTest = harmlessSelfTest(engine)
-        if json {
-            let payload: [String: String] = [
-                "version": RightClickVersion.current,
-                "macos": report.macosVersion,
-                "services": String(report.serviceRegistrationCount),
-                "actionExtensions": String(report.actionExtensionCount),
-                "providers": String(rows.count),
-                "cursor": cursorResult.message,
-                "cursorStatus": cursorResult.success ? "PASS" : "FAIL",
-                "selfTest": selfTest.message,
-                "selfTestStatus": selfTest.success ? "PASS" : "FAIL",
-                "servicesDiscovery": report.servicesDiscovery,
-                "mcpConnection": "NOT_VERIFIED",
-            ]
-            print(RightClickJSON.encode(payload))
-            return succeeded(discovery: report.servicesDiscovery, cursorWritten: cursorResult.success, selfTestPassed: selfTest.success) ? 0 : 1
+
+        let executable =
+            executablePath()
+
+        let cursorResult =
+            writeCursorConfig(
+                executable:
+                    executable
+            )
+
+        let openAIResult =
+            RightClickOpenAIPlugin
+                .install(
+                    executable:
+                        executable
+                )
+
+        let existingState =
+            try? RightClickSetupStateStore
+                .read()
+
+        let tunnelID =
+            requestedChatGPTTunnelID(
+                args: args,
+                existingState:
+                    existingState
+            )
+
+        let stateResult:
+            RightClickSetupStateReconciliation
+
+        let bridgeCheck: Check
+
+        if let tunnelID {
+            let prepared =
+                RightClickChatGPTBridgeInstaller
+                    .prepare(
+                        tunnelID:
+                            tunnelID,
+                        rightclickExecutable:
+                            executable
+                    )
+
+            bridgeCheck = Check(
+                success:
+                    prepared.success,
+                message:
+                    prepared.message
+            )
+
+            if let preparedState =
+                prepared.state
+            {
+                stateResult =
+                    preparedState
+            } else {
+                stateResult =
+                    RightClickSetupStateStore
+                        .reconcile(
+                            executable:
+                                executable
+                        )
+            }
+        } else {
+            stateResult =
+                RightClickSetupStateStore
+                    .reconcile(
+                        executable:
+                            executable
+                    )
+
+            bridgeCheck = Check(
+                success: true,
+                message:
+                    """
+                    ChatGPT bridge not configured.
+                    Pass --chatgpt-tunnel-id tunnel_<32 lowercase hex characters> to prepare it.
+                    """
+            )
         }
-        let sharingNote = report.sharingDiscovery == "PASS" ? "ready" : report.sharingDiscovery
-        print("""
-        RIGHTCLICK
 
-        Mac: \(sharingNote) (\(report.macosVersion))
-        Services: \(report.serviceRegistrationCount) registrations
-        Providers: \(rows.count)
-        Action extensions: \(report.actionExtensionCount)
-        MCP: \(cursorResult.success ? "stdio command configured; connection not verified" : "configuration failed")
+        let selfTest =
+            harmlessSelfTest(engine)
 
-        \(cursorResult.message)
+        let success =
+            succeeded(
+                discovery:
+                    report.servicesDiscovery,
+                cursorWritten:
+                    cursorResult.success,
+                openAIWritten:
+                    openAIResult.success,
+                stateWritten:
+                    stateResult.success,
+                chatGPTBridgePrepared:
+                    bridgeCheck.success,
+                selfTestPassed:
+                    selfTest.success
+            )
 
-        Test:
-        "What can my Mac do with ~/Desktop/example.jpg?"
+        if json {
+            let payload:
+                [String: String] = [
+                    "version":
+                        RightClickVersion.current,
 
-        Self-test: \(selfTest.message)
-        """)
-        return succeeded(discovery: report.servicesDiscovery, cursorWritten: cursorResult.success, selfTestPassed: selfTest.success) ? 0 : 1
+                    "macos":
+                        report.macosVersion,
+
+                    "services":
+                        String(
+                            report.serviceRegistrationCount
+                        ),
+
+                    "actionExtensions":
+                        String(
+                            report.actionExtensionCount
+                        ),
+
+                    "providers":
+                        String(rows.count),
+
+                    "cursor":
+                        cursorResult.message,
+
+                    "cursorStatus":
+                        cursorResult.success
+                        ? "PASS"
+                        : "FAIL",
+
+                    "openAI":
+                        openAIResult.message,
+
+                    "openAIStatus":
+                        openAIResult.success
+                        ? "PASS"
+                        : "FAIL",
+
+                    "setupState":
+                        stateResult.message,
+
+                    "setupStateStatus":
+                        stateResult.success
+                        ? "PASS"
+                        : "FAIL",
+
+                    "mcpToolSchemaSHA256":
+                        stateResult.current?
+                            .mcpToolSchemaSHA256
+                        ?? "",
+
+                    "chatGPTBridge":
+                        bridgeCheck.message,
+
+                    "chatGPTBridgeStatus":
+                        tunnelID == nil
+                        ? "NOT_CONFIGURED"
+                        : (
+                            bridgeCheck.success
+                            ? "PREPARED"
+                            : "FAIL"
+                        ),
+
+                    "chatGPTTunnelID":
+                        stateResult.current?
+                            .chatGPTTunnelID
+                        ?? "",
+
+                    "selfTest":
+                        selfTest.message,
+
+                    "selfTestStatus":
+                        selfTest.success
+                        ? "PASS"
+                        : "FAIL",
+
+                    "servicesDiscovery":
+                        report.servicesDiscovery,
+
+                    "mcpConnection":
+                        tunnelID != nil
+                            && bridgeCheck.success
+                        ? "PREPARED_NOT_ACTIVATED"
+                        : "NOT_VERIFIED",
+                ]
+
+            print(
+                RightClickJSON.encode(
+                    payload
+                )
+            )
+
+            return success ? 0 : 1
+        }
+
+        let sharingNote =
+            report.sharingDiscovery == "PASS"
+            ? "ready"
+            : report.sharingDiscovery
+
+        let bridgeStatus: String
+
+        if tunnelID == nil {
+            bridgeStatus =
+                "not configured"
+        } else if bridgeCheck.success {
+            bridgeStatus =
+                "prepared; not activated"
+        } else {
+            bridgeStatus =
+                "configuration failed"
+        }
+
+        print(
+            """
+            RIGHTCLICK
+
+            Mac: \(sharingNote) (\(report.macosVersion))
+            Services: \(report.serviceRegistrationCount) registrations
+            Providers: \(rows.count)
+            Action extensions: \(report.actionExtensionCount)
+            Local MCP: \(cursorResult.success ? "configured" : "configuration failed")
+            ChatGPT bridge: \(bridgeStatus)
+
+            \(cursorResult.message)
+
+            \(openAIResult.message)
+
+            \(bridgeCheck.message)
+
+            Setup state:
+            \(stateResult.message)
+
+            Test:
+            "What can my Mac do with ~/Desktop/example.jpg?"
+
+            Self-test: \(selfTest.message)
+            """
+        )
+
+        return success ? 0 : 1
+    }
+
+    static func requestedChatGPTTunnelID(
+        args: [String],
+        existingState:
+            RightClickSetupState?
+    ) -> String? {
+        if let explicit =
+            argumentValue(
+                args,
+                "--chatgpt-tunnel-id"
+            )
+        {
+            return explicit
+        }
+
+        return existingState?
+            .chatGPTTunnelID
+    }
+
+    static func argumentValue(
+        _ args: [String],
+        _ name: String
+    ) -> String? {
+        guard
+            let index =
+                args.firstIndex(
+                    of: name
+                ),
+            index + 1 < args.count
+        else {
+            return nil
+        }
+
+        return args[index + 1]
     }
 
     static func writeCursorConfig(

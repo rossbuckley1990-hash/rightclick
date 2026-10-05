@@ -78,7 +78,329 @@ final class SetupTests: XCTestCase {
             XCTAssertFalse(RightClickSetup.succeeded(discovery: discovery, cursorWritten: true, selfTestPassed: true))
         }
         XCTAssertFalse(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: false, selfTestPassed: true))
+        XCTAssertFalse(
+            RightClickSetup.succeeded(
+                discovery: "PASS",
+                cursorWritten: true,
+                openAIWritten: true,
+                stateWritten: false,
+                selfTestPassed: true
+            )
+        )
+        XCTAssertFalse(
+            RightClickSetup.succeeded(
+                discovery: "PASS",
+                cursorWritten: true,
+                openAIWritten: true,
+                stateWritten: true,
+                chatGPTBridgePrepared: false,
+                selfTestPassed: true
+            )
+        )
+        XCTAssertFalse(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, openAIWritten: false, selfTestPassed: true))
         XCTAssertFalse(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, selfTestPassed: false))
-        XCTAssertTrue(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, selfTestPassed: true))
+        XCTAssertTrue(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, openAIWritten: true, selfTestPassed: true))
+    }
+
+    func testOpenAIPluginUsesCurrentPersonalMarketplaceLayout() throws {
+        let home = FileManager.default.temporaryDirectory
+            .appendingPathComponent("rightclick-openai-plugin-\(UUID().uuidString)")
+
+        try FileManager.default.createDirectory(
+            at: home,
+            withIntermediateDirectories: true
+        )
+
+        defer {
+            try? FileManager.default.removeItem(at: home)
+        }
+
+        let result = RightClickOpenAIPlugin.install(
+            executable: "/example/with spaces/rightclick",
+            home: home
+        )
+
+        XCTAssertTrue(result.success, result.message)
+
+        let pluginRoot = home.appendingPathComponent("plugins/rightclick")
+
+        let manifestFile = pluginRoot
+            .appendingPathComponent(".codex-plugin/plugin.json")
+
+        XCTAssertTrue(
+            FileManager.default.fileExists(atPath: manifestFile.path)
+        )
+
+        let manifest = try XCTUnwrap(
+            JSONSerialization.jsonObject(
+                with: Data(contentsOf: manifestFile)
+            ) as? [String: Any]
+        )
+
+        XCTAssertEqual(
+            manifest["mcpServers"] as? String,
+            "./.mcp.json"
+        )
+
+        let mcpFile = pluginRoot.appendingPathComponent(".mcp.json")
+
+        let mcp = try XCTUnwrap(
+            JSONSerialization.jsonObject(
+                with: Data(contentsOf: mcpFile)
+            ) as? [String: Any]
+        )
+
+        let servers = try XCTUnwrap(
+            mcp["mcpServers"] as? [String: Any]
+        )
+
+        let rightclick = try XCTUnwrap(
+            servers["rightclick"] as? [String: Any]
+        )
+
+        XCTAssertEqual(rightclick["type"] as? String, "stdio")
+        XCTAssertEqual(rightclick["command"] as? String, "zsh")
+        XCTAssertEqual(
+            rightclick["args"] as? [String],
+            ["./bin/rightclick-mcp"]
+        )
+        XCTAssertEqual(rightclick["cwd"] as? String, ".")
+
+        let launcher = try String(
+            contentsOf: pluginRoot
+                .appendingPathComponent("bin/rightclick-mcp"),
+            encoding: .utf8
+        )
+
+        XCTAssertTrue(
+            launcher.contains(
+                "exec '/example/with spaces/rightclick' mcp"
+            )
+        )
+
+        let marketplaceFile = home
+            .appendingPathComponent(".agents/plugins/marketplace.json")
+
+        let marketplace = try XCTUnwrap(
+            JSONSerialization.jsonObject(
+                with: Data(contentsOf: marketplaceFile)
+            ) as? [String: Any]
+        )
+
+        let plugins = try XCTUnwrap(
+            marketplace["plugins"] as? [[String: Any]]
+        )
+
+        let entry = try XCTUnwrap(
+            plugins.first {
+                $0["name"] as? String == "rightclick"
+            }
+        )
+
+        let source = try XCTUnwrap(
+            entry["source"] as? [String: Any]
+        )
+
+        XCTAssertEqual(source["source"] as? String, "local")
+        XCTAssertEqual(
+            source["path"] as? String,
+            "./plugins/rightclick"
+        )
+    }
+
+    func testOpenAIPluginPreservesMarketplaceAndIsIdempotent() throws {
+        let home = FileManager.default.temporaryDirectory
+            .appendingPathComponent("rightclick-openai-idempotent-\(UUID().uuidString)")
+
+        let marketplaceFile = home
+            .appendingPathComponent(".agents/plugins/marketplace.json")
+
+        try FileManager.default.createDirectory(
+            at: marketplaceFile.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+
+        let original: [String: Any] = [
+            "name": "personal",
+            "interface": [
+                "displayName": "My Personal Plugins",
+            ],
+            "extra": [
+                "keep": true,
+            ],
+            "plugins": [
+                [
+                    "name": "other-plugin",
+                    "source": [
+                        "source": "local",
+                        "path": "./plugins/other-plugin",
+                    ],
+                    "policy": [
+                        "installation": "AVAILABLE",
+                        "authentication": "ON_INSTALL",
+                    ],
+                    "category": "Productivity",
+                ],
+            ],
+        ]
+
+        var originalData = try JSONSerialization.data(
+            withJSONObject: original,
+            options: [.prettyPrinted, .sortedKeys]
+        )
+        originalData.append(0x0A)
+        try originalData.write(to: marketplaceFile)
+
+        defer {
+            try? FileManager.default.removeItem(at: home)
+        }
+
+        let first = RightClickOpenAIPlugin.install(
+            executable: "/example/rightclick",
+            home: home
+        )
+
+        XCTAssertTrue(first.success, first.message)
+
+        let afterFirst = try Data(contentsOf: marketplaceFile)
+
+        let second = RightClickOpenAIPlugin.install(
+            executable: "/example/rightclick",
+            home: home
+        )
+
+        XCTAssertTrue(second.success, second.message)
+
+        let afterSecond = try Data(contentsOf: marketplaceFile)
+
+        XCTAssertEqual(afterFirst, afterSecond)
+
+        let root = try XCTUnwrap(
+            JSONSerialization.jsonObject(
+                with: afterSecond
+            ) as? [String: Any]
+        )
+
+        let extra = try XCTUnwrap(
+            root["extra"] as? [String: Any]
+        )
+
+        XCTAssertEqual(extra["keep"] as? Bool, true)
+
+        let plugins = try XCTUnwrap(
+            root["plugins"] as? [[String: Any]]
+        )
+
+        XCTAssertEqual(
+            plugins.filter {
+                $0["name"] as? String == "rightclick"
+            }.count,
+            1
+        )
+
+        XCTAssertEqual(
+            plugins.filter {
+                $0["name"] as? String == "other-plugin"
+            }.count,
+            1
+        )
+    }
+
+}
+
+extension SetupTests {
+    func testExplicitChatGPTTunnelIDIsSelected() {
+        let tunnelID =
+            "tunnel_0123456789abcdef0123456789abcdef"
+
+        XCTAssertEqual(
+            RightClickSetup
+                .requestedChatGPTTunnelID(
+                    args: [
+                        "--chatgpt-tunnel-id",
+                        tunnelID,
+                    ],
+                    existingState: nil
+                ),
+            tunnelID
+        )
+    }
+
+    func testStoredChatGPTTunnelIDIsReused() {
+        let stored =
+            "tunnel_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+        let state =
+            RightClickSetupState(
+                setupSchemaVersion: 1,
+                rightclickVersion: "test",
+                executablePath:
+                    "/example/rightclick",
+                executableSHA256:
+                    "binary",
+                mcpSchemaVersion: 1,
+                mcpToolSchemaSHA256:
+                    "contract",
+                chatGPTTunnelID:
+                    stored,
+                tunnelClientPath:
+                    "/example/tunnel-client",
+                tunnelClientVersion:
+                    "0.0.15",
+                bridgeConfigurationVersion:
+                    1
+            )
+
+        XCTAssertEqual(
+            RightClickSetup
+                .requestedChatGPTTunnelID(
+                    args: [],
+                    existingState:
+                        state
+                ),
+            stored
+        )
+    }
+
+    func testExplicitTunnelIDOverridesStoredIdentity() {
+        let stored =
+            "tunnel_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+        let explicit =
+            "tunnel_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+
+        let state =
+            RightClickSetupState(
+                setupSchemaVersion: 1,
+                rightclickVersion: "test",
+                executablePath:
+                    "/example/rightclick",
+                executableSHA256:
+                    "binary",
+                mcpSchemaVersion: 1,
+                mcpToolSchemaSHA256:
+                    "contract",
+                chatGPTTunnelID:
+                    stored,
+                tunnelClientPath:
+                    "/example/tunnel-client",
+                tunnelClientVersion:
+                    "0.0.15",
+                bridgeConfigurationVersion:
+                    1
+            )
+
+        XCTAssertEqual(
+            RightClickSetup
+                .requestedChatGPTTunnelID(
+                    args: [
+                        "--chatgpt-tunnel-id",
+                        explicit,
+                    ],
+                    existingState:
+                        state
+                ),
+            explicit
+        )
     }
 }

@@ -137,7 +137,7 @@ final class StdioMCPServer {
             capabilities: .init(tools: .init(listChanged: false))
         )
         await registerTools(on: server, engine: engine)
-        let transport = StdioTransport()
+        let transport = ModernMCPStdioTransport()
         try await server.start(transport: transport)
         try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
     }
@@ -467,5 +467,30 @@ private extension Value {
     var boolValue: Bool? {
         if case .bool(let value) = self { return value }
         return nil
+    }
+}
+
+public enum RightClickMCPContract {
+    public static let schemaVersion = 1
+
+    public static func toolSchemaSHA256() -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+
+        guard let data = try? encoder.encode(rightClickTools()) else {
+            return ""
+        }
+
+        let digest = SHA256.hash(data: data)
+
+        return digest
+            .map { String(format: "%02x", $0) }
+            .joined()
+    }
+
+    public static func toolNames() -> [String] {
+        rightClickTools()
+            .map(\.name)
+            .sorted()
     }
 }
