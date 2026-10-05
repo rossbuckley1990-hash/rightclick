@@ -14,6 +14,7 @@ Constraints honored: no provider-specific RIGHTCLICK code; no app-specific MCP; 
 | Capability scalability census (16 fixture types) | **DONE** — 59 unique caps, 39 providers | [`census/`](census/) |
 | Four-app blind discovery (apps installed without naming) | **PASS discovery** — Acorn, Cyberduck, GraphicConverter 12 applicable; Keka providers-only | [`four-app-blind/`](four-app-blind/) |
 | Image conversion intent (PNG→JPEG, AI chooses capability) | **SEMANTIC PASS** | [`png2jpeg-intent/`](png2jpeg-intent/) |
+| Privacy / xattr hygiene intent (remove synthetic xattr, image intact) | **SEMANTIC PASS** | [`privacy-intent/`](privacy-intent/) |
 
 Related earlier v0.1 semantic / acquisition evidence (already in repo):
 - `evidence/v0.1-coteditor/`
