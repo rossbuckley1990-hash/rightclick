@@ -83,7 +83,13 @@ public final class CapabilityEngine {
         throw RightClickError("Capability \(id) was not found. Sharing capabilities only exist in the context of an item.")
     }
 
-    public func run(id: String, item raw: String, confirmed: Bool, expectedOutput: String? = nil) throws -> RunResult {
+    public func run(
+        id: String,
+        item raw: String,
+        confirmed: Bool,
+        expectedOutput: String? = nil,
+        verification: VerificationSpec? = nil
+    ) throws -> RunResult {
         let (item, capabilities) = try capabilities(for: raw)
         guard let capability = capabilities.first(where: { $0.id == id || $0.title == id }) else {
             return RunResult(status: .unavailable, actionID: id, message: "No discovered capability matches \(id) for this item.")
@@ -124,7 +130,37 @@ public final class CapabilityEngine {
             let final = ExecutionStore.shared.get(started.executionId) ?? started
             return runResult(from: final)
         case .service:
-            return ServiceCatalog.perform(capabilityID: capability.id, item: item, expectedOutput: expectedOutput)
+            let before = try verification.map {
+                _ in try OutcomeVerifier.snapshot(
+                    item: item
+                )
+            }
+
+            // Generic verification is authoritative when supplied.
+            // Preserve the legacy exact-output path only when no
+            // VerificationSpec was supplied.
+            let providerResult = ServiceCatalog.perform(
+                capabilityID: capability.id,
+                item: item,
+                expectedOutput:
+                    verification == nil
+                    ? expectedOutput
+                    : nil
+            )
+
+            guard
+                let verification,
+                let before
+            else {
+                return providerResult
+            }
+
+            return try applyingVerification(
+                verification,
+                before: before,
+                item: item,
+                to: providerResult
+            )
         case .actionExtension, .system:
             return RunResult(
                 status: .unsupported,
@@ -138,7 +174,13 @@ public final class CapabilityEngine {
 
     /// Starts an execution and returns without waiting for an asynchronous share callback.
     /// `NSPerformService` is synchronous, so its Boolean result is stored before return.
-    public func begin(id: String, item raw: String, confirmed: Bool, expectedOutput: String? = nil) throws -> ExecutionRecord {
+    public func begin(
+        id: String,
+        item raw: String,
+        confirmed: Bool,
+        expectedOutput: String? = nil,
+        verification: VerificationSpec? = nil
+    ) throws -> ExecutionRecord {
         let executionId = UUID().uuidString
         let (item, capabilities) = try capabilities(for: raw)
         guard let capability = capabilities.first(where: { $0.id == id || $0.title == id }) else {
@@ -178,7 +220,36 @@ public final class CapabilityEngine {
             }
             return ExecutionStore.shared.get(executionId) ?? record
         case .service:
-            let result = ServiceCatalog.perform(capabilityID: capability.id, item: item, expectedOutput: expectedOutput)
+            let before = try verification.map {
+                _ in try OutcomeVerifier.snapshot(
+                    item: item
+                )
+            }
+
+            let providerResult = ServiceCatalog.perform(
+                capabilityID: capability.id,
+                item: item,
+                expectedOutput:
+                    verification == nil
+                    ? expectedOutput
+                    : nil
+            )
+
+            let result: RunResult
+
+            if let verification,
+               let before
+            {
+                result = try applyingVerification(
+                    verification,
+                    before: before,
+                    item: item,
+                    to: providerResult
+                )
+            } else {
+                result = providerResult
+            }
+
             let record = ExecutionRecord(
                 executionId: executionId,
                 actionId: capability.id,
@@ -186,7 +257,8 @@ public final class CapabilityEngine {
                 state: executionState(for: result.status),
                 message: result.message,
                 output: result.output,
-                evidence: result.evidence
+                evidence: result.evidence,
+                verification: result.verification
             )
             ExecutionStore.shared.put(record)
             return record
@@ -232,8 +304,74 @@ public final class CapabilityEngine {
             title: record.title,
             message: record.message,
             output: record.output,
-            evidence: record.evidence
+            evidence: record.evidence,
+            verification: record.verification
         )
+    }
+
+    private func applyingVerification(
+        _ spec: VerificationSpec,
+        before: OutcomeSnapshot,
+        item: ContentItem,
+        to providerResult: RunResult
+    ) throws -> RunResult {
+        // A postcondition can only adjudicate semantic outcome after
+        // the invocation itself reached an accepted/verified boundary.
+        guard
+            providerResult.status == .accepted
+            || providerResult.status == .verified
+        else {
+            return providerResult
+        }
+
+        let verification =
+            try OutcomeVerifier.verifyEventually(
+                spec: spec,
+                item: item,
+                before: before,
+                returnedText: providerResult.output
+            )
+
+        var result = providerResult
+        result.verification = verification
+
+        switch verification.status {
+        case .verifiedSuccess:
+            result.status = .verified
+            result.message =
+                "Caller-declared generic postconditions verified."
+
+            result.evidence = OutcomeEvidence(
+                type: "generic_postcondition",
+                boundary:
+                    "Evaluated provider-independent caller-declared postconditions against observable state after invocation.",
+                outcomeVerified: true
+            )
+
+        case .verifiedFailure:
+            result.status = .failed
+            result.message =
+                "Caller-declared generic postconditions were evaluated and at least one required predicate failed."
+
+            result.evidence = OutcomeEvidence(
+                type: "generic_postcondition",
+                boundary:
+                    "Evaluated provider-independent caller-declared postconditions against observable state after invocation. The intended outcome was not established.",
+                outcomeVerified: false
+            )
+
+        case .unverified:
+            result.status = .accepted
+            result.message =
+                "Provider accepted the request, but the caller-declared generic postconditions could not be fully verified."
+
+        case .abstained:
+            result.status = .accepted
+            result.message =
+                "Provider accepted the request; outcome verification abstained."
+        }
+
+        return result
     }
 
     public func refresh() {

@@ -56,10 +56,16 @@ public struct VerificationPredicate: Codable, Sendable, Equatable {
 public struct VerificationSpec: Codable, Sendable, Equatable {
     public var predicates: [VerificationPredicate]
 
+    /// Maximum time to wait for declared postconditions to become true.
+    /// Nil or zero performs one immediate observation.
+    public var timeoutMilliseconds: Int?
+
     public init(
-        predicates: [VerificationPredicate]
+        predicates: [VerificationPredicate],
+        timeoutMilliseconds: Int? = nil
     ) {
         self.predicates = predicates
+        self.timeoutMilliseconds = timeoutMilliseconds
     }
 }
 
@@ -249,6 +255,73 @@ public enum OutcomeVerifier {
             status: .unverified,
             predicates: results
         )
+    }
+
+    public static func verifyEventually(
+        spec: VerificationSpec,
+        item: ContentItem,
+        before: OutcomeSnapshot,
+        returnedText: String?
+    ) throws -> OutcomeVerification {
+        let requested = spec.timeoutMilliseconds ?? 0
+
+        // Agent-supplied waits are bounded. RIGHTCLICK must never
+        // become an unbounded sleep primitive.
+        let timeoutMilliseconds = max(
+            0,
+            min(requested, 60_000)
+        )
+
+        let deadline = Date().addingTimeInterval(
+            Double(timeoutMilliseconds) / 1000.0
+        )
+
+        var latest = try verify(
+            spec: spec,
+            item: item,
+            before: before,
+            returnedText: returnedText
+        )
+
+        guard timeoutMilliseconds > 0 else {
+            return latest
+        }
+
+        while latest.status != .verifiedSuccess,
+              Date() < deadline
+        {
+            let next = min(
+                deadline,
+                Date().addingTimeInterval(0.10)
+            )
+
+            if Thread.isMainThread {
+                _ = RunLoop.current.run(
+                    mode: .default,
+                    before: next
+                )
+            } else {
+                let interval = max(
+                    0,
+                    next.timeIntervalSinceNow
+                )
+
+                if interval > 0 {
+                    Thread.sleep(
+                        forTimeInterval: interval
+                    )
+                }
+            }
+
+            latest = try verify(
+                spec: spec,
+                item: item,
+                before: before,
+                returnedText: returnedText
+            )
+        }
+
+        return latest
     }
 
     private static func evaluate(
