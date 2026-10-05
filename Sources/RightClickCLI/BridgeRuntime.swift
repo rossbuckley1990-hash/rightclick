@@ -205,6 +205,8 @@ enum RightClickBridgeRuntime {
         environment: [String: String] =
             ProcessInfo.processInfo.environment,
         state: RightClickSetupState? = nil,
+        rightclickExecutablePath: String =
+            RightClickSetup.executablePath(),
         fallbackPaths: [String] = [
             "/opt/homebrew/bin/tunnel-client",
             "/usr/local/bin/tunnel-client",
@@ -218,6 +220,14 @@ enum RightClickBridgeRuntime {
         {
             candidates.append(override)
         }
+
+        candidates.append(
+            contentsOf:
+                bundledTunnelClientCandidates(
+                    rightclickExecutablePath:
+                        rightclickExecutablePath
+                )
+        )
 
         if let stored =
             state?.tunnelClientPath,
@@ -247,6 +257,65 @@ enum RightClickBridgeRuntime {
         }
 
         return nil
+    }
+
+    static func bundledTunnelClientCandidates(
+        rightclickExecutablePath: String
+    ) -> [String] {
+        let executable = URL(
+            fileURLWithPath:
+                rightclickExecutablePath
+        )
+
+        var candidates: [String] = []
+
+        // Homebrew's stable bin symlink:
+        // /opt/homebrew/bin/rightclick
+        //   -> /opt/homebrew/opt/rightclick/libexec/tunnel-client
+        let parent =
+            executable
+                .deletingLastPathComponent()
+
+        if parent.lastPathComponent == "bin" {
+            let prefix =
+                parent
+                    .deletingLastPathComponent()
+
+            candidates.append(
+                prefix
+                    .appendingPathComponent(
+                        "opt/rightclick/libexec/tunnel-client"
+                    )
+                    .path
+            )
+        }
+
+        // Direct Cellar execution:
+        // .../Cellar/rightclick/<version>/bin/rightclick
+        //   -> .../<version>/libexec/tunnel-client
+        let resolved =
+            executable
+                .resolvingSymlinksInPath()
+
+        let versionRoot =
+            resolved
+                .deletingLastPathComponent()
+                .deletingLastPathComponent()
+
+        candidates.append(
+            versionRoot
+                .appendingPathComponent(
+                    "libexec/tunnel-client"
+                )
+                .path
+        )
+
+        return Array(
+            NSOrderedSet(
+                array: candidates
+            )
+        ) as? [String]
+            ?? candidates
     }
 
     static func childConfiguration(

@@ -193,3 +193,137 @@ final class BridgeRuntimeTests:
         )
     }
 }
+
+extension BridgeRuntimeTests {
+    func testBundledTunnelClientIsPreferredOverStoredRuntime()
+        throws
+    {
+        let root =
+            FileManager.default
+                .temporaryDirectory
+                .appendingPathComponent(
+                    "rightclick-bundled-\(UUID().uuidString)",
+                    isDirectory: true
+                )
+
+        defer {
+            try? FileManager.default
+                .removeItem(at: root)
+        }
+
+        let prefix =
+            root.appendingPathComponent(
+                "homebrew",
+                isDirectory: true
+            )
+
+        let bin =
+            prefix.appendingPathComponent(
+                "bin",
+                isDirectory: true
+            )
+
+        let bundled =
+            prefix.appendingPathComponent(
+                "opt/rightclick/libexec/tunnel-client"
+            )
+
+        try FileManager.default
+            .createDirectory(
+                at:
+                    bundled
+                        .deletingLastPathComponent(),
+                withIntermediateDirectories:
+                    true
+            )
+
+        try FileManager.default
+            .createDirectory(
+                at: bin,
+                withIntermediateDirectories:
+                    true
+            )
+
+        try Data(
+            "#!/bin/sh\nexit 0\n".utf8
+        ).write(
+            to: bundled
+        )
+
+        try FileManager.default
+            .setAttributes(
+                [.posixPermissions: 0o755],
+                ofItemAtPath:
+                    bundled.path
+            )
+
+        let stale =
+            root.appendingPathComponent(
+                "old-tunnel-client"
+            )
+
+        try Data(
+            "#!/bin/sh\nexit 0\n".utf8
+        ).write(
+            to: stale
+        )
+
+        try FileManager.default
+            .setAttributes(
+                [.posixPermissions: 0o755],
+                ofItemAtPath:
+                    stale.path
+            )
+
+        let state =
+            RightClickSetupState(
+                setupSchemaVersion: 1,
+                rightclickVersion: "old",
+                executablePath:
+                    "/old/rightclick",
+                executableSHA256:
+                    "old",
+                mcpSchemaVersion: 1,
+                mcpToolSchemaSHA256:
+                    "old",
+                chatGPTTunnelID: nil,
+                tunnelClientPath:
+                    stale.path,
+                tunnelClientVersion:
+                    "0.0.15",
+                bridgeConfigurationVersion:
+                    1
+            )
+
+        let resolved =
+            RightClickBridgeRuntime
+                .resolveTunnelClient(
+                    environment: [:],
+                    state: state,
+                    rightclickExecutablePath:
+                        bin
+                            .appendingPathComponent(
+                                "rightclick"
+                            )
+                            .path,
+                    fallbackPaths: []
+                )
+
+        XCTAssertEqual(
+            resolved,
+            bundled.path
+        )
+    }
+
+    func testBundledCandidateTracksStableHomebrewPrefix() {
+        XCTAssertEqual(
+            RightClickBridgeRuntime
+                .bundledTunnelClientCandidates(
+                    rightclickExecutablePath:
+                        "/opt/homebrew/bin/rightclick"
+                )
+                .first,
+            "/opt/homebrew/opt/rightclick/libexec/tunnel-client"
+        )
+    }
+}

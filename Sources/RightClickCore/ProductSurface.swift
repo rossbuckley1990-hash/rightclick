@@ -1,7 +1,7 @@
 import Foundation
 
 public enum RightClickVersion {
-    public static let current = "0.1.1"
+    public static let current = "0.2.0"
 }
 
 public enum RightClickPaths {
