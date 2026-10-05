@@ -1,0 +1,49 @@
+# RIGHTCLICK
+
+> Install an app. Your AI learns what it can do.
+
+RIGHTCLICK is an Apache-2.0 macOS tool (Apple Silicon, macOS 14+) that reflects existing native capability contracts — Services, sharing services, Finder Action extension metadata — into a contextual capability layer for AI clients over MCP and a matching CLI.
+
+## Install
+
+```bash
+brew install rossbuckley1990-hash/tap/rightclick
+rightclick setup
+```
+
+Tap: https://github.com/rossbuckley1990-hash/homebrew-tap
+Release: https://github.com/rossbuckley1990-hash/rightclick/releases/tag/v0.1.0
+
+## MCP tools (same engine as CLI)
+
+- context_inspect
+- context_actions
+- context_explain
+- context_run (requires confirmed:true after human confirmation)
+- context_run_status
+- context_providers
+
+stdio: `rightclick mcp`
+Authenticated Streamable HTTP: `rightclick serve` on loopback (prints a bearer; keep private).
+
+## Proof (v0.1)
+
+Ordinary BBEdit installation changed one plain-text query from 36 capabilities (0 third-party) to 41 (5 BBEdit) with zero BBEdit-specific acquisition code. Generic invocation of service:com.barebones.bbedit:openSelectionService produced a document with the exact fixture text. See docs/BBEDIT-PROOF.md.
+
+## Hard limits (do not invent around these)
+
+- Not every installed app exposes a compatible contract.
+- NSPerformService returning true means acceptance, not semantic success.
+- Yojam acquisition/invocation pass; browser semantic result is a documented limitation (docs/YOJAM-LIMITATION.md).
+- Capability engine is frozen for v0.1.
+- Execution status is in-process memory only.
+
+## Key docs
+
+- README.md
+- docs/BBEDIT-PROOF.md
+- docs/YOJAM-LIMITATION.md
+- docs/V0.1_COMPLETION_REPORT.md
+- docs/RELEASE.md
+- SECURITY.md
+- examples/mcp-client/README.md

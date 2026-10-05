@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RIGHTCLICK — Install an app. Your AI learns what it can do.</title>
+  <meta name="description" content="Reflect macOS app capabilities into MCP for AI. No per-app integrations." />
+  <meta property="og:title" content="RIGHTCLICK" />
+  <meta property="og:description" content="Install an app. Your AI learns what it can do." />
+  <meta property="og:image" content="../assets/og.svg" />
+  <link rel="icon" href="../assets/og.svg" />
+  <style>
+    :root { color-scheme: dark; --bg:#070708; --fg:#f4f4f5; --muted:#a1a1aa; --line:#27272a; --accent:#fafafa; }
+    * { box-sizing: border-box; }
+    body { margin:0; font:16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; background:var(--bg); color:var(--fg); }
+    main { max-width: 720px; margin: 0 auto; padding: 64px 24px 96px; }
+    h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.04em; margin: 0 0 8px; }
+    .tag { color: var(--muted); font-size: 1.125rem; margin-bottom: 32px; }
+    pre { background:#111113; border:1px solid var(--line); border-radius:12px; padding:16px 18px; overflow:auto; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.92em; }
+    .grid { display:grid; gap:12px; margin: 28px 0; }
+    .card { border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#0c0c0e; }
+    .card strong { display:block; margin-bottom:4px; }
+    a { color: var(--accent); }
+    .muted { color: var(--muted); }
+    footer { margin-top: 48px; color: var(--muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>RIGHTCLICK</h1>
+    <p class="tag">Install an app. Your AI learns what it can do.</p>
+    <pre><code>brew install rossbuckley1990-hash/tap/rightclick
+rightclick setup</code></pre>
+    <div class="grid">
+      <div class="card"><strong>Reflect, don’t integrate</strong><span class="muted">Ordinary BBEdit install: 36→41 capabilities, 5 BBEdit actions, zero provider-specific code.</span></div>
+      <div class="card"><strong>MCP + CLI, one engine</strong><span class="muted">Six tools: inspect, actions, explain, run, run_status, providers.</span></div>
+      <div class="card"><strong>Honest outcomes</strong><span class="muted">Acceptance ≠ semantic success. Confirmation for risky actions.</span></div>
+    </div>
+    <p><a href="https://github.com/rossbuckley1990-hash/rightclick">GitHub</a> · <a href="https://github.com/rossbuckley1990-hash/homebrew-tap">Homebrew tap</a> · <a href="https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/BBEDIT-PROOF.md">BBEdit proof</a></p>
+    <footer>Apache-2.0 · Apple Silicon · macOS 14+</footer>
+  </main>
+</body>
+</html>
