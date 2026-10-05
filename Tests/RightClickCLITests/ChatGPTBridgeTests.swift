@@ -210,6 +210,7 @@ final class ChatGPTBridgeTests: XCTestCase {
             "tunnel_short",
             "TUNNEL_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
             "tunnel_Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "tunnel_gggggggggggggggggggggggggggggggg",
             "other_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         ] {
             XCTAssertThrowsError(

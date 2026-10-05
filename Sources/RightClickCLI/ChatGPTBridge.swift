@@ -287,7 +287,7 @@ enum RightClickChatGPTBridge {
             let value = $0.value
 
             return (value >= 48 && value <= 57)
-                || (value >= 97 && value <= 122)
+                || (value >= 97 && value <= 102)
         }
 
         guard valid else {

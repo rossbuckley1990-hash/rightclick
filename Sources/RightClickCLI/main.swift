@@ -48,7 +48,10 @@ struct CLI {
             print(RightClickVersion.current)
             return 0
         case "setup":
-            return RightClickSetup.run(json: json)
+            return RightClickSetup.run(
+                args: rest,
+                json: json
+            )
         case "bridge":
             return RightClickBridgeCLI.run(rest)
         case "auth":
@@ -239,7 +242,7 @@ struct CLI {
         rightclick status <execution-id>
         rightclick providers
         rightclick refresh
-        rightclick setup
+        rightclick setup [--chatgpt-tunnel-id tunnel_...]
         rightclick bridge run
         rightclick bridge key set|status|delete
         rightclick serve [--tunnel] [--port 8765]

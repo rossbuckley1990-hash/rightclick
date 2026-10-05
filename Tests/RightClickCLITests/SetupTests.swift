@@ -87,6 +87,16 @@ final class SetupTests: XCTestCase {
                 selfTestPassed: true
             )
         )
+        XCTAssertFalse(
+            RightClickSetup.succeeded(
+                discovery: "PASS",
+                cursorWritten: true,
+                openAIWritten: true,
+                stateWritten: true,
+                chatGPTBridgePrepared: false,
+                selfTestPassed: true
+            )
+        )
         XCTAssertFalse(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, openAIWritten: false, selfTestPassed: true))
         XCTAssertFalse(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, selfTestPassed: false))
         XCTAssertTrue(RightClickSetup.succeeded(discovery: "PASS", cursorWritten: true, openAIWritten: true, selfTestPassed: true))
@@ -296,4 +306,101 @@ final class SetupTests: XCTestCase {
         )
     }
 
+}
+
+extension SetupTests {
+    func testExplicitChatGPTTunnelIDIsSelected() {
+        let tunnelID =
+            "tunnel_0123456789abcdef0123456789abcdef"
+
+        XCTAssertEqual(
+            RightClickSetup
+                .requestedChatGPTTunnelID(
+                    args: [
+                        "--chatgpt-tunnel-id",
+                        tunnelID,
+                    ],
+                    existingState: nil
+                ),
+            tunnelID
+        )
+    }
+
+    func testStoredChatGPTTunnelIDIsReused() {
+        let stored =
+            "tunnel_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+        let state =
+            RightClickSetupState(
+                setupSchemaVersion: 1,
+                rightclickVersion: "test",
+                executablePath:
+                    "/example/rightclick",
+                executableSHA256:
+                    "binary",
+                mcpSchemaVersion: 1,
+                mcpToolSchemaSHA256:
+                    "contract",
+                chatGPTTunnelID:
+                    stored,
+                tunnelClientPath:
+                    "/example/tunnel-client",
+                tunnelClientVersion:
+                    "0.0.15",
+                bridgeConfigurationVersion:
+                    1
+            )
+
+        XCTAssertEqual(
+            RightClickSetup
+                .requestedChatGPTTunnelID(
+                    args: [],
+                    existingState:
+                        state
+                ),
+            stored
+        )
+    }
+
+    func testExplicitTunnelIDOverridesStoredIdentity() {
+        let stored =
+            "tunnel_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+        let explicit =
+            "tunnel_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+
+        let state =
+            RightClickSetupState(
+                setupSchemaVersion: 1,
+                rightclickVersion: "test",
+                executablePath:
+                    "/example/rightclick",
+                executableSHA256:
+                    "binary",
+                mcpSchemaVersion: 1,
+                mcpToolSchemaSHA256:
+                    "contract",
+                chatGPTTunnelID:
+                    stored,
+                tunnelClientPath:
+                    "/example/tunnel-client",
+                tunnelClientVersion:
+                    "0.0.15",
+                bridgeConfigurationVersion:
+                    1
+            )
+
+        XCTAssertEqual(
+            RightClickSetup
+                .requestedChatGPTTunnelID(
+                    args: [
+                        "--chatgpt-tunnel-id",
+                        explicit,
+                    ],
+                    existingState:
+                        state
+                ),
+            explicit
+        )
+    }
 }
