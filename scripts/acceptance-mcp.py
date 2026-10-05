@@ -17,6 +17,11 @@ import uuid
 
 binary = str(pathlib.Path(sys.argv[1]).resolve())
 out = pathlib.Path(sys.argv[2])
+
+expected_version = subprocess.check_output(
+    [binary, "version"],
+    text=True,
+).strip()
 out.mkdir(parents=True, exist_ok=True)
 records = []
 expected_tools = {"context_inspect", "context_actions", "context_run", "context_run_status", "context_explain", "context_providers"}
@@ -36,7 +41,7 @@ def payload(reply):
 
 def exercise(request, label):
     init = request(message(1, "initialize", {"protocolVersion": "2025-03-26", "capabilities": {}, "clientInfo": {"name": "rightclick-acceptance", "version": "1"}}))
-    assert init["result"]["serverInfo"]["version"] == "0.1.1", init
+    assert init["result"]["serverInfo"]["version"] == expected_version, init
     tools = request(message(2, "tools/list"))
     assert {t["name"] for t in tools["result"]["tools"]} == expected_tools
     inspected = payload(request(message(7, "tools/call", {"name": "context_inspect", "arguments": {"item": "RightClick"}})))

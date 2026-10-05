@@ -1,9 +1,16 @@
 class Rightclick < Formula
   desc "Install an app. Your AI learns what it can do"
   homepage "https://github.com/rossbuckley1990-hash/rightclick"
-  url "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.1.1/rightclick-0.1.1-source.tar.gz"
-  sha256 "eae0e789c97f32302b0f11a9535defbb168a469ae644fddd4d6b13907c378ae5"
+  url "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.2.0/rightclick-0.2.0-source.tar.gz"
+  sha256 "3fa4a4914c0e5985f0c2ee353604dbe120f75bd9551269be8901a4a8e5fc85e7"
   license "Apache-2.0"
+
+  # RIGHTCLICK owns this compatibility pin.
+  # ChatGPT's modern tunnel path requires OpenAI tunnel-client >= 0.0.15.
+  resource "openai-tunnel-client" do
+    url "https://github.com/openai/tunnel-client/releases/download/v0.0.15/tunnel-client-v0.0.15-darwin-arm64.zip"
+    sha256 "b2cae3aa9df45b4c2fe9b1d700ebacce39f9feb6a6b46b86e6499f9a51bf72ff"
+  end
 
   depends_on arch: :arm64
   depends_on macos: :sonoma
@@ -43,6 +50,23 @@ class Rightclick < Formula
            "-Xlinker", "-oso_prefix", "-Xlinker", "#{buildpath}/"
     bin.install ".build/release/rightclick"
     (pkgshare/"ThirdPartyLicenses").install Dir["packaging/ThirdPartyLicenses/*"]
+
+    resource("openai-tunnel-client").stage do
+      libexec.install(
+        "tunnel-client",
+        "cloudflared",
+        "cloudflared-manifest.json"
+      )
+
+      tunnel_share = pkgshare/"OpenAITunnelClient"
+
+      tunnel_share.install(
+        "LICENSE",
+        "NOTICE",
+        "tunnel-client-v0.0.15-darwin-arm64-licenses.txt",
+        "tunnel-client-v0.0.15-darwin-arm64.spdx.json"
+      )
+    end
   end
 
   test do
@@ -52,5 +76,12 @@ class Rightclick < Formula
     assert_equal "RightClick", text.fetch("text")
     assert_equal "public.plain-text", text.fetch("typeIdentifier")
     assert_equal 10, text.fetch("byteCount")
+
+    assert_predicate libexec/"tunnel-client", :executable?
+
+    assert_match(
+      "0.0.15",
+      shell_output("#{libexec}/tunnel-client --version")
+    )
   end
 end
