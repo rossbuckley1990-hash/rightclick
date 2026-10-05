@@ -1,0 +1,510 @@
+test-bot (macos-26)	Set up job	﻿2026-10-05T08:59:43.9707440Z Current runner version: '2.337.0'
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9726800Z ##[group]Runner Image Provisioner
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9727590Z Hosted Compute Agent
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9728070Z Version: 20260828.587
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9728560Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9729160Z Build Date: 2026-08-28T16:44:25Z
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9729900Z Worker ID: {dbdc28da-55da-407a-8db3-b3cd3193612a}
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9730400Z Azure Region: westus
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9730790Z ##[endgroup]
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9731890Z ##[group]Operating System
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9732310Z macOS
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9732720Z 26.6.2
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9733120Z 25G83
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9733560Z ##[endgroup]
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9733940Z ##[group]Runner Image
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9734480Z Image: macos-26-arm64
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9735010Z Version: 20260907.0351.1
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9735810Z Included Software: https://github.com/actions/runner-images/blob/macos-26-arm64/20260907.0351/images/macos/macos-26-arm64-Readme.md
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9737110Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-26-arm64%2F20260907.0351
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9737870Z ##[endgroup]
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9739020Z ##[group]GITHUB_TOKEN Permissions
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9740330Z Actions: read
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9740700Z Checks: read
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9741070Z Contents: read
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9742150Z Metadata: read
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9742830Z PullRequests: read
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9743260Z ##[endgroup]
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9745110Z Secret source: Actions
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9745780Z Cache mode: write
+test-bot (macos-26)	Set up job	2026-10-05T08:59:43.9746340Z Prepare workflow directory
+test-bot (macos-26)	Set up job	2026-10-05T08:59:44.0084710Z Prepare all required actions
+test-bot (macos-26)	Set up job	2026-10-05T08:59:44.0123290Z Getting action download info
+test-bot (macos-26)	Set up job	2026-10-05T08:59:44.3404140Z Download action repository 'Homebrew/actions@848c272c7bfe984a197bd4d16383f4c106ec61e6' (SHA:848c272c7bfe984a197bd4d16383f4c106ec61e6)
+test-bot (macos-26)	Set up job	2026-10-05T08:59:46.3085400Z Download action repository 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+test-bot (macos-26)	Set up job	2026-10-05T08:59:46.3835350Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+test-bot (macos-26)	Set up job	2026-10-05T08:59:46.4925140Z Complete job name: test-bot (macos-26)
+test-bot (macos-26)	Set up Homebrew	﻿2026-10-05T08:59:46.5333330Z ##[group]Run Homebrew/actions/setup-homebrew@848c272c7bfe984a197bd4d16383f4c106ec61e6
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:46.5334060Z with:
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:46.5336350Z   token: ***
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:46.5336650Z   core: false
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:46.5336940Z   cask: false
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:46.5337240Z   debug: false
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:46.5339520Z   brew-gh-api-token: ***
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:46.5339850Z   stable: auto
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:46.5340290Z ##[endgroup]
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:46.9295710Z [command]/bin/bash /Users/runner/work/_actions/Homebrew/actions/848c272c7bfe984a197bd4d16383f4c106ec61e6/setup-homebrew/main.sh false false false *** auto ***
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.0420690Z ^[[34m==>^[[0m ^[[1mFetching Homebrew/brew...^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5717320Z From https://github.com/Homebrew/brew
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5718560Z  - [deleted]               (none)                 -> origin/advisory-history-walks
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5719680Z  - [deleted]               (none)                 -> origin/bundle-batch-cask-type-flags
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5720530Z  - [deleted]               (none)                 -> origin/cask-audit-skip-intel-signing
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5721290Z  - [deleted]               (none)                 -> origin/curl-declared-deferred-secrets
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5721920Z  - [deleted]               (none)                 -> origin/formula-conflicts-typing
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5722510Z  - [deleted]               (none)                 -> origin/linux-cache-fixes
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5723080Z  - [deleted]               (none)                 -> origin/more_deprecations
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5723680Z  - [deleted]               (none)                 -> origin/rubocop-font-sort
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5724260Z  - [deleted]               (none)                 -> origin/shallow-tap-detection
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5725370Z  - [deleted]               (none)                 -> origin/sorbet-test-bumps
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5725950Z  - [deleted]               (none)                 -> origin/trust-bare-tap-argv
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5726550Z  - [deleted]               (none)                 -> origin/trust-normalise-tap-reference
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:47.5727230Z  - [deleted]               (none)                 -> origin/version-post-token
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7808820Z  * [new branch]            feat/analytics/report_x86_version -> origin/feat/analytics/report_x86_version
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7810530Z  * [new branch]            get_tar_commit_id      -> origin/get_tar_commit_id
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7811800Z  * [new branch]            interactive-fetch-sandbox-env -> origin/interactive-fetch-sandbox-env
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7813010Z    07a2f25e87..a57af195cf  main                   -> origin/main
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7813860Z  * [new branch]            master                 -> origin/master
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7814940Z  * [new branch]            patch-removal-comments -> origin/patch-removal-comments
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7816040Z  * [new branch]            style-typed-options    -> origin/style-typed-options
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7817660Z  * [new branch]            type-subcommand-context-targets -> origin/type-subcommand-context-targets
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7819050Z  * [new tag]               7.0.0                  -> 7.0.0
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7819850Z  * [new tag]               7.0.1                  -> 7.0.1
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7820740Z  * [new tag]               7.0.2                  -> 7.0.2
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7821600Z  * [new tag]               7.0.3                  -> 7.0.3
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7822480Z  * [new tag]               7.0.4                  -> 7.0.4
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7823420Z  * [new tag]               7.0.5                  -> 7.0.5
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7824330Z  * [new tag]               7.0.6                  -> 7.0.6
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7825300Z  * [new tag]               7.0.7                  -> 7.0.7
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:48.7826210Z  * [new tag]               7.0.8                  -> 7.0.8
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:49.2908120Z 'origin/HEAD' is unchanged and points to 'main'
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:49.7168700Z Switched to and reset branch 'main'
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:49.7169650Z branch 'main' set up to track 'origin/main'.
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:49.7171050Z Your branch is up to date with 'origin/main'.
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:49.7172450Z ^[[34m==>^[[0m ^[[1mTrusting rossbuckley1990-hash/tap tap...^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:51.2399530Z ^[[34m==>^[[0m ^[[1mDownloading https://ghcr.io/v2/homebrew/core/portable-ruby/blobs/sha256:e0088dff5614b39387300136ec7a5f95bf1e07589547245c919524fc9e8b4197^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:51.5369580Z #=#=#                                                                          
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:51.5393560Z 
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:51.6399860Z #####                                                                      7.2%
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:51.6559420Z ###################################################################       94.3%
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:51.6657820Z ######################################################################## 100.0%
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:51.8191440Z ^[[34m==>^[[0m ^[[1mPouring portable-ruby-4.0.7.arm64_big_sur.bottle.tar.gz^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.1061000Z Trusted tap: rossbuckley1990-hash/tap
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.1103350Z ^[[34m==>^[[0m ^[[1mbrew update --auto-update^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.2986470Z Checking if we need to fetch /opt/homebrew...
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.3247090Z Checking if we need to fetch /opt/homebrew/Library/Taps/aws/homebrew-tap...
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.3457700Z ^[[34m==>^[[0m ^[[1mAuto-updating Homebrew...^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.3458430Z Adjust how often this is run with `$HOMEBREW_AUTO_UPDATE_SECS` or disable with
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.3459060Z `$HOMEBREW_NO_AUTO_UPDATE=1`. Hide these hints with `$HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.3548850Z Checking if we need to fetch /opt/homebrew/Library/Taps/azure/homebrew-bicep...
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.3860770Z Checking if we need to fetch /opt/homebrew/Library/Taps/hashicorp/homebrew-tap...
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.4775950Z Fetching /opt/homebrew/Library/Taps/azure/homebrew-bicep...
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:53.5066440Z Fetching /opt/homebrew/Library/Taps/hashicorp/homebrew-tap...
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:54.5693190Z branch 'main' set up to track 'origin/main'.
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:54.6539950Z Updating /opt/homebrew/Library/Taps/azure/homebrew-bicep...
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:54.7203260Z Successfully rebased and updated refs/heads/main.
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:54.7743500Z Checking if we need to fetch internal/packages.arm64_tahoe.jws.json...
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:54.9753410Z Updated internal/packages.arm64_tahoe.jws.json.
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:55.4873590Z ^[[34m==>^[[0m ^[[1mHomebrew's analytics have entirely moved to our InfluxDB instance in the EU.^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:55.4874280Z We gather less data than before and have destroyed all Google Analytics data:
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:55.4875260Z   ^[[4mhttps://docs.brew.sh/Analytics^[[24m^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:55.4875970Z Please reconsider re-enabling analytics to help our volunteer maintainers with:
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:55.4877040Z   brew analytics on
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:55.4877880Z ^[[34m==>^[[0m ^[[1mHomebrew is run entirely by unpaid volunteers. Please consider donating:^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:55.4879000Z   ^[[4mhttps://github.com/Homebrew/brew#-donations^[[24m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:55.4879370Z 
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2034090Z ^[[34m==>^[[0m ^[[1mAuto-updated Homebrew!^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2041500Z Updated 3 taps (azure/bicep, homebrew/core and homebrew/cask).
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2042200Z ^[[34m==>^[[0m ^[[1mNew Formulae^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2042870Z agent-manager: Run Claude Code, Codex, OpenCode and other AI coding agents in tmux
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2043700Z all-smi: GPU monitoring tool for NVIDIA/Jetson/Apple Silicon/Tenstorrent
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2044350Z apkid: Android application identifier for compilers, packers, and obfuscators
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2045070Z arcane-cli: Command-line client for the Arcane Docker management platform
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2045820Z bashka: Static verification of installation bash scripts
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2046450Z baysor: Bayesian segmentation of imaging-based spatial transcriptomics data
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2047170Z bend: Language that blocks AI mistakes via proof
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2047810Z cargo-mutants: Inject bugs and see if your tests catch them
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2052440Z ccmux: Run all your AI coding agents in tmux
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2052860Z chisel-ubuntu: Carve and cut Debian packages into slices
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2053330Z confluence-markdown-exporter: Export Atlassian Confluence pages as Markdown files
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2053830Z ctcache: Cache for clang-tidy static analysis results
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2054290Z deja: Predictive ghost-text autosuggestions for zsh
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2054740Z elasticmq: In-memory message queue with an Amazon SQS-compatible interface
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2055410Z fastplong: Ultra-fast preprocessing and quality control for long-read sequencing data
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2055910Z fdk-aac: Standalone library of the Fraunhofer FDK AAC code from Android
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2056410Z fdk-aac-encoder: Command-line encoder frontend for libfdk-aac
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2056790Z forgejo-runner: Official Actions runner for Forgejo instances
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2057230Z go-arch-lint: Architecture linter for Go projects
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2057650Z goleft: Tools for coverage and QC of BAM/CRAM files, including indexcov
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2058200Z hidapitester: Command-line tool to exercise USB HID devices via HIDAPI
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2058740Z hister: Self-hosted search engine for your browsing history
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2059060Z ketch: Web search and scraping for agents
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2059530Z kpt: Toolchain for composing, customizing, and deploying Kubernetes packages
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2060070Z kubectl-radar: Missing open-source Kubernetes UI with a built-in MCP server for AI agents
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2060600Z libklvanc: VANC Processing Framework
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2061300Z licensee: Detect under what license a project is distributed
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2061790Z mailtrap-local: Local email sandbox with SMTP server, web UI, and JSON API
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2062280Z mariadb@12.3: Drop-in replacement for MySQL
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2062820Z modflow6: USGS modular hydrologic model
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2063760Z morphe: Desktop app and CLI for patching Android apps with Morphe
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2064720Z ntfs2btrfs: In-place conversion of NTFS filesystem to Btrfs
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2065660Z openfasttrace: Requirement tracing suite
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2066640Z openshell: Safe, private runtime for autonomous AI agents
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2067550Z osctrl-mcp: Fast and efficient osquery management
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2068220Z percona-server@8.4: Drop-in MySQL replacement
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2069270Z pg_activity: Top-like interactive monitoring tool for PostgreSQL server activity
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2069920Z plink1: Whole-genome association analysis toolset
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2070840Z pnpm@11: Fast, disk space efficient package manager
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2071700Z pypy3.12: Implementation of Python 3 in Python
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2073230Z ratex: Fast TeX engine written in Rust
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2074480Z regenie: Whole genome regression modelling of large genome-wide association studies
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2076880Z rustqc: Fast genomics quality control tools for sequencing data
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2078320Z sac: Seismic Analysis Code, Community Edition
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2080210Z sdrmm: Modular, client-server software-defined radio
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2082230Z smbclient-ng: Fast and user friendly way to interact with SMB shares
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2082840Z sniffles: Structural variant caller for long-read sequencing data
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2084620Z snx-rs: Open-source client for Check Point VPN tunnels
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2086180Z sofka: Kubernetes TUI, reimagined in Rust
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2086780Z somalier: Relatedness, QC and ancestry checks from BAM/CRAM/VCF
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2087920Z taoup: Tao of Unix Programming with Ruby-powered ANSI-colored fortunes
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2088830Z tcltls: OpenSSL extension to Tcl
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2089480Z termaid: Render Mermaid diagrams in the terminal
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2090200Z tfswitch: Command-line tool to switch between Terraform versions
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2092020Z trealla-prolog: Compact and efficient ISO Prolog interpreter written in plain old C
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2092710Z tunnelite: Secure tunneling to local applications
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2093690Z unixcw: Morse code tutor and command-line tools
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2094510Z vcfexpress: Filter and format VCF/BCF files with Lua expressions
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2096020Z vortix: Terminal UI for WireGuard and OpenVPN with live telemetry and leak guarding
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2097250Z wavemon: Ncurses-based monitoring application for wireless network devices on Linux
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2098720Z workmux: Git worktrees + tmux windows for zero-friction parallel dev
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2099610Z xgrammar: Structured generation and reasoning engine for LLMs
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2100810Z xwpe: Borland-style IDE clone with LSP/DAP support (terminal UI)
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2101770Z zig@0.16: Programming language designed for robustness, optimality, and clarity
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2102660Z ^[[34m==>^[[0m ^[[1mNew Casks^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2103160Z activitywatch@experimental: Time tracker
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2104610Z agentiloop-agent: Autonomous agent
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2105830Z amp-app: Coding agent and development environment
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2107320Z argo-books: Accounting software for small businesses
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2107970Z audacity@3: Multi-track audio editor and recorder
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2109960Z bettermacwidgets: Live-animated widgets that sit on the desktop
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2110680Z bitmuse: Bit-perfect music player for local hi-res libraries
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2112070Z buholaunchpad: Launchpad alternative
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2112700Z caldera-amp: Headless player for Plex music servers
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2114780Z calyx: Terminal for running and supervising coding agents
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2115320Z capsomnia: Utility that keeps your computer awake with the lid closed
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2116250Z cline-app: AI coding agent
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2116850Z colamd: Markdown editor
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2117630Z cuadriver: Background desktop automation driver for AI agents
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2118390Z deepseek-harness: Plugin-based AI agent desktop application
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2119130Z deviceshelf: Scanner for devices, open ports and security risks on the local network
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2119800Z distill-web-monitor: Monitor webpages for changes
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2120590Z doubaoime: Chinese input method with voice input and intelligent suggestions
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2121190Z easymac-cleaner: Cleaning, privacy, and system optimisation utility
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2122420Z flick: Radial command wheel triggered by holding a key and flicking the mouse
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2123940Z font-aptos
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2125320Z font-google-sans
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2125870Z font-google-sans-flex
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2126550Z font-lexica-ultralegible
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2127240Z font-nebula-sans
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2127720Z font-pennstander
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2128550Z font-pyeojin-gothic
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2129940Z font-tiny5-duo
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2130590Z font-xmind
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2131200Z ghostex: Workspace for running and reviewing multiple CLI coding agents
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2132950Z gitdifferent: Git client built around a three-way merge tool
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2133780Z gloomberb: Finance terminal
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2134690Z hagimimonitordirect: Menu bar monitor for system performance and hardware
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2135250Z highball: Tool to run Windows games
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2135650Z hol-guard: Local-first runtime firewall for AI coding agents
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2136450Z homebrew-app: Homebrew's official GUI
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2136840Z hoptodesk: Remote desktop and remote support tool with end-to-end encryption
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2137300Z ideashell: AI partner for notes, voice, and to-dos
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2137690Z ideashell-cn: AI partner for notes, voice, and to-dos (China edition)
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2138200Z incy: Proxy client
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2138750Z jlcone: Desktop client for JLCPCB quoting, ordering and order tracking
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2139630Z jpki: Digital signature and authentication client for the My Number Card (JPKI)
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2140860Z kaku: Terminal optimised for AI coding
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2141580Z keyecho: Mechanical keyboard sounds for every keystroke
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2142150Z kkterm: Local-first administration workspace for terminals, SSH, and SFTP
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2142540Z langdock: Platform for AI Adoption
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2143690Z littlebird: AI assistant that captures meetings and work context
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2144190Z local-studio: Local workstation for running and managing language models
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2144660Z lody: Share coding agent sessions across desktop and mobile
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2145110Z look: Keyboard-first local launcher
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2145490Z manus-cue: Personal AI agents with their own identities
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2146040Z markpad: Markdown viewer and editor
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2147320Z mdhero: Markdown viewer and editor
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2147790Z mindroom: Self-hostable AI stack for multi-user, multi-agent workflows on Matrix
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2148250Z muse: AI assistant for managing tasks, projects, and long-term goals
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2149690Z napari: Multi-dimensional image viewer for Python
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2150010Z network-weather: Network diagnostics tool
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2150600Z nuphyio: Keyboard configurator for NuPhy devices
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2151080Z nvidia-pair: Local inference router for a group of compatible computers
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2151610Z ollama-binary: Get up and running with large language models locally
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2152450Z open-science: AI research workbench with scientific agents and notebooks
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2154000Z openclip: Instant actions for selected text
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2154400Z opendisk: Disk space analyser
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2154790Z openplc-editor: IDE for creating programs for the OpenPLC Runtime
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2155310Z picmal: Converts and compresses images, video, audio and PDFs locally
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2155850Z picsart-ai-playground: Workspace for AI image, video and audio creation
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2156340Z plane: Project management tool for tasks, sprints and docs
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2157180Z privacynotes: End-to-end encrypted notes, tasks, files, journal, passwords and bookmark sync
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2157860Z psysonic: Desktop client for Navidrome and other Subsonic-compatible servers
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2158410Z recordly: Creator-focused screen recorder with auto-zoom, cursor effects, and more
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2158920Z relay: Menu bar app for building LLM prompts from files, clipboard and voice notes
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2159630Z reolink: Client for viewing and managing security cameras and NVRs
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2160020Z robbietilton-compositor: Photoshop alternative
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2160390Z ruffle: Flash Player emulator
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2160640Z ruswitcher: Keyboard layout switcher
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2160960Z saega: Dictation app for Swedish and Norwegian
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2161410Z sandisk: Managing SanDisk external drives
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2161930Z sdrmm-app: Modular, client-server software-defined radio
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2162410Z sidex: Code editor based on VS Code and Tauri
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2162770Z snapline: Screenshot, screen recording and GIF tool
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2163200Z ssl-360: Plugin mixer and control software for SSL 360-enabled hardware
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2163690Z ssl-download-manager: Software manager for SSL plug-ins
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2164150Z stockbit: Indonesian stock trading and analysis platform
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2164720Z swiftcord: Native Discord client
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2164980Z tabularis@nightly: Lightweight database management tool
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2165330Z tapmap: Visualise network connections on an interactive world map
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2165640Z telari: Markdown reader built for typography
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2166030Z telegram@beta: Messaging app with a focus on speed and security
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2166780Z tencent-yingyongbao: Tencent application store
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2167150Z tungsten-edge: Window-oriented taskbar that replaces the Dock
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2167570Z volumehud: Bring back the pre-Tahoe volume and brightness HUDs
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2167950Z wheelwizard: Mod manager for Mario Kart Wii and Retro Rewind
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2168260Z workbuddy-ai: AI agent for everyday office work
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2191380Z workbuddy-cn: AI agent for everyday office work
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2191940Z wsl-manager: Manage native Linux VMs and remote WSL distros
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2192350Z yap-app: On-device voice dictation
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.2192700Z zentty: Terminal for agent-driven development
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.5525240Z 
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.5526780Z You have ^[[1m37^[[0m outdated formulae and ^[[1m2^[[0m outdated casks installed.
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:56.7088120Z 
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4520540Z ^[[34m==>^[[0m ^[[1mFetching rossbuckley1990-hash/homebrew-tap...^[[0m
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4552270Z /opt/homebrew/Library/Taps/rossbuckley1990-hash
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4553160Z /opt/homebrew/Library/Taps/rossbuckley1990-hash/homebrew-tap
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4702220Z hint: Using 'master' as the name for the initial branch. This default branch name
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4702810Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4704440Z hint: to use in all of your new repositories, which will suppress this warning,
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4705030Z hint: call:
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4705260Z hint:
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4706300Z hint: 	git config --global init.defaultBranch <name>
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4706740Z hint:
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4707550Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4708090Z hint: 'development'. The just-created branch can be renamed via this command:
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4710340Z hint:
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4710790Z hint: 	git branch -m <name>
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4711260Z hint:
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4711770Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4712600Z Initialized empty Git repository in /opt/homebrew/Library/Taps/rossbuckley1990-hash/homebrew-tap/.git/
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4930440Z /opt/homebrew/Library/Taps/rossbuckley1990-hash/homebrew-tap -> /Users/runner/work/homebrew-tap/homebrew-tap
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.4932450Z /Users/runner/work/homebrew-tap/homebrew-tap
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.9431550Z From https://github.com/rossbuckley1990-hash/homebrew-tap
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.9432380Z  * branch            7eec14e8373a871443ef0a60dd89511f21495de2 -> FETCH_HEAD
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.9432870Z  * [new branch]      codex/v0.1-formula-audit -> origin/codex/v0.1-formula-audit
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:57.9433420Z  * [new branch]      main       -> origin/main
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:58.2065790Z 'origin/HEAD' is now created and points to 'main'
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:58.2236250Z Switched to a new branch 'main'
+test-bot (macos-26)	Set up Homebrew	2026-10-05T08:59:58.2243380Z /Users/runner/work/homebrew-tap/homebrew-tap
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	﻿2026-10-05T08:59:58.2659360Z ##[group]Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2659730Z with:
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2659930Z   path: /opt/homebrew/Library/Homebrew/vendor/bundle/ruby/
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2660330Z   key: macos-26-rubygems-66f966427bbed93913933f7d5d534e80351172ce0a397d3ff66025b67d4638bb
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2660710Z   restore-keys: macos-26-rubygems-
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2660910Z   enableCrossOsArchive: false
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2661100Z   fail-on-cache-miss: false
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2661270Z   lookup-only: false
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2661420Z   save-always: false
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2661580Z env:
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2661920Z   HOMEBREW_NO_INSTALL_FROM_API: 
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2664250Z   HOMEBREW_GITHUB_API_TOKEN: ***
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.2664440Z ##[endgroup]
+test-bot (macos-26)	Cache Homebrew Bundler RubyGems	2026-10-05T08:59:58.6283210Z Cache not found for input keys: macos-26-rubygems-66f966427bbed93913933f7d5d534e80351172ce0a397d3ff66025b67d4638bb, macos-26-rubygems-
+test-bot (macos-26)	Require Apple Silicon	﻿2026-10-05T08:59:58.6347540Z ##[group]Run test "$(uname -m)" = arm64
+test-bot (macos-26)	Require Apple Silicon	2026-10-05T08:59:58.6347860Z ^[[36;1mtest "$(uname -m)" = arm64^[[0m
+test-bot (macos-26)	Require Apple Silicon	2026-10-05T08:59:58.6405310Z shell: /bin/bash -xeuo pipefail {0}
+test-bot (macos-26)	Require Apple Silicon	2026-10-05T08:59:58.6405550Z env:
+test-bot (macos-26)	Require Apple Silicon	2026-10-05T08:59:58.6405720Z   HOMEBREW_NO_INSTALL_FROM_API: 
+test-bot (macos-26)	Require Apple Silicon	2026-10-05T08:59:58.6407750Z   HOMEBREW_GITHUB_API_TOKEN: ***
+test-bot (macos-26)	Require Apple Silicon	2026-10-05T08:59:58.6407960Z ##[endgroup]
+test-bot (macos-26)	Require Apple Silicon	2026-10-05T08:59:58.6652530Z ++ uname -m
+test-bot (macos-26)	Require Apple Silicon	2026-10-05T08:59:58.6679990Z + test arm64 = arm64
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	﻿2026-10-05T08:59:58.6717010Z ##[group]Run brew test-bot --only-cleanup-before
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.6717430Z ^[[36;1mbrew test-bot --only-cleanup-before^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.6764030Z shell: /bin/bash -xeuo pipefail {0}
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.6764290Z env:
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.6764460Z   HOMEBREW_NO_INSTALL_FROM_API: 
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.6766490Z   HOMEBREW_GITHUB_API_TOKEN: ***
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.6766700Z ##[endgroup]
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.6947380Z + brew test-bot --only-cleanup-before
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.7771410Z ^[[33mWarning:^[[0m ^[[1mtest-bot^[[0m is a developer command, so Homebrew's
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.7782710Z developer mode has been automatically turned on.
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.7785340Z To turn developer mode off, run:
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.7785690Z   brew developer off
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:58.7785830Z 
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:59.0976010Z ^[[34m==>^[[0m ^[[1mAlready trusted tap: rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:59.9715640Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/brew 7.0.8 (Merge pull request #24162 from Homebrew/monthly-maintainer-reports)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T08:59:59.9953410Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/homebrew-core 3cc40d0f3a3 (Merge pull request #302729 from Homebrew/faust-llvm23)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:00.0173180Z ^[[36m==>^[[0m ^[[1mTesting rossbuckley1990-hash/homebrew-tap 7eec14e (Merge 83026e89c83b3831ec9f7e494637905f962bd0b2 into f9467140c2fdfd6c9acf310989963ad2c3ef5290):^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:00.0174580Z 
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:00.0174940Z ^[[35m==>^[[0m ^[[1mRunning CleanupBefore#run!^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:00.5321940Z ^[[34m==>^[[0m ^[[1mgit -C /opt/homebrew/Library/Taps/homebrew/homebrew-core reset --hard origin/main^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:00.8647660Z ^[[34m==>^[[0m ^[[1msudo mv /Library/Frameworks/Python.framework /private/tmp/d20261005-3180-lu4bhi^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:00.8835520Z ^[[34m==>^[[0m ^[[1mbrew cleanup --prune-prefix^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:04.8821350Z ^[[34m==>^[[0m ^[[1mgit -C /opt/homebrew/Library/Taps/rossbuckley1990-hash/homebrew-tap clean -ff -dx^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:05.1789420Z ^[[34m==>^[[0m ^[[1mgit -C /opt/homebrew clean -ff -dx^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:06.5975560Z ^[[34m==>^[[0m ^[[1mTrusted tap: rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-cleanup-before	2026-10-05T09:00:06.5976120Z All steps passed!
+test-bot (macos-26)	Run brew test-bot --only-setup	﻿2026-10-05T09:00:06.6083630Z ##[group]Run brew test-bot --only-setup
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:06.6084050Z ^[[36;1mbrew test-bot --only-setup^[[0m
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:06.6098130Z shell: /bin/bash -xeuo pipefail {0}
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:06.6098340Z env:
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:06.6098490Z   HOMEBREW_NO_INSTALL_FROM_API: 
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:06.6100310Z   HOMEBREW_GITHUB_API_TOKEN: ***
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:06.6100500Z ##[endgroup]
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:06.6258250Z + brew test-bot --only-setup
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:06.9967890Z ^[[34m==>^[[0m ^[[1mAlready trusted tap: rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:07.0342490Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/brew 7.0.8 (Merge pull request #24162 from Homebrew/monthly-maintainer-reports)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:07.0536130Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/homebrew-core 3cc40d0f3a3 (Merge pull request #302729 from Homebrew/faust-llvm23)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:07.0702690Z ^[[36m==>^[[0m ^[[1mTesting rossbuckley1990-hash/homebrew-tap 7eec14e (Merge 83026e89c83b3831ec9f7e494637905f962bd0b2 into f9467140c2fdfd6c9acf310989963ad2c3ef5290):^[[0m
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:07.0710150Z 
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:07.0711270Z ^[[35m==>^[[0m ^[[1mRunning Setup#run!^[[0m
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:07.0714530Z ^[[34m==>^[[0m ^[[1mbrew install-bundler-gems --add-groups=ast,audit,bottle,formula_test,livecheck,style^[[0m
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:26.8506920Z ^[[34m==>^[[0m ^[[1mbrew config^[[0m
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.6315400Z HOMEBREW_VERSION: 7.0.8
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.6429930Z ORIGIN: https://github.com/Homebrew/brew
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.6638380Z HEAD: a57af195cf9d7addb48bdb1204c9151313cd0057
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.6744290Z Last commit: 19 hours ago
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.6860480Z Branch: main
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.6964470Z Core tap HEAD: 3cc40d0f3a316ece2c58491a8cc237490699ce03
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.7073910Z Core tap last commit: 4 weeks ago
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.7197360Z Core cask tap HEAD: 3b6641505241052f20339a9049b317324a08b9b7
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.7299190Z Core cask tap last commit: 4 weeks ago
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.7403120Z HOMEBREW_PREFIX: /opt/homebrew
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.7504540Z HOMEBREW_CASK_OPTS: ["--no-quarantine"]
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.7628710Z HOMEBREW_GITHUB_API_TOKEN: set
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.7742450Z HOMEBREW_NO_AUTO_UPDATE: set
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.7856660Z HOMEBREW_NO_INSTALL_CLEANUP: set
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.7957310Z Homebrew Ruby: 4.0.7 => /opt/homebrew/Library/Homebrew/vendor/portable-ruby/4.0.7/bin/ruby
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.8058640Z CPU: 3-core 64-bit dunno
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.8159800Z Clang: 21.0.0 build 2100
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.8299390Z Git: 2.50.1 => /usr/bin/git
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.8412640Z Curl: 8.7.1 => /usr/bin/curl
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.8513990Z macOS: 26.6.2-arm64
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.8614950Z CLT: 26.6.0.0.1781586589
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.8718980Z Xcode: 26.6 => /Applications/Xcode_26.6.app/Contents/Developer
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.8820210Z Metal Toolchain: 17.0 (17F109)
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.8920560Z Rosetta 2: false
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:29.9021890Z ^[[34m==>^[[0m ^[[1mbrew doctor^[[0m
+test-bot (macos-26)	Run brew test-bot --only-setup	2026-10-05T09:00:35.5395600Z All steps passed!
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	﻿2026-10-05T09:00:35.6058710Z ##[group]Run brew test-bot --only-tap-syntax
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:35.6059220Z ^[[36;1mbrew test-bot --only-tap-syntax^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:35.6289110Z shell: /bin/bash -xeuo pipefail {0}
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:35.6289430Z env:
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:35.6289780Z   HOMEBREW_NO_INSTALL_FROM_API: 
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:35.6293460Z   HOMEBREW_GITHUB_API_TOKEN: ***
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:35.6293770Z ##[endgroup]
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:35.6933890Z + brew test-bot --only-tap-syntax
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:36.3190490Z ^[[34m==>^[[0m ^[[1mAlready trusted tap: rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:36.3601760Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/brew 7.0.8 (Merge pull request #24162 from Homebrew/monthly-maintainer-reports)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:36.3776070Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/homebrew-core 3cc40d0f3a3 (Merge pull request #302729 from Homebrew/faust-llvm23)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:36.3955220Z ^[[36m==>^[[0m ^[[1mTesting rossbuckley1990-hash/homebrew-tap 7eec14e (Merge 83026e89c83b3831ec9f7e494637905f962bd0b2 into f9467140c2fdfd6c9acf310989963ad2c3ef5290):^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:36.3961700Z 
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:36.3962870Z ^[[35m==>^[[0m ^[[1mRunning TapSyntax#run!^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:36.3967650Z ^[[34m==>^[[0m ^[[1mbrew style rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:51.3908280Z ^[[34m==>^[[0m ^[[1mbrew readall --aliases --os=all --arch=all rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:52.1877920Z ^[[34m==>^[[0m ^[[1mbrew audit --except=installed --tap=rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T09:00:55.5027850Z All steps passed!
+test-bot (macos-26)	Run brew test-bot --only-formulae	﻿2026-10-05T09:00:55.5411870Z ##[group]Run brew test-bot --only-formulae
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:55.5412290Z ^[[36;1mbrew test-bot --only-formulae^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:55.5433290Z shell: /bin/bash -xeuo pipefail {0}
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:55.5433590Z env:
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:55.5433900Z   HOMEBREW_NO_INSTALL_FROM_API: 
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:55.5436640Z   HOMEBREW_GITHUB_API_TOKEN: ***
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:55.5437000Z ##[endgroup]
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:55.5879250Z + brew test-bot --only-formulae
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:56.6044920Z ^[[34m==>^[[0m ^[[1mAlready trusted tap: rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:56.6669710Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/brew 7.0.8 (Merge pull request #24162 from Homebrew/monthly-maintainer-reports)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:56.6897600Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/homebrew-core 3cc40d0f3a3 (Merge pull request #302729 from Homebrew/faust-llvm23)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:56.7265650Z ^[[36m==>^[[0m ^[[1mTesting rossbuckley1990-hash/homebrew-tap 7eec14e (Merge 83026e89c83b3831ec9f7e494637905f962bd0b2 into f9467140c2fdfd6c9acf310989963ad2c3ef5290):^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:56.7299710Z 
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:56.7301670Z ^[[35m==>^[[0m ^[[1mRunning FormulaeDetect#detect_formulae!^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:56.7307220Z ^[[34m==>^[[0m ^[[1mgit -C /opt/homebrew/Library/Taps/rossbuckley1990-hash/homebrew-tap fetch origin +refs/heads/main^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.3461170Z     url               https://github.com/rossbuckley1990-hash/homebrew-tap/pull/1/checks
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.3461950Z     tap origin/main f946714 (Add RIGHTCLICK 0.1.0 source package and standard bottle workflows)
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.3462720Z     HEAD              7eec14e (Merge 83026e89c83b3831ec9f7e494637905f962bd0b2 into f9467140c2fdfd6c9acf310989963ad2c3ef5290)
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.3463500Z     diff_start_sha1   f9467140c2fdfd6c9acf310989963ad2c3ef5290
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.3463900Z     diff_end_sha1     7eec14e8373a871443ef0a60dd89511f21495de2
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.4854680Z 
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.4855030Z     testing_formulae  rossbuckley1990-hash/tap/rightclick
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.4855490Z     added_formulae    (none)
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.4855840Z     modified_formulae rossbuckley1990-hash/tap/rightclick
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.4856290Z     deleted_formulae  (none)
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.4856630Z     formulae_to_fetch (none)
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.4863730Z 
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:57.4866980Z ^[[35m==>^[[0m ^[[1mRunning Formulae#run!^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:58.2379900Z 
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:58.2386110Z ^[[35m==>^[[0m ^[[1mRunning Formulae#formula!(rossbuckley1990-hash/tap/rightclick)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:58.3118610Z ^[[34m==>^[[0m ^[[1mbrew deps --tree --prune --annotate --include-build --include-test rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:00:59.5230720Z ^[[36m==>^[[0m ^[[1mDetermining dependencies...^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:01:01.4677120Z ^[[34m==>^[[0m ^[[1mbrew install --only-dependencies --verbose --formula --build-bottle rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:01:02.5442500Z ^[[36m==>^[[0m ^[[1mStarting tests for rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:01:02.5445350Z ^[[34m==>^[[0m ^[[1mbrew fetch --formula --retry rossbuckley1990-hash/tap/rightclick --build-bottle --force^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:01:20.1242860Z ^[[34m==>^[[0m ^[[1mbrew install --verbose --formula --build-bottle rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:16.1676980Z ^[[34m==>^[[0m ^[[1mbrew style --formula rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:20.1657970Z ^[[34m==>^[[0m ^[[1mbrew audit --formula rossbuckley1990-hash/tap/rightclick --online --git --skip-style^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:23.2452670Z ^[[34m==>^[[0m ^[[1mbrew bottle --verbose --json rossbuckley1990-hash/tap/rightclick --root-url=https://github.com/rossbuckley1990-hash/homebrew-tap/releases/download/rightclick-0.1.0^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:32.3597630Z ^[[34m==>^[[0m ^[[1mbrew bottle --merge --write --no-commit --no-all-checks ./rightclick--0.1.0.arm64_tahoe.bottle.json^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:36.8445780Z ^[[34m==>^[[0m ^[[1mbrew uninstall --formula --force --ignore-dependencies rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:38.1791280Z ^[[34m==>^[[0m ^[[1mbrew install --only-dependencies ./rightclick--0.1.0.arm64_tahoe.bottle.1.tar.gz^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:39.5699550Z ^[[34m==>^[[0m ^[[1mbrew install ./rightclick--0.1.0.arm64_tahoe.bottle.1.tar.gz^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:44.9186980Z ^[[34m==>^[[0m ^[[1mbrew linkage --test rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:45.4813720Z ^[[34m==>^[[0m ^[[1mbrew linkage --cached --test --strict rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:46.0037270Z ^[[34m==>^[[0m ^[[1mbrew linkage --cached rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:46.5196710Z ^[[34m==>^[[0m ^[[1mbrew install --formula --only-dependencies --include-test rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:47.2022080Z ^[[34m==>^[[0m ^[[1mbrew test --verbose rossbuckley1990-hash/tap/rightclick^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:50.1576550Z 
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:50.1649280Z ^[[34m==>^[[0m ^[[1mbrew untap --force homebrew/cask^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:52.1381530Z ^[[36m==>^[[0m ^[[1mSkipped or failed formulae:^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:52.6444610Z 
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:52.6448080Z ^[[35m==>^[[0m ^[[1mRunning FormulaeDependents#dependent_formulae!(rossbuckley1990-hash/tap/rightclick)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:03:52.6454030Z ^[[36m==>^[[0m ^[[1mDetermining dependents...^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:04:28.7580180Z ^[[36m==>^[[0m ^[[1mSource dependents:^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:04:28.7590380Z ^[[36m==>^[[0m ^[[1mBottled dependents:^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:04:28.7591370Z ^[[36m==>^[[0m ^[[1mTestable dependents:^[[0m
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:04:28.7591860Z 
+test-bot (macos-26)	Run brew test-bot --only-formulae	2026-10-05T09:04:28.7630380Z All steps passed!
+test-bot (macos-26)	Upload bottles as artifact	﻿2026-10-05T09:04:28.8674810Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8676200Z with:
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8676970Z   name: bottles_macos-26
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8678130Z   path: *.bottle.*
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8679120Z   if-no-files-found: warn
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8680490Z   compression-level: 6
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8681370Z   overwrite: false
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8682080Z   include-hidden-files: false
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8683040Z   archive: true
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8683730Z env:
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8684490Z   HOMEBREW_NO_INSTALL_FROM_API: 
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8693040Z   HOMEBREW_GITHUB_API_TOKEN: ***
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:28.8693970Z ##[endgroup]
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:29.7321370Z With the provided path, there will be 2 files uploaded
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:29.7323030Z Artifact name is valid!
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:29.7323700Z Root directory input is valid!
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:30.0461590Z Uploading artifact: bottles_macos-26.zip
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:30.0493630Z Beginning upload of artifact content to blob storage
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:30.4774680Z Uploaded bytes 1524201
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:30.5193810Z Finished uploading artifact content to blob storage!
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:30.5195340Z SHA256 digest of uploaded artifact is a7f9f4d8d9698fba3e4e76a5e8161443141b9d617a2300fcaa773f251f0a44ce
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:30.5206990Z Finalizing artifact upload
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:30.8678500Z Artifact bottles_macos-26 successfully finalized. Artifact ID 11334808334
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:30.8688300Z Artifact bottles_macos-26 has been successfully uploaded! Final size is 1524201 bytes. Artifact ID is 11334808334
+test-bot (macos-26)	Upload bottles as artifact	2026-10-05T09:04:30.8699430Z Artifact download URL: https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37287113865/artifacts/11334808334
+test-bot (macos-26)	Post Cache Homebrew Bundler RubyGems	﻿2026-10-05T09:04:30.8952370Z Post job cleanup.
+test-bot (macos-26)	Post Cache Homebrew Bundler RubyGems	2026-10-05T09:04:31.0889340Z [command]/usr/bin/tar --posix -cf cache.tgz --exclude cache.tgz -P -C /Users/runner/work/homebrew-tap/homebrew-tap --files-from manifest.txt -z
+test-bot (macos-26)	Post Cache Homebrew Bundler RubyGems	2026-10-05T09:04:36.8729980Z Sent 41764013 of 41764013 (100.0%), 44.6 MBs/sec
+test-bot (macos-26)	Post Cache Homebrew Bundler RubyGems	2026-10-05T09:04:37.0869730Z Cache saved with key: macos-26-rubygems-66f966427bbed93913933f7d5d534e80351172ce0a397d3ff66025b67d4638bb
+test-bot (macos-26)	Post Set up Homebrew	﻿2026-10-05T09:04:37.1147140Z Post job cleanup.
+test-bot (macos-26)	Post Set up Homebrew	2026-10-05T09:04:37.5243010Z [command]/bin/bash /Users/runner/work/_actions/Homebrew/actions/848c272c7bfe984a197bd4d16383f4c106ec61e6/setup-homebrew/post.sh false
+test-bot (macos-26)	Post Set up Homebrew	2026-10-05T09:04:37.5560570Z Reset tap symlink.
+test-bot (macos-26)	Post Set up Homebrew	2026-10-05T09:04:37.6189750Z Removed token.
+test-bot (macos-26)	Complete job	﻿2026-10-05T09:04:37.6358840Z Cleaning up orphan processes

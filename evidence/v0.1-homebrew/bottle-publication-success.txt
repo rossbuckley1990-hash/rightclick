@@ -1,0 +1,292 @@
+pr-pull	Set up job	﻿2026-10-05T09:05:52.7763525Z Current runner version: '2.337.0'
+pr-pull	Set up job	2026-10-05T09:05:52.7800740Z ##[group]Runner Image Provisioner
+pr-pull	Set up job	2026-10-05T09:05:52.7802131Z Hosted Compute Agent
+pr-pull	Set up job	2026-10-05T09:05:52.7803065Z Version: 20260901.588
+pr-pull	Set up job	2026-10-05T09:05:52.7804346Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+pr-pull	Set up job	2026-10-05T09:05:52.7805637Z Build Date: 2026-09-01T19:56:44Z
+pr-pull	Set up job	2026-10-05T09:05:52.7807142Z Worker ID: {14132b95-258e-468f-95fa-d66c6009274f}
+pr-pull	Set up job	2026-10-05T09:05:52.7808427Z Azure Region: eastus
+pr-pull	Set up job	2026-10-05T09:05:52.7809366Z ##[endgroup]
+pr-pull	Set up job	2026-10-05T09:05:52.7811721Z ##[group]Operating System
+pr-pull	Set up job	2026-10-05T09:05:52.7812803Z Ubuntu
+pr-pull	Set up job	2026-10-05T09:05:52.7813744Z 24.04.5
+pr-pull	Set up job	2026-10-05T09:05:52.7814604Z LTS
+pr-pull	Set up job	2026-10-05T09:05:52.7815423Z ##[endgroup]
+pr-pull	Set up job	2026-10-05T09:05:52.7816536Z ##[group]Runner Image
+pr-pull	Set up job	2026-10-05T09:05:52.7817750Z Image: ubuntu-24.04
+pr-pull	Set up job	2026-10-05T09:05:52.7819385Z Version: 20260927.320.1
+pr-pull	Set up job	2026-10-05T09:05:52.7821239Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260927.320/images/ubuntu/Ubuntu2404-Readme.md
+pr-pull	Set up job	2026-10-05T09:05:52.7824319Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260927.320
+pr-pull	Set up job	2026-10-05T09:05:52.7826113Z ##[endgroup]
+pr-pull	Set up job	2026-10-05T09:05:52.7829217Z ##[group]GITHUB_TOKEN Permissions
+pr-pull	Set up job	2026-10-05T09:05:52.7832606Z Actions: read
+pr-pull	Set up job	2026-10-05T09:05:52.7833679Z Attestations: write
+pr-pull	Set up job	2026-10-05T09:05:52.7834620Z Checks: read
+pr-pull	Set up job	2026-10-05T09:05:52.7835642Z Contents: write
+pr-pull	Set up job	2026-10-05T09:05:52.7836999Z Issues: read
+pr-pull	Set up job	2026-10-05T09:05:52.7838097Z Metadata: read
+pr-pull	Set up job	2026-10-05T09:05:52.7839045Z PullRequests: write
+pr-pull	Set up job	2026-10-05T09:05:52.7839922Z ##[endgroup]
+pr-pull	Set up job	2026-10-05T09:05:52.7843175Z Secret source: Actions
+pr-pull	Set up job	2026-10-05T09:05:52.7844822Z Cache mode: write
+pr-pull	Set up job	2026-10-05T09:05:52.7846308Z Prepare workflow directory
+pr-pull	Set up job	2026-10-05T09:05:52.8388181Z Prepare all required actions
+pr-pull	Set up job	2026-10-05T09:05:52.8438646Z Getting action download info
+pr-pull	Set up job	2026-10-05T09:05:53.0509197Z Download action repository 'Homebrew/actions@848c272c7bfe984a197bd4d16383f4c106ec61e6' (SHA:848c272c7bfe984a197bd4d16383f4c106ec61e6)
+pr-pull	Set up job	2026-10-05T09:05:53.7008478Z Download action repository 'actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6' (SHA:1e69f48acb82d1966a394da916b4c1698aa569d6)
+pr-pull	Set up job	2026-10-05T09:05:53.9681447Z Complete job name: pr-pull
+pr-pull	Set up Homebrew	﻿2026-10-05T09:05:54.0458718Z ##[group]Run Homebrew/actions/setup-homebrew@848c272c7bfe984a197bd4d16383f4c106ec61e6
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.0460031Z with:
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.0463921Z   token: ***
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.0464360Z   core: false
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.0464773Z   cask: false
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.0465186Z   debug: false
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.0469466Z   brew-gh-api-token: ***
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.0469994Z   stable: auto
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.0470737Z ##[endgroup]
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.2368161Z [command]/bin/bash /home/runner/work/_actions/Homebrew/actions/848c272c7bfe984a197bd4d16383f4c106ec61e6/setup-homebrew/main.sh false false false *** auto ***
+pr-pull	Set up Homebrew	2026-10-05T09:05:54.5081067Z ^[[34m==>^[[0m ^[[1mFetching Homebrew/brew...^[[0m
+pr-pull	Set up Homebrew	2026-10-05T09:05:55.3508602Z From https://github.com/Homebrew/brew
+pr-pull	Set up Homebrew	2026-10-05T09:05:55.3509726Z  - [deleted]               (none)                 -> origin/cask-audit-download-timeout
+pr-pull	Set up Homebrew	2026-10-05T09:05:55.3510977Z  - [deleted]               (none)                 -> origin/dependents-tested-formulae
+pr-pull	Set up Homebrew	2026-10-05T09:05:55.3511849Z  - [deleted]               (none)                 -> origin/pr-publish-warn-on-upload-failure
+pr-pull	Set up Homebrew	2026-10-05T09:05:55.3512539Z  - [deleted]               (none)                 -> origin/sorbet-more-formula-binds
+pr-pull	Set up Homebrew	2026-10-05T09:05:58.6172261Z  + 3887d4a398...690f08d4a5 feat/analytics/report_x86_version -> origin/feat/analytics/report_x86_version  (forced update)
+pr-pull	Set up Homebrew	2026-10-05T09:05:58.6175332Z  * [new branch]            get_tar_commit_id      -> origin/get_tar_commit_id
+pr-pull	Set up Homebrew	2026-10-05T09:05:58.6177121Z  * [new branch]            interactive-fetch-sandbox-env -> origin/interactive-fetch-sandbox-env
+pr-pull	Set up Homebrew	2026-10-05T09:05:58.6178406Z    4bbad1d876..a57af195cf  main                   -> origin/main
+pr-pull	Set up Homebrew	2026-10-05T09:05:58.6179563Z  * [new branch]            master                 -> origin/master
+pr-pull	Set up Homebrew	2026-10-05T09:05:58.6181156Z  * [new branch]            patch-removal-comments -> origin/patch-removal-comments
+pr-pull	Set up Homebrew	2026-10-05T09:05:58.6182316Z  * [new tag]               7.0.7                  -> 7.0.7
+pr-pull	Set up Homebrew	2026-10-05T09:05:58.6183175Z  * [new tag]               7.0.8                  -> 7.0.8
+pr-pull	Set up Homebrew	2026-10-05T09:05:58.8782424Z 'origin/HEAD' is unchanged and points to 'main'
+pr-pull	Set up Homebrew	2026-10-05T09:05:59.5949587Z Switched to and reset branch 'main'
+pr-pull	Set up Homebrew	2026-10-05T09:05:59.5957774Z branch 'main' set up to track 'origin/main'.
+pr-pull	Set up Homebrew	2026-10-05T09:05:59.5958835Z Your branch is up to date with 'origin/main'.
+pr-pull	Set up Homebrew	2026-10-05T09:05:59.5995545Z ^[[34m==>^[[0m ^[[1mTrusting rossbuckley1990-hash/tap tap...^[[0m
+pr-pull	Set up Homebrew	2026-10-05T09:06:05.2653963Z ^[[32m==>^[[0m ^[[1mDownloading Homebrew API data^[[0m
+pr-pull	Set up Homebrew	2026-10-05T09:06:06.5195834Z ✔︎ JSON API packages.x86_64_linux.jws.json
+pr-pull	Set up Homebrew	2026-10-05T09:06:06.5517598Z Trusted tap: rossbuckley1990-hash/tap
+pr-pull	Set up Homebrew	2026-10-05T09:06:06.5868738Z ^[[34m==>^[[0m ^[[1mbrew update --auto-update^[[0m
+pr-pull	Set up Homebrew	2026-10-05T09:06:06.6780765Z Checking if we need to fetch /home/linuxbrew/.linuxbrew/Homebrew...
+pr-pull	Set up Homebrew	2026-10-05T09:06:06.6957258Z Checking if we need to fetch internal/packages.x86_64_linux.jws.json...
+pr-pull	Set up Homebrew	2026-10-05T09:06:07.2476987Z ^G^[[34m==>^[[0m ^[[1mHomebrew collects anonymous analytics.^[[0m
+pr-pull	Set up Homebrew	2026-10-05T09:06:07.2488216Z ^[[1mRead the analytics documentation (and how to opt-out) here:
+pr-pull	Set up Homebrew	2026-10-05T09:06:07.2489046Z   ^[[4mhttps://docs.brew.sh/Analytics^[[24m^[[0m
+pr-pull	Set up Homebrew	2026-10-05T09:06:07.2506120Z No analytics have been recorded yet (nor will be during this `brew` run).
+pr-pull	Set up Homebrew	2026-10-05T09:06:07.2507129Z 
+pr-pull	Set up Homebrew	2026-10-05T09:06:07.2507822Z ^[[34m==>^[[0m ^[[1mHomebrew is run entirely by unpaid volunteers. Please consider donating:^[[0m
+pr-pull	Set up Homebrew	2026-10-05T09:06:07.2508931Z   ^[[4mhttps://github.com/Homebrew/brew#-donations^[[24m
+pr-pull	Set up Homebrew	2026-10-05T09:06:07.2509411Z 
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6439128Z ^[[34m==>^[[0m ^[[1mFetching rossbuckley1990-hash/homebrew-tap...^[[0m
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6453438Z mkdir: created directory '/home/linuxbrew/.linuxbrew/Homebrew/Library/Taps'
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6454623Z mkdir: created directory '/home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/rossbuckley1990-hash'
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6455495Z mkdir: created directory '/home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/rossbuckley1990-hash/homebrew-tap'
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6585206Z hint: Using 'master' as the name for the initial branch. This default branch name
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6586683Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6587897Z hint: to use in all of your new repositories, which will suppress this warning,
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6588465Z hint: call:
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6588688Z hint:
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6588995Z hint: 	git config --global init.defaultBranch <name>
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6589334Z hint:
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6589650Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6590212Z hint: 'development'. The just-created branch can be renamed via this command:
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6590691Z hint:
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6590935Z hint: 	git branch -m <name>
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6591228Z hint:
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6591638Z hint: Disable this message with "git config set advice.defaultBranchName false"
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6593180Z Initialized empty Git repository in /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/rossbuckley1990-hash/homebrew-tap/.git/
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6755333Z '/home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/rossbuckley1990-hash/homebrew-tap' -> '/home/runner/work/homebrew-tap/homebrew-tap'
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.6756247Z /home/runner/work/homebrew-tap/homebrew-tap
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.9921242Z From https://github.com/rossbuckley1990-hash/homebrew-tap
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.9922134Z  * branch            f9467140c2fdfd6c9acf310989963ad2c3ef5290 -> FETCH_HEAD
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.9922854Z  * [new branch]      codex/v0.1-formula-audit -> origin/codex/v0.1-formula-audit
+pr-pull	Set up Homebrew	2026-10-05T09:06:08.9923587Z  * [new branch]      main       -> origin/main
+pr-pull	Set up Homebrew	2026-10-05T09:06:09.2831645Z 'origin/HEAD' is now created and points to 'main'
+pr-pull	Set up Homebrew	2026-10-05T09:06:09.2885562Z Switched to a new branch 'main'
+pr-pull	Set up Homebrew	2026-10-05T09:06:09.2892391Z /home/runner/work/homebrew-tap/homebrew-tap
+pr-pull	Set up git	﻿2026-10-05T09:06:09.3303342Z ##[group]Run Homebrew/actions/git-user-config@848c272c7bfe984a197bd4d16383f4c106ec61e6
+pr-pull	Set up git	2026-10-05T09:06:09.3304121Z with:
+pr-pull	Set up git	2026-10-05T09:06:09.3307112Z   token: ***
+pr-pull	Set up git	2026-10-05T09:06:09.3307395Z   username: rossbuckley1990-hash
+pr-pull	Set up git	2026-10-05T09:06:09.3307653Z env:
+pr-pull	Set up git	2026-10-05T09:06:09.3307848Z   HOMEBREW_NO_INSTALL_FROM_API: 
+pr-pull	Set up git	2026-10-05T09:06:09.3310555Z   HOMEBREW_GITHUB_API_TOKEN: ***
+pr-pull	Set up git	2026-10-05T09:06:09.3310810Z ##[endgroup]
+pr-pull	Set up git	2026-10-05T09:06:09.7241006Z [command]/usr/bin/git config --global user.name Bucko
+pr-pull	Set up git	2026-10-05T09:06:09.7331729Z [command]/usr/bin/git config --global user.email 255341254+rossbuckley1990-hash@users.noreply.github.com
+pr-pull	Pull bottles	﻿2026-10-05T09:06:09.7829465Z ##[group]Run brew pr-pull --debug --retain-bottle-dir --tap="$GITHUB_REPOSITORY" --head-sha="$HEAD_SHA" \
+pr-pull	Pull bottles	2026-10-05T09:06:09.7830327Z ^[[36;1mbrew pr-pull --debug --retain-bottle-dir --tap="$GITHUB_REPOSITORY" --head-sha="$HEAD_SHA" \^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:09.7830847Z ^[[36;1m  "$PULL_REQUEST"^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:09.8180326Z shell: /usr/bin/bash -xeuo pipefail {0}
+pr-pull	Pull bottles	2026-10-05T09:06:09.8180738Z env:
+pr-pull	Pull bottles	2026-10-05T09:06:09.8181008Z   HOMEBREW_NO_INSTALL_FROM_API: 
+pr-pull	Pull bottles	2026-10-05T09:06:09.8184979Z   HOMEBREW_GITHUB_API_TOKEN: ***
+pr-pull	Pull bottles	2026-10-05T09:06:09.8185330Z   HOMEBREW_GIT_COMMITTER_NAME: Bucko
+pr-pull	Pull bottles	2026-10-05T09:06:09.8185860Z   HOMEBREW_GIT_COMMITTER_EMAIL: 255341254+rossbuckley1990-hash@users.noreply.github.com
+pr-pull	Pull bottles	2026-10-05T09:06:09.8186449Z   HEAD_SHA: 83026e89c83b3831ec9f7e494637905f962bd0b2
+pr-pull	Pull bottles	2026-10-05T09:06:09.8187107Z   PULL_REQUEST: 1
+pr-pull	Pull bottles	2026-10-05T09:06:09.8187368Z ##[endgroup]
+pr-pull	Pull bottles	2026-10-05T09:06:09.8309619Z + brew pr-pull --debug --retain-bottle-dir --tap=rossbuckley1990-hash/homebrew-tap --head-sha=83026e89c83b3831ec9f7e494637905f962bd0b2 1
+pr-pull	Pull bottles	2026-10-05T09:06:09.8928960Z ^[[33mWarning:^[[0m ^[[1mpr-pull^[[0m is a developer command, so Homebrew's
+pr-pull	Pull bottles	2026-10-05T09:06:09.8929528Z developer mode has been automatically turned on.
+pr-pull	Pull bottles	2026-10-05T09:06:09.8929929Z To turn developer mode off, run:
+pr-pull	Pull bottles	2026-10-05T09:06:09.8930212Z   brew developer off
+pr-pull	Pull bottles	2026-10-05T09:06:09.8930364Z 
+pr-pull	Pull bottles	2026-10-05T09:06:10.7346366Z ^[[34m==>^[[0m ^[[1mPull request #1 expected head SHA: 83026e89c83b3831ec9f7e494637905f962bd0b2^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:10.9857428Z ^[[34m==>^[[0m ^[[1mFetching rossbuckley1990-hash/tap pull request #1^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:10.9859412Z ^[[35m==>^[[0m ^[[1mPull request merge-base: f9467140c2fdfd6c9acf310989963ad2c3ef5290^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:11.9756973Z ^[[34m==>^[[0m ^[[1mUsing 1 commit from #1^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:13.0641373Z ^[[34m==>^[[0m ^[[1mDownloading bottles for workflow: tests.yml^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:13.2517769Z ^[[34m==>^[[0m ^[[1mDownloading https://api.github.com/repos/rossbuckley1990-hash/homebrew-tap/actions/artifacts/11334808334/zip^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:13.7310931Z ##[warning]Landlock ABI 10 or later is required to deny all network access; found ABI 7. Applying the network restrictions supported by this kernel.
+pr-pull	Pull bottles	2026-10-05T09:06:18.9316283Z Fetching gem metadata from https://rubygems.org/.........
+pr-pull	Pull bottles	2026-10-05T09:06:18.9747716Z Fetching bigdecimal 4.1.3
+pr-pull	Pull bottles	2026-10-05T09:06:18.9750326Z Fetching bindata 3.0.0
+pr-pull	Pull bottles	2026-10-05T09:06:18.9752302Z Fetching concurrent-ruby 1.3.8
+pr-pull	Pull bottles	2026-10-05T09:06:18.9819329Z Fetching elftools 2.2.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.0597321Z Fetching hana 1.3.7
+pr-pull	Pull bottles	2026-10-05T09:06:19.0619831Z Fetching regexp_parser 2.13.1
+pr-pull	Pull bottles	2026-10-05T09:06:19.0669199Z Fetching simpleidn 0.3.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.1028844Z Installing bigdecimal 4.1.3 with native extensions
+pr-pull	Pull bottles	2026-10-05T09:06:19.1045008Z Fetching json_schemer 2.5.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.1081421Z Fetching logger 1.7.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.1099912Z Fetching patchelf 1.7.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.1185974Z Fetching plist 3.7.2
+pr-pull	Pull bottles	2026-10-05T09:06:19.1224902Z Fetching ruby-macho 7.0.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.1249093Z Fetching sorbet-runtime 0.6.13508
+pr-pull	Pull bottles	2026-10-05T09:06:19.1264291Z Installing bindata 3.0.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.1376555Z Installing elftools 2.2.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.1406496Z Installing hana 1.3.7
+pr-pull	Pull bottles	2026-10-05T09:06:19.1487813Z Installing concurrent-ruby 1.3.8
+pr-pull	Pull bottles	2026-10-05T09:06:19.2064597Z Installing simpleidn 0.3.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.2210007Z Installing regexp_parser 2.13.1
+pr-pull	Pull bottles	2026-10-05T09:06:19.2278575Z Installing logger 1.7.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.2392688Z Installing patchelf 1.7.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.2566949Z Installing plist 3.7.2
+pr-pull	Pull bottles	2026-10-05T09:06:19.2659218Z Installing json_schemer 2.5.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.2688859Z Installing ruby-macho 7.0.0
+pr-pull	Pull bottles	2026-10-05T09:06:19.3773687Z Installing sorbet-runtime 0.6.13508
+pr-pull	Pull bottles	2026-10-05T09:06:28.9404738Z Bundle complete! 38 Gemfile dependencies, 13 gems now installed.
+pr-pull	Pull bottles	2026-10-05T09:06:28.9406437Z Bundled gems are installed into `../../../home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor/bundle`
+pr-pull	Pull bottles	2026-10-05T09:06:28.9521346Z 2 installed gems you directly depend on are looking for funding.
+pr-pull	Pull bottles	2026-10-05T09:06:28.9522625Z   Run `bundle fund` for details
+pr-pull	Pull bottles	2026-10-05T09:06:31.5495324Z Fetching gem metadata from https://rubygems.org/.........
+pr-pull	Pull bottles	2026-10-05T09:06:31.6673614Z Fetching racc 1.8.1
+pr-pull	Pull bottles	2026-10-05T09:06:31.6742086Z Fetching ast 2.4.3
+pr-pull	Pull bottles	2026-10-05T09:06:31.6827513Z Fetching parser 3.3.12.0
+pr-pull	Pull bottles	2026-10-05T09:06:31.6827820Z Fetching prism 1.9.0
+pr-pull	Pull bottles	2026-10-05T09:06:31.7370421Z Fetching rubocop-ast 1.50.0
+pr-pull	Pull bottles	2026-10-05T09:06:31.7487269Z Installing ast 2.4.3
+pr-pull	Pull bottles	2026-10-05T09:06:31.7608960Z Installing racc 1.8.1 with native extensions
+pr-pull	Pull bottles	2026-10-05T09:06:31.7629600Z Installing rubocop-ast 1.50.0
+pr-pull	Pull bottles	2026-10-05T09:06:31.9197519Z Installing prism 1.9.0 with native extensions
+pr-pull	Pull bottles	2026-10-05T09:06:31.9284369Z Installing parser 3.3.12.0
+pr-pull	Pull bottles	2026-10-05T09:06:44.5270399Z Bundle complete! 38 Gemfile dependencies, 18 gems now installed.
+pr-pull	Pull bottles	2026-10-05T09:06:44.5271788Z Bundled gems are installed into `../../../home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor/bundle`
+pr-pull	Pull bottles	2026-10-05T09:06:44.5550007Z 2 installed gems you directly depend on are looking for funding.
+pr-pull	Pull bottles	2026-10-05T09:06:44.5550873Z   Run `bundle fund` for details
+pr-pull	Pull bottles	2026-10-05T09:06:44.6650275Z ^[[34m==>^[[0m ^[[1mrossbuckley1990-hash/tap/rightclick^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:45.0866820Z   bottle do
+pr-pull	Pull bottles	2026-10-05T09:06:45.0867917Z     root_url "https://github.com/rossbuckley1990-hash/homebrew-tap/releases/download/rightclick-0.1.0"
+pr-pull	Pull bottles	2026-10-05T09:06:45.0868534Z     rebuild 1
+pr-pull	Pull bottles	2026-10-05T09:06:45.0869131Z     sha256 cellar: :any_skip_relocation, arm64_tahoe: "81f54908ece4bf0b64ebedac1e9bb77624f1e0af7a367e2307c0c92577da2a95"
+pr-pull	Pull bottles	2026-10-05T09:06:45.0869789Z   end
+pr-pull	Pull bottles	2026-10-05T09:06:45.1068607Z [main 1959610] rightclick: add 0.1.0 bottle.
+pr-pull	Pull bottles	2026-10-05T09:06:45.1069448Z  1 file changed, 6 insertions(+)
+pr-pull	Pull bottles	2026-10-05T09:06:47.8229805Z Fetching gem metadata from https://rubygems.org/.........
+pr-pull	Pull bottles	2026-10-05T09:06:47.8662416Z Fetching rexml 3.4.4
+pr-pull	Pull bottles	2026-10-05T09:06:47.9140827Z Installing rexml 3.4.4
+pr-pull	Pull bottles	2026-10-05T09:06:47.9293152Z Bundle complete! 38 Gemfile dependencies, 19 gems now installed.
+pr-pull	Pull bottles	2026-10-05T09:06:47.9294068Z Bundled gems are installed into `../../../home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor/bundle`
+pr-pull	Pull bottles	2026-10-05T09:06:47.9398108Z 2 installed gems you directly depend on are looking for funding.
+pr-pull	Pull bottles	2026-10-05T09:06:47.9398875Z   Run `bundle fund` for details
+pr-pull	Pull bottles	2026-10-05T09:06:48.2314494Z ^[[35m==>^[[0m ^[[1mAuditing Formula rightclick on os linux and arch intel^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:48.5635105Z ^[[35m==>^[[0m ^[[1mCreating new GitHub release "rightclick-0.1.0"^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:49.5744488Z ^[[35m==>^[[0m ^[[1mUploading rightclick-0.1.0.arm64_tahoe.bottle.1.tar.gz^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:50.4368421Z ^[[34m==>^[[0m ^[[1mBottle files retained at:^[[0m
+pr-pull	Pull bottles	2026-10-05T09:06:50.4368844Z /var/tmp/pr-pull-1-20261005-2651-l5gqfz
+pr-pull	Generate build provenance	﻿2026-10-05T09:06:50.4626488Z ##[group]Run actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4627222Z with:
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4627516Z   subject-path: /var/tmp/pr-pull-1-20261005-2651-l5gqfz/*.tar.gz
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4627880Z   push-to-registry: false
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4628131Z   create-storage-record: true
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4628373Z   show-summary: true
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4631073Z   github-token: ***
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4631293Z env:
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4631497Z   HOMEBREW_NO_INSTALL_FROM_API: 
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4634457Z   HOMEBREW_GITHUB_API_TOKEN: ***
+pr-pull	Generate build provenance	2026-10-05T09:06:50.4634705Z ##[endgroup]
+pr-pull	Generate build provenance	2026-10-05T09:06:50.6293969Z Attestation type: Build Provenance
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7637054Z Attestation created for rightclick--0.1.0.arm64_tahoe.bottle.1.tar.gz@sha256:81f54908ece4bf0b64ebedac1e9bb77624f1e0af7a367e2307c0c92577da2a95
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7641616Z ##[group]^[[36mAttestation signed using certificate from Public Good Sigstore instance^[[39m
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7642643Z -----BEGIN CERTIFICATE-----
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7643506Z MIIHkjCCBxegAwIBAgIUQF2nt3I/FzparKTaMNZEPxyQ6m8wCgYIKoZIzj0EAwMw
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7644602Z NzEVMBMGA1UEChMMc2lnc3RvcmUuZGV2MR4wHAYDVQQDExVzaWdzdG9yZS1pbnRl
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7645664Z cm1lZGlhdGUwHhcNMjYxMDA1MDkwNjUxWhcNMjYxMDA1MDkxNjUxWjAAMFkwEwYH
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7646903Z KoZIzj0CAQYIKoZIzj0DAQcDQgAE/B1c9meTIfuIuFrXX3O+CSxzS6jDk4b0cqb8
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7647895Z LV5lCPBBzoJmrqVWWOa9lqI1eDEK45Ng9NJRSdQWyyyHgWkzHKOCBjYwggYyMA4G
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7649003Z A1UdDwEB/wQEAwIHgDATBgNVHSUEDDAKBggrBgEFBQcDAzAdBgNVHQ4EFgQUyt1n
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7650175Z uJIkJOcZFlVc4kzN6D5vcMcwHwYDVR0jBBgwFoAU39Ppz1YkEZb5qNjpKFWixi4Y
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7651275Z ZD8wcAYDVR0RAQH/BGYwZIZiaHR0cHM6Ly9naXRodWIuY29tL3Jvc3NidWNrbGV5
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7652310Z MTk5MC1oYXNoL2hvbWVicmV3LXRhcC8uZ2l0aHViL3dvcmtmbG93cy9wdWJsaXNo
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7653354Z LnltbEByZWZzL2hlYWRzL21haW4wOQYKKwYBBAGDvzABAQQraHR0cHM6Ly90b2tl
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7654402Z bi5hY3Rpb25zLmdpdGh1YnVzZXJjb250ZW50LmNvbTAfBgorBgEEAYO/MAECBBF3
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7655403Z b3JrZmxvd19kaXNwYXRjaDA2BgorBgEEAYO/MAEDBChmOTQ2NzE0MGMyZmRmZDZj
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7656372Z OWFjZjMxMDk4OTk2M2FkMmMzZWY1MjkwMBoGCisGAQQBg78wAQQEDGJyZXcgcHIt
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7658856Z cHVsbDAvBgorBgEEAYO/MAEFBCFyb3NzYnVja2xleTE5OTAtaGFzaC9ob21lYnJl
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7659808Z dy10YXAwHQYKKwYBBAGDvzABBgQPcmVmcy9oZWFkcy9tYWluMDsGCisGAQQBg78w
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7660791Z AQgELQwraHR0cHM6Ly90b2tlbi5hY3Rpb25zLmdpdGh1YnVzZXJjb250ZW50LmNv
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7661731Z bTByBgorBgEEAYO/MAEJBGQMYmh0dHBzOi8vZ2l0aHViLmNvbS9yb3NzYnVja2xl
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7662673Z eTE5OTAtaGFzaC9ob21lYnJldy10YXAvLmdpdGh1Yi93b3JrZmxvd3MvcHVibGlz
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7663629Z aC55bWxAcmVmcy9oZWFkcy9tYWluMDgGCisGAQQBg78wAQoEKgwoZjk0NjcxNDBj
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7664565Z MmZkZmQ2YzlhY2YzMTA5ODk5NjNhZDJjM2VmNTI5MDAdBgorBgEEAYO/MAELBA8M
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7665503Z DWdpdGh1Yi1ob3N0ZWQwRAYKKwYBBAGDvzABDAQ2DDRodHRwczovL2dpdGh1Yi5j
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7666447Z b20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvaG9tZWJyZXctdGFwMDgGCisGAQQBg78w
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7667650Z AQ0EKgwoZjk0NjcxNDBjMmZkZmQ2YzlhY2YzMTA5ODk5NjNhZDJjM2VmNTI5MDAf
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7668598Z BgorBgEEAYO/MAEOBBEMD3JlZnMvaGVhZHMvbWFpbjAaBgorBgEEAYO/MAEPBAwM
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7669541Z CjE0MDU0NTE0NjkwNwYKKwYBBAGDvzABEAQpDCdodHRwczovL2dpdGh1Yi5jb20v
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7670509Z cm9zc2J1Y2tsZXkxOTkwLWhhc2gwGQYKKwYBBAGDvzABEQQLDAkyNTUzNDEyNTQw
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7671499Z cgYKKwYBBAGDvzABEgRkDGJodHRwczovL2dpdGh1Yi5jb20vcm9zc2J1Y2tsZXkx
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7672404Z OTkwLWhhc2gvaG9tZWJyZXctdGFwLy5naXRodWIvd29ya2Zsb3dzL3B1Ymxpc2gu
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7673289Z eW1sQHJlZnMvaGVhZHMvbWFpbjA4BgorBgEEAYO/MAETBCoMKGY5NDY3MTQwYzJm
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7674224Z ZGZkNmM5YWNmMzEwOTg5OTYzYWQyYzNlZjUyOTAwIQYKKwYBBAGDvzABFAQTDBF3
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7675117Z b3JrZmxvd19kaXNwYXRjaDBoBgorBgEEAYO/MAEVBFoMWGh0dHBzOi8vZ2l0aHVi
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7676051Z LmNvbS9yb3NzYnVja2xleTE5OTAtaGFzaC9ob21lYnJldy10YXAvYWN0aW9ucy9y
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7677216Z dW5zLzM3Mjg3NzgyMDcwL2F0dGVtcHRzLzEwFgYKKwYBBAGDvzABFgQIDAZwdWJs
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7678694Z aWMwXwYKKwYBBAGDvzABGARRDE9yZXBvOnJvc3NidWNrbGV5MTk5MC1oYXNoQDI1
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7679672Z NTM0MTI1NC9ob21lYnJldy10YXBAMTQwNTQ1MTQ2OTpyZWY6cmVmcy9oZWFkcy9t
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7680739Z YWluMIGJBgorBgEEAdZ5AgQCBHsEeQB3AHUA3T0wasbHETJjGR4cmWc3AqJKXrje
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7681787Z PK3/h4pygC8p7o4AAAGhC1DcEgAABAMARjBEAiBqJ3FtHfowvoYg8dMsOtUbk8vl
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7682844Z TwxKLoWCGGVNC3xKQAIgIPHbkozM9/ux7n4q8iMkL05PYTbD9bL5/DfWju9E5+ww
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7683988Z CgYIKoZIzj0EAwMDaQAwZgIxAP/6Mu3QMVVBct2D+0zlIDAzsmaElboD5QxkOTQ3
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7684940Z 2i94d9XM97Cs/S/z8hFrlaxTNAIxAIc3YgUadymdfkBh6hbmyZBHxHrZaOs60d2S
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7685842Z VUzeW3KCZe5tmZDzJmWzZKBCd4zuiw==
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7686265Z -----END CERTIFICATE-----
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7686588Z 
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7687460Z ##[endgroup]
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7687955Z ^[[36mAttestation signature uploaded to Rekor transparency log^[[39m
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7688802Z https://search.sigstore.dev?logIndex=3085145463
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7689705Z ^[[36mAttestation uploaded to repository^[[39m
+pr-pull	Generate build provenance	2026-10-05T09:06:51.7690578Z https://github.com/rossbuckley1990-hash/homebrew-tap/attestations/52766068
+pr-pull	Push commits	﻿2026-10-05T09:06:51.8067401Z ##[group]Run Homebrew/actions/git-try-push@848c272c7bfe984a197bd4d16383f4c106ec61e6
+pr-pull	Push commits	2026-10-05T09:06:51.8067887Z with:
+pr-pull	Push commits	2026-10-05T09:06:51.8068082Z   branch: main
+pr-pull	Push commits	2026-10-05T09:06:51.8068280Z   remote: origin
+pr-pull	Push commits	2026-10-05T09:06:51.8068470Z   tries: 10
+pr-pull	Push commits	2026-10-05T09:06:51.8068648Z env:
+pr-pull	Push commits	2026-10-05T09:06:51.8068854Z   HOMEBREW_NO_INSTALL_FROM_API: 
+pr-pull	Push commits	2026-10-05T09:06:51.8071614Z   HOMEBREW_GITHUB_API_TOKEN: ***
+pr-pull	Push commits	2026-10-05T09:06:51.8071873Z ##[endgroup]
+pr-pull	Push commits	2026-10-05T09:06:51.9797802Z [command]/usr/bin/git checkout main
+pr-pull	Push commits	2026-10-05T09:06:51.9857925Z Already on 'main'
+pr-pull	Push commits	2026-10-05T09:06:51.9880850Z [command]/usr/bin/git push origin main
+pr-pull	Push commits	2026-10-05T09:06:53.1473334Z To https://github.com/rossbuckley1990-hash/homebrew-tap
+pr-pull	Push commits	2026-10-05T09:06:53.1474111Z    f946714..1959610  main -> main
+pr-pull	Push commits	2026-10-05T09:06:53.1515478Z [command]/usr/bin/git checkout -
+pr-pull	Push commits	2026-10-05T09:06:53.1555465Z Already on 'main'
+pr-pull	Post Set up Homebrew	﻿2026-10-05T09:06:53.1730399Z Post job cleanup.
+pr-pull	Post Set up Homebrew	2026-10-05T09:06:53.3364480Z [command]/bin/bash /home/runner/work/_actions/Homebrew/actions/848c272c7bfe984a197bd4d16383f4c106ec61e6/setup-homebrew/post.sh false
+pr-pull	Post Set up Homebrew	2026-10-05T09:06:53.3456084Z Reset tap symlink.
+pr-pull	Post Set up Homebrew	2026-10-05T09:06:53.3484413Z Removed token.
+pr-pull	Complete job	﻿2026-10-05T09:06:53.3640460Z Cleaning up orphan processes

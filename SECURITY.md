@@ -1,6 +1,6 @@
 # Security
 
-Discovery is not approval. RIGHTCLICK reflects contracts declared by installed software; that metadata is not a cryptographic claim that a provider is safe. External-share, destructive, financial, and unclassified actions require confirmation. A friendly title is not proof of safety. Action extensions fail safely as unsupported.
+Discovery is not approval. RIGHTCLICK reflects contracts declared by installed software; that metadata is not a cryptographic claim that a provider is safe. External-share, destructive, financial, and unclassified actions require confirmation. Classification uses metadata heuristics, including text-return contracts; it does not inspect provider implementation or prove absence of side effects. A friendly title or returned-text contract is not proof of safety. Confirm sensitive operations and trust the installed provider. Action extensions fail safely as unsupported.
 
 `NSPerformService` returning true means invocation was accepted. It does not prove completion or an external semantic result. Agents should distinguish discovery, applicability, payload construction, invocation, completion, and independent outcome verification.
 
@@ -20,4 +20,4 @@ Homebrew uninstall removes package files, not your Cursor configuration, logs, o
 
 ## Reporting
 
-Until the public repository and private reporting channel exist, report security findings directly to the maintainer through your existing contact. Do not place credentials or sensitive payloads in public issue reports. After publication, use GitHub private vulnerability reporting when enabled. Only 0.1.x is in scope for this release preparation.
+Report security findings directly to the maintainer through your existing private contact, or use GitHub private vulnerability reporting when enabled on the public repository. Do not place credentials or sensitive payloads in public issue reports. Only 0.1.x is supported.

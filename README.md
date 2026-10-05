@@ -8,16 +8,16 @@ The v0.1 proof is ordinary BBEdit installation: the same text query changed from
 
 Not every installed app exposes compatible native capabilities. RIGHTCLICK does not claim universal app compatibility or access to every right-click menu item.
 
-### Installation status
+### Install
 
-v0.1.0 targets Apple Silicon and macOS 14 or later. Homebrew is the primary distribution path; no paid Apple Developer account is required. Publication is being prepared. Once the public release and tap are available:
+v0.1.0 targets Apple Silicon and macOS 14 or later. Homebrew is the primary distribution path; no paid Apple Developer account is required. The [0.1.0 release](https://github.com/rossbuckley1990-hash/rightclick/releases/tag/v0.1.0) and [tap](https://github.com/rossbuckley1990-hash/homebrew-tap) are public:
 
 ```bash
 brew install rossbuckley1990-hash/tap/rightclick
 rightclick setup
 ```
 
-Source installation needs Swift 6.2 or later from the free Apple Command Line Tools. A matching Homebrew bottle avoids compilation when available. Older Command Line Tools cannot compile the pinned dependencies; update them through Software Update. Do not disable macOS security.
+The published Apple Silicon Tahoe bottle avoids compilation on a matching Mac. Source fallback needs Swift 6.2 or later from the free Apple Command Line Tools. Older Command Line Tools cannot compile the pinned dependencies. Update them through Software Update when a compatible version is available. Runtime deployment targets macOS 14; acceptance was performed on macOS 26.4.1, and older macOS versions have not been independently validated. Do not disable macOS security.
 
 For contributors, a local source checkout supports:
 

@@ -1,11 +1,13 @@
 {
-  "commits": 11,
-  "credentialPatternCounts": [
-    0,
-    0,
-    0,
-    0,
-    0
-  ],
-  "personalPathsAndExpiredHostnames": "historical provenance retained; not active configuration"
+  "historySecretCandidates": {
+    "private-key": 0,
+    "github-token": 0,
+    "api-key": 0,
+    "bearer-secret": 0,
+    "aws-access-key": 0
+  },
+  "historicalPersonalPathsPresent": true,
+  "historicalTunnelHostnamesPresent": true,
+  "historyRewritten": false,
+  "scope": "All local Git refs including published release/main; no secret values emitted."
 }

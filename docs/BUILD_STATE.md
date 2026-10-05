@@ -6,8 +6,8 @@ The unchanged XCTest suite passes 33 tests with zero failures. Full Xcode is nee
 
 The protocol acceptance script exercises the concrete installed binary over stdio and authenticated loopback HTTP: initialize, all six tools, exact object inspection, discovery, safety confirmation, exact Apple full-width result/status, authentication failure, loopback binding and malformed framing rejection.
 
-The primary source asset is deterministic, contains the pinned build inputs/tests/fixtures/notices, and excludes build caches, personal configuration and raw execution evidence. The production formula pins its actual SHA256 and immutable GitHub Release URL. The prepared tap includes standard Homebrew bottle workflows. Source installation is a sufficient v0.1 path; no paid Apple account or security bypass is needed.
+The published source asset is deterministic, contains the pinned build inputs/tests/fixtures/notices, and excludes build caches, personal configuration and raw execution evidence. The production formula pins its actual SHA256 and immutable GitHub Release URL. Standard Homebrew CI built and published the Apple Silicon Tahoe bottle. Both an actual public source build with free Command Line Tools and the exact default public bottle install passed; no paid Apple account or security bypass was needed.
 
 The historical BBEdit installation proof remains 36→41 capabilities with five new BBEdit capabilities and no provider-specific production changes. Yojam's one control remains a documented semantic limitation. The capability engine is frozen.
 
-Pre-publication local source-cache acceptance does not prove a public download. That final gate requires the authorised public repositories and release asset, with the publishing namespace confirmed by Ross.
+Public repositories and releases are under `rossbuckley1990-hash`, as authorised by Ross. Final CLI, setup, Cursor, stdio, authenticated loopback HTTP and exact BBEdit output all passed using the Homebrew-installed bottle. Raw final evidence is under `evidence/v0.1-homebrew/final-installed/`. Acceptance was on macOS 26.4.1; older deployment targets remain unvalidated.

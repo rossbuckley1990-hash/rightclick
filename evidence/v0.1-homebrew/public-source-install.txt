@@ -1,0 +1,179 @@
+==> Trusted formula rossbuckley1990-hash/tap/rightclick
+==> Fetching downloads for: rightclick
+✔︎ Formula rightclick (0.1.0)
+==> Verifying checksum for '77addb65287e4e5be2d88733bfebc8f215fb1b5274eeeeba4dab9a15b4ab0da1--rightclick-0.1.0-source.tar.gz'
+==> Installing rightclick from rossbuckley1990-hash/tap
+Warning: A newer Command Line Tools release is available.
+Update them from Software Update in System Settings.
+
+If that doesn't show you any updates, run:
+  sudo rm -rf /Library/Developer/CommandLineTools
+  sudo xcode-select --install
+
+Alternatively, manually download them from:
+  https://developer.apple.com/download/all/.
+You should download the Command Line Tools for Xcode 26.6.
+==> Verifying checksum for '77addb65287e4e5be2d88733bfebc8f215fb1b5274eeeeba4dab9a15b4ab0da1--rightclick-0.1.0-source.tar.gz'
+mv /private/tmp/s-zsHNW6oO/homebrew-unpack-20261005-7106-779kwh/rightclick-0.1.0 /private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0
+==> swift package --disable-sandbox --force-resolved-versions resolve
+warning: /Users/ross/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.
+warning: 'rightclick-0.1.0': failed storing manifest for 'rightclick-0.1.0' in cache: attempt to write a readonly database
+Fetching https://github.com/mattt/eventsource.git
+Fetching https://github.com/apple/swift-nio.git
+Fetching https://github.com/apple/swift-log.git
+Fetching https://github.com/apple/swift-atomics.git
+Fetching https://github.com/apple/swift-collections.git
+Fetching https://github.com/modelcontextprotocol/swift-sdk.git
+Fetching https://github.com/apple/swift-system.git
+[1/303] Fetching eventsource
+[2/2188] Fetching eventsource, swift-atomics
+[738/10420] Fetching eventsource, swift-atomics, swift-log
+[10421/17535] Fetching eventsource, swift-atomics, swift-log, swift-system
+[10920/21527] Fetching eventsource, swift-atomics, swift-log, swift-system, swift-sdk
+[19049/50065] Fetching eventsource, swift-atomics, swift-log, swift-system, swift-sdk, swift-collections
+[26095/136342] Fetching eventsource, swift-atomics, swift-log, swift-system, swift-sdk, swift-collections, swift-nio
+Fetched https://github.com/modelcontextprotocol/swift-sdk.git from cache (1.81s)
+[27557/132350] Fetching eventsource, swift-atomics, swift-log, swift-system, swift-collections, swift-nio
+Fetched https://github.com/apple/swift-system.git from cache (4.82s)
+Fetched https://github.com/apple/swift-log.git from cache (4.82s)
+Fetched https://github.com/apple/swift-atomics.git from cache (4.82s)
+Fetched https://github.com/apple/swift-collections.git from cache (4.83s)
+[62423/86580] Fetching eventsource, swift-nio
+Fetched https://github.com/mattt/eventsource.git from cache (11.69s)
+Fetched https://github.com/apple/swift-nio.git from cache (11.69s)
+Creating working copy for https://github.com/modelcontextprotocol/swift-sdk.git
+Creating working copy for https://github.com/apple/swift-system.git
+Creating working copy for https://github.com/mattt/eventsource.git
+Creating working copy for https://github.com/apple/swift-nio.git
+Creating working copy for https://github.com/apple/swift-atomics.git
+Creating working copy for https://github.com/apple/swift-collections.git
+Creating working copy for https://github.com/apple/swift-log.git
+Working copy of https://github.com/mattt/eventsource.git resolved at 1.5.1
+Working copy of https://github.com/apple/swift-system.git resolved at 1.8.1
+Working copy of https://github.com/modelcontextprotocol/swift-sdk.git resolved at 0.12.1
+Working copy of https://github.com/apple/swift-log.git resolved at 1.15.1
+Working copy of https://github.com/apple/swift-atomics.git resolved at 1.3.1
+Working copy of https://github.com/apple/swift-nio.git resolved at 2.103.0
+Working copy of https://github.com/apple/swift-collections.git resolved at 1.7.1
+warning: 'swift-sdk': failed storing manifest for 'swift-sdk' in cache: attempt to write a readonly database
+warning: 'swift-log': failed storing manifest for 'swift-log' in cache: attempt to write a readonly database
+warning: 'eventsource': failed storing manifest for 'eventsource' in cache: attempt to write a readonly database
+warning: 'swift-system': failed storing manifest for 'swift-system' in cache: attempt to write a readonly database
+warning: 'swift-nio': failed storing manifest for 'swift-nio' in cache: attempt to write a readonly database
+warning: 'swift-atomics': failed storing manifest for 'swift-atomics' in cache: attempt to write a readonly database
+warning: 'swift-collections': failed storing manifest for 'swift-collections' in cache: attempt to write a readonly database
+==> swift build --product rightclick --disable-sandbox --configuration release --jobs 10 --disable-sandbox --force-resolved-versions --skip-update -Xswiftc -debug-prefix-map -Xswiftc /private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0=/rightclick -Xswiftc -file-prefix-map -Xswiftc /private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0=/rightclick -Xcc -fdebug-prefix-map=/private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0=/rightclick -Xcc -ffile-prefix-map=/private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0=/rightclick -Xlinker -oso_prefix -Xlinker /private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0/
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: /Users/ross/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.
+Building for production...
+[0/11] Write sources
+[7/11] Write swift-version--1AB21518FC5DEDBE.txt
+[8/14] Compiling CSystem shims.c
+[10/15] Compiling Logging MultiplexLogHandler.swift
+[11/15] Compiling SystemPackage Errno.swift
+[12/15] Compiling EventSource AsyncEventsSequence.swift
+[13/16] Compiling RightClickCore ActionExtensionCatalog.swift
+/private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 23 |         let items = pasteboardItems(for: item)
+ 24 |         guard !items.isEmpty else { return [] }
+ 25 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 26 |         return services.compactMap { service in
+ 27 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 35 |         let items = pasteboardItems(for: item)
+ 36 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 38 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[14/16] Compiling MCP OAuthAuthorizationCodeFlow.swift
+[15/17] Compiling RightClickMCP HTTPListener.swift
+/private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0/Sources/RightClickMCP/Server.swift:246:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+244 |         do {
+245 |             let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+246 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/private/tmp/rightclick-20261005-6813-rf963m/rightclick-0.1.0/Sources/RightClickMCP/Server.swift:248:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+246 |             return .init(content: [.text(text)], isError: false)
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+249 |         }
+250 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[16/18] Compiling RightClickCLI Setup.swift
+[16/18] Write Objects.LinkFileList
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2QNI05BT3HWZT/_SwiftConcurrencyShims-JX1COEH18DAN.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2QNI05BT3HWZT/_SwiftConcurrencyShims-JX1COEH18DAN.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2QNI05BT3HWZT/Foundation-6N6S7C0XOBON.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2QNI05BT3HWZT/Foundation-6N6S7C0XOBON.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2QNI05BT3HWZT/SwiftShims-JX1COEH18DAN.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2QNI05BT3HWZT/SwiftShims-JX1COEH18DAN.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/_DarwinFoundation2-WWWEWLWRZ14W.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/_DarwinFoundation2-WWWEWLWRZ14W.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/Darwin-1JBQYKNXQBTK.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/Darwin-1JBQYKNXQBTK.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/_SwiftConcurrencyShims-JX1COEH18DAN.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/_SwiftConcurrencyShims-JX1COEH18DAN.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/SwiftShims-JX1COEH18DAN.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/SwiftShims-JX1COEH18DAN.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/Foundation-6N6S7C0XOBON.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/Foundation-6N6S7C0XOBON.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/_SwiftConcurrencyShims-JX1COEH18DAN.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/_SwiftConcurrencyShims-JX1COEH18DAN.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/Network-1DIFEBPF616E8.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/Network-1DIFEBPF616E8.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/Darwin-1JBQYKNXQBTK.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/Darwin-1JBQYKNXQBTK.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/SwiftShims-JX1COEH18DAN.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/SwiftShims-JX1COEH18DAN.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/Dispatch-2RHP2FXWTH678.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MPZ2NXX2J29E/Dispatch-2RHP2FXWTH678.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Foundation-6N6S7C0XOBON.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Foundation-6N6S7C0XOBON.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Security-QHJXGYYDCL9F.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Security-QHJXGYYDCL9F.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/_SwiftConcurrencyShims-JX1COEH18DAN.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/_SwiftConcurrencyShims-JX1COEH18DAN.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/SwiftShims-JX1COEH18DAN.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/SwiftShims-JX1COEH18DAN.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/UniformTypeIdentifiers-2NKX6626FZIUE.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/UniformTypeIdentifiers-2NKX6626FZIUE.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/AppKit-1CITRTGP8HZC1.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/AppKit-1CITRTGP8HZC1.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Darwin-1JBQYKNXQBTK.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Darwin-1JBQYKNXQBTK.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Dispatch-2RHP2FXWTH678.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Dispatch-2RHP2FXWTH678.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Network-1DIFEBPF616E8.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3JY2G6GEH4YYA/Network-1DIFEBPF616E8.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/CSystem-2A8YS6EHFEACG.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/35NVPOGHIW7MS/CSystem-2A8YS6EHFEACG.pcm
+[17/18] Linking rightclick
+Build of product 'rightclick' complete! (574.34s)
+==> Cleaning
+==> Finishing up
+ln -s ../Cellar/rightclick/0.1.0/bin/rightclick rightclick
+ln -s ../Cellar/rightclick/0.1.0/share/rightclick rightclick
+
+This is a Tier 2 configuration:
+  https://docs.brew.sh/Support-Tiers#tier-2
+You can report issues with Tier 2 configurations to Homebrew/* repositories!
+  https://docs.brew.sh/Troubleshooting
+Read the above document before opening any issues or PRs.
+==> Not running 'post_install' as we're building a bottle
+You can run it manually using:
+  brew postinstall rossbuckley1990-hash/tap/rightclick
+==> Summary
+🍺  /opt/homebrew/Cellar/rightclick/0.1.0: 15 files, 6MB, built in 10 minutes

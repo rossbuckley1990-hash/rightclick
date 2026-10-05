@@ -1,5 +1,7 @@
 # Release procedure — 0.1.0
 
+Publication is complete under `rossbuckley1990-hash`: [source/release](https://github.com/rossbuckley1990-hash/rightclick/releases/tag/v0.1.0), [tap](https://github.com/rossbuckley1990-hash/homebrew-tap), and [Apple Silicon bottle](https://github.com/rossbuckley1990-hash/homebrew-tap/releases/tag/rightclick-0.1.0). Public source build, fresh bottle install and installed-product acceptance passed. See the [final report](V0.1_COMPLETION_REPORT.md). The commands below preserve the release procedure; do not recreate or replace the existing v0.1.0 tag/assets.
+
 The primary v0.1 distribution is a Homebrew CLI/MCP developer package. Free Apple Command Line Tools with Swift 6.2+ compile its pinned dependencies. The runtime targets Apple Silicon/macOS 14+. The engine remains frozen. Paid Apple distribution is [deferred](SIGNING.md), not a release blocker.
 
 ## Prepare and validate
@@ -22,13 +24,12 @@ Before publication, the identical source asset may be staged in Homebrew's downl
 
 Ross authorised publication in the chat. GitHub authentication must be valid and have rights under `rossbuckley1990-hash`. Sign in interactively with `gh auth login --hostname github.com --web`; never paste a credential into chat or source.
 
-After the final clean commit, prepare the local tag and publish the source repository:
+For a first publication, after the final clean commit, prepare the local tag and publish the source repository. This sequence was completed for v0.1.0; subsequent releases must use a new version:
 
 ```bash
 gh repo create rossbuckley1990-hash/rightclick --public --source=. --remote=origin \
   --description "Install an app. Your AI learns what it can do."
 git push -u origin HEAD:main
-gh repo edit rossbuckley1990-hash/rightclick --default-branch main --enable-issues
 git tag -a v0.1.0 -m "RIGHTCLICK 0.1.0"
 git push origin v0.1.0
 gh release create v0.1.0 \
@@ -71,11 +72,13 @@ Use `scripts/acceptance-mcp.py /opt/homebrew/bin/rightclick <output-dir>` to ver
 
 With ordinary BBEdit installed independently, invoke New BBEdit Document with Selection once and independently inspect its new document for the exact fixture. Preserve the historical 36→41 acquisition proof. Do not repeat the closed Yojam experiment or present it as semantic success.
 
-This Mac can verify an actual downloaded public installation once assets exist. A second supported Mac is valuable independent portability evidence; do not describe a same-Mac test as a fresh-machine result.
+This sequence passed on the proof Mac with the published bottle and, independently, the public source asset. A second supported Mac is valuable independent portability evidence; do not describe a same-Mac test as a fresh-machine result.
 
-## Optional bottles
+## Published bottle and future bottle procedure
 
-Source installation is sufficient for v0.1. The tap's `tests.yml` builds bottles for formula pull requests on Apple Silicon macOS. After a green reviewed PR, run the `brew pr-pull` workflow with its PR number and reviewed head SHA. It publishes the standard bottle assets and commits the bottle checksums. Do not publish unreviewed workflow results or hand-invent a bottle checksum. A Linux job that manages bottle publication is infrastructure, not Linux product support.
+The v0.1.0 Apple Silicon Tahoe bottle was built, tested, attested and published through these standard workflows, then downloaded and accepted through the exact public Homebrew install. Source fallback also passed. The tap's `tests.yml` builds bottles for formula pull requests on Apple Silicon macOS. After a green reviewed PR, run the `brew pr-pull` workflow with its PR number and reviewed head SHA. It publishes the standard bottle assets and commits the bottle checksums. Do not publish unreviewed workflow results or hand-invent a bottle checksum. A Linux job that manages bottle publication is infrastructure, not Linux product support.
+
+`packaging/homebrew/bottle.json` preserves the actual published bottle DSL and its source SHA256. Source packaging refuses to attach that bottle to changed source; prepare a new version instead. Both formula copies match the public tap.
 
 Local bottle validation uses `brew install --build-bottle rossbuckley1990-hash/tap/rightclick`, `brew bottle --json rossbuckley1990-hash/tap/rightclick`, then uninstall/pour the resulting bottle and repeat acceptance. A local bottle is not evidence that GitHub Actions has executed.
 

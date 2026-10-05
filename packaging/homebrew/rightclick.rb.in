@@ -2,10 +2,10 @@ class Rightclick < Formula
   desc "Install an app. Your AI learns what it can do"
   homepage "https://github.com/rossbuckley1990-hash/rightclick"
   url "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.1.0/rightclick-0.1.0-source.tar.gz"
-  version "0.1.0"
   sha256 "@SOURCE_SHA256@"
   license "Apache-2.0"
 
+@BOTTLE_BLOCK@
   depends_on arch: :arm64
   depends_on macos: :sonoma
   uses_from_macos "swift" => :build, since: :sonoma

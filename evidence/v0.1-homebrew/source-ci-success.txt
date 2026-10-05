@@ -1,0 +1,872 @@
+test	Set up job	﻿2026-10-05T08:54:03.2917890Z Current runner version: '2.337.0'
+test	Set up job	2026-10-05T08:54:03.2970930Z ##[group]Runner Image Provisioner
+test	Set up job	2026-10-05T08:54:03.2972910Z Hosted Compute Agent
+test	Set up job	2026-10-05T08:54:03.2974060Z Version: 20260828.587
+test	Set up job	2026-10-05T08:54:03.2975190Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+test	Set up job	2026-10-05T08:54:03.2976500Z Build Date: 2026-08-28T16:44:25Z
+test	Set up job	2026-10-05T08:54:03.2977740Z Worker ID: {f59618e3-ec52-4703-8096-1c593e5a0cc7}
+test	Set up job	2026-10-05T08:54:03.2979200Z Azure Region: westus
+test	Set up job	2026-10-05T08:54:03.2980220Z ##[endgroup]
+test	Set up job	2026-10-05T08:54:03.2984220Z ##[group]Operating System
+test	Set up job	2026-10-05T08:54:03.2985370Z macOS
+test	Set up job	2026-10-05T08:54:03.2986240Z 26.6.2
+test	Set up job	2026-10-05T08:54:03.2987100Z 25G83
+test	Set up job	2026-10-05T08:54:03.2987970Z ##[endgroup]
+test	Set up job	2026-10-05T08:54:03.2988890Z ##[group]Runner Image
+test	Set up job	2026-10-05T08:54:03.2989910Z Image: macos-26-arm64
+test	Set up job	2026-10-05T08:54:03.2990900Z Version: 20260907.0351.1
+test	Set up job	2026-10-05T08:54:03.2992920Z Included Software: https://github.com/actions/runner-images/blob/macos-26-arm64/20260907.0351/images/macos/macos-26-arm64-Readme.md
+test	Set up job	2026-10-05T08:54:03.2996080Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-26-arm64%2F20260907.0351
+test	Set up job	2026-10-05T08:54:03.2997870Z ##[endgroup]
+test	Set up job	2026-10-05T08:54:03.2999820Z ##[group]GITHUB_TOKEN Permissions
+test	Set up job	2026-10-05T08:54:03.3004020Z Contents: read
+test	Set up job	2026-10-05T08:54:03.3005060Z Metadata: read
+test	Set up job	2026-10-05T08:54:03.3006200Z ##[endgroup]
+test	Set up job	2026-10-05T08:54:03.3010750Z Secret source: Actions
+test	Set up job	2026-10-05T08:54:03.3012480Z Cache mode: write
+test	Set up job	2026-10-05T08:54:03.3013650Z Prepare workflow directory
+test	Set up job	2026-10-05T08:54:03.3363390Z Prepare all required actions
+test	Set up job	2026-10-05T08:54:03.3454490Z Getting action download info
+test	Set up job	2026-10-05T08:54:03.7438390Z Download action repository 'actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd' (SHA:de0fac2e4500dabe0009e67214ff5f5447ce83dd)
+test	Set up job	2026-10-05T08:54:04.1484470Z Complete job name: test
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	﻿2026-10-05T08:54:04.2198870Z ##[group]Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2199710Z with:
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2200080Z   repository: rossbuckley1990-hash/rightclick
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2203170Z   token: ***
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2203590Z   ssh-strict: true
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2203960Z   ssh-user: git
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2204290Z   persist-credentials: true
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2204650Z   clean: true
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2205010Z   sparse-checkout-cone-mode: true
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2205450Z   fetch-depth: 1
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2205790Z   fetch-tags: false
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2206130Z   show-progress: true
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2206470Z   lfs: false
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2206780Z   submodules: false
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2207120Z   set-safe-directory: true
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.2207670Z ##[endgroup]
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.6985090Z Syncing repository: rossbuckley1990-hash/rightclick
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.6986730Z ##[group]Getting Git version info
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.6987270Z Working directory is '/Users/runner/work/rightclick/rightclick'
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.6988180Z [command]/opt/homebrew/bin/git version
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.7711140Z git version 2.55.0
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.7742590Z ##[endgroup]
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.7761330Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/e5bf5944-1a26-424d-89c0-1173bfaf22c2/.gitconfig'
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.7777030Z Temporarily overriding HOME='/Users/runner/work/_temp/e5bf5944-1a26-424d-89c0-1173bfaf22c2' before making global git config changes
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.7781710Z Adding repository directory to the temporary git global config as a safe directory
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.7787230Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/rightclick/rightclick
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.7922850Z Deleting the contents of '/Users/runner/work/rightclick/rightclick'
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.7927070Z ##[group]Initializing the repository
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.7931500Z [command]/opt/homebrew/bin/git init /Users/runner/work/rightclick/rightclick
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8237300Z hint: Using 'master' as the name for the initial branch. This default branch name
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8244920Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8248540Z hint: to use in all of your new repositories, which will suppress this warning,
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8250120Z hint: call:
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8251010Z hint:
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8252120Z hint: 	git config --global init.defaultBranch <name>
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8253440Z hint:
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8254770Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8256670Z hint: 'development'. The just-created branch can be renamed via this command:
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8258170Z hint:
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8259170Z hint: 	git branch -m <name>
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8260290Z hint:
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8262020Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8264100Z Initialized empty Git repository in /Users/runner/work/rightclick/rightclick/.git/
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8265800Z [command]/opt/homebrew/bin/git remote add origin https://github.com/rossbuckley1990-hash/rightclick
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8418360Z ##[endgroup]
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8421000Z ##[group]Disabling automatic garbage collection
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8422680Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8505970Z ##[endgroup]
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8508560Z ##[group]Setting up auth
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8510470Z Removing SSH command configuration
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8512320Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:04.8656160Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.0204000Z Removing HTTP extra header
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.0215920Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.0412910Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.2206310Z Removing includeIf entries pointing to credentials config files
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.2308770Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.2617640Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.4245610Z [command]/opt/homebrew/bin/git config --file /Users/runner/work/_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.4491440Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/rightclick/rightclick/.git.path /Users/runner/work/_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.4507270Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/Users/runner/work/rightclick/rightclick/.git/worktrees/*.path /Users/runner/work/_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.4512540Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.4516670Z [command]/opt/homebrew/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.4519700Z ##[endgroup]
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.4522330Z ##[group]Fetching the repository
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:05.4524640Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +refs/tags/v0.1.0:refs/tags/v0.1.0
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0180920Z From https://github.com/rossbuckley1990-hash/rightclick
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0183560Z  * [new tag]         v0.1.0     -> v0.1.0
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0198910Z [command]/opt/homebrew/bin/git tag --list v0.1.0
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0317770Z v0.1.0
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0321370Z [command]/opt/homebrew/bin/git rev-parse refs/tags/v0.1.0^{commit}
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0414710Z ef43a5dcd7357385423b8fb2d5b7f660b13a4c13
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0421180Z ##[endgroup]
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0423710Z ##[group]Determining the checkout info
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0426520Z ##[endgroup]
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0430770Z [command]/opt/homebrew/bin/git sparse-checkout disable
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0542050Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0651940Z ##[group]Checking out the ref
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.0653900Z [command]/opt/homebrew/bin/git checkout --progress --force refs/tags/v0.1.0
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.1261850Z HEAD is now at ef43a5d Release v0.1 through a pinned Homebrew source package without paid Apple distribution
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.1279410Z ##[endgroup]
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.1377120Z [command]/opt/homebrew/bin/git log -1 --format=%H
+test	Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:54:06.1460440Z ef43a5dcd7357385423b8fb2d5b7f660b13a4c13
+test	Run swift test --force-resolved-versions	﻿2026-10-05T08:54:06.1691360Z ##[group]Run swift test --force-resolved-versions
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:06.1692370Z ^[[36;1mswift test --force-resolved-versions^[[0m
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:06.1748020Z shell: /bin/bash -e {0}
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:06.1748870Z ##[endgroup]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:20.1708120Z Fetching https://github.com/apple/swift-log.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:20.1716620Z Fetching https://github.com/apple/swift-atomics.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:20.6761630Z [1/8232] Fetching swift-log
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:20.7833170Z [8233/10117] Fetching swift-log, swift-atomics
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.0359310Z Fetched https://github.com/apple/swift-atomics.git from cache (0.87s)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.0374630Z Fetched https://github.com/apple/swift-log.git from cache (0.87s)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.0543570Z Fetching https://github.com/mattt/eventsource.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.0550450Z Fetching https://github.com/apple/swift-system.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.4670390Z [1/303] Fetching eventsource
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.6642040Z [304/7418] Fetching eventsource, swift-system
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.8809030Z Fetched https://github.com/mattt/eventsource.git from cache (0.82s)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.8910950Z Fetched https://github.com/apple/swift-system.git from cache (0.82s)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.8935900Z Fetching https://github.com/apple/swift-collections.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:21.9058250Z Fetching https://github.com/modelcontextprotocol/swift-sdk.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:22.5777080Z [1/3992] Fetching swift-sdk
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:22.6599380Z [1638/32530] Fetching swift-sdk, swift-collections
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:23.6686060Z Fetched https://github.com/apple/swift-collections.git from cache (1.77s)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:23.6797670Z Fetched https://github.com/modelcontextprotocol/swift-sdk.git from cache (1.77s)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:23.6902180Z Fetching https://github.com/apple/swift-nio.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:24.6231600Z [1/86277] Fetching swift-nio
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.0922930Z Fetched https://github.com/apple/swift-nio.git from cache (4.41s)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.1253210Z Creating working copy for https://github.com/apple/swift-atomics.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.1271730Z Creating working copy for https://github.com/apple/swift-log.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.1897410Z Creating working copy for https://github.com/apple/swift-system.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.3647470Z Working copy of https://github.com/apple/swift-log.git resolved at 1.15.1
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.3797430Z Creating working copy for https://github.com/mattt/eventsource.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.3901330Z Working copy of https://github.com/apple/swift-atomics.git resolved at 1.3.1
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.4009600Z Working copy of https://github.com/apple/swift-system.git resolved at 1.8.1
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.4186100Z Creating working copy for https://github.com/apple/swift-collections.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.4362560Z Creating working copy for https://github.com/modelcontextprotocol/swift-sdk.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.5048590Z Working copy of https://github.com/mattt/eventsource.git resolved at 1.5.1
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.5398120Z Creating working copy for https://github.com/apple/swift-nio.git
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.6439440Z Working copy of https://github.com/modelcontextprotocol/swift-sdk.git resolved at 0.12.1
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:28.9580110Z Working copy of https://github.com/apple/swift-collections.git resolved at 1.7.1
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:29.2593980Z Working copy of https://github.com/apple/swift-nio.git resolved at 2.103.0
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:40.9664890Z Building for debugging...
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:41.0189720Z [0/29] /Users/runner/work/rightclick/rightclick/.build/arm64-apple-macosx/debug/rightclick-mcpPackageTests.derived/runner.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:41.0542510Z [1/29] Write sources
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:41.0572370Z [2/29] Write rightclick-marker-entitlement.plist
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:41.1147640Z [2/29] Write rightclick-probe-entitlement.plist
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:41.2891730Z [2/29] Write rightclick-entitlement.plist
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:41.3028620Z [5/29] Write sources
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:41.7681890Z [15/29] Write swift-version-7974D3F7F03D5E95.txt
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:42.2165880Z [16/31] Compiling CSystem shims.c
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:45.4777950Z [17/39] Compiling RightClickProbePrivate RCPrivateExtensionProbe.m
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.6183440Z [19/64] Emitting module SystemPackage
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.6342910Z [20/64] Compiling SystemPackage Errno.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.6485880Z [21/64] Compiling SystemPackage ErrnoWindows.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.6623660Z [22/64] Compiling SystemPackage FileDescriptor.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.6726230Z [23/64] Compiling SystemPackage FileHelpers.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.6829290Z [24/64] Compiling SystemPackage FileOperations.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.6931610Z [25/64] Compiling SystemPackage FilePath.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.7033170Z [26/64] Compiling SystemPackage FilePathComponentView.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.7135370Z [27/64] Compiling SystemPackage FilePathComponents.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.7236750Z [28/64] Compiling SystemPackage FilePathParsing.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.7343530Z [29/64] Compiling SystemPackage FilePathString.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.7449670Z [30/64] Compiling SystemPackage FilePathSyntax.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:50.7552440Z [31/64] Compiling SystemPackage FilePathTemp.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:52.9969560Z [32/76] Compiling SystemPackage FilePathTempPosix.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.0072260Z [33/76] Compiling SystemPackage FilePathTempWindows.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.0174590Z [34/76] Compiling SystemPackage FilePathWindows.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.0280580Z [35/76] Compiling SystemPackage FilePermissions.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.0394540Z [36/76] Compiling SystemPackage FileFlags.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.0497280Z [37/76] Compiling SystemPackage FileMode.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.0597590Z [38/76] Compiling SystemPackage FileType.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.0699700Z [39/76] Compiling SystemPackage Identifiers.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.0802680Z [40/76] Compiling SystemPackage Stat.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.0935840Z [41/76] Compiling SystemPackage Backcompat.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.1052210Z [42/76] Compiling SystemPackage CInterop.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:53.1153200Z [43/76] Compiling SystemPackage Constants.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.5078830Z [44/76] Compiling SystemPackage Exports.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.5161180Z [45/76] Compiling SystemPackage Mocking.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.5261680Z [46/76] Compiling SystemPackage RawBuffer.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.5378720Z [47/76] Compiling SystemPackage Syscalls.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.5488330Z [48/76] Compiling SystemPackage WindowsSyscallAdapters.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.5617790Z [49/76] Compiling SystemPackage MachPort.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.5726510Z [50/76] Compiling SystemPackage PlatformString.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.5829650Z [51/76] Compiling SystemPackage SystemString.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.5929650Z [52/76] Compiling SystemPackage Util+StringArray.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.6030260Z [53/76] Compiling SystemPackage Util.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.6131740Z [54/76] Compiling SystemPackage UtilConsumers.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:54.6156120Z [55/76] Compiling SystemPackage WinSDK+Overlay.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:58.8833240Z [59/81] Emitting module RightClickCore
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:58.9026140Z [64/81] Compiling RightClickMarker main.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:58.9128030Z [65/81] Emitting module RightClickMarker
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.0859670Z [66/81] Compiling RightClickCore ServiceCatalog.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.0963050Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.1063590Z  23 |         let items = pasteboardItems(for: item)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.1164610Z  24 |         guard !items.isEmpty else { return [] }
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.1268420Z  25 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.1389260Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.1492740Z  26 |         return services.compactMap { service in
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.1593410Z  27 |             guard service.canPerform(withItems: items) else { return nil }
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.1694560Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.1796090Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.1927340Z  34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2029370Z  35 |         let items = pasteboardItems(for: item)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2030400Z  36 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2032360Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2034720Z  37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2036370Z  38 |         guard pthread_main_np() != 0 else {
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2036750Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2037610Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2138900Z [67/81] Compiling RightClickCore SharingCatalog.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2241170Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2343190Z  23 |         let items = pasteboardItems(for: item)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2496080Z  24 |         guard !items.isEmpty else { return [] }
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2626360Z  25 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2738500Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.2739510Z  26 |         return services.compactMap { service in
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3000140Z  27 |             guard service.canPerform(withItems: items) else { return nil }
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3026300Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3274720Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3277640Z  34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3380900Z  35 |         let items = pasteboardItems(for: item)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3483820Z  36 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3589430Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3693510Z  37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3795600Z  38 |         guard pthread_main_np() != 0 else {
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.3897150Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4005080Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4110170Z [68/81] Compiling RightClickCore SharingExecutionModel.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4213070Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4317250Z  23 |         let items = pasteboardItems(for: item)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4419180Z  24 |         guard !items.isEmpty else { return [] }
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4521640Z  25 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4624790Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4728260Z  26 |         return services.compactMap { service in
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4828890Z  27 |             guard service.canPerform(withItems: items) else { return nil }
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.4930340Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.5046470Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.5152530Z  34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.5255030Z  35 |         let items = pasteboardItems(for: item)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.5355860Z  36 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.5458140Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.5566810Z  37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.5669270Z  38 |         guard pthread_main_np() != 0 else {
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.5770860Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:54:59.5796850Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:00.4676490Z [69/94] Emitting module Logging
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:00.7751050Z [70/97] Compiling Logging LogEvent.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:00.7852450Z [71/97] Compiling Logging LogHandler.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:00.7953650Z [72/97] Compiling Logging Logger+Attributes.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:00.8055080Z [73/97] Compiling Logging Logger+With.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:01.0530010Z [74/97] Compiling EventSource AsyncEventsSequence.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:01.0632890Z [75/97] Compiling EventSource AsyncSequence+Events.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:01.0734920Z [76/97] Compiling Logging SwiftLogNoOpLogHandler.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:01.0835580Z [77/97] Compiling Logging Locks.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:01.4578450Z [78/97] Compiling Logging Logger.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:01.4680130Z [79/97] Compiling Logging LoggingSystem.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:01.4781470Z [80/97] Compiling Logging MetadataProvider.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:03.6858080Z [81/101] Compiling EventSource EventSource+AsyncHTTPClient.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:03.9082370Z [82/102] Compiling RightClickCoreTests AcquisitionTests.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:03.9185490Z [83/102] Compiling RightClickCoreTests EngineTests.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:04.1824370Z [84/102] Emitting module EventSource
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:05.0960400Z [85/102] Compiling EventSource EventSource.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:05.1062480Z [85/102] Write Objects.LinkFileList
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.4479650Z [87/135] Emitting module RightClickProbe
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.4582280Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:231:27: warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.4687500Z  229 |     KnownShareName(name: .useAsDesktopPicture, status: "PUBLIC_SUPPORTED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.4788950Z  230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.4890350Z  231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.4991800Z      |                           `- warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.5104570Z  232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.5205210Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.5305220Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.5406680Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:232:27: warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.5507000Z  230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.5607250Z  231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.5708790Z  232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.5809430Z      |                           `- warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.5911340Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6011780Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6111950Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6213390Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:233:27: warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6313600Z  231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6415320Z  232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6518210Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6625130Z      |                           `- warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6726170Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6827670Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.6929810Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7033100Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:234:27: warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7132500Z  232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7234710Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7340410Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7442240Z      |                           `- warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7544060Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7644380Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7745830Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7847390Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:235:27: warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.7947420Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8049540Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8158310Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8260050Z      |                           `- warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8360240Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8460450Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8560520Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8665710Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:236:27: warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8788630Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8890800Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.8992290Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.9093920Z      |                           `- warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.9196670Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.9297990Z  238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.9398070Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.9499240Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:237:27: warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.9599720Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.9721030Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.9822430Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:06.9924500Z      |                           `- warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0027300Z  238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0128860Z  239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0228770Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0330840Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:238:27: warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0430330Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0531900Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0632260Z  238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0732810Z      |                           `- warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0833950Z  239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.0934840Z  240 | ]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1035070Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1137020Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:239:27: warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1236910Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1357140Z  238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1458490Z  239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1560400Z      |                           `- warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1659420Z  240 | ]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1761290Z  241 | 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1861390Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.1963250Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:07.9951570Z [88/135] Compiling RightClickProbe main.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0051440Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:231:27: warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0151440Z  229 |     KnownShareName(name: .useAsDesktopPicture, status: "PUBLIC_SUPPORTED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0254430Z  230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0354470Z  231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0457230Z      |                           `- warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0556580Z  232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0657440Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0758320Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0860120Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:232:27: warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.0960320Z  230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1061180Z  231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1162390Z  232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1264290Z      |                           `- warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1364330Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1466130Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1567400Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1670290Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:233:27: warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1769150Z  231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1871180Z  232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.1970610Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.2073600Z      |                           `- warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.2175290Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.2275880Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.2375720Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.2478020Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:234:27: warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.2578590Z  232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.2680700Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.2784090Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.2960020Z      |                           `- warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3062830Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3063560Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3164310Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3268740Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:235:27: warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3371360Z  233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3472850Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3574940Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3677120Z      |                           `- warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3778560Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3880150Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.3981690Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4084790Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:236:27: warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4183630Z  234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4285060Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4385970Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4486880Z      |                           `- warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4589260Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4689250Z  238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4789240Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4892520Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:237:27: warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.4990870Z  235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.5092570Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.5193410Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.5295000Z      |                           `- warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.5396030Z  238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.5496400Z  239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.5596670Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.5698370Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:238:27: warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.5798970Z  236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.5901440Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6002710Z  238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6104580Z      |                           `- warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6207350Z  239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6308850Z  240 | ]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6409800Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6511260Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:239:27: warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6613750Z  237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6716590Z  238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6836630Z  239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.6938440Z      |                           `- warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.7050980Z  240 | ]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.7152460Z  241 | 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.7274150Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.7375840Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:582:30: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.7492160Z  580 |         var errors: [String] = []
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.7598400Z  581 |         let deprecated = safeShares {
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.7700240Z  582 |             NSSharingService.sharingServices(forItems: items).map {
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.7802430Z      |                              `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.7904380Z  583 |                 record(for: $0, items: items, sourceAPI: "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED")
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8007210Z  584 |             }
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8108700Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8210510Z /Users/runner/work/rightclick/rightclick/Sources/RightClickProbe/main.swift:748:39: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8314450Z  746 | func executeHarmlessShare(fixtures: FixtureSet) -> SharingExecution {
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8419740Z  747 |     let items: [Any] = [fixtures.webURL as NSURL]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8529590Z  748 |     let discovered = NSSharingService.sharingServices(forItems: items)
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8650680Z      |                                       `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8755080Z  749 |     let titles = discovered.map(\.title)
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8857670Z  750 |     let readingListName = NSSharingService.Name.addToSafariReadingList
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.8959660Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:08.9061940Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:09.9120130Z [88/135] Linking rightclick-marker
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:09.9221390Z [89/135] Write Objects.LinkFileList
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:09.9322710Z [90/135] Applying rightclick-marker
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:09.9424360Z [91/135] Linking rightclick-probe
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:09.9526160Z [92/135] Applying rightclick-probe
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:12.9167470Z [94/135] Compiling RightClickCoreTests PolicyTests.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:13.2098760Z [95/136] Compiling MCP Icon.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:13.2200830Z [96/136] Compiling MCP Lifecycle.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:13.2302650Z [97/136] Emitting module RightClickCoreTests
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:13.2403560Z [98/136] Compiling RightClickCoreTests SharingExecutionTests.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.2975680Z [99/138] Compiling MCP OAuthAuthorizationCodeFlow.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.3095080Z [100/138] Compiling MCP OAuthAuthorizer.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.3196610Z [101/138] Compiling MCP OAuthClientRegistrar.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.3298940Z [102/138] Compiling MCP OAuthConfiguration.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.3401480Z [103/138] Compiling MCP OAuthConstants.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.3506780Z [104/138] Compiling MCP OAuthDiscovery.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.3608120Z [105/138] Compiling MCP OAuthDiscoveryClient.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.3709510Z [106/138] Compiling MCP OAuthErrors.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.3810700Z [107/138] Compiling MCP OAuthModels.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.3912750Z [108/138] Compiling MCP OAuthTokenEndpointClient.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.4014390Z [109/138] Compiling MCP OAuthURLValidator.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.4115430Z [110/138] Compiling MCP OAuthWWWAuthenticateParser.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.4215290Z [111/138] Compiling MCP PKCE.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.4357780Z [112/138] Compiling MCP TokenStorage.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.4358820Z [113/138] Compiling MCP Error.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:14.4482490Z [114/138] Compiling MCP ID.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.0258830Z [115/153] Emitting module rightclick_mcpPackageTests
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.0360730Z [116/153] Compiling rightclick_mcpPackageTests runner.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.0460850Z [116/153] Write Objects.LinkFileList
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.5887330Z [118/153] Emitting module MCP
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.5988580Z [121/153] Compiling MCP Messages.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6090060Z [122/153] Compiling MCP PendingRequest.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6192090Z [123/153] Compiling MCP Transport.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6293770Z [124/153] Compiling MCP HTTPClientTransport.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6395050Z [125/153] Compiling MCP HTTPRequestValidation.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6496520Z [126/153] Compiling MCP HTTPServerTypes.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6598460Z [127/153] Compiling MCP StatefulHTTPServerTransport.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6699860Z [128/153] Compiling MCP StatelessHTTPServerTransport.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6801440Z [129/153] Compiling MCP InMemoryTransport.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6839950Z [130/153] Compiling MCP NetworkTransport.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.6941430Z [131/153] Compiling MCP StdioTransport.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.7042420Z [132/153] Compiling MCP UnitInterval.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.7144170Z [133/153] Compiling MCP Cancellation.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.7245550Z [134/153] Compiling MCP Ping.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:15.7347410Z [134/153] Linking rightclick-mcpPackageTests
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6146200Z [136/153] Compiling MCP Progress.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6157150Z [137/153] Compiling MCP RequestContext.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6180540Z [138/153] Compiling MCP Value.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6181540Z [139/153] Compiling MCP Versioning.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6183200Z [140/153] Compiling MCP Client.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6271050Z [141/153] Compiling MCP Elicitation.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6287820Z [142/153] Compiling MCP Roots.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6288110Z [143/153] Compiling MCP Sampling.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6288470Z [144/153] Compiling MCP Data+Extensions.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6288840Z [145/153] Compiling MCP Completion.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6289170Z [146/153] Compiling MCP Logging.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6289430Z [147/153] Compiling MCP Prompts.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6289740Z [148/153] Compiling MCP Resources.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6289990Z [149/153] Compiling MCP Server.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:22.6290340Z [150/153] Compiling MCP Tools.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.3964030Z [151/156] Compiling RightClickMCP HTTPListener.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4066800Z [152/156] Compiling RightClickMCP Server.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4170850Z /Users/runner/work/rightclick/rightclick/Sources/RightClickMCP/Server.swift:246:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4277290Z 244 |         do {
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4380000Z 245 |             let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4484130Z 246 |             return .init(content: [.text(text)], isError: false)
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4588210Z     |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4691380Z 247 |         } catch {
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4793880Z 248 |             return .init(content: [.text(String(describing: error))], isError: true)
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4895770Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.4999460Z /Users/runner/work/rightclick/rightclick/Sources/RightClickMCP/Server.swift:248:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.5099620Z 246 |             return .init(content: [.text(text)], isError: false)
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.5201650Z 247 |         } catch {
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.5303040Z 248 |             return .init(content: [.text(String(describing: error))], isError: true)
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.5405370Z     |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.5510480Z 249 |         }
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.5612560Z 250 |     }
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.5714190Z 
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.5815950Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:24.5919550Z [153/156] Emitting module RightClickMCP
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:25.3927350Z [154/159] Compiling RightClickCLI Setup.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:25.4026600Z [155/159] Emitting module RightClickCLI
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:25.4128020Z [156/159] Compiling RightClickCLI main.swift
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:25.4288070Z [156/159] Write Objects.LinkFileList
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:26.5920620Z [157/159] Linking rightclick
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:26.6308280Z [158/159] Applying rightclick
+test	Run swift test --force-resolved-versions	2026-10-05T08:55:26.6364620Z Build complete! (66.46s)
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2818350Z Test Suite 'All tests' started at 2026-10-05 08:55:27.803.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2820940Z Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-05 08:55:27.805.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2821760Z Test Suite 'AcquisitionTests' started at 2026-10-05 08:55:27.805.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2822700Z Test Case '-[RightClickCoreTests.AcquisitionTests testDeclaredTextRepresentationsRoundTripOnThePasteboard]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2823690Z Test Case '-[RightClickCoreTests.AcquisitionTests testDeclaredTextRepresentationsRoundTripOnThePasteboard]' passed (0.036 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2824710Z Test Case '-[RightClickCoreTests.AcquisitionTests testDirectoryAndURLClassification]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2825580Z Test Case '-[RightClickCoreTests.AcquisitionTests testDirectoryAndURLClassification]' passed (0.007 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2827390Z Test Case '-[RightClickCoreTests.AcquisitionTests testDuplicateIDsCollapse]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2843380Z Test Case '-[RightClickCoreTests.AcquisitionTests testDuplicateIDsCollapse]' passed (0.001 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2845380Z Test Case '-[RightClickCoreTests.AcquisitionTests testFinancialRequiresConfirmation]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2847000Z Test Case '-[RightClickCoreTests.AcquisitionTests testFinancialRequiresConfirmation]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2849040Z Test Case '-[RightClickCoreTests.AcquisitionTests testImageServiceDoesNotApplyToPlainText]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2850050Z Test Case '-[RightClickCoreTests.AcquisitionTests testImageServiceDoesNotApplyToPlainText]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2851070Z Test Case '-[RightClickCoreTests.AcquisitionTests testMalformedPathIsAnError]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2851890Z Test Case '-[RightClickCoreTests.AcquisitionTests testMalformedPathIsAnError]' passed (0.001 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2853170Z Test Case '-[RightClickCoreTests.AcquisitionTests testProofURLPayloadRoundTrip]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2854490Z Test Case '-[RightClickCoreTests.AcquisitionTests testProofURLPayloadRoundTrip]' passed (0.003 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2866070Z Test Case '-[RightClickCoreTests.AcquisitionTests testServiceAppearsAndDisappearsWithTheBundle]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2868330Z Test Case '-[RightClickCoreTests.AcquisitionTests testServiceAppearsAndDisappearsWithTheBundle]' passed (0.003 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2870740Z Test Case '-[RightClickCoreTests.AcquisitionTests testStaleServiceIDFails]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2873290Z Test Case '-[RightClickCoreTests.AcquisitionTests testStaleServiceIDFails]' passed (3.030 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2875920Z Test Case '-[RightClickCoreTests.AcquisitionTests testTextPasteboardTypesFollowDeclaredSendTypes]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2878710Z Test Case '-[RightClickCoreTests.AcquisitionTests testTextPasteboardTypesFollowDeclaredSendTypes]' passed (0.001 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2881090Z Test Case '-[RightClickCoreTests.AcquisitionTests testUnknownRequiresConfirmation]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2883090Z Test Case '-[RightClickCoreTests.AcquisitionTests testUnknownRequiresConfirmation]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2884290Z Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadAbstainsForFileURLOnly]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2888620Z Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadAbstainsForFileURLOnly]' passed (0.001 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2890000Z Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredPlainTextType]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2892230Z Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredPlainTextType]' passed (0.002 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2893670Z Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredURLType]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2894590Z Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredURLType]' passed (0.002 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2895740Z Test Suite 'AcquisitionTests' passed at 2026-10-05 08:55:30.897.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2896460Z 	 Executed 14 tests, with 0 failures (0 unexpected) in 3.089 (3.092) seconds
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2898880Z Test Suite 'EngineTests' started at 2026-10-05 08:55:30.897.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2900660Z Test Case '-[RightClickCoreTests.EngineTests testExternalShareIsGated]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2901620Z Test Case '-[RightClickCoreTests.EngineTests testExternalShareIsGated]' passed (7.206 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2902690Z Test Case '-[RightClickCoreTests.EngineTests testFixturesDifferentiateSharingAndQuickActions]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2903910Z Test Case '-[RightClickCoreTests.EngineTests testFixturesDifferentiateSharingAndQuickActions]' passed (18.763 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2904860Z Test Case '-[RightClickCoreTests.EngineTests testFullWidthServiceRoundTrip]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2907730Z 2026-10-05T08:56:01Z service payload declared=public.rtf|public.utf8-plain-text written=public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=22 utf8Bytes=10 readback=RightClick
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2916750Z 2026-10-05T08:56:01Z NSPerformService name=Convert Text to Full Width provider=com.apple.ChineseTextConverterService sendFileTypes=[] pasteboardTypes=public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2921830Z 2026-10-05T08:56:01Z NSPerformService returned true changeCount 1->2
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2922370Z Test Case '-[RightClickCoreTests.EngineTests testFullWidthServiceRoundTrip]' passed (5.081 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2923180Z Test Case '-[RightClickCoreTests.EngineTests testMarkupIsDiscoveredButNotInvokable]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2923950Z Test Case '-[RightClickCoreTests.EngineTests testMarkupIsDiscoveredButNotInvokable]' passed (3.160 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2924530Z Test Suite 'EngineTests' passed at 2026-10-05 08:56:05.108.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2925570Z 	 Executed 4 tests, with 0 failures (0 unexpected) in 34.209 (34.211) seconds
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2926010Z Test Suite 'PolicyTests' started at 2026-10-05 08:56:05.108.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2926570Z Test Case '-[RightClickCoreTests.PolicyTests testActionExtensionIsNotInvokable]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2927250Z Test Case '-[RightClickCoreTests.PolicyTests testActionExtensionIsNotInvokable]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2927820Z Test Case '-[RightClickCoreTests.PolicyTests testContentClassification]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2928590Z Test Case '-[RightClickCoreTests.PolicyTests testContentClassification]' passed (0.001 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2929270Z Test Case '-[RightClickCoreTests.PolicyTests testDedupeKeepsFirstIdentifier]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2930100Z Test Case '-[RightClickCoreTests.PolicyTests testDedupeKeepsFirstIdentifier]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2930770Z Test Case '-[RightClickCoreTests.PolicyTests testDestructiveRequiresConfirmation]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2931470Z Test Case '-[RightClickCoreTests.PolicyTests testDestructiveRequiresConfirmation]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2932140Z Test Case '-[RightClickCoreTests.PolicyTests testExternalShareRequiresConfirmation]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2932860Z Test Case '-[RightClickCoreTests.PolicyTests testExternalShareRequiresConfirmation]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2933660Z Test Case '-[RightClickCoreTests.PolicyTests testServiceIdentifierPrefersMessage]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2934400Z Test Case '-[RightClickCoreTests.PolicyTests testServiceIdentifierPrefersMessage]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2935090Z Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierFallsBackToTitleSlug]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2935830Z Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierFallsBackToTitleSlug]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2936560Z Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierUsesPublicName]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2937250Z Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierUsesPublicName]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2937890Z Test Case '-[RightClickCoreTests.PolicyTests testTextTransformDoesNotRequireConfirmation]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2938710Z Test Case '-[RightClickCoreTests.PolicyTests testTextTransformDoesNotRequireConfirmation]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2939640Z Test Suite 'PolicyTests' passed at 2026-10-05 08:56:05.112.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2940090Z 	 Executed 9 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2940650Z Test Suite 'SharingExecutionTests' started at 2026-10-05 08:56:05.112.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2941200Z Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineDoesNotOverrideATerminalCallback]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2942590Z Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineDoesNotOverrideATerminalCallback]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2943320Z Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineWithoutCallbackIsUnknown]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2944170Z Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineWithoutCallbackIsUnknown]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2944850Z Test Case '-[RightClickCoreTests.SharingExecutionTests testDidFailToShareItemsFails]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2945560Z Test Case '-[RightClickCoreTests.SharingExecutionTests testDidFailToShareItemsFails]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2946340Z Test Case '-[RightClickCoreTests.SharingExecutionTests testDidShareItemsSucceeds]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2946970Z Test Case '-[RightClickCoreTests.SharingExecutionTests testDidShareItemsSucceeds]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2947710Z Test Case '-[RightClickCoreTests.SharingExecutionTests testPerformReturnWithoutCallbackStaysStarted]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2948460Z Test Case '-[RightClickCoreTests.SharingExecutionTests testPerformReturnWithoutCallbackStaysStarted]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2949500Z Test Case '-[RightClickCoreTests.SharingExecutionTests testWillShareItemsDoesNotFailTheExecution]' started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2950870Z Test Case '-[RightClickCoreTests.SharingExecutionTests testWillShareItemsDoesNotFailTheExecution]' passed (0.000 seconds).
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2951630Z Test Suite 'SharingExecutionTests' passed at 2026-10-05 08:56:05.114.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2952150Z 	 Executed 6 tests, with 0 failures (0 unexpected) in 0.001 (0.002) seconds
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2952640Z Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-05 08:56:05.114.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2953150Z 	 Executed 33 tests, with 0 failures (0 unexpected) in 37.302 (37.309) seconds
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2953540Z Test Suite 'All tests' passed at 2026-10-05 08:56:05.114.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2953980Z 	 Executed 33 tests, with 0 failures (0 unexpected) in 37.302 (37.311) seconds
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2955810Z ◇ Test run started.
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2956330Z ↳ Testing Library Version: 1902
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2956770Z ↳ Target Platform: arm64e-apple-macos14.0
+test	Run swift test --force-resolved-versions	2026-10-05T08:56:05.2957260Z ✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+test	Run scripts/build-cli.sh	﻿2026-10-05T08:56:05.3185690Z ##[group]Run scripts/build-cli.sh
+test	Run scripts/build-cli.sh	2026-10-05T08:56:05.3188120Z ^[[36;1mscripts/build-cli.sh^[[0m
+test	Run scripts/build-cli.sh	2026-10-05T08:56:05.4831860Z shell: /bin/bash -e {0}
+test	Run scripts/build-cli.sh	2026-10-05T08:56:05.4832500Z ##[endgroup]
+test	Run scripts/build-cli.sh	2026-10-05T08:56:12.6141840Z Building for production...
+test	Run scripts/build-cli.sh	2026-10-05T08:56:12.6292590Z [0/11] Write sources
+test	Run scripts/build-cli.sh	2026-10-05T08:56:12.7893940Z [7/11] Write swift-version-7974D3F7F03D5E95.txt
+test	Run scripts/build-cli.sh	2026-10-05T08:56:12.8223170Z [8/11] Compiling CSystem shims.c
+test	Run scripts/build-cli.sh	2026-10-05T08:56:17.2518440Z [10/14] Compiling Logging MultiplexLogHandler.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:56:18.0147530Z [11/15] Compiling EventSource AsyncEventsSequence.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:56:23.2359360Z [12/15] Compiling SystemPackage Errno.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1492290Z [13/16] Compiling RightClickCore ActionExtensionCatalog.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1525660Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1532390Z  23 |         let items = pasteboardItems(for: item)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1534660Z  24 |         guard !items.isEmpty else { return [] }
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1536760Z  25 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1539120Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1540090Z  26 |         return services.compactMap { service in
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1555390Z  27 |             guard service.canPerform(withItems: items) else { return nil }
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1556100Z 
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1557090Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1559730Z  34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1560770Z  35 |         let items = pasteboardItems(for: item)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1561320Z  36 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1562710Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1565160Z  37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1566090Z  38 |         guard pthread_main_np() != 0 else {
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1566480Z 
+test	Run scripts/build-cli.sh	2026-10-05T08:56:26.1567390Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run scripts/build-cli.sh	2026-10-05T08:56:47.0374220Z [14/16] Compiling MCP OAuthAuthorizationCodeFlow.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0530930Z [15/17] Compiling RightClickMCP HTTPListener.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0533250Z /Users/runner/work/rightclick/rightclick/Sources/RightClickMCP/Server.swift:246:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0535510Z 244 |         do {
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0539960Z 245 |             let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0542520Z 246 |             return .init(content: [.text(text)], isError: false)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0545260Z     |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0546130Z 247 |         } catch {
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0546730Z 248 |             return .init(content: [.text(String(describing: error))], isError: true)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0547580Z 
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0548540Z /Users/runner/work/rightclick/rightclick/Sources/RightClickMCP/Server.swift:248:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0557710Z 246 |             return .init(content: [.text(text)], isError: false)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0558320Z 247 |         } catch {
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0558830Z 248 |             return .init(content: [.text(String(describing: error))], isError: true)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0559720Z     |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0560420Z 249 |         }
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0560790Z 250 |     }
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0561050Z 
+test	Run scripts/build-cli.sh	2026-10-05T08:56:50.0561830Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.0074700Z [16/18] Compiling RightClickCLI Setup.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.0107740Z [16/18] Write Objects.LinkFileList
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7740560Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LAAGN273O23W/_SwiftConcurrencyShims-9NQJOJM4OLX0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7746020Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LAAGN273O23W/_SwiftConcurrencyShims-9NQJOJM4OLX0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7750190Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LAAGN273O23W/Foundation-38YXKN0YIMIG0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7751250Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LAAGN273O23W/Foundation-38YXKN0YIMIG0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7753740Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LAAGN273O23W/SwiftShims-9NQJOJM4OLX0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7754620Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LAAGN273O23W/SwiftShims-9NQJOJM4OLX0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7755790Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/_DarwinFoundation2-1MZ4YW41NCYUI.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7757790Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/_DarwinFoundation2-1MZ4YW41NCYUI.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7758760Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/Darwin-37WIDF19QD7Z8.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7760750Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/Darwin-37WIDF19QD7Z8.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7762650Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/_SwiftConcurrencyShims-9NQJOJM4OLX0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7763890Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/_SwiftConcurrencyShims-9NQJOJM4OLX0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7765850Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/SwiftShims-9NQJOJM4OLX0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7766760Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/SwiftShims-9NQJOJM4OLX0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7767780Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/Foundation-38YXKN0YIMIG0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7769040Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/Foundation-38YXKN0YIMIG0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7769930Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/_SwiftConcurrencyShims-9NQJOJM4OLX0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7770930Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/_SwiftConcurrencyShims-9NQJOJM4OLX0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7773270Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/Network-1J4272M09T5PK.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7776460Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/Network-1J4272M09T5PK.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7778620Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/Darwin-37WIDF19QD7Z8.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7780990Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/Darwin-37WIDF19QD7Z8.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7782090Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/SwiftShims-9NQJOJM4OLX0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7783110Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/SwiftShims-9NQJOJM4OLX0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7784050Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/Dispatch-37NRPBCG6NSUK.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7785120Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/1ENQHTLEMMAMU/Dispatch-37NRPBCG6NSUK.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7785950Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Foundation-38YXKN0YIMIG0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7787310Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Foundation-38YXKN0YIMIG0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7788120Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Security-234VW12JIG8K3.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7789590Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Security-234VW12JIG8K3.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7790530Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/_SwiftConcurrencyShims-9NQJOJM4OLX0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7791460Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/_SwiftConcurrencyShims-9NQJOJM4OLX0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7793060Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/SwiftShims-9NQJOJM4OLX0.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7794030Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/SwiftShims-9NQJOJM4OLX0.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7795040Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/UniformTypeIdentifiers-4KQL35JFJIUT.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7796010Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/UniformTypeIdentifiers-4KQL35JFJIUT.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7796990Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/AppKit-1YB4H1K2T9X2K.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7797960Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/AppKit-1YB4H1K2T9X2K.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7798740Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Darwin-37WIDF19QD7Z8.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7799730Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Darwin-37WIDF19QD7Z8.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7800530Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Dispatch-37NRPBCG6NSUK.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7801550Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Dispatch-37NRPBCG6NSUK.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7802410Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Network-1J4272M09T5PK.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7803360Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/328ZF1Z5JD6XR/Network-1J4272M09T5PK.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7804750Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/CSystem-1GZJ9LUC3TE5C.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7806370Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2XGCC4AHPYYVY/CSystem-1GZJ9LUC3TE5C.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7806920Z [17/18] Linking rightclick
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.7816140Z Build of product 'rightclick' complete! (42.54s)
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.8125180Z 0.1.0
+test	Run scripts/build-cli.sh	2026-10-05T08:56:52.8130230Z Built .build/release/rightclick
+test	Run python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"	﻿2026-10-05T08:56:52.8289960Z ##[group]Run python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"
+test	Run python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"	2026-10-05T08:56:52.8290840Z ^[[36;1mpython3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"^[[0m
+test	Run python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"	2026-10-05T08:56:52.8638350Z shell: /bin/bash -e {0}
+test	Run python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"	2026-10-05T08:56:52.8638800Z ##[endgroup]
+test	Run python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"	2026-10-05T08:57:02.3168380Z PASS: setup through PATH outside checkout writes the actual executable and preserves unrelated configuration
+test	Require Apple Silicon and free Command Line Tools for CLI build	﻿2026-10-05T08:57:02.3515190Z ##[group]Run test "$(uname -m)" = arm64
+test	Require Apple Silicon and free Command Line Tools for CLI build	2026-10-05T08:57:02.3516300Z ^[[36;1mtest "$(uname -m)" = arm64^[[0m
+test	Require Apple Silicon and free Command Line Tools for CLI build	2026-10-05T08:57:02.3516640Z ^[[36;1mtest -d /Library/Developer/CommandLineTools^[[0m
+test	Require Apple Silicon and free Command Line Tools for CLI build	2026-10-05T08:57:02.3517000Z ^[[36;1mecho "DEVELOPER_DIR=/Library/Developer/CommandLineTools" >> "$GITHUB_ENV"^[[0m
+test	Require Apple Silicon and free Command Line Tools for CLI build	2026-10-05T08:57:02.3708160Z shell: /bin/bash -e {0}
+test	Require Apple Silicon and free Command Line Tools for CLI build	2026-10-05T08:57:02.3708590Z ##[endgroup]
+test	Run scripts/build-cli.sh	﻿2026-10-05T08:57:02.4450040Z ##[group]Run scripts/build-cli.sh
+test	Run scripts/build-cli.sh	2026-10-05T08:57:02.4450440Z ^[[36;1mscripts/build-cli.sh^[[0m
+test	Run scripts/build-cli.sh	2026-10-05T08:57:02.4526410Z shell: /bin/bash -e {0}
+test	Run scripts/build-cli.sh	2026-10-05T08:57:02.4526790Z env:
+test	Run scripts/build-cli.sh	2026-10-05T08:57:02.4527580Z   DEVELOPER_DIR: /Library/Developer/CommandLineTools
+test	Run scripts/build-cli.sh	2026-10-05T08:57:02.4528610Z ##[endgroup]
+test	Run scripts/build-cli.sh	2026-10-05T08:57:06.8444970Z [0/1] Planning build
+test	Run scripts/build-cli.sh	2026-10-05T08:57:06.8661490Z Building for production...
+test	Run scripts/build-cli.sh	2026-10-05T08:57:06.9860080Z [0/4] Write swift-version--1AB21518FC5DEDBE.txt
+test	Run scripts/build-cli.sh	2026-10-05T08:57:07.0782270Z [1/6] Compiling CSystem shims.c
+test	Run scripts/build-cli.sh	2026-10-05T08:57:32.8390340Z [3/7] Compiling Logging MultiplexLogHandler.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:57:38.8320090Z [4/8] Compiling SystemPackage Errno.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:57:42.6745910Z [5/8] Compiling EventSource AsyncEventsSequence.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.0321460Z [6/9] Compiling RightClickCore ActionExtensionCatalog.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.0426540Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.0530680Z  23 |         let items = pasteboardItems(for: item)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.0633210Z  24 |         guard !items.isEmpty else { return [] }
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.0735090Z  25 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.0837070Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.0939430Z  26 |         return services.compactMap { service in
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1041840Z  27 |             guard service.canPerform(withItems: items) else { return nil }
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1152130Z 
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1153220Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1154340Z  34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1154880Z  35 |         let items = pasteboardItems(for: item)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1162850Z  36 |         let services = NSSharingService.sharingServices(forItems: items)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1163600Z     |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1164560Z  37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1165080Z  38 |         guard pthread_main_np() != 0 else {
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1165350Z 
+test	Run scripts/build-cli.sh	2026-10-05T08:58:10.1165920Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run scripts/build-cli.sh	2026-10-05T08:58:15.0567640Z [7/9] Compiling MCP OAuthAuthorizationCodeFlow.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2043850Z [8/10] Compiling RightClickMCP HTTPListener.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2045210Z /Users/runner/work/rightclick/rightclick/Sources/RightClickMCP/Server.swift:246:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2046350Z 244 |         do {
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2047060Z 245 |             let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2047810Z 246 |             return .init(content: [.text(text)], isError: false)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2048520Z     |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2049260Z 247 |         } catch {
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2052520Z 248 |             return .init(content: [.text(String(describing: error))], isError: true)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2175020Z 
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2175770Z /Users/runner/work/rightclick/rightclick/Sources/RightClickMCP/Server.swift:248:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2210920Z 246 |             return .init(content: [.text(text)], isError: false)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2211340Z 247 |         } catch {
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2211810Z 248 |             return .init(content: [.text(String(describing: error))], isError: true)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2212540Z     |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2213250Z 249 |         }
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2213550Z 250 |     }
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2213690Z 
+test	Run scripts/build-cli.sh	2026-10-05T08:58:18.2214120Z [#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+test	Run scripts/build-cli.sh	2026-10-05T08:58:20.0830610Z [9/11] Compiling RightClickCLI Setup.swift
+test	Run scripts/build-cli.sh	2026-10-05T08:58:20.0879730Z [9/11] Write Objects.LinkFileList
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0193460Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3IRX96G03TP4/_SwiftConcurrencyShims-3DMJL40ENYFGZ.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0195190Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3IRX96G03TP4/_SwiftConcurrencyShims-3DMJL40ENYFGZ.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0196350Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3IRX96G03TP4/Foundation-1S7PJFI7ZDUS5.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0197380Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3IRX96G03TP4/Foundation-1S7PJFI7ZDUS5.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0198400Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3IRX96G03TP4/SwiftShims-3DMJL40ENYFGZ.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0199470Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3IRX96G03TP4/SwiftShims-3DMJL40ENYFGZ.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0200570Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/_DarwinFoundation2-3IPFO15NCE4O9.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0201710Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/_DarwinFoundation2-3IPFO15NCE4O9.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0202670Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/Darwin-1UK486ZPUQ7AX.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0203510Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/Darwin-1UK486ZPUQ7AX.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0204340Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/_SwiftConcurrencyShims-3DMJL40ENYFGZ.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0205400Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/_SwiftConcurrencyShims-3DMJL40ENYFGZ.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0206360Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/SwiftShims-3DMJL40ENYFGZ.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0207400Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/SwiftShims-3DMJL40ENYFGZ.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0208310Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/Foundation-1S7PJFI7ZDUS5.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0209110Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/Foundation-1S7PJFI7ZDUS5.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0210090Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/_SwiftConcurrencyShims-3DMJL40ENYFGZ.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0211020Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/_SwiftConcurrencyShims-3DMJL40ENYFGZ.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0212790Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/Network-1WCO29EW58MPF.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0213680Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/Network-1WCO29EW58MPF.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0215140Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/Darwin-1UK486ZPUQ7AX.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0216060Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/Darwin-1UK486ZPUQ7AX.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0216850Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/SwiftShims-3DMJL40ENYFGZ.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0260520Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/SwiftShims-3DMJL40ENYFGZ.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0261610Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/Dispatch-YA9M2B2SU41B.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0262690Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/223GEN523X5DM/Dispatch-YA9M2B2SU41B.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0263820Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Foundation-1S7PJFI7ZDUS5.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0264740Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Foundation-1S7PJFI7ZDUS5.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0267830Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Security-24PA3QCD68V7B.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0269560Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Security-24PA3QCD68V7B.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0270870Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/_SwiftConcurrencyShims-3DMJL40ENYFGZ.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0271970Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/_SwiftConcurrencyShims-3DMJL40ENYFGZ.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0273720Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/SwiftShims-3DMJL40ENYFGZ.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0274950Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/SwiftShims-3DMJL40ENYFGZ.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0275970Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/UniformTypeIdentifiers-3VDF30QG6LSAQ.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0277360Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/UniformTypeIdentifiers-3VDF30QG6LSAQ.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0278560Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/AppKit-1WMSEOYSYS6QX.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0279920Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/AppKit-1WMSEOYSYS6QX.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0280940Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Darwin-1UK486ZPUQ7AX.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0282060Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Darwin-1UK486ZPUQ7AX.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0283110Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Dispatch-YA9M2B2SU41B.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0284540Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Dispatch-YA9M2B2SU41B.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0285940Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Network-1WCO29EW58MPF.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0286960Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/19PX1TBGLAZU0/Network-1WCO29EW58MPF.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0289670Z warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/CSystem-1GZJ9LUC3TE5C.pcm: No such file or directory
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0290880Z note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/2LT3J21YRKUXK/CSystem-1GZJ9LUC3TE5C.pcm
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0292050Z [10/11] Linking rightclick
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0292440Z Build of product 'rightclick' complete! (76.01s)
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0616650Z 0.1.0
+test	Run scripts/build-cli.sh	2026-10-05T08:58:21.0619480Z Built .build/release/rightclick
+test	Run python3 scripts/package-source.py	﻿2026-10-05T08:58:21.0725680Z ##[group]Run python3 scripts/package-source.py
+test	Run python3 scripts/package-source.py	2026-10-05T08:58:21.0726150Z ^[[36;1mpython3 scripts/package-source.py^[[0m
+test	Run python3 scripts/package-source.py	2026-10-05T08:58:21.1085300Z shell: /bin/bash -e {0}
+test	Run python3 scripts/package-source.py	2026-10-05T08:58:21.1085640Z env:
+test	Run python3 scripts/package-source.py	2026-10-05T08:58:21.1085970Z   DEVELOPER_DIR: /Library/Developer/CommandLineTools
+test	Run python3 scripts/package-source.py	2026-10-05T08:58:21.1086230Z ##[endgroup]
+test	Run python3 scripts/package-source.py	2026-10-05T08:58:21.6280060Z f45ba8bac307ed13110edb4914cf094eccd44e01dca484af957a94b34f3eca16  rightclick-0.1.0-source.tar.gz
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	﻿2026-10-05T08:58:21.6501260Z Post job cleanup.
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.0232370Z [command]/opt/homebrew/bin/git version
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.0479280Z git version 2.55.0
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.0505570Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/61120181-142a-4395-ac72-ed09770f95f5/.gitconfig'
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.0512540Z Temporarily overriding HOME='/Users/runner/work/_temp/61120181-142a-4395-ac72-ed09770f95f5' before making global git config changes
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.0513330Z Adding repository directory to the temporary git global config as a safe directory
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.0516460Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/rightclick/rightclick
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.0760620Z Removing SSH command configuration
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.0837660Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.0843990Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.2109840Z Removing HTTP extra header
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.2114040Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.2189150Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3509790Z Removing includeIf entries pointing to credentials config files
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3513750Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3609400Z includeif.gitdir:/Users/runner/work/rightclick/rightclick/.git.path
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3610100Z includeif.gitdir:/Users/runner/work/rightclick/rightclick/.git/worktrees/*.path
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3613420Z includeif.gitdir:/github/workspace/.git.path
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3614460Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3622510Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/rightclick/rightclick/.git.path
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3716400Z /Users/runner/work/_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3726100Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/rightclick/rightclick/.git.path /Users/runner/work/_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3839900Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/Users/runner/work/rightclick/rightclick/.git/worktrees/*.path
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3966270Z /Users/runner/work/_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.3975570Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/Users/runner/work/rightclick/rightclick/.git/worktrees/*.path /Users/runner/work/_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.4081470Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.4190540Z /github/runner_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.4197770Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.4284840Z [command]/opt/homebrew/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.4372160Z /github/runner_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.4385870Z [command]/opt/homebrew/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.4498110Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test	Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd	2026-10-05T08:58:22.5799250Z Removing credentials config '/Users/runner/work/_temp/git-credentials-31d77bf2-2cd3-42e9-9997-7c14e03cbc81.config'
+test	Complete job	﻿2026-10-05T08:58:22.5980470Z Cleaning up orphan processes
+test	Complete job	2026-10-05T08:58:23.5402100Z Terminate orphan process: pid (14360) (ChineseTextConv)

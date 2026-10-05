@@ -17,4 +17,6 @@ rightclick run --yes service:com.barebones.bbedit:openSelectionService "RIGHTCLI
 
 For a replay, clearly label the preserved before/after acquisition records as historical. Current regression verified `RIGHTCLICK v0.1 BBEdit regression 20261005`, exactly 42 characters, in a new BBEdit window. See [BBEDIT-PROOF.md](BBEDIT-PROOF.md).
 
-Do not demonstrate Yojam semantic execution as passing. Its new capability was acquired automatically, but accepted invocation did not establish the expected external result. Announce public installation only after the source asset and Homebrew tap are published and their actual install path passes acceptance. Paid Apple distribution is deferred.
+The public v0.1.0 Homebrew bottle was independently verified with exact fixture `RIGHTCLICK v0.1 public bottle proof 20261005` (44 characters) in BBEdit's new `untitled text 5`. The source release, tap and bottle are published, and actual public installation/installed-product acceptance passed. Begin a launch replay with `brew install rossbuckley1990-hash/tap/rightclick` and `rightclick setup`.
+
+Do not demonstrate Yojam semantic execution as passing. Its new capability was acquired automatically, but accepted invocation did not establish the expected external result. Paid Apple distribution is deferred.

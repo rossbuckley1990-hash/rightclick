@@ -1,0 +1,27 @@
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	﻿2026-10-05T08:56:45.0840370Z ##[group]Run brew test-bot --only-tap-syntax
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.0840980Z ^[[36;1mbrew test-bot --only-tap-syntax^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.1043030Z shell: /bin/bash -xeuo pipefail {0}
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.1043490Z env:
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.1043750Z   HOMEBREW_NO_INSTALL_FROM_API: 
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.1047650Z   HOMEBREW_GITHUB_API_TOKEN: ***
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.1047930Z ##[endgroup]
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.1853880Z + brew test-bot --only-tap-syntax
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.7981200Z ^[[34m==>^[[0m ^[[1mAlready trusted tap: rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.8605490Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/brew 7.0.8 (Merge pull request #24162 from Homebrew/monthly-maintainer-reports)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.8968620Z ^[[36m==>^[[0m ^[[1mUsing Homebrew/homebrew-core 3cc40d0f3a3 (Merge pull request #302729 from Homebrew/faust-llvm23)^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.9454450Z ^[[36m==>^[[0m ^[[1mTesting rossbuckley1990-hash/homebrew-tap f946714 (Add RIGHTCLICK 0.1.0 source package and standard bottle workflows):^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.9490550Z 
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.9495800Z ^[[35m==>^[[0m ^[[1mRunning TapSyntax#run!^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:56:45.9517630Z ^[[34m==>^[[0m ^[[1mbrew style rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:03.2597370Z ^[[34m==>^[[0m ^[[1mbrew readall --aliases --os=all --arch=all rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:03.9538620Z ^[[34m==>^[[0m ^[[1mbrew audit --except=installed --tap=rossbuckley1990-hash/tap^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.5773360Z ^[[31m==>^[[0m ^[[1m^[[31mFAILED^[[0m^[[0m
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.5804120Z ##[group]Full audit --except=installed --tap=rossbuckley1990-hash/tap output
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.5805410Z rossbuckley1990-hash/tap/rightclick
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.5807150Z   * Stable: `version 0.1.0` is redundant with version scanned from URL
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.5866550Z ##[error]1 problem in 1 formula detected.
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.5879750Z ##[error]Stable: `version 0.1.0` is redundant with version scanned from URL
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.5881140Z ##[endgroup]
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.5881350Z Error: 1 failed step!
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.5881940Z brew audit --except=installed --tap=rossbuckley1990-hash/tap
+test-bot (macos-26)	Run brew test-bot --only-tap-syntax	2026-10-05T08:57:06.6130690Z ##[error]Process completed with exit code 1.

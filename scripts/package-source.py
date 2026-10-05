@@ -6,6 +6,7 @@ personal configuration, credentials, or private evidence enters this asset.
 """
 import gzip
 import hashlib
+import json
 import pathlib
 import tarfile
 
@@ -41,7 +42,14 @@ with output.open("wb") as raw:
                     archive.addfile(info)
 digest = hashlib.sha256(output.read_bytes()).hexdigest()
 template = (root / "packaging/homebrew/rightclick.rb.in").read_text()
-formula = template.replace("@SOURCE_SHA256@", digest)
+bottle = root / "packaging/homebrew/bottle.json"
+block = ""
+if bottle.exists():
+    metadata = json.loads(bottle.read_text())
+    if metadata["source_sha256"] != digest:
+        raise RuntimeError("The published bottle pins different source. Prepare a new version; do not replace v0.1.0.")
+    block = metadata["dsl"] + "\n"
+formula = template.replace("@SOURCE_SHA256@", digest).replace("@BOTTLE_BLOCK@\n", block)
 for name in ["packaging/homebrew/rightclick.rb", "packaging/tap/Formula/rightclick.rb"]:
     (root / name).write_text(formula)
 (output.parent / "SHA256SUMS-source").write_text(f"{digest}  {output.name}\n")
