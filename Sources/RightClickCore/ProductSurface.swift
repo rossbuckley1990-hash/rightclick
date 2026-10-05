@@ -1,7 +1,7 @@
 import Foundation
 
 public enum RightClickVersion {
-    public static let current = "0.1.0"
+    public static let current = "0.1.1"
 }
 
 public enum RightClickPaths {
@@ -51,7 +51,7 @@ public enum CapabilityExplanation {
         case .service:
             return "macOS Service “\(capability.title)”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check."
         case .sharingService:
-            return "Sharing service “\(capability.title)”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown."
+            return "Sharing service “\(capability.title)”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems reports provider completion as accepted, with external outcome unverified. didFailToShareItems means failed; no callback before the deadline means unknown."
         case .actionExtension:
             return "Action extension “\(capability.title)” was discovered from installed extension metadata. This Mac does not expose a public call to run it."
         case .system:

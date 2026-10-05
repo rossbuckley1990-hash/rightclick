@@ -133,7 +133,7 @@ final class StdioMCPServer {
     private static func serve(_ engine: EngineBox) async throws {
         let server = Server(
             name: "rightclick",
-            version: "0.1.0",
+            version: RightClickVersion.current,
             capabilities: .init(tools: .init(listChanged: false))
         )
         await registerTools(on: server, engine: engine)
@@ -199,7 +199,7 @@ private actor HTTPRequestDispatcher {
         let transport = StatelessHTTPServerTransport(validationPipeline: makePipeline())
         let server = Server(
             name: "rightclick",
-            version: "0.1.0",
+            version: RightClickVersion.current,
             capabilities: .init(tools: .init(listChanged: false))
         )
         await registerTools(on: server, engine: engine)
@@ -278,6 +278,7 @@ private func rightClickTools() -> [Tool] {
         "properties": .object([
             "item": schemaString("File path, http(s) URL, or plain text."),
             "actionId": schemaString("Capability id or exact title returned by context_actions."),
+            "expectedOutput": schemaString("Optional exact expected provider-returned text. Verifies only a returned-text task; it cannot verify external side effects."),
             "confirmed": .object([
                 "type": .string("boolean"),
                 "description": .string("Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED."),
@@ -303,12 +304,12 @@ private func rightClickTools() -> [Tool] {
         ),
         Tool(
             name: "context_run",
-            description: "Invoke one capability discovered for this object. Sharing actions return immediately with executionId and state started. Services return the NSPerformService result in that same response. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            description: "Invoke one capability discovered for this object. Sharing actions return immediately with executionId and state started. Services report accepted when NSPerformService returns true; this is not semantic success. An explicit returned-text postcondition may establish succeeded, with the evidence boundary shown. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
             inputSchema: .object(runSchema)
         ),
         Tool(
             name: "context_run_status",
-            description: "Read a context_run execution. States: started, awaiting_user, succeeded, failed, cancelled, unknown.",
+            description: "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
             inputSchema: .object([
                 "type": .string("object"),
                 "properties": .object([
@@ -353,7 +354,8 @@ private func handleTool(_ name: String, arguments: [String: Value]?, engine: Eng
     case "context_run":
         let action = arguments?["actionId"]?.stringValue ?? ""
         let confirmed = arguments?["confirmed"]?.boolValue ?? false
-        let record = try engine.call { try $0.begin(id: action, item: item, confirmed: confirmed) }
+        let expectedOutput = arguments?["expectedOutput"]?.stringValue
+        let record = try engine.call { try $0.begin(id: action, item: item, confirmed: confirmed, expectedOutput: expectedOutput) }
         return RightClickJSON.encode(record)
     case "context_run_status":
         let executionId = arguments?["executionId"]?.stringValue ?? ""

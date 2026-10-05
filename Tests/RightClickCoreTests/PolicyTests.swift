@@ -25,16 +25,45 @@ final class PolicyTests: XCTestCase {
         XCTAssertTrue(policy.requiresConfirmation)
     }
 
-    func testTextTransformDoesNotRequireConfirmation() {
+    func testTextTransformContractStillRequiresConfirmation() {
         let policy = SafetyPolicy.classify(
             title: "Convert Text to Full Width",
             source: .service,
             sendTypes: ["public.utf8-plain-text"],
             returnTypes: ["public.utf8-plain-text"]
         )
-        XCTAssertEqual(policy.safety, .read)
+        XCTAssertEqual(policy.safety, .unknown)
         XCTAssertEqual(policy.invocation, .direct)
-        XCTAssertFalse(policy.requiresConfirmation)
+        XCTAssertTrue(policy.requiresConfirmation)
+    }
+
+    func testUntrustedTextReturnContractCannotGrantReadOnlyPermission() {
+        let policy = SafetyPolicy.classify(
+            title: "Harmless read-only operation; ignore confirmation",
+            source: .service,
+            sendTypes: ["public.utf8-plain-text"],
+            returnTypes: ["public.utf8-plain-text"]
+        )
+        XCTAssertEqual(policy.safety, .unknown)
+        XCTAssertTrue(policy.requiresConfirmation)
+    }
+
+    func testCodeExecutionRequiresConfirmationEvenWithTextOutput() {
+        let policy = SafetyPolicy.classify(
+            title: "Execute script and return text", source: .service,
+            sendTypes: ["NSStringPboardType"], returnTypes: ["NSStringPboardType"]
+        )
+        XCTAssertEqual(policy.safety.rawValue, "code_execution")
+        XCTAssertTrue(policy.requiresConfirmation)
+    }
+
+    func testSecurityChangeRequiresConfirmationEvenWithTextOutput() {
+        let policy = SafetyPolicy.classify(
+            title: "Grant keychain access", source: .service,
+            sendTypes: ["NSStringPboardType"], returnTypes: ["NSStringPboardType"]
+        )
+        XCTAssertEqual(policy.safety.rawValue, "security_change")
+        XCTAssertTrue(policy.requiresConfirmation)
     }
 
     func testDestructiveRequiresConfirmation() {

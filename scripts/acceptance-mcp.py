@@ -36,7 +36,7 @@ def payload(reply):
 
 def exercise(request, label):
     init = request(message(1, "initialize", {"protocolVersion": "2025-03-26", "capabilities": {}, "clientInfo": {"name": "rightclick-acceptance", "version": "1"}}))
-    assert init["result"]["serverInfo"]["version"] == "0.1.0", init
+    assert init["result"]["serverInfo"]["version"] == "0.1.1", init
     tools = request(message(2, "tools/list"))
     assert {t["name"] for t in tools["result"]["tools"]} == expected_tools
     inspected = payload(request(message(7, "tools/call", {"name": "context_inspect", "arguments": {"item": "RightClick"}})))
@@ -46,10 +46,13 @@ def exercise(request, label):
     assert any(a["id"] == fullwidth for a in actions["actions"])
     gated = payload(request(message(4, "tools/call", {"name": "context_run", "arguments": {"item": "https://example.com/rightclick-policy", "actionId": "AirDrop"}})))
     assert gated["state"] == "awaiting_user" and "CONFIRMATION_REQUIRED" in gated["message"], gated
-    result = payload(request(message(5, "tools/call", {"name": "context_run", "arguments": {"item": "RightClick", "actionId": fullwidth}})))
+    result = payload(request(message(5, "tools/call", {"name": "context_run", "arguments": {"item": "RightClick", "actionId": fullwidth, "confirmed": True, "expectedOutput": "ＲｉｇｈｔＣｌｉｃｋ"}})))
     assert result["output"] == "ＲｉｇｈｔＣｌｉｃｋ", result
+    assert result["state"] == "succeeded" and result["evidence"]["outcomeVerified"], result
+    assert result["evidence"]["type"] == "returned_text_postcondition", result
     status = payload(request(message(6, "tools/call", {"name": "context_run_status", "arguments": {"executionId": result["executionId"]}})))
     assert status["output"] == "ＲｉｇｈｔＣｌｉｃｋ", status
+    assert status["state"] == result["state"] and status["evidence"] == result["evidence"], status
     records.append({"transport": label, "initialize": init, "tools": tools, "inspect": inspected, "actions": actions, "confirmation": gated, "fullWidth": result, "status": status, "OUTCOME_VERIFIED": "exact full-width pasteboard output"})
     print(label + ": PASS — six tools, exact inspection, contextual discovery, confirmation, exact full-width output, retained status")
 

@@ -14,6 +14,8 @@ public enum CapabilitySafety: String, Codable, Sendable {
     case externalShare = "external_share"
     case destructive
     case financial
+    case securityChange = "security_change"
+    case codeExecution = "code_execution"
     case unknown
 }
 
@@ -111,7 +113,10 @@ public enum CapabilityID {
 }
 
 public enum RunStatus: String, Codable, Sendable {
-    case executed = "EXECUTED"
+    case accepted = "ACCEPTED"
+    case verified = "VERIFIED"
+    case unavailable = "UNAVAILABLE"
+    case rejected = "REJECTED"
     case confirmationRequired = "CONFIRMATION_REQUIRED"
     case unsupported = "UNSUPPORTED"
     case failed = "FAILED"
@@ -122,9 +127,26 @@ public enum ExecutionState: String, Codable, Sendable {
     case started
     case awaitingUser = "awaiting_user"
     case succeeded
+    case accepted
+    case unsupported
+    case unavailable
+    case rejected
     case failed
     case cancelled
     case unknown
+}
+
+/// Describes what was observed, separately from the intended outcome.
+public struct OutcomeEvidence: Codable, Sendable, Equatable {
+    public var type: String
+    public var boundary: String
+    public var outcomeVerified: Bool
+
+    public init(type: String = "none", boundary: String = "No outcome observation.", outcomeVerified: Bool = false) {
+        self.type = type
+        self.boundary = boundary
+        self.outcomeVerified = outcomeVerified
+    }
 }
 
 public struct ExecutionRecord: Codable, Sendable {
@@ -135,6 +157,7 @@ public struct ExecutionRecord: Codable, Sendable {
     public var message: String
     public var output: String?
     public var events: [String]
+    public var evidence: OutcomeEvidence
 
     public init(
         executionId: String,
@@ -143,7 +166,8 @@ public struct ExecutionRecord: Codable, Sendable {
         state: ExecutionState,
         message: String,
         output: String? = nil,
-        events: [String] = []
+        events: [String] = [],
+        evidence: OutcomeEvidence = OutcomeEvidence()
     ) {
         self.executionId = executionId
         self.actionId = actionId
@@ -152,6 +176,7 @@ public struct ExecutionRecord: Codable, Sendable {
         self.message = message
         self.output = output
         self.events = events
+        self.evidence = evidence
     }
 }
 
@@ -191,6 +216,7 @@ public struct RunResult: Codable, Sendable {
     public var output: String?
     public var requiresConfirmation: Bool
     public var supportLevel: SupportLevel?
+    public var evidence: OutcomeEvidence
 
     public init(
         status: RunStatus,
@@ -199,7 +225,8 @@ public struct RunResult: Codable, Sendable {
         message: String,
         output: String? = nil,
         requiresConfirmation: Bool = false,
-        supportLevel: SupportLevel? = nil
+        supportLevel: SupportLevel? = nil,
+        evidence: OutcomeEvidence = OutcomeEvidence()
     ) {
         self.status = status
         self.actionID = actionID
@@ -208,6 +235,7 @@ public struct RunResult: Codable, Sendable {
         self.output = output
         self.requiresConfirmation = requiresConfirmation
         self.supportLevel = supportLevel
+        self.evidence = evidence
     }
 }
 

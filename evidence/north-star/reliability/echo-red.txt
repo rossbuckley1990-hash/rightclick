@@ -1,0 +1,31 @@
+[0/1] Planning build
+Building for debugging...
+[0/10] Write sources
+[2/10] Write swift-version--58304C5D6DBC2206.txt
+[4/8] Compiling RightClickCore CapabilityEngine.swift
+[5/8] Emitting module RightClickCore
+[5/10] Write Objects.LinkFileList
+[7/12] Emitting module RightClickCoreTests
+[8/12] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[8/12] Linking rightclick
+[9/12] Applying rightclick
+[10/12] Write Objects.LinkFileList
+[11/12] Linking rightclick-mcpPackageTests
+Build complete! (5.69s)
+Test Suite 'Selected tests' started at 2026-10-05 12:21:19.275.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-05 12:21:19.278.
+Test Suite 'ServiceOutcomeTests' started at 2026-10-05 12:21:19.278.
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testEchoedInputWithChangedCounterIsNotSemanticProof]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceOutcomeTests.swift:40: error: -[RightClickCoreTests.ServiceOutcomeTests testEchoedInputWithChangedCounterIsNotSemanticProof] : XCTAssertEqual failed: ("verified") is not equal to ("accepted")
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceOutcomeTests.swift:41: error: -[RightClickCoreTests.ServiceOutcomeTests testEchoedInputWithChangedCounterIsNotSemanticProof] : XCTAssertFalse failed
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testEchoedInputWithChangedCounterIsNotSemanticProof]' failed (0.879 seconds).
+Test Suite 'ServiceOutcomeTests' failed at 2026-10-05 12:21:20.157.
+	 Executed 1 test, with 2 failures (0 unexpected) in 0.879 (0.880) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-05 12:21:20.157.
+	 Executed 1 test, with 2 failures (0 unexpected) in 0.879 (0.880) seconds
+Test Suite 'Selected tests' failed at 2026-10-05 12:21:20.157.
+	 Executed 1 test, with 2 failures (0 unexpected) in 0.879 (0.882) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

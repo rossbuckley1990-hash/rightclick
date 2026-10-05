@@ -1,0 +1,55 @@
+[0/1] Planning build
+Building for debugging...
+[0/11] Write sources
+[2/11] Write swift-version--58304C5D6DBC2206.txt
+[4/12] Emitting module RightClickCoreTests
+[5/12] Compiling RightClickCoreTests AcquisitionTests.swift
+[6/12] Compiling RightClickCoreTests ServiceContextTests.swift
+[7/12] Compiling RightClickCLI main.swift
+[8/12] Emitting module RightClickCLI
+[8/13] Write Objects.LinkFileList
+[9/13] Linking rightclick
+[10/13] Applying rightclick
+[11/13] Write Objects.LinkFileList
+[12/13] Linking rightclick-mcpPackageTests
+Build complete! (14.08s)
+Test Suite 'Selected tests' started at 2026-10-05 12:13:38.318.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-05 12:13:38.324.
+Test Suite 'ServiceContextTests' started at 2026-10-05 12:13:38.324.
+Test Case '-[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:35: error: -[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage] : XCTAssertFalse failed
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:37: error: -[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage] : XCTAssertFalse failed
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:37: error: -[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage] : XCTAssertFalse failed
+Test Case '-[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage]' failed (4.867 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testContextDictionariesAreANDAndArrayIsOR]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:28: error: -[RightClickCoreTests.ServiceContextTests testContextDictionariesAreANDAndArrayIsOR] : XCTAssertFalse failed
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:30: error: -[RightClickCoreTests.ServiceContextTests testContextDictionariesAreANDAndArrayIsOR] : XCTAssertFalse failed
+Test Case '-[RightClickCoreTests.ServiceContextTests testContextDictionariesAreANDAndArrayIsOR]' failed (0.002 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathRequirementDoesNotApplyToOrdinaryTextOrWebURL]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:16: error: -[RightClickCoreTests.ServiceContextTests testFilePathRequirementDoesNotApplyToOrdinaryTextOrWebURL] : XCTAssertFalse failed
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:17: error: -[RightClickCoreTests.ServiceContextTests testFilePathRequirementDoesNotApplyToOrdinaryTextOrWebURL] : XCTAssertFalse failed
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathRequirementDoesNotApplyToOrdinaryTextOrWebURL]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:43: error: -[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching] : XCTAssertFalse failed - dev.example.fake-text
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:43: error: -[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching] : XCTAssertFalse failed - public.rtfd
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:43: error: -[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching] : XCTAssertFalse failed - NSRTFDPboardType
+Test Case '-[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching]' failed (0.002 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:23: error: -[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain] : XCTAssertFalse failed - {"FutureConstraint":"unknown"}
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:23: error: -[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain] : XCTAssertFalse failed - {"NSTextContent":"FutureContent"}
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:23: error: -[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain] : XCTAssertFalse failed - null
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:23: error: -[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain] : XCTAssertFalse failed - []
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:23: error: -[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain] : XCTAssertFalse failed - [1]
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:23: error: -[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain] : XCTAssertFalse failed - invalid
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:23: error: -[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain] : XCTAssertFalse failed - {"NSWordLimit":"two"}
+Test Case '-[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain]' failed (0.002 seconds).
+Test Suite 'ServiceContextTests' failed at 2026-10-05 12:13:43.200.
+	 Executed 5 tests, with 17 failures (0 unexpected) in 4.873 (4.876) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-05 12:13:43.200.
+	 Executed 5 tests, with 17 failures (0 unexpected) in 4.873 (4.876) seconds
+Test Suite 'Selected tests' failed at 2026-10-05 12:13:43.200.
+	 Executed 5 tests, with 17 failures (0 unexpected) in 4.873 (4.883) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.025 seconds.

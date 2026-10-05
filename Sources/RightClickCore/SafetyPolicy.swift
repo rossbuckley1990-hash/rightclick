@@ -22,6 +22,14 @@ public enum SafetyPolicy {
             return (.destructive, .interactive, true)
         }
 
+        if containsAny(haystack, ["keychain", "password", "permission", "authentication", "firewall", "security", "grant access"]) {
+            return (.securityChange, .interactive, true)
+        }
+
+        if containsAny(haystack, ["script", "execute", "shell", "eval", "run code"]) {
+            return (.codeExecution, .interactive, true)
+        }
+
         if containsAny(haystack, [
             "airdrop", "mail", "message", "messages", "facebook", "twitter", "weibo",
             "linkedin", "flickr", "vimeo", "post", "upload", "news", "journal",
@@ -35,7 +43,10 @@ public enum SafetyPolicy {
             return lowered.contains("string") || lowered.contains("text") || lowered.contains("rtf")
         }
         if source == .service, !returnTypes.isEmpty, textSend {
-            return (.read, .direct, false)
+            // A declared return representation says nothing about side effects.
+            // Untrusted provider metadata may raise a risk classification, never
+            // grant permission to execute without user authorisation.
+            return (.unknown, .direct, true)
         }
 
         if source == .service, returnTypes.isEmpty {

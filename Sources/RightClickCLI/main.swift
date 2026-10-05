@@ -122,16 +122,18 @@ struct CLI {
         let resolvedItem = itemFlag ?? (positional.count >= 2 ? positional[1] : item)
         let resolvedAction = actionFlag ?? positional[0]
         do {
-            let result = try CapabilityEngine().run(id: resolvedAction, item: resolvedItem, confirmed: confirmed)
+            let result = try CapabilityEngine().run(id: resolvedAction, item: resolvedItem, confirmed: confirmed, expectedOutput: flag(args, "--expect-output"))
             if json {
                 print(RightClickJSON.encode(result))
             } else {
                 print(CLIRender.renderRun(result))
             }
             switch result.status {
-            case .executed: return 0
+            case .accepted, .verified: return 0
             case .confirmationRequired: return 3
             case .unsupported: return 4
+            case .unavailable: return 4
+            case .rejected: return 1
             case .failed: return 1
             case .unknown: return 1
             }
@@ -200,7 +202,7 @@ struct CLI {
         rightclick doctor
         rightclick inspect <item>
         rightclick actions <item>
-        rightclick run <action-id> <item> [--yes]
+        rightclick run <action-id> <item> [--yes] [--expect-output <exact-text>]
         rightclick status <execution-id>
         rightclick providers
         rightclick refresh

@@ -83,17 +83,17 @@ public final class CapabilityEngine {
         throw RightClickError("Capability \(id) was not found. Sharing capabilities only exist in the context of an item.")
     }
 
-    public func run(id: String, item raw: String, confirmed: Bool) throws -> RunResult {
+    public func run(id: String, item raw: String, confirmed: Bool, expectedOutput: String? = nil) throws -> RunResult {
         let (item, capabilities) = try capabilities(for: raw)
         guard let capability = capabilities.first(where: { $0.id == id || $0.title == id }) else {
-            return RunResult(status: .failed, actionID: id, message: "No discovered capability matches \(id) for this item.")
+            return RunResult(status: .unavailable, actionID: id, message: "No discovered capability matches \(id) for this item.")
         }
         if capability.invocation == .unsupported {
             return RunResult(
                 status: .unsupported,
                 actionID: capability.id,
                 title: capability.title,
-                message: "macOS exposes \(capability.title) as an Action extension, and this system has no public API to invoke it directly.",
+                message: capability.metadata["invocationLimitation"] ?? "No supported public invocation is available for \(capability.title).",
                 requiresConfirmation: true,
                 supportLevel: capability.supportLevel
             )
@@ -124,7 +124,7 @@ public final class CapabilityEngine {
             let final = ExecutionStore.shared.get(started.executionId) ?? started
             return runResult(from: final)
         case .service:
-            return ServiceCatalog.perform(capabilityID: capability.id, item: item)
+            return ServiceCatalog.perform(capabilityID: capability.id, item: item, expectedOutput: expectedOutput)
         case .actionExtension, .system:
             return RunResult(
                 status: .unsupported,
@@ -138,16 +138,16 @@ public final class CapabilityEngine {
 
     /// Starts an execution and returns without waiting for an asynchronous share callback.
     /// `NSPerformService` is synchronous, so its Boolean result is stored before return.
-    public func begin(id: String, item raw: String, confirmed: Bool) throws -> ExecutionRecord {
+    public func begin(id: String, item raw: String, confirmed: Bool, expectedOutput: String? = nil) throws -> ExecutionRecord {
         let executionId = UUID().uuidString
         let (item, capabilities) = try capabilities(for: raw)
         guard let capability = capabilities.first(where: { $0.id == id || $0.title == id }) else {
-            let record = ExecutionRecord(executionId: executionId, actionId: id, state: .failed, message: "No discovered capability matches \(id) for this item.")
+            let record = ExecutionRecord(executionId: executionId, actionId: id, state: .unavailable, message: "No discovered capability matches \(id) for this item.")
             ExecutionStore.shared.put(record)
             return record
         }
         if capability.invocation == .unsupported {
-            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .failed, message: "No public invocation API for \(capability.title).")
+            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .unsupported, message: "No public invocation API for \(capability.title).")
             ExecutionStore.shared.put(record)
             return record
         }
@@ -178,21 +178,35 @@ public final class CapabilityEngine {
             }
             return ExecutionStore.shared.get(executionId) ?? record
         case .service:
-            let result = ServiceCatalog.perform(capabilityID: capability.id, item: item)
+            let result = ServiceCatalog.perform(capabilityID: capability.id, item: item, expectedOutput: expectedOutput)
             let record = ExecutionRecord(
                 executionId: executionId,
                 actionId: capability.id,
                 title: result.title,
-                state: result.status == .executed ? .succeeded : .failed,
+                state: executionState(for: result.status),
                 message: result.message,
-                output: result.output
+                output: result.output,
+                evidence: result.evidence
             )
             ExecutionStore.shared.put(record)
             return record
         case .actionExtension, .system:
-            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .failed, message: "Invocation is not supported.")
+            let record = ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title, state: .unsupported, message: "Invocation is not supported.")
             ExecutionStore.shared.put(record)
             return record
+        }
+    }
+
+    private func executionState(for status: RunStatus) -> ExecutionState {
+        switch status {
+        case .accepted: return .accepted
+        case .verified: return .succeeded
+        case .confirmationRequired: return .awaitingUser
+        case .unsupported: return .unsupported
+        case .unavailable: return .unavailable
+        case .rejected: return .rejected
+        case .failed: return .failed
+        case .unknown: return .unknown
         }
     }
 
@@ -200,7 +214,11 @@ public final class CapabilityEngine {
         let status: RunStatus
         switch record.state {
         case .succeeded:
-            status = .executed
+            status = .verified
+        case .accepted: status = .accepted
+        case .unsupported: status = .unsupported
+        case .unavailable: status = .unavailable
+        case .rejected: status = .rejected
         case .awaitingUser:
             status = .confirmationRequired
         case .failed:
@@ -213,7 +231,8 @@ public final class CapabilityEngine {
             actionID: record.actionId,
             title: record.title,
             message: record.message,
-            output: record.output
+            output: record.output,
+            evidence: record.evidence
         )
     }
 

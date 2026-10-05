@@ -158,7 +158,7 @@ final class AcquisitionTests: XCTestCase {
     func testStaleServiceIDFails() {
         let item = ContentItem(kind: "text", display: "hello", text: "hello", typeIdentifier: "public.plain-text")
         let result = ServiceCatalog.perform(capabilityID: "service:missing.provider:nope", item: item)
-        XCTAssertEqual(result.status, .failed)
+        XCTAssertEqual(result.status, .unavailable)
     }
 
     func testDirectoryAndURLClassification() throws {
