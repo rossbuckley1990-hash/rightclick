@@ -147,10 +147,7 @@ enum ServiceCatalog {
             return false
         }
         if item.url != nil {
-            return record.sendTypes.contains { type in
-                let lowered = type.lowercased()
-                return lowered.contains("url")
-            }
+            return canEncodeWebURL(declaredSendTypes: record.sendTypes)
         }
         if item.text != nil {
             return record.sendTypes.contains(where: isTextType)
@@ -188,21 +185,49 @@ enum ServiceCatalog {
 
     private static func servicePayload(for item: ContentItem, record: InstalledServiceRecord) -> ServicePayload? {
         if item.path != nil, record.sendFileTypes.contains(where: { typeIdentifier($0).map { ContentParser.conforms(item, to: $0) } ?? false }) {
-            return ServicePayload(text: nil, filePath: item.path)
+            return ServicePayload(text: nil, filePath: item.path, webURL: nil)
+        }
+        if let web = item.url {
+            guard canEncodeWebURL(declaredSendTypes: record.sendTypes) else { return nil }
+            return ServicePayload(text: nil, filePath: nil, webURL: web)
         }
         if let text = item.text {
-            return ServicePayload(text: text, filePath: nil)
+            return ServicePayload(text: text, filePath: nil, webURL: nil)
         }
         if let path = item.path, item.kind == "text_file" || (item.utType?.conforms(to: .text) ?? false) {
             if let data = try? Data(contentsOf: URL(fileURLWithPath: path)), data.count <= 1_000_000,
                let text = String(data: data, encoding: .utf8) {
-                return ServicePayload(text: text, filePath: nil)
+                return ServicePayload(text: text, filePath: nil, webURL: nil)
             }
         }
         if let path = item.path {
-            return ServicePayload(text: nil, filePath: path)
+            return ServicePayload(text: nil, filePath: path, webURL: nil)
         }
         return nil
+    }
+
+    static func canEncodeWebURL(declaredSendTypes: [String]) -> Bool {
+        declaredSendTypes.contains { isWebURLSendType($0) || isTextType($0) }
+    }
+
+    static func prepareWebURLPasteboard(_ pasteboard: NSPasteboard, url: String, declaredSendTypes: [String]) -> Bool {
+        let record = InstalledServiceRecord(
+            menuTitle: "url",
+            message: nil,
+            bundleIdentifier: nil,
+            bundleName: nil,
+            bundlePath: "",
+            sendTypes: declaredSendTypes,
+            sendFileTypes: [],
+            returnTypes: [],
+            requiredContext: nil
+        )
+        guard let payload = servicePayload(
+            for: ContentItem(kind: "web_url", display: url, url: url, typeIdentifier: "public.url"),
+            record: record
+        ) else { return false }
+        declare(payload, on: pasteboard, record: record)
+        return true
     }
 
     static func pasteboardTypesForText(declaredSendTypes: [String]) -> [NSPasteboard.PasteboardType] {
@@ -235,6 +260,29 @@ enum ServiceCatalog {
     }
 
     private static func declare(_ payload: ServicePayload, on pasteboard: NSPasteboard, record: InstalledServiceRecord) {
+        if let web = payload.webURL {
+            var types: [NSPasteboard.PasteboardType] = []
+            var rich: [NSPasteboard.PasteboardType] = []
+            for raw in record.sendTypes {
+                let type = pasteboardType(for: raw)
+                let include = isWebURLSendType(raw) || isTextType(raw)
+                guard include, !types.contains(type) else { continue }
+                types.append(type)
+                if isTextType(raw), isRichTextType(type) {
+                    rich.append(type)
+                }
+            }
+            guard !types.isEmpty else { return }
+            pasteboard.declareTypes(types, owner: nil)
+            for type in types {
+                if rich.contains(type) {
+                    pasteboard.setData(plainTextRTF(web), forType: type)
+                } else {
+                    pasteboard.setString(web, forType: type)
+                }
+            }
+            return
+        }
         if let text = payload.text {
             let types = pasteboardTypesForText(declaredSendTypes: record.sendTypes)
             pasteboard.declareTypes(types, owner: nil)
@@ -333,6 +381,15 @@ enum ServiceCatalog {
         return nil
     }
 
+    private static func isWebURLSendType(_ type: String) -> Bool {
+        switch type.lowercased() {
+        case "public.url", "nsurlpboardtype", "nspasteboardtypeurl":
+            return true
+        default:
+            return false
+        }
+    }
+
     private static func isTextType(_ type: String) -> Bool {
         let lowered = type.lowercased()
         return lowered.contains("string") || lowered.contains("text") || lowered.contains("rtf")
@@ -362,6 +419,7 @@ enum ServiceCatalog {
 private struct ServicePayload {
     var text: String?
     var filePath: String?
+    var webURL: String?
 }
 
 private final class ServiceCallBox {

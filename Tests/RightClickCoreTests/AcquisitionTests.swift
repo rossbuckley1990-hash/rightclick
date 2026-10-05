@@ -25,6 +25,61 @@ final class AcquisitionTests: XCTestCase {
         XCTAssertTrue(gone.isEmpty)
     }
 
+    func testWebURLPayloadUsesDeclaredURLType() {
+        let address = "https://example.com/rightclick-test"
+        let pasteboard = NSPasteboard.withUniqueName()
+        XCTAssertTrue(ServiceCatalog.prepareWebURLPasteboard(pasteboard, url: address, declaredSendTypes: ["public.url"]))
+        XCTAssertEqual(pasteboard.string(forType: NSPasteboard.PasteboardType("public.url")), address)
+        pasteboard.releaseGlobally()
+    }
+
+    func testWebURLPayloadUsesDeclaredPlainTextType() {
+        let address = "https://example.com/rightclick-test"
+        let pasteboard = NSPasteboard.withUniqueName()
+        XCTAssertTrue(ServiceCatalog.prepareWebURLPasteboard(
+            pasteboard,
+            url: address,
+            declaredSendTypes: ["public.utf8-plain-text", "NSStringPboardType", "public.plain-text"]
+        ))
+        for raw in ["public.utf8-plain-text", "NSStringPboardType", "public.plain-text"] {
+            XCTAssertEqual(pasteboard.string(forType: NSPasteboard.PasteboardType(raw)), address, raw)
+        }
+        pasteboard.releaseGlobally()
+    }
+
+    func testWebURLPayloadAbstainsForFileURLOnly() {
+        let address = "https://example.com/rightclick-test"
+        let record = InstalledServiceRecord(
+            menuTitle: "Open File",
+            message: "openFile",
+            bundleIdentifier: "dev.example.files",
+            bundleName: "Files",
+            bundlePath: "/tmp/Files.app",
+            sendTypes: ["public.file-url"],
+            sendFileTypes: [],
+            returnTypes: [],
+            requiredContext: nil
+        )
+        let item = ContentItem(kind: "web_url", display: address, url: address, typeIdentifier: "public.url")
+        XCTAssertFalse(ServiceCatalog.accepts(record, item: item))
+        let pasteboard = NSPasteboard.withUniqueName()
+        XCTAssertFalse(ServiceCatalog.prepareWebURLPasteboard(pasteboard, url: address, declaredSendTypes: ["public.file-url"]))
+        pasteboard.releaseGlobally()
+    }
+
+    func testProofURLPayloadRoundTrip() {
+        let address = "https://example.com/rightclick-yojam-proof"
+        let declared = ["public.url", "public.rtf", "public.utf8-plain-text", "NSStringPboardType", "public.plain-text"]
+        let pasteboard = NSPasteboard.withUniqueName()
+        XCTAssertTrue(ServiceCatalog.prepareWebURLPasteboard(pasteboard, url: address, declaredSendTypes: declared))
+        for raw in ["public.url", "public.utf8-plain-text", "NSStringPboardType", "public.plain-text"] {
+            XCTAssertEqual(pasteboard.string(forType: NSPasteboard.PasteboardType(raw)), address, raw)
+        }
+        let rtf = pasteboard.data(forType: NSPasteboard.PasteboardType("public.rtf"))
+        XCTAssertGreaterThan(rtf?.count ?? 0, 0)
+        pasteboard.releaseGlobally()
+    }
+
     func testTextPasteboardTypesFollowDeclaredSendTypes() {
         let types = ServiceCatalog.pasteboardTypesForText(declaredSendTypes: [
             "NSStringPboardType",
