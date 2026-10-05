@@ -1,5 +1,6 @@
 import Darwin
 import Foundation
+import Dispatch
 import Security
 
 protocol RightClickRuntimeKeyStore {
@@ -388,6 +389,16 @@ enum RightClickBridgeRuntime {
         )
     }
 
+    static func forwardTermination(
+        to process: Process
+    ) {
+        guard process.isRunning else {
+            return
+        }
+
+        process.terminate()
+    }
+
     static func runDaemon(
         keyStore: any RightClickRuntimeKeyStore =
             SystemRightClickRuntimeKeyStore()
@@ -526,6 +537,78 @@ enum RightClickBridgeRuntime {
                     rightclickExecutable
                 )
 
+        // launchd terminates the RIGHTCLICK wrapper, not its child.
+        // Convert SIGTERM/SIGINT into explicit child termination so
+        // tunnel-client cannot survive as an orphan.
+        Darwin.signal(
+            SIGTERM,
+            SIG_IGN
+        )
+
+        Darwin.signal(
+            SIGINT,
+            SIG_IGN
+        )
+
+        let terminationRequested =
+            DispatchSemaphore(
+                value: 0
+            )
+
+        let signalQueue =
+            DispatchQueue(
+                label:
+                    "ai.rightclick.chatgpt-bridge.signals"
+            )
+
+        let termSource =
+            DispatchSource
+                .makeSignalSource(
+                    signal: SIGTERM,
+                    queue: signalQueue
+                )
+
+        let intSource =
+            DispatchSource
+                .makeSignalSource(
+                    signal: SIGINT,
+                    queue: signalQueue
+                )
+
+        termSource.setEventHandler {
+            terminationRequested.signal()
+
+            forwardTermination(
+                to: process
+            )
+        }
+
+        intSource.setEventHandler {
+            terminationRequested.signal()
+
+            forwardTermination(
+                to: process
+            )
+        }
+
+        termSource.resume()
+        intSource.resume()
+
+        defer {
+            termSource.cancel()
+            intSource.cancel()
+
+            Darwin.signal(
+                SIGTERM,
+                SIG_DFL
+            )
+
+            Darwin.signal(
+                SIGINT,
+                SIG_DFL
+            )
+        }
+
         do {
             try process.run()
         } catch {
@@ -535,6 +618,16 @@ enum RightClickBridgeRuntime {
             )
 
             return 1
+        }
+
+        // Cover the narrow race where termination arrives after the
+        // wrapper installs its signal sources but before Process.run().
+        if terminationRequested.wait(
+            timeout: .now()
+        ) == .success {
+            forwardTermination(
+                to: process
+            )
         }
 
         while process.isRunning {

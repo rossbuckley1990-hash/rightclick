@@ -327,3 +327,38 @@ extension BridgeRuntimeTests {
         )
     }
 }
+
+extension BridgeRuntimeTests {
+    func testForwardTerminationStopsRunningChild()
+        throws
+    {
+        let process = Process()
+
+        process.executableURL =
+            URL(
+                fileURLWithPath:
+                    "/bin/sleep"
+            )
+
+        process.arguments = [
+            "30",
+        ]
+
+        try process.run()
+
+        XCTAssertTrue(
+            process.isRunning
+        )
+
+        RightClickBridgeRuntime
+            .forwardTermination(
+                to: process
+            )
+
+        process.waitUntilExit()
+
+        XCTAssertFalse(
+            process.isRunning
+        )
+    }
+}
