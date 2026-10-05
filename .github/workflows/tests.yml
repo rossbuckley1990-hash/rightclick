@@ -12,6 +12,8 @@ jobs:
       - run: swift test --force-resolved-versions
       - run: scripts/build-cli.sh
       - run: python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"
+      - run: python3 scripts/acceptance-mcp.py "$PWD/.build/release/rightclick" /tmp/rightclick-mcp-acceptance
+      - run: python3 scripts/acceptance-core-boundary.py "$PWD/.build/release/rightclick" /tmp/rightclick-core-acceptance /tmp/rightclick-mcp-acceptance/results.json
       - name: Require Apple Silicon and free Command Line Tools for CLI build
         run: |
           test "$(uname -m)" = arm64

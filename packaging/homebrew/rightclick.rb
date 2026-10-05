@@ -1,15 +1,9 @@
 class Rightclick < Formula
   desc "Install an app. Your AI learns what it can do"
   homepage "https://github.com/rossbuckley1990-hash/rightclick"
-  url "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.1.0/rightclick-0.1.0-source.tar.gz"
-  sha256 "f45ba8bac307ed13110edb4914cf094eccd44e01dca484af957a94b34f3eca16"
+  url "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.1.1/rightclick-0.1.1-source.tar.gz"
+  sha256 "eae0e789c97f32302b0f11a9535defbb168a469ae644fddd4d6b13907c378ae5"
   license "Apache-2.0"
-
-  bottle do
-    root_url "https://github.com/rossbuckley1990-hash/homebrew-tap/releases/download/rightclick-0.1.0"
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_tahoe: "81f54908ece4bf0b64ebedac1e9bb77624f1e0af7a367e2307c0c92577da2a95"
-  end
 
   depends_on arch: :arm64
   depends_on macos: :sonoma
