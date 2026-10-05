@@ -273,12 +273,69 @@ private func rightClickTools() -> [Tool] {
         ]),
         "required": .array([.string("item"), .string("actionId")]),
     ]
+    let verificationPredicateSchema: Value = .object([
+        "type": .string("object"),
+        "properties": .object([
+            "type": .object([
+                "type": .string("string"),
+                "description": .string("Provider-independent observable predicate type."),
+                "enum": .array([
+                    .string("text_equals"),
+                    .string("file_exists"),
+                    .string("file_readable"),
+                    .string("file_sha256_equals"),
+                    .string("file_sha256_differs"),
+                    .string("file_size_less_than"),
+                    .string("dimensions_equal"),
+                    .string("xattr_present"),
+                    .string("xattr_absent"),
+                    .string("metadata_value_present"),
+                    .string("metadata_value_absent"),
+                ]),
+            ]),
+            "key": schemaString("Optional key, for example an extended-attribute name."),
+            "value": schemaString("Optional expected or forbidden exact value."),
+            "reference": schemaString("Optional observation reference. Currently 'before' for before/after predicates."),
+            "width": .object([
+                "type": .string("integer"),
+                "description": .string("Optional expected image width."),
+            ]),
+            "height": .object([
+                "type": .string("integer"),
+                "description": .string("Optional expected image height."),
+            ]),
+            "bytes": .object([
+                "type": .string("integer"),
+                "description": .string("Optional byte threshold."),
+            ]),
+        ]),
+        "required": .array([.string("type")]),
+    ])
+
+    let verificationSchema: Value = .object([
+        "type": .string("object"),
+        "description": .string("Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success."),
+        "properties": .object([
+            "predicates": .object([
+                "type": .string("array"),
+                "description": .string("Required provider-independent postconditions."),
+                "items": verificationPredicateSchema,
+            ]),
+            "timeoutMilliseconds": .object([
+                "type": .string("integer"),
+                "description": .string("Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms."),
+            ]),
+        ]),
+        "required": .array([.string("predicates")]),
+    ])
+
     let runSchema: [String: Value] = [
         "type": .string("object"),
         "properties": .object([
             "item": schemaString("File path, http(s) URL, or plain text."),
             "actionId": schemaString("Capability id or exact title returned by context_actions."),
-            "expectedOutput": schemaString("Optional exact expected provider-returned text. Verifies only a returned-text task; it cannot verify external side effects."),
+            "expectedOutput": schemaString("Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes."),
+            "verification": verificationSchema,
             "confirmed": .object([
                 "type": .string("boolean"),
                 "description": .string("Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED."),
@@ -304,7 +361,7 @@ private func rightClickTools() -> [Tool] {
         ),
         Tool(
             name: "context_run",
-            description: "Invoke one capability discovered for this object. Sharing actions return immediately with executionId and state started. Services report accepted when NSPerformService returns true; this is not semantic success. An explicit returned-text postcondition may establish succeeded, with the evidence boundary shown. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            description: "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
             inputSchema: .object(runSchema)
         ),
         Tool(
@@ -355,7 +412,35 @@ private func handleTool(_ name: String, arguments: [String: Value]?, engine: Eng
         let action = arguments?["actionId"]?.stringValue ?? ""
         let confirmed = arguments?["confirmed"]?.boolValue ?? false
         let expectedOutput = arguments?["expectedOutput"]?.stringValue
-        let record = try engine.call { try $0.begin(id: action, item: item, confirmed: confirmed, expectedOutput: expectedOutput) }
+
+        let verification: VerificationSpec?
+
+        if let value = arguments?["verification"] {
+            do {
+                let data = try JSONEncoder().encode(value)
+                verification = try JSONDecoder().decode(
+                    VerificationSpec.self,
+                    from: data
+                )
+            } catch {
+                throw RightClickError(
+                    "Invalid verification VerificationSpec: \(error)"
+                )
+            }
+        } else {
+            verification = nil
+        }
+
+        let record = try engine.call {
+            try $0.begin(
+                id: action,
+                item: item,
+                confirmed: confirmed,
+                expectedOutput: expectedOutput,
+                verification: verification
+            )
+        }
+
         return RightClickJSON.encode(record)
     case "context_run_status":
         let executionId = arguments?["executionId"]?.stringValue ?? ""
