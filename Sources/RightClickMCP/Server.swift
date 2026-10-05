@@ -137,7 +137,7 @@ final class StdioMCPServer {
             capabilities: .init(tools: .init(listChanged: false))
         )
         await registerTools(on: server, engine: engine)
-        let transport = StdioTransport()
+        let transport = ModernMCPStdioTransport()
         try await server.start(transport: transport)
         try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
     }

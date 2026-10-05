@@ -9,8 +9,13 @@ enum RightClickSetup {
         let message: String
     }
 
-    static func succeeded(discovery: String, cursorWritten: Bool, selfTestPassed: Bool) -> Bool {
-        discovery == "PASS" && cursorWritten && selfTestPassed
+    static func succeeded(
+        discovery: String,
+        cursorWritten: Bool,
+        openAIWritten: Bool = true,
+        selfTestPassed: Bool
+    ) -> Bool {
+        discovery == "PASS" && cursorWritten && openAIWritten && selfTestPassed
     }
 
     static func run(json: Bool) -> Int {
@@ -19,6 +24,7 @@ enum RightClickSetup {
         let rows = engine.providers()
         let executable = executablePath()
         let cursorResult = writeCursorConfig(executable: executable)
+        let openAIResult = RightClickOpenAIPlugin.install(executable: executable)
         let selfTest = harmlessSelfTest(engine)
         if json {
             let payload: [String: String] = [
@@ -29,13 +35,20 @@ enum RightClickSetup {
                 "providers": String(rows.count),
                 "cursor": cursorResult.message,
                 "cursorStatus": cursorResult.success ? "PASS" : "FAIL",
+                "openAI": openAIResult.message,
+                "openAIStatus": openAIResult.success ? "PASS" : "FAIL",
                 "selfTest": selfTest.message,
                 "selfTestStatus": selfTest.success ? "PASS" : "FAIL",
                 "servicesDiscovery": report.servicesDiscovery,
                 "mcpConnection": "NOT_VERIFIED",
             ]
             print(RightClickJSON.encode(payload))
-            return succeeded(discovery: report.servicesDiscovery, cursorWritten: cursorResult.success, selfTestPassed: selfTest.success) ? 0 : 1
+            return succeeded(
+                discovery: report.servicesDiscovery,
+                cursorWritten: cursorResult.success,
+                openAIWritten: openAIResult.success,
+                selfTestPassed: selfTest.success
+            ) ? 0 : 1
         }
         let sharingNote = report.sharingDiscovery == "PASS" ? "ready" : report.sharingDiscovery
         print("""
@@ -45,16 +58,25 @@ enum RightClickSetup {
         Services: \(report.serviceRegistrationCount) registrations
         Providers: \(rows.count)
         Action extensions: \(report.actionExtensionCount)
-        MCP: \(cursorResult.success ? "stdio command configured; connection not verified" : "configuration failed")
+        MCP:
+          Cursor: \(cursorResult.success ? "configured; connection not verified" : "configuration failed")
+          ChatGPT/Codex: \(openAIResult.success ? "local plugin configured; restart required" : "configuration failed")
 
         \(cursorResult.message)
+
+        \(openAIResult.message)
 
         Test:
         "What can my Mac do with ~/Desktop/example.jpg?"
 
         Self-test: \(selfTest.message)
         """)
-        return succeeded(discovery: report.servicesDiscovery, cursorWritten: cursorResult.success, selfTestPassed: selfTest.success) ? 0 : 1
+        return succeeded(
+                discovery: report.servicesDiscovery,
+                cursorWritten: cursorResult.success,
+                openAIWritten: openAIResult.success,
+                selfTestPassed: selfTest.success
+            ) ? 0 : 1
     }
 
     static func writeCursorConfig(
