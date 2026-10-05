@@ -17,4 +17,4 @@ rightclick run --yes service:com.barebones.bbedit:openSelectionService "RIGHTCLI
 
 For a replay, clearly label the preserved before/after acquisition records as historical. Current regression verified `RIGHTCLICK v0.1 BBEdit regression 20261005`, exactly 42 characters, in a new BBEdit window. See [BBEDIT-PROOF.md](BBEDIT-PROOF.md).
 
-Do not demonstrate Yojam semantic execution as passing. Its new capability was acquired automatically, but accepted invocation did not establish the expected external result. Do not announce public installation until signing, notarisation, tap publication, and clean-machine acceptance pass.
+Do not demonstrate Yojam semantic execution as passing. Its new capability was acquired automatically, but accepted invocation did not establish the expected external result. Announce public installation only after the source asset and Homebrew tap are published and their actual install path passes acceptance. Paid Apple distribution is deferred.

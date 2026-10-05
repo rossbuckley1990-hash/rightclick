@@ -10,4 +10,4 @@ The proof: the same plain-text query had 36 capabilities and none from third-par
 
 This is a bounded test of Capability Reflection, not universal Mac automation. Compatible apps must expose a supported native contract. Finder Action extensions are discovery-only. Some providers accept a call without delivering an independently verified result; Yojam is a documented example. A successful invocation is not enough to claim semantic success.
 
-v0.1.0 targets Apple Silicon/macOS 14+. Publication is pending real Developer ID signing, notarisation, and public Homebrew clean-install acceptance. Replace this status sentence with the verified release install commands only when those gates pass.
+v0.1.0 targets Apple Silicon/macOS 14+. The launch install is `brew install rossbuckley1990-hash/tap/rightclick`, followed by `rightclick setup`. Source builds need Swift 6.2+ from free Apple Command Line Tools. Paid Apple distribution is deferred. Publish this launch copy only after the actual public Homebrew installation passes.

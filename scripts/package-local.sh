@@ -8,7 +8,7 @@ ARCHIVE="$(pwd)/dist/rightclick-0.1.0-arm64-development.tar.gz"
 cat > dist/rightclick.rb << EOF
 class Rightclick < Formula
   desc "Install an app. Your AI learns what it can do."
-  homepage "https://github.com/ross-buckley/rightclick"
+  homepage "https://github.com/rossbuckley1990-hash/rightclick"
   version "0.1.0"
   license "Apache-2.0"
   url "file://${ARCHIVE}"

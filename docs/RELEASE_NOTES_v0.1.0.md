@@ -14,4 +14,6 @@ stdio and authenticated Streamable HTTP expose initialization, contextual discov
 
 Not every app exposes a compatible contract. Accepted invocation does not establish semantic completion. Yojam acquisition and generic payload/invocation pass, but its expected browser result remains a documented limitation after one bounded standalone control. Interactive actions may require a person. Status is in memory and is lost on restart.
 
-0.1.0 targets Apple Silicon/macOS 14+. The capability engine is frozen. The development package and local Homebrew rehearsal pass; public distribution remains blocked on Developer ID, notarisation, Gatekeeper acceptance, authorised asset/tap publication and fresh-machine acceptance. No public launch is claimed by these prepared notes.
+0.1.0 targets Apple Silicon/macOS 14+. Install through `brew install rossbuckley1990-hash/tap/rightclick`, then run `rightclick setup` and enable RIGHTCLICK in Cursor. Source installation requires Swift 6.2+ from the free Apple Command Line Tools. Homebrew bottles are optional and are built using the tap's standard workflow. A paid Apple Developer account is not required; Developer ID and notarisation are deferred.
+
+These notes are prepared for the release. Public installation is only available after the source asset and tap are published and verified.

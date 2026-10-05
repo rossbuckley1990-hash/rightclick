@@ -39,6 +39,9 @@ def exercise(request, label):
     assert init["result"]["serverInfo"]["version"] == "0.1.0", init
     tools = request(message(2, "tools/list"))
     assert {t["name"] for t in tools["result"]["tools"]} == expected_tools
+    inspected = payload(request(message(7, "tools/call", {"name": "context_inspect", "arguments": {"item": "RightClick"}})))
+    assert inspected["kind"] == "text" and inspected["text"] == "RightClick", inspected
+    assert inspected["typeIdentifier"] == "public.plain-text" and inspected["byteCount"] == 10, inspected
     actions = payload(request(message(3, "tools/call", {"name": "context_actions", "arguments": {"item": "RightClick"}})))
     assert any(a["id"] == fullwidth for a in actions["actions"])
     gated = payload(request(message(4, "tools/call", {"name": "context_run", "arguments": {"item": "https://example.com/rightclick-policy", "actionId": "AirDrop"}})))
@@ -47,8 +50,8 @@ def exercise(request, label):
     assert result["output"] == "ＲｉｇｈｔＣｌｉｃｋ", result
     status = payload(request(message(6, "tools/call", {"name": "context_run_status", "arguments": {"executionId": result["executionId"]}})))
     assert status["output"] == "ＲｉｇｈｔＣｌｉｃｋ", status
-    records.append({"transport": label, "initialize": init, "tools": tools, "actions": actions, "confirmation": gated, "fullWidth": result, "status": status, "OUTCOME_VERIFIED": "exact full-width pasteboard output"})
-    print(label + ": PASS — six tools, contextual discovery, confirmation, exact full-width output, retained status")
+    records.append({"transport": label, "initialize": init, "tools": tools, "inspect": inspected, "actions": actions, "confirmation": gated, "fullWidth": result, "status": status, "OUTCOME_VERIFIED": "exact full-width pasteboard output"})
+    print(label + ": PASS — six tools, exact inspection, contextual discovery, confirmation, exact full-width output, retained status")
 
 with (out / "stdio.stderr.log").open("w") as err:
     process = subprocess.Popen([binary, "mcp"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=err, text=True, bufsize=1)

@@ -1,11 +1,11 @@
-# Apple distribution gate
+# Optional future Apple distribution
 
-This Mac reports **0 valid code-signing identities**. The development executable is linker ad-hoc signed; Gatekeeper rejects it. No notarisation credential was supplied. Public Developer ID, notarisation and Gatekeeper acceptance are BLOCKED. No insecure distribution workaround was used.
+**DEFERRED UNTIL USER DEMAND JUSTIFIES PAID APPLE DISTRIBUTION**
 
-Ross must install a Developer ID Application certificate with its private key and store a valid notarisation profile in the keychain. Use `xcrun notarytool store-credentials RIGHTCLICK_NOTARY` interactively. Never commit passwords or certificates/private keys. See [the exact release sequence](RELEASE.md).
+Developer ID, notarisation, standalone signed downloads, app bundles, DMG, PKG, App Store and consumer installers are outside the v0.1 critical path. A paid Apple Developer account is not required for normal Homebrew source installation or standard Homebrew bottles. Do not remove quarantine, disable Gatekeeper or weaken macOS security.
 
-The prepared pipeline signs `dist/RIGHTCLICK.app`, enabling hardened runtime and a secure timestamp. It verifies the signature, submits an app-bundle ZIP, checks explicit `Accepted` status, staples and validates the app, and requires Gatekeeper acceptance before making the public archive. It refuses to archive an unvalidated public artifact. A naked executable is not passed to stapler.
+The existing `build-release.sh`, `sign-release.sh`, `validate-release.sh`, `make-release-archive.sh`, `deterministic-archive.py` and `package-local.sh` scripts remain available for this future path. `fill-homebrew-formula.sh` now writes only under `packaging/deferred-apple/`; it cannot overwrite the primary source formula.
 
-The pipeline is prepared and preflight failures are verified; successful Apple signing/notarisation cannot be tested until the account credentials exist. After notarisation, extraction/validation of the final archive is also required. Apple's [notarisation workflow](https://developer.apple.com/documentation/security/customizing-the-notarization-workflow) explains supported containers and packaging after stapling.
+The preserved pipeline requires a real Developer ID identity and stored notarisation credentials, enables hardened runtime and a timestamp, verifies the signature, requires notarisation Accepted, staples the app and validates Gatekeeper. It never falls back to ad-hoc signing for that distribution path. Its preflight failure is verified; successful account-dependent signing was not tested.
 
-Unsigned builds and archives can be checked for deterministic bytes on the same compiler/SDK. Developer ID timestamps and notarisation change final bytes; record the actual final signed hashes. Do not reuse the development SHA256 as the public release hash.
+Historical artifact hashes and signing observations remain in the [superseded report](V0.1_COMPLETION_REPORT_APPLE_PATH.md) and raw evidence. They are not current v0.1 launch gates.

@@ -10,24 +10,26 @@ Not every installed app exposes compatible native capabilities. RIGHTCLICK does 
 
 ### Installation status
 
-v0.1.0 targets Apple Silicon and macOS 14 or later. The development package and local Homebrew rehearsal work. The public install is **blocked** on Developer ID signing, notarisation, publishing approval, and a public release asset/tap. The eventual commands are:
+v0.1.0 targets Apple Silicon and macOS 14 or later. Homebrew is the primary distribution path; no paid Apple Developer account is required. Publication is being prepared. Once the public release and tap are available:
 
 ```bash
-brew install ross-buckley/tap/rightclick
+brew install rossbuckley1990-hash/tap/rightclick
 rightclick setup
 ```
 
-Until publication, use a local source checkout with Xcode command-line tools and Swift 6:
+Source installation needs Swift 6.2 or later from the free Apple Command Line Tools. A matching Homebrew bottle avoids compilation when available. Older Command Line Tools cannot compile the pinned dependencies; update them through Software Update. Do not disable macOS security.
+
+For contributors, a local source checkout supports:
 
 ```bash
 swift test
-scripts/build-release.sh
+scripts/build-cli.sh
 .build/release/rightclick version
 .build/release/rightclick doctor
 .build/release/rightclick setup
 ```
 
-`setup` checks discovery and merges only the `rightclick` entry into `~/.cursor/mcp.json`, using the executable you ran. Enable the server in Cursor if your client requires it. Other MCP clients can launch that executable with argument `mcp`.
+`setup` checks discovery and merges only the `rightclick` entry into `~/.cursor/mcp.json`, using the executable you ran. Enable RIGHTCLICK in Cursor's MCP settings if required, then start a new chat and ask “What can my Mac do with this text: RightClick?” Other MCP clients can launch the Homebrew-installed executable with argument `mcp`.
 
 ```bash
 rightclick actions "RightClick third party capability test"

@@ -1,0 +1,21 @@
+name: macOS tests
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - run: swift test --force-resolved-versions
+      - run: scripts/build-cli.sh
+      - run: python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"
+      - name: Require Apple Silicon and free Command Line Tools for CLI build
+        run: |
+          test "$(uname -m)" = arm64
+          test -d /Library/Developer/CommandLineTools
+          echo "DEVELOPER_DIR=/Library/Developer/CommandLineTools" >> "$GITHUB_ENV"
+      - run: scripts/build-cli.sh
+      - run: python3 scripts/package-source.py

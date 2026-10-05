@@ -6,6 +6,6 @@ RIGHTCLICK asks the environment which actions apply to an object. Preserve gener
 
 Before proposing a change, reproduce the problem, add a meaningful failing regression where appropriate, make the smallest generic repair, and run `swift test`. Do not weaken assertions or skip a failing regression to obtain green. Run `scripts/acceptance-mcp.py <absolute-binary> <evidence-directory>` for transport changes, and the relevant independent semantic control for execution changes. Never infer outcome verification from an accepted provider invocation.
 
-Build with `scripts/build-release.sh`; archive a development rehearsal with `scripts/package-local.sh`. Public archives require the validated Apple distribution pipeline in [docs/RELEASE.md](docs/RELEASE.md). Preserve evidence, keep credentials out of the tree, and describe exactly what a check proves.
+Free Apple Command Line Tools with Swift 6.2 or later build the CLI. Running the existing XCTest suite requires full Xcode (also free); Command Line Tools do not include XCTest. Build the CLI with `scripts/build-cli.sh`; prepare the deterministic source asset and Homebrew formula with `python3 scripts/package-source.py`. [docs/RELEASE.md](docs/RELEASE.md) describes the package-manager release. The optional app-bundle signing pipeline is deferred; see [docs/SIGNING.md](docs/SIGNING.md). Preserve evidence, keep credentials out of the tree, and describe exactly what a check proves.
 
 Contributions use Apache-2.0. The distributable retains notices for pinned dependencies under `packaging/ThirdPartyLicenses/`.
