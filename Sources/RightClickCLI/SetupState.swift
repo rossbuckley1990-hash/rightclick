@@ -141,7 +141,10 @@ struct RightClickSetupStateReconciliation {
 extension RightClickSetupStateStore {
     static func reconcile(
         executable: String,
-        at file: URL = defaultFile()
+        at file: URL = defaultFile(),
+        chatGPTTunnelID: String? = nil,
+        tunnelClientPath: String? = nil,
+        tunnelClientVersion: String? = nil
     ) -> RightClickSetupStateReconciliation {
         let fileManager = FileManager.default
 
@@ -164,9 +167,15 @@ extension RightClickSetupStateStore {
         do {
             let current = try make(
                 executable: executable,
-                chatGPTTunnelID: previous?.chatGPTTunnelID,
-                tunnelClientPath: previous?.tunnelClientPath,
-                tunnelClientVersion: previous?.tunnelClientVersion
+                chatGPTTunnelID:
+                    chatGPTTunnelID
+                    ?? previous?.chatGPTTunnelID,
+                tunnelClientPath:
+                    tunnelClientPath
+                    ?? previous?.tunnelClientPath,
+                tunnelClientVersion:
+                    tunnelClientVersion
+                    ?? previous?.tunnelClientVersion
             )
 
             try write(

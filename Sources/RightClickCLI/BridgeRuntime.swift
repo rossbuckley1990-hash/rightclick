@@ -1,3 +1,4 @@
+import Darwin
 import Foundation
 import Security
 
@@ -518,9 +519,7 @@ enum RightClickBridgeCLI {
         keyStore: any RightClickRuntimeKeyStore =
             SystemRightClickRuntimeKeyStore(),
         input: () -> String? = {
-            readLine(
-                strippingNewline: true
-            )
+            readSecretFromTerminal()
         }
     ) -> Int {
         switch args {
@@ -608,5 +607,58 @@ enum RightClickBridgeCLI {
 
             return 2
         }
+    }
+}
+
+
+extension RightClickBridgeCLI {
+    static func readSecretFromTerminal() -> String? {
+        fputs(
+            "OpenAI runtime API key: ",
+            stderr
+        )
+        fflush(stderr)
+
+        let descriptor = fileno(stdin)
+        var original = termios()
+
+        guard tcgetattr(
+            descriptor,
+            &original
+        ) == 0 else {
+            return readLine(
+                strippingNewline: true
+            )
+        }
+
+        var hidden = original
+        hidden.c_lflag &= ~tcflag_t(ECHO)
+
+        guard tcsetattr(
+            descriptor,
+            TCSAFLUSH,
+            &hidden
+        ) == 0 else {
+            return readLine(
+                strippingNewline: true
+            )
+        }
+
+        defer {
+            var restored = original
+
+            _ = tcsetattr(
+                descriptor,
+                TCSAFLUSH,
+                &restored
+            )
+
+            fputs("\n", stderr)
+            fflush(stderr)
+        }
+
+        return readLine(
+            strippingNewline: true
+        )
     }
 }
