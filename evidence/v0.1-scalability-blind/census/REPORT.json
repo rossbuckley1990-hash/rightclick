@@ -1,0 +1,2443 @@
+{
+  "generated_at": "2026-10-05T13:20:05",
+  "timezone_label": "BST (Europe/London)",
+  "rightclick_version": "0.1.0",
+  "census_dir": "/tmp/rightclick-census-78231",
+  "object_types_tested": 16,
+  "unique_capabilities": 59,
+  "unique_providers": 39,
+  "unique_providers_including_providers_cli_unseen": 42,
+  "third_party_providers": 10,
+  "previously_unseen_third_party_providers": 3,
+  "invocable_capabilities": 5,
+  "discovery_only_capabilities": 54,
+  "semantic_classes_represented": [
+    "ANALYSE",
+    "COMPUTE",
+    "CONVERT",
+    "CREATE",
+    "EDIT",
+    "MEDIA",
+    "OPEN",
+    "OPTIMISE",
+    "SEARCH",
+    "SHARE",
+    "TRANSFORM",
+    "UNKNOWN"
+  ],
+  "object_type_coverage": {
+    "text": 45,
+    "URL": 51,
+    "image": 12,
+    "PDF": 6,
+    "audio": 6,
+    "video": 8,
+    "archive": 5,
+    "folder": 7,
+    "code": 47
+  },
+  "per_fixture_counts": {
+    "text": 45,
+    "url": 51,
+    "txt": 47,
+    "md": 47,
+    "json": 45,
+    "csv": 47,
+    "pdf": 6,
+    "jpg": 12,
+    "png": 12,
+    "svg": 12,
+    "mp3": 6,
+    "wav": 6,
+    "mp4": 8,
+    "zip": 5,
+    "code": 47,
+    "folder": 7
+  },
+  "segment_counts": {
+    "apple_system_unique_caps": 45,
+    "known_third_party_unique_caps": 14,
+    "unseen_third_party_unique_caps": 0
+  },
+  "invocation_distribution": {
+    "interactive": 52,
+    "direct": 5,
+    "unsupported": 2
+  },
+  "supportLevel_distribution": {
+    "public_supported": 48,
+    "public_deprecated": 11
+  },
+  "capabilities": [
+    {
+      "id": "service:com.apple.services.addToiTunesAsSpokenTrack:runWorkflowAsService",
+      "title": "Add to Music as a Spoken Track",
+      "provider_name": "Add to Music as a Spoken Track",
+      "bundleIdentifier": "com.apple.services.addToiTunesAsSpokenTrack",
+      "source": "service",
+      "inputTypes": [
+        "public.utf8-plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cAdd to Music as a Spoken Track\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "MEDIA",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.barebones.bbedit:appendToScratchpadService",
+      "title": "BBEdit/Append Selection to BBEdit Scratchpad",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/Append Selection to BBEdit Scratchpad\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "EDIT",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.barebones.bbedit:openSelectionService",
+      "title": "BBEdit/New BBEdit Document with Selection",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/New BBEdit Document with Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.barebones.bbedit:newNoteWithSelectionService",
+      "title": "BBEdit/New Note in BBEdit",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.plain-text",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/New Note in BBEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.barebones.bbedit:openFileService",
+      "title": "BBEdit/Open File in BBEdit",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.utf8-plain-text",
+        "NSURLPboardType",
+        "public.url",
+        "public.file-url"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/Open File in BBEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.barebones.bbedit:multiFileSearchService",
+      "title": "BBEdit/Search Here in BBEdit",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.utf8-plain-text",
+        "NSURLPboardType",
+        "public.url",
+        "public.file-url"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/Search Here in BBEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "SEARCH",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.apple.ChineseTextConverterService:convertTextToTraditionalChinese",
+      "title": "Convert Text from Simplified to Traditional Chinese",
+      "provider_name": "ChineseTextConverterService",
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "source": "service",
+      "inputTypes": [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "direct",
+      "supportLevel": "public_supported",
+      "safety": "read",
+      "requiresConfirmation": false,
+      "explanation": "macOS Service \u201cConvert Text from Simplified to Traditional Chinese\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "TRANSFORM",
+      "invocable": true,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.ChineseTextConverterService:convertTextToSimplifiedChinese",
+      "title": "Convert Text from Traditional to Simplified Chinese",
+      "provider_name": "ChineseTextConverterService",
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "source": "service",
+      "inputTypes": [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "direct",
+      "supportLevel": "public_supported",
+      "safety": "read",
+      "requiresConfirmation": false,
+      "explanation": "macOS Service \u201cConvert Text from Traditional to Simplified Chinese\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "TRANSFORM",
+      "invocable": true,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+      "title": "Convert Text to Full Width",
+      "provider_name": "ChineseTextConverterService",
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "source": "service",
+      "inputTypes": [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "direct",
+      "supportLevel": "public_supported",
+      "safety": "read",
+      "requiresConfirmation": false,
+      "explanation": "macOS Service \u201cConvert Text to Full Width\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "TRANSFORM",
+      "invocable": true,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.ChineseTextConverterService:convertTextToHalfWidth",
+      "title": "Convert Text to Half Width",
+      "provider_name": "ChineseTextConverterService",
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "source": "service",
+      "inputTypes": [
+        "public.rtf",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "direct",
+      "supportLevel": "public_supported",
+      "safety": "read",
+      "requiresConfirmation": false,
+      "explanation": "macOS Service \u201cConvert Text to Half Width\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "TRANSFORM",
+      "invocable": true,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.Automator:makeNewServiceWithPasteboard",
+      "title": "Create Service",
+      "provider_name": "Automator",
+      "bundleIdentifier": "com.apple.Automator",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cCreate Service\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.Automator:makeNewWorkflowServiceWithPasteboard",
+      "title": "Create Workflow",
+      "provider_name": "Automator",
+      "bundleIdentifier": "com.apple.Automator",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cCreate Workflow\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.dt.Xcode:batchFind",
+      "title": "Find in Xcode",
+      "provider_name": "Xcode",
+      "bundleIdentifier": "com.apple.dt.Xcode",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cFind in Xcode\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "SEARCH",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.finder:open",
+      "title": "Finder/Open",
+      "provider_name": "Finder",
+      "bundleIdentifier": "com.apple.finder",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cFinder/Open\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.finder:reveal",
+      "title": "Finder/Reveal",
+      "provider_name": "Finder",
+      "bundleIdentifier": "com.apple.finder",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cFinder/Reveal\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.finder:showInfo",
+      "title": "Finder/Show Info",
+      "provider_name": "Finder",
+      "bundleIdentifier": "com.apple.finder",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSFilenamesPboardType",
+        "NSURLPboardType",
+        "NSMultipleTextSelectionPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cFinder/Show Info\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.Dictionary:doLookupService",
+      "title": "Look Up in Dictionary",
+      "provider_name": "Dictionary",
+      "bundleIdentifier": "com.apple.Dictionary",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cLook Up in Dictionary\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "SEARCH",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.mail:mailTo",
+      "title": "Mail/New Email To Address",
+      "provider_name": "Mail",
+      "bundleIdentifier": "com.apple.mail",
+      "source": "service",
+      "inputTypes": [
+        "NSPasteboardTypeString"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cMail/New Email To Address\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.mail:mailSelection",
+      "title": "Mail/New Email With Selection",
+      "provider_name": "Mail",
+      "bundleIdentifier": "com.apple.mail",
+      "source": "service",
+      "inputTypes": [
+        "NSPasteboardTypeRTFD",
+        "NSPasteboardTypeRTF",
+        "NSPasteboardTypeString",
+        "Apple Web Archive pasteboard type"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cMail/New Email With Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.Stickies:makeStickyFromTextService",
+      "title": "Make Sticky",
+      "provider_name": "Stickies",
+      "bundleIdentifier": "com.apple.Stickies",
+      "source": "service",
+      "inputTypes": [
+        "public.plain-text",
+        "public.rtf",
+        "com.apple.flat-rtfd"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cMake Sticky\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.coteditor.CotEditor:openSelection",
+      "title": "New CotEditor Window Containing Selection",
+      "provider_name": "CotEditor",
+      "bundleIdentifier": "com.coteditor.CotEditor",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cNew CotEditor Window Containing Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.apple.Terminal:newTerminalAtFolder",
+      "title": "New Terminal Tab at Folder",
+      "provider_name": "Terminal",
+      "bundleIdentifier": "com.apple.Terminal",
+      "source": "service",
+      "inputTypes": [
+        "public.plain-text",
+        "public.directory",
+        "com.apple.resolvable"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cNew Terminal Tab at Folder\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code",
+        "folder"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.TextEdit:openSelection",
+      "title": "New TextEdit Window Containing Selection",
+      "provider_name": "TextEdit",
+      "bundleIdentifier": "com.apple.TextEdit",
+      "source": "service",
+      "inputTypes": [
+        "com.apple.flat-rtfd",
+        "public.rtf",
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cNew TextEdit Window Containing Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.coteditor.CotEditor:openFile",
+      "title": "Open in CotEditor",
+      "provider_name": "CotEditor",
+      "bundleIdentifier": "com.coteditor.CotEditor",
+      "source": "service",
+      "inputTypes": [
+        "NSURLPboardType",
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen in CotEditor\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.yojam.app:openURLViaService",
+      "title": "Open in Yojam",
+      "provider_name": "Yojam",
+      "bundleIdentifier": "com.yojam.app",
+      "source": "service",
+      "inputTypes": [
+        "public.url",
+        "public.rtf",
+        "public.utf8-plain-text",
+        "NSStringPboardType",
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen in Yojam\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.apple.Terminal:openManPage",
+      "title": "Open man Page in Terminal",
+      "provider_name": "Terminal",
+      "bundleIdentifier": "com.apple.Terminal",
+      "source": "service",
+      "inputTypes": [
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen man Page in Terminal\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.dt.Xcode:openQuickly",
+      "title": "Open Quickly in Xcode",
+      "provider_name": "Xcode",
+      "bundleIdentifier": "com.apple.dt.Xcode",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen Quickly in Xcode\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.TextEdit:openFile",
+      "title": "Open Selected File in TextEdit",
+      "provider_name": "TextEdit",
+      "bundleIdentifier": "com.apple.TextEdit",
+      "source": "service",
+      "inputTypes": [
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen Selected File in TextEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.systemuiserver:openURL",
+      "title": "Open URL",
+      "provider_name": "SystemUIServer",
+      "bundleIdentifier": "com.apple.systemuiserver",
+      "source": "service",
+      "inputTypes": [
+        "NSURLPboardType",
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen URL\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:org.R-project.R:doPerformServiceOpenRScript",
+      "title": "R/R \u2013 Open selection",
+      "provider_name": "R",
+      "bundleIdentifier": "org.R-project.R",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cR/R \u2013 Open selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:org.R-project.R:doPerformServiceRunInConsole",
+      "title": "R/R \u2013 Run selection in Console",
+      "provider_name": "R",
+      "bundleIdentifier": "org.R-project.R",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSURLPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cR/R \u2013 Run selection in Console\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "COMPUTE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.apple.ScriptEditor2:runAsAppleScript",
+      "title": "Script Editor/Get Result of AppleScript",
+      "provider_name": "Script Editor",
+      "bundleIdentifier": "com.apple.ScriptEditor2",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "direct",
+      "supportLevel": "public_supported",
+      "safety": "read",
+      "requiresConfirmation": false,
+      "explanation": "macOS Service \u201cScript Editor/Get Result of AppleScript\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "COMPUTE",
+      "invocable": true,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.ScriptEditor2:makeNewAppleScript",
+      "title": "Script Editor/Make New AppleScript",
+      "provider_name": "Script Editor",
+      "bundleIdentifier": "com.apple.ScriptEditor2",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cScript Editor/Make New AppleScript\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.Terminal:searchManPages",
+      "title": "Search man Page Index in Terminal",
+      "provider_name": "Terminal",
+      "bundleIdentifier": "com.apple.Terminal",
+      "source": "service",
+      "inputTypes": [
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cSearch man Page Index in Terminal\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "SEARCH",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.SpotlightService:doSearchWithSpotlight",
+      "title": "SEARCH_WITH_SPOTLIGHT",
+      "provider_name": "SpotlightService",
+      "bundleIdentifier": "com.apple.SpotlightService",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cSEARCH_WITH_SPOTLIGHT\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.BluetoothFileExchange:sendFileUsingBluetoothOBEXService",
+      "title": "Send File To Bluetooth Device",
+      "provider_name": "Bluetooth File Exchange",
+      "bundleIdentifier": "com.apple.BluetoothFileExchange",
+      "source": "service",
+      "inputTypes": [
+        "public.plain-text",
+        "NSFilenamesPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cSend File To Bluetooth Device\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.services.showMap:runWorkflowAsService",
+      "title": "Show Map",
+      "provider_name": "Show Map",
+      "bundleIdentifier": "com.apple.services.showMap",
+      "source": "service",
+      "inputTypes": [
+        "public.utf8-plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cShow Map\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.speech.SpeechService:doSpeakSelectedText",
+      "title": "Speech/Start Speaking Text",
+      "provider_name": "Speech Service",
+      "bundleIdentifier": "com.apple.speech.SpeechService",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cSpeech/Start Speaking Text\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.speech.SpeechService:doStopSpeaking",
+      "title": "Speech/Stop Speaking",
+      "provider_name": "Speech Service",
+      "bundleIdentifier": "com.apple.speech.SpeechService",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cSpeech/Stop Speaking\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.SummaryService:doSummarization",
+      "title": "Summarize",
+      "provider_name": "Summary Service",
+      "bundleIdentifier": "com.apple.SummaryService",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cSummarize\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "ANALYSE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:title:freeform",
+      "title": "Freeform",
+      "provider_name": "Freeform",
+      "bundleIdentifier": null,
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cFreeform\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "pdf",
+        "jpg",
+        "png",
+        "svg",
+        "mp3",
+        "wav",
+        "mp4",
+        "zip",
+        "code",
+        "folder"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:title:journal",
+      "title": "Journal",
+      "provider_name": "Journal",
+      "bundleIdentifier": null,
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cJournal\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "csv",
+        "jpg",
+        "png",
+        "svg",
+        "mp4",
+        "code"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:com.apple.messages.ShareExtension",
+      "title": "Messages",
+      "provider_name": "Messages",
+      "bundleIdentifier": "com.apple.messages.ShareExtension",
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cMessages\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "pdf",
+        "jpg",
+        "png",
+        "svg",
+        "mp3",
+        "wav",
+        "mp4",
+        "zip",
+        "code",
+        "folder"
+      ],
+      "class": "SHARE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:title:notes",
+      "title": "Notes",
+      "provider_name": "Notes",
+      "bundleIdentifier": null,
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cNotes\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "pdf",
+        "jpg",
+        "png",
+        "svg",
+        "mp3",
+        "wav",
+        "mp4",
+        "zip",
+        "code",
+        "folder"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:title:reminders",
+      "title": "Reminders",
+      "provider_name": "Reminders",
+      "bundleIdentifier": null,
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cReminders\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "csv",
+        "jpg",
+        "png",
+        "svg",
+        "code"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.barebones.bbedit:compareFilesService",
+      "title": "BBEdit/Compare Using BBEdit",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSURLPboardType",
+        "public.file-url"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/Compare Using BBEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "url"
+      ],
+      "class": "SEARCH",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "sharing:com.apple.share.System.add-to-safari-reading-list",
+      "title": "Add to Reading List",
+      "provider_name": "Add to Reading List",
+      "bundleIdentifier": "com.apple.share.System.add-to-safari-reading-list",
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cAdd to Reading List\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "url"
+      ],
+      "class": "SHARE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:com.apple.share.AirDrop.send",
+      "title": "AirDrop",
+      "provider_name": "AirDrop",
+      "bundleIdentifier": "com.apple.share.AirDrop.send",
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cAirDrop\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "pdf",
+        "jpg",
+        "png",
+        "svg",
+        "mp3",
+        "wav",
+        "mp4",
+        "zip",
+        "code",
+        "folder"
+      ],
+      "class": "SHARE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:com.apple.share.Mail.compose",
+      "title": "Mail",
+      "provider_name": "Mail",
+      "bundleIdentifier": "com.apple.share.Mail.compose",
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cMail\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "url"
+      ],
+      "class": "SHARE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:title:open-in-news",
+      "title": "Open in News",
+      "provider_name": "Open in News",
+      "bundleIdentifier": null,
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cOpen in News\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "url"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:title:simulator",
+      "title": "Simulator",
+      "provider_name": "Simulator",
+      "bundleIdentifier": null,
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cSimulator\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "pdf",
+        "jpg",
+        "png",
+        "svg",
+        "mp3",
+        "wav",
+        "mp4",
+        "zip",
+        "code",
+        "folder"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "action:com.apple.MarkupUI.Markup",
+      "title": "Markup",
+      "provider_name": "Markup",
+      "bundleIdentifier": "com.apple.MarkupUI.Markup",
+      "source": "action_extension",
+      "inputTypes": [
+        "com.adobe.pdf"
+      ],
+      "invocation": "unsupported",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "Action extension \u201cMarkup\u201d was discovered from installed extension metadata. This Mac does not expose a public call to run it.",
+      "observed_on": [
+        "pdf",
+        "jpg",
+        "png",
+        "svg"
+      ],
+      "class": "UNKNOWN",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:net.pornel.ImageOptim:handleServices",
+      "title": "ImageOptimize",
+      "provider_name": "ImageOptim",
+      "bundleIdentifier": "net.pornel.ImageOptim",
+      "source": "service",
+      "inputTypes": [
+        "public.png",
+        "public.jpeg",
+        "com.compuserve.gif",
+        "public.svg-image"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cImageOptimize\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "jpg",
+        "png",
+        "svg"
+      ],
+      "class": "OPTIMISE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.apple.services.setDesktopPicture:runWorkflowAsService",
+      "title": "Set Desktop Picture",
+      "provider_name": "Set Desktop Picture",
+      "bundleIdentifier": "com.apple.services.setDesktopPicture",
+      "source": "service",
+      "inputTypes": [
+        "public.image"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cSet Desktop Picture\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "jpg",
+        "png",
+        "svg"
+      ],
+      "class": "MEDIA",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "sharing:com.apple.share.System.add-to-iphoto",
+      "title": "Add to Photos",
+      "provider_name": "Add to Photos",
+      "bundleIdentifier": "com.apple.share.System.add-to-iphoto",
+      "source": "sharing_service",
+      "inputTypes": [
+        "NSPasteboardWriting"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_deprecated",
+      "safety": "external_share",
+      "requiresConfirmation": true,
+      "explanation": "Sharing service \u201cAdd to Photos\u201d. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "observed_on": [
+        "jpg",
+        "png",
+        "svg",
+        "mp4"
+      ],
+      "class": "SHARE",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "action:net.pornel.ImageOptimizeExtension",
+      "title": "ImageOptimize",
+      "provider_name": "ImageOptimize",
+      "bundleIdentifier": "net.pornel.ImageOptimizeExtension",
+      "source": "action_extension",
+      "inputTypes": [
+        "public.jpeg"
+      ],
+      "invocation": "unsupported",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "Action extension \u201cImageOptimize\u201d was discovered from installed extension metadata. This Mac does not expose a public call to run it.",
+      "observed_on": [
+        "jpg",
+        "png",
+        "svg"
+      ],
+      "class": "OPTIMISE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.apple.QuickTime.service.encodeSelectedAudioFiles:runWorkflowAsService",
+      "title": "Encode Selected Audio Files",
+      "provider_name": "Encode Selected Audio Files",
+      "bundleIdentifier": "com.apple.QuickTime.service.encodeSelectedAudioFiles",
+      "source": "service",
+      "inputTypes": [
+        "public.audio"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cEncode Selected Audio Files\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "mp3",
+        "wav"
+      ],
+      "class": "CONVERT",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:com.apple.services.encodeSelectedVideoFiles:runWorkflowAsService",
+      "title": "Encode Selected Video Files",
+      "provider_name": "Encode Selected Video Files",
+      "bundleIdentifier": "com.apple.services.encodeSelectedVideoFiles",
+      "source": "service",
+      "inputTypes": [
+        "public.movie"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cEncode Selected Video Files\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "mp4"
+      ],
+      "class": "CONVERT",
+      "invocable": false,
+      "segment": "apple"
+    },
+    {
+      "id": "service:dev.zcode.app.finder-open-workflow:runWorkflowAsService",
+      "title": "Open in ZCode",
+      "provider_name": "Open in ZCode",
+      "bundleIdentifier": "dev.zcode.app.finder-open-workflow",
+      "source": "service",
+      "inputTypes": [
+        "public.folder",
+        "public.directory"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen in ZCode\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "folder"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    }
+  ],
+  "third_party_capabilities": [
+    {
+      "id": "service:com.barebones.bbedit:appendToScratchpadService",
+      "title": "BBEdit/Append Selection to BBEdit Scratchpad",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/Append Selection to BBEdit Scratchpad\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "EDIT",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.barebones.bbedit:openSelectionService",
+      "title": "BBEdit/New BBEdit Document with Selection",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/New BBEdit Document with Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.barebones.bbedit:newNoteWithSelectionService",
+      "title": "BBEdit/New Note in BBEdit",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.plain-text",
+        "public.utf8-plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/New Note in BBEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.barebones.bbedit:openFileService",
+      "title": "BBEdit/Open File in BBEdit",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.utf8-plain-text",
+        "NSURLPboardType",
+        "public.url",
+        "public.file-url"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/Open File in BBEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.barebones.bbedit:multiFileSearchService",
+      "title": "BBEdit/Search Here in BBEdit",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "public.utf8-plain-text",
+        "NSURLPboardType",
+        "public.url",
+        "public.file-url"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/Search Here in BBEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "SEARCH",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.coteditor.CotEditor:openSelection",
+      "title": "New CotEditor Window Containing Selection",
+      "provider_name": "CotEditor",
+      "bundleIdentifier": "com.coteditor.CotEditor",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cNew CotEditor Window Containing Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "CREATE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.coteditor.CotEditor:openFile",
+      "title": "Open in CotEditor",
+      "provider_name": "CotEditor",
+      "bundleIdentifier": "com.coteditor.CotEditor",
+      "source": "service",
+      "inputTypes": [
+        "NSURLPboardType",
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen in CotEditor\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.yojam.app:openURLViaService",
+      "title": "Open in Yojam",
+      "provider_name": "Yojam",
+      "bundleIdentifier": "com.yojam.app",
+      "source": "service",
+      "inputTypes": [
+        "public.url",
+        "public.rtf",
+        "public.utf8-plain-text",
+        "NSStringPboardType",
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen in Yojam\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:org.R-project.R:doPerformServiceOpenRScript",
+      "title": "R/R \u2013 Open selection",
+      "provider_name": "R",
+      "bundleIdentifier": "org.R-project.R",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cR/R \u2013 Open selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:org.R-project.R:doPerformServiceRunInConsole",
+      "title": "R/R \u2013 Run selection in Console",
+      "provider_name": "R",
+      "bundleIdentifier": "org.R-project.R",
+      "source": "service",
+      "inputTypes": [
+        "NSStringPboardType",
+        "NSURLPboardType"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cR/R \u2013 Run selection in Console\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "text",
+        "url",
+        "txt",
+        "md",
+        "json",
+        "csv",
+        "code"
+      ],
+      "class": "COMPUTE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:com.barebones.bbedit:compareFilesService",
+      "title": "BBEdit/Compare Using BBEdit",
+      "provider_name": "BBEdit",
+      "bundleIdentifier": "com.barebones.bbedit",
+      "source": "service",
+      "inputTypes": [
+        "NSURLPboardType",
+        "public.file-url"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cBBEdit/Compare Using BBEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "url"
+      ],
+      "class": "SEARCH",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:net.pornel.ImageOptim:handleServices",
+      "title": "ImageOptimize",
+      "provider_name": "ImageOptim",
+      "bundleIdentifier": "net.pornel.ImageOptim",
+      "source": "service",
+      "inputTypes": [
+        "public.png",
+        "public.jpeg",
+        "com.compuserve.gif",
+        "public.svg-image"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cImageOptimize\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "jpg",
+        "png",
+        "svg"
+      ],
+      "class": "OPTIMISE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "action:net.pornel.ImageOptimizeExtension",
+      "title": "ImageOptimize",
+      "provider_name": "ImageOptimize",
+      "bundleIdentifier": "net.pornel.ImageOptimizeExtension",
+      "source": "action_extension",
+      "inputTypes": [
+        "public.jpeg"
+      ],
+      "invocation": "unsupported",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "Action extension \u201cImageOptimize\u201d was discovered from installed extension metadata. This Mac does not expose a public call to run it.",
+      "observed_on": [
+        "jpg",
+        "png",
+        "svg"
+      ],
+      "class": "OPTIMISE",
+      "invocable": false,
+      "segment": "known_third_party"
+    },
+    {
+      "id": "service:dev.zcode.app.finder-open-workflow:runWorkflowAsService",
+      "title": "Open in ZCode",
+      "provider_name": "Open in ZCode",
+      "bundleIdentifier": "dev.zcode.app.finder-open-workflow",
+      "source": "service",
+      "inputTypes": [
+        "public.folder",
+        "public.directory"
+      ],
+      "invocation": "interactive",
+      "supportLevel": "public_supported",
+      "safety": "unknown",
+      "requiresConfirmation": true,
+      "explanation": "macOS Service \u201cOpen in ZCode\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "observed_on": [
+        "folder"
+      ],
+      "class": "OPEN",
+      "invocable": false,
+      "segment": "known_third_party"
+    }
+  ],
+  "unseen_third_party_capabilities": [],
+  "claude_providers_registered_but_not_in_actions": [
+    {
+      "capabilityTitles": [
+        "Ask Claude"
+      ],
+      "name": "/Users/ross/Library/Services/Claude - ask.workflow",
+      "source": "service"
+    },
+    {
+      "capabilityTitles": [
+        "New Claude Code Session Here"
+      ],
+      "name": "/Users/ross/Library/Services/Claude - codeHere.workflow",
+      "source": "service"
+    },
+    {
+      "capabilityTitles": [
+        "Send to Claude"
+      ],
+      "name": "/Users/ross/Library/Services/Claude - send.workflow",
+      "source": "service"
+    }
+  ],
+  "providers_cli": [
+    {
+      "capabilityTitles": [
+        "Ask Claude"
+      ],
+      "name": "/Users/ross/Library/Services/Claude - ask.workflow",
+      "source": "service"
+    },
+    {
+      "capabilityTitles": [
+        "New Claude Code Session Here"
+      ],
+      "name": "/Users/ross/Library/Services/Claude - codeHere.workflow",
+      "source": "service"
+    },
+    {
+      "capabilityTitles": [
+        "Send to Claude"
+      ],
+      "name": "/Users/ross/Library/Services/Claude - send.workflow",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.services.addToiTunesAsSpokenTrack",
+      "capabilityTitles": [
+        "Add to Music as a Spoken Track"
+      ],
+      "name": "Add to Music as a Spoken Track",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Automator",
+      "capabilityTitles": [
+        "Create Service",
+        "Create Workflow"
+      ],
+      "name": "Automator",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.barebones.bbedit",
+      "capabilityTitles": [
+        "BBEdit/Append Selection to BBEdit Scratchpad",
+        "BBEdit/Compare Using BBEdit",
+        "BBEdit/New BBEdit Document with Selection",
+        "BBEdit/New Note in BBEdit",
+        "BBEdit/Open File in BBEdit",
+        "BBEdit/Search Here in BBEdit"
+      ],
+      "name": "BBEdit",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.BluetoothFileExchange",
+      "capabilityTitles": [
+        "Send File To Bluetooth Device"
+      ],
+      "name": "Bluetooth File Exchange",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "capabilityTitles": [
+        "Convert Text from Simplified to Traditional Chinese",
+        "Convert Text from Traditional to Simplified Chinese",
+        "Convert Text to Full Width",
+        "Convert Text to Half Width"
+      ],
+      "name": "ChineseTextConverterService",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.coteditor.CotEditor",
+      "capabilityTitles": [
+        "New CotEditor Window Containing Selection",
+        "Open in CotEditor"
+      ],
+      "name": "CotEditor",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Dictionary",
+      "capabilityTitles": [
+        "Look Up in Dictionary"
+      ],
+      "name": "Dictionary",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.QuickTime.service.encodeSelectedAudioFiles",
+      "capabilityTitles": [
+        "Encode Selected Audio Files"
+      ],
+      "name": "Encode Selected Audio Files",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.services.encodeSelectedVideoFiles",
+      "capabilityTitles": [
+        "Encode Selected Video Files"
+      ],
+      "name": "Encode Selected Video Files",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.FileMerge",
+      "capabilityTitles": [
+        "FileMerge/Compare Files",
+        "FileMerge/Compare To Main"
+      ],
+      "name": "FileMerge",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.finder",
+      "capabilityTitles": [
+        "Finder/Open",
+        "Finder/Reveal",
+        "Finder/Show Info"
+      ],
+      "name": "Finder",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.FolderActionsSetup",
+      "capabilityTitles": [
+        "Folder Actions Setup"
+      ],
+      "name": "Folder Actions Setup",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "net.pornel.ImageOptim",
+      "capabilityTitles": [
+        "ImageOptimize"
+      ],
+      "name": "ImageOptim",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "net.pornel.ImageOptimizeExtension",
+      "capabilityTitles": [
+        "ImageOptimize"
+      ],
+      "name": "ImageOptimize",
+      "source": "action_extension"
+    },
+    {
+      "bundleIdentifier": "com.apple.dt.Instruments",
+      "capabilityTitles": [
+        "Activity Monitor",
+        "Allocations & Leaks",
+        "File Activity",
+        "System Trace"
+      ],
+      "name": "Instruments",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.mail",
+      "capabilityTitles": [
+        "Mail/New Email To Address",
+        "Mail/New Email With Selection"
+      ],
+      "name": "Mail",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.MarkupUI.Markup",
+      "capabilityTitles": [
+        "Markup"
+      ],
+      "name": "Markup",
+      "source": "action_extension"
+    },
+    {
+      "bundleIdentifier": "dev.zcode.app.finder-open-workflow",
+      "capabilityTitles": [
+        "Open in ZCode"
+      ],
+      "name": "Open in ZCode",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Preview",
+      "capabilityTitles": [
+        "Preview/Open images"
+      ],
+      "name": "Preview",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "org.R-project.R",
+      "capabilityTitles": [
+        "R/R \u2013 Open selection",
+        "R/R \u2013 Run selection in Console"
+      ],
+      "name": "R",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.ScriptEditor2",
+      "capabilityTitles": [
+        "Script Editor/Get Result of AppleScript",
+        "Script Editor/Make New AppleScript",
+        "Script Editor/Run as AppleScript"
+      ],
+      "name": "Script Editor",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.services.setDesktopPicture",
+      "capabilityTitles": [
+        "Set Desktop Picture"
+      ],
+      "name": "Set Desktop Picture",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.services.showMap",
+      "capabilityTitles": [
+        "Show Map"
+      ],
+      "name": "Show Map",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.speech.SpeechService",
+      "capabilityTitles": [
+        "Speech/Start Speaking Text",
+        "Speech/Stop Speaking"
+      ],
+      "name": "Speech Service",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.SpotlightService",
+      "capabilityTitles": [
+        "SEARCH_WITH_SPOTLIGHT"
+      ],
+      "name": "SpotlightService",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Stickies",
+      "capabilityTitles": [
+        "Make Sticky"
+      ],
+      "name": "Stickies",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.SummaryService",
+      "capabilityTitles": [
+        "Summarize"
+      ],
+      "name": "Summary Service",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.systemuiserver",
+      "capabilityTitles": [
+        "Open URL"
+      ],
+      "name": "SystemUIServer",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Terminal",
+      "capabilityTitles": [
+        "New Terminal Tab at Folder",
+        "New Terminal at Folder",
+        "Open man Page in Terminal",
+        "Search man Page Index in Terminal"
+      ],
+      "name": "Terminal",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.TextEdit",
+      "capabilityTitles": [
+        "New TextEdit Window Containing Selection",
+        "Open Selected File in TextEdit"
+      ],
+      "name": "TextEdit",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.dt.Xcode",
+      "capabilityTitles": [
+        "Find in Xcode",
+        "Open Quickly in Xcode"
+      ],
+      "name": "Xcode",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.yojam.app",
+      "capabilityTitles": [
+        "Open in Yojam"
+      ],
+      "name": "Yojam",
+      "source": "service"
+    }
+  ],
+  "notes": [
+    "Claude Automator workflows appear in `rightclick providers --json` but returned zero matching actions for any census fixture via `rightclick actions --json`.",
+    "Invocable = invocation in {direct, service, cli, automation, script}; interactive and unsupported counted as discovery-only.",
+    "Classification from title/provider name keywords only."
+  ],
+  "report_counts": {
+    "object_types_tested": 16,
+    "unique_capabilities": 59,
+    "unique_providers": 39,
+    "third_party_providers": 10,
+    "previously_unseen_third_party_providers": 3,
+    "invocable_capabilities": 5,
+    "discovery_only_capabilities": 54,
+    "known_third_party_providers_from_actions": 7,
+    "claude_registered_not_in_actions": 3
+  },
+  "envelope": "Across 16 synthetic object fixtures, rightclick actions --json surfaced 59 unique capability IDs from 39 providers (plus 3 Claude Automator workflows visible only via providers --json). Coverage is text/URL-heavy (45\u201351 caps) and code-adjacent (47); images 12; video 8; folder 7; PDF/audio 6; archive 5. Apple/system dominates (45 caps). Known third-party adds 14 caps (BBEdit, CotEditor, R, Yojam, ImageOptim/ImageOptimize, ZCode). Only 5 caps are direct-invocable (Chinese text converters + Script Editor AppleScript); 54 are interactive or unsupported discovery-only. No capability execution was performed.",
+  "bottlenecks": [
+    "Invocation skew: 52 interactive + 2 unsupported vs 5 direct \u2014 nearly all census caps are discovery-only for automated run.",
+    "Type skew: text/URL/code-rich; PDF/audio/archive/folder thin \u2014 binary and container objects expose few services.",
+    "Third-party surface is mostly OPEN/CREATE/EDIT/SEARCH on text-like inputs; little third-party compute/transform on media besides ImageOptim.",
+    "Claude local Automator workflows appear in providers --json but matched 0 actions for all 16 fixtures (eligibility/input-type gap).",
+    "Duplicate ImageOptimize paths (service net.pornel.ImageOptim + action_extension net.pornel.ImageOptimizeExtension) both discovery-only here.",
+    "Many share targets lack bundleIdentifier (name-only), complicating provider segmentation.",
+    "supportLevel almost always public_supported even when invocation is interactive \u2014 supportLevel alone does not imply automatable invocation."
+  ]
+}
