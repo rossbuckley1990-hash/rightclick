@@ -17,6 +17,8 @@ Constraints honored: no provider-specific RIGHTCLICK code; no app-specific MCP; 
 | Privacy / xattr hygiene intent (remove synthetic xattr, image intact) | **SEMANTIC PASS** | [`privacy-intent/`](privacy-intent/) |
 | Compress intent (smaller JPEG, AI chooses capability; MCP meta-routing) | **SEMANTIC PASS** | [`compress-intent/`](compress-intent/) |
 | Multi-app composition (PNG→JPEG via GC, then ImageOptim compress) | **COMPOSITION + SEMANTIC PASS** | [`composition-png-jpeg-optim/`](composition-png-jpeg-optim/) |
+| Dynamic substitution / capability restoration (A→B→A' ImageOptim) | **DYNAMIC SUBSTITUTION + RESTORATION PASS** | [`dynamic-substitution/`](dynamic-substitution/) |
+| Cross-domain CSV→chart (R → ImageOptim; intermediate rediscovery) | **CROSS-DOMAIN COMPOSITION + REDISCOVERY PASS** | [`cross-domain-csv-chart/`](cross-domain-csv-chart/) |
 
 Related earlier v0.1 semantic / acquisition evidence (already in repo):
 - `evidence/v0.1-coteditor/`
@@ -25,7 +27,7 @@ Related earlier v0.1 semantic / acquisition evidence (already in repo):
 
 ## North-star claim these tests support
 
-An AI can discover useful capabilities from ordinary installed Mac software via RIGHTCLICK reflection **without** being told the app name or a capability ID, and (for convert / privacy hygiene / compress / multi-app composition) produce an independently observed semantic outcome.
+An AI can discover useful capabilities from ordinary installed Mac software via RIGHTCLICK reflection **without** being told the app name or a capability ID, and (for convert / privacy hygiene / compress / multi-app composition / dynamic substitution / cross-domain CSV→chart with intermediate-output rediscovery) produce an independently observed semantic outcome. Plans are compiled from the current capability graph: when software appears or disappears, or when one step creates a new object with a different graph, the plan adapts.
 
 ## What is *not* claimed
 
