@@ -1,81 +1,51 @@
-# RIGHTCLICK
+#                                   RIGHTCLICK
 
-## Install software. Your AI learns what it can do.
+## Your agent shouldn't need a new integration every time it gains a new ability.
 
-**RIGHTCLICK lets AI agents discover and use capabilities from the software and services around them — without adding a new AI integration for every new ability.**
+**RIGHTCLICK lets AI agents discover capabilities from the software and services around them at runtime.**
+
+Install an app.  
+A service comes online.  
+An API exposes a compatible contract.
+
+**Your agent can discover the new ability without adding another provider-specific AI tool.**
 
 ```text
-Software appears
-      ↓
+Software / service appears
+          ↓
 RIGHTCLICK discovers what it can do
-      ↓
-The capability appears to the AI
-      ↓
-The AI can use it
+          ↓
+capability appears
+          ↓
+AI can inspect it
+          ↓
+AI can use it
+          ↓
+RIGHTCLICK verifies what happened
 ```
 
-**Same agent. Same 7 generic tools. New abilities at runtime.**
+**7 generic AI-facing operations. A capability graph that can change underneath them.**
 
-Apple Silicon · macOS 14+ · Homebrew · MCP · Apache-2.0
+Apple Silicon · macOS 14+ · MCP · Homebrew · Apache-2.0
 
 ---
 
-## See the idea in 20 seconds
+# Try it in 30 seconds
 
-This has already happened in live tests:
-
-```text
-Provider absent
-    ↓
-capability does not exist
-
-Provider appears
-    ↓
-RIGHTCLICK discovers its contract
-    ↓
-new capability appears
-
-AI invokes it through the same generic context_run
-    ↓
-RIGHTCLICK executes it
-
-requested result is observed
-    ↓
-VERIFIED_SUCCESS
-
-Provider disappears
-    ↓
-capability disappears
-```
-
-RIGHTCLICK did not add a new MCP tool.
-
-The AI was not reprogrammed for that provider.
-
-**The environment changed, so the AI became more capable.**
-
-That is RIGHTCLICK.
-
----
-
-# Try it now
-
-## 1. Install
+## Install
 
 ```bash
 brew install rossbuckley1990-hash/tap/rightclick
 ```
 
-Check it:
+Check that it's alive:
 
 ```bash
 rightclick version
 rightclick doctor
 ```
 
-## 2. Ask RIGHTCLICK what your Mac can already do
-
-Try text:
+Now ask RIGHTCLICK what your machine can do with some text:
 
 ```bash
 rightclick actions "RightClick"
@@ -93,222 +63,259 @@ Try a URL:
 rightclick actions "https://example.com"
 ```
 
-RIGHTCLICK inspects the item and returns the capabilities that apply **in your environment, right now**.
+You are not querying a static list of integrations.
 
-Not a static list.
+RIGHTCLICK is inspecting the object and asking the **current environment** which capabilities actually apply.
 
-Not every tool installed everywhere.
+Try:
 
-The actions that actually apply here.
+```bash
+rightclick providers
+```
 
-## 3. Give those abilities to your AI
+That shows the capability providers RIGHTCLICK can currently see.
 
-For the supported local MCP setup:
+---
+
+# Give the same abilities to your AI
+
+RIGHTCLICK speaks MCP.
+
+For supported local clients:
 
 ```bash
 rightclick setup
 ```
 
-Or explicitly configure Cursor:
+Or select one explicitly.
+
+### Cursor
 
 ```bash
+rightclick setup --client cursor --dry-run --json
 rightclick setup --client cursor --yes
 ```
 
-Then ask your agent:
+### Claude Code
+
+Available on current `main`:
+
+```bash
+rightclick setup --client claude --dry-run --json
+rightclick setup --client claude --yes
+```
+
+RIGHTCLICK uses Claude Code's own native MCP registration rather than editing Claude's configuration behind its back.
+
+### Codex
+
+Available on current `main`:
+
+```bash
+rightclick setup --client codex --dry-run --json
+rightclick setup --client codex --yes
+```
+
+RIGHTCLICK uses Codex's native MCP registration and checks for conflicting registrations before allowing Codex to overwrite anything.
+
+### ChatGPT
+
+RIGHTCLICK also has a persistent ChatGPT bridge path:
+
+```bash
+rightclick setup chatgpt --dry-run --json
+```
+
+The preview tells you what pairing or credential state is still required without changing anything.
+
+Once the bridge prerequisites exist:
+
+```bash
+rightclick setup chatgpt --yes
+```
+
+### Any MCP client
+
+Run RIGHTCLICK directly over stdio:
+
+```bash
+rightclick mcp
+```
+
+Equivalent MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "rightclick": {
+      "command": "/opt/homebrew/bin/rightclick",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+Use `which rightclick` if Homebrew lives somewhere else.
+
+RIGHTCLICK also supports authenticated local HTTP for clients that cannot launch a stdio process.
+
+---
+
+# Then ask your agent something simple
 
 ```text
-What can my Mac do with this text: RightClick?
+What can you do with this text: RightClick?
 ```
 
 Or:
 
 ```text
-What can you do with ~/Desktop/example.jpg?
-Explain the safest useful options before doing anything.
+What can you do with ~/Desktop/photo.jpg?
 ```
 
-That is the basic experience.
+Or:
 
-**Install RIGHTCLICK → ask what is possible → use it.**
+```text
+Find the useful capabilities for this file.
+Explain them before doing anything.
+```
+
+Or:
+
+```text
+Do this, but don't tell me it worked unless you can verify the result.
+```
+
+The interesting part is where the answer comes from.
+
+**The agent did not need every possible capability hard-coded into its tool list first.**
 
 ---
 
-# Why this exists
+# Why I built this
 
-Agents are getting dramatically smarter.
+I kept running into the same thing with agents.
 
-Their integration model is not.
+Every time I wanted to give one a new ability, I seemed to be adding another MCP server, another set of tools, another schema, another authentication path and another thing that would need maintaining.
 
-Today, making an agent useful often means doing this:
+You end up with something like:
 
 ```text
 Agent
-├── GitHub MCP
-│   ├── create_issue
-│   ├── update_issue
-│   ├── create_pr
-│   ├── review_pr
-│   └── ...
-│
-├── Slack MCP
-│   ├── send_message
-│   ├── search_messages
-│   ├── add_reaction
-│   └── ...
-│
-├── Notion MCP
-│   ├── create_page
-│   ├── update_page
-│   └── ...
-│
-├── Drive MCP
-├── Jira MCP
+├── GitHub tools
+├── Slack tools
+├── Notion tools
+├── Drive tools
+├── Jira tools
 ├── database tools
+├── browser tools
 ├── filesystem tools
-├── internal APIs
+├── internal API tools
 └── ...
 ```
 
-Every system brings another integration lifecycle:
+Then each provider expands:
 
 ```text
-discover API
-    ↓
-write integration
-    ↓
-define tools
-    ↓
-define schemas
-    ↓
-configure credentials
-    ↓
-attach tools to agent
-    ↓
-teach model when to use them
-    ↓
-maintain integration
-    ↓
-repeat
+GitHub
+├── create_issue
+├── update_issue
+├── create_pr
+├── review_pr
+├── merge_pr
+├── get_commit
+├── ...
 ```
-
-And every new tool can increase:
-
-- context consumption
-- tool-selection ambiguity
-- configuration
-- credential surface
-- maintenance
-- failure modes
-- integration code
-- agent complexity
 
 The model gets smarter.
 
 **The plumbing gets bigger.**
 
+So I started asking a different question:
+
+> Why does the agent need to know every capability in advance?
+
+Why can't software describe what it can do and let the agent discover those abilities when they are actually available?
+
+That is the experiment behind RIGHTCLICK.
+
 ---
 
-# RIGHTCLICK changes the abstraction
+# The idea
 
-Instead of teaching the AI about every provider:
-
-```text
-AI
-├── integration
-├── integration
-├── integration
-├── integration
-├── integration
-└── integration
-```
-
-RIGHTCLICK puts a capability runtime between the AI and its environment:
+Instead of:
 
 ```text
-                         AI
-                          │
-                          │
-                  7 generic tools
-                          │
-                          ▼
-                 ┌────────────────┐
-                 │   RIGHTCLICK   │
-                 └───────┬────────┘
-                         │
-                 capability graph
-                         │
-       ┌─────────────────┼─────────────────┐
-       │                 │                 │
-       ▼                 ▼                 ▼
-     Apps            Services            APIs
-       │                 │                 │
-       └──────── capability contracts ─────┘
+new software
+     ↓
+build AI integration
+     ↓
+define tools
+     ↓
+define schemas
+     ↓
+wire authentication
+     ↓
+configure agent
+     ↓
+maintain forever
 ```
 
-Software exposes what it can do.
+RIGHTCLICK is working toward:
 
-RIGHTCLICK reflects supported capabilities.
+```text
+new software / service
+        ↓
+exposes a compatible capability contract
+        ↓
+RIGHTCLICK discovers it
+        ↓
+capability enters the graph
+        ↓
+AI can use it
+```
 
-The AI discovers them when needed.
+The model-facing interface does not need to grow every time this happens.
 
 > **MCP is the transport. Capability acquisition is the product.**
 
 ---
 
-# Why that matters
+# One small interface
 
-| Traditional agent integration | RIGHTCLICK |
+RIGHTCLICK exposes seven generic MCP operations:
+
+| Tool | What it does |
 |---|---|
-| Add another provider integration | Discover supported capabilities from the environment |
-| Add more model-facing tools | Keep a small generic runtime |
-| Tool catalog is mostly static | Capability graph can change at runtime |
-| Agent needs provider-specific surface | Capability is normalized before reaching the AI |
-| Credentials often become integration plumbing | Authority can stay at the execution boundary |
-| HTTP/API success can look like task success | RIGHTCLICK can separately verify outcomes |
-| Provider disappears but integration remains | Reflected capability can disappear with it |
-| Build the AI around its integrations | Let the environment describe what the AI can do |
+| `context_runtime` | Proves exactly which RIGHTCLICK runtime the AI is talking to |
+| `context_inspect` | Understands the current object or context |
+| `context_actions` | Discovers capabilities that apply right now |
+| `context_explain` | Explains one capability before it is used |
+| `context_run` | Executes a discovered capability |
+| `context_run_status` | Returns execution and verification evidence |
+| `context_providers` | Shows the providers currently contributing capabilities |
 
-RIGHTCLICK is not trying to win by having the biggest integration catalog.
+The point is what **isn't** required.
 
-**It is trying to make the integration catalog less necessary.**
-
----
-
-# One small interface. A changing world behind it.
-
-RIGHTCLICK exposes seven generic MCP tools:
-
-| Tool | Purpose |
-|---|---|
-| `context_runtime` | Prove exactly which RIGHTCLICK process the AI is talking to |
-| `context_inspect` | Understand the current object or context |
-| `context_actions` | Discover what can be done right now |
-| `context_explain` | Understand a capability before using it |
-| `context_run` | Execute a discovered capability |
-| `context_run_status` | Inspect execution and verification evidence |
-| `context_providers` | See which capability providers currently exist |
-
-The key idea is what **isn't** here.
-
-There is no requirement for:
+RIGHTCLICK does not need permanent top-level tools like:
 
 ```text
+github_get_user
 github_create_issue
-github_update_issue
 github_create_pr
-slack_send_message
-slack_search
-record_create
-record_read
-image_optimizer_x
-provider_y_action_z
-...
+
+foo_create_record
+foo_read_record
+
+bar_transform_image
+
+provider_x_action_y
+provider_x_action_z
 ```
 
-to become permanent top-level RIGHTCLICK tools.
+for every capability it reflects.
 
-A capability can instead be discovered and described at runtime.
+A capability can be discovered at runtime and executed through the same generic interface.
 
 For example:
 
@@ -330,46 +337,51 @@ Different capability.
 
 ---
 
-# Capabilities are live
+# The capability graph is alive
 
-RIGHTCLICK does not assume the environment is static.
+RIGHTCLICK does not assume that the world is static.
+
+A provider can appear:
 
 ```text
-10:00
-provider unavailable
-→ capability absent
+provider absent
+      ↓
+capability absent
 
-10:01
 provider appears
-→ capability discovered
-
-10:02
-AI can use it
-
-10:10
-provider disappears
-→ capability removed
+      ↓
+RIGHTCLICK discovers it
+      ↓
+capability appears
 ```
 
-This has been demonstrated with remote OpenAPI providers.
+And disappear again:
 
-No model-facing tool was added or removed.
+```text
+provider disappears
+      ↓
+capability disappears
+```
 
-**RIGHTCLICK changed its capability graph because reality changed.**
+That behaviour has been demonstrated with real dynamically discovered OpenAPI providers.
+
+The model-facing tool contract did not change.
+
+**Reality changed, so the available abilities changed.**
 
 ---
 
-# This isn't theoretical
+# This started with a surprisingly simple experiment
 
-## Proof 1 — install an ordinary app, gain abilities
+I wanted to know whether installing normal software could make an AI more capable without writing an integration specifically for that application.
 
-The original experiment used BBEdit.
+So I tested BBEdit.
 
 Same Mac.
 
 Same RIGHTCLICK.
 
-Same text query.
+Same query.
 
 Before BBEdit:
 
@@ -378,225 +390,34 @@ Before BBEdit:
 0 from third-party software
 ```
 
-After ordinary BBEdit installation:
+After an ordinary BBEdit installation:
 
 ```text
 41 capabilities
 5 BBEdit capabilities
 ```
 
-No BBEdit-specific capability acquisition code was added to RIGHTCLICK.
+I had added **zero BBEdit-specific acquisition code** to RIGHTCLICK.
 
-The generic executor then invoked BBEdit's exposed Service with the exact requested content.
+RIGHTCLICK found capabilities the application already exposed.
 
-**The application arrived. The capability graph changed.**
+The generic executor then used one of them with the exact requested content.
+
+The application appeared.
+
+**The capability graph changed.**
 
 [See the BBEdit proof](docs/BBEDIT-PROOF.md)
 
 ---
 
-## Proof 2 — discover a remote ability RIGHTCLICK did not previously understand
+# Then it escaped the Mac
 
-A remote service exposed two operations.
+The more interesting question was whether the same idea could work for network software.
 
-The old RIGHTCLICK runtime understood the plain-text operation.
+RIGHTCLICK now has a provider-independent capability reflection architecture.
 
-It could not expose the structured JSON operation.
-
-A generic improvement was made to RIGHTCLICK's capability reflection.
-
-Same provider.
-
-Same OpenAPI contract.
-
-Now this appeared:
-
-```text
-Create Structured Record
-```
-
-RIGHTCLICK then:
-
-```text
-discovered operation
-        ↓
-reflected its argument contract
-        ↓
-AI supplied generic arguments
-        ↓
-RIGHTCLICK validated them
-        ↓
-serialized the request
-        ↓
-executed the remote operation
-        ↓
-validated the result
-        ↓
-VERIFIED_SUCCESS
-```
-
-No provider-specific MCP tool was created.
-
-[MOAT-001 evidence](evidence/moat-001-structured-openapi-2026-10-06/README.md)
-
----
-
-## Proof 3 — create state, then independently prove it exists
-
-Returning `201 Created` is not enough.
-
-So RIGHTCLICK went further.
-
-A provider exposed:
-
-```text
-POST /records
-
-GET /records/{id}
-```
-
-RIGHTCLICK dynamically discovered both supported capabilities.
-
-It created a remote record.
-
-But it did **not** treat the POST response as proof that persistent state existed.
-
-Instead:
-
-```text
-Create record
-     ↓
-receive ID
-     ↓
-discover Read Durable Record
-     ↓
-GET /records/{id}
-     ↓
-observe persisted state independently
-     ↓
-VERIFIED_SUCCESS
-```
-
-The read capability itself had previously been unavailable to RIGHTCLICK.
-
-It was acquired generically.
-
-[MOAT-002 evidence](evidence/moat-002-durable-readback-2026-10-06/README.md)
-
----
-
-## Proof 4 — capabilities can require authority without giving secrets to the model
-
-Some capabilities require credentials.
-
-That does not mean the credential should be put into model arguments.
-
-RIGHTCLICK can keep authority at the execution boundary.
-
-For the supported HTTP bearer flow:
-
-```text
-AI selects capability
-        ↓
-RIGHTCLICK sees authority requirement
-        ↓
-exact provider origin is identified
-        ↓
-credential resolved from macOS Keychain
-        ↓
-credential injected at HTTP boundary
-```
-
-Observed live behaviour:
-
-```text
-No authority
-→ unavailable before provider request
-
-Authority exists
-→ capability executes
-
-Authority removed
-→ unavailable again
-```
-
-The bearer secret was not supplied through MCP.
-
-[MOAT-003 evidence](evidence/moat-003-generic-bearer-authority-2026-10-06/README.md)
-
----
-
-# A tool call succeeding does not mean the task succeeded
-
-This matters once agents do real work.
-
-These are not the same:
-
-```text
-API accepted request
-```
-
-```text
-Provider returned success
-```
-
-```text
-The thing the user asked for actually happened
-```
-
-RIGHTCLICK keeps that distinction explicit.
-
-It can evaluate provider-independent postconditions after execution.
-
-Current verification primitives include things like:
-
-- exact returned text
-- file existence
-- file readability
-- SHA-256 equality or change
-- file-size thresholds
-- image dimensions
-- extended-attribute presence or absence
-- metadata presence or absence
-- before/after observable state
-
-So an execution can be:
-
-```text
-accepted
-```
-
-without pretending it was:
-
-```text
-VERIFIED_SUCCESS
-```
-
-And if the requested state can be observed and is wrong:
-
-```text
-VERIFIED_FAILURE
-```
-
-That is important infrastructure for agents that are expected to act reliably.
-
----
-
-# What can RIGHTCLICK discover today?
-
-RIGHTCLICK's current capability sources include supported slices of:
-
-### Native macOS software
-
-- macOS Services
-- Sharing Services
-- Finder Action extension metadata
-
-This lets compatible installed software contribute abilities without a RIGHTCLICK integration written specifically for that app.
-
-### Network services
-
-RIGHTCLICK can discover supported providers advertised through:
+The first network acquisition path uses:
 
 ```text
 Bonjour
@@ -604,548 +425,881 @@ Bonjour
 OpenAPI
 ```
 
-Supported operations are reflected into the same capability runtime used for local software.
+A supported service can appear on the network:
 
-That work currently includes demonstrated support for:
+```text
+service appears
+      ↓
+RIGHTCLICK acquires its OpenAPI contract
+      ↓
+supported operations are reflected
+      ↓
+AI can discover them
+      ↓
+AI can execute them
+```
 
-- plain-text operations
-- supported structured JSON object operations
-- supported GET path parameters
-- provider appearance and removal
-- capability identity changes
-- generic structured arguments
-- origin-bound HTTP bearer authority
-- validated provider responses
-- outcome verification
+And when the service disappears:
 
-RIGHTCLICK deliberately expands these supported shapes generically rather than adding special cases for individual providers.
+```text
+capabilities disappear
+```
+
+Again:
+
+**no new model-facing tool needs to be added.**
 
 ---
 
-# Use RIGHTCLICK your way
+# It now works against a real GitHub API capability
 
-## CLI
+This was an important test because fixtures only prove so much.
 
-You can use RIGHTCLICK without an AI at all.
+The MOAT-004 work on current `main` expanded RIGHTCLICK's generic OpenAPI acquisition far enough to reflect a real authenticated GitHub operation.
 
-```bash
-rightclick doctor
-rightclick inspect <item>
-rightclick actions <item>
-rightclick explain <action-id> <item>
-rightclick run <action-id> <item>
-rightclick status <execution-id>
-rightclick providers
-rightclick version
+The live path was:
+
+```text
+ChatGPT
+   ↓
+7 generic RIGHTCLICK tools
+   ↓
+dynamically reflected capability
+   ↓
+origin-bound local authority
+   ↓
+real GitHub API
+   ↓
+GET https://api.github.com/user
 ```
 
-Machine-readable output is available with:
+The returned GitHub identity matched an independent authenticated control.
 
-```bash
---json
-```
+There is:
+
+- no GitHub-specific RIGHTCLICK production tool
+- no `github_get_user` MCP tool
+- no GitHub-specific model-facing interface
+- no GitHub-specific execution branch
+
+GitHub was just another capability provider behind the generic runtime.
+
+That is the direction.
+
+[See PR #9 — MOAT-004 integration](https://github.com/rossbuckley1990-hash/rightclick/pull/9)
 
 ---
 
-## Cursor
+# Structured APIs do not require structured top-level tools
 
-Setup can safely add RIGHTCLICK to Cursor's MCP configuration:
+RIGHTCLICK can reflect supported structured JSON operations.
 
-```bash
-rightclick setup
-```
-
-Or explicitly:
-
-```bash
-rightclick setup --client cursor --yes
-```
-
-Preview first without changing anything:
-
-```bash
-rightclick setup --client cursor --dry-run --json
-```
-
-RIGHTCLICK preserves unrelated configuration and refuses to silently replace a conflicting RIGHTCLICK entry.
-
-Then ask Cursor:
+The first structured OpenAPI proof started with two operations:
 
 ```text
-What can my Mac do with this?
+plain text operation     → RIGHTCLICK understood it
+
+structured JSON operation → RIGHTCLICK could not expose it
 ```
+
+A generic improvement was made to the runtime.
+
+Same provider.
+
+Same OpenAPI document.
+
+Then this capability appeared:
+
+```text
+Create Structured Record
+```
+
+RIGHTCLICK:
+
+```text
+discovered it
+     ↓
+reflected its arguments
+     ↓
+accepted generic structured values
+     ↓
+validated them
+     ↓
+serialized the request
+     ↓
+executed the operation
+     ↓
+validated the response
+     ↓
+VERIFIED_SUCCESS
+```
+
+No provider-specific tool was created.
+
+[MOAT-001 evidence](evidence/moat-001-structured-openapi-2026-10-06/README.md)
 
 ---
 
-## ChatGPT
+# A `201 Created` is not proof that anything was actually created
 
-RIGHTCLICK also has a persistent ChatGPT bridge path.
+This became another design principle.
 
-Preview the current state first:
+Agents often collapse these into one thing:
 
-```bash
-rightclick setup chatgpt --dry-run --json
+```text
+HTTP request succeeded
 ```
 
-When the required pairing and credential state exists:
+and:
 
-```bash
-rightclick setup chatgpt --yes
+```text
+the user's requested outcome happened
 ```
 
-The setup path checks the persistent executable, binary identity, tunnel configuration and bridge state rather than silently pointing ChatGPT at an arbitrary development binary.
+They are not the same.
 
-If something is missing, setup reports the required state instead of partially pretending the connection is ready.
+For the durable-state test, RIGHTCLICK discovered:
+
+```text
+POST /records
+GET  /records/{id}
+```
+
+It created a record.
+
+But the successful POST was **not** treated as proof of durable state.
+
+Instead:
+
+```text
+POST accepted
+     ↓
+record ID returned
+     ↓
+separate reflected GET capability
+     ↓
+GET /records/{id}
+     ↓
+persisted state observed independently
+     ↓
+VERIFIED_SUCCESS
+```
+
+That independent read-back established the result.
+
+[MOAT-002 evidence](evidence/moat-002-durable-readback-2026-10-06/README.md)
 
 ---
 
-## Any MCP client over stdio
+# Provider success is not user success
 
-RIGHTCLICK can run directly as an MCP server:
+RIGHTCLICK keeps execution and verification separate.
 
-```bash
-rightclick mcp
+An operation can be:
+
+```text
+accepted
 ```
 
-The equivalent configuration is:
+without pretending that it was:
 
-```json
-{
-  "mcpServers": {
-    "rightclick": {
-      "command": "/opt/homebrew/bin/rightclick",
-      "args": ["mcp"]
-    }
-  }
-}
+```text
+VERIFIED_SUCCESS
 ```
 
-If your Homebrew prefix is different, use:
+Where the requested result is observable, RIGHTCLICK can evaluate provider-independent postconditions.
 
-```bash
-which rightclick
+Current verification primitives include things such as:
+
+- exact returned text
+- file existence
+- file readability
+- SHA-256 equality
+- SHA-256 change
+- file-size thresholds
+- image dimensions
+- extended-attribute presence or absence
+- metadata presence or absence
+- before/after observable state
+
+That means RIGHTCLICK can return:
+
+```text
+VERIFIED_SUCCESS
 ```
 
-for the command path.
+when the required state is actually observed.
+
+Or:
+
+```text
+VERIFIED_FAILURE
+```
+
+when a provider accepted the call but the requested result did not occur.
+
+That distinction becomes increasingly important once agents start doing consequential work.
 
 ---
 
-## Authenticated local HTTP
+# Authentication does not have to become model context
 
-RIGHTCLICK also supports authenticated MCP over loopback HTTP:
+Some discovered capabilities require credentials.
 
-```bash
-rightclick serve --port 8765
+That does not mean the model needs to receive the credential.
+
+RIGHTCLICK's supported bearer-authority path works like this:
+
+```text
+AI selects capability
+        ↓
+capability requires authority
+        ↓
+RIGHTCLICK identifies exact execution origin
+        ↓
+credential is resolved locally
+        ↓
+credential is injected at transport boundary
 ```
 
-This gives clients that cannot spawn a stdio process another way to connect to the same capability engine.
+The bearer secret is not supplied through `context_run`.
+
+Live testing demonstrated:
+
+```text
+authority absent
+→ unavailable before provider transport
+
+authority present
+→ capability executes
+
+authority removed
+→ unavailable again
+```
+
+The authority is bound to the exact execution origin.
+
+Redirects cannot silently carry it somewhere else.
+
+[MOAT-003 evidence](evidence/moat-003-generic-bearer-authority-2026-10-06/README.md)
 
 ---
 
-# Give your AI these prompts
+# One capability runtime, multiple AI clients
 
-After connecting RIGHTCLICK, try:
+The runtime should not belong to one model.
 
-### Discover
+That would just recreate the integration problem at another layer.
 
-```text
-What can my Mac do with this text: RightClick?
-```
+RIGHTCLICK now has a generic onboarding architecture with thin client adapters.
 
-### Files
+Current `main` supports:
 
-```text
-What can you do with ~/Desktop/photo.jpg?
-```
+| Client | RIGHTCLICK integration |
+|---|---|
+| Cursor | MCP config adapter |
+| Claude Code | Native Claude MCP registration |
+| Codex | Native Codex MCP registration |
+| ChatGPT | Persistent bridge path |
+| Other MCP clients | stdio / authenticated HTTP |
 
-### Explain before acting
+The important part is that these clients are **not separate RIGHTCLICK products**.
 
-```text
-Find the useful capabilities for this file.
-Explain the safest three and don't execute anything yet.
-```
-
-### Act
+They connect to the same capability runtime.
 
 ```text
-Use the best available capability to do this.
+ChatGPT ──────┐
+Claude Code ──┤
+Codex ────────┼──► RIGHTCLICK ───► capability graph
+Cursor ───────┤
+MCP client ───┘
 ```
 
-### Require verification
+Meanwhile the graph underneath RIGHTCLICK can keep changing.
+
+---
+
+# Claude Code
+
+Current `main` uses Claude Code's native MCP CLI.
+
+RIGHTCLICK does not directly write Claude MCP JSON.
+
+The registration flow is:
 
 ```text
-Do this, but don't tell me it succeeded unless you can verify the requested result.
+claude mcp add --scope user rightclick -- <rightclick> mcp
 ```
 
-### Inspect the environment
+The implementation was tested using a real Claude Code installation.
+
+RIGHTCLICK also checks Claude's own reported connection state instead of treating configuration as proof of connectivity.
+
+[See PR #11](https://github.com/rossbuckley1990-hash/rightclick/pull/11)
+
+---
+
+# Codex
+
+Current `main` also uses Codex's own native MCP registration.
+
+RIGHTCLICK does not edit `config.toml` directly.
+
+The flow uses Codex's native commands:
 
 ```text
-What capability providers can you see right now?
+codex mcp get
+codex mcp add
+codex mcp list
+codex mcp remove
 ```
 
-That last question is especially important.
+One interesting finding during the real-client test was that Codex permits a same-name MCP registration to be overwritten.
 
-The answer is not hard-coded into the agent.
+RIGHTCLICK therefore inspects the existing registration first and refuses a conflicting mutation before calling Codex.
 
-It comes from **your environment**.
+The Codex adapter was tested against a real Codex CLI installation.
+
+[See PR #12](https://github.com/rossbuckley1990-hash/rightclick/pull/12)
 
 ---
 
 # Why not just use MCP servers?
 
-Use them.
+You should.
 
-RIGHTCLICK itself speaks MCP.
+RIGHTCLICK is an MCP server.
 
-MCP solves an enormously important problem:
+MCP solves:
 
-> **How does an AI communicate with external tools and systems?**
+> **How does an AI communicate with external capabilities?**
 
-RIGHTCLICK is attacking a different layer:
+RIGHTCLICK is exploring a different question:
 
-> **Where do those capabilities come from, and does every new ability need another AI-specific tool integration?**
+> **Where should those capabilities come from?**
 
 Today:
 
 ```text
-software
-    ↓
-someone builds MCP integration
-    ↓
-tools are attached to model
-    ↓
-AI gets capability
+provider exists
+      ↓
+someone writes MCP server / integration
+      ↓
+provider-specific tools are exposed
+      ↓
+agent receives them
 ```
 
 RIGHTCLICK's direction:
 
 ```text
-software
-    ↓
-software exposes compatible capability contract
-    ↓
+provider exists
+      ↓
+provider exposes a compatible contract
+      ↓
 RIGHTCLICK discovers it
-    ↓
-AI gets capability
+      ↓
+agent receives the capability
 ```
 
-MCP can carry both.
+MCP can carry both models.
 
-RIGHTCLICK changes the layer above it.
+RIGHTCLICK changes the capability-acquisition layer above it.
 
 ---
 
-# Why not just search a giant tool registry?
+# Why not just build a giant tool registry?
 
-Tool search helps an AI choose from a large set of tools.
+A registry helps an agent search among tools someone has already integrated.
 
-RIGHTCLICK asks whether all of those abilities needed to become pre-built AI tools in the first place.
+That is useful.
+
+But it is a different problem.
 
 A registry says:
 
 ```text
-Here are 10,000 tools somebody integrated.
-Find one.
+Here are 10,000 tools.
+
+Find the right one.
 ```
 
 RIGHTCLICK says:
 
 ```text
 Look at the environment you're actually in.
+
 What can it do right now?
 ```
 
-Those approaches can coexist.
+These approaches can coexist.
 
-They solve different problems.
+RIGHTCLICK is interested in capabilities that are **derived from the current environment**, not only capabilities that were pre-enrolled into a global catalog.
 
 ---
 
-# Why agent builders should care
+# Why agent developers should care
 
-### Smaller stable AI interface
+### Fewer permanent model-facing tools
 
-RIGHTCLICK keeps its top-level MCP surface deliberately small.
+The generic interface stays small while capabilities can grow behind it.
 
-### Contextual capability discovery
+### Less provider-specific orchestration
 
-The AI asks what applies to the object or task instead of carrying every possible provider operation everywhere.
+Supported contracts are normalized before they reach the model.
 
 ### Dynamic environments
 
-Capabilities can appear and disappear while the agent is running.
+Providers can appear and disappear while the agent is running.
 
-### Less provider-specific agent code
+### Contextual discovery
 
-The runtime reflects supported capability contracts generically.
+The agent can ask what applies to this object or task instead of loading everything everywhere.
 
-### Better trust boundaries
+### Authority below the model
 
-Authority, confirmation and execution policy can sit below the model.
+Credentials do not necessarily have to become model arguments.
 
-### Better outcome semantics
+### Better execution semantics
 
-Provider acceptance is not silently converted into “task complete.”
+"Provider accepted it" and "user's goal happened" remain separate states.
+
+### Model/client independence
+
+The capability runtime is being connected to ChatGPT, Claude Code, Codex, Cursor and generic MCP clients rather than rebuilt around each one.
 
 ---
 
 # Why software developers should care
 
-Imagine shipping an application or service and not having to build:
+Imagine shipping software and exposing a capability once.
+
+Not:
 
 ```text
-OpenAI integration
-Claude integration
-Cursor integration
-agent framework integration
-custom MCP wrapper
-another AI adapter
+build OpenAI adapter
+build Claude adapter
+build Cursor adapter
+build Codex adapter
+build another agent adapter
+build custom MCP wrapper
 ...
 ```
 
-for every capability you expose.
-
-The longer-term model is:
+But:
 
 ```text
-Your software exposes what it can do
-            ↓
-RIGHTCLICK discovers it
-            ↓
-compatible agents can use it
+your software
+      ↓
+describes capability
+      ↓
+RIGHTCLICK reflects supported contract
+      ↓
+compatible AI clients can discover it
 ```
 
-**Expose the capability once.**
+That is the longer-term model being tested.
 
-Let the runtime handle the AI boundary.
+**Expose what your software can do.**
 
-That is the direction RIGHTCLICK is testing.
+Let the capability runtime deal with the AI boundary.
 
 ---
 
 # Why platform teams should care
 
-The capability layer is also a natural place to centralize things that become messy when every integration implements them separately:
+Every integration tends to independently rebuild some mixture of:
 
 ```text
 discovery
+schema translation
 applicability
-schemas
-authority
+authentication
+authorization
 confirmation
 execution
+result handling
 verification
 runtime identity
-evidence
+audit evidence
 ```
 
-RIGHTCLICK already separates those concerns.
+RIGHTCLICK treats those as capability-runtime concerns.
 
-The result is a model where **capability acquisition** and **safe capability use** can evolve independently of the model.
+That creates a place where the rules for acquiring and executing capabilities can evolve independently of the model using them.
 
 ---
 
-# Architecture
+# How RIGHTCLICK works
 
 ```text
-                              AI
-                               │
-                               │ MCP
-                               ▼
-                  ┌────────────────────────┐
-                  │       RIGHTCLICK       │
-                  │                        │
-                  │ inspect                │
-                  │ discover               │
-                  │ explain                │
-                  │ authorize              │
-                  │ confirm                │
-                  │ execute                │
-                  │ verify                 │
-                  └───────────┬────────────┘
-                              │
-                    normalized capability
-                           graph
-                              │
-            ┌─────────────────┼─────────────────┐
-            │                 │                 │
-            ▼                 ▼                 ▼
-       macOS software    local services    remote services
-            │                 │                 │
-       Services          capability        Bonjour
-       Sharing           sources              +
-       Actions                                OpenAPI
-            │                 │                 │
-            └─────────────────┼─────────────────┘
-                              │
-                              ▼
+                            AI
+                             │
+                             │ MCP
+                             ▼
+                ┌────────────────────────┐
+                │       RIGHTCLICK       │
+                │                        │
+                │ inspect                │
+                │ discover               │
+                │ explain                │
+                │ authorize              │
+                │ confirm                │
+                │ execute                │
+                │ verify                 │
+                └───────────┬────────────┘
+                            │
+                    capability graph
+                            │
+          ┌─────────────────┼──────────────────┐
+          │                 │                  │
+          ▼                 ▼                  ▼
+    native software    local services     remote services
+          │                 │                  │
+     macOS Services       future           Bonjour
+     Sharing             sources              +
+     Action metadata                         OpenAPI
+          │                 │                  │
+          └─────────────────┼──────────────────┘
+                            │
+                            ▼
                      real-world abilities
 ```
 
-RIGHTCLICK's core capability engine is not built around a list of specific applications.
+The core capability engine is not built around a list of supported brands.
 
-Reflectors translate supported substrates into a normalized capability model.
+Reflectors translate supported capability substrates into one normalized model.
 
-Sources can change the available reflectors as the environment changes.
+Capability sources determine which reflectors are present in the current environment.
 
 ---
 
-# The important safety property
+# Current OpenAPI work
 
-RIGHTCLICK should feel like magic.
+The supported OpenAPI surface has been expanding generically rather than through provider special-cases.
 
-But the magic should come from **discovery**, not from guessing.
+Current `main` includes support demonstrated by the regression and live test programmes for things including:
 
-When RIGHTCLICK understands a supported capability contract, the experience should be effortless.
+- plain-text operations
+- closed structured JSON object requests
+- generic structured arguments
+- required string path parameters
+- zero-argument GET operations
+- bounded larger OpenAPI documents
+- separate specification and execution origins
+- literal OpenAPI server binding
+- validated structured JSON responses
+- read-only JSON syntax fallback where semantic schema claims are unavailable
+- provider appearance and removal
+- capability identity changes
+- operation-level bearer authority
+- externally advertised bearer authority
+- exact execution-origin credential binding
+- real authenticated GitHub compatibility
 
-When it does not, it should not fabricate one.
+Unsupported shapes are not silently converted into capabilities.
 
-When an action needs confirmation, it can require it.
+The goal is not provider-specific exceptions.
 
-When a capability needs authority, credentials can remain outside model arguments.
+The goal is to keep widening the **generic language of capabilities**.
 
-When an operation is accepted, RIGHTCLICK does not automatically pretend the requested outcome occurred.
+---
 
-The engineering principle is:
+# Safety should mostly be invisible
+
+The product should feel simple:
+
+```text
+ask what is possible
+      ↓
+pick an ability
+      ↓
+use it
+```
+
+But underneath that, RIGHTCLICK tries to be conservative about consequential things.
+
+It can:
+
+- require explicit confirmation
+- distinguish support from unsupported execution
+- keep credentials outside model-facing arguments
+- bind authority to an exact execution origin
+- fail closed on conflicting client registrations
+- preserve unrelated client configuration
+- distinguish configured from connected
+- identify the exact runtime binary serving the AI
+- retain execution evidence
+- verify observable outcomes
+
+The principle is:
 
 > **Discover aggressively. Execute safely. Verify relentlessly.**
 
 ---
 
-# Current scope
+# CLI
 
-RIGHTCLICK is early infrastructure.
+You can use RIGHTCLICK without an AI client.
 
-Today it targets:
+```bash
+rightclick doctor
+
+rightclick inspect "some text"
+rightclick inspect ~/Desktop/file.pdf
+
+rightclick actions "some text"
+rightclick actions ~/Desktop/photo.jpg
+
+rightclick providers
+
+rightclick explain <capability-id> <item>
+
+rightclick run <capability-id> <item>
+
+rightclick status <execution-id>
+
+rightclick version
+```
+
+Add:
+
+```bash
+--json
+```
+
+for machine-readable output where supported.
+
+---
+
+# Test capability discovery yourself
+
+The simplest test is:
+
+```bash
+rightclick actions "RightClick"
+```
+
+Then:
+
+```bash
+rightclick providers
+```
+
+Install or expose software that contributes a supported capability.
+
+Run the same query again.
+
+The interesting property to watch is not merely that RIGHTCLICK has lots of tools.
+
+It is whether:
+
+```text
+environment changes
+        ↓
+capability graph changes
+```
+
+without changing the AI-facing interface.
+
+---
+
+# Stable release vs current main
+
+The latest published Homebrew release is currently **v0.2.1**:
+
+```bash
+brew install rossbuckley1990-hash/tap/rightclick
+```
+
+The repository's current `main` is ahead of that release and additionally contains:
+
+- MOAT-004 real GitHub-compatible acquisition work
+- the generic multi-client onboarding engine
+- native Claude Code onboarding
+- native Codex onboarding
+
+To test the newest `main` before it is promoted to Homebrew:
+
+```bash
+git clone https://github.com/rossbuckley1990-hash/rightclick.git
+cd rightclick
+
+swift test
+swift build -c release
+
+.build/release/rightclick version
+.build/release/rightclick doctor
+```
+
+Then configure a supported local client using that executable, or run:
+
+```bash
+.build/release/rightclick mcp
+```
+
+directly.
+
+**For a public launch, the intention is to promote the current `main` capability set into the next Homebrew release so `brew install` and this README describe the same product.**
+
+---
+
+# Requirements
+
+Current runtime target:
 
 ```text
 Apple Silicon
 macOS 14+
 ```
 
-It does not currently claim that every installed application exposes a usable capability contract.
+RIGHTCLICK does not require disabling macOS security.
 
-It does not claim arbitrary OpenAPI compatibility or every possible authentication scheme.
+Not every application exposes a capability contract RIGHTCLICK can use today.
 
-Those aren't permanent philosophical limits.
+Not every OpenAPI shape is currently supported.
 
-They are the **currently implemented capability shapes**.
+That is expected.
 
-The direction is to keep widening those shapes generically.
-
----
-
-# The north star
-
-The future RIGHTCLICK is working toward looks like this:
-
-```text
-An AI enters a new environment
-           ↓
-it does not arrive with every integration prewired
-           ↓
-RIGHTCLICK discovers what exists
-           ↓
-software describes what it can do
-           ↓
-useful capabilities appear
-           ↓
-authority is resolved
-           ↓
-the AI acts
-           ↓
-the result is verified
-```
-
-A new application is installed.
-
-**The AI becomes more capable.**
-
-A service comes online.
-
-**The AI becomes more capable.**
-
-A machine exposes a new capability.
-
-**The AI becomes more capable.**
-
-The agent should not need to be rebuilt every time the world around it changes.
-
-> ## Make AI automatically gain reliable, safe abilities from the software and environment already around it.
+The interesting work is expanding the generic capability language without turning RIGHTCLICK into another pile of provider-specific integrations.
 
 ---
 
-# Evidence, not vibes
+# Evidence, not screenshots
 
-The project keeps evidence for the claims above in the repository:
+A lot of RIGHTCLICK development has been done as explicit RED → GREEN capability gates because the core claim is easy to overstate.
+
+The repository preserves evidence for the important milestones:
 
 - [BBEdit — capability acquisition without provider-specific code](docs/BBEDIT-PROOF.md)
 - [MOAT-001 — structured OpenAPI capability acquisition](evidence/moat-001-structured-openapi-2026-10-06/README.md)
 - [MOAT-002 — durable state + independent read-back](evidence/moat-002-durable-readback-2026-10-06/README.md)
 - [MOAT-003 — generic bearer authority](evidence/moat-003-generic-bearer-authority-2026-10-06/README.md)
+- [MOAT-004 — real GitHub-compatible acquisition](https://github.com/rossbuckley1990-hash/rightclick/pull/9)
+- [Generic onboarding engine](https://github.com/rossbuckley1990-hash/rightclick/pull/10)
+- [Claude Code adapter](https://github.com/rossbuckley1990-hash/rightclick/pull/11)
+- [Codex adapter](https://github.com/rossbuckley1990-hash/rightclick/pull/12)
 - [Security](SECURITY.md)
 - [Release process](docs/RELEASE.md)
-- [Contributing](CONTRIBUTING.md)
 
-The test and evidence lineage is intentionally kept alongside the implementation.
+The latest Codex integration regression passed:
 
----
-
-# Build from source
-
-```bash
-git clone git@github.com:rossbuckley1990-hash/rightclick.git
-cd rightclick
-
-swift test
-scripts/build-cli.sh
-.build/release/rightclick version
-.build/release/rightclick doctor
+```text
+288 tests
+25 skipped
+0 failures
 ```
 
+The skipped tests are environment-gated tests rather than hidden failures.
+
 ---
 
-# Help build the capability layer for agents
+# What I want people to challenge
+
+RIGHTCLICK is still early.
 
 If you work on:
 
 - AI agents
 - MCP
-- tool runtimes
-- operating systems
+- tool use
 - developer tools
+- operating systems
 - agent security
-- capability discovery
-- application integrations
 - OpenAPI
-- agent infrastructure
+- local-first software
+- AI infrastructure
+- capability systems
 
-this is the problem RIGHTCLICK is exploring.
+I would genuinely like you to try to break the idea.
 
-Try it.
+Expose a service RIGHTCLICK cannot understand.
 
-Break it.
+Give it an awkward OpenAPI document.
 
-Expose a capability it cannot understand yet.
+Install software with unusual capability metadata.
+
+Try the client onboarding.
+
+Find a case where it reflects too much.
+
+Find a case where it reflects too little.
+
+Find somewhere the abstraction stops making sense.
 
 Open an issue.
 
-Build another reflector.
+The interesting question is bigger than this implementation:
 
-Improve the verification layer.
+> **Should agents keep accumulating predefined tools, or should they be able to discover what their environment can do?**
 
 ---
 
-## If this future makes sense to you
+# Start here
 
-**Install RIGHTCLICK and see what your own machine can teach your AI.**
+Stable release:
 
 ```bash
 brew install rossbuckley1990-hash/tap/rightclick
+
+rightclick doctor
 rightclick actions "RightClick"
+rightclick providers
 ```
 
-And if you think agents should **discover abilities instead of accumulating integrations**, star the repo and share what you make with it.
+Then connect it to your AI and ask:
+
+```text
+What can you do here?
+```
+
+If that question can eventually replace a meaningful amount of integration plumbing, RIGHTCLICK is onto something.
+
+---
+
+## The north star
+
+An agent enters a new environment.
+
+It does not arrive knowing every tool it will ever need.
+
+Instead:
+
+```text
+it observes the environment
+        ↓
+software describes what is possible
+        ↓
+RIGHTCLICK discovers supported capabilities
+        ↓
+the capabilities become available
+        ↓
+authority is resolved
+        ↓
+the agent acts
+        ↓
+the result is verified
+```
+
+A new application appears.
+
+**The agent gains an ability.**
+
+A service comes online.
+
+**The agent gains an ability.**
+
+An API exposes a compatible contract.
+
+**The agent gains an ability.**
+
+No rebuild of the agent.
+
+No provider-specific top-level tool required.
+
+No assumption that a successful HTTP call means the job is done.
+
+> ## Software appears. Your AI learns what it can do.
 
 ---
 
