@@ -1,0 +1,37 @@
+{
+  "gate": "MOAT-004 G2",
+  "baseG1Commit": "f171fe22554d1a8bc3e2b836ab9f6f2cbcea777f",
+  "testFirstCommit": "0a7e741f04ccd944e95403ac90dfb3afdfc0406b",
+  "testPatchSHA256": "ebfceadaadfd6d6b723a6cf873db42f65a5db721540f42f4993f5e790ff05ea1",
+  "implementationPatchSHA256": "c60a6335949867a33d269d09a83f3bfd14fbb167de2c09616dd7f1713fc4fe31",
+  "splitOrigin": {
+    "absoluteHTTPSMode": true,
+    "specURLKey": "spec-url",
+    "baseURLKey": "base-url",
+    "bothRequiredTogether": true,
+    "mixedLegacyAndAbsoluteRejected": true,
+    "legacyRelativeModePreserved": true
+  },
+  "originAuthority": {
+    "specificationTransportPinnedToSpecificationOrigin": true,
+    "executionTransportPinnedToBaseOrigin": true,
+    "credentialOriginRemainsDerivedFromBaseURL": true
+  },
+  "serverBinding": {
+    "literalServerMustMatchBase": true,
+    "canonicalComparison": true,
+    "serverVariablesUnsupported": true,
+    "mismatchAbstains": true
+  },
+  "frozenGitHubContract": {
+    "bytes": 12901084,
+    "sha256": "1429e93b5cbfa7547aa197e9553a6dacbd8d4aaf28012446ed730b152bcdf284",
+    "splitOriginAccepted": true,
+    "targetUsersGetAuthenticatedReflected": false
+  },
+  "g3Implemented": false,
+  "g4Implemented": false,
+  "g5Implemented": false,
+  "providerSpecificProductionCode": false,
+  "result": "PASS"
+}

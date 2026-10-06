@@ -311,6 +311,40 @@ public final class BonjourOpenAPISource:
             return nil
         }
 
+        let hasAbsoluteAdvertisement =
+            descriptor.txt["spec-url"] != nil
+            || descriptor.txt["base-url"] != nil
+
+        let hasLegacyAdvertisement =
+            descriptor.txt["scheme"] != nil
+            || descriptor.txt["spec"] != nil
+            || descriptor.txt["base"] != nil
+
+        if hasAbsoluteAdvertisement {
+            guard
+                !hasLegacyAdvertisement,
+                let specificationURL =
+                    validatedAbsoluteHTTPSURL(
+                        descriptor.txt[
+                            "spec-url"
+                        ]
+                    ),
+                let baseURL =
+                    validatedAbsoluteHTTPSURL(
+                        descriptor.txt[
+                            "base-url"
+                        ]
+                    )
+            else {
+                return nil
+            }
+
+            return (
+                specificationURL,
+                baseURL
+            )
+        }
+
         let rawHost =
             descriptor.host
             .trimmingCharacters(
@@ -397,6 +431,55 @@ public final class BonjourOpenAPISource:
             specificationURL,
             baseURL
         )
+    }
+
+    private func validatedAbsoluteHTTPSURL(
+        _ raw: String?
+    ) -> URL? {
+        guard
+            let raw
+        else {
+            return nil
+        }
+
+        let value =
+            raw.trimmingCharacters(
+                in:
+                    .whitespacesAndNewlines
+            )
+
+        guard
+            !value.isEmpty,
+            var components =
+                URLComponents(
+                    string:
+                        value
+                ),
+            components.scheme?
+                .lowercased()
+                == "https",
+            let rawHost =
+                components.host,
+            !rawHost.isEmpty,
+            components.user == nil,
+            components.password == nil,
+            components.fragment == nil
+        else {
+            return nil
+        }
+
+        components.scheme =
+            "https"
+
+        components.host =
+            rawHost.lowercased()
+
+        if components.port == 443 {
+            components.port =
+                nil
+        }
+
+        return components.url
     }
 
     private func validatedAdvertisedPath(

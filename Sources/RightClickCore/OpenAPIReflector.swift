@@ -108,6 +108,13 @@ public final class OpenAPIReflector: CapabilityReflector {
                 baseURL
             )
 
+        try Self
+            .validateDeclaredServerBinding(
+                specificationData,
+                baseURL:
+                    canonicalBaseURL
+            )
+
         let specificationSHA256 =
             Self.sha256Hex(
                 specificationData
@@ -1124,6 +1131,112 @@ public final class OpenAPIReflector: CapabilityReflector {
         }
 
         return result
+    }
+
+    private static func validateDeclaredServerBinding(
+        _ data: Data,
+        baseURL: URL
+    ) throws {
+        guard
+            let root =
+                try JSONSerialization
+                    .jsonObject(
+                        with:
+                            data
+                    ) as? [String: Any]
+        else {
+            throw RightClickError(
+                "OpenAPI specification must be a JSON object."
+            )
+        }
+
+        guard
+            root.keys.contains(
+                "servers"
+            )
+        else {
+            return
+        }
+
+        guard
+            let servers =
+                root[
+                    "servers"
+                ] as? [Any],
+            !servers.isEmpty
+        else {
+            throw RightClickError(
+                "OpenAPI servers declaration is unsupported."
+            )
+        }
+
+        var sawSupportedLiteral =
+            false
+
+        for rawServer in servers {
+            guard
+                let server =
+                    rawServer
+                        as? [String: Any],
+                server[
+                    "variables"
+                ] == nil,
+                let rawURL =
+                    (
+                        server[
+                            "url"
+                        ] as? String
+                    )?
+                    .trimmingCharacters(
+                        in:
+                            .whitespacesAndNewlines
+                    ),
+                !rawURL.isEmpty,
+                !rawURL.contains("{"),
+                !rawURL.contains("}"),
+                let serverURL =
+                    URL(
+                        string:
+                            rawURL
+                    ),
+                let components =
+                    URLComponents(
+                        url:
+                            serverURL,
+                        resolvingAgainstBaseURL:
+                            false
+                    ),
+                components.scheme != nil,
+                components.host != nil,
+                components.user == nil,
+                components.password == nil,
+                let canonicalServer =
+                    try? canonicalBaseURL(
+                        serverURL
+                    )
+            else {
+                continue
+            }
+
+            sawSupportedLiteral =
+                true
+
+            if canonicalServer
+                == baseURL
+            {
+                return
+            }
+        }
+
+        if !sawSupportedLiteral {
+            throw RightClickError(
+                "OpenAPI servers declaration has no supported literal HTTP or HTTPS server."
+            )
+        }
+
+        throw RightClickError(
+            "OpenAPI base URL does not match a supported literal server declaration."
+        )
     }
 
     private static func canonicalAuthorityOrigin(
