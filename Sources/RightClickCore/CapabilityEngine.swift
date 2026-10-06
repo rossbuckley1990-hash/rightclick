@@ -7,6 +7,18 @@ public struct ProviderSummary: Codable, Sendable {
     public var bundleIdentifier: String?
     public var source: String
     public var capabilityTitles: [String]
+
+    public init(
+        name: String,
+        bundleIdentifier: String? = nil,
+        source: String,
+        capabilityTitles: [String]
+    ) {
+        self.name = name
+        self.bundleIdentifier = bundleIdentifier
+        self.source = source
+        self.capabilityTitles = capabilityTitles
+    }
 }
 
 public struct DoctorReport: Codable, Sendable {
