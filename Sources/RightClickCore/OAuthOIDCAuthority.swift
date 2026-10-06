@@ -65,11 +65,16 @@ public struct OAuthAuthorizationServerMetadata: Codable, Equatable, Sendable {
     ) throws -> Self {
         let expectedIssuer = try OAuthOIDCAuthority.canonicalIssuer(rawExpectedIssuer)
         let metadata = try JSONDecoder().decode(Self.self, from: data)
-        let actualIssuer = try OAuthOIDCAuthority.canonicalIssuer(metadata.issuer)
 
-        guard actualIssuer == expectedIssuer else {
+        // RFC 8414 requires the returned issuer identifier to be identical
+        // to the issuer used to derive the metadata location. Canonical
+        // equivalence is deliberately not enough here: exact comparison is
+        // part of the authorization-server mix-up defence.
+        guard metadata.issuer == expectedIssuer else {
             throw OAuthOIDCAuthorityError.issuerMismatch
         }
+
+        _ = try OAuthOIDCAuthority.canonicalIssuer(metadata.issuer)
 
         guard try OAuthOIDCAuthority.validatedHTTPSURL(metadata.authorizationEndpoint) != nil else {
             throw OAuthOIDCAuthorityError.invalidMetadata(
@@ -104,7 +109,7 @@ public struct OAuthAuthorizationServerMetadata: Codable, Equatable, Sendable {
         }
 
         return Self(
-            issuer: actualIssuer,
+            issuer: expectedIssuer,
             authorizationEndpoint: metadata.authorizationEndpoint,
             tokenEndpoint: metadata.tokenEndpoint,
             codeChallengeMethodsSupported: metadata.codeChallengeMethodsSupported,
