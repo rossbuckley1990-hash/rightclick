@@ -1,0 +1,45 @@
+{
+  "gate": "MOAT-004 G6",
+  "base": "c12dbd38adc53e26ee19a57eab238a576c8516a9",
+  "testFirstCommit": "a28039e86a67bb552a4470c9bc610dabd395fe50",
+  "officialContract": {
+    "bytes": 12901084,
+    "sha256": "1429e93b5cbfa7547aa197e9553a6dacbd8d4aaf28012446ed730b152bcdf284",
+    "acquiredThroughDefaultRightClickSource": true
+  },
+  "target": {
+    "operationId": "users/get-authenticated",
+    "title": "Get the authenticated user",
+    "method": "GET",
+    "path": "/user",
+    "authorityRequired": true,
+    "authorityKind": "http_bearer",
+    "authorityScheme": "MOAT004G6RealGitHubBearer",
+    "authorityOrigin": "https://api.github.com",
+    "resultValidation": "json_syntax_only"
+  },
+  "realExecution": {
+    "provider": "https://api.github.com",
+    "authenticatedGETUser": "PASS",
+    "controlLogin": "rossbuckley1990-hash",
+    "controlID": 255341254,
+    "rightclickLoginAndIDMatchIndependentControl": true,
+    "rightclickExecutionOutcomeVerifiedFlag": false
+  },
+  "credentialBoundary": {
+    "realGitHubCredentialUsed": true,
+    "storedOnlyInTemporaryLocalKeychainAccount": true,
+    "passedThroughMCP": false,
+    "passedThroughTestEnvironment": false,
+    "printed": false,
+    "removedAfterGate": true
+  },
+  "candidate": {
+    "version": "0.2.1",
+    "sha256": "0163f5ef206c7fbb1ad2f206f4a0e6ec28db26be7fe1484a42ba7d04f234a92d"
+  },
+  "productCodeChanged": false,
+  "chatGPTLiveExecution": false,
+  "providerSpecificProductionCode": false,
+  "result": "PASS"
+}
