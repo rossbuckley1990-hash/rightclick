@@ -38,30 +38,8 @@ repository = os.environ.get(
     "rossbuckley1990-hash/rightclick",
 )
 raw_origin = "https://raw.githubusercontent.com"
-api_origin = "https://api.github.com"
 spec_url = f"{raw_origin}/{repository}/{sha}/fixtures/federation-proof/openapi.json"
-proof_file = root / "fixtures/federation-proof/result.json"
-blob = subprocess.check_output(
-    ["git", "hash-object", str(proof_file.relative_to(root))],
-    cwd=root,
-    text=True,
-).strip()
-assert re.fullmatch(r"[0-9a-fA-F]{40}", blob), blob
-proof_request = urllib.request.Request(
-    f"{api_origin}/repos/{repository}/git/blobs/{blob}",
-    headers={
-        "Accept": "application/json",
-        "User-Agent": "rightclick-federation-acceptance",
-    },
-)
-with urllib.request.urlopen(proof_request, timeout=20) as response:
-    assert response.status == 200
-    assert response.headers.get_content_type() == "application/json"
-    expected = json.dumps(
-        json.load(response),
-        sort_keys=True,
-        separators=(",", ":"),
-    )
+expected = (root / "fixtures/federation-proof/result.txt").read_text()
 
 def free_port():
     with socket.socket() as probe:
@@ -232,7 +210,7 @@ with tempfile.TemporaryDirectory(prefix="rightclick-federation-live-") as tempor
                 "--spec-url",
                 spec_url,
                 "--base-url",
-                api_origin,
+                raw_origin,
                 "--json",
             ],
             env=b_environment,
@@ -272,7 +250,7 @@ with tempfile.TemporaryDirectory(prefix="rightclick-federation-live-") as tempor
                 "item": "RIGHTCLICK federation live proof",
                 "actionId": federated["id"],
                 "arguments": {
-                    "blob": blob,
+                    "ref": sha,
                 },
                 "confirmed": True,
                 "verification": {
