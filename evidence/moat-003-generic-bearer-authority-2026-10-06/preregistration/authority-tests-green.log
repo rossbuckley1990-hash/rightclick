@@ -1,0 +1,85 @@
+[0/1] Planning build
+Building for debugging...
+[0/11] Write sources
+[1/11] Write swift-version--58304C5D6DBC2206.txt
+[3/10] Compiling RightClickCore OpenAPIReflector.swift
+[4/10] Compiling RightClickCore OpenAPIAuthority.swift
+[5/10] Emitting module RightClickCore
+[6/12] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+[7/12] Compiling RightClickCore BonjourOpenAPISource.swift
+[8/33] Emitting module RightClickCoreTests
+[9/34] Emitting module RightClickMCP
+[10/34] Compiling RightClickMCP Server.swift
+/private/tmp/rightclick-moat-003-green/Sources/RightClickMCP/Server.swift:265:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+263 |                 transport: transport
+264 |             )
+265 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+266 |         } catch {
+267 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickMCP/Server.swift:267:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+265 |             return .init(content: [.text(text)], isError: false)
+266 |         } catch {
+267 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+268 |         }
+269 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[11/34] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+[12/34] Compiling RightClickCoreTests EngineTests.swift
+[13/34] Compiling RightClickCoreTests AcquisitionTests.swift
+[14/34] Compiling RightClickCoreTests BonjourOpenAPISourceTests.swift
+[15/34] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+[16/34] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+[17/34] Compiling RightClickCoreTests ServiceContextTests.swift
+[18/34] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[19/34] Compiling RightClickCoreTests PolicyTests.swift
+[20/34] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+[21/34] Compiling RightClickCoreTests SharingExecutionTests.swift
+[22/34] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+[23/34] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+[24/34] Compiling RightClickCoreTests OutcomeVerifierTests.swift
+[25/34] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+[26/34] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+[27/34] Compiling RightClickCoreTests BonjourRealLifecycleAcceptanceTests.swift
+[28/34] Compiling RightClickCoreTests CapabilityReflectorSourceTests.swift
+[29/38] Compiling RightClickCoreTests VerificationIntegrationTests.swift
+[30/38] Compiling RightClickCLI Setup.swift
+[31/38] Compiling RightClickCLI main.swift
+[32/38] Compiling RightClickCLI SetupState.swift
+[33/38] Emitting module RightClickCLI
+[33/38] Write Objects.LinkFileList
+[34/38] Linking rightclick
+[35/38] Applying rightclick
+[36/38] Write Objects.LinkFileList
+[37/38] Linking rightclick-mcpPackageTests
+Build complete! (3.27s)
+Test Suite 'Selected tests' started at 2026-10-06 07:21:05.870.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-06 07:21:05.871.
+Test Suite 'OpenAPIAuthorityTests' started at 2026-10-06 07:21:05.871.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityDoesNotCrossOrigin]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityDoesNotCrossOrigin]' passed (0.045 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityIsInjectedFromOriginBoundKeychainWithoutSecretDisclosure]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityIsInjectedFromOriginBoundKeychainWithoutSecretDisclosure]' passed (0.010 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testExplicitEmptyOperationSecurityOverridesRootSecurityAsPublic]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testExplicitEmptyOperationSecurityOverridesRootSecurityAsPublic]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testMissingBearerAuthorityFailsBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testMissingBearerAuthorityFailsBeforeTransport]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testRootLevelSecurityIsNotSilentlyIgnored]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testRootLevelSecurityIsNotSilentlyIgnored]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing]' passed (0.001 seconds).
+Test Suite 'OpenAPIAuthorityTests' passed at 2026-10-06 07:21:05.929.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.058 (0.059) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-06 07:21:05.929.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.058 (0.059) seconds
+Test Suite 'Selected tests' passed at 2026-10-06 07:21:05.929.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.058 (0.059) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

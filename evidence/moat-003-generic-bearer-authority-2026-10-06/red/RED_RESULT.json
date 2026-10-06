@@ -1,0 +1,15 @@
+{
+  "authorityMetadataKeys": [],
+  "authorityRequirementUnderstood": false,
+  "baseCommit": "b9361d3f19abab7bc7916a08f81687a52cb3f2b9",
+  "executionEvidenceType": "provider_rejection",
+  "executionState": "rejected",
+  "experiment": "MOAT-003 Generic Bearer Authority RED",
+  "openAPISecurityDeclared": true,
+  "protectedCapabilityReflected": true,
+  "providerDiscovered": true,
+  "providerHTTPStatus": 401,
+  "redGap": "RIGHTCLICK reflected an operation whose OpenAPI contract requires HTTP bearer authority, but the frozen runtime had no generic authority interpretation or credential injection and the provider rejected the unauthenticated request with HTTP 401.",
+  "runtimeSHA256": "bb67736a038a4144d77218b47b21f8c72746fb6de8f7f5523dbb131009f85ae0",
+  "specificationSHA256": "e6e1ae67f30a52085384a40155dd2bcb063be735a99ea554019d0141b75974db"
+}

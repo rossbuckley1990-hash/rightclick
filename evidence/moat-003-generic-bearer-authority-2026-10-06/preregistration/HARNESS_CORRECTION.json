@@ -1,0 +1,12 @@
+{
+  "authoritySemanticsChanged": false,
+  "classification": "TEST_HARNESS_DEFECT",
+  "correctedPreregisteredTestPatchSHA256": "01a8971c7144c7605c47c58121113f5cb1e1f828fe379a13ca4b44bc03446919",
+  "correction": "Within only the bearer-injection non-disclosure test, use CapabilityEngine.begin() so the test observes ExecutionRecord, which exposes the provider execution events. Change the corresponding assertion from result.status to result.state.",
+  "experiment": "MOAT-003 GREEN preregistration harness correction",
+  "originalFailure": "OpenAPIAuthorityTests did not compile because the test read result.events from RunResult, which does not expose events.",
+  "originalPreregisteredTestPatchSHA256": "c204615c89fe329e6bdb725b58f500e8089f8b4af000a291e3efeed12f762561",
+  "productionCodeChanged": false,
+  "reasonCorrectionIsPermitted": "The first preregistration attempt failed at Swift compilation before any authority behavior could be evaluated. The correction only fixes use of the existing public test API needed to observe events; no GREEN expectation was weakened.",
+  "testIntentChanged": false
+}
