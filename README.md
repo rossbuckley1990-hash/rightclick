@@ -533,11 +533,17 @@ Discovery sources and reflectors feed the same normalized runtime.
 
 # Install
 
-The current public release is **RIGHTCLICK 0.2.0**.
+The current v0.2 release line installs through Homebrew. This branch prepares **RIGHTCLICK 0.2.1** without rewriting the historical v0.2.0 evidence below.
 
 ```bash
 brew install rossbuckley1990-hash/tap/rightclick
+
+# Local supported MCP client
 rightclick setup
+
+# Persistent ChatGPT bridge
+rightclick setup chatgpt --dry-run --json
+rightclick setup chatgpt --yes
 ```
 
 Useful checks:

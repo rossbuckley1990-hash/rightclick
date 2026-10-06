@@ -399,6 +399,276 @@ enum RightClickBridgeRuntime {
         process.terminate()
     }
 
+    enum StableProfileIntegrityError:
+        LocalizedError
+    {
+        case commandMissing(
+            profile: String
+        )
+
+        case commandMismatch(
+            expected: String,
+            found: String
+        )
+
+        case changedDuringValidation(
+            profile: String
+        )
+
+        var errorDescription: String? {
+            switch self {
+            case .commandMissing(
+                let profile
+            ):
+                return """
+                ChatGPT tunnel profile does not declare an MCP command.
+
+                profile: \(profile)
+                """
+
+            case .commandMismatch(
+                let expected,
+                let found
+            ):
+                return """
+                ChatGPT tunnel profile MCP command does not match the trusted RIGHTCLICK entrypoint.
+
+                expected: \(expected)
+                found: \(found)
+                """
+
+            case .changedDuringValidation(
+                let profile
+            ):
+                return """
+                ChatGPT tunnel profile changed while RIGHTCLICK was validating it.
+
+                profile: \(profile)
+                """
+            }
+        }
+    }
+
+    struct StableProfileAttestation:
+        Equatable
+    {
+        let executable: String
+        let expectedCommand: String
+        let profileSHA256: String
+    }
+
+    static func attestStableProfile(
+        profileFile: URL,
+
+        invokedExecutable: String =
+            RightClickSetup.executablePath(),
+
+        layouts:
+            [RightClickStableEntrypoint.Layout] =
+            RightClickStableEntrypoint
+                .productionLayouts,
+
+        fileManager:
+            FileManager = .default
+    ) throws -> StableProfileAttestation {
+        let stable =
+            try RightClickStableEntrypoint
+                .resolve(
+                    invokedExecutable:
+                        invokedExecutable,
+                    layouts:
+                        layouts,
+                    fileManager:
+                        fileManager
+                )
+
+        let expected =
+            "\(stable) mcp"
+
+        guard
+            let commandBefore =
+                try RightClickChatGPTOnboarding
+                    .profileCommand(
+                        profileFile
+                    )
+        else {
+            throw StableProfileIntegrityError
+                .commandMissing(
+                    profile:
+                        profileFile.path
+                )
+        }
+
+        guard commandBefore == expected else {
+            throw StableProfileIntegrityError
+                .commandMismatch(
+                    expected:
+                        expected,
+                    found:
+                        commandBefore
+                )
+        }
+
+        let firstSHA =
+            try RightClickSetupStateStore
+                .sha256File(
+                    profileFile.path
+                )
+
+        guard
+            let commandAfter =
+                try RightClickChatGPTOnboarding
+                    .profileCommand(
+                        profileFile
+                    )
+        else {
+            throw StableProfileIntegrityError
+                .changedDuringValidation(
+                    profile:
+                        profileFile.path
+                )
+        }
+
+        let secondSHA =
+            try RightClickSetupStateStore
+                .sha256File(
+                    profileFile.path
+                )
+
+        guard
+            commandAfter == expected,
+            firstSHA == secondSHA
+        else {
+            throw StableProfileIntegrityError
+                .changedDuringValidation(
+                    profile:
+                        profileFile.path
+                )
+        }
+
+        return StableProfileAttestation(
+            executable:
+                stable,
+            expectedCommand:
+                expected,
+            profileSHA256:
+                secondSHA
+        )
+    }
+
+    enum StableSetupStateReconciliationError:
+        LocalizedError
+    {
+        case executableMismatch(
+            expected: String,
+            found: String
+        )
+
+        var errorDescription: String? {
+            switch self {
+            case .executableMismatch(
+                let expected,
+                let found
+            ):
+                return """
+                Setup state belongs to a different RIGHTCLICK executable.
+
+                expected: \(expected)
+                found: \(found)
+                """
+            }
+        }
+    }
+
+    @discardableResult
+    static func reconcileStableSetupStateIfNeeded(
+        invokedExecutable: String =
+            RightClickSetup.executablePath(),
+
+        stateFile: URL =
+            RightClickSetupStateStore.defaultFile(),
+
+        layouts:
+            [RightClickStableEntrypoint.Layout] =
+            RightClickStableEntrypoint
+                .productionLayouts,
+
+        fileManager:
+            FileManager = .default
+    ) throws -> Bool {
+        let stable =
+            try RightClickStableEntrypoint
+                .resolve(
+                    invokedExecutable:
+                        invokedExecutable,
+                    layouts:
+                        layouts,
+                    fileManager:
+                        fileManager
+                )
+
+        guard
+            fileManager
+                .fileExists(
+                    atPath:
+                        stateFile.path
+                )
+        else {
+            // Bridge startup must never invent pairing state.
+            return false
+        }
+
+        let previous =
+            try RightClickSetupStateStore
+                .read(
+                    from:
+                        stateFile
+                )
+
+        guard
+            previous.executablePath
+                == stable
+        else {
+            throw StableSetupStateReconciliationError
+                .executableMismatch(
+                    expected:
+                        stable,
+                    found:
+                        previous.executablePath
+                )
+        }
+
+        let current =
+            try RightClickSetupStateStore
+                .make(
+                    executable:
+                        stable,
+                    chatGPTTunnelID:
+                        previous
+                            .chatGPTTunnelID,
+                    tunnelClientPath:
+                        previous
+                            .tunnelClientPath,
+                    tunnelClientVersion:
+                        previous
+                            .tunnelClientVersion
+                )
+
+        guard current != previous else {
+            // No rewrite on an ordinary restart.
+            return false
+        }
+
+        try RightClickSetupStateStore
+            .write(
+                current,
+                to:
+                    stateFile
+            )
+
+        return true
+    }
+
     static func runDaemon(
         keyStore: any RightClickRuntimeKeyStore =
             SystemRightClickRuntimeKeyStore()
@@ -425,6 +695,39 @@ enum RightClickBridgeRuntime {
 
             return 1
         }
+
+        let profileAttestation:
+            StableProfileAttestation
+
+        do {
+            profileAttestation =
+                try attestStableProfile(
+                    profileFile:
+                        profile
+                )
+        } catch {
+            fputs(
+                """
+                RIGHTCLICK refused to start the ChatGPT tunnel.
+
+                \(error.localizedDescription)
+
+                Run `rightclick setup chatgpt --yes` to repair the owned profile.
+
+                """,
+                stderr
+            )
+
+            return 78
+        }
+
+        let rightclickExecutable =
+            profileAttestation
+                .executable
+
+        let initialProfileSHA =
+            profileAttestation
+                .profileSHA256
 
         let state =
             try? RightClickSetupStateStore
@@ -528,9 +831,6 @@ enum RightClickBridgeRuntime {
         process.standardError =
             FileHandle.standardError
 
-        let rightclickExecutable =
-            RightClickSetup.executablePath()
-
         let initialSHA =
             try? RightClickSetupStateStore
                 .sha256File(
@@ -610,6 +910,39 @@ enum RightClickBridgeRuntime {
         }
 
         do {
+            let preLaunch =
+                try attestStableProfile(
+                    profileFile:
+                        profile
+                )
+
+            guard
+                preLaunch.executable
+                    == rightclickExecutable,
+                preLaunch.profileSHA256
+                    == initialProfileSHA
+            else {
+                throw StableProfileIntegrityError
+                    .changedDuringValidation(
+                        profile:
+                            profile.path
+                    )
+            }
+        } catch {
+            fputs(
+                """
+                RIGHTCLICK refused to launch tunnel-client because the profile changed before launch.
+
+                \(error.localizedDescription)
+
+                """,
+                stderr
+            )
+
+            return 78
+        }
+
+        do {
             try process.run()
         } catch {
             fputs(
@@ -630,10 +963,81 @@ enum RightClickBridgeRuntime {
             )
         }
 
+        // A Homebrew upgrade retargets the stable executable
+        // while keeping the persisted path constant.
+        //
+        // Reconcile only after the new wrapper has successfully
+        // started tunnel-client, never during planning/install.
+        do {
+            let changed =
+                try reconcileStableSetupStateIfNeeded()
+
+            if changed {
+                fputs(
+                    """
+                    RIGHTCLICK setup state reconciled to the installed Homebrew release.
+
+                    """,
+                    stderr
+                )
+            }
+        } catch {
+            // Service continuity wins here. A stale state remains
+            // visible to setup/diagnostics rather than being
+            // silently replaced when ownership is uncertain.
+            fputs(
+                """
+                RIGHTCLICK could not reconcile setup state after restart:
+                \(error.localizedDescription)
+
+                """,
+                stderr
+            )
+        }
+
         while process.isRunning {
             Thread.sleep(
                 forTimeInterval: 2
             )
+
+            guard let currentProfileSHA =
+                try? RightClickSetupStateStore
+                    .sha256File(
+                        profile.path
+                    )
+            else {
+                fputs(
+                    """
+                    RIGHTCLICK tunnel profile became unreadable.
+                    Stopping the ChatGPT tunnel before it can continue with unverified configuration.
+
+                    """,
+                    stderr
+                )
+
+                process.terminate()
+                process.waitUntilExit()
+
+                return 75
+            }
+
+            if currentProfileSHA
+                != initialProfileSHA
+            {
+                fputs(
+                    """
+                    RIGHTCLICK tunnel profile changed on disk.
+                    Restarting through the trusted bridge so the profile can be re-attested.
+
+                    """,
+                    stderr
+                )
+
+                process.terminate()
+                process.waitUntilExit()
+
+                return 75
+            }
 
             guard let initialSHA else {
                 continue
