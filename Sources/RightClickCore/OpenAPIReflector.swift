@@ -1809,6 +1809,8 @@ public final class OpenAPIReflector: CapabilityReflector {
                                 pathObject,
                             operation:
                                 operation,
+                            root:
+                                root,
                             allowRequestBody:
                                 false
                         )
@@ -1934,6 +1936,8 @@ public final class OpenAPIReflector: CapabilityReflector {
                                             pathObject,
                                         operation:
                                             operation,
+                                        root:
+                                            root,
                                         allowRequestBody:
                                             true
                                     ),
@@ -2252,10 +2256,246 @@ public final class OpenAPIReflector: CapabilityReflector {
         return true
     }
 
+    private static func resolveLocalReferenceObject(
+        _ object: [String: Any],
+        root: [String: Any],
+        visited: Set<String> = [],
+        depth: Int = 0
+    ) -> [String: Any]? {
+        guard
+            depth <= 16
+        else {
+            return nil
+        }
+
+        guard
+            let rawReference =
+                object["$ref"]
+        else {
+            return object
+        }
+
+        let allowedReferenceKeys:
+            Set<String> = [
+                "$ref",
+                "summary",
+                "description",
+            ]
+
+        guard
+            Set(object.keys)
+                .isSubset(
+                    of:
+                        allowedReferenceKeys
+                ),
+            let reference =
+                rawReference
+                    as? String,
+            reference
+                .hasPrefix(
+                    "#/"
+                ),
+            !visited
+                .contains(
+                    reference
+                ),
+            depth < 16,
+            let target =
+                localJSONPointerValue(
+                    reference,
+                    root:
+                        root
+                )
+                    as? [String: Any]
+        else {
+            return nil
+        }
+
+        var nextVisited =
+            visited
+
+        nextVisited.insert(
+            reference
+        )
+
+        return resolveLocalReferenceObject(
+            target,
+            root:
+                root,
+            visited:
+                nextVisited,
+            depth:
+                depth + 1
+        )
+    }
+
+    private static func localJSONPointerValue(
+        _ reference: String,
+        root: [String: Any]
+    ) -> Any? {
+        guard
+            reference
+                .hasPrefix(
+                    "#/"
+                )
+        else {
+            return nil
+        }
+
+        let pointer =
+            String(
+                reference
+                    .dropFirst(
+                        2
+                    )
+            )
+
+        let rawTokens =
+            pointer.split(
+                separator:
+                    "/",
+                omittingEmptySubsequences:
+                    false
+            )
+
+        var current: Any =
+            root
+
+        for rawToken
+            in rawTokens
+        {
+            guard
+                let token =
+                    decodeJSONPointerToken(
+                        String(
+                            rawToken
+                        )
+                    )
+            else {
+                return nil
+            }
+
+            if
+                let object =
+                    current
+                        as? [String: Any]
+            {
+                guard
+                    let next =
+                        object[token]
+                else {
+                    return nil
+                }
+
+                current =
+                    next
+
+                continue
+            }
+
+            if
+                let array =
+                    current
+                        as? [Any],
+                let index =
+                    Int(
+                        token
+                    ),
+                index >= 0,
+                index < array.count
+            {
+                current =
+                    array[index]
+
+                continue
+            }
+
+            return nil
+        }
+
+        return current
+    }
+
+    private static func decodeJSONPointerToken(
+        _ rawToken: String
+    ) -> String? {
+        guard
+            let percentDecoded =
+                rawToken
+                    .removingPercentEncoding
+        else {
+            return nil
+        }
+
+        let characters =
+            Array(
+                percentDecoded
+            )
+
+        var output =
+            ""
+
+        var index =
+            0
+
+        while
+            index
+                < characters.count
+        {
+            let character =
+                characters[index]
+
+            guard
+                character
+                    == "~"
+            else {
+                output.append(
+                    character
+                )
+
+                index += 1
+
+                continue
+            }
+
+            guard
+                index + 1
+                    < characters.count
+            else {
+                return nil
+            }
+
+            let escape =
+                characters[
+                    index + 1
+                ]
+
+            switch escape {
+            case "0":
+                output.append(
+                    "~"
+                )
+
+            case "1":
+                output.append(
+                    "/"
+                )
+
+            default:
+                return nil
+            }
+
+            index += 2
+        }
+
+        return output
+    }
+
     private static func supportedPathArgumentSchema(
         path: String,
         pathObject: [String: Any],
         operation: [String: Any],
+        root: [String: Any],
         allowRequestBody: Bool
     ) -> JSONObjectSchema? {
         guard
@@ -2264,10 +2504,10 @@ public final class OpenAPIReflector: CapabilityReflector {
                 allowRequestBody
                 || operation["requestBody"] == nil
             ),
-            let parameters =
+            let rawParameters =
                 operation["parameters"]
-                    as? [[String: Any]],
-            !parameters.isEmpty
+                    as? [Any],
+            !rawParameters.isEmpty
         else {
             return nil
         }
@@ -2294,10 +2534,19 @@ public final class OpenAPIReflector: CapabilityReflector {
         var rawProperties:
             [String: Any] = [:]
 
-        for parameter
-            in parameters
+        for rawParameter
+            in rawParameters
         {
             guard
+                let rawObject =
+                    rawParameter
+                        as? [String: Any],
+                let parameter =
+                    resolveLocalReferenceObject(
+                        rawObject,
+                        root:
+                            root
+                    ),
                 Set(parameter.keys)
                     .isSubset(
                         of:
@@ -2314,9 +2563,15 @@ public final class OpenAPIReflector: CapabilityReflector {
                     as? String == "path",
                 parameter["required"]
                     as? Bool == true,
-                let schema =
+                let rawSchema =
                     parameter["schema"]
                         as? [String: Any],
+                let schema =
+                    resolveLocalReferenceObject(
+                        rawSchema,
+                        root:
+                            root
+                    ),
                 Set(schema.keys)
                     .isSubset(
                         of:
