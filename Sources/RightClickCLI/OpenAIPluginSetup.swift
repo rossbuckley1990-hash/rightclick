@@ -88,7 +88,7 @@ enum RightClickOpenAIPlugin {
     private static func pluginManifest() -> [String: Any] {
         [
             "name": "rightclick",
-            "version": "0.2.0",
+            "version": "0.2.1",
             "description": "Give AI the capabilities already exposed by software installed on this Mac.",
             "author": [
                 "name": "Ross Buckley",
