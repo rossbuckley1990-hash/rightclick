@@ -84,5 +84,15 @@ let package = Package(
             dependencies: ["RightClickCLI"],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
+        .testTarget(
+            name: "RightClickMCPTests",
+            dependencies: [
+                "RightClickCore",
+                "RightClickMCP",
+            ],
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+            ]
+        ),
     ]
 )
