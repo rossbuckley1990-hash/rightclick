@@ -1,0 +1,26 @@
+{
+  "authenticationContract": {
+    "hasSecuritySchemes": false,
+    "operationHasSecurity": false,
+    "rootHasSecurity": false
+  },
+  "infoVersion": "1.1.4",
+  "openapi": "3.0.3",
+  "pathCount": 816,
+  "response200": {
+    "contentType": "application/json",
+    "hasDiscriminator": true,
+    "oneOfRefs": [
+      "#/components/schemas/private-user",
+      "#/components/schemas/public-user"
+    ]
+  },
+  "server": "https://api.github.com",
+  "target": {
+    "method": "GET",
+    "operationId": "users/get-authenticated",
+    "parameters": [],
+    "path": "/user",
+    "summary": "Get the authenticated user"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "experiment": "MOAT-004 Generic Real-World OpenAPI Compatibility",
+  "target": {
+    "providerClass": "third-party HTTPS OpenAPI",
+    "referenceProvider": "GitHub REST API",
+    "referenceOperation": "users/get-authenticated"
+  },
+  "principle": "Close the frozen GitHub RED using provider-independent mechanisms only.",
+  "greenContract": {
+    "acquisition": {
+      "defaultGenericMaximumBytesRemains": 1048576,
+      "openAPISpecificationMaximumBytes": 16777216,
+      "deadlineSecondsRemains": 5,
+      "redirectsRemainRejected": true,
+      "requirement": "Use an OpenAPI-source-specific bounded acquisition allowance rather than globally weakening every HTTP provider-document boundary."
+    },
+    "splitOriginDiscovery": {
+      "legacyRelativeModeMustRemainSupported": true,
+      "newMode": {
+        "specURLKey": "spec-url",
+        "baseURLKey": "base-url",
+        "bothRequiredTogether": true,
+        "absoluteHTTPSOnly": true,
+        "mixedLegacyAndAbsoluteModesForbidden": true
+      },
+      "specificationTransportPinnedToSpecificationOrigin": true,
+      "executionTransportPinnedToBaseOrigin": true,
+      "credentialOriginDerivedOnlyFromBaseURL": true,
+      "serverBinding": {
+        "ifContractDeclaresServers": "The advertised base URL must match a supported literal contract server after canonicalization.",
+        "serverVariablesUnsupported": true,
+        "mismatchMustAbstain": true
+      }
+    },
+    "zeroArgumentGET": {
+      "supported": true,
+      "pathMustContainNoTemplateParameters": true,
+      "pathLevelParametersForbidden": true,
+      "operationParametersMustBeAbsentOrEmpty": true,
+      "requestBodyForbidden": true,
+      "argumentsSchemaAbsent": true,
+      "requestBodyAbsent": true,
+      "contentTypeHeaderAbsent": true
+    },
+    "jsonResponseFallback": {
+      "scope": "GET only",
+      "strongExistingClosedSchemaValidationRemainsPreferred": true,
+      "unsupportedDeclaredJSONSchemaMayUseSyntaxOnlyValidation": true,
+      "syntaxOnlyMetadata": "json_syntax_only",
+      "responseMustStillBeValidJSON": true,
+      "mutatingOperationsDoNotGainThisFallback": true,
+      "unsupportedMutatingResponseSchemasStillAbstain": true
+    },
+    "externalBearerAuthority": {
+      "metadataKind": "http-bearer",
+      "metadataSchemeKey": "auth-scheme",
+      "credentialNeverAppearsInMCP": true,
+      "credentialBoundToExactBaseOrigin": true,
+      "fallbackAppliesOnlyWhenOpenAPISecurityIsUnspecified": true,
+      "explicitEmptySecurityRemainsPublic": true,
+      "unsupportedDeclaredSecurityStillAbstains": true,
+      "contractDeclaredSupportedBearerSecurityTakesPrecedence": true
+    },
+    "mcp": {
+      "toolCountRemains": 7,
+      "providerSpecificToolAdded": false,
+      "contextRunGenericArgumentsEnvelopeRemains": true
+    }
+  },
+  "forbiddenImplementations": [
+    "GitHub-specific hostname branches",
+    "users/get-authenticated production special cases",
+    "hard-coded GitHub bearer tokens",
+    "passing bearer credentials through ChatGPT",
+    "following specification or invocation redirects",
+    "globally removing provider-document size bounds",
+    "treating arbitrary mutating JSON responses as valid without the existing supported contract"
+  ],
+  "liveAcceptance": {
+    "contractMustRemainTheFrozenOfficialGitHubContract": true,
+    "targetTitle": "Get the authenticated user",
+    "targetMethod": "GET",
+    "targetPath": "/user",
+    "authorityKind": "http_bearer",
+    "authorityOrigin": "https://api.github.com",
+    "secretVisibleToChatGPT": false,
+    "providerSpecificProductionCode": false
+  }
+}
