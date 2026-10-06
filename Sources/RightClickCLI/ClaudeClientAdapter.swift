@@ -18,9 +18,19 @@ struct RightClickClaudeClientAdapter:
     func configurationFile(
         home: URL
     ) -> URL {
-        home.appendingPathComponent(
-            ".claude.json"
-        )
+        if let override =
+            ProcessInfo.processInfo.environment["CLAUDE_CONFIG_DIR"],
+           !override.isEmpty
+        {
+            return URL(
+                fileURLWithPath: override,
+                isDirectory: true
+            )
+            .standardizedFileURL
+            .appendingPathComponent(".claude.json")
+        }
+
+        return home.appendingPathComponent(".claude.json")
     }
 
     func connectionRecipe(
