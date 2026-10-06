@@ -203,21 +203,7 @@ public final class GRPCReflector:
         providerName:
             String? = nil,
         invoker:
-            @escaping UnaryInvoker = {
-                endpoint,
-                path,
-                request in
-
-                try GRPCReflectionTransport
-                    .invokeUnary(
-                        endpoint:
-                            endpoint,
-                        path:
-                            path,
-                        request:
-                            request
-                    )
-            }
+            UnaryInvoker? = nil
     ) throws {
         guard
             !descriptorData.isEmpty
@@ -305,6 +291,21 @@ public final class GRPCReflector:
 
         self.invoker =
             invoker
+            ?? {
+                endpoint,
+                path,
+                request in
+
+                try GRPCReflectionTransport
+                    .invokeUnary(
+                        endpoint:
+                            endpoint,
+                        path:
+                            path,
+                        request:
+                            request
+                    )
+            }
 
         self.id =
             "grpc-reflector:"
