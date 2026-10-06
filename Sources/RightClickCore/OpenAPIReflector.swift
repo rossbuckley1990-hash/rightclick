@@ -1896,22 +1896,6 @@ public final class OpenAPIReflector: CapabilityReflector {
                     }
 
                 } else {
-                        continue
-                    }
-
-                    requestContentType =
-                        nil
-
-                    responseContentType =
-                        "application/json"
-
-                    requestJSONSchema =
-                        nil
-
-                    responseJSONSchema =
-                        responseSchema
-
-                } else {
                     zeroArgumentGET =
                         false
 
