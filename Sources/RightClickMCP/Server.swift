@@ -4,6 +4,36 @@ import Foundation
 import MCP
 import RightClickCore
 
+public enum RightClickMCPRuntime {
+    public static func makeEngine(
+        startBrowsing: Bool = true
+    ) -> CapabilityEngine {
+        var sources =
+            CapabilityReflectorSourceDefaults
+                .all(
+                    startBrowsing:
+                        startBrowsing
+                )
+
+        if let federation =
+            FederationPeerSource
+                .fromEnvironment()
+        {
+            sources.append(
+                federation
+            )
+        }
+
+        return CapabilityRuntimeDefaults
+            .makeEngine(
+                reflectorSources:
+                    sources,
+                startBrowsing:
+                    startBrowsing
+            )
+    }
+}
+
 public enum RightClickMCPMain {
     public static func run(_ args: [String]) -> Int {
         let http = args.contains("--http")
@@ -11,7 +41,7 @@ public enum RightClickMCPMain {
         let token = flag(args, "--token") ?? ProcessInfo.processInfo.environment["RIGHTCLICK_MCP_TOKEN"]
         StartupLog.record(transport: http ? "http" : "stdio")
         let box = EngineBox(
-            CapabilityRuntimeDefaults.makeEngine()
+            RightClickMCPRuntime.makeEngine()
         )
         if http {
             guard let token, !token.isEmpty else {
