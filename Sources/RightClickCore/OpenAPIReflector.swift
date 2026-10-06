@@ -2472,7 +2472,15 @@ public final class OpenAPIReflector: CapabilityReflector {
             return nil
         }
 
-        return parseClosedJSONStringObjectSchema(
+        if let strictSchema =
+            parseClosedJSONStringObjectSchema(
+                rawSchema
+            )
+        {
+            return strictSchema
+        }
+
+        return parseSafelyNarrowedJSONStringObjectSchema(
             rawSchema
         )
     }
@@ -2572,6 +2580,301 @@ public final class OpenAPIReflector: CapabilityReflector {
         }
 
         return nil
+    }
+
+    /// Conservatively project a provider request schema into the
+    /// existing closed string-object argument model.
+    ///
+    /// This is intentionally request-only and one-way:
+    ///
+    /// - every provider-required property must survive projection;
+    /// - unsupported optional properties are omitted;
+    /// - the projected object is always closed;
+    /// - oneOf is narrowed only when exactly one branch is a supported
+    ///   string schema and every other branch is provably non-string.
+    ///
+    /// Therefore every argument object RIGHTCLICK accepts through the
+    /// projection remains inside the provider's declared request space.
+    private static func parseSafelyNarrowedJSONStringObjectSchema(
+        _ schema:
+            [String: Any]
+    ) -> JSONObjectSchema? {
+        let allowedObjectKeys:
+            Set<String> = [
+                "type",
+                "additionalProperties",
+                "required",
+                "properties",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(schema.keys)
+                .isSubset(
+                    of:
+                        allowedObjectKeys
+                ),
+            schema["type"]
+                as? String == "object",
+            let rawRequired =
+                schema["required"]
+                    as? [String],
+            !rawRequired.isEmpty,
+            Set(rawRequired).count
+                == rawRequired.count,
+            let rawProperties =
+                schema["properties"]
+                    as? [String: Any],
+            !rawProperties.isEmpty
+        else {
+            return nil
+        }
+
+        let required =
+            Set(rawRequired)
+
+        guard
+            required.isSubset(
+                of:
+                    Set(
+                        rawProperties.keys
+                    )
+            )
+        else {
+            return nil
+        }
+
+        var narrowedProperties:
+            [String: Any] = [:]
+
+        for key
+            in rawProperties.keys.sorted()
+        {
+            guard
+                !key.isEmpty,
+                let raw =
+                    rawProperties[key]
+                        as? [String: Any]
+            else {
+                if required.contains(key) {
+                    return nil
+                }
+
+                continue
+            }
+
+            if let narrowed =
+                safelyNarrowedJSONStringProperty(
+                    raw
+                )
+            {
+                narrowedProperties[
+                    key
+                ] =
+                    narrowed
+
+            } else if
+                required.contains(key)
+            {
+                // A provider-required field that RIGHTCLICK cannot model
+                // cannot be silently discarded.
+                return nil
+            }
+        }
+
+        guard
+            required.isSubset(
+                of:
+                    Set(
+                        narrowedProperties.keys
+                    )
+            )
+        else {
+            return nil
+        }
+
+        let closedSchema:
+            [String: Any] = [
+                "type":
+                    "object",
+
+                "additionalProperties":
+                    false,
+
+                "required":
+                    required.sorted(),
+
+                "properties":
+                    narrowedProperties,
+            ]
+
+        return parseClosedJSONStringObjectSchema(
+            closedSchema
+        )
+    }
+
+    /// Return the normalized closed-string representation of one provider
+    /// property, or nil when RIGHTCLICK cannot prove a safe narrowing.
+    private static func safelyNarrowedJSONStringProperty(
+        _ property:
+            [String: Any]
+    ) -> [String: Any]? {
+        if let direct =
+            normalizedDirectJSONStringProperty(
+                property
+            )
+        {
+            return direct
+        }
+
+        let allowedUnionKeys:
+            Set<String> = [
+                "oneOf",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(property.keys)
+                .isSubset(
+                    of:
+                        allowedUnionKeys
+                ),
+            let branches =
+                property["oneOf"]
+                    as? [[String: Any]],
+            !branches.isEmpty
+        else {
+            return nil
+        }
+
+        var supportedStrings:
+            [[String: Any]] = []
+
+        for branch
+            in branches
+        {
+            if let supported =
+                normalizedDirectJSONStringProperty(
+                    branch
+                )
+            {
+                supportedStrings.append(
+                    supported
+                )
+
+                continue
+            }
+
+            guard
+                isProvablyNonStringJSONSchema(
+                    branch
+                )
+            else {
+                return nil
+            }
+        }
+
+        guard
+            supportedStrings.count == 1
+        else {
+            return nil
+        }
+
+        return supportedStrings[0]
+    }
+
+    /// Normalize only the existing strong direct string-property subset.
+    private static func normalizedDirectJSONStringProperty(
+        _ property:
+            [String: Any]
+    ) -> [String: Any]? {
+        let allowedKeys:
+            Set<String> = [
+                "type",
+                "enum",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(property.keys)
+                .isSubset(
+                    of:
+                        allowedKeys
+                ),
+            property["type"]
+                as? String == "string"
+        else {
+            return nil
+        }
+
+        var normalized:
+            [String: Any] = [
+                "type":
+                    "string"
+            ]
+
+        if let rawEnum =
+            property["enum"]
+        {
+            guard
+                let values =
+                    rawEnum as? [String],
+                !values.isEmpty,
+                Set(values).count
+                    == values.count
+            else {
+                return nil
+            }
+
+            normalized[
+                "enum"
+            ] =
+                values
+        }
+
+        return normalized
+    }
+
+    /// A branch can be discarded from a oneOf string narrowing only when
+    /// its top-level JSON type proves that a string accepted by RIGHTCLICK
+    /// cannot satisfy that branch.
+    private static func isProvablyNonStringJSONSchema(
+        _ schema:
+            [String: Any]
+    ) -> Bool {
+        let allowedKeys:
+            Set<String> = [
+                "type",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(schema.keys)
+                .isSubset(
+                    of:
+                        allowedKeys
+                ),
+            let type =
+                schema["type"]
+                    as? String
+        else {
+            return false
+        }
+
+        return [
+            "array",
+            "boolean",
+            "integer",
+            "number",
+            "object",
+            "null",
+        ].contains(
+            type
+        )
     }
 
     private static func parseClosedJSONStringObjectSchema(
