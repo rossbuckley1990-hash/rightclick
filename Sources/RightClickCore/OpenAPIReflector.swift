@@ -40,8 +40,14 @@ public final class OpenAPIReflector: CapabilityReflector {
         let pathArgumentsSchema:
             JSONObjectSchema?
 
+        let zeroArgumentGET:
+            Bool
+
         let responseJSONSchema:
             JSONObjectSchema?
+
+        let responseJSONSyntaxOnly:
+            Bool
 
         let authorityRequirement:
             OpenAPIAuthorityRequirement?
@@ -101,6 +107,8 @@ public final class OpenAPIReflector: CapabilityReflector {
     public init(
         specificationData: Data,
         baseURL: URL,
+        externalBearerSchemeName:
+            String? = nil,
         session: URLSession = .shared
     ) throws {
         let canonicalBaseURL =
@@ -108,19 +116,37 @@ public final class OpenAPIReflector: CapabilityReflector {
                 baseURL
             )
 
+        let resolvedExternalBearerSchemeName =
+            try Self.validatedExternalBearerSchemeName(
+                externalBearerSchemeName
+            )
+
+        try Self
+            .validateDeclaredServerBinding(
+                specificationData,
+                baseURL:
+                    canonicalBaseURL
+            )
+
         let specificationSHA256 =
             Self.sha256Hex(
                 specificationData
             )
 
+        var providerIdentity =
+            canonicalBaseURL.absoluteString
+            + "\n"
+            + specificationSHA256
+
+        if let resolvedExternalBearerSchemeName {
+            providerIdentity +=
+                "\nauth-scheme:"
+                + resolvedExternalBearerSchemeName
+        }
+
         let providerIdentityMaterial =
             Data(
-                (
-                    canonicalBaseURL
-                        .absoluteString
-                    + "\n"
-                    + specificationSHA256
-                ).utf8
+                providerIdentity.utf8
             )
 
         let providerFingerprint =
@@ -139,7 +165,9 @@ public final class OpenAPIReflector: CapabilityReflector {
                 providerFingerprint:
                     providerFingerprint,
                 authorityOrigin:
-                    authorityOrigin
+                    authorityOrigin,
+                externalBearerSchemeName:
+                    resolvedExternalBearerSchemeName
             )
 
         self.baseURL =
@@ -256,6 +284,13 @@ public final class OpenAPIReflector: CapabilityReflector {
                     "resultSchema"
                 ] =
                     schema.canonicalJSON
+            }
+
+            if operation.responseJSONSyntaxOnly {
+                metadata[
+                    "resultValidation"
+                ] =
+                    "json_syntax_only"
             }
 
             if let authority =
@@ -396,7 +431,36 @@ public final class OpenAPIReflector: CapabilityReflector {
         let targetPath:
             String
 
-        if let pathSchema =
+        if operation.zeroArgumentGET {
+            guard arguments == nil else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "The OpenAPI GET operation accepts no capability arguments.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "RIGHTCLICK rejected arguments before transport because this reflected GET operation declares no path, query, header, cookie or body inputs."
+                        )
+                )
+            }
+
+            targetPath =
+                operation.path
+
+            requestBody =
+                nil
+
+        } else if let pathSchema =
             operation.pathArgumentsSchema
         {
             guard
@@ -900,9 +964,7 @@ public final class OpenAPIReflector: CapabilityReflector {
 
         } else if
             operation.responseContentType
-                == "application/json",
-            let schema =
-                operation.responseJSONSchema
+                == "application/json"
         {
             guard
                 mediaType
@@ -929,34 +991,73 @@ public final class OpenAPIReflector: CapabilityReflector {
                 )
             }
 
-            do {
-                output =
-                    try Self
-                    .canonicalValidatedJSONObject(
-                        responseData,
-                        schema:
-                            schema
-                    )
-            } catch {
-                return ExecutionRecord(
-                    executionId:
-                        executionID,
-                    actionId:
-                        capability.id,
-                    title:
-                        capability.title,
-                    state:
-                        .failed,
-                    message:
-                        "The OpenAPI provider response failed the reflected JSON schema: \(error)",
-                    evidence:
-                        OutcomeEvidence(
-                            type:
-                                "provider_contract_failure",
-                            boundary:
-                                "The provider returned 2xx, but its application/json body did not satisfy the reflected closed JSON object schema."
+            if let schema =
+                operation.responseJSONSchema
+            {
+                do {
+                    output =
+                        try Self
+                        .canonicalValidatedJSONObject(
+                            responseData,
+                            schema:
+                                schema
                         )
-                )
+                } catch {
+                    return ExecutionRecord(
+                        executionId:
+                            executionID,
+                        actionId:
+                            capability.id,
+                        title:
+                            capability.title,
+                        state:
+                            .failed,
+                        message:
+                            "The OpenAPI provider response failed the reflected JSON schema: \(error)",
+                        evidence:
+                            OutcomeEvidence(
+                                type:
+                                    "provider_contract_failure",
+                                boundary:
+                                    "The provider returned 2xx, but its application/json body did not satisfy the reflected closed JSON object schema."
+                            )
+                    )
+                }
+
+            } else if
+                operation.responseJSONSyntaxOnly
+            {
+                do {
+                    output =
+                        try Self
+                        .canonicalValidatedJSON(
+                            responseData
+                        )
+                } catch {
+                    return ExecutionRecord(
+                        executionId:
+                            executionID,
+                        actionId:
+                            capability.id,
+                        title:
+                            capability.title,
+                        state:
+                            .failed,
+                        message:
+                            "The OpenAPI provider response failed JSON syntax validation: \(error)",
+                        evidence:
+                            OutcomeEvidence(
+                                type:
+                                    "provider_contract_failure",
+                                boundary:
+                                    "The provider returned 2xx application/json, but the body was not valid JSON. No schema-level semantic claim was made."
+                            )
+                    )
+                }
+
+            } else {
+                output =
+                    nil
             }
 
         } else {
@@ -1050,6 +1151,37 @@ public final class OpenAPIReflector: CapabilityReflector {
         return url
     }
 
+    private static func validatedExternalBearerSchemeName(
+        _ raw: String?
+    ) throws -> String? {
+        guard
+            let raw
+        else {
+            return nil
+        }
+
+        let value =
+            raw.trimmingCharacters(
+                in:
+                    .whitespacesAndNewlines
+            )
+
+        guard
+            !value.isEmpty,
+            !value.contains("|"),
+            value.rangeOfCharacter(
+                from:
+                    .controlCharacters
+            ) == nil
+        else {
+            throw RightClickError(
+                "External OpenAPI bearer authority scheme name is invalid."
+            )
+        }
+
+        return value
+    }
+
     private static func canonicalBaseURL(
         _ url: URL
     ) throws -> URL {
@@ -1124,6 +1256,112 @@ public final class OpenAPIReflector: CapabilityReflector {
         }
 
         return result
+    }
+
+    private static func validateDeclaredServerBinding(
+        _ data: Data,
+        baseURL: URL
+    ) throws {
+        guard
+            let root =
+                try JSONSerialization
+                    .jsonObject(
+                        with:
+                            data
+                    ) as? [String: Any]
+        else {
+            throw RightClickError(
+                "OpenAPI specification must be a JSON object."
+            )
+        }
+
+        guard
+            root.keys.contains(
+                "servers"
+            )
+        else {
+            return
+        }
+
+        guard
+            let servers =
+                root[
+                    "servers"
+                ] as? [Any],
+            !servers.isEmpty
+        else {
+            throw RightClickError(
+                "OpenAPI servers declaration is unsupported."
+            )
+        }
+
+        var sawSupportedLiteral =
+            false
+
+        for rawServer in servers {
+            guard
+                let server =
+                    rawServer
+                        as? [String: Any],
+                server[
+                    "variables"
+                ] == nil,
+                let rawURL =
+                    (
+                        server[
+                            "url"
+                        ] as? String
+                    )?
+                    .trimmingCharacters(
+                        in:
+                            .whitespacesAndNewlines
+                    ),
+                !rawURL.isEmpty,
+                !rawURL.contains("{"),
+                !rawURL.contains("}"),
+                let serverURL =
+                    URL(
+                        string:
+                            rawURL
+                    ),
+                let components =
+                    URLComponents(
+                        url:
+                            serverURL,
+                        resolvingAgainstBaseURL:
+                            false
+                    ),
+                components.scheme != nil,
+                components.host != nil,
+                components.user == nil,
+                components.password == nil,
+                let canonicalServer =
+                    try? canonicalBaseURL(
+                        serverURL
+                    )
+            else {
+                continue
+            }
+
+            sawSupportedLiteral =
+                true
+
+            if canonicalServer
+                == baseURL
+            {
+                return
+            }
+        }
+
+        if !sawSupportedLiteral {
+            throw RightClickError(
+                "OpenAPI servers declaration has no supported literal HTTP or HTTPS server."
+            )
+        }
+
+        throw RightClickError(
+            "OpenAPI base URL does not match a supported literal server declaration."
+        )
     }
 
     private static func canonicalAuthorityOrigin(
@@ -1216,7 +1454,9 @@ public final class OpenAPIReflector: CapabilityReflector {
     private static func parseSpecification(
         _ data: Data,
         providerFingerprint: String,
-        authorityOrigin: String
+        authorityOrigin: String,
+        externalBearerSchemeName:
+            String?
     ) throws -> (
         providerName: String,
         operations: [Operation]
@@ -1268,6 +1508,14 @@ public final class OpenAPIReflector: CapabilityReflector {
             root.keys.contains(
                 "security"
             )
+
+        let rootSecurityIsExplicitlyEmpty =
+            rootHasSecurity
+            && (
+                root[
+                    "security"
+                ] as? [Any]
+            )?.isEmpty == true
 
         let components =
             root["components"]
@@ -1342,10 +1590,14 @@ public final class OpenAPIReflector: CapabilityReflector {
                         operation,
                     rootHasSecurity:
                         rootHasSecurity,
+                    rootSecurityIsExplicitlyEmpty:
+                        rootSecurityIsExplicitlyEmpty,
                     securitySchemes:
                         securitySchemes,
                     authorityOrigin:
-                        authorityOrigin
+                        authorityOrigin,
+                    externalBearerSchemeName:
+                        externalBearerSchemeName
                 ) {
                 case .publicAccess:
                     authorityRequirement =
@@ -1376,22 +1628,67 @@ public final class OpenAPIReflector: CapabilityReflector {
                 let responseJSONSchema:
                     JSONObjectSchema?
 
+                let responseJSONSyntaxOnly:
+                    Bool
+
+                let zeroArgumentGET:
+                    Bool
+
                 if method == "get" {
+                    let responseSchema =
+                        supportedJSONObjectResponseSchema(
+                            operation
+                        )
+
+                    responseJSONSyntaxOnly =
+                        responseSchema == nil
+                        && hasDeclaredJSONResponseSchema(
+                            operation
+                        )
+
                     guard
-                        let pathSchema =
-                            supportedGETPathArgumentSchema(
-                                path:
-                                    path,
-                                pathObject:
-                                    pathObject,
-                                operation:
-                                    operation
-                            ),
-                        let responseSchema =
-                            supportedJSONObjectResponseSchema(
-                                operation
-                            )
+                        responseSchema != nil
+                        || responseJSONSyntaxOnly
                     else {
+                        continue
+                    }
+
+                    let pathSchema =
+                        supportedGETPathArgumentSchema(
+                            path:
+                                path,
+                            pathObject:
+                                pathObject,
+                            operation:
+                                operation
+                        )
+
+                    if let pathSchema =
+                        pathSchema
+                    {
+                        zeroArgumentGET =
+                            false
+
+                        pathArgumentsSchema =
+                            pathSchema
+
+                    } else if
+                        supportsZeroArgumentGET(
+                            path:
+                                path,
+                            pathObject:
+                                pathObject,
+                            operation:
+                                operation
+                        )
+                    {
+                        zeroArgumentGET =
+                            true
+
+                        pathArgumentsSchema =
+                            nil
+
+                    } else {
                         continue
                     }
 
@@ -1404,13 +1701,16 @@ public final class OpenAPIReflector: CapabilityReflector {
                     requestJSONSchema =
                         nil
 
-                    pathArgumentsSchema =
-                        pathSchema
-
                     responseJSONSchema =
                         responseSchema
 
                 } else {
+                    zeroArgumentGET =
+                        false
+
+                    responseJSONSyntaxOnly =
+                        false
+
                     guard
                         !path.contains("{"),
                         !path.contains("}")
@@ -1538,8 +1838,12 @@ public final class OpenAPIReflector: CapabilityReflector {
                             requestJSONSchema,
                         pathArgumentsSchema:
                             pathArgumentsSchema,
+                        zeroArgumentGET:
+                            zeroArgumentGET,
                         responseJSONSchema:
                             responseJSONSchema,
+                        responseJSONSyntaxOnly:
+                            responseJSONSyntaxOnly,
                         authorityRequirement:
                             authorityRequirement
                     )
@@ -1577,20 +1881,39 @@ public final class OpenAPIReflector: CapabilityReflector {
             [String: Any],
         rootHasSecurity:
             Bool,
+        rootSecurityIsExplicitlyEmpty:
+            Bool,
         securitySchemes:
             [String: Any],
         authorityOrigin:
-            String
+            String,
+        externalBearerSchemeName:
+            String?
     ) -> AuthorityResolution {
         guard
             operation.keys.contains(
                 "security"
             )
         else {
-            return
-                rootHasSecurity
-                ? .unsupported
-                : .publicAccess
+            if rootHasSecurity {
+                return
+                    rootSecurityIsExplicitlyEmpty
+                    ? .publicAccess
+                    : .unsupported
+            }
+
+            if let externalBearerSchemeName {
+                return .required(
+                    .httpBearer(
+                        schemeName:
+                            externalBearerSchemeName,
+                        origin:
+                            authorityOrigin
+                    )
+                )
+            }
+
+            return .publicAccess
         }
 
         guard
@@ -1686,6 +2009,41 @@ public final class OpenAPIReflector: CapabilityReflector {
                     authorityOrigin
             )
         )
+    }
+
+    private static func supportsZeroArgumentGET(
+        path: String,
+        pathObject: [String: Any],
+        operation: [String: Any]
+    ) -> Bool {
+        guard
+            !path.contains("{"),
+            !path.contains("}"),
+            pathObject["parameters"] == nil,
+            operation["requestBody"] == nil
+        else {
+            return false
+        }
+
+        guard
+            operation.keys.contains(
+                "parameters"
+            )
+        else {
+            return true
+        }
+
+        guard
+            let parameters =
+                operation[
+                    "parameters"
+                ] as? [Any],
+            parameters.isEmpty
+        else {
+            return false
+        }
+
+        return true
     }
 
     private static func supportedGETPathArgumentSchema(
@@ -1894,6 +2252,56 @@ public final class OpenAPIReflector: CapabilityReflector {
         return parseClosedJSONStringObjectSchema(
             rawSchema
         )
+    }
+
+    private static func hasDeclaredJSONResponseSchema(
+        _ operation:
+            [String: Any]
+    ) -> Bool {
+        guard
+            let responses =
+                operation[
+                    "responses"
+                ] as? [String: Any]
+        else {
+            return false
+        }
+
+        for key
+            in responses.keys.sorted()
+        {
+            guard
+                let status =
+                    Int(key),
+                (200...299)
+                    .contains(
+                        status
+                    ),
+                let response =
+                    responses[
+                        key
+                    ] as? [String: Any],
+                let content =
+                    response[
+                        "content"
+                    ] as? [String: Any],
+                let json =
+                    content[
+                        "application/json"
+                    ] as? [String: Any],
+                let rawSchema =
+                    json[
+                        "schema"
+                    ] as? [String: Any],
+                !rawSchema.isEmpty
+            else {
+                continue
+            }
+
+            return true
+        }
+
+        return false
     }
 
     private static func supportedJSONObjectResponseSchema(
@@ -2280,6 +2688,58 @@ public final class OpenAPIReflector: CapabilityReflector {
                     .sortedKeys
                 ]
             )
+    }
+
+    private static func canonicalValidatedJSON(
+        _ data:
+            Data
+    ) throws -> String {
+        let object:
+            Any
+
+        do {
+            object =
+                try JSONSerialization
+                .jsonObject(
+                    with:
+                        data,
+                    options: [
+                        .fragmentsAllowed
+                    ]
+                )
+        } catch {
+            throw RightClickError(
+                "Response is not valid JSON."
+            )
+        }
+
+        let canonicalData =
+            try JSONSerialization
+            .data(
+                withJSONObject:
+                    object,
+                options: [
+                    .sortedKeys,
+                    .withoutEscapingSlashes,
+                    .fragmentsAllowed,
+                ]
+            )
+
+        guard
+            let string =
+                String(
+                    data:
+                        canonicalData,
+                    encoding:
+                        .utf8
+                )
+        else {
+            throw RightClickError(
+                "Could not encode canonical JSON response."
+            )
+        }
+
+        return string
     }
 
     private static func canonicalValidatedJSONObject(

@@ -14,6 +14,9 @@ enum OriginPinnedHTTP {
     static let maximumAcquisitionBytes =
         1_048_576
 
+    static let maximumOpenAPISpecificationBytes =
+        16_777_216
+
     static let acquisitionDeadline:
         TimeInterval = 5
 
@@ -267,6 +270,38 @@ enum OriginPinnedHTTP {
         template:
             URLSession = .shared
     ) throws -> Data {
+        try boundedLoad(
+            url,
+            maximumBytes:
+                maximumAcquisitionBytes,
+            template:
+                template
+        )
+    }
+
+    static func loadOpenAPISpecification(
+        _ url: URL,
+        template:
+            URLSession = .shared
+    ) throws -> Data {
+        try boundedLoad(
+            url,
+            maximumBytes:
+                maximumOpenAPISpecificationBytes,
+            template:
+                template
+        )
+    }
+
+    private static func boundedLoad(
+        _ url: URL,
+        maximumBytes: Int,
+        template: URLSession
+    ) throws -> Data {
+        precondition(
+            maximumBytes > 0
+        )
+
         let configuration =
             template.configuration
 
@@ -281,7 +316,7 @@ enum OriginPinnedHTTP {
         let delegate =
             BoundedLoadDelegate(
                 maximumBytes:
-                    maximumAcquisitionBytes
+                    maximumBytes
             )
 
         let session =
@@ -380,7 +415,7 @@ enum OriginPinnedHTTP {
         // prevents the buffer from crossing this boundary.
         guard
             result.data.count
-                <= maximumAcquisitionBytes
+                <= maximumBytes
         else {
             throw AcquisitionFailure
                 .responseTooLarge

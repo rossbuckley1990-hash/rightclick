@@ -135,7 +135,7 @@ final class OpenAPIAcquisitionBoundsTests:
         )
     }
 
-    func testSpecificationOneByteOverLimitFailsClosed()
+    func testSpecificationOneByteOverLegacyGenericLimitIsAcceptedByOpenAPISource()
         throws
     {
         let result =
@@ -146,12 +146,13 @@ final class OpenAPIAcquisitionBoundsTests:
                     "/oversize-openapi.json"
             )
 
-        XCTAssertTrue(
+        XCTAssertEqual(
             result
                 .source
                 .reflectors()
-                .isEmpty,
-            "A valid OpenAPI document larger than 1 MiB must not create a reflector."
+                .count,
+            1,
+            "The OpenAPI-specific acquisition path must accept a valid specification one byte above the generic 1 MiB document limit."
         )
     }
 
