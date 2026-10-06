@@ -13,6 +13,14 @@ public final class OpenAPIReflector: CapabilityReflector {
         let canonicalJSON: String
     }
 
+    private enum AuthorityResolution {
+        case publicAccess
+        case required(
+            OpenAPIAuthorityRequirement
+        )
+        case unsupported
+    }
+
     private struct Operation {
         let capabilityID: String
         let operationID: String
@@ -34,6 +42,9 @@ public final class OpenAPIReflector: CapabilityReflector {
 
         let responseJSONSchema:
             JSONObjectSchema?
+
+        let authorityRequirement:
+            OpenAPIAuthorityRequirement?
     }
 
     private final class HTTPResultBox: @unchecked Sendable {
@@ -117,11 +128,18 @@ public final class OpenAPIReflector: CapabilityReflector {
                 providerIdentityMaterial
             )
 
+        let authorityOrigin =
+            try Self.canonicalAuthorityOrigin(
+                canonicalBaseURL
+            )
+
         let parsed =
             try Self.parseSpecification(
                 specificationData,
                 providerFingerprint:
-                    providerFingerprint
+                    providerFingerprint,
+                authorityOrigin:
+                    authorityOrigin
             )
 
         self.baseURL =
@@ -238,6 +256,30 @@ public final class OpenAPIReflector: CapabilityReflector {
                     "resultSchema"
                 ] =
                     schema.canonicalJSON
+            }
+
+            if let authority =
+                operation.authorityRequirement
+            {
+                metadata[
+                    "authorityRequired"
+                ] =
+                    "true"
+
+                metadata[
+                    "authorityKind"
+                ] =
+                    authority.kind
+
+                metadata[
+                    "authorityScheme"
+                ] =
+                    authority.schemeName
+
+                metadata[
+                    "authorityOrigin"
+                ] =
+                    authority.origin
             }
 
             return Capability(
@@ -545,6 +587,79 @@ public final class OpenAPIReflector: CapabilityReflector {
                         != nil
             )
 
+        let bearerToken:
+            String?
+
+        if let authority =
+            operation.authorityRequirement
+        {
+            guard
+                let targetOrigin =
+                    try? Self
+                    .canonicalAuthorityOrigin(
+                        targetURL
+                    ),
+                targetOrigin
+                    == authority.origin
+            else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "The reflected authority origin does not match the request origin.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "authority_boundary_violation",
+                            boundary:
+                                "RIGHTCLICK refused to attach authority because the request origin did not match the reflected authority origin."
+                        )
+                )
+            }
+
+            guard
+                let token =
+                    OpenAPIAuthorityStore
+                    .bearerToken(
+                        for:
+                            authority
+                    )
+            else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .unavailable,
+                    message:
+                        "Required provider authority is unavailable.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "authority_unavailable",
+                            boundary:
+                                "RIGHTCLICK found no credential for the exact reflected authority origin and security scheme. No provider transport occurred."
+                        )
+                )
+            }
+
+            bearerToken =
+                token
+
+        } else {
+            bearerToken =
+                nil
+        }
+
         var request =
             URLRequest(
                 url: targetURL
@@ -555,6 +670,15 @@ public final class OpenAPIReflector: CapabilityReflector {
 
         request.httpBody =
             requestBody
+
+        if let bearerToken {
+            request.setValue(
+                "Bearer "
+                + bearerToken,
+                forHTTPHeaderField:
+                    "Authorization"
+            )
+        }
 
         if let requestContentType =
             operation.requestContentType
@@ -1002,9 +1126,97 @@ public final class OpenAPIReflector: CapabilityReflector {
         return result
     }
 
+    private static func canonicalAuthorityOrigin(
+        _ url: URL
+    ) throws -> String {
+        guard
+            var components =
+                URLComponents(
+                    url:
+                        url,
+                    resolvingAgainstBaseURL:
+                        false
+                ),
+            let rawScheme =
+                components.scheme,
+            let rawHost =
+                components.host
+        else {
+            throw RightClickError(
+                "OpenAPI authority origin requires an absolute HTTP or HTTPS URL."
+            )
+        }
+
+        let scheme =
+            rawScheme.lowercased()
+
+        guard
+            scheme == "http"
+                || scheme == "https"
+        else {
+            throw RightClickError(
+                "OpenAPI authority origin must use HTTP or HTTPS."
+            )
+        }
+
+        components.scheme =
+            scheme
+
+        components.host =
+            rawHost.lowercased()
+
+        if
+            (
+                scheme == "http"
+                && components.port == 80
+            )
+            || (
+                scheme == "https"
+                && components.port == 443
+            )
+        {
+            components.port =
+                nil
+        }
+
+        components.user =
+            nil
+
+        components.password =
+            nil
+
+        components.path =
+            ""
+
+        components.query =
+            nil
+
+        components.fragment =
+            nil
+
+        guard
+            let result =
+                components.url
+        else {
+            throw RightClickError(
+                "Could not canonicalize OpenAPI authority origin."
+            )
+        }
+
+        var value =
+            result.absoluteString
+
+        if value.hasSuffix("/") {
+            value.removeLast()
+        }
+
+        return value
+    }
+
     private static func parseSpecification(
         _ data: Data,
-        providerFingerprint: String
+        providerFingerprint: String,
+        authorityOrigin: String
     ) throws -> (
         providerName: String,
         operations: [Operation]
@@ -1051,6 +1263,21 @@ public final class OpenAPIReflector: CapabilityReflector {
             rawTitle?.isEmpty == false
             ? rawTitle!
             : "OpenAPI provider"
+
+        let rootHasSecurity =
+            root.keys.contains(
+                "security"
+            )
+
+        let components =
+            root["components"]
+                as? [String: Any]
+
+        let securitySchemes =
+            components?[
+                "securitySchemes"
+            ] as? [String: Any]
+            ?? [:]
 
         guard
             let paths =
@@ -1104,6 +1331,33 @@ public final class OpenAPIReflector: CapabilityReflector {
                         ),
                     !operationID.isEmpty
                 else {
+                    continue
+                }
+
+                let authorityRequirement:
+                    OpenAPIAuthorityRequirement?
+
+                switch authorityResolution(
+                    operation:
+                        operation,
+                    rootHasSecurity:
+                        rootHasSecurity,
+                    securitySchemes:
+                        securitySchemes,
+                    authorityOrigin:
+                        authorityOrigin
+                ) {
+                case .publicAccess:
+                    authorityRequirement =
+                        nil
+
+                case let .required(
+                    requirement
+                ):
+                    authorityRequirement =
+                        requirement
+
+                case .unsupported:
                     continue
                 }
 
@@ -1285,7 +1539,9 @@ public final class OpenAPIReflector: CapabilityReflector {
                         pathArgumentsSchema:
                             pathArgumentsSchema,
                         responseJSONSchema:
-                            responseJSONSchema
+                            responseJSONSchema,
+                        authorityRequirement:
+                            authorityRequirement
                     )
                 )
             }
@@ -1313,6 +1569,122 @@ public final class OpenAPIReflector: CapabilityReflector {
                     $0.path
                     < $1.path
             }
+        )
+    }
+
+    private static func authorityResolution(
+        operation:
+            [String: Any],
+        rootHasSecurity:
+            Bool,
+        securitySchemes:
+            [String: Any],
+        authorityOrigin:
+            String
+    ) -> AuthorityResolution {
+        guard
+            operation.keys.contains(
+                "security"
+            )
+        else {
+            return
+                rootHasSecurity
+                ? .unsupported
+                : .publicAccess
+        }
+
+        guard
+            let rawSecurity =
+                operation[
+                    "security"
+                ] as? [Any]
+        else {
+            return .unsupported
+        }
+
+        if rawSecurity.isEmpty {
+            return .publicAccess
+        }
+
+        guard
+            rawSecurity.count == 1,
+            let rawRequirement =
+                rawSecurity.first
+                    as? [String: Any],
+            rawRequirement.count == 1,
+            let schemeName =
+                rawRequirement.keys.first,
+            !schemeName.isEmpty,
+            !schemeName.contains("|"),
+            let scopes =
+                rawRequirement[
+                    schemeName
+                ] as? [Any],
+            scopes.isEmpty,
+            let rawScheme =
+                securitySchemes[
+                    schemeName
+                ] as? [String: Any]
+        else {
+            return .unsupported
+        }
+
+        let allowedSchemeKeys:
+            Set<String> = [
+                "type",
+                "scheme",
+                "bearerFormat",
+                "description",
+            ]
+
+        guard
+            Set(
+                rawScheme.keys
+            )
+            .isSubset(
+                of:
+                    allowedSchemeKeys
+            ),
+            rawScheme[
+                "type"
+            ] as? String
+                == "http",
+            let httpScheme =
+                rawScheme[
+                    "scheme"
+                ] as? String,
+            httpScheme
+                .lowercased()
+                == "bearer"
+        else {
+            return .unsupported
+        }
+
+        if let bearerFormat =
+            rawScheme[
+                "bearerFormat"
+            ],
+            !(bearerFormat is String)
+        {
+            return .unsupported
+        }
+
+        if let description =
+            rawScheme[
+                "description"
+            ],
+            !(description is String)
+        {
+            return .unsupported
+        }
+
+        return .required(
+            .httpBearer(
+                schemeName:
+                    schemeName,
+                origin:
+                    authorityOrigin
+            )
         )
     }
 
