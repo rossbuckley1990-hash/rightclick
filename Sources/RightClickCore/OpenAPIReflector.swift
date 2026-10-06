@@ -1858,9 +1858,6 @@ public final class OpenAPIReflector: CapabilityReflector {
                     zeroArgumentGET =
                         false
 
-                    responseJSONSyntaxOnly =
-                        false
-
                     if
                         supportsPlainTextRequest(
                             operation
@@ -1879,6 +1876,9 @@ public final class OpenAPIReflector: CapabilityReflector {
                         pathArgumentsSchema =
                             nil
 
+                        responseJSONSyntaxOnly =
+                            false
+
                         requestContentType =
                             "text/plain"
 
@@ -1895,12 +1895,29 @@ public final class OpenAPIReflector: CapabilityReflector {
                         let requestSchema =
                             supportedJSONObjectRequestSchema(
                                 operation
-                            ),
+                            )
+                    {
                         let responseSchema =
                             supportedJSONObjectResponseSchema(
                                 operation
                             )
-                    {
+
+                        let responseSyntaxOnly =
+                            responseSchema == nil
+                            && hasDeclaredJSONResponseSchema(
+                                operation
+                            )
+
+                        guard
+                            responseSchema != nil
+                            || responseSyntaxOnly
+                        else {
+                            continue
+                        }
+
+                        responseJSONSyntaxOnly =
+                            responseSyntaxOnly
+
                         let pathSchema:
                             JSONObjectSchema?
 
