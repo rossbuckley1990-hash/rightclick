@@ -38,6 +38,7 @@ repository = os.environ.get(
     "rossbuckley1990-hash/rightclick",
 )
 raw_origin = "https://raw.githubusercontent.com"
+api_origin = "https://api.github.com"
 spec_url = f"{raw_origin}/{repository}/{sha}/fixtures/federation-proof/openapi.json"
 proof_file = root / "fixtures/federation-proof/result.json"
 blob = subprocess.check_output(
@@ -47,7 +48,7 @@ blob = subprocess.check_output(
 ).strip()
 assert re.fullmatch(r"[0-9a-fA-F]{40}", blob), blob
 proof_request = urllib.request.Request(
-    f"https://api.github.com/repos/{repository}/git/blobs/{blob}",
+    f"{api_origin}/repos/{repository}/git/blobs/{blob}",
     headers={
         "Accept": "application/json",
         "User-Agent": "rightclick-federation-acceptance",
@@ -231,7 +232,7 @@ with tempfile.TemporaryDirectory(prefix="rightclick-federation-live-") as tempor
                 "--spec-url",
                 spec_url,
                 "--base-url",
-                raw_origin,
+                api_origin,
                 "--json",
             ],
             env=b_environment,
