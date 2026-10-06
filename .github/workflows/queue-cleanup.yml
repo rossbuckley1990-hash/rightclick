@@ -19,7 +19,7 @@ jobs:
   cleanup:
     runs-on: ubuntu-latest
     steps:
-      - name: Cancel superseded macOS test runs
+      - name: Cancel superseded runs and remove cancelled duplicates
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -27,8 +27,10 @@ jobs:
           python3 - <<'PY'
           import json
           import os
-          import urllib.request
+          import time
+          import urllib.error
           import urllib.parse
+          import urllib.request
 
           token = os.environ["GH_TOKEN"]
           repo = os.environ["GH_REPO"]
@@ -42,31 +44,30 @@ jobs:
 
           def request(url, method="GET"):
               req = urllib.request.Request(url, headers=headers, method=method)
-              with urllib.request.urlopen(req) as r:
+              with urllib.request.urlopen(req, timeout=30) as r:
                   body = r.read()
                   return json.loads(body) if body else None
 
-          runs = []
-          for status in ("queued", "in_progress"):
+          def workflow_runs():
+              out = []
               page = 1
               while True:
-                  qs = urllib.parse.urlencode({
-                      "status": status,
-                      "per_page": 100,
-                      "page": page,
-                  })
+                  qs = urllib.parse.urlencode({"per_page": 100, "page": page})
                   data = request(f"{api}/actions/workflows/tests.yml/runs?{qs}")
                   batch = data.get("workflow_runs", [])
-                  runs.extend(batch)
+                  out.extend(batch)
                   if len(batch) < 100:
-                      break
+                      return out
                   page += 1
 
-          # Keep only the newest meaningful run in each current lane:
-          # - one main push
-          # - one pull_request run per head branch
+          runs = workflow_runs()
+          active = [
+              r for r in runs
+              if r.get("status") in {"queued", "in_progress", "waiting", "pending"}
+          ]
+
           keep = {}
-          for run in sorted(runs, key=lambda r: r["run_number"], reverse=True):
+          for run in sorted(active, key=lambda r: r["run_number"], reverse=True):
               event = run.get("event")
               branch = run.get("head_branch")
               if event == "push":
@@ -80,32 +81,38 @@ jobs:
               keep.setdefault(key, run["id"])
 
           cancel = []
-          for run in runs:
+          for run in active:
               event = run.get("event")
               branch = run.get("head_branch")
               if event == "push" and branch != "main":
                   cancel.append(run)
                   continue
-              key = (event, branch)
-              if event == "push" and branch == "main":
-                  key = ("push", "main")
+              key = ("push", "main") if event == "push" else (event, branch)
               if keep.get(key) != run["id"]:
                   cancel.append(run)
 
-          print(f"active={len(runs)} keep={len(keep)} cancel={len(cancel)}")
+          print(f"active={len(active)} keep={len(keep)} cancel={len(cancel)}")
           for run in sorted(cancel, key=lambda r: r["run_number"]):
               rid = run["id"]
-              print(
-                  "cancel",
-                  run["run_number"],
-                  run.get("event"),
-                  run.get("head_branch"),
-                  rid,
-              )
+              print("cancel", run["run_number"], run.get("event"), run.get("head_branch"), rid)
               try:
                   request(f"{api}/actions/runs/{rid}/cancel", method="POST")
               except urllib.error.HTTPError as e:
-                  # 409 means the run already transitioned while cleanup was executing.
-                  if e.code != 409:
+                  if e.code not in (409, 422):
+                      raise
+
+          # Give GitHub a short window to transition cancellation requests.
+          time.sleep(8)
+
+          runs = workflow_runs()
+          cancelled = [r for r in runs if r.get("conclusion") == "cancelled"]
+          print(f"delete_cancelled={len(cancelled)}")
+          for run in sorted(cancelled, key=lambda r: r["run_number"]):
+              rid = run["id"]
+              print("delete", run["run_number"], run.get("event"), run.get("head_branch"), rid)
+              try:
+                  request(f"{api}/actions/runs/{rid}", method="DELETE")
+              except urllib.error.HTTPError as e:
+                  if e.code not in (404, 409, 422):
                       raise
           PY
