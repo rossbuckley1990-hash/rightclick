@@ -1,0 +1,24 @@
+{
+  "gate": "MOAT-004 G1",
+  "historyRewritten": false,
+  "testFirstCommit": "a503c63991c7d06531ee5a68ce5c0d0f8e30120e",
+  "testFirstCommitParent": "5e76581df0dc625f63a9a4f93631fcc7f63b4bda",
+  "originalPreregisteredPatch": {
+    "path": "G1-001-preregistered-tests.patch",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "empty": true,
+    "cause": "git diff does not emit an untracked file without --no-index or a committed comparison"
+  },
+  "correctedPreregisteredPatch": {
+    "path": "G1-001C-preregistered-tests.patch.gz",
+    "rawSHA256": "c6db83fcc6aeb9149821e59855185d6cc704dd953e108511e4ef10729ea8e677",
+    "derivedFrom": "5e76581df0dc625f63a9a4f93631fcc7f63b4bda..a503c63991c7d06531ee5a68ce5c0d0f8e30120e",
+    "roundTripVerified": true
+  },
+  "implementationPatch": {
+    "path": "G1-003-implementation.patch.gz",
+    "rawSHA256": "a4f3ec0bc172aa9be625f31f95a57d9d9ef296d96d883db4d408485cc0a0d3a2",
+    "roundTripVerified": true
+  },
+  "causalOrderingPreserved": true
+}

@@ -77,7 +77,10 @@ public final class BonjourOpenAPISource:
             startBrowsing:
                 startBrowsing,
             specificationLoader: {
-                try OriginPinnedHTTP.load($0)
+                try OriginPinnedHTTP
+                    .loadOpenAPISpecification(
+                        $0
+                    )
             }
         )
     }

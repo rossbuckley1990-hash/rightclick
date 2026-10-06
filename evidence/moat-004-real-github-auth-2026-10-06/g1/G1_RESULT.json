@@ -1,0 +1,30 @@
+{
+  "gate": "MOAT-004 G1",
+  "baseEvidenceCommit": "5e76581df0dc625f63a9a4f93631fcc7f63b4bda",
+  "preregisteredTestCommit": "a503c63991c7d06531ee5a68ce5c0d0f8e30120e",
+  "genericDefaultMaximumBytes": 1048576,
+  "openAPISpecificationMaximumBytes": 16777216,
+  "deadlineSeconds": 5,
+  "redirectsRejected": true,
+  "frozenGitHubSpecification": {
+    "bytes": 12901084,
+    "sha256": "1429e93b5cbfa7547aa197e9553a6dacbd8d4aaf28012446ed730b152bcdf284",
+    "acquiredSuccessfullyThroughOpenAPISpecificBound": true
+  },
+  "genericDefaultOneMiBBoundaryUnchanged": true,
+  "bonjourUsesOpenAPISpecificLoader": true,
+  "splitOriginImplemented": false,
+  "zeroArgumentGETImplemented": false,
+  "jsonResponseFallbackImplemented": false,
+  "externalBearerAuthorityImplemented": false,
+  "githubSpecificProductionCode": false,
+  "result": "PASS",
+  "evidenceRecovery": {
+    "historyRewritten": false,
+    "originalEmptyTestPatchPreserved": true,
+    "correctedTestPatchRawSHA256": "c6db83fcc6aeb9149821e59855185d6cc704dd953e108511e4ef10729ea8e677",
+    "implementationPatchRawSHA256": "a4f3ec0bc172aa9be625f31f95a57d9d9ef296d96d883db4d408485cc0a0d3a2",
+    "deterministicArchives": true,
+    "roundTripVerified": true
+  }
+}
