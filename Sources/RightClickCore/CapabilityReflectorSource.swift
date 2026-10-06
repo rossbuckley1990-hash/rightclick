@@ -17,3 +17,15 @@ public protocol CapabilityReflectorSource:
     func reflectors()
         -> [any CapabilityReflector]
 }
+
+/// Discovery sources such as ARD registries may depend on the current task
+/// or object. The engine passes the already-parsed ContentItem into these
+/// sources while preserving the ordinary source contract for non-contextual
+/// environment discovery.
+public protocol ContextualCapabilityReflectorSource:
+    CapabilityReflectorSource
+{
+    func reflectors(
+        for item: ContentItem
+    ) -> [any CapabilityReflector]
+}
