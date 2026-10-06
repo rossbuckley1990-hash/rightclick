@@ -94,6 +94,12 @@ enum RightClickLocalOnboarding {
         try RightClickCursorClientAdapter().connectionRecipe(executable: executable).jsonMCPEntry
     }
 
+    // Compatibility shim for existing onboarding transactions that already
+    // rely on the same fail-closed path inspection semantics.
+    static func inspectPath(_ file: URL) throws {
+        try RightClickJSONConfigBackend.inspectPath(file)
+    }
+
     static func plan(file: URL, executable: String, disconnect: Bool = false) throws -> Plan {
         let desired = try desiredEntry(executable: executable)
         var legacy = desired
