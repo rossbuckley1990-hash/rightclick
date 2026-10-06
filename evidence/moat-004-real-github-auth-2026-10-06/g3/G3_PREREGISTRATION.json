@@ -1,0 +1,20 @@
+{
+  "gate": "MOAT-004 G3",
+  "base": "d4c5050c0497ec8e14599cd0aaf255b73d246f93",
+  "testPatchSHA256": "721009c53eb85186518aed02f3b6d919bd8fb42571c988305bde82acef4c36ef",
+  "preimplementationResult": "SEMANTIC_RED",
+  "zeroArgumentGET": {
+    "pathTemplatesForbidden": true,
+    "pathLevelParametersForbidden": true,
+    "operationParametersAbsentOrEmptyOnly": true,
+    "requestBodyForbidden": true,
+    "argumentsSchemaAbsent": true,
+    "unexpectedArgumentsFailBeforeTransport": true,
+    "requestBodyAbsentAtExecution": true,
+    "contentTypeHeaderAbsentAtExecution": true
+  },
+  "existingPathArgumentGETPreserved": true,
+  "g4Implemented": false,
+  "g5Implemented": false,
+  "providerSpecificProductionCodeAllowed": false
+}
