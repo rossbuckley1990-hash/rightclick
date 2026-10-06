@@ -254,11 +254,20 @@ public final class CapabilityEngine {
             )
         }
 
-        let before = try verification.map {
-            _ in
-            try OutcomeVerifier.snapshot(
-                item: item
-            )
+        let verificationReflector =
+            reflector as? any CapabilityVerificationReflector
+
+        let before: OutcomeSnapshot?
+
+        if verificationReflector == nil {
+            before = try verification.map {
+                _ in
+                try OutcomeVerifier.snapshot(
+                    item: item
+                )
+            }
+        } else {
+            before = nil
         }
 
         let initial = ExecutionRecord(
@@ -275,12 +284,30 @@ public final class CapabilityEngine {
 
         ExecutionStore.shared.put(initial)
 
-        var started = try reflector.begin(
-            capability: capability,
-            item: item,
-            executionID: executionId,
-            arguments: arguments
-        )
+        let startedRecord: ExecutionRecord
+
+        if let verification,
+           let verificationReflector
+        {
+            startedRecord =
+                try verificationReflector.begin(
+                    capability: capability,
+                    item: item,
+                    executionID: executionId,
+                    arguments: arguments,
+                    verification: verification
+                )
+        } else {
+            startedRecord =
+                try reflector.begin(
+                    capability: capability,
+                    item: item,
+                    executionID: executionId,
+                    arguments: arguments
+                )
+        }
+
+        var started = startedRecord
 
         // The engine owns execution identity even if a reflector
         // returns malformed bookkeeping.
@@ -345,6 +372,14 @@ public final class CapabilityEngine {
         if providerResult.title == nil {
             providerResult.title =
                 capability.title
+        }
+
+        if verification != nil,
+           verificationReflector != nil
+        {
+            return validatedDelegatedVerification(
+                providerResult
+            )
         }
 
         if let verification,
@@ -459,11 +494,20 @@ public final class CapabilityEngine {
             return record
         }
 
-        let before = try verification.map {
-            _ in
-            try OutcomeVerifier.snapshot(
-                item: item
-            )
+        let verificationReflector =
+            reflector as? any CapabilityVerificationReflector
+
+        let before: OutcomeSnapshot?
+
+        if verificationReflector == nil {
+            before = try verification.map {
+                _ in
+                try OutcomeVerifier.snapshot(
+                    item: item
+                )
+            }
+        } else {
+            before = nil
         }
 
         let initial = ExecutionRecord(
@@ -480,13 +524,28 @@ public final class CapabilityEngine {
 
         ExecutionStore.shared.put(initial)
 
-        var providerRecord =
-            try reflector.begin(
-                capability: capability,
-                item: item,
-                executionID: executionId,
-                arguments: arguments
-            )
+        var providerRecord: ExecutionRecord
+
+        if let verification,
+           let verificationReflector
+        {
+            providerRecord =
+                try verificationReflector.begin(
+                    capability: capability,
+                    item: item,
+                    executionID: executionId,
+                    arguments: arguments,
+                    verification: verification
+                )
+        } else {
+            providerRecord =
+                try reflector.begin(
+                    capability: capability,
+                    item: item,
+                    executionID: executionId,
+                    arguments: arguments
+                )
+        }
 
         providerRecord.executionId =
             executionId
@@ -524,8 +583,15 @@ public final class CapabilityEngine {
         result.requiresConfirmation =
             capability.requiresConfirmation
 
-        if let verification,
-           let before
+        if verification != nil,
+           verificationReflector != nil
+        {
+            result =
+                validatedDelegatedVerification(
+                    result
+                )
+        } else if let verification,
+                  let before
         {
             result = try applyingVerification(
                 verification,
@@ -571,6 +637,50 @@ public final class CapabilityEngine {
         currentReflectors().first {
             $0.id == capability.reflectorID
         }
+    }
+
+    private func validatedDelegatedVerification(
+        _ providerResult: RunResult
+    ) -> RunResult {
+        guard
+            providerResult.status
+                == .verified
+        else {
+            return providerResult
+        }
+
+        guard
+            providerResult
+                .verification?
+                .status
+                == .verifiedSuccess,
+            providerResult
+                .evidence
+                .outcomeVerified
+        else {
+            var result =
+                providerResult
+
+            result.status =
+                .accepted
+
+            result.message =
+                "Execution substrate claimed verified success without complete delegated verification evidence; downgraded to accepted."
+
+            result.evidence =
+                OutcomeEvidence(
+                    type:
+                        "delegated_verification_incomplete",
+                    boundary:
+                        "Delegated semantic verification is trusted only when the execution substrate returns VERIFIED_SUCCESS and outcomeVerified=true.",
+                    outcomeVerified:
+                        false
+                )
+
+            return result
+        }
+
+        return providerResult
     }
 
     private func applyingReturnedTextPostcondition(
