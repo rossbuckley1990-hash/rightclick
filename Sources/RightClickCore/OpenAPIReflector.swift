@@ -46,6 +46,9 @@ public final class OpenAPIReflector: CapabilityReflector {
         let responseJSONSchema:
             JSONObjectSchema?
 
+        let responseJSONSyntaxOnly:
+            Bool
+
         let authorityRequirement:
             OpenAPIAuthorityRequirement?
     }
@@ -266,6 +269,13 @@ public final class OpenAPIReflector: CapabilityReflector {
                     "resultSchema"
                 ] =
                     schema.canonicalJSON
+            }
+
+            if operation.responseJSONSyntaxOnly {
+                metadata[
+                    "resultValidation"
+                ] =
+                    "json_syntax_only"
             }
 
             if let authority =
@@ -939,9 +949,7 @@ public final class OpenAPIReflector: CapabilityReflector {
 
         } else if
             operation.responseContentType
-                == "application/json",
-            let schema =
-                operation.responseJSONSchema
+                == "application/json"
         {
             guard
                 mediaType
@@ -968,34 +976,73 @@ public final class OpenAPIReflector: CapabilityReflector {
                 )
             }
 
-            do {
-                output =
-                    try Self
-                    .canonicalValidatedJSONObject(
-                        responseData,
-                        schema:
-                            schema
-                    )
-            } catch {
-                return ExecutionRecord(
-                    executionId:
-                        executionID,
-                    actionId:
-                        capability.id,
-                    title:
-                        capability.title,
-                    state:
-                        .failed,
-                    message:
-                        "The OpenAPI provider response failed the reflected JSON schema: \(error)",
-                    evidence:
-                        OutcomeEvidence(
-                            type:
-                                "provider_contract_failure",
-                            boundary:
-                                "The provider returned 2xx, but its application/json body did not satisfy the reflected closed JSON object schema."
+            if let schema =
+                operation.responseJSONSchema
+            {
+                do {
+                    output =
+                        try Self
+                        .canonicalValidatedJSONObject(
+                            responseData,
+                            schema:
+                                schema
                         )
-                )
+                } catch {
+                    return ExecutionRecord(
+                        executionId:
+                            executionID,
+                        actionId:
+                            capability.id,
+                        title:
+                            capability.title,
+                        state:
+                            .failed,
+                        message:
+                            "The OpenAPI provider response failed the reflected JSON schema: \(error)",
+                        evidence:
+                            OutcomeEvidence(
+                                type:
+                                    "provider_contract_failure",
+                                boundary:
+                                    "The provider returned 2xx, but its application/json body did not satisfy the reflected closed JSON object schema."
+                            )
+                    )
+                }
+
+            } else if
+                operation.responseJSONSyntaxOnly
+            {
+                do {
+                    output =
+                        try Self
+                        .canonicalValidatedJSON(
+                            responseData
+                        )
+                } catch {
+                    return ExecutionRecord(
+                        executionId:
+                            executionID,
+                        actionId:
+                            capability.id,
+                        title:
+                            capability.title,
+                        state:
+                            .failed,
+                        message:
+                            "The OpenAPI provider response failed JSON syntax validation: \(error)",
+                        evidence:
+                            OutcomeEvidence(
+                                type:
+                                    "provider_contract_failure",
+                                boundary:
+                                    "The provider returned 2xx application/json, but the body was not valid JSON. No schema-level semantic claim was made."
+                            )
+                    )
+                }
+
+            } else {
+                output =
+                    nil
             }
 
         } else {
@@ -1521,15 +1568,27 @@ public final class OpenAPIReflector: CapabilityReflector {
                 let responseJSONSchema:
                     JSONObjectSchema?
 
+                let responseJSONSyntaxOnly:
+                    Bool
+
                 let zeroArgumentGET:
                     Bool
 
                 if method == "get" {
+                    let responseSchema =
+                        supportedJSONObjectResponseSchema(
+                            operation
+                        )
+
+                    responseJSONSyntaxOnly =
+                        responseSchema == nil
+                        && hasDeclaredJSONResponseSchema(
+                            operation
+                        )
+
                     guard
-                        let responseSchema =
-                            supportedJSONObjectResponseSchema(
-                                operation
-                            )
+                        responseSchema != nil
+                        || responseJSONSyntaxOnly
                     else {
                         continue
                     }
@@ -1587,6 +1646,9 @@ public final class OpenAPIReflector: CapabilityReflector {
 
                 } else {
                     zeroArgumentGET =
+                        false
+
+                    responseJSONSyntaxOnly =
                         false
 
                     guard
@@ -1720,6 +1782,8 @@ public final class OpenAPIReflector: CapabilityReflector {
                             zeroArgumentGET,
                         responseJSONSchema:
                             responseJSONSchema,
+                        responseJSONSyntaxOnly:
+                            responseJSONSyntaxOnly,
                         authorityRequirement:
                             authorityRequirement
                     )
@@ -2111,6 +2175,56 @@ public final class OpenAPIReflector: CapabilityReflector {
         )
     }
 
+    private static func hasDeclaredJSONResponseSchema(
+        _ operation:
+            [String: Any]
+    ) -> Bool {
+        guard
+            let responses =
+                operation[
+                    "responses"
+                ] as? [String: Any]
+        else {
+            return false
+        }
+
+        for key
+            in responses.keys.sorted()
+        {
+            guard
+                let status =
+                    Int(key),
+                (200...299)
+                    .contains(
+                        status
+                    ),
+                let response =
+                    responses[
+                        key
+                    ] as? [String: Any],
+                let content =
+                    response[
+                        "content"
+                    ] as? [String: Any],
+                let json =
+                    content[
+                        "application/json"
+                    ] as? [String: Any],
+                let rawSchema =
+                    json[
+                        "schema"
+                    ] as? [String: Any],
+                !rawSchema.isEmpty
+            else {
+                continue
+            }
+
+            return true
+        }
+
+        return false
+    }
+
     private static func supportedJSONObjectResponseSchema(
         _ operation:
             [String: Any]
@@ -2495,6 +2609,58 @@ public final class OpenAPIReflector: CapabilityReflector {
                     .sortedKeys
                 ]
             )
+    }
+
+    private static func canonicalValidatedJSON(
+        _ data:
+            Data
+    ) throws -> String {
+        let object:
+            Any
+
+        do {
+            object =
+                try JSONSerialization
+                .jsonObject(
+                    with:
+                        data,
+                    options: [
+                        .fragmentsAllowed
+                    ]
+                )
+        } catch {
+            throw RightClickError(
+                "Response is not valid JSON."
+            )
+        }
+
+        let canonicalData =
+            try JSONSerialization
+            .data(
+                withJSONObject:
+                    object,
+                options: [
+                    .sortedKeys,
+                    .withoutEscapingSlashes,
+                    .fragmentsAllowed,
+                ]
+            )
+
+        guard
+            let string =
+                String(
+                    data:
+                        canonicalData,
+                    encoding:
+                        .utf8
+                )
+        else {
+            throw RightClickError(
+                "Could not encode canonical JSON response."
+            )
+        }
+
+        return string
     }
 
     private static func canonicalValidatedJSONObject(

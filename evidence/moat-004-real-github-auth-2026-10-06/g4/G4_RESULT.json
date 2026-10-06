@@ -1,0 +1,28 @@
+{
+  "gate": "MOAT-004 G4",
+  "baseG3Commit": "b95b15bd187ea459285bbd9632c1793d1a6a6706",
+  "testFirstCommit": "1eb30aa9580f8dfab652aba3c01e2d8e0f4e5832",
+  "testPatchSHA256": "e542d353b6262f7c2aee4306fc90422404e57b7d1dd31da48033fc3c582e8b71",
+  "implementationPatchSHA256": "832ab4733d13fcf48a1622cf4033821cfa6703b4e667ad5bcfd54e1f48e706cb",
+  "fallback": {
+    "scope": "GET_ONLY",
+    "strongClosedSchemaPreferred": true,
+    "requiresDeclaredApplicationJSONSchema": true,
+    "syntaxOnlyMetadata": "json_syntax_only",
+    "validJSONRequired": true,
+    "applicationJSONContentTypeRequired": true,
+    "mutatingOperationsRemainFailClosed": true
+  },
+  "frozenGitHubContract": {
+    "bytes": 12901084,
+    "sha256": "1429e93b5cbfa7547aa197e9553a6dacbd8d4aaf28012446ed730b152bcdf284",
+    "operationId": "users/get-authenticated",
+    "title": "Get the authenticated user",
+    "reflected": true,
+    "resultValidation": "json_syntax_only",
+    "authorityMetadataPresent": false
+  },
+  "g5Implemented": false,
+  "providerSpecificProductionCode": false,
+  "result": "PASS"
+}
