@@ -7,8 +7,10 @@ let package = Package(
         .macOS(.v14),
     ],
     products: [
+        .library(name: "RightClickARD", targets: ["RightClickARD"]),
         .library(name: "RightClickCore", targets: ["RightClickCore"]),
         .executable(name: "rightclick", targets: ["RightClickCLI"]),
+        .executable(name: "rightclick-ard-probe", targets: ["RightClickARDProbe"]),
         .executable(name: "rightclick-probe", targets: ["RightClickProbe"]),
         .executable(name: "rightclick-marker", targets: ["RightClickMarker"]),
     ],
@@ -17,7 +19,14 @@ let package = Package(
     ],
     targets: [
         .target(
+            name: "RightClickARD",
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+            ]
+        ),
+        .target(
             name: "RightClickCore",
+            dependencies: ["RightClickARD"],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
             ],
@@ -44,6 +53,13 @@ let package = Package(
             swiftSettings: [
                 .swiftLanguageMode(.v5),
                 .unsafeFlags(["-parse-as-library"]),
+            ]
+        ),
+        .executableTarget(
+            name: "RightClickARDProbe",
+            dependencies: ["RightClickARD"],
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
             ]
         ),
         .target(
@@ -73,8 +89,15 @@ let package = Package(
             ]
         ),
         .testTarget(
+            name: "RightClickARDTests",
+            dependencies: ["RightClickARD"],
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+            ]
+        ),
+        .testTarget(
             name: "RightClickCoreTests",
-            dependencies: ["RightClickCore"],
+            dependencies: ["RightClickARD", "RightClickCore"],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
             ]
