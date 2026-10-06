@@ -30,11 +30,12 @@ enum RightClickLocalOnboarding {
                 case "--client":
                     index += 1
                     guard index < args.count,
-                          ["cursor", "claude"].contains(args[index])
+                          ["cursor", "claude", "codex"].contains(args[index])
                     else {
                         throw SetupError(
                             "RIGHTCLICK currently supports "
-                            + "--client cursor or --client claude."
+                            + "--client cursor, --client claude, "
+                            + "or --client codex."
                         )
                     }
                     client = args[index]
@@ -49,8 +50,9 @@ enum RightClickLocalOnboarding {
             }
             if yes && client == nil {
                 throw SetupError(
-                    "Use --client cursor or --client claude "
-                    + "with --yes to explicitly select the client."
+                    "Use --client cursor, --client claude, "
+                    + "or --client codex with --yes to "
+                    + "explicitly select the client."
                 )
             }
         }
@@ -62,9 +64,12 @@ enum RightClickLocalOnboarding {
     rightclick setup --client cursor --disconnect [--yes] [--dry-run] [--json]
     rightclick setup --client claude [--yes] [--dry-run] [--json]
     rightclick setup --client claude --disconnect [--yes] [--dry-run] [--json]
+    rightclick setup --client codex [--yes] [--dry-run] [--json]
+    rightclick setup --client codex --disconnect [--yes] [--dry-run] [--json]
 
     Cursor uses its local JSON MCP configuration.
     Claude Code uses its native user-scope MCP registration CLI.
+    Codex uses its native global MCP registration CLI.
     Dry-run may inspect current state but never mutates configuration.
     Existing different rightclick registrations are never silently replaced.
     """
@@ -153,6 +158,7 @@ enum RightClickLocalOnboarding {
 
             let cursor = RightClickCursorClientAdapter()
             let claude = RightClickClaudeClientAdapter()
+            let codex = RightClickCodexClientAdapter()
 
             let adapter: any RightClickClientAdapter
 
@@ -162,6 +168,9 @@ enum RightClickLocalOnboarding {
 
             case "claude":
                 adapter = claude
+
+            case "codex":
+                adapter = codex
 
             case nil:
                 if cursor.detected(
@@ -178,11 +187,18 @@ enum RightClickLocalOnboarding {
                     )
                 ) {
                     adapter = claude
+                } else if codex.detected(
+                    home: home,
+                    applications: URL(
+                        fileURLWithPath: "/Applications"
+                    )
+                ) {
+                    adapter = codex
                 } else {
                     throw SetupError(
                         "No supported local client was detected. "
-                        + "Use --client cursor or --client claude "
-                        + "to explicitly select one."
+                        + "Use --client cursor, --client claude, "
+                        + "or --client codex to explicitly select one."
                     )
                 }
 
@@ -217,6 +233,32 @@ enum RightClickLocalOnboarding {
 
             let recipe =
                 onboarding.recipe
+
+            let notice: String
+
+            switch onboarding.clientID {
+            case "claude":
+                notice =
+                    "Claude Code will use its native "
+                    + "user-scope MCP registration. "
+                    + "RIGHTCLICK does not write Claude "
+                    + "JSON directly."
+
+            case "codex":
+                notice =
+                    "Codex will use its native global "
+                    + "MCP registration. RIGHTCLICK does "
+                    + "not write Codex config.toml directly."
+
+            default:
+                notice =
+                    "Cursor can launch this executable and "
+                    + "request its discovered capabilities. "
+                    + "Existing action confirmations still "
+                    + "apply. Close Cursor while changing "
+                    + "its configuration."
+            }
+
             var payload: [String: String] = [
                 "client": onboarding.clientID,
                 "configuration": file.path,
@@ -232,9 +274,7 @@ enum RightClickLocalOnboarding {
                 "localProbe": "NOT_RUN",
                 "bridge": "NOT_TOUCHED",
                 "keychain": "NOT_TOUCHED",
-                "notice": onboarding.clientID == "claude"
-                    ? "Claude Code will use its native user-scope MCP registration. RIGHTCLICK does not write Claude JSON directly."
-                    : "Cursor can launch this executable and request its discovered capabilities. Existing action confirmations still apply. Close Cursor while changing its configuration.",
+                "notice": notice,
             ]
 
             if options.dryRun {
@@ -295,15 +335,45 @@ enum RightClickLocalOnboarding {
             }
 
             if options.disconnect {
-                payload["next"] =
-                    onboarding.clientID == "claude"
-                    ? "Claude Code no longer has the RIGHTCLICK user-scope MCP registration."
-                    : "Reload Cursor to stop using this entry. No process was stopped by setup."
+                switch onboarding.clientID {
+                case "claude":
+                    payload["next"] =
+                        "Claude Code no longer has the "
+                        + "RIGHTCLICK user-scope MCP registration."
+
+                case "codex":
+                    payload["next"] =
+                        "Codex no longer has the RIGHTCLICK "
+                        + "global MCP registration."
+
+                default:
+                    payload["next"] =
+                        "Reload Cursor to stop using this entry. "
+                        + "No process was stopped by setup."
+                }
             } else {
-                payload["next"] =
-                    onboarding.clientID == "claude"
-                    ? "Claude Code reports RIGHTCLICK connected. Start a new Claude Code session and ask it to use RIGHTCLICK."
-                    : "Open Cursor, enable RIGHTCLICK in its MCP settings if required, and start a new chat. Ask: Use RIGHTCLICK to inspect the exact text RightClick, then list applicable capabilities. Do not invoke any capability yet."
+                switch onboarding.clientID {
+                case "claude":
+                    payload["next"] =
+                        "Claude Code reports RIGHTCLICK connected. "
+                        + "Start a new Claude Code session and ask "
+                        + "it to use RIGHTCLICK."
+
+                case "codex":
+                    payload["next"] =
+                        "Codex has the RIGHTCLICK MCP registration. "
+                        + "Start a new Codex session and ask it to "
+                        + "use RIGHTCLICK. Connection is not attested "
+                        + "by this setup command."
+
+                default:
+                    payload["next"] =
+                        "Open Cursor, enable RIGHTCLICK in its MCP "
+                        + "settings if required, and start a new chat. "
+                        + "Ask: Use RIGHTCLICK to inspect the exact "
+                        + "text RightClick, then list applicable "
+                        + "capabilities. Do not invoke any capability yet."
+                }
             }
             emit(payload)
             return 0

@@ -31,7 +31,7 @@ final class LocalOnboardingTests: XCTestCase {
     }
 
     func testOptionsRejectUnknownOrIncompleteArguments() {
-        for args in [["--wat"], ["--client"], ["--client", "codex"], ["--client=cursor"], ["cursor"], ["--yes"], ["--json", "--json"], ["--client", "cursor", "--client", "cursor"]] {
+        for args in [["--wat"], ["--client"], ["--client", "gemini"], ["--client=cursor"], ["cursor"], ["--yes"], ["--json", "--json"], ["--client", "cursor", "--client", "cursor"]] {
             XCTAssertThrowsError(try S.Options(args), "\(args)")
         }
     }
