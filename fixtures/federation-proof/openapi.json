@@ -5,7 +5,7 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/rossbuckley1990-hash/rightclick/{ref}/fixtures/federation-proof/result.txt": {
+    "/rossbuckley1990-hash/rightclick/{ref}/fixtures/federation-proof/result.json": {
       "get": {
         "operationId": "readFederationProof",
         "summary": "Read federation proof",
@@ -21,11 +21,20 @@
         ],
         "responses": {
           "200": {
-            "description": "Exact federation proof text",
+            "description": "Exact federation proof JSON",
             "content": {
-              "text/plain": {
+              "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "proof"
+                  ],
+                  "properties": {
+                    "proof": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
