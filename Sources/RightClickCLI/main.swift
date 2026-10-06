@@ -42,6 +42,8 @@ struct CLI {
             return providers(json: json)
         case "provider":
             return RightClickProviderCLI.run(rest)
+        case "authority":
+            return RightClickAuthorityCLI.run(rest)
         case "refresh":
             CapabilityRuntimeDefaults.makeEngine().refresh()
             print("Refreshed macOS Services registrations. The next query scans installed providers again.")
@@ -278,6 +280,9 @@ struct CLI {
         rightclick provider list [--json]
         rightclick provider add --id <id> --spec-url <https-url> --base-url <https-url> [--auth-scheme <scheme>]
         rightclick provider remove --id <id>
+        rightclick authority set --origin <https-origin> --scheme <name>
+        rightclick authority status --origin <https-origin> --scheme <name>
+        rightclick authority delete --origin <https-origin> --scheme <name>
         rightclick refresh
         rightclick setup [--client cursor] [--yes] [--dry-run]
         rightclick setup --client cursor --disconnect [--yes] [--dry-run]
