@@ -244,9 +244,61 @@ enum RightClickNativeRegistrationBackend {
         }
     }
 
+    private static func requireMutationLease(
+        _ plan: Plan
+    ) throws {
+        let current =
+            try run(
+                plan.contract.inspect
+            )
+
+        switch plan.operation {
+        case "CONFIGURED":
+            guard isAbsent(
+                current,
+                contract:
+                    plan.contract
+            )
+            else {
+                throw RightClickOnboardingError(
+                    "Native RIGHTCLICK registration changed "
+                    + "after preflight. Nothing was changed; "
+                    + "run setup again."
+                )
+            }
+
+        case "DISCONNECTED":
+            guard
+                current.status == 0,
+                desiredRegistrationMatches(
+                    current.output,
+                    contract:
+                        plan.contract
+                )
+            else {
+                throw RightClickOnboardingError(
+                    "Native RIGHTCLICK registration changed "
+                    + "after preflight. Nothing was changed; "
+                    + "run setup again."
+                )
+            }
+
+        default:
+            throw RightClickOnboardingError(
+                "Unsupported native mutation lease "
+                + "operation: "
+                + plan.operation
+            )
+        }
+    }
+
     private static func configure(
         _ plan: Plan
     ) throws -> Applied {
+        try requireMutationLease(
+            plan
+        )
+
         let result =
             try run(
                 plan.contract.add
@@ -298,6 +350,10 @@ enum RightClickNativeRegistrationBackend {
     private static func disconnect(
         _ plan: Plan
     ) throws -> Applied {
+        try requireMutationLease(
+            plan
+        )
+
         let result =
             try run(
                 plan.contract.remove
