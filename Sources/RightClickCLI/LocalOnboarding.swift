@@ -14,6 +14,7 @@ enum RightClickLocalOnboarding {
 
     struct Options {
         var client: String?
+        var all = false
         var yes = false
         var dryRun = false
         var json = false
@@ -54,8 +55,12 @@ enum RightClickLocalOnboarding {
                     }
 
                     client = args[index]
-                case "--yes": yes = true
-                case "--dry-run": dryRun = true
+                case "--all":
+                    all = true
+                case "--yes":
+                    yes = true
+                case "--dry-run":
+                    dryRun = true
                 case "--json": json = true
                 case "--disconnect": disconnect = true
                 case "--help", "-h": help = true
@@ -63,10 +68,18 @@ enum RightClickLocalOnboarding {
                 }
                 index += 1
             }
-            if yes && client == nil {
+            if all && client != nil {
                 throw SetupError(
-                    "Use --client <id> with --yes to "
-                    + "explicitly select a client. "
+                    "--all and --client are mutually exclusive."
+                )
+            }
+
+            if yes
+                && client == nil
+                && !all
+            {
+                throw SetupError(
+                    "Use --client <id> or --all with --yes. "
                     + "Supported IDs: "
                     + RightClickClientRegistry
                         .supportedIDs
@@ -80,6 +93,8 @@ enum RightClickLocalOnboarding {
     static var usage: String {
         var lines: [String] = [
             "rightclick setup",
+            "rightclick setup --all [--yes] [--dry-run] [--json]",
+            "rightclick setup --all --disconnect [--yes] [--dry-run] [--json]",
         ]
 
         for id in
@@ -208,6 +223,538 @@ enum RightClickLocalOnboarding {
         try RightClickJSONConfigBackend.apply(plan)
     }
 
+    private static func emitAggregate(
+        _ payload: [String: Any],
+        json: Bool,
+        output: (String) -> Void
+    ) {
+        if json,
+           let data =
+            try? JSONSerialization
+                .data(
+                    withJSONObject:
+                        payload,
+                    options:
+                        [.sortedKeys]
+                ),
+           let text =
+            String(
+                data: data,
+                encoding: .utf8
+            )
+        {
+            output(text)
+            return
+        }
+
+        if let data =
+            try? JSONSerialization
+                .data(
+                    withJSONObject:
+                        payload,
+                    options:
+                        [
+                            .prettyPrinted,
+                            .sortedKeys,
+                        ]
+                ),
+           let text =
+            String(
+                data: data,
+                encoding: .utf8
+            )
+        {
+            output(text)
+            return
+        }
+
+        output(
+            String(
+                describing:
+                    payload
+            )
+        )
+    }
+
+    private static func aggregateClientRecord(
+        _ prepared:
+            RightClickSetupAllTransaction
+                .PreparedClient,
+        applied:
+            RightClickOnboardingApplied? = nil,
+        mutationExecuted: Bool
+    ) -> [String: Any] {
+        var record:
+            [String: Any] = [
+                "client":
+                    prepared.plan.clientID,
+                "displayName":
+                    prepared.plan
+                        .clientDisplayName,
+                "configuration":
+                    prepared.plan
+                        .configurationFile
+                        .path,
+                "operation":
+                    prepared.plan
+                        .mutation
+                        .operation,
+                "configurationChanged":
+                    mutationExecuted
+                    && prepared
+                        .plan
+                        .mutation
+                        .changed
+                        ? "true"
+                        : "false",
+                "registrationBackend":
+                    prepared.plan
+                        .mutation
+                        .backendID,
+                "registrationScope":
+                    prepared.plan
+                        .mutation
+                        .scope
+                    ?? "client-config",
+                "mcpConnection":
+                    "NOT_VERIFIED",
+            ]
+
+        if applied?
+            .connectionState
+            == .connected
+        {
+            record[
+                "mcpConnection"
+            ] = "CONNECTED"
+        }
+
+        return record
+    }
+
+    private static func runAll(
+        options: Options,
+        executable: String,
+        home: URL,
+        interactive: Bool,
+        readAnswer: () -> String?,
+        output: (String) -> Void,
+        probe: () throws -> String,
+        json: Bool
+    ) -> Int {
+        let applications =
+            URL(
+                fileURLWithPath:
+                    "/Applications"
+            )
+
+        let adapters =
+            RightClickClientRegistry
+                .detected(
+                    home: home,
+                    applications:
+                        applications
+                )
+
+        let detectedIDs =
+            adapters.map {
+                $0.id
+            }
+
+        guard !adapters.isEmpty
+        else {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "error":
+                        "No supported local client was detected.",
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        }
+
+        guard
+            options.disconnect
+            || FileManager.default
+                .isExecutableFile(
+                    atPath:
+                        executable
+                )
+        else {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "error":
+                        "The RIGHTCLICK executable is missing "
+                        + "or not executable: "
+                        + executable,
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        }
+
+        let prepared:
+            [
+                RightClickSetupAllTransaction
+                    .PreparedClient
+            ]
+
+        do {
+            prepared =
+                try RightClickSetupAllTransaction
+                    .preflight(
+                        adapters:
+                            adapters,
+                        home:
+                            home,
+                        executable:
+                            executable,
+                        disconnect:
+                            options.disconnect
+                    )
+        } catch let failure
+            as RightClickSetupAllTransaction
+                .PreflightFailure
+        {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "failedClient":
+                        failure.clientID,
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "error":
+                        failure.description,
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        } catch {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "error":
+                        String(
+                            describing:
+                                error
+                        ),
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        }
+
+        let plannedRecords =
+            prepared.map {
+                aggregateClientRecord(
+                    $0,
+                    mutationExecuted:
+                        false
+                )
+            }
+
+        let anyChange =
+            prepared.contains {
+                $0.plan
+                    .mutation
+                    .changed
+            }
+
+        if options.dryRun {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "DRY_RUN",
+                    "detectedClients":
+                        detectedIDs,
+                    "configurationChanged":
+                        "false",
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "localProbe":
+                        "NOT_RUN",
+                    "clients":
+                        plannedRecords,
+                ],
+                json: json,
+                output: output
+            )
+
+            return 0
+        }
+
+        if anyChange
+            && !options.yes
+        {
+            if !interactive
+                || json
+            {
+                emitAggregate(
+                    [
+                        "client": "all",
+                        "status":
+                            "CONSENT_REQUIRED",
+                        "detectedClients":
+                            detectedIDs,
+                        "configurationChanged":
+                            "false",
+                        "rollbackStatus":
+                            "NOT_REQUIRED",
+                        "localProbe":
+                            "NOT_RUN",
+                        "clients":
+                            plannedRecords,
+                        "next":
+                            "Review the aggregate plan, "
+                            + "then run setup --all --yes"
+                            + (
+                                options.disconnect
+                                ? " --disconnect"
+                                : ""
+                            ),
+                    ],
+                    json: json,
+                    output: output
+                )
+
+                return 3
+            }
+
+            output(
+                """
+                RIGHTCLICK multi-client setup
+
+                Detected clients:
+                \(detectedIDs.joined(separator: ", "))
+
+                All detected clients have been preflighted.
+                No client has been modified yet.
+
+                """
+            )
+
+            output(
+                "Apply this transaction to all detected clients? [y/N]"
+            )
+
+            let answer =
+                readAnswer()?
+                    .trimmingCharacters(
+                        in:
+                            .whitespacesAndNewlines
+                    )
+                    .lowercased()
+
+            guard
+                answer == "y"
+                || answer == "yes"
+            else {
+                emitAggregate(
+                    [
+                        "client": "all",
+                        "status": "CANCELLED",
+                        "detectedClients":
+                            detectedIDs,
+                        "configurationChanged":
+                            "false",
+                        "rollbackStatus":
+                            "NOT_REQUIRED",
+                        "localProbe":
+                            "NOT_RUN",
+                        "clients":
+                            plannedRecords,
+                    ],
+                    json: json,
+                    output: output
+                )
+
+                return 3
+            }
+        }
+
+        var probeResult =
+            "NOT_RUN"
+
+        if !options.disconnect {
+            do {
+                probeResult =
+                    try probe()
+            } catch {
+                emitAggregate(
+                    [
+                        "client": "all",
+                        "status": "FAILED",
+                        "detectedClients":
+                            detectedIDs,
+                        "failedClient":
+                            "rightclick",
+                        "configurationChanged":
+                            "false",
+                        "rollbackStatus":
+                            "NOT_REQUIRED",
+                        "localProbe":
+                            "FAILED",
+                        "clients":
+                            plannedRecords,
+                        "error":
+                            String(
+                                describing:
+                                    error
+                            ),
+                    ],
+                    json: json,
+                    output: output
+                )
+
+                return 1
+            }
+        }
+
+        let applied:
+            [
+                RightClickSetupAllTransaction
+                    .AppliedClient
+            ]
+
+        do {
+            applied =
+                try RightClickSetupAllTransaction
+                    .apply(
+                        prepared
+                    )
+        } catch let failure
+            as RightClickSetupAllTransaction
+                .ApplyFailure
+        {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "failedClient":
+                        failure.clientID,
+                    "configurationChanged":
+                        "false",
+                    "rollbackStatus":
+                        failure.rollbackStatus,
+                    "localProbe":
+                        probeResult,
+                    "clients":
+                        plannedRecords,
+                    "error":
+                        failure.description,
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        } catch {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "configurationChanged":
+                        "false",
+                    "rollbackStatus":
+                        "ROLLBACK_FAILED",
+                    "localProbe":
+                        probeResult,
+                    "clients":
+                        plannedRecords,
+                    "error":
+                        String(
+                            describing:
+                                error
+                        ),
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        }
+
+        let clientRecords =
+            applied.map {
+                aggregateClientRecord(
+                    $0.prepared,
+                    applied:
+                        $0.result,
+                    mutationExecuted:
+                        true
+                )
+            }
+
+        let status: String
+
+        if options.disconnect {
+            status =
+                anyChange
+                ? "DISCONNECTED"
+                : "ALREADY_DISCONNECTED"
+        } else {
+            status =
+                anyChange
+                ? "CONFIGURED"
+                : "ALREADY_CONFIGURED"
+        }
+
+        emitAggregate(
+            [
+                "client": "all",
+                "status": status,
+                "detectedClients":
+                    detectedIDs,
+                "configurationChanged":
+                    anyChange
+                    ? "true"
+                    : "false",
+                "rollbackStatus":
+                    "NOT_REQUIRED",
+                "localProbe":
+                    probeResult,
+                "clients":
+                    clientRecords,
+            ],
+            json: json,
+            output: output
+        )
+
+        return 0
+    }
+
     static func run(
         args: [String], executable: String,
         home: URL = FileManager.default.homeDirectoryForCurrentUser,
@@ -228,6 +775,27 @@ enum RightClickLocalOnboarding {
             if options.help {
                 emit(["help": usage])
                 return 0
+            }
+
+            if options.all {
+                return runAll(
+                    options:
+                        options,
+                    executable:
+                        executable,
+                    home:
+                        home,
+                    interactive:
+                        interactive,
+                    readAnswer:
+                        readAnswer,
+                    output:
+                        output,
+                    probe:
+                        probe,
+                    json:
+                        json
+                )
             }
 
             let applications =

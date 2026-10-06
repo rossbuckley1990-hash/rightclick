@@ -238,6 +238,36 @@ enum RightClickOnboardingEngine {
             )
         }
     }
+
+    static func rollback(
+        _ plan: RightClickOnboardingPlan,
+        applied: RightClickOnboardingApplied
+    ) throws {
+        guard plan.mutation.changed else {
+            return
+        }
+
+        switch plan.mutation {
+        case .json(let mutation):
+            try RightClickJSONConfigBackend
+                .rollbackTransaction(
+                    mutation,
+                    applied:
+                        .init(
+                            operation:
+                                applied.operation,
+                            backup:
+                                applied.backup
+                        )
+                )
+
+        case .native(let mutation):
+            try RightClickNativeRegistrationBackend
+                .rollback(
+                    mutation
+                )
+        }
+    }
 }
 
 enum RightClickJSONConfigBackend {
@@ -414,6 +444,48 @@ enum RightClickJSONConfigBackend {
         }
 
         return Applied(operation: plan.operation, backup: backup)
+    }
+
+    static func rollbackTransaction(
+        _ plan: Plan,
+        applied: Applied
+    ) throws {
+        guard plan.changed else {
+            return
+        }
+
+        if let replacement =
+            plan.replacement
+        {
+            guard
+                try snapshot(
+                    plan.file
+                ) == replacement
+            else {
+                throw RightClickOnboardingError(
+                    "Configuration changed after the "
+                    + "transaction applied it. Refusing "
+                    + "to overwrite the newer state "
+                    + "during rollback."
+                )
+            }
+        }
+
+        try rollback(plan)
+
+        if let backup =
+            applied.backup,
+           FileManager.default
+            .fileExists(
+                atPath:
+                    backup.path
+            )
+        {
+            try FileManager.default
+                .removeItem(
+                    at: backup
+                )
+        }
     }
 
     private static func rollback(_ plan: Plan) throws {

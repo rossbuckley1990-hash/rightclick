@@ -174,6 +174,76 @@ enum RightClickNativeRegistrationBackend {
         }
     }
 
+    static func rollback(
+        _ plan: Plan
+    ) throws {
+        guard plan.changed else {
+            return
+        }
+
+        switch plan.operation {
+        case "CONFIGURED":
+            let result =
+                try run(
+                    plan.contract.remove
+                )
+
+            guard result.status == 0
+            else {
+                throw RightClickOnboardingError(
+                    "Native transaction rollback remove "
+                    + "failed with exit "
+                    + "\(result.status): "
+                    + result.output
+                )
+            }
+
+            let inspection =
+                try run(
+                    plan.contract.inspect
+                )
+
+            guard isAbsent(
+                inspection,
+                contract:
+                    plan.contract
+            )
+            else {
+                throw RightClickOnboardingError(
+                    "Native transaction rollback could "
+                    + "not verify registration removal."
+                )
+            }
+
+        case "DISCONNECTED":
+            let result =
+                try run(
+                    plan.contract.add
+                )
+
+            guard result.status == 0
+            else {
+                throw RightClickOnboardingError(
+                    "Native transaction rollback add "
+                    + "failed with exit "
+                    + "\(result.status): "
+                    + result.output
+                )
+            }
+
+            try requireExactRegistration(
+                plan.contract
+            )
+
+        default:
+            throw RightClickOnboardingError(
+                "Unsupported native transaction rollback "
+                + "operation: "
+                + plan.operation
+            )
+        }
+    }
+
     private static func configure(
         _ plan: Plan
     ) throws -> Applied {
