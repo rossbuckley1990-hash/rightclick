@@ -5,13 +5,13 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/rossbuckley1990-hash/rightclick/{ref}/fixtures/federation-proof/result.json": {
+    "/repos/rossbuckley1990-hash/rightclick/git/blobs/{blob}": {
       "get": {
         "operationId": "readFederationProof",
         "summary": "Read federation proof",
         "parameters": [
           {
-            "name": "ref",
+            "name": "blob",
             "in": "path",
             "required": true,
             "schema": {
@@ -21,20 +21,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Exact federation proof JSON",
+            "description": "Immutable Git blob response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": [
-                    "proof"
-                  ],
-                  "properties": {
-                    "proof": {
-                      "type": "string"
-                    }
-                  }
+                  "type": "object"
                 }
               }
             }
