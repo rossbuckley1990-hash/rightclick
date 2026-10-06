@@ -348,11 +348,26 @@ private func rightClickTools() -> [Tool] {
         "required": .array([.string("predicates")]),
     ])
 
+    let capabilityArgumentsSchema:
+        Value = .object([
+            "type": .string("object"),
+            "description":
+                .string(
+                    "Optional provider-independent structured capability arguments. Values are strings in the current schema slice."
+                ),
+            "additionalProperties":
+                .object([
+                    "type":
+                        .string("string")
+                ]),
+        ])
+
     let runSchema: [String: Value] = [
         "type": .string("object"),
         "properties": .object([
             "item": schemaString("File path, http(s) URL, or plain text."),
             "actionId": schemaString("Capability id or exact title returned by context_actions."),
+            "arguments": capabilityArgumentsSchema,
             "expectedOutput": schemaString("Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes."),
             "verification": verificationSchema,
             "confirmed": .object([
@@ -446,8 +461,35 @@ private func handleTool(
         return RightClickJSON.encode(capability)
     case "context_run":
         let action = arguments?["actionId"]?.stringValue ?? ""
-        let confirmed = arguments?["confirmed"]?.boolValue ?? false
-        let expectedOutput = arguments?["expectedOutput"]?.stringValue
+        let confirmed =
+            arguments?["confirmed"]?
+                .boolValue ?? false
+
+        let expectedOutput =
+            arguments?["expectedOutput"]?
+                .stringValue
+
+        let capabilityArguments:
+            CapabilityArguments?
+
+        if let value =
+            arguments?["arguments"]
+        {
+            guard
+                let decoded =
+                    value.stringMapValue
+            else {
+                throw RightClickError(
+                    "context_run arguments must be an object whose values are strings."
+                )
+            }
+
+            capabilityArguments =
+                decoded
+        } else {
+            capabilityArguments =
+                nil
+        }
 
         let verification: VerificationSpec?
 
@@ -472,6 +514,7 @@ private func handleTool(
                 id: action,
                 item: item,
                 confirmed: confirmed,
+                arguments: capabilityArguments,
                 expectedOutput: expectedOutput,
                 verification: verification
             )
@@ -501,8 +544,41 @@ private extension Value {
     }
 
     var boolValue: Bool? {
-        if case .bool(let value) = self { return value }
+        if case .bool(let value) = self {
+            return value
+        }
+
         return nil
+    }
+
+    var stringMapValue:
+        [String: String]?
+    {
+        guard
+            case .object(let object) =
+                self
+        else {
+            return nil
+        }
+
+        var result:
+            [String: String] = [:]
+
+        for (key, value)
+            in object
+        {
+            guard
+                case .string(let string) =
+                    value
+            else {
+                return nil
+            }
+
+            result[key] =
+                string
+        }
+
+        return result
     }
 }
 
