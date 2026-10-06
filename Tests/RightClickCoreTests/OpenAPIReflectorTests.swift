@@ -142,6 +142,7 @@ final class OpenAPIReflectorTests: XCTestCase {
                 "title": "Unknown Text Provider",
                 "version": "1.0.0"
               },
+              "security": [],
               "paths": {
                 "\(path)": {
                   "post": {
@@ -186,6 +187,7 @@ final class OpenAPIReflectorTests: XCTestCase {
                 "title": "Unknown JSON Provider",
                 "version": "1.0.0"
               },
+              "security": [],
               "paths": {
                 "/object": {
                   "post": {
@@ -229,6 +231,7 @@ final class OpenAPIReflectorTests: XCTestCase {
                 "title": "Unnamed Operation Provider",
                 "version": "1.0.0"
               },
+              "security": [],
               "paths": {
                 "/transform": {
                   "post": {
@@ -339,7 +342,7 @@ final class OpenAPIReflectorTests: XCTestCase {
         )
     }
 
-    func testUnsupportedSchemaAbstainsRatherThanGuessing()
+    func testStructuredJSONReflectsAndRequiresConfirmationForTypedInvocation()
         throws
     {
         let reflector = try OpenAPIReflector(
@@ -357,11 +360,68 @@ final class OpenAPIReflectorTests: XCTestCase {
             reflectors: [reflector]
         )
 
+        let capability =
+            try XCTUnwrap(
+                engine
+                    .capabilities(
+                        for: "hello"
+                    )
+                    .capabilities
+                    .first
+            )
+
+        XCTAssertEqual(
+            capability.invocation,
+            .interactive
+        )
+
         XCTAssertTrue(
-            try engine
-                .capabilities(for: "hello")
-                .capabilities
-                .isEmpty
+            capability.requiresConfirmation
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "requestContentType"
+            ],
+            "application/json"
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "responseContentType"
+            ],
+            "application/json"
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "typedInvocation"
+            ],
+            "true"
+        )
+
+        XCTAssertNotNil(
+            capability.metadata[
+                "requestSchemaJSON"
+            ]
+        )
+
+        XCTAssertNotNil(
+            capability.metadata[
+                "responseSchemaJSON"
+            ]
+        )
+
+        let result =
+            try engine.run(
+                id: capability.id,
+                item: #"{"value":"hello"}"#,
+                confirmed: false
+            )
+
+        XCTAssertEqual(
+            result.status,
+            .confirmationRequired
         )
     }
 

@@ -14,6 +14,7 @@ final class OpenAPIRealProviderAcceptanceTests:
                 "title": "Ephemeral Local Text Provider",
                 "version": "1.0.0"
               },
+              "security": [],
               "paths": {
                 "/transform": {
                   "post": {
