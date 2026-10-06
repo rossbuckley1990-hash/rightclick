@@ -11,6 +11,29 @@ public final class OpenAPIReflector: CapabilityReflector {
         let properties:
             [String: JSONStringProperty]
         let canonicalJSON: String
+        let multiSegmentPathArguments:
+            Set<String>
+
+        init(
+            required: Set<String>,
+            properties:
+                [String: JSONStringProperty],
+            canonicalJSON: String,
+            multiSegmentPathArguments:
+                Set<String> = []
+        ) {
+            self.required =
+                required
+
+            self.properties =
+                properties
+
+            self.canonicalJSON =
+                canonicalJSON
+
+            self.multiSegmentPathArguments =
+                multiSegmentPathArguments
+        }
     }
 
     private enum AuthorityResolution {
@@ -2519,6 +2542,7 @@ public final class OpenAPIReflector: CapabilityReflector {
                 "required",
                 "schema",
                 "description",
+                "x-multi-segment",
             ]
 
         let allowedSchemaKeys:
@@ -2533,6 +2557,9 @@ public final class OpenAPIReflector: CapabilityReflector {
 
         var rawProperties:
             [String: Any] = [:]
+
+        var multiSegmentNames:
+            Set<String> = []
 
         for rawParameter
             in rawParameters
@@ -2584,6 +2611,37 @@ public final class OpenAPIReflector: CapabilityReflector {
                 ).inserted
             else {
                 return nil
+            }
+
+            let isMultiSegment:
+                Bool
+
+            if
+                let rawMultiSegment =
+                    parameter[
+                        "x-multi-segment"
+                    ]
+            {
+                guard
+                    let declared =
+                        rawMultiSegment
+                            as? Bool
+                else {
+                    return nil
+                }
+
+                isMultiSegment =
+                    declared
+
+            } else {
+                isMultiSegment =
+                    false
+            }
+
+            if isMultiSegment {
+                multiSegmentNames.insert(
+                    name
+                )
             }
 
             let token =
@@ -2647,8 +2705,24 @@ public final class OpenAPIReflector: CapabilityReflector {
                     rawProperties,
             ]
 
-        return parseClosedJSONStringObjectSchema(
-            argumentsSchema
+        guard
+            let parsed =
+                parseClosedJSONStringObjectSchema(
+                    argumentsSchema
+                )
+        else {
+            return nil
+        }
+
+        return JSONObjectSchema(
+            required:
+                parsed.required,
+            properties:
+                parsed.properties,
+            canonicalJSON:
+                parsed.canonicalJSON,
+            multiSegmentPathArguments:
+                multiSegmentNames
         )
     }
 
@@ -3485,6 +3559,71 @@ public final class OpenAPIReflector: CapabilityReflector {
         }
     }
 
+    private static func encodedMultiSegmentPathArgument(
+        _ value: String
+    ) throws -> String {
+        let segments =
+            value.split(
+                separator:
+                    "/",
+                omittingEmptySubsequences:
+                    false
+            )
+
+        guard
+            !segments.isEmpty
+        else {
+            throw RightClickError(
+                "Multi-segment path argument is empty."
+            )
+        }
+
+        var encodedSegments:
+            [String] = []
+
+        for rawSegment
+            in segments
+        {
+            let segment =
+                String(
+                    rawSegment
+                )
+
+            guard
+                !segment.isEmpty,
+                segment != ".",
+                segment != ".."
+            else {
+                throw RightClickError(
+                    "Multi-segment path argument contains an unsafe path segment."
+                )
+            }
+
+            guard
+                let encoded =
+                    segment
+                        .addingPercentEncoding(
+                            withAllowedCharacters:
+                                identifierCharacters
+                        )
+            else {
+                throw RightClickError(
+                    "Could not percent-encode multi-segment path argument."
+                )
+            }
+
+            encodedSegments.append(
+                encoded
+            )
+        }
+
+        return encodedSegments
+            .joined(
+                separator:
+                    "/"
+            )
+    }
+
     private static func substitutedPath(
         _ template: String,
         arguments:
@@ -3530,16 +3669,36 @@ public final class OpenAPIReflector: CapabilityReflector {
                 )
             }
 
-            guard
-                let encoded =
-                    value.addingPercentEncoding(
-                        withAllowedCharacters:
-                            identifierCharacters
+            let encoded:
+                String
+
+            if
+                schema
+                    .multiSegmentPathArguments
+                    .contains(
+                        name
                     )
-            else {
-                throw RightClickError(
-                    "Could not percent-encode path argument."
-                )
+            {
+                encoded =
+                    try encodedMultiSegmentPathArgument(
+                        value
+                    )
+
+            } else {
+                guard
+                    let singleSegment =
+                        value.addingPercentEncoding(
+                            withAllowedCharacters:
+                                identifierCharacters
+                        )
+                else {
+                    throw RightClickError(
+                        "Could not percent-encode path argument."
+                    )
+                }
+
+                encoded =
+                    singleSegment
             }
 
             result =
