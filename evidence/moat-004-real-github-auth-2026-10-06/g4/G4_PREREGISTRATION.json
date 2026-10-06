@@ -1,0 +1,23 @@
+{
+  "gate": "MOAT-004 G4",
+  "base": "b95b15bd187ea459285bbd9632c1793d1a6a6706",
+  "testPatchSHA256": "e542d353b6262f7c2aee4306fc90422404e57b7d1dd31da48033fc3c582e8b71",
+  "preimplementationResult": "SEMANTIC_RED",
+  "fallback": {
+    "scope": "GET_ONLY",
+    "requiresDeclaredApplicationJSONSchema": true,
+    "strongClosedSchemaPreferred": true,
+    "metadataKey": "resultValidation",
+    "metadataValue": "json_syntax_only",
+    "responseMustParseAsJSON": true,
+    "applicationJSONContentTypeStillRequired": true,
+    "mutatingOperationsExcluded": true
+  },
+  "githubTargetExpectedAfterGreen": {
+    "operationId": "users/get-authenticated",
+    "reflected": true,
+    "authorityRequired": false
+  },
+  "g5Implemented": false,
+  "providerSpecificProductionCodeAllowed": false
+}
