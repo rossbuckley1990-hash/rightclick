@@ -274,7 +274,7 @@ public enum ARDAcquisition {
         if let rawURL {
             guard
                 let string = rawURL as? String,
-                let canonical = validatedArtifactURL(string)
+                let canonical = validatedReferenceURL(string)
             else {
                 throw ARDAcquisitionError.invalidResult(index)
             }
@@ -319,6 +319,35 @@ public enum ARDAcquisition {
 
         return value.hasPrefix("urn:air:")
             || value.hasPrefix("urn:ai:")
+    }
+
+    private static func validatedReferenceURL(
+        _ raw: String
+    ) -> String? {
+        guard
+            raw.utf8.count <= 4096,
+            raw == raw.trimmingCharacters(in: .whitespacesAndNewlines),
+            var components = URLComponents(string: raw),
+            let rawScheme = components.scheme,
+            !rawScheme.isEmpty,
+            components.user == nil,
+            components.password == nil,
+            components.fragment == nil
+        else {
+            return nil
+        }
+
+        components.scheme = rawScheme.lowercased()
+
+        if let host = components.host {
+            components.host = host.lowercased()
+        }
+
+        guard let url = components.url else {
+            return nil
+        }
+
+        return url.absoluteString
     }
 
     private static func canonicalHTTPURL(
