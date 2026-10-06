@@ -1,0 +1,25 @@
+{
+  "experiment": "MOAT-005",
+  "gate": "G5",
+  "parent": "901b27be0983ef48d651bb78bd01ba84240a99b4",
+  "specificationCommit": "836ce198db13a6fb194547e53eea99c6ddae495b",
+  "specificationPath": "descriptions/api.github.com/api.github.com.2026-03-10.json",
+  "specificationURL": "https://raw.githubusercontent.com/github/rest-api-description/836ce198db13a6fb194547e53eea99c6ddae495b/descriptions/api.github.com/api.github.com.2026-03-10.json",
+  "specificationSHA256": "1429e93b5cbfa7547aa197e9553a6dacbd8d4aaf28012446ed730b152bcdf284",
+  "specificationBytes": 12901084,
+  "baseURL": "https://api.github.com",
+  "externalBearerScheme": "MOAT005G5Bearer",
+  "targetOperationId": "issues/create",
+  "targetMethod": "POST",
+  "targetPath": "/repos/{owner}/{repo}/issues",
+  "expectedRequiredArguments": [
+    "owner",
+    "repo",
+    "title"
+  ],
+  "expectedOptionalArguments": [
+    "body"
+  ],
+  "expectedResultValidation": "json_syntax_only",
+  "providerExecutionAllowed": false
+}
