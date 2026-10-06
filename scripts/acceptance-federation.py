@@ -39,7 +39,11 @@ repository = os.environ.get(
 )
 raw_origin = "https://raw.githubusercontent.com"
 spec_url = f"{raw_origin}/{repository}/{sha}/fixtures/federation-proof/openapi.json"
-expected = json.dumps(\n    json.loads((root / "fixtures/federation-proof/result.json").read_text()),\n    sort_keys=True,\n    separators=(",", ":"),\n)
+expected = json.dumps(
+    json.loads((root / "fixtures/federation-proof/result.json").read_text()),
+    sort_keys=True,
+    separators=(",", ":"),
+)
 
 def free_port():
     with socket.socket() as probe:
