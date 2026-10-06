@@ -267,9 +267,30 @@ public final class OpenAPIReflector: CapabilityReflector {
                     requestContentType
             }
 
-            if let schema =
-                operation.requestJSONSchema
+            let argumentsSchema:
+                JSONObjectSchema?
+
+            if
+                let pathSchema =
+                    operation.pathArgumentsSchema,
+                let requestSchema =
+                    operation.requestJSONSchema
+            {
+                argumentsSchema =
+                    Self.combinedArgumentsSchema(
+                        pathSchema:
+                            pathSchema,
+                        requestSchema:
+                            requestSchema
+                    )
+            } else {
+                argumentsSchema =
+                    operation.requestJSONSchema
                     ?? operation.pathArgumentsSchema
+            }
+
+            if let schema =
+                argumentsSchema
             {
                 metadata[
                     "argumentsSchema"
@@ -459,6 +480,133 @@ public final class OpenAPIReflector: CapabilityReflector {
 
             requestBody =
                 nil
+
+        } else if
+            let pathSchema =
+                operation.pathArgumentsSchema,
+            let requestSchema =
+                operation.requestJSONSchema,
+            operation.requestContentType
+                == "application/json"
+        {
+            guard
+                let arguments,
+                let combinedSchema =
+                    Self.combinedArgumentsSchema(
+                        pathSchema:
+                            pathSchema,
+                        requestSchema:
+                            requestSchema
+                    )
+            else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "The combined OpenAPI argument contract is unavailable.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "RIGHTCLICK could not construct a collision-free combined path and JSON argument schema."
+                        )
+                )
+            }
+
+            do {
+                try Self.validateArguments(
+                    arguments,
+                    schema:
+                        combinedSchema
+                )
+
+                let pathArguments =
+                    Dictionary(
+                        uniqueKeysWithValues:
+                            arguments
+                            .compactMap {
+                                key,
+                                value
+                                in
+
+                                pathSchema
+                                    .properties[
+                                        key
+                                    ] != nil
+                                ? (
+                                    key,
+                                    value
+                                )
+                                : nil
+                            }
+                    )
+
+                let bodyArguments =
+                    Dictionary(
+                        uniqueKeysWithValues:
+                            arguments
+                            .compactMap {
+                                key,
+                                value
+                                in
+
+                                requestSchema
+                                    .properties[
+                                        key
+                                    ] != nil
+                                ? (
+                                    key,
+                                    value
+                                )
+                                : nil
+                            }
+                    )
+
+                targetPath =
+                    try Self.substitutedPath(
+                        operation.path,
+                        arguments:
+                            pathArguments,
+                        schema:
+                            pathSchema
+                    )
+
+                requestBody =
+                    try Self
+                    .validatedJSONObjectBody(
+                        bodyArguments,
+                        schema:
+                            requestSchema
+                    )
+
+            } catch {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "Combined capability arguments failed schema validation: \(error)",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "RIGHTCLICK rejected combined path and JSON arguments before provider transport."
+                        )
+                )
+            }
 
         } else if let pathSchema =
             operation.pathArgumentsSchema
@@ -1654,13 +1802,15 @@ public final class OpenAPIReflector: CapabilityReflector {
                     }
 
                     let pathSchema =
-                        supportedGETPathArgumentSchema(
+                        supportedPathArgumentSchema(
                             path:
                                 path,
                             pathObject:
                                 pathObject,
                             operation:
-                                operation
+                                operation,
+                            allowRequestBody:
+                                false
                         )
 
                     if let pathSchema =
@@ -1711,16 +1861,6 @@ public final class OpenAPIReflector: CapabilityReflector {
                     responseJSONSyntaxOnly =
                         false
 
-                    guard
-                        !path.contains("{"),
-                        !path.contains("}")
-                    else {
-                        continue
-                    }
-
-                    pathArgumentsSchema =
-                        nil
-
                     if
                         supportsPlainTextRequest(
                             operation
@@ -1729,6 +1869,16 @@ public final class OpenAPIReflector: CapabilityReflector {
                             operation
                         )
                     {
+                        guard
+                            !path.contains("{"),
+                            !path.contains("}")
+                        else {
+                            continue
+                        }
+
+                        pathArgumentsSchema =
+                            nil
+
                         requestContentType =
                             "text/plain"
 
@@ -1751,6 +1901,45 @@ public final class OpenAPIReflector: CapabilityReflector {
                                 operation
                             )
                     {
+                        let pathSchema:
+                            JSONObjectSchema?
+
+                        if
+                            path.contains("{")
+                            || path.contains("}")
+                        {
+                            guard
+                                let supportedPathSchema =
+                                    supportedPathArgumentSchema(
+                                        path:
+                                            path,
+                                        pathObject:
+                                            pathObject,
+                                        operation:
+                                            operation,
+                                        allowRequestBody:
+                                            true
+                                    ),
+                                combinedArgumentsSchema(
+                                    pathSchema:
+                                        supportedPathSchema,
+                                    requestSchema:
+                                        requestSchema
+                                ) != nil
+                            else {
+                                continue
+                            }
+
+                            pathSchema =
+                                supportedPathSchema
+                        } else {
+                            pathSchema =
+                                nil
+                        }
+
+                        pathArgumentsSchema =
+                            pathSchema
+
                         requestContentType =
                             "application/json"
 
@@ -2046,14 +2235,18 @@ public final class OpenAPIReflector: CapabilityReflector {
         return true
     }
 
-    private static func supportedGETPathArgumentSchema(
+    private static func supportedPathArgumentSchema(
         path: String,
         pathObject: [String: Any],
-        operation: [String: Any]
+        operation: [String: Any],
+        allowRequestBody: Bool
     ) -> JSONObjectSchema? {
         guard
             pathObject["parameters"] == nil,
-            operation["requestBody"] == nil,
+            (
+                allowRequestBody
+                || operation["requestBody"] == nil
+            ),
             let parameters =
                 operation["parameters"]
                     as? [[String: Any]],
@@ -2504,6 +2697,114 @@ public final class OpenAPIReflector: CapabilityReflector {
                 properties,
             canonicalJSON:
                 canonicalJSON
+        )
+    }
+
+    private static func combinedArgumentsSchema(
+        pathSchema:
+            JSONObjectSchema,
+        requestSchema:
+            JSONObjectSchema
+    ) -> JSONObjectSchema? {
+        let pathNames =
+            Set(
+                pathSchema
+                    .properties
+                    .keys
+            )
+
+        let requestNames =
+            Set(
+                requestSchema
+                    .properties
+                    .keys
+            )
+
+        guard
+            pathNames.isDisjoint(
+                with:
+                    requestNames
+            )
+        else {
+            return nil
+        }
+
+        var rawProperties:
+            [String: Any] = [:]
+
+        for (
+            name,
+            property
+        ) in pathSchema.properties {
+            var raw:
+                [String: Any] = [
+                    "type":
+                        "string"
+                ]
+
+            if let allowed =
+                property.allowedValues
+            {
+                raw[
+                    "enum"
+                ] =
+                    allowed.sorted()
+            }
+
+            rawProperties[
+                name
+            ] =
+                raw
+        }
+
+        for (
+            name,
+            property
+        ) in requestSchema.properties {
+            var raw:
+                [String: Any] = [
+                    "type":
+                        "string"
+                ]
+
+            if let allowed =
+                property.allowedValues
+            {
+                raw[
+                    "enum"
+                ] =
+                    allowed.sorted()
+            }
+
+            rawProperties[
+                name
+            ] =
+                raw
+        }
+
+        let rawSchema:
+            [String: Any] = [
+                "type":
+                    "object",
+
+                "additionalProperties":
+                    false,
+
+                "required":
+                    pathSchema
+                    .required
+                    .union(
+                        requestSchema
+                            .required
+                    )
+                    .sorted(),
+
+                "properties":
+                    rawProperties,
+            ]
+
+        return parseClosedJSONStringObjectSchema(
+            rawSchema
         )
     }
 
