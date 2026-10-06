@@ -98,14 +98,30 @@ final class CapabilityRuntimeDefaultsTests:
                         false
                 )
 
+        let sourceIDs =
+            Set(
+                sources.map {
+                    $0.id
+                }
+            )
+
         XCTAssertEqual(
             sources.count,
-            1
+            2
+        )
+
+        XCTAssertEqual(
+            sourceIDs,
+            Set([
+                "bonjour.openapi",
+                "configured.openapi",
+            ])
         )
 
         XCTAssertTrue(
-            sources.first
-                is BonjourOpenAPISource
+            sources.contains {
+                $0 is BonjourOpenAPISource
+            }
         )
     }
 

@@ -9,10 +9,12 @@ public enum CapabilityReflectorSourceDefaults {
         startBrowsing: Bool = true
     ) -> [any CapabilityReflectorSource] {
         [
+            ConfiguredOpenAPISource(),
+
             BonjourOpenAPISource(
                 startBrowsing:
                     startBrowsing
-            )
+            ),
         ]
     }
 }
