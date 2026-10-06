@@ -1,0 +1,30 @@
+{
+  "additionalProperties": "UNSPECIFIED",
+  "assigneesType": "array",
+  "bodyType": "string",
+  "experiment": "MOAT-005",
+  "fixtureBoundary": "Exact deep-resolved GitHub request schema; already-proven G2 path semantics; synthetic closed response.",
+  "gate": "G3",
+  "labelsType": "array",
+  "parentIssueIDType": "integer",
+  "properties": [
+    "assignees",
+    "body",
+    "issue_field_values",
+    "labels",
+    "milestone",
+    "parent_issue_id",
+    "title",
+    "type"
+  ],
+  "requestBodyRequired": true,
+  "requestSchemaSHA256": "a62a780f959c6ffab8a9a2444a513f907ea4861d3028b9565af85dc7134299d4",
+  "required": [
+    "title"
+  ],
+  "schemaType": "object",
+  "sourceOperationId": "issues/create",
+  "sourcePath": "/repos/{owner}/{repo}/issues",
+  "titleStringBranchCount": 1,
+  "titleUsesOneOf": true
+}
