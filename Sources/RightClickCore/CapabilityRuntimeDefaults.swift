@@ -15,6 +15,10 @@ public enum CapabilityReflectorSourceDefaults {
                 startBrowsing:
                     startBrowsing
             ),
+            BonjourGraphQLSource(
+                startBrowsing:
+                    startBrowsing
+            ),
         ]
     }
 }

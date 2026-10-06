@@ -107,12 +107,13 @@ final class CapabilityRuntimeDefaultsTests:
 
         XCTAssertEqual(
             sources.count,
-            2
+            3
         )
 
         XCTAssertEqual(
             sourceIDs,
             Set([
+                "bonjour.graphql",
                 "bonjour.openapi",
                 "configured.openapi",
             ])
@@ -121,6 +122,12 @@ final class CapabilityRuntimeDefaultsTests:
         XCTAssertTrue(
             sources.contains {
                 $0 is BonjourOpenAPISource
+            }
+        )
+
+        XCTAssertTrue(
+            sources.contains {
+                $0 is BonjourGraphQLSource
             }
         )
     }
