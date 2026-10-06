@@ -81,6 +81,17 @@ final class OAuthOIDCAuthorityTests: XCTestCase {
         XCTAssertThrowsError(
             try OAuthAuthorizationServerMetadata.decodeAndValidate(
                 metadataData(
+                    issuer:
+                        "HTTPS://AUTH.EXAMPLE.COM:443/tenant/"
+                ),
+                expectedIssuer:
+                    "https://auth.example.com/tenant"
+            )
+        )
+
+        XCTAssertThrowsError(
+            try OAuthAuthorizationServerMetadata.decodeAndValidate(
+                metadataData(
                     authorizationEndpoint:
                         "http://auth.example.com/authorize"
                 ),
