@@ -1,6 +1,6 @@
 # Contributing
 
-RIGHTCLICK v0.1's capability engine is frozen. Accept release-critical fixes; defer platforms, new capability families, provider-specific integrations, Accessibility/AppleScript automation, devices, and network discovery.
+RIGHTCLICK v0.2.1's generic capability architecture is release-frozen. Accept narrowly scoped release-critical fixes; defer provider-specific integrations, speculative automation, and new capability families that are not backed by preregistered evidence and regression coverage.
 
 RIGHTCLICK asks the environment which actions apply to an object. Preserve generic discovery and shared applicability/payload rules. Do not replace them with a hard-coded action catalogue. Services use documented `NSServices` metadata and `NSPerformService`. Sharing uses the deprecated context-filtered discovery API honestly. Action extensions remain unsupported for invocation; no private `NSExtension` calls belong in production.
 

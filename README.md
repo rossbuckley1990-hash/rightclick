@@ -10,7 +10,7 @@ Not every installed app exposes compatible native capabilities. RIGHTCLICK does 
 
 ### Install
 
-v0.1.0 targets Apple Silicon and macOS 14 or later. Homebrew is the primary distribution path; no paid Apple Developer account is required. The [0.1.0 release](https://github.com/rossbuckley1990-hash/rightclick/releases/tag/v0.1.0) and [tap](https://github.com/rossbuckley1990-hash/homebrew-tap) are public:
+v0.2.1 targets Apple Silicon and macOS 14 or later. Homebrew is the primary distribution path; no paid Apple Developer account is required. Install from the public [Homebrew tap](https://github.com/rossbuckley1990-hash/homebrew-tap):
 
 ```bash
 brew install rossbuckley1990-hash/tap/rightclick
@@ -29,7 +29,7 @@ scripts/build-cli.sh
 .build/release/rightclick setup
 ```
 
-`setup` checks discovery and merges only the `rightclick` entry into `~/.cursor/mcp.json`, using the executable you ran. Enable RIGHTCLICK in Cursor's MCP settings if required, then start a new chat and ask “What can my Mac do with this text: RightClick?” Other MCP clients can launch the Homebrew-installed executable with argument `mcp`.
+`setup` configures supported local MCP clients while preserving unrelated configuration. For ChatGPT's persistent remote bridge, preview with `rightclick setup chatgpt --dry-run --json`, then apply with `rightclick setup chatgpt --yes`. Persistent ChatGPT configuration is accepted only from the supported stable Homebrew entrypoint.
 
 ```bash
 rightclick actions "RightClick third party capability test"
@@ -60,7 +60,7 @@ execution
 outcome verification
 ```
 
-v0.1 tests this architecture using macOS Services, sharing services, and Finder Action extension metadata. The CLI and six MCP tools use the same engine: `context_inspect`, `context_actions`, `context_explain`, `context_run`, `context_run_status`, and `context_providers`.
+v0.2.1 preserves the generic macOS capability reflectors and adds dynamic OpenAPI capability acquisition. The CLI and seven MCP tools use the same engine: `context_inspect`, `context_actions`, `context_explain`, `context_run`, `context_run_status`, `context_providers`, and `context_runtime`.
 
 Services come from documented `NSServices` metadata and run through `NSPerformService`. Sharing discovery uses the deprecated `NSSharingService.sharingServices(forItems:)`; it still returns a context-filtered catalog on the proof Mac. Sharing invocation uses public `perform(withItems:)`. Finder Action extensions are discovered from metadata and marked unsupported for invocation because `NSExtension` is absent from the public SDK.
 
@@ -79,4 +79,4 @@ Services come from documented `NSServices` metadata and run through `NSPerformSe
 - Execution status is retained in the serving process; it is lost on restart and is unavailable to a separate CLI process.
 - Authenticated Streamable HTTP works on loopback. `rightclick serve` prints a bearer secret; keep it private. Development tunnels are optional and require explicit, deliberate exposure.
 
-The capability engine is frozen for v0.1. New platforms and capability families are outside this release. [Completion evidence](docs/V0.1_COMPLETION_REPORT.md), [release procedure](docs/RELEASE.md), [security](SECURITY.md), [contributing](CONTRIBUTING.md), and [Apache-2.0 licence](LICENSE).
+The v0.2.1 release candidate passed 219 automated tests with zero skips and zero failures under the complete live-fixture acceptance gate. Historical v0.1 evidence remains preserved unchanged. See [v0.2.1 release notes](docs/RELEASE_NOTES_v0.2.1.md), [release procedure](docs/RELEASE.md), [security](SECURITY.md), [contributing](CONTRIBUTING.md), and the [Apache-2.0 licence](LICENSE).
