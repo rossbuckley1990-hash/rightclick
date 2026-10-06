@@ -94,6 +94,11 @@ final class BonjourRealLifecycleAcceptanceTests:
         let host =
             "rc\(suffix).local."
 
+        let canonicalHost =
+            String(
+                host.dropLast()
+            )
+
         let source =
             BonjourOpenAPISource(
                 startBrowsing: true
@@ -117,12 +122,24 @@ final class BonjourRealLifecycleAcceptanceTests:
                 .first {
                     capability in
 
-                    capability
-                        .metadata[
-                            "baseURL"
-                        ]?
-                        .contains(host)
-                        == true
+                    guard
+                        let rawBaseURL =
+                            capability
+                            .metadata[
+                                "baseURL"
+                            ],
+                        let baseURL =
+                            URL(
+                                string:
+                                    rawBaseURL
+                            )
+                    else {
+                        return false
+                    }
+
+                    return
+                        baseURL.host
+                        == canonicalHost
                 }
         }
 

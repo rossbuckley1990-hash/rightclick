@@ -48,10 +48,42 @@ struct CLI {
             print(RightClickVersion.current)
             return 0
         case "setup":
-            return RightClickSetup.run(
-                args: rest,
-                json: json
-            )
+            do {
+                if rest.first == "chatgpt" {
+                    return RightClickChatGPTOnboarding.run(
+                        args: rest,
+                        executable: RightClickSetup.executablePath()
+                    )
+                }
+
+                if try RightClickLocalOnboarding.bridgeArguments(rest) {
+                    return RightClickSetup.run(args: rest, json: json)
+                }
+                return RightClickLocalOnboarding.run(
+                    args: rest,
+                    executable: RightClickSetup.executablePath()
+                ) {
+                    let item = try CapabilityEngine().inspect("RIGHTCLICK onboarding probe")
+                    guard item.typeIdentifier == "public.plain-text" else {
+                        throw RightClickLocalOnboarding.SetupError(
+                            "Local text inspection did not return public.plain-text."
+                        )
+                    }
+                    return "PASS: local text inspection; not an MCP connection test"
+                }
+            } catch {
+                if json {
+                    print(RightClickJSON.encode([
+                        "status": "FAILED",
+                        "error": String(describing: error),
+                        "mcpConnection": "NOT_VERIFIED",
+                        "outcomeVerification": "NOT_RUN",
+                    ]))
+                } else {
+                    fputs("Setup failed: \(error)\n", stderr)
+                }
+                return 2
+            }
         case "bridge":
             return RightClickBridgeCLI.run(rest)
         case "auth":
@@ -242,7 +274,9 @@ struct CLI {
         rightclick status <execution-id>
         rightclick providers
         rightclick refresh
-        rightclick setup [--chatgpt-tunnel-id tunnel_...]
+        rightclick setup [--client cursor] [--yes] [--dry-run]
+        rightclick setup --client cursor --disconnect [--yes] [--dry-run]
+        rightclick setup --chatgpt-tunnel-id tunnel_...  (explicit legacy bridge preparation)
         rightclick bridge run
         rightclick bridge activate|status|deactivate
         rightclick bridge key set|status|delete
