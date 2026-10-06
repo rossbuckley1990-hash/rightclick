@@ -1,0 +1,17 @@
+{
+  "actionId": "openapi:654dcd0720c8c3e79e4c629d4cd48e62a33fcaa4ed466d9c7ba23261945613fc:b320cf124cf8e3d7:createSecureRecord",
+  "events": [
+    "HTTP POST [REDACTED_TEMP_PROVIDER_URL]/records",
+    "provider returned 201"
+  ],
+  "evidence": {
+    "boundary": "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
+    "outcomeVerified": true,
+    "type": "returned_text_postcondition"
+  },
+  "executionId": "B38346BB-2534-439A-9440-15564D9C4EF8",
+  "message": "Returned text matches the explicit postcondition.",
+  "output": "{\"id\":\"moat003-secure-record\",\"priority\":\"high\",\"title\":\"RightClick MOAT-003 GREEN LIVE\"}",
+  "state": "succeeded",
+  "title": "Create Secure Record"
+}

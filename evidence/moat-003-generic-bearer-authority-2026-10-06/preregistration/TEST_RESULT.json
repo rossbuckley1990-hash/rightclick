@@ -1,0 +1,36 @@
+{
+  "authority": {
+    "accountFormat": "http-bearer|<canonical-origin>|<security-scheme-name>",
+    "crossOriginReuseForbidden": true,
+    "kind": "http_bearer",
+    "missingCredentialFailsBeforeTransport": true,
+    "secretExposedToAISurface": false,
+    "service": "ai.rightclick.openapi-authority",
+    "storage": "macOS Keychain generic password"
+  },
+  "authorityTests": {
+    "executed": 7,
+    "failed": 0
+  },
+  "baseCommit": "b9361d3f19abab7bc7916a08f81687a52cb3f2b9",
+  "experiment": "MOAT-003 GREEN Generic HTTP Bearer Authority",
+  "fullSuite": {
+    "executed": 148,
+    "failed": 0,
+    "skipped": 8
+  },
+  "implementationPatchSHA256": "a8416262f4b577126e3cf0739796bf850e9f2e24de49564ac1129520a0b319d9",
+  "mcp": {
+    "contextRunSchemaChanged": false,
+    "providerSpecificToolAdded": false,
+    "toolContractChanged": false,
+    "toolCount": 7
+  },
+  "openAPIReflectorTests": {
+    "executed": 14,
+    "failed": 0
+  },
+  "preregisteredTestsPatchSHA256": "01a8971c7144c7605c47c58121113f5cb1e1f828fe379a13ca4b44bc03446919",
+  "releaseBinarySHA256": "631ae7919bb1eb924137924b1306bc4a05641e2ed8e3890cbd5497d1039a94cc",
+  "result": "PASS"
+}
