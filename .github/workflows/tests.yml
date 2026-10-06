@@ -30,6 +30,20 @@ jobs:
       - run: scripts/build-cli.sh
       - run: python3 scripts/package-source.py
 
+  ard-runtime:
+    name: macOS ARD runtime gates
+    runs-on: macos-15
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Toolchain
+        run: swift --version
+      - name: G13 portable parser contract
+        run: swift test --force-resolved-versions --filter ARDPortableTests
+      - name: G14-G16 runtime gates
+        run: swift test --force-resolved-versions --filter ARDAcquisitionGateTests
+
   ard-portable:
     name: Linux ARD portable acquisition
     runs-on: ubuntu-latest
