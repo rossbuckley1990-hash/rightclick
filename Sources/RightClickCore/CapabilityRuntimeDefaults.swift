@@ -33,6 +33,15 @@ public enum CapabilityReflectorSourceDefaults {
         }
 #endif
 
+#if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
+        sources.append(
+            BonjourGRPCSource(
+                startBrowsing:
+                    startBrowsing
+            )
+        )
+#endif
+
         return sources
     }
 }
