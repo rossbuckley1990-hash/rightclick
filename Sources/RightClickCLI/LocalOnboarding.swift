@@ -14,6 +14,7 @@ enum RightClickLocalOnboarding {
 
     struct Options {
         var client: String?
+        var all = false
         var yes = false
         var dryRun = false
         var json = false
@@ -29,18 +30,37 @@ enum RightClickLocalOnboarding {
                 switch arg {
                 case "--client":
                     index += 1
-                    guard index < args.count,
-                          ["cursor", "claude", "codex"].contains(args[index])
+                    guard
+                        index < args.count,
+                        RightClickClientRegistry
+                            .adapter(
+                                id: args[index]
+                            ) != nil
                     else {
+                        let supported =
+                            RightClickClientRegistry
+                                .supportedIDs
+                                .map {
+                                    "--client " + $0
+                                }
+                                .joined(
+                                    separator: ", "
+                                )
+
                         throw SetupError(
-                            "RIGHTCLICK currently supports "
-                            + "--client cursor, --client claude, "
-                            + "or --client codex."
+                            "RIGHTCLICK currently supports: "
+                            + supported
+                            + "."
                         )
                     }
+
                     client = args[index]
-                case "--yes": yes = true
-                case "--dry-run": dryRun = true
+                case "--all":
+                    all = true
+                case "--yes":
+                    yes = true
+                case "--dry-run":
+                    dryRun = true
                 case "--json": json = true
                 case "--disconnect": disconnect = true
                 case "--help", "-h": help = true
@@ -48,31 +68,80 @@ enum RightClickLocalOnboarding {
                 }
                 index += 1
             }
-            if yes && client == nil {
+            if all && client != nil {
                 throw SetupError(
-                    "Use --client cursor, --client claude, "
-                    + "or --client codex with --yes to "
-                    + "explicitly select the client."
+                    "--all and --client are mutually exclusive."
+                )
+            }
+
+            if yes
+                && client == nil
+                && !all
+            {
+                throw SetupError(
+                    "Use --client <id> or --all with --yes. "
+                    + "Supported IDs: "
+                    + RightClickClientRegistry
+                        .supportedIDs
+                        .joined(separator: ", ")
+                    + "."
                 )
             }
         }
     }
 
-    static let usage = """
-    rightclick setup
-    rightclick setup --client cursor [--yes] [--dry-run] [--json]
-    rightclick setup --client cursor --disconnect [--yes] [--dry-run] [--json]
-    rightclick setup --client claude [--yes] [--dry-run] [--json]
-    rightclick setup --client claude --disconnect [--yes] [--dry-run] [--json]
-    rightclick setup --client codex [--yes] [--dry-run] [--json]
-    rightclick setup --client codex --disconnect [--yes] [--dry-run] [--json]
+    static var usage: String {
+        var lines: [String] = [
+            "rightclick setup",
+            "rightclick setup --all [--yes] [--dry-run] [--json]",
+            "rightclick setup --all --disconnect [--yes] [--dry-run] [--json]",
+        ]
 
-    Cursor uses its local JSON MCP configuration.
-    Claude Code uses its native user-scope MCP registration CLI.
-    Codex uses its native global MCP registration CLI.
-    Dry-run may inspect current state but never mutates configuration.
-    Existing different rightclick registrations are never silently replaced.
-    """
+        for id in
+            RightClickClientRegistry
+                .supportedIDs
+        {
+            lines.append(
+                "rightclick setup --client "
+                + id
+                + " [--yes] [--dry-run] [--json]"
+            )
+
+            lines.append(
+                "rightclick setup --client "
+                + id
+                + " --disconnect [--yes] "
+                + "[--dry-run] [--json]"
+            )
+        }
+
+        lines.append("")
+
+        for adapter in
+            RightClickClientRegistry
+                .adapters
+        {
+            lines.append(
+                adapter.displayName
+                + ": "
+                + adapter.setupNotice
+            )
+        }
+
+        lines.append(
+            "Dry-run may inspect current state "
+            + "but never mutates configuration."
+        )
+
+        lines.append(
+            "Existing different rightclick "
+            + "registrations are never silently replaced."
+        )
+
+        return lines.joined(
+            separator: "\n"
+        )
+    }
 
     static func bridgeArguments(_ args: [String]) throws -> Bool {
         guard args.contains("--chatgpt-tunnel-id") else { return false }
@@ -102,12 +171,32 @@ enum RightClickLocalOnboarding {
         return true
     }
 
-    static func cursorDetected(home: URL, applications: URL = URL(fileURLWithPath: "/Applications")) -> Bool {
-        RightClickCursorClientAdapter().detected(home: home, applications: applications)
+    static func cursorDetected(
+        home: URL,
+        applications: URL =
+            URL(
+                fileURLWithPath: "/Applications"
+            )
+    ) -> Bool {
+        RightClickClientRegistry
+            .adapters
+            .first?
+            .detected(
+                home: home,
+                applications: applications
+            )
+        ?? false
     }
 
-    static func desiredEntry(executable: String) throws -> [String: Any] {
-        try RightClickCursorClientAdapter().connectionRecipe(executable: executable).jsonMCPEntry
+    static func desiredEntry(
+        executable: String
+    ) throws -> [String: Any] {
+        try RightClickConnectionRecipe
+            .stdio(
+                command: executable,
+                arguments: ["mcp"]
+            )
+            .jsonMCPEntry
     }
 
     // Compatibility shim for existing onboarding transactions that already
@@ -134,6 +223,538 @@ enum RightClickLocalOnboarding {
         try RightClickJSONConfigBackend.apply(plan)
     }
 
+    private static func emitAggregate(
+        _ payload: [String: Any],
+        json: Bool,
+        output: (String) -> Void
+    ) {
+        if json,
+           let data =
+            try? JSONSerialization
+                .data(
+                    withJSONObject:
+                        payload,
+                    options:
+                        [.sortedKeys]
+                ),
+           let text =
+            String(
+                data: data,
+                encoding: .utf8
+            )
+        {
+            output(text)
+            return
+        }
+
+        if let data =
+            try? JSONSerialization
+                .data(
+                    withJSONObject:
+                        payload,
+                    options:
+                        [
+                            .prettyPrinted,
+                            .sortedKeys,
+                        ]
+                ),
+           let text =
+            String(
+                data: data,
+                encoding: .utf8
+            )
+        {
+            output(text)
+            return
+        }
+
+        output(
+            String(
+                describing:
+                    payload
+            )
+        )
+    }
+
+    private static func aggregateClientRecord(
+        _ prepared:
+            RightClickSetupAllTransaction
+                .PreparedClient,
+        applied:
+            RightClickOnboardingApplied? = nil,
+        mutationExecuted: Bool
+    ) -> [String: Any] {
+        var record:
+            [String: Any] = [
+                "client":
+                    prepared.plan.clientID,
+                "displayName":
+                    prepared.plan
+                        .clientDisplayName,
+                "configuration":
+                    prepared.plan
+                        .configurationFile
+                        .path,
+                "operation":
+                    prepared.plan
+                        .mutation
+                        .operation,
+                "configurationChanged":
+                    mutationExecuted
+                    && prepared
+                        .plan
+                        .mutation
+                        .changed
+                        ? "true"
+                        : "false",
+                "registrationBackend":
+                    prepared.plan
+                        .mutation
+                        .backendID,
+                "registrationScope":
+                    prepared.plan
+                        .mutation
+                        .scope
+                    ?? "client-config",
+                "mcpConnection":
+                    "NOT_VERIFIED",
+            ]
+
+        if applied?
+            .connectionState
+            == .connected
+        {
+            record[
+                "mcpConnection"
+            ] = "CONNECTED"
+        }
+
+        return record
+    }
+
+    private static func runAll(
+        options: Options,
+        executable: String,
+        home: URL,
+        interactive: Bool,
+        readAnswer: () -> String?,
+        output: (String) -> Void,
+        probe: () throws -> String,
+        json: Bool
+    ) -> Int {
+        let applications =
+            URL(
+                fileURLWithPath:
+                    "/Applications"
+            )
+
+        let adapters =
+            RightClickClientRegistry
+                .detected(
+                    home: home,
+                    applications:
+                        applications
+                )
+
+        let detectedIDs =
+            adapters.map {
+                $0.id
+            }
+
+        guard !adapters.isEmpty
+        else {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "error":
+                        "No supported local client was detected.",
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        }
+
+        guard
+            options.disconnect
+            || FileManager.default
+                .isExecutableFile(
+                    atPath:
+                        executable
+                )
+        else {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "error":
+                        "The RIGHTCLICK executable is missing "
+                        + "or not executable: "
+                        + executable,
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        }
+
+        let prepared:
+            [
+                RightClickSetupAllTransaction
+                    .PreparedClient
+            ]
+
+        do {
+            prepared =
+                try RightClickSetupAllTransaction
+                    .preflight(
+                        adapters:
+                            adapters,
+                        home:
+                            home,
+                        executable:
+                            executable,
+                        disconnect:
+                            options.disconnect
+                    )
+        } catch let failure
+            as RightClickSetupAllTransaction
+                .PreflightFailure
+        {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "failedClient":
+                        failure.clientID,
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "error":
+                        failure.description,
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        } catch {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "error":
+                        String(
+                            describing:
+                                error
+                        ),
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        }
+
+        let plannedRecords =
+            prepared.map {
+                aggregateClientRecord(
+                    $0,
+                    mutationExecuted:
+                        false
+                )
+            }
+
+        let anyChange =
+            prepared.contains {
+                $0.plan
+                    .mutation
+                    .changed
+            }
+
+        if options.dryRun {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "DRY_RUN",
+                    "detectedClients":
+                        detectedIDs,
+                    "configurationChanged":
+                        "false",
+                    "rollbackStatus":
+                        "NOT_REQUIRED",
+                    "localProbe":
+                        "NOT_RUN",
+                    "clients":
+                        plannedRecords,
+                ],
+                json: json,
+                output: output
+            )
+
+            return 0
+        }
+
+        if anyChange
+            && !options.yes
+        {
+            if !interactive
+                || json
+            {
+                emitAggregate(
+                    [
+                        "client": "all",
+                        "status":
+                            "CONSENT_REQUIRED",
+                        "detectedClients":
+                            detectedIDs,
+                        "configurationChanged":
+                            "false",
+                        "rollbackStatus":
+                            "NOT_REQUIRED",
+                        "localProbe":
+                            "NOT_RUN",
+                        "clients":
+                            plannedRecords,
+                        "next":
+                            "Review the aggregate plan, "
+                            + "then run setup --all --yes"
+                            + (
+                                options.disconnect
+                                ? " --disconnect"
+                                : ""
+                            ),
+                    ],
+                    json: json,
+                    output: output
+                )
+
+                return 3
+            }
+
+            output(
+                """
+                RIGHTCLICK multi-client setup
+
+                Detected clients:
+                \(detectedIDs.joined(separator: ", "))
+
+                All detected clients have been preflighted.
+                No client has been modified yet.
+
+                """
+            )
+
+            output(
+                "Apply this transaction to all detected clients? [y/N]"
+            )
+
+            let answer =
+                readAnswer()?
+                    .trimmingCharacters(
+                        in:
+                            .whitespacesAndNewlines
+                    )
+                    .lowercased()
+
+            guard
+                answer == "y"
+                || answer == "yes"
+            else {
+                emitAggregate(
+                    [
+                        "client": "all",
+                        "status": "CANCELLED",
+                        "detectedClients":
+                            detectedIDs,
+                        "configurationChanged":
+                            "false",
+                        "rollbackStatus":
+                            "NOT_REQUIRED",
+                        "localProbe":
+                            "NOT_RUN",
+                        "clients":
+                            plannedRecords,
+                    ],
+                    json: json,
+                    output: output
+                )
+
+                return 3
+            }
+        }
+
+        var probeResult =
+            "NOT_RUN"
+
+        if !options.disconnect {
+            do {
+                probeResult =
+                    try probe()
+            } catch {
+                emitAggregate(
+                    [
+                        "client": "all",
+                        "status": "FAILED",
+                        "detectedClients":
+                            detectedIDs,
+                        "failedClient":
+                            "rightclick",
+                        "configurationChanged":
+                            "false",
+                        "rollbackStatus":
+                            "NOT_REQUIRED",
+                        "localProbe":
+                            "FAILED",
+                        "clients":
+                            plannedRecords,
+                        "error":
+                            String(
+                                describing:
+                                    error
+                            ),
+                    ],
+                    json: json,
+                    output: output
+                )
+
+                return 1
+            }
+        }
+
+        let applied:
+            [
+                RightClickSetupAllTransaction
+                    .AppliedClient
+            ]
+
+        do {
+            applied =
+                try RightClickSetupAllTransaction
+                    .apply(
+                        prepared
+                    )
+        } catch let failure
+            as RightClickSetupAllTransaction
+                .ApplyFailure
+        {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "failedClient":
+                        failure.clientID,
+                    "configurationChanged":
+                        "false",
+                    "rollbackStatus":
+                        failure.rollbackStatus,
+                    "localProbe":
+                        probeResult,
+                    "clients":
+                        plannedRecords,
+                    "error":
+                        failure.description,
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        } catch {
+            emitAggregate(
+                [
+                    "client": "all",
+                    "status": "FAILED",
+                    "detectedClients":
+                        detectedIDs,
+                    "configurationChanged":
+                        "false",
+                    "rollbackStatus":
+                        "ROLLBACK_FAILED",
+                    "localProbe":
+                        probeResult,
+                    "clients":
+                        plannedRecords,
+                    "error":
+                        String(
+                            describing:
+                                error
+                        ),
+                ],
+                json: json,
+                output: output
+            )
+
+            return 1
+        }
+
+        let clientRecords =
+            applied.map {
+                aggregateClientRecord(
+                    $0.prepared,
+                    applied:
+                        $0.result,
+                    mutationExecuted:
+                        true
+                )
+            }
+
+        let status: String
+
+        if options.disconnect {
+            status =
+                anyChange
+                ? "DISCONNECTED"
+                : "ALREADY_DISCONNECTED"
+        } else {
+            status =
+                anyChange
+                ? "CONFIGURED"
+                : "ALREADY_CONFIGURED"
+        }
+
+        emitAggregate(
+            [
+                "client": "all",
+                "status": status,
+                "detectedClients":
+                    detectedIDs,
+                "configurationChanged":
+                    anyChange
+                    ? "true"
+                    : "false",
+                "rollbackStatus":
+                    "NOT_REQUIRED",
+                "localProbe":
+                    probeResult,
+                "clients":
+                    clientRecords,
+            ],
+            json: json,
+            output: output
+        )
+
+        return 0
+    }
+
     static func run(
         args: [String], executable: String,
         home: URL = FileManager.default.homeDirectoryForCurrentUser,
@@ -156,56 +777,73 @@ enum RightClickLocalOnboarding {
                 return 0
             }
 
-            let cursor = RightClickCursorClientAdapter()
-            let claude = RightClickClaudeClientAdapter()
-            let codex = RightClickCodexClientAdapter()
+            if options.all {
+                return runAll(
+                    options:
+                        options,
+                    executable:
+                        executable,
+                    home:
+                        home,
+                    interactive:
+                        interactive,
+                    readAnswer:
+                        readAnswer,
+                    output:
+                        output,
+                    probe:
+                        probe,
+                    json:
+                        json
+                )
+            }
 
-            let adapter: any RightClickClientAdapter
+            let applications =
+                URL(
+                    fileURLWithPath:
+                        "/Applications"
+                )
 
-            switch options.client {
-            case "cursor":
-                adapter = cursor
+            let adapter:
+                any RightClickClientAdapter
 
-            case "claude":
-                adapter = claude
-
-            case "codex":
-                adapter = codex
-
-            case nil:
-                if cursor.detected(
-                    home: home,
-                    applications: URL(
-                        fileURLWithPath: "/Applications"
-                    )
-                ) {
-                    adapter = cursor
-                } else if claude.detected(
-                    home: home,
-                    applications: URL(
-                        fileURLWithPath: "/Applications"
-                    )
-                ) {
-                    adapter = claude
-                } else if codex.detected(
-                    home: home,
-                    applications: URL(
-                        fileURLWithPath: "/Applications"
-                    )
-                ) {
-                    adapter = codex
-                } else {
+            if let clientID =
+                options.client
+            {
+                guard let selected =
+                    RightClickClientRegistry
+                        .adapter(
+                            id: clientID
+                        )
+                else {
                     throw SetupError(
-                        "No supported local client was detected. "
-                        + "Use --client cursor, --client claude, "
-                        + "or --client codex to explicitly select one."
+                        "Unsupported local client."
                     )
                 }
 
-            default:
-                throw SetupError(
-                    "Unsupported local client."
-                )
+                adapter = selected
+            } else {
+                let detected =
+                    RightClickClientRegistry
+                        .detected(
+                            home: home,
+                            applications: applications
+                        )
+
+                guard let selected =
+                    detected.first
+                else {
+                    throw SetupError(
+                        "No supported local client "
+                        + "was detected. Supported IDs: "
+                        + RightClickClientRegistry
+                            .supportedIDs
+                            .joined(separator: ", ")
+                        + "."
+                    )
+                }
+
+                adapter = selected
             }
 
             guard options.disconnect
@@ -234,30 +872,8 @@ enum RightClickLocalOnboarding {
             let recipe =
                 onboarding.recipe
 
-            let notice: String
-
-            switch onboarding.clientID {
-            case "claude":
-                notice =
-                    "Claude Code will use its native "
-                    + "user-scope MCP registration. "
-                    + "RIGHTCLICK does not write Claude "
-                    + "JSON directly."
-
-            case "codex":
-                notice =
-                    "Codex will use its native global "
-                    + "MCP registration. RIGHTCLICK does "
-                    + "not write Codex config.toml directly."
-
-            default:
-                notice =
-                    "Cursor can launch this executable and "
-                    + "request its discovered capabilities. "
-                    + "Existing action confirmations still "
-                    + "apply. Close Cursor while changing "
-                    + "its configuration."
-            }
+            let notice =
+                adapter.setupNotice
 
             var payload: [String: String] = [
                 "client": onboarding.clientID,
@@ -334,47 +950,12 @@ enum RightClickLocalOnboarding {
                 payload["mcpConnection"] = "CONNECTED"
             }
 
-            if options.disconnect {
-                switch onboarding.clientID {
-                case "claude":
-                    payload["next"] =
-                        "Claude Code no longer has the "
-                        + "RIGHTCLICK user-scope MCP registration."
+            payload["next"] =
+                adapter.nextMessage(
+                    disconnect:
+                        options.disconnect
+                )
 
-                case "codex":
-                    payload["next"] =
-                        "Codex no longer has the RIGHTCLICK "
-                        + "global MCP registration."
-
-                default:
-                    payload["next"] =
-                        "Reload Cursor to stop using this entry. "
-                        + "No process was stopped by setup."
-                }
-            } else {
-                switch onboarding.clientID {
-                case "claude":
-                    payload["next"] =
-                        "Claude Code reports RIGHTCLICK connected. "
-                        + "Start a new Claude Code session and ask "
-                        + "it to use RIGHTCLICK."
-
-                case "codex":
-                    payload["next"] =
-                        "Codex has the RIGHTCLICK MCP registration. "
-                        + "Start a new Codex session and ask it to "
-                        + "use RIGHTCLICK. Connection is not attested "
-                        + "by this setup command."
-
-                default:
-                    payload["next"] =
-                        "Open Cursor, enable RIGHTCLICK in its MCP "
-                        + "settings if required, and start a new chat. "
-                        + "Ask: Use RIGHTCLICK to inspect the exact "
-                        + "text RightClick, then list applicable "
-                        + "capabilities. Do not invoke any capability yet."
-                }
-            }
             emit(payload)
             return 0
         } catch {

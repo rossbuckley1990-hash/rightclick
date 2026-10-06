@@ -42,15 +42,78 @@ struct RightClickConnectionRecipe {
 protocol RightClickClientAdapter {
     var id: String { get }
     var displayName: String { get }
-    func detected(home: URL, applications: URL) -> Bool
-    func configurationFile(home: URL) -> URL
-    func connectionRecipe(executable: String) throws -> RightClickConnectionRecipe
-    func planConfiguration(home: URL, recipe: RightClickConnectionRecipe, disconnect: Bool) throws -> RightClickOnboardingMutation
+    var setupNotice: String { get }
+
+    func nextMessage(
+        disconnect: Bool
+    ) -> String
+
+    func detected(
+        home: URL,
+        applications: URL
+    ) -> Bool
+
+    func configurationFile(
+        home: URL
+    ) -> URL
+
+    func connectionRecipe(
+        executable: String
+    ) throws -> RightClickConnectionRecipe
+
+    func planConfiguration(
+        home: URL,
+        recipe: RightClickConnectionRecipe,
+        disconnect: Bool
+    ) throws -> RightClickOnboardingMutation
+}
+
+extension RightClickClientAdapter {
+    var setupNotice: String {
+        displayName
+            + " will use RIGHTCLICK through its "
+            + "configured MCP surface."
+    }
+
+    func nextMessage(
+        disconnect: Bool
+    ) -> String {
+        if disconnect {
+            return displayName
+                + " no longer has the RIGHTCLICK "
+                + "MCP registration."
+        }
+
+        return "Start a new "
+            + displayName
+            + " session and ask it to use RIGHTCLICK."
+    }
 }
 
 struct RightClickCursorClientAdapter: RightClickClientAdapter {
     let id = "cursor"
     let displayName = "Cursor"
+
+    let setupNotice =
+        "Cursor can launch this executable and request "
+        + "its discovered capabilities. Existing action "
+        + "confirmations still apply. Close Cursor while "
+        + "changing its configuration."
+
+    func nextMessage(
+        disconnect: Bool
+    ) -> String {
+        if disconnect {
+            return "Reload Cursor to stop using this entry. "
+                + "No process was stopped by setup."
+        }
+
+        return "Open Cursor, enable RIGHTCLICK in its MCP "
+            + "settings if required, and start a new chat. "
+            + "Ask: Use RIGHTCLICK to inspect the exact "
+            + "text RightClick, then list applicable "
+            + "capabilities. Do not invoke any capability yet."
+    }
 
     func detected(home: URL, applications: URL = URL(fileURLWithPath: "/Applications")) -> Bool {
         let fm = FileManager.default
@@ -173,6 +236,36 @@ enum RightClickOnboardingEngine {
                 backup: nil,
                 connectionState: result.connectionState
             )
+        }
+    }
+
+    static func rollback(
+        _ plan: RightClickOnboardingPlan,
+        applied: RightClickOnboardingApplied
+    ) throws {
+        guard plan.mutation.changed else {
+            return
+        }
+
+        switch plan.mutation {
+        case .json(let mutation):
+            try RightClickJSONConfigBackend
+                .rollbackTransaction(
+                    mutation,
+                    applied:
+                        .init(
+                            operation:
+                                applied.operation,
+                            backup:
+                                applied.backup
+                        )
+                )
+
+        case .native(let mutation):
+            try RightClickNativeRegistrationBackend
+                .rollback(
+                    mutation
+                )
         }
     }
 }
@@ -351,6 +444,48 @@ enum RightClickJSONConfigBackend {
         }
 
         return Applied(operation: plan.operation, backup: backup)
+    }
+
+    static func rollbackTransaction(
+        _ plan: Plan,
+        applied: Applied
+    ) throws {
+        guard plan.changed else {
+            return
+        }
+
+        if let replacement =
+            plan.replacement
+        {
+            guard
+                try snapshot(
+                    plan.file
+                ) == replacement
+            else {
+                throw RightClickOnboardingError(
+                    "Configuration changed after the "
+                    + "transaction applied it. Refusing "
+                    + "to overwrite the newer state "
+                    + "during rollback."
+                )
+            }
+        }
+
+        try rollback(plan)
+
+        if let backup =
+            applied.backup,
+           FileManager.default
+            .fileExists(
+                atPath:
+                    backup.path
+            )
+        {
+            try FileManager.default
+                .removeItem(
+                    at: backup
+                )
+        }
     }
 
     private static func rollback(_ plan: Plan) throws {

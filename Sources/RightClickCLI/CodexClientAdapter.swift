@@ -6,6 +6,24 @@ struct RightClickCodexClientAdapter:
     let id = "codex"
     let displayName = "Codex"
 
+    let setupNotice =
+        "Codex will use its native global MCP registration. "
+        + "RIGHTCLICK does not write Codex config.toml directly."
+
+    func nextMessage(
+        disconnect: Bool
+    ) -> String {
+        if disconnect {
+            return "Codex no longer has the RIGHTCLICK "
+                + "global MCP registration."
+        }
+
+        return "Codex has the RIGHTCLICK MCP registration. "
+            + "Start a new Codex session and ask it to "
+            + "use RIGHTCLICK. Connection is not attested "
+            + "by this setup command."
+    }
+
     func detected(
         home: URL,
         applications: URL

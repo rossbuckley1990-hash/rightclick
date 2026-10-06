@@ -6,6 +6,24 @@ struct RightClickClaudeClientAdapter:
     let id = "claude"
     let displayName = "Claude Code"
 
+    let setupNotice =
+        "Claude Code will use its native user-scope "
+        + "MCP registration. RIGHTCLICK does not write "
+        + "Claude JSON directly."
+
+    func nextMessage(
+        disconnect: Bool
+    ) -> String {
+        if disconnect {
+            return "Claude Code no longer has the "
+                + "RIGHTCLICK user-scope MCP registration."
+        }
+
+        return "Claude Code reports RIGHTCLICK connected. "
+            + "Start a new Claude Code session and ask "
+            + "it to use RIGHTCLICK."
+    }
+
     func detected(
         home: URL,
         applications: URL
