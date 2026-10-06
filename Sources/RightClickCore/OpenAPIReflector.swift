@@ -2250,9 +2250,7 @@ public final class OpenAPIReflector: CapabilityReflector {
             let parameters =
                 operation["parameters"]
                     as? [[String: Any]],
-            parameters.count == 1,
-            let parameter =
-                parameters.first
+            !parameters.isEmpty
         else {
             return nil
         }
@@ -2266,30 +2264,6 @@ public final class OpenAPIReflector: CapabilityReflector {
                 "description",
             ]
 
-        guard
-            Set(parameter.keys)
-                .isSubset(
-                    of:
-                        allowedParameterKeys
-                ),
-            let name =
-                parameter["name"]
-                    as? String,
-            !name.isEmpty,
-            !name.contains("{"),
-            !name.contains("}"),
-            !name.contains("/"),
-            parameter["in"]
-                as? String == "path",
-            parameter["required"]
-                as? Bool == true,
-            let schema =
-                parameter["schema"]
-                    as? [String: Any]
-        else {
-            return nil
-        }
-
         let allowedSchemaKeys:
             Set<String> = [
                 "type",
@@ -2297,33 +2271,91 @@ public final class OpenAPIReflector: CapabilityReflector {
                 "description",
             ]
 
-        guard
-            Set(schema.keys)
-                .isSubset(
-                    of:
-                        allowedSchemaKeys
-                ),
-            schema["type"]
-                as? String == "string"
-        else {
-            return nil
+        var names:
+            Set<String> = []
+
+        var rawProperties:
+            [String: Any] = [:]
+
+        for parameter
+            in parameters
+        {
+            guard
+                Set(parameter.keys)
+                    .isSubset(
+                        of:
+                            allowedParameterKeys
+                    ),
+                let name =
+                    parameter["name"]
+                        as? String,
+                !name.isEmpty,
+                !name.contains("{"),
+                !name.contains("}"),
+                !name.contains("/"),
+                parameter["in"]
+                    as? String == "path",
+                parameter["required"]
+                    as? Bool == true,
+                let schema =
+                    parameter["schema"]
+                        as? [String: Any],
+                Set(schema.keys)
+                    .isSubset(
+                        of:
+                            allowedSchemaKeys
+                    ),
+                schema["type"]
+                    as? String == "string",
+                names.insert(
+                    name
+                ).inserted
+            else {
+                return nil
+            }
+
+            let token =
+                "{\(name)}"
+
+            let pieces =
+                path.components(
+                    separatedBy:
+                        token
+                )
+
+            guard
+                pieces.count == 2
+            else {
+                return nil
+            }
+
+            rawProperties[
+                name
+            ] = [
+                "type":
+                    "string"
+            ]
         }
 
-        let token =
-            "{\(name)}"
+        var remainder =
+            path
 
-        let pieces =
-            path.components(
-                separatedBy:
-                    token
-            )
+        for name
+            in names.sorted()
+        {
+            remainder =
+                remainder
+                .replacingOccurrences(
+                    of:
+                        "{\(name)}",
+                    with:
+                        ""
+                )
+        }
 
         guard
-            pieces.count == 2,
-            !pieces[0].contains("{"),
-            !pieces[0].contains("}"),
-            !pieces[1].contains("{"),
-            !pieces[1].contains("}")
+            !remainder.contains("{"),
+            !remainder.contains("}")
         else {
             return nil
         }
@@ -2332,17 +2364,15 @@ public final class OpenAPIReflector: CapabilityReflector {
             [String: Any] = [
                 "type":
                     "object",
+
                 "additionalProperties":
                     false,
-                "required": [
-                    name
-                ],
-                "properties": [
-                    name: [
-                        "type":
-                            "string"
-                    ]
-                ],
+
+                "required":
+                    names.sorted(),
+
+                "properties":
+                    rawProperties,
             ]
 
         return parseClosedJSONStringObjectSchema(
