@@ -8,7 +8,7 @@ public enum CapabilityReflectorSourceDefaults {
     public static func all(
         startBrowsing: Bool = true
     ) -> [any CapabilityReflectorSource] {
-        [
+        var sources: [any CapabilityReflectorSource] = [
             ConfiguredOpenAPISource(),
 
             BonjourOpenAPISource(
@@ -20,12 +20,18 @@ public enum CapabilityReflectorSourceDefaults {
                 startBrowsing:
                     startBrowsing
             ),
+        ]
 
+#if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
+        sources.append(
             BonjourGRPCSource(
                 startBrowsing:
                     startBrowsing
-            ),
-        ]
+            )
+        )
+#endif
+
+        return sources
     }
 }
 

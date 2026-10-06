@@ -1,3 +1,4 @@
+#if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
 import Foundation
 
 public struct BonjourGRPCServiceDescriptor:
@@ -711,3 +712,4 @@ extension BonjourGRPCSource:
         )
     }
 }
+#endif

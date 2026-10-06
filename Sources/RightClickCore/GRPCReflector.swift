@@ -1,3 +1,4 @@
+#if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
 import CryptoKit
 import Foundation
 import SwiftProtobuf
@@ -2324,3 +2325,4 @@ public final class GRPCReflector:
             .joined()
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
 import Foundation
 import GRPC
 import NIOCore
@@ -937,3 +938,4 @@ enum GRPCReflectionTransport {
         )
     }
 }
+#endif
