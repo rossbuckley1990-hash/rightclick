@@ -66,6 +66,8 @@ Services come from documented `NSServices` metadata and run through `NSPerformSe
 
 ### Evidence and limits
 
+- MOAT-001 proves generic structured OpenAPI capability discovery and invocation: a previously unsupported remote JSON operation becomes a typed capability behind the same seven RIGHTCLICK tool names, executes with generic arguments, and returns VERIFIED_SUCCESS. See [the evidence](evidence/moat-001-structured-openapi-2026-10-06/README.md).
+
 - OpenAPI discovery, reflected execution, returned-text verification, and live capability removal pass in the v0.2.0 RC1 demo. See [the sanitized evidence](evidence/openapi-discovery-execution-verification-live-removal-2026-10-06/README.md).
 - Remote HTTPS OpenAPI capability discovery, verified execution, a matching physical-phone notification, and capability loss/regain pass in the v0.2.0 FQDN candidate demo. See [the sanitized evidence](evidence/remote-openapi-capability-gain-execution-phone-outcome-2026-10-06/README.md).
 - BBEdit acquisition and exact semantic execution pass.
