@@ -1,4 +1,4 @@
-name: macOS tests
+name: tests
 on:
   push:
   pull_request:
@@ -6,6 +6,7 @@ permissions:
   contents: read
 jobs:
   test:
+    name: macOS full suite
     runs-on: macos-26
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -21,3 +22,16 @@ jobs:
           echo "DEVELOPER_DIR=/Library/Developer/CommandLineTools" >> "$GITHUB_ENV"
       - run: scripts/build-cli.sh
       - run: python3 scripts/package-source.py
+
+  ard-portable:
+    name: Linux ARD portable acquisition
+    runs-on: ubuntu-latest
+    container: swift:6.0
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Build portable ARD product only
+        run: swift build --product rightclick-ard-probe --force-resolved-versions
+      - name: G17 portable ARD acquisition
+        run: .build/debug/rightclick-ard-probe
+      - name: G13 live hf-discover SearchResponse
+        run: .build/debug/rightclick-ard-probe live-hf
