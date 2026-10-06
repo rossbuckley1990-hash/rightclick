@@ -67,6 +67,7 @@ Services come from documented `NSServices` metadata and run through `NSPerformSe
 ### Evidence and limits
 
 - OpenAPI discovery, reflected execution, returned-text verification, and live capability removal pass in the v0.2.0 RC1 demo. See [the sanitized evidence](evidence/openapi-discovery-execution-verification-live-removal-2026-10-06/README.md).
+- Remote HTTPS OpenAPI capability discovery, verified execution, a matching physical-phone notification, and capability loss/regain pass in the v0.2.0 FQDN candidate demo. See [the sanitized evidence](evidence/remote-openapi-capability-gain-execution-phone-outcome-2026-10-06/README.md).
 - BBEdit acquisition and exact semantic execution pass.
 - Yojam acquisition, applicability, payload construction, and invocation pass. Its semantic result remains a [documented limitation](docs/YOJAM-LIMITATION.md); the one standalone AppKit control did not verify a browser result.
 - `NSPerformService == true` means invocation was accepted. The legacy execution state `succeeded` does **not** prove an external outcome. Verify returned data or an independent provider result before claiming completion.
