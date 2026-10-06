@@ -67,6 +67,24 @@ public extension CapabilityReflector {
     }
 }
 
+/// A reflector can implement this protocol when semantic verification must
+/// occur at the execution boundary rather than on the caller runtime.
+///
+/// The CapabilityEngine still validates any claimed verified success before
+/// exposing it as VERIFIED. Ordinary reflectors continue to use the local
+/// OutcomeVerifier and do not need to implement this protocol.
+public protocol CapabilityVerificationReflector:
+    CapabilityReflector
+{
+    func begin(
+        capability: Capability,
+        item: ContentItem,
+        executionID: String,
+        arguments: CapabilityArguments?,
+        verification: VerificationSpec
+    ) throws -> ExecutionRecord
+}
+
 enum CapabilityReflectorID {
     static let macOSService = "macos.service"
     static let macOSSharing = "macos.sharing"
