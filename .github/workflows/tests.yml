@@ -21,6 +21,9 @@ jobs:
       - run: scripts/build-cli.sh
       - run: python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"
       - run: python3 scripts/acceptance-mcp.py "$PWD/.build/release/rightclick" /tmp/rightclick-mcp-acceptance
+      - run: python3 scripts/acceptance-federation.py "$PWD/.build/release/rightclick" /tmp/rightclick-federation-acceptance
+        env:
+          RIGHTCLICK_ACCEPTANCE_REF: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: python3 scripts/acceptance-core-boundary.py "$PWD/.build/release/rightclick" /tmp/rightclick-core-acceptance /tmp/rightclick-mcp-acceptance/results.json
       - name: Require Apple Silicon and free Command Line Tools for CLI build
         run: |
