@@ -125,6 +125,43 @@ final class FederationTests:
         )
     }
 
+    func testLoopbackIPPeersCanonicalizeToLocalhostForTransport()
+        throws
+    {
+        for endpoint in [
+            "http://127.0.0.1:8877/mcp",
+            "http://[::1]:8877/mcp",
+            "http://localhost:8877/mcp",
+        ] {
+            let peer =
+                FederationPeerConfiguration(
+                    id:
+                        "local",
+                    name:
+                        "Local RIGHTCLICK",
+                    endpoint:
+                        endpoint,
+                    tokenEnvironment:
+                        "RIGHTCLICK_LOCAL_TOKEN"
+                )
+
+            XCTAssertEqual(
+                peer.endpointURL?.host,
+                "localhost"
+            )
+
+            XCTAssertEqual(
+                peer.endpointURL?.port,
+                8877
+            )
+
+            XCTAssertEqual(
+                peer.endpointURL?.path,
+                "/mcp"
+            )
+        }
+    }
+
     func testFederatedCapabilityAppearsAndDisappearsLive()
         throws
     {
