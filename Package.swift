@@ -16,6 +16,9 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/modelcontextprotocol/swift-sdk.git", from: "0.11.0"),
+        .package(url: "https://github.com/grpc/grpc-swift.git", exact: "1.26.2"),
+        .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.28.1"),
+        .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
     ],
     targets: [
         .target(
@@ -26,7 +29,13 @@ let package = Package(
         ),
         .target(
             name: "RightClickCore",
-            dependencies: ["RightClickARD"],
+            dependencies: [
+                "RightClickARD",
+                .product(name: "GRPC", package: "grpc-swift"),
+                .product(name: "SwiftProtobuf", package: "swift-protobuf"),
+                .product(name: "NIOCore", package: "swift-nio"),
+                .product(name: "NIOPosix", package: "swift-nio"),
+            ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
             ],
