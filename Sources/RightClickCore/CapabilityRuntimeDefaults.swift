@@ -22,6 +22,7 @@ public enum CapabilityReflectorSourceDefaults {
                 ),
             ]
 
+#if canImport(RightClickARD)
         if let ard =
             ARDRegistrySource
                 .fromEnvironment()
@@ -30,6 +31,7 @@ public enum CapabilityReflectorSourceDefaults {
                 ard
             )
         }
+#endif
 
         return sources
     }
