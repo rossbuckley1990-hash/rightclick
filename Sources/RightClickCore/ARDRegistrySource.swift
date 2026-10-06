@@ -1,3 +1,4 @@
+#if canImport(RightClickARD)
 import Foundation
 import RightClickARD
 
@@ -854,3 +855,4 @@ private final class ARDOpenAPIReflector:
         return result
     }
 }
+#endif
