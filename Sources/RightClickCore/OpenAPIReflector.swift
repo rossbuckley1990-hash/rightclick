@@ -40,6 +40,9 @@ public final class OpenAPIReflector: CapabilityReflector {
         let pathArgumentsSchema:
             JSONObjectSchema?
 
+        let zeroArgumentGET:
+            Bool
+
         let responseJSONSchema:
             JSONObjectSchema?
 
@@ -403,7 +406,36 @@ public final class OpenAPIReflector: CapabilityReflector {
         let targetPath:
             String
 
-        if let pathSchema =
+        if operation.zeroArgumentGET {
+            guard arguments == nil else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "The OpenAPI GET operation accepts no capability arguments.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "RIGHTCLICK rejected arguments before transport because this reflected GET operation declares no path, query, header, cookie or body inputs."
+                        )
+                )
+            }
+
+            targetPath =
+                operation.path
+
+            requestBody =
+                nil
+
+        } else if let pathSchema =
             operation.pathArgumentsSchema
         {
             guard
@@ -1489,22 +1521,55 @@ public final class OpenAPIReflector: CapabilityReflector {
                 let responseJSONSchema:
                     JSONObjectSchema?
 
+                let zeroArgumentGET:
+                    Bool
+
                 if method == "get" {
                     guard
-                        let pathSchema =
-                            supportedGETPathArgumentSchema(
-                                path:
-                                    path,
-                                pathObject:
-                                    pathObject,
-                                operation:
-                                    operation
-                            ),
                         let responseSchema =
                             supportedJSONObjectResponseSchema(
                                 operation
                             )
                     else {
+                        continue
+                    }
+
+                    let pathSchema =
+                        supportedGETPathArgumentSchema(
+                            path:
+                                path,
+                            pathObject:
+                                pathObject,
+                            operation:
+                                operation
+                        )
+
+                    if let pathSchema =
+                        pathSchema
+                    {
+                        zeroArgumentGET =
+                            false
+
+                        pathArgumentsSchema =
+                            pathSchema
+
+                    } else if
+                        supportsZeroArgumentGET(
+                            path:
+                                path,
+                            pathObject:
+                                pathObject,
+                            operation:
+                                operation
+                        )
+                    {
+                        zeroArgumentGET =
+                            true
+
+                        pathArgumentsSchema =
+                            nil
+
+                    } else {
                         continue
                     }
 
@@ -1517,13 +1582,13 @@ public final class OpenAPIReflector: CapabilityReflector {
                     requestJSONSchema =
                         nil
 
-                    pathArgumentsSchema =
-                        pathSchema
-
                     responseJSONSchema =
                         responseSchema
 
                 } else {
+                    zeroArgumentGET =
+                        false
+
                     guard
                         !path.contains("{"),
                         !path.contains("}")
@@ -1651,6 +1716,8 @@ public final class OpenAPIReflector: CapabilityReflector {
                             requestJSONSchema,
                         pathArgumentsSchema:
                             pathArgumentsSchema,
+                        zeroArgumentGET:
+                            zeroArgumentGET,
                         responseJSONSchema:
                             responseJSONSchema,
                         authorityRequirement:
@@ -1799,6 +1866,41 @@ public final class OpenAPIReflector: CapabilityReflector {
                     authorityOrigin
             )
         )
+    }
+
+    private static func supportsZeroArgumentGET(
+        path: String,
+        pathObject: [String: Any],
+        operation: [String: Any]
+    ) -> Bool {
+        guard
+            !path.contains("{"),
+            !path.contains("}"),
+            pathObject["parameters"] == nil,
+            operation["requestBody"] == nil
+        else {
+            return false
+        }
+
+        guard
+            operation.keys.contains(
+                "parameters"
+            )
+        else {
+            return true
+        }
+
+        guard
+            let parameters =
+                operation[
+                    "parameters"
+                ] as? [Any],
+            parameters.isEmpty
+        else {
+            return false
+        }
+
+        return true
     }
 
     private static func supportedGETPathArgumentSchema(

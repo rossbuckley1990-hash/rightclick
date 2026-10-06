@@ -1,0 +1,29 @@
+{
+  "gate": "MOAT-004 G3",
+  "baseG2Commit": "d4c5050c0497ec8e14599cd0aaf255b73d246f93",
+  "testFirstCommit": "77953185c6972d9c1b3fc8d2f521c3fd04ed932c",
+  "testPatchSHA256": "721009c53eb85186518aed02f3b6d919bd8fb42571c988305bde82acef4c36ef",
+  "implementationPatchSHA256": "69c6782b800365e8eb352432dad886cd25397b130e47c1558a3882045c20018b",
+  "zeroArgumentGET": {
+    "supported": true,
+    "pathTemplatesForbidden": true,
+    "pathLevelParametersForbidden": true,
+    "operationParametersAbsentOrEmptyOnly": true,
+    "requestBodyForbidden": true,
+    "argumentsSchemaAbsent": true,
+    "unexpectedArgumentsFailBeforeTransport": true,
+    "requestBodyAbsentAtExecution": true,
+    "contentTypeHeaderAbsentAtExecution": true
+  },
+  "existingRequiredStringPathGETPreserved": true,
+  "frozenGitHubContract": {
+    "bytes": 12901084,
+    "sha256": "1429e93b5cbfa7547aa197e9553a6dacbd8d4aaf28012446ed730b152bcdf284",
+    "targetUsersGetAuthenticatedReflected": false,
+    "remainingBoundary": "G4 response-schema compatibility"
+  },
+  "g4Implemented": false,
+  "g5Implemented": false,
+  "providerSpecificProductionCode": false,
+  "result": "PASS"
+}
