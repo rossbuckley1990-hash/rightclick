@@ -24,7 +24,7 @@ out = pathlib.Path(sys.argv[2]).resolve()
 root = pathlib.Path(__file__).resolve().parent.parent
 out.mkdir(parents=True, exist_ok=True)
 
-sha = os.environ.get("GITHUB_SHA")
+sha = os.environ.get("RIGHTCLICK_ACCEPTANCE_REF") or os.environ.get("GITHUB_SHA")
 if not sha:
     sha = subprocess.check_output(
         ["git", "rev-parse", "HEAD"],
