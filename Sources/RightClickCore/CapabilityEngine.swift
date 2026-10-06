@@ -97,17 +97,33 @@ public final class CapabilityEngine {
     /// Duplicate reflector identities fail closed: if more than one
     /// currently visible reflector claims the same id, none of those
     /// ambiguous reflectors enter the live graph.
-    private func currentReflectors()
-        -> [any CapabilityReflector]
+    private func currentReflectors(
+        for item: ContentItem? = nil
+    ) -> [any CapabilityReflector]
     {
         var candidates =
             fixedReflectors
 
         for source in reflectorSources {
-            candidates.append(
-                contentsOf:
-                    source.reflectors()
-            )
+            if
+                let item,
+                let contextual =
+                    source
+                        as? any ContextualCapabilityReflectorSource
+            {
+                candidates.append(
+                    contentsOf:
+                        contextual.reflectors(
+                            for:
+                                item
+                        )
+                )
+            } else {
+                candidates.append(
+                    contentsOf:
+                        source.reflectors()
+                )
+            }
         }
 
         var counts:
@@ -130,7 +146,7 @@ public final class CapabilityEngine {
         let item = try ContentParser.parse(raw)
         var reflected: [Capability] = []
 
-        for reflector in currentReflectors() {
+        for reflector in currentReflectors(for: item) {
             var capabilities =
                 try reflector.capabilities(
                     for: item
@@ -253,7 +269,7 @@ public final class CapabilityEngine {
 
         guard
             let reflector =
-                reflector(for: capability)
+                reflector(for: capability, item: item)
         else {
             return RunResult(
                 status: .unavailable,
@@ -488,7 +504,7 @@ public final class CapabilityEngine {
 
         guard
             let reflector =
-                reflector(for: capability)
+                reflector(for: capability, item: item)
         else {
             let record = ExecutionRecord(
                 executionId: executionId,
@@ -644,9 +660,14 @@ public final class CapabilityEngine {
     }
 
     private func reflector(
-        for capability: Capability
+        for capability: Capability,
+        item: ContentItem
     ) -> (any CapabilityReflector)? {
-        currentReflectors().first {
+        currentReflectors(
+            for:
+                item
+        )
+        .first {
             $0.id == capability.reflectorID
         }
     }
