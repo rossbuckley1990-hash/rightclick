@@ -66,6 +66,7 @@ final class BonjourOpenAPISourceTests:
     }
 
     private func descriptor(
+        host: String = "127.0.0.1",
         port: Int = 40123,
         txt: [String: String] = [
             "kind": "openapi",
@@ -79,7 +80,7 @@ final class BonjourOpenAPISourceTests:
             serviceType:
                 "_rightclick._tcp.",
             domain: "local.",
-            host: "127.0.0.1",
+            host: host,
             port: port,
             txt: txt
         )
@@ -437,4 +438,120 @@ final class BonjourOpenAPISourceTests:
             .unavailable
         )
     }
+
+    func testAbsoluteBonjourDNSNameCanonicalizesTerminalRootDot()
+        throws
+    {
+        let loader =
+            LoaderProbe(
+                data: specification()
+            )
+
+        let source =
+            BonjourOpenAPISource(
+                startBrowsing: false,
+                specificationLoader:
+                    loader.load
+            )
+
+        let engine =
+            CapabilityEngine(
+                reflectorSources: [
+                    source
+                ]
+            )
+
+        source.update(
+            resolved:
+                descriptor(
+                    host:
+                        "remote.example.",
+                    port:
+                        443,
+                    txt: [
+                        "kind": "openapi",
+                        "scheme": "https",
+                        "spec": "/openapi.json",
+                        "base": "/",
+                    ]
+                )
+        )
+
+        let requestedURL =
+            try XCTUnwrap(
+                loader.requestedURLs.first
+            )
+
+        XCTAssertEqual(
+            requestedURL.scheme,
+            "https"
+        )
+
+        XCTAssertEqual(
+            requestedURL.host,
+            "remote.example"
+        )
+
+        XCTAssertEqual(
+            requestedURL.port,
+            443
+        )
+
+        let capability =
+            try XCTUnwrap(
+                engine
+                    .capabilities(
+                        for: "hello"
+                    )
+                    .capabilities
+                    .first
+            )
+
+        XCTAssertEqual(
+            capability
+                .metadata["baseURL"],
+            "https://remote.example"
+        )
+    }
+
+    func testMultipleTerminalRootDotsAreRejected()
+        throws
+    {
+        let loader =
+            LoaderProbe(
+                data: specification()
+            )
+
+        let source =
+            BonjourOpenAPISource(
+                startBrowsing: false,
+                specificationLoader:
+                    loader.load
+            )
+
+        source.update(
+            resolved:
+                descriptor(
+                    host:
+                        "remote.example..",
+                    port:
+                        443,
+                    txt: [
+                        "kind": "openapi",
+                        "scheme": "https",
+                        "spec": "/openapi.json",
+                        "base": "/",
+                    ]
+                )
+        )
+
+        XCTAssertTrue(
+            source.reflectors().isEmpty
+        )
+
+        XCTAssertTrue(
+            loader.requestedURLs.isEmpty
+        )
+    }
+
 }

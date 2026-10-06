@@ -2,12 +2,38 @@ import CryptoKit
 import Foundation
 
 public final class OpenAPIReflector: CapabilityReflector {
+    private struct JSONStringProperty {
+        let allowedValues: Set<String>?
+    }
+
+    private struct JSONObjectSchema {
+        let required: Set<String>
+        let properties:
+            [String: JSONStringProperty]
+        let canonicalJSON: String
+    }
+
     private struct Operation {
         let capabilityID: String
         let operationID: String
         let title: String
         let method: String
         let path: String
+
+        let requestContentType:
+            String?
+
+        let responseContentType:
+            String
+
+        let requestJSONSchema:
+            JSONObjectSchema?
+
+        let pathArgumentsSchema:
+            JSONObjectSchema?
+
+        let responseJSONSchema:
+            JSONObjectSchema?
     }
 
     private final class HTTPResultBox: @unchecked Sendable {
@@ -145,6 +171,13 @@ public final class OpenAPIReflector: CapabilityReflector {
         return operations.map {
             operation in
 
+            let outputType =
+                operation
+                    .responseContentType
+                    == "application/json"
+                ? "public.json"
+                : "public.plain-text"
+
             let policy =
                 SafetyPolicy.classify(
                     title:
@@ -154,9 +187,58 @@ public final class OpenAPIReflector: CapabilityReflector {
                         "public.plain-text"
                     ],
                     returnTypes: [
-                        "public.plain-text"
+                        outputType
                     ]
                 )
+
+            var metadata:
+                [String: String] = [
+                    "substrate":
+                        "openapi",
+                    "method":
+                        operation.method,
+                    "path":
+                        operation.path,
+                    "operationId":
+                        operation.operationID,
+                    "providerIdentity":
+                        providerFingerprint,
+                    "specificationSHA256":
+                        specificationSHA256,
+                    "baseURL":
+                        baseURL.absoluteString,
+                    "responseContentType":
+                        operation
+                            .responseContentType,
+                ]
+
+            if let requestContentType =
+                operation.requestContentType
+            {
+                metadata[
+                    "requestContentType"
+                ] =
+                    requestContentType
+            }
+
+            if let schema =
+                operation.requestJSONSchema
+                    ?? operation.pathArgumentsSchema
+            {
+                metadata[
+                    "argumentsSchema"
+                ] =
+                    schema.canonicalJSON
+            }
+
+            if let schema =
+                operation.responseJSONSchema
+            {
+                metadata[
+                    "resultSchema"
+                ] =
+                    schema.canonicalJSON
+            }
 
             return Capability(
                 id:
@@ -176,7 +258,7 @@ public final class OpenAPIReflector: CapabilityReflector {
                     "public.plain-text"
                 ],
                 output: [
-                    "public.plain-text"
+                    outputType
                 ],
                 safety:
                     policy.safety,
@@ -187,26 +269,8 @@ public final class OpenAPIReflector: CapabilityReflector {
                 requiresConfirmation:
                     policy
                         .requiresConfirmation,
-                metadata: [
-                    "substrate":
-                        "openapi",
-                    "method":
-                        operation.method,
-                    "path":
-                        operation.path,
-                    "operationId":
-                        operation.operationID,
-                    "providerIdentity":
-                        providerFingerprint,
-                    "specificationSHA256":
-                        specificationSHA256,
-                    "baseURL":
-                        baseURL.absoluteString,
-                    "requestContentType":
-                        "text/plain",
-                    "responseContentType":
-                        "text/plain",
-                ]
+                metadata:
+                    metadata
             )
         }
     }
@@ -243,6 +307,20 @@ public final class OpenAPIReflector: CapabilityReflector {
         item: ContentItem,
         executionID: String
     ) throws -> ExecutionRecord {
+        try begin(
+            capability: capability,
+            item: item,
+            executionID: executionID,
+            arguments: nil
+        )
+    }
+
+    public func begin(
+        capability: Capability,
+        item: ContentItem,
+        executionID: String,
+        arguments: CapabilityArguments?
+    ) throws -> ExecutionRecord {
         guard
             let operation =
                 operationByCapabilityID[
@@ -270,7 +348,172 @@ public final class OpenAPIReflector: CapabilityReflector {
             )
         }
 
-        guard let text = item.text else {
+        let requestBody:
+            Data?
+
+        let targetPath:
+            String
+
+        if let pathSchema =
+            operation.pathArgumentsSchema
+        {
+            guard
+                let arguments
+            else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "Path capability arguments are required.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "The reflected OpenAPI path template requires structured arguments before transport."
+                        )
+                )
+            }
+
+            do {
+                targetPath =
+                    try Self.substitutedPath(
+                        operation.path,
+                        arguments:
+                            arguments,
+                        schema:
+                            pathSchema
+                    )
+            } catch {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "Path capability arguments failed schema validation: \(error)",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "RIGHTCLICK rejected path arguments before provider transport because they did not satisfy the reflected closed path-parameter schema."
+                        )
+                )
+            }
+
+            requestBody =
+                nil
+
+        } else if
+            operation.requestContentType
+                == "text/plain"
+        {
+            guard
+                let text =
+                    item.text
+            else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "The OpenAPI operation requires a plain-text input.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "No plain-text ContentItem payload was available for the declared text/plain request body."
+                        )
+                )
+            }
+
+            targetPath =
+                operation.path
+
+            requestBody =
+                Data(text.utf8)
+
+        } else if
+            operation.requestContentType
+                == "application/json",
+            let schema =
+                operation.requestJSONSchema
+        {
+            guard
+                let arguments
+            else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "Structured capability arguments are required.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "The reflected application/json request schema requires structured arguments before transport."
+                        )
+                )
+            }
+
+            do {
+                requestBody =
+                    try Self
+                    .validatedJSONObjectBody(
+                        arguments,
+                        schema:
+                            schema
+                    )
+            } catch {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "Structured capability arguments failed schema validation: \(error)",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "RIGHTCLICK rejected structured arguments before provider transport because they did not satisfy the reflected closed JSON object schema."
+                        )
+                )
+            }
+
+            targetPath =
+                operation.path
+
+        } else {
             return ExecutionRecord(
                 executionId:
                     executionID,
@@ -281,13 +524,13 @@ public final class OpenAPIReflector: CapabilityReflector {
                 state:
                     .failed,
                 message:
-                    "The OpenAPI operation requires a plain-text input.",
+                    "The reflected OpenAPI request contract is unavailable.",
                 evidence:
                     OutcomeEvidence(
                         type:
                             "input_contract_failure",
                         boundary:
-                            "No plain-text ContentItem payload was available for the declared text/plain request body."
+                            "RIGHTCLICK had no supported request representation for this reflected operation."
                     )
             )
         }
@@ -295,7 +538,11 @@ public final class OpenAPIReflector: CapabilityReflector {
         let targetURL =
             try joinedURL(
                 path:
-                    operation.path
+                    targetPath,
+                percentEncoded:
+                    operation
+                        .pathArgumentsSchema
+                        != nil
             )
 
         var request =
@@ -307,16 +554,20 @@ public final class OpenAPIReflector: CapabilityReflector {
             operation.method
 
         request.httpBody =
-            Data(text.utf8)
+            requestBody
+
+        if let requestContentType =
+            operation.requestContentType
+        {
+            request.setValue(
+                requestContentType,
+                forHTTPHeaderField:
+                    "Content-Type"
+            )
+        }
 
         request.setValue(
-            "text/plain",
-            forHTTPHeaderField:
-                "Content-Type"
-        )
-
-        request.setValue(
-            "text/plain",
+            operation.responseContentType,
             forHTTPHeaderField:
                 "Accept"
         )
@@ -505,16 +756,85 @@ public final class OpenAPIReflector: CapabilityReflector {
                     .lowercased()
             }
 
-        let output: String?
+        let output:
+            String?
 
-        if mediaType == "text/plain" {
-            output =
-                String(
-                    data:
-                        responseData,
-                    encoding:
-                        .utf8
+        if operation.responseContentType
+            == "text/plain"
+        {
+            if mediaType == "text/plain" {
+                output =
+                    String(
+                        data:
+                            responseData,
+                        encoding:
+                            .utf8
+                    )
+            } else {
+                output = nil
+            }
+
+        } else if
+            operation.responseContentType
+                == "application/json",
+            let schema =
+                operation.responseJSONSchema
+        {
+            guard
+                mediaType
+                    == "application/json"
+            else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "The OpenAPI provider returned an unexpected response content type.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "provider_contract_failure",
+                            boundary:
+                                "The provider returned a 2xx response whose media type did not match the reflected application/json response contract."
+                        )
                 )
+            }
+
+            do {
+                output =
+                    try Self
+                    .canonicalValidatedJSONObject(
+                        responseData,
+                        schema:
+                            schema
+                    )
+            } catch {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "The OpenAPI provider response failed the reflected JSON schema: \(error)",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "provider_contract_failure",
+                            boundary:
+                                "The provider returned 2xx, but its application/json body did not satisfy the reflected closed JSON object schema."
+                        )
+                )
+            }
+
         } else {
             output = nil
         }
@@ -551,7 +871,8 @@ public final class OpenAPIReflector: CapabilityReflector {
     }
 
     private func joinedURL(
-        path operationPath: String
+        path operationPath: String,
+        percentEncoded: Bool = false
     ) throws -> URL {
         guard
             var components =
@@ -568,7 +889,9 @@ public final class OpenAPIReflector: CapabilityReflector {
         }
 
         var basePath =
-            components.path
+            percentEncoded
+            ? components.percentEncodedPath
+            : components.path
 
         while
             basePath.count > 1,
@@ -586,8 +909,13 @@ public final class OpenAPIReflector: CapabilityReflector {
             ? operationPath
             : "/" + operationPath
 
-        components.path =
-            basePath + suffix
+        if percentEncoded {
+            components.percentEncodedPath =
+                basePath + suffix
+        } else {
+            components.path =
+                basePath + suffix
+        }
 
         guard let url = components.url else {
             throw RightClickError(
@@ -736,6 +1064,7 @@ public final class OpenAPIReflector: CapabilityReflector {
         }
 
         let methods = [
+            "get",
             "post",
             "put",
             "patch",
@@ -744,13 +1073,6 @@ public final class OpenAPIReflector: CapabilityReflector {
         var operations: [Operation] = []
 
         for path in paths.keys.sorted() {
-            guard
-                !path.contains("{"),
-                !path.contains("}")
-            else {
-                continue
-            }
-
             guard
                 let pathObject =
                     paths[path]
@@ -785,15 +1107,111 @@ public final class OpenAPIReflector: CapabilityReflector {
                     continue
                 }
 
-                guard
-                    supportsPlainTextRequest(
-                        operation
-                    ),
-                    supportsPlainTextResponse(
-                        operation
-                    )
-                else {
-                    continue
+                let requestContentType:
+                    String?
+
+                let responseContentType:
+                    String
+
+                let requestJSONSchema:
+                    JSONObjectSchema?
+
+                let pathArgumentsSchema:
+                    JSONObjectSchema?
+
+                let responseJSONSchema:
+                    JSONObjectSchema?
+
+                if method == "get" {
+                    guard
+                        let pathSchema =
+                            supportedGETPathArgumentSchema(
+                                path:
+                                    path,
+                                pathObject:
+                                    pathObject,
+                                operation:
+                                    operation
+                            ),
+                        let responseSchema =
+                            supportedJSONObjectResponseSchema(
+                                operation
+                            )
+                    else {
+                        continue
+                    }
+
+                    requestContentType =
+                        nil
+
+                    responseContentType =
+                        "application/json"
+
+                    requestJSONSchema =
+                        nil
+
+                    pathArgumentsSchema =
+                        pathSchema
+
+                    responseJSONSchema =
+                        responseSchema
+
+                } else {
+                    guard
+                        !path.contains("{"),
+                        !path.contains("}")
+                    else {
+                        continue
+                    }
+
+                    pathArgumentsSchema =
+                        nil
+
+                    if
+                        supportsPlainTextRequest(
+                            operation
+                        ),
+                        supportsPlainTextResponse(
+                            operation
+                        )
+                    {
+                        requestContentType =
+                            "text/plain"
+
+                        responseContentType =
+                            "text/plain"
+
+                        requestJSONSchema =
+                            nil
+
+                        responseJSONSchema =
+                            nil
+
+                    } else if
+                        let requestSchema =
+                            supportedJSONObjectRequestSchema(
+                                operation
+                            ),
+                        let responseSchema =
+                            supportedJSONObjectResponseSchema(
+                                operation
+                            )
+                    {
+                        requestContentType =
+                            "application/json"
+
+                        responseContentType =
+                            "application/json"
+
+                        requestJSONSchema =
+                            requestSchema
+
+                        responseJSONSchema =
+                            responseSchema
+
+                    } else {
+                        continue
+                    }
                 }
 
                 let summary =
@@ -857,7 +1275,17 @@ public final class OpenAPIReflector: CapabilityReflector {
                         method:
                             method.uppercased(),
                         path:
-                            path
+                            path,
+                        requestContentType:
+                            requestContentType,
+                        responseContentType:
+                            responseContentType,
+                        requestJSONSchema:
+                            requestJSONSchema,
+                        pathArgumentsSchema:
+                            pathArgumentsSchema,
+                        responseJSONSchema:
+                            responseJSONSchema
                     )
                 )
             }
@@ -885,6 +1313,117 @@ public final class OpenAPIReflector: CapabilityReflector {
                     $0.path
                     < $1.path
             }
+        )
+    }
+
+    private static func supportedGETPathArgumentSchema(
+        path: String,
+        pathObject: [String: Any],
+        operation: [String: Any]
+    ) -> JSONObjectSchema? {
+        guard
+            pathObject["parameters"] == nil,
+            operation["requestBody"] == nil,
+            let parameters =
+                operation["parameters"]
+                    as? [[String: Any]],
+            parameters.count == 1,
+            let parameter =
+                parameters.first
+        else {
+            return nil
+        }
+
+        let allowedParameterKeys:
+            Set<String> = [
+                "name",
+                "in",
+                "required",
+                "schema",
+                "description",
+            ]
+
+        guard
+            Set(parameter.keys)
+                .isSubset(
+                    of:
+                        allowedParameterKeys
+                ),
+            let name =
+                parameter["name"]
+                    as? String,
+            !name.isEmpty,
+            !name.contains("{"),
+            !name.contains("}"),
+            !name.contains("/"),
+            parameter["in"]
+                as? String == "path",
+            parameter["required"]
+                as? Bool == true,
+            let schema =
+                parameter["schema"]
+                    as? [String: Any]
+        else {
+            return nil
+        }
+
+        let allowedSchemaKeys:
+            Set<String> = [
+                "type",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(schema.keys)
+                .isSubset(
+                    of:
+                        allowedSchemaKeys
+                ),
+            schema["type"]
+                as? String == "string"
+        else {
+            return nil
+        }
+
+        let token =
+            "{\(name)}"
+
+        let pieces =
+            path.components(
+                separatedBy:
+                    token
+            )
+
+        guard
+            pieces.count == 2,
+            !pieces[0].contains("{"),
+            !pieces[0].contains("}"),
+            !pieces[1].contains("{"),
+            !pieces[1].contains("}")
+        else {
+            return nil
+        }
+
+        let argumentsSchema:
+            [String: Any] = [
+                "type":
+                    "object",
+                "additionalProperties":
+                    false,
+                "required": [
+                    name
+                ],
+                "properties": [
+                    name: [
+                        "type":
+                            "string"
+                    ]
+                ],
+            ]
+
+        return parseClosedJSONStringObjectSchema(
+            argumentsSchema
         )
     }
 
@@ -954,6 +1493,533 @@ public final class OpenAPIReflector: CapabilityReflector {
         }
 
         return false
+    }
+
+    private static func supportedJSONObjectRequestSchema(
+        _ operation:
+            [String: Any]
+    ) -> JSONObjectSchema? {
+        guard
+            let requestBody =
+                operation["requestBody"]
+                    as? [String: Any],
+            requestBody["required"]
+                as? Bool == true,
+            let content =
+                requestBody["content"]
+                    as? [String: Any],
+            let json =
+                content[
+                    "application/json"
+                ] as? [String: Any],
+            let rawSchema =
+                json["schema"]
+                    as? [String: Any]
+        else {
+            return nil
+        }
+
+        return parseClosedJSONStringObjectSchema(
+            rawSchema
+        )
+    }
+
+    private static func supportedJSONObjectResponseSchema(
+        _ operation:
+            [String: Any]
+    ) -> JSONObjectSchema? {
+        guard
+            let responses =
+                operation["responses"]
+                    as? [String: Any]
+        else {
+            return nil
+        }
+
+        for key
+            in responses.keys.sorted()
+        {
+            guard
+                let status =
+                    Int(key),
+                (200...299)
+                    .contains(status),
+                let response =
+                    responses[key]
+                        as? [String: Any],
+                let content =
+                    response["content"]
+                        as? [String: Any],
+                let json =
+                    content[
+                        "application/json"
+                    ] as? [String: Any],
+                let rawSchema =
+                    json["schema"]
+                        as? [String: Any],
+                let schema =
+                    parseClosedJSONStringObjectSchema(
+                        rawSchema
+                    )
+            else {
+                continue
+            }
+
+            return schema
+        }
+
+        return nil
+    }
+
+    private static func parseClosedJSONStringObjectSchema(
+        _ schema:
+            [String: Any]
+    ) -> JSONObjectSchema? {
+        let allowedObjectKeys:
+            Set<String> = [
+                "type",
+                "additionalProperties",
+                "required",
+                "properties",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(schema.keys)
+                .isSubset(
+                    of:
+                        allowedObjectKeys
+                ),
+            schema["type"]
+                as? String == "object",
+            schema[
+                "additionalProperties"
+            ] as? Bool == false,
+            let rawRequired =
+                schema["required"]
+                    as? [String],
+            !rawRequired.isEmpty,
+            Set(rawRequired).count
+                == rawRequired.count,
+            let rawProperties =
+                schema["properties"]
+                    as? [String: Any],
+            !rawProperties.isEmpty
+        else {
+            return nil
+        }
+
+        let required =
+            Set(rawRequired)
+
+        guard
+            required.isSubset(
+                of:
+                    Set(
+                        rawProperties.keys
+                    )
+            )
+        else {
+            return nil
+        }
+
+        var properties:
+            [String: JSONStringProperty] =
+                [:]
+
+        for key
+            in rawProperties.keys.sorted()
+        {
+            guard
+                !key.isEmpty,
+                let raw =
+                    rawProperties[key]
+                        as? [String: Any]
+            else {
+                return nil
+            }
+
+            let allowedPropertyKeys:
+                Set<String> = [
+                    "type",
+                    "enum",
+                    "title",
+                    "description",
+                ]
+
+            guard
+                Set(raw.keys)
+                    .isSubset(
+                        of:
+                            allowedPropertyKeys
+                    ),
+                raw["type"]
+                    as? String
+                    == "string"
+            else {
+                return nil
+            }
+
+            let allowedValues:
+                Set<String>?
+
+            if let rawEnum =
+                raw["enum"]
+            {
+                guard
+                    let values =
+                        rawEnum
+                            as? [String],
+                    !values.isEmpty,
+                    Set(values).count
+                        == values.count
+                else {
+                    return nil
+                }
+
+                allowedValues =
+                    Set(values)
+            } else {
+                allowedValues =
+                    nil
+            }
+
+            properties[key] =
+                JSONStringProperty(
+                    allowedValues:
+                        allowedValues
+                )
+        }
+
+        guard
+            JSONSerialization
+                .isValidJSONObject(
+                    schema
+                ),
+            let canonicalData =
+                try? JSONSerialization
+                    .data(
+                        withJSONObject:
+                            schema,
+                        options: [
+                            .sortedKeys
+                        ]
+                    ),
+            let canonicalJSON =
+                String(
+                    data:
+                        canonicalData,
+                    encoding:
+                        .utf8
+                )
+        else {
+            return nil
+        }
+
+        return JSONObjectSchema(
+            required:
+                required,
+            properties:
+                properties,
+            canonicalJSON:
+                canonicalJSON
+        )
+    }
+
+    private static func validateArguments(
+        _ arguments:
+            CapabilityArguments,
+        schema:
+            JSONObjectSchema
+    ) throws {
+        let supplied =
+            Set(arguments.keys)
+
+        let missing =
+            schema.required
+                .subtracting(
+                    supplied
+                )
+
+        guard missing.isEmpty else {
+            throw RightClickError(
+                "Missing required arguments: "
+                + missing.sorted()
+                    .joined(
+                        separator: ", "
+                    )
+            )
+        }
+
+        let unknown =
+            supplied
+                .subtracting(
+                    Set(
+                        schema
+                            .properties
+                            .keys
+                    )
+                )
+
+        guard unknown.isEmpty else {
+            throw RightClickError(
+                "Unknown arguments: "
+                + unknown.sorted()
+                    .joined(
+                        separator: ", "
+                    )
+            )
+        }
+
+        for key
+            in arguments.keys.sorted()
+        {
+            guard
+                let property =
+                    schema.properties[
+                        key
+                    ],
+                let value =
+                    arguments[key]
+            else {
+                throw RightClickError(
+                    "Argument schema lookup failed."
+                )
+            }
+
+            if let allowed =
+                property.allowedValues,
+                !allowed.contains(value)
+            {
+                throw RightClickError(
+                    "Argument \(key) is not one of the declared enum values."
+                )
+            }
+        }
+    }
+
+    private static func substitutedPath(
+        _ template: String,
+        arguments:
+            CapabilityArguments,
+        schema:
+            JSONObjectSchema
+    ) throws -> String {
+        try validateArguments(
+            arguments,
+            schema:
+                schema
+        )
+
+        var result =
+            template
+
+        for name
+            in schema.required.sorted()
+        {
+            guard
+                let value =
+                    arguments[name]
+            else {
+                throw RightClickError(
+                    "Missing required path argument."
+                )
+            }
+
+            let token =
+                "{\(name)}"
+
+            let occurrences =
+                result.components(
+                    separatedBy:
+                        token
+                )
+
+            guard
+                occurrences.count == 2
+            else {
+                throw RightClickError(
+                    "Path template does not contain exactly one matching placeholder."
+                )
+            }
+
+            guard
+                let encoded =
+                    value.addingPercentEncoding(
+                        withAllowedCharacters:
+                            identifierCharacters
+                    )
+            else {
+                throw RightClickError(
+                    "Could not percent-encode path argument."
+                )
+            }
+
+            result =
+                result.replacingOccurrences(
+                    of:
+                        token,
+                    with:
+                        encoded
+                )
+        }
+
+        guard
+            !result.contains("{"),
+            !result.contains("}")
+        else {
+            throw RightClickError(
+                "Unresolved path placeholders remain."
+            )
+        }
+
+        return result
+    }
+
+    private static func validatedJSONObjectBody(
+        _ arguments:
+            CapabilityArguments,
+        schema:
+            JSONObjectSchema
+    ) throws -> Data {
+        try validateArguments(
+            arguments,
+            schema:
+                schema
+        )
+
+        guard
+            JSONSerialization
+                .isValidJSONObject(
+                    arguments
+                )
+        else {
+            throw RightClickError(
+                "Structured arguments are not valid JSON."
+            )
+        }
+
+        return try JSONSerialization
+            .data(
+                withJSONObject:
+                    arguments,
+                options: [
+                    .sortedKeys
+                ]
+            )
+    }
+
+    private static func canonicalValidatedJSONObject(
+        _ data:
+            Data,
+        schema:
+            JSONObjectSchema
+    ) throws -> String {
+        guard
+            let object =
+                try JSONSerialization
+                    .jsonObject(
+                        with:
+                            data
+                    )
+                    as? [String: Any]
+        else {
+            throw RightClickError(
+                "Expected a JSON object response."
+            )
+        }
+
+        let supplied =
+            Set(object.keys)
+
+        let missing =
+            schema.required
+                .subtracting(
+                    supplied
+                )
+
+        guard missing.isEmpty else {
+            throw RightClickError(
+                "Response is missing required fields."
+            )
+        }
+
+        let unknown =
+            supplied
+                .subtracting(
+                    Set(
+                        schema
+                            .properties
+                            .keys
+                    )
+                )
+
+        guard unknown.isEmpty else {
+            throw RightClickError(
+                "Response contains undeclared fields."
+            )
+        }
+
+        var canonical:
+            [String: String] = [:]
+
+        for key
+            in object.keys.sorted()
+        {
+            guard
+                let property =
+                    schema.properties[
+                        key
+                    ],
+                let value =
+                    object[key]
+                        as? String
+            else {
+                throw RightClickError(
+                    "Response field \(key) is not a declared string."
+                )
+            }
+
+            if let allowed =
+                property.allowedValues,
+                !allowed.contains(value)
+            {
+                throw RightClickError(
+                    "Response field \(key) is outside its declared enum."
+                )
+            }
+
+            canonical[key] =
+                value
+        }
+
+        let canonicalData =
+            try JSONSerialization
+                .data(
+                    withJSONObject:
+                        canonical,
+                    options: [
+                        .sortedKeys,
+                        .withoutEscapingSlashes
+                    ]
+                )
+
+        guard
+            let string =
+                String(
+                    data:
+                        canonicalData,
+                    encoding:
+                        .utf8
+                )
+        else {
+            throw RightClickError(
+                "Could not encode canonical JSON response."
+            )
+        }
+
+        return string
     }
 
     private static func sha256Hex(

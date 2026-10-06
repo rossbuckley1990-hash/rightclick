@@ -1,0 +1,21 @@
+{
+  "experiment": "MOAT-002 Durable State + Independent Read-Back",
+  "phase": "RED",
+  "result": "PASS",
+  "remoteState": {
+    "createHTTP": 201,
+    "independentReadHTTP": 200,
+    "delayedReadHTTP": 200,
+    "finalReadHTTP": 200,
+    "readBackMatchesCreate": true
+  },
+  "rightclick": {
+    "createDurableRecordPresent": true,
+    "readDurableRecordPresent": false
+  },
+  "genericGap": {
+    "getMethodSupport": false,
+    "pathParameterSupport": false
+  },
+  "nextAllowedChange": "Add generic GET plus closed required string path-parameter reflection and execution. No provider-specific handling."
+}

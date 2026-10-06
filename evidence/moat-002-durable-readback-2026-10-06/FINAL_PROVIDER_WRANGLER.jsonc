@@ -1,0 +1,23 @@
+{
+  "name": "rightclick-moat-002-023753",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-06",
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RECORD_STORE",
+        "class_name": "RecordStore"
+      }
+    ]
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "RecordStore"
+      ]
+    }
+  ]
+}

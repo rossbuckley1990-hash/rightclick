@@ -5,6 +5,9 @@ import Foundation
 /// RIGHTCLICK's normalized capability model and performs provider invocation.
 ///
 /// Semantic verification deliberately remains above this boundary.
+public typealias CapabilityArguments =
+    [String: String]
+
 public protocol CapabilityReflector: AnyObject {
     /// Stable identity for this reflector instance.
     var id: String { get }
@@ -28,6 +31,19 @@ public protocol CapabilityReflector: AnyObject {
         item: ContentItem,
         executionID: String
     ) throws -> ExecutionRecord
+
+    /// Begin invocation with provider-independent structured
+    /// arguments.
+    ///
+    /// Reflectors that do not consume structured arguments inherit
+    /// the default implementation, which preserves their existing
+    /// behaviour.
+    func begin(
+        capability: Capability,
+        item: ContentItem,
+        executionID: String,
+        arguments: CapabilityArguments?
+    ) throws -> ExecutionRecord
 }
 
 public extension CapabilityReflector {
@@ -35,6 +51,19 @@ public extension CapabilityReflector {
 
     func providers() -> [ProviderSummary] {
         []
+    }
+
+    func begin(
+        capability: Capability,
+        item: ContentItem,
+        executionID: String,
+        arguments: CapabilityArguments?
+    ) throws -> ExecutionRecord {
+        try begin(
+            capability: capability,
+            item: item,
+            executionID: executionID
+        )
     }
 }
 

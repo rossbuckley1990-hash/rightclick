@@ -1,0 +1,12 @@
+{
+  "actualJSON": "{\"id\":\"alpha\\/beta ?#\",\"priority\":\"high\",\"title\":\"Persisted\"}",
+  "allowedCorrection": "Use generic JSONSerialization withoutEscapingSlashes when producing canonical validated provider JSON output. Do not change preregistered tests.",
+  "expectedJSON": "{\"id\":\"alpha/beta ?#\",\"priority\":\"high\",\"title\":\"Persisted\"}",
+  "failedTest": "testGETPathParameterUsesGenericArgumentsPercentEncodesAndSendsNoBody",
+  "failureBoundary": "canonical structured response text",
+  "firstImplementationPatchSHA256": "684ee5c9c9013869edd9dbf5be8d5ab5517ecd2436740998974d37afa27369dc",
+  "phase": "GREEN-002A",
+  "requestAssertionsBeforeFailure": "passed",
+  "result": "FAIL",
+  "semanticJSONValueDifference": false
+}

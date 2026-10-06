@@ -187,6 +187,7 @@ public final class CapabilityEngine {
         id: String,
         item raw: String,
         confirmed: Bool,
+        arguments: CapabilityArguments? = nil,
         expectedOutput: String? = nil,
         verification: VerificationSpec? = nil
     ) throws -> RunResult {
@@ -277,7 +278,8 @@ public final class CapabilityEngine {
         var started = try reflector.begin(
             capability: capability,
             item: item,
-            executionID: executionId
+            executionID: executionId,
+            arguments: arguments
         )
 
         // The engine owns execution identity even if a reflector
@@ -373,6 +375,7 @@ public final class CapabilityEngine {
         id: String,
         item raw: String,
         confirmed: Bool,
+        arguments: CapabilityArguments? = nil,
         expectedOutput: String? = nil,
         verification: VerificationSpec? = nil
     ) throws -> ExecutionRecord {
@@ -481,7 +484,8 @@ public final class CapabilityEngine {
             try reflector.begin(
                 capability: capability,
                 item: item,
-                executionID: executionId
+                executionID: executionId,
+                arguments: arguments
             )
 
         providerRecord.executionId =

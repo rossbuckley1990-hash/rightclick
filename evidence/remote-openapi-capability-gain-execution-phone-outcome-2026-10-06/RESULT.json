@@ -1,0 +1,82 @@
+{
+  "experiment": "remote-openapi-capability-gain-execution-phone-outcome",
+  "date": "2026-10-06",
+  "result": "PASS",
+  "parentCommit": "0e733f5fb64bbc2f10ef8701e6a2e2dbc2f7335b",
+  "runtime": {
+    "product": "RIGHTCLICK",
+    "version": "0.2.0",
+    "candidate": true,
+    "executablePath": "/tmp/rightclick-v020-remote-fqdn-rc2/.build/release/rightclick",
+    "executableRealPath": "/tmp/rightclick-v020-remote-fqdn-rc2/.build/arm64-apple-macosx/release/rightclick",
+    "executableSHA256": "60aba8cc28e40fb2e16637e380381fe2a98b844c2c435a136515a3f1382feb17",
+    "pid": 43135,
+    "transport": "stdio"
+  },
+  "fqdnFix": {
+    "problem": "Bonjour resolved an absolute DNS hostname with a terminal root dot; Foundation URLSession failed TLS on that form.",
+    "change": "Remove exactly one terminal DNS root dot before constructing provider URLs and reject hosts still ending in a dot.",
+    "sealedRC1Modified": false
+  },
+  "tests": {
+    "bonjourOpenAPISourceTests": {
+      "executed": 7,
+      "failed": 0
+    },
+    "fullSuite": {
+      "executed": 134,
+      "skipped": 8,
+      "failed": 0
+    }
+  },
+  "provider": {
+    "name": "RIGHTCLICK Remote Cloud Software",
+    "executionLocation": "Cloudflare Workers",
+    "origin": "https://rightclick-remote-openapi.spiny-justice.workers.dev",
+    "substrate": "openapi",
+    "operationId": "broadcastRemoteProof",
+    "capability": "Publish Proof Through Remote Cloud Software",
+    "bonjour": {
+      "serviceType": "_rightclick._tcp.",
+      "instance": "RIGHTCLICK REMOTE CLOUD",
+      "port": 443,
+      "kind": "openapi",
+      "scheme": "https",
+      "spec": "/openapi.json",
+      "base": "/"
+    }
+  },
+  "execution": {
+    "message": "This AI learned how to do this after I asked. Proof: 3XD527",
+    "proofCode": "3XD527",
+    "executionId": "D01A9A12-F47F-4E64-85CC-DD385FF6A0F0",
+    "request": "HTTP POST https://rightclick-remote-openapi.spiny-justice.workers.dev/broadcast",
+    "providerHTTPStatus": 200,
+    "state": "succeeded",
+    "providerOutput": "RIGHTCLICK_REMOTE_PUBLISHED",
+    "verificationStatus": "VERIFIED_SUCCESS",
+    "outcomeVerified": true
+  },
+  "phoneEvidence": {
+    "file": "PHONE_PROOF.png",
+    "sha256": "4eaaac0ec51846645f8682ad0131385cd2f28b5ba14797f81d1f65b612b2514f",
+    "width": 941,
+    "height": 2048,
+    "observedMessage": "This AI learned how to do this after I asked. Proof: 3XD527"
+  },
+  "capabilityLifecycle": {
+    "proofCode": "M7K4P2",
+    "absentAfterAdvertisementRemoval": true,
+    "presentAfterAdvertisementRestore": true,
+    "chatGPTRestartedBetweenThoseQueries": false,
+    "secondInvocationReachedRightClick": false,
+    "secondNotificationClaimed": false,
+    "secondInvocationBoundary": "Blocked by the ChatGPT platform before reaching RIGHTCLICK."
+  },
+  "providerIntegrationChanges": {
+    "newProviderSpecificMCPServer": false,
+    "newChatGPTToolDefinition": false,
+    "newPlugin": false
+  },
+  "claimBoundary": "Remote action execution and phone outcome are proven for the isolated RC2 candidate. The remote provider was made discoverable through a local Bonjour proxy advertisement. The later M7K4P2 invocation was blocked before reaching RIGHTCLICK and is not a successful execution."
+}

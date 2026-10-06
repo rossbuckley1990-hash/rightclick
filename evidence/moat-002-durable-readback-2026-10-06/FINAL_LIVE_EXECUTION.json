@@ -1,0 +1,36 @@
+{
+  "create": {
+    "evidenceType": "provider_returned_text",
+    "executionId": "E013275F-7375-403B-99E1-913C3F922D66",
+    "method": "POST",
+    "outcomeVerified": false,
+    "output": "{\"id\":\"6a4c11b3-7813-4e58-9683-1c4341a89af5\",\"priority\":\"high\",\"title\":\"RightClick MOAT-002 live gate\"}",
+    "path": "/records",
+    "providerHTTPStatus": 201,
+    "returnedRecord": {
+      "id": "6a4c11b3-7813-4e58-9683-1c4341a89af5",
+      "priority": "high",
+      "title": "RightClick MOAT-002 live gate"
+    },
+    "state": "accepted"
+  },
+  "independentReadBackMatchesCreate": true,
+  "providerAcceptanceAloneTreatedAsSuccess": false,
+  "read": {
+    "actual": "{\"id\":\"6a4c11b3-7813-4e58-9683-1c4341a89af5\",\"priority\":\"high\",\"title\":\"RightClick MOAT-002 live gate\"}",
+    "evidenceType": "generic_postcondition",
+    "executionId": "F2933431-269F-46BE-BA9E-BD65CB9CE604",
+    "expected": "{\"id\":\"6a4c11b3-7813-4e58-9683-1c4341a89af5\",\"priority\":\"high\",\"title\":\"RightClick MOAT-002 live gate\"}",
+    "method": "GET",
+    "outcomeVerified": true,
+    "output": "{\"id\":\"6a4c11b3-7813-4e58-9683-1c4341a89af5\",\"priority\":\"high\",\"title\":\"RightClick MOAT-002 live gate\"}",
+    "path": "/records/6a4c11b3-7813-4e58-9683-1c4341a89af5",
+    "providerHTTPStatus": 200,
+    "state": "succeeded",
+    "verificationPredicate": "text_equals",
+    "verificationStatus": "VERIFIED_SUCCESS"
+  },
+  "result": "PASS",
+  "runtimeSHA256": "8fd520a251108a1ac93bdb898b74de429fbf86b5e445b3669d41b7bf3beeae0f",
+  "specificationSHA256": "e58eea412ca836a2c3c6aef0cfdc7f142296abf7d84d931d9b16d71efea9277d"
+}

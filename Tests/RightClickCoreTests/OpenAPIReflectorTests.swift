@@ -220,6 +220,178 @@ final class OpenAPIReflectorTests: XCTestCase {
         )
     }
 
+    private func supportedStructuredJSONSpec()
+        -> Data
+    {
+        Data(
+            """
+            {
+              "openapi": "3.0.3",
+              "info": {
+                "title": "Unknown Structured Provider",
+                "version": "1.0.0"
+              },
+              "paths": {
+                "/records": {
+                  "post": {
+                    "operationId": "createStructuredRecord",
+                    "summary": "Create Structured Record",
+                    "requestBody": {
+                      "required": true,
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "title",
+                              "priority"
+                            ],
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "priority": {
+                                "type": "string",
+                                "enum": [
+                                  "low",
+                                  "medium",
+                                  "high"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "responses": {
+                      "201": {
+                        "description": "Created",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "id",
+                                "title",
+                                "priority"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "priority": {
+                                  "type": "string",
+                                  "enum": [
+                                    "low",
+                                    "medium",
+                                    "high"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            """.utf8
+        )
+    }
+
+
+    private func getPathParameterSpec(
+        required: Bool = true,
+        parameterType: String = "string",
+        includeQueryParameter: Bool = false
+    ) -> Data {
+        let queryParameter =
+            includeQueryParameter
+            ? """
+              ,
+              {
+                "name": "expand",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              }
+              """
+            : ""
+
+        return Data(
+            """
+            {
+              "openapi": "3.0.3",
+              "info": {
+                "title": "Unknown Durable Read Provider",
+                "version": "1.0.0"
+              },
+              "paths": {
+                "/records/{id}": {
+                  "get": {
+                    "operationId": "readDurableRecord",
+                    "summary": "Read Durable Record",
+                    "parameters": [
+                      {
+                        "name": "id",
+                        "in": "path",
+                        "required": \(required ? "true" : "false"),
+                        "schema": {
+                          "type": "\(parameterType)"
+                        }
+                      }\(queryParameter)
+                    ],
+                    "responses": {
+                      "200": {
+                        "description": "Persisted record",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "id",
+                                "title",
+                                "priority"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                },
+                                "priority": {
+                                  "type": "string",
+                                  "enum": [
+                                    "low",
+                                    "medium",
+                                    "high"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            """.utf8
+        )
+    }
+
     private func missingOperationIDSpec() -> Data {
         Data(
             """
@@ -363,6 +535,742 @@ final class OpenAPIReflectorTests: XCTestCase {
                 .capabilities
                 .isEmpty
         )
+    }
+
+    func testSupportedStructuredJSONObjectOperationReflectsGenericArgumentSchema()
+        throws
+    {
+        let reflector =
+            try OpenAPIReflector(
+                specificationData:
+                    supportedStructuredJSONSpec(),
+                baseURL:
+                    URL(
+                        string:
+                            "https://provider.example"
+                    )!,
+                session:
+                    session()
+            )
+
+        let engine =
+            CapabilityEngine(
+                reflectors: [
+                    reflector
+                ]
+            )
+
+        let result =
+            try engine.capabilities(
+                for:
+                    "Create a record titled RightClick learned structured JSON live with priority high"
+            )
+
+        XCTAssertEqual(
+            result.capabilities.count,
+            1
+        )
+
+        let capability =
+            try XCTUnwrap(
+                result.capabilities.first
+            )
+
+        XCTAssertEqual(
+            capability.title,
+            "Create Structured Record"
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "requestContentType"
+            ],
+            "application/json"
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "responseContentType"
+            ],
+            "application/json"
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "argumentsSchema"
+            ],
+            """
+            {"additionalProperties":false,"properties":{"priority":{"enum":["low","medium","high"],"type":"string"},"title":{"type":"string"}},"required":["title","priority"],"type":"object"}
+            """
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "resultSchema"
+            ],
+            """
+            {"additionalProperties":false,"properties":{"id":{"type":"string"},"priority":{"enum":["low","medium","high"],"type":"string"},"title":{"type":"string"}},"required":["id","title","priority"],"type":"object"}
+            """
+        )
+    }
+
+    func testStructuredJSONObjectOperationUsesGenericArgumentsAndReturnsCanonicalJSON()
+        throws
+    {
+        StubURLProtocol.handler = {
+            request in
+
+            XCTAssertEqual(
+                request.httpMethod,
+                "POST"
+            )
+
+            XCTAssertEqual(
+                request.url?.absoluteString,
+                "https://provider.example/records"
+            )
+
+            XCTAssertEqual(
+                request.value(
+                    forHTTPHeaderField:
+                        "Content-Type"
+                ),
+                "application/json"
+            )
+
+            XCTAssertEqual(
+                request.value(
+                    forHTTPHeaderField:
+                        "Accept"
+                ),
+                "application/json"
+            )
+
+            let body =
+                try XCTUnwrap(
+                    request.httpBody
+                )
+
+            let object =
+                try XCTUnwrap(
+                    JSONSerialization
+                        .jsonObject(
+                            with: body
+                        )
+                        as? [String: String]
+                )
+
+            XCTAssertEqual(
+                object,
+                [
+                    "title":
+                        "RightClick learned structured JSON live",
+                    "priority":
+                        "high",
+                ]
+            )
+
+            let response =
+                try XCTUnwrap(
+                    HTTPURLResponse(
+                        url:
+                            try XCTUnwrap(
+                                request.url
+                            ),
+                        statusCode:
+                            201,
+                        httpVersion:
+                            "HTTP/1.1",
+                        headerFields: [
+                            "Content-Type":
+                                "application/json"
+                        ]
+                    )
+                )
+
+            return (
+                response,
+                Data(
+                    """
+                    {
+                      "id": "record-001",
+                      "title": "RightClick learned structured JSON live",
+                      "priority": "high"
+                    }
+                    """.utf8
+                )
+            )
+        }
+
+        let reflector =
+            try OpenAPIReflector(
+                specificationData:
+                    supportedStructuredJSONSpec(),
+                baseURL:
+                    URL(
+                        string:
+                            "https://provider.example"
+                    )!,
+                session:
+                    session()
+            )
+
+        let engine =
+            CapabilityEngine(
+                reflectors: [
+                    reflector
+                ]
+            )
+
+        let capability =
+            try XCTUnwrap(
+                engine
+                    .capabilities(
+                        for:
+                            "Create a high-priority record"
+                    )
+                    .capabilities
+                    .first
+            )
+
+        let result =
+            try engine.run(
+                id:
+                    capability.id,
+                item:
+                    "Create a high-priority record",
+                confirmed:
+                    true,
+                arguments: [
+                    "title":
+                        "RightClick learned structured JSON live",
+                    "priority":
+                        "high",
+                ]
+            )
+
+        XCTAssertEqual(
+            result.status,
+            .accepted
+        )
+
+        XCTAssertEqual(
+            result.output,
+            """
+            {"id":"record-001","priority":"high","title":"RightClick learned structured JSON live"}
+            """
+        )
+
+        XCTAssertFalse(
+            result.evidence
+                .outcomeVerified
+        )
+    }
+
+    func testStructuredJSONObjectArgumentsFailClosedBeforeTransport()
+        throws
+    {
+        var transportCalled =
+            false
+
+        StubURLProtocol.handler = {
+            request in
+
+            transportCalled = true
+
+            throw NSError(
+                domain:
+                    "ShouldNotReachTransport",
+                code:
+                    1
+            )
+        }
+
+        let reflector =
+            try OpenAPIReflector(
+                specificationData:
+                    supportedStructuredJSONSpec(),
+                baseURL:
+                    URL(
+                        string:
+                            "https://provider.example"
+                    )!,
+                session:
+                    session()
+            )
+
+        let engine =
+            CapabilityEngine(
+                reflectors: [
+                    reflector
+                ]
+            )
+
+        let capability =
+            try XCTUnwrap(
+                engine
+                    .capabilities(
+                        for:
+                            "Create a record"
+                    )
+                    .capabilities
+                    .first
+            )
+
+        let missingRequired =
+            try engine.run(
+                id:
+                    capability.id,
+                item:
+                    "Create a record",
+                confirmed:
+                    true,
+                arguments: [
+                    "title":
+                        "Incomplete"
+                ]
+            )
+
+        XCTAssertEqual(
+            missingRequired.status,
+            .failed
+        )
+
+        XCTAssertFalse(
+            transportCalled
+        )
+
+        let invalidEnum =
+            try engine.run(
+                id:
+                    capability.id,
+                item:
+                    "Create a record",
+                confirmed:
+                    true,
+                arguments: [
+                    "title":
+                        "Bad priority",
+                    "priority":
+                        "urgent",
+                ]
+            )
+
+        XCTAssertEqual(
+            invalidEnum.status,
+            .failed
+        )
+
+        XCTAssertFalse(
+            transportCalled
+        )
+
+        let unknownField =
+            try engine.run(
+                id:
+                    capability.id,
+                item:
+                    "Create a record",
+                confirmed:
+                    true,
+                arguments: [
+                    "title":
+                        "Unexpected",
+                    "priority":
+                        "high",
+                    "providerSpecificHack":
+                        "must fail",
+                ]
+            )
+
+        XCTAssertEqual(
+            unknownField.status,
+            .failed
+        )
+
+        XCTAssertFalse(
+            transportCalled
+        )
+    }
+
+
+    func testGETWithRequiredStringPathParameterReflectsGenericArgumentSchema()
+        throws
+    {
+        let reflector =
+            try OpenAPIReflector(
+                specificationData:
+                    getPathParameterSpec(),
+                baseURL:
+                    URL(
+                        string:
+                            "https://provider.example"
+                    )!,
+                session:
+                    session()
+            )
+
+        let engine =
+            CapabilityEngine(
+                reflectors: [
+                    reflector
+                ]
+            )
+
+        let result =
+            try engine.capabilities(
+                for:
+                    "Read durable record record-001"
+            )
+
+        XCTAssertEqual(
+            result.capabilities.count,
+            1
+        )
+
+        let capability =
+            try XCTUnwrap(
+                result.capabilities.first
+            )
+
+        XCTAssertEqual(
+            capability.title,
+            "Read Durable Record"
+        )
+
+        XCTAssertEqual(
+            capability.metadata["method"],
+            "GET"
+        )
+
+        XCTAssertEqual(
+            capability.metadata["path"],
+            "/records/{id}"
+        )
+
+        XCTAssertNil(
+            capability.metadata[
+                "requestContentType"
+            ]
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "responseContentType"
+            ],
+            "application/json"
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "argumentsSchema"
+            ],
+            """
+            {"additionalProperties":false,"properties":{"id":{"type":"string"}},"required":["id"],"type":"object"}
+            """
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "resultSchema"
+            ],
+            """
+            {"additionalProperties":false,"properties":{"id":{"type":"string"},"priority":{"enum":["low","medium","high"],"type":"string"},"title":{"type":"string"}},"required":["id","title","priority"],"type":"object"}
+            """
+        )
+    }
+
+    func testGETPathParameterUsesGenericArgumentsPercentEncodesAndSendsNoBody()
+        throws
+    {
+        StubURLProtocol.handler = {
+            request in
+
+            XCTAssertEqual(
+                request.httpMethod,
+                "GET"
+            )
+
+            XCTAssertEqual(
+                request.url?.absoluteString,
+                "https://provider.example/records/alpha%2Fbeta%20%3F%23"
+            )
+
+            XCTAssertNil(
+                request.httpBody
+            )
+
+            XCTAssertNil(
+                request.value(
+                    forHTTPHeaderField:
+                        "Content-Type"
+                )
+            )
+
+            XCTAssertEqual(
+                request.value(
+                    forHTTPHeaderField:
+                        "Accept"
+                ),
+                "application/json"
+            )
+
+            let response =
+                try XCTUnwrap(
+                    HTTPURLResponse(
+                        url:
+                            try XCTUnwrap(
+                                request.url
+                            ),
+                        statusCode:
+                            200,
+                        httpVersion:
+                            "HTTP/1.1",
+                        headerFields: [
+                            "Content-Type":
+                                "application/json"
+                        ]
+                    )
+                )
+
+            return (
+                response,
+                Data(
+                    """
+                    {
+                      "id": "alpha/beta ?#",
+                      "title": "Persisted",
+                      "priority": "high"
+                    }
+                    """.utf8
+                )
+            )
+        }
+
+        let reflector =
+            try OpenAPIReflector(
+                specificationData:
+                    getPathParameterSpec(),
+                baseURL:
+                    URL(
+                        string:
+                            "https://provider.example"
+                    )!,
+                session:
+                    session()
+            )
+
+        let engine =
+            CapabilityEngine(
+                reflectors: [
+                    reflector
+                ]
+            )
+
+        let capability =
+            try XCTUnwrap(
+                engine
+                    .capabilities(
+                        for:
+                            "Read durable record"
+                    )
+                    .capabilities
+                    .first
+            )
+
+        let result =
+            try engine.run(
+                id:
+                    capability.id,
+                item:
+                    "Read durable record",
+                confirmed:
+                    true,
+                arguments: [
+                    "id":
+                        "alpha/beta ?#"
+                ]
+            )
+
+        XCTAssertEqual(
+            result.status,
+            .accepted
+        )
+
+        XCTAssertEqual(
+            result.output,
+            """
+            {"id":"alpha/beta ?#","priority":"high","title":"Persisted"}
+            """
+        )
+
+        XCTAssertFalse(
+            result.evidence
+                .outcomeVerified
+        )
+    }
+
+    func testGETPathParameterArgumentsFailClosedBeforeTransport()
+        throws
+    {
+        var transportCalled =
+            false
+
+        StubURLProtocol.handler = {
+            request in
+
+            transportCalled = true
+
+            throw NSError(
+                domain:
+                    "ShouldNotReachTransport",
+                code:
+                    1
+            )
+        }
+
+        let reflector =
+            try OpenAPIReflector(
+                specificationData:
+                    getPathParameterSpec(),
+                baseURL:
+                    URL(
+                        string:
+                            "https://provider.example"
+                    )!,
+                session:
+                    session()
+            )
+
+        let engine =
+            CapabilityEngine(
+                reflectors: [
+                    reflector
+                ]
+            )
+
+        let capability =
+            try XCTUnwrap(
+                engine
+                    .capabilities(
+                        for:
+                            "Read durable record"
+                    )
+                    .capabilities
+                    .first
+            )
+
+        let missingArguments =
+            try engine.run(
+                id:
+                    capability.id,
+                item:
+                    "Read durable record",
+                confirmed:
+                    true
+            )
+
+        XCTAssertEqual(
+            missingArguments.status,
+            .failed
+        )
+
+        XCTAssertFalse(
+            transportCalled
+        )
+
+        let missingID =
+            try engine.run(
+                id:
+                    capability.id,
+                item:
+                    "Read durable record",
+                confirmed:
+                    true,
+                arguments: [:]
+            )
+
+        XCTAssertEqual(
+            missingID.status,
+            .failed
+        )
+
+        XCTAssertFalse(
+            transportCalled
+        )
+
+        let unknownArgument =
+            try engine.run(
+                id:
+                    capability.id,
+                item:
+                    "Read durable record",
+                confirmed:
+                    true,
+                arguments: [
+                    "id":
+                        "record-001",
+                    "providerSpecificHack":
+                        "must fail",
+                ]
+            )
+
+        XCTAssertEqual(
+            unknownArgument.status,
+            .failed
+        )
+
+        XCTAssertFalse(
+            transportCalled
+        )
+    }
+
+    func testGETUnsupportedParameterShapesAbstainRatherThanGuessing()
+        throws
+    {
+        let unsupported = [
+            getPathParameterSpec(
+                required: false
+            ),
+            getPathParameterSpec(
+                parameterType: "integer"
+            ),
+            getPathParameterSpec(
+                includeQueryParameter: true
+            ),
+        ]
+
+        for specification in unsupported {
+            let reflector =
+                try OpenAPIReflector(
+                    specificationData:
+                        specification,
+                    baseURL:
+                        URL(
+                            string:
+                                "https://provider.example"
+                        )!,
+                    session:
+                        session()
+                )
+
+            let engine =
+                CapabilityEngine(
+                    reflectors: [
+                        reflector
+                    ]
+                )
+
+            XCTAssertTrue(
+                try engine
+                    .capabilities(
+                        for:
+                            "Read durable record"
+                    )
+                    .capabilities
+                    .isEmpty
+            )
+        }
     }
 
     func testMissingOperationIDAbstains()

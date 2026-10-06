@@ -308,14 +308,23 @@ public final class BonjourOpenAPISource:
             return nil
         }
 
-        let host =
+        let rawHost =
             descriptor.host
             .trimmingCharacters(
                 in:
                     .whitespacesAndNewlines
             )
 
-        guard !host.isEmpty else {
+        var host = rawHost
+
+        if host.hasSuffix(".") {
+            host.removeLast()
+        }
+
+        guard
+            !host.isEmpty,
+            !host.hasSuffix(".")
+        else {
             return nil
         }
 

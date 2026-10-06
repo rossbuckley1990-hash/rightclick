@@ -1,0 +1,32 @@
+{
+  "experiment": "MOAT-002 GREEN",
+  "baseCommit": "0d4d88a09c9d9214aa36b06152ae649555aa1f35",
+  "redEvidenceManifestSHA256": "1c24e8f73ca8391ff21458a96e670f2180a99b4628ad8105a1665518cdaca425",
+  "openapiSHA256": "e58eea412ca836a2c3c6aef0cfdc7f142296abf7d84d931d9b16d71efea9277d",
+  "preregisteredTestsPatchSHA256": "72ce3b0299f882daa8e0cbee5ef0189e13490f19a0795f430756278df6f6292c",
+  "allowedChange": {
+    "method": "GET",
+    "requestBody": "none",
+    "pathParameters": {
+      "count": 1,
+      "location": "path",
+      "required": true,
+      "schemaType": "string"
+    },
+    "response": "existing closed application/json object schema"
+  },
+  "requirements": [
+    "Reflect GET operations with exactly one supported required string path parameter.",
+    "Expose the path parameter through the existing generic arguments object.",
+    "Substitute the argument into the path using path-segment-safe percent encoding.",
+    "Send GET without an HTTP request body.",
+    "Do not send Content-Type when there is no request body.",
+    "Preserve reflected application/json Accept behavior.",
+    "Validate the structured JSON response using the existing generic response schema machinery.",
+    "Reject missing and unknown structured arguments before network transport.",
+    "Abstain on optional path parameters, non-string path parameters, and unsupported additional query parameters.",
+    "Add no provider-specific or Cloudflare-specific behavior.",
+    "Add no new MCP tool names.",
+    "Make no change to the generic context_run MCP arguments schema."
+  ]
+}

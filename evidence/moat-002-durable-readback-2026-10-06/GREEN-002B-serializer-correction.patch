@@ -1,0 +1,12 @@
+--- a/Sources/RightClickCore/OpenAPIReflector.swift
++++ b/Sources/RightClickCore/OpenAPIReflector.swift
+@@ -2000,7 +2000,8 @@
+                     withJSONObject:
+                         canonical,
+                     options: [
+-                        .sortedKeys
++                        .sortedKeys,
++                        .withoutEscapingSlashes
+                     ]
+                 )
+ 

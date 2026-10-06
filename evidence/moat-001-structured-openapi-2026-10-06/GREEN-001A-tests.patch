@@ -1,0 +1,181 @@
+diff --git a/Tests/RightClickCoreTests/OpenAPIReflectorTests.swift b/Tests/RightClickCoreTests/OpenAPIReflectorTests.swift
+index bd0c389..7ab33bc 100644
+--- a/Tests/RightClickCoreTests/OpenAPIReflectorTests.swift
++++ b/Tests/RightClickCoreTests/OpenAPIReflectorTests.swift
+@@ -220,6 +220,92 @@ final class OpenAPIReflectorTests: XCTestCase {
+         )
+     }
+ 
++    private func supportedStructuredJSONSpec()
++        -> Data
++    {
++        Data(
++            """
++            {
++              "openapi": "3.0.3",
++              "info": {
++                "title": "Unknown Structured Provider",
++                "version": "1.0.0"
++              },
++              "paths": {
++                "/records": {
++                  "post": {
++                    "operationId": "createStructuredRecord",
++                    "summary": "Create Structured Record",
++                    "requestBody": {
++                      "required": true,
++                      "content": {
++                        "application/json": {
++                          "schema": {
++                            "type": "object",
++                            "additionalProperties": false,
++                            "required": [
++                              "title",
++                              "priority"
++                            ],
++                            "properties": {
++                              "title": {
++                                "type": "string"
++                              },
++                              "priority": {
++                                "type": "string",
++                                "enum": [
++                                  "low",
++                                  "medium",
++                                  "high"
++                                ]
++                              }
++                            }
++                          }
++                        }
++                      }
++                    },
++                    "responses": {
++                      "201": {
++                        "description": "Created",
++                        "content": {
++                          "application/json": {
++                            "schema": {
++                              "type": "object",
++                              "additionalProperties": false,
++                              "required": [
++                                "id",
++                                "title",
++                                "priority"
++                              ],
++                              "properties": {
++                                "id": {
++                                  "type": "string"
++                                },
++                                "title": {
++                                  "type": "string"
++                                },
++                                "priority": {
++                                  "type": "string",
++                                  "enum": [
++                                    "low",
++                                    "medium",
++                                    "high"
++                                  ]
++                                }
++                              }
++                            }
++                          }
++                        }
++                      }
++                    }
++                  }
++                }
++              }
++            }
++            """.utf8
++        )
++    }
++
+     private func missingOperationIDSpec() -> Data {
+         Data(
+             """
+@@ -365,6 +451,83 @@ final class OpenAPIReflectorTests: XCTestCase {
+         )
+     }
+ 
++    func testSupportedStructuredJSONObjectOperationReflectsGenericArgumentSchema()
++        throws
++    {
++        let reflector =
++            try OpenAPIReflector(
++                specificationData:
++                    supportedStructuredJSONSpec(),
++                baseURL:
++                    URL(
++                        string:
++                            "https://provider.example"
++                    )!,
++                session:
++                    session()
++            )
++
++        let engine =
++            CapabilityEngine(
++                reflectors: [
++                    reflector
++                ]
++            )
++
++        let result =
++            try engine.capabilities(
++                for:
++                    "Create a record titled RightClick learned structured JSON live with priority high"
++            )
++
++        XCTAssertEqual(
++            result.capabilities.count,
++            1
++        )
++
++        let capability =
++            try XCTUnwrap(
++                result.capabilities.first
++            )
++
++        XCTAssertEqual(
++            capability.title,
++            "Create Structured Record"
++        )
++
++        XCTAssertEqual(
++            capability.metadata[
++                "requestContentType"
++            ],
++            "application/json"
++        )
++
++        XCTAssertEqual(
++            capability.metadata[
++                "responseContentType"
++            ],
++            "application/json"
++        )
++
++        XCTAssertEqual(
++            capability.metadata[
++                "argumentsSchema"
++            ],
++            """
++            {"additionalProperties":false,"properties":{"priority":{"enum":["low","medium","high"],"type":"string"},"title":{"type":"string"}},"required":["title","priority"],"type":"object"}
++            """
++        )
++
++        XCTAssertEqual(
++            capability.metadata[
++                "resultSchema"
++            ],
++            """
++            {"additionalProperties":false,"properties":{"id":{"type":"string"},"priority":{"enum":["low","medium","high"],"type":"string"},"title":{"type":"string"}},"required":["id","title","priority"],"type":"object"}
++            """
++        )
++    }
++
+     func testMissingOperationIDAbstains()
+         throws
+     {
