@@ -188,6 +188,19 @@ The GET result exactly matched the record returned by the POST.
 A further delayed read during evidence freezing also returned the same
 persisted record.
 
+
+## Raw runtime receipts
+
+The evidence bundle preserves the literal JSON returned by
+`context_run_status` for both final live executions:
+
+- `RAW_CREATE_CONTEXT_RUN_STATUS.json`
+- `RAW_READ_CONTEXT_RUN_STATUS.json`
+
+The create receipt remains `accepted` with `outcomeVerified: false`.
+The separately discovered GET receipt is `succeeded` with
+`VERIFIED_SUCCESS` and `outcomeVerified: true`.
+
 ## Exact supported claim
 
 > RIGHTCLICK gained a previously unavailable remote ability while its

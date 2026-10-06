@@ -1,0 +1,32 @@
+{
+  "actionId" : "openapi:897dbbbd6d4306550ed0e588bc5e912156a401368cdc9871f8ff8f9993d5ff3c:0ac0989fd45fdf7f:readDurableRecord",
+  "events" : [
+    "HTTP GET https://rightclick-moat-002-023753.dandelion-pen.workers.dev/records/6a4c11b3-7813-4e58-9683-1c4341a89af5",
+    "provider returned 200"
+  ],
+  "evidence" : {
+    "boundary" : "Evaluated provider-independent caller-declared postconditions against observable state after invocation.",
+    "outcomeVerified" : true,
+    "type" : "generic_postcondition"
+  },
+  "executionId" : "F2933431-269F-46BE-BA9E-BD65CB9CE604",
+  "message" : "Caller-declared generic postconditions verified.",
+  "output" : "{\"id\":\"6a4c11b3-7813-4e58-9683-1c4341a89af5\",\"priority\":\"high\",\"title\":\"RightClick MOAT-002 live gate\"}",
+  "state" : "succeeded",
+  "title" : "Read Durable Record",
+  "verification" : {
+    "predicates" : [
+      {
+        "actual" : "{\"id\":\"6a4c11b3-7813-4e58-9683-1c4341a89af5\",\"priority\":\"high\",\"title\":\"RightClick MOAT-002 live gate\"}",
+        "evaluated" : true,
+        "message" : "Compared exact provider-returned text.",
+        "passed" : true,
+        "predicate" : {
+          "type" : "text_equals",
+          "value" : "{\"id\":\"6a4c11b3-7813-4e58-9683-1c4341a89af5\",\"priority\":\"high\",\"title\":\"RightClick MOAT-002 live gate\"}"
+        }
+      }
+    ],
+    "status" : "VERIFIED_SUCCESS"
+  }
+}
