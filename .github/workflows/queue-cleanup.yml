@@ -1,19 +1,11 @@
-name: Queue cleanup
+name: CI queue cleanup (manual)
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/queue-cleanup.yml
+  workflow_dispatch:
 
 permissions:
   actions: write
   contents: read
-
-concurrency:
-  group: rightclick-queue-cleanup
-  cancel-in-progress: true
 
 jobs:
   cleanup:
@@ -39,7 +31,7 @@ jobs:
               "Authorization": f"Bearer {token}",
               "Accept": "application/vnd.github+json",
               "X-GitHub-Api-Version": "2022-11-28",
-              "User-Agent": "rightclick-queue-cleanup",
+              "User-Agent": "rightclick-ci-cleanup",
           }
 
           def request(url, method="GET"):
@@ -48,7 +40,7 @@ jobs:
                   body = r.read()
                   return json.loads(body) if body else None
 
-          def workflow_runs():
+          def list_runs():
               out = []
               page = 1
               while True:
@@ -60,7 +52,7 @@ jobs:
                       return out
                   page += 1
 
-          runs = workflow_runs()
+          runs = list_runs()
           active = [
               r for r in runs
               if r.get("status") in {"queued", "in_progress", "waiting", "pending"}
@@ -80,39 +72,33 @@ jobs:
                   key = (event, branch)
               keep.setdefault(key, run["id"])
 
-          cancel = []
           for run in active:
               event = run.get("event")
               branch = run.get("head_branch")
-              if event == "push" and branch != "main":
-                  cancel.append(run)
-                  continue
+              stale = event == "push" and branch != "main"
               key = ("push", "main") if event == "push" else (event, branch)
-              if keep.get(key) != run["id"]:
-                  cancel.append(run)
-
-          print(f"active={len(active)} keep={len(keep)} cancel={len(cancel)}")
-          for run in sorted(cancel, key=lambda r: r["run_number"]):
-              rid = run["id"]
-              print("cancel", run["run_number"], run.get("event"), run.get("head_branch"), rid)
+              stale = stale or keep.get(key) != run["id"]
+              if not stale:
+                  continue
               try:
-                  request(f"{api}/actions/runs/{rid}/cancel", method="POST")
+                  request(f"{api}/actions/runs/{run['id']}/cancel", method="POST")
               except urllib.error.HTTPError as e:
                   if e.code not in (409, 422):
                       raise
 
-          # Give GitHub a short window to transition cancellation requests.
-          time.sleep(8)
+          time.sleep(5)
 
-          runs = workflow_runs()
-          cancelled = [r for r in runs if r.get("conclusion") == "cancelled"]
-          print(f"delete_cancelled={len(cancelled)}")
-          for run in sorted(cancelled, key=lambda r: r["run_number"]):
-              rid = run["id"]
-              print("delete", run["run_number"], run.get("event"), run.get("head_branch"), rid)
+          deleted = 0
+          for run in list_runs():
+              if run.get("conclusion") != "cancelled":
+                  continue
               try:
-                  request(f"{api}/actions/runs/{rid}", method="DELETE")
+                  request(f"{api}/actions/runs/{run['id']}", method="DELETE")
+                  deleted += 1
               except urllib.error.HTTPError as e:
                   if e.code not in (404, 409, 422):
                       raise
+
+          print(f"active_lanes_kept={len(keep)}")
+          print(f"cancelled_history_deleted={deleted}")
           PY
