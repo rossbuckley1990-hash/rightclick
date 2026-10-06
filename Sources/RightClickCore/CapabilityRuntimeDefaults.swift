@@ -8,18 +8,30 @@ public enum CapabilityReflectorSourceDefaults {
     public static func all(
         startBrowsing: Bool = true
     ) -> [any CapabilityReflectorSource] {
-        [
-            ConfiguredOpenAPISource(),
+        var sources:
+            [any CapabilityReflectorSource] = [
+                ConfiguredOpenAPISource(),
 
-            BonjourOpenAPISource(
-                startBrowsing:
-                    startBrowsing
-            ),
-            BonjourGraphQLSource(
-                startBrowsing:
-                    startBrowsing
-            ),
-        ]
+                BonjourOpenAPISource(
+                    startBrowsing:
+                        startBrowsing
+                ),
+                BonjourGraphQLSource(
+                    startBrowsing:
+                        startBrowsing
+                ),
+            ]
+
+        if let ard =
+            ARDRegistrySource
+                .fromEnvironment()
+        {
+            sources.append(
+                ard
+            )
+        }
+
+        return sources
     }
 }
 
