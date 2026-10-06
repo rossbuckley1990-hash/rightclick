@@ -170,7 +170,9 @@ public final class BonjourOpenAPISource:
                     specificationData:
                         specification,
                     baseURL:
-                        material.baseURL
+                        material.baseURL,
+                    externalBearerSchemeName:
+                        material.externalBearerSchemeName
                 )
 
             lock.lock()
@@ -290,7 +292,8 @@ public final class BonjourOpenAPISource:
             BonjourOpenAPIServiceDescriptor
     ) -> (
         specificationURL: URL,
-        baseURL: URL
+        baseURL: URL,
+        externalBearerSchemeName: String?
     )? {
         guard
             descriptor.serviceType
@@ -309,6 +312,31 @@ public final class BonjourOpenAPISource:
                 == "openapi"
         else {
             return nil
+        }
+
+        let externalBearerSchemeName:
+            String?
+
+        if descriptor.txt.keys.contains(
+            "auth-scheme"
+        ) {
+            guard
+                let value =
+                    validatedAuthoritySchemeName(
+                        descriptor.txt[
+                            "auth-scheme"
+                        ]
+                    )
+            else {
+                return nil
+            }
+
+            externalBearerSchemeName =
+                value
+
+        } else {
+            externalBearerSchemeName =
+                nil
         }
 
         let hasAbsoluteAdvertisement =
@@ -341,7 +369,8 @@ public final class BonjourOpenAPISource:
 
             return (
                 specificationURL,
-                baseURL
+                baseURL,
+                externalBearerSchemeName
             )
         }
 
@@ -429,8 +458,38 @@ public final class BonjourOpenAPISource:
 
         return (
             specificationURL,
-            baseURL
+            baseURL,
+            externalBearerSchemeName
         )
+    }
+
+    private func validatedAuthoritySchemeName(
+        _ raw: String?
+    ) -> String? {
+        guard
+            let raw
+        else {
+            return nil
+        }
+
+        let value =
+            raw.trimmingCharacters(
+                in:
+                    .whitespacesAndNewlines
+            )
+
+        guard
+            !value.isEmpty,
+            !value.contains("|"),
+            value.rangeOfCharacter(
+                from:
+                    .controlCharacters
+            ) == nil
+        else {
+            return nil
+        }
+
+        return value
     }
 
     private func validatedAbsoluteHTTPSURL(

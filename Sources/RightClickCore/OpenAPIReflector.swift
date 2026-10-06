@@ -107,11 +107,18 @@ public final class OpenAPIReflector: CapabilityReflector {
     public init(
         specificationData: Data,
         baseURL: URL,
+        externalBearerSchemeName:
+            String? = nil,
         session: URLSession = .shared
     ) throws {
         let canonicalBaseURL =
             try Self.canonicalBaseURL(
                 baseURL
+            )
+
+        let resolvedExternalBearerSchemeName =
+            try Self.validatedExternalBearerSchemeName(
+                externalBearerSchemeName
             )
 
         try Self
@@ -126,14 +133,20 @@ public final class OpenAPIReflector: CapabilityReflector {
                 specificationData
             )
 
+        var providerIdentity =
+            canonicalBaseURL.absoluteString
+            + "\n"
+            + specificationSHA256
+
+        if let resolvedExternalBearerSchemeName {
+            providerIdentity +=
+                "\nauth-scheme:"
+                + resolvedExternalBearerSchemeName
+        }
+
         let providerIdentityMaterial =
             Data(
-                (
-                    canonicalBaseURL
-                        .absoluteString
-                    + "\n"
-                    + specificationSHA256
-                ).utf8
+                providerIdentity.utf8
             )
 
         let providerFingerprint =
@@ -152,7 +165,9 @@ public final class OpenAPIReflector: CapabilityReflector {
                 providerFingerprint:
                     providerFingerprint,
                 authorityOrigin:
-                    authorityOrigin
+                    authorityOrigin,
+                externalBearerSchemeName:
+                    resolvedExternalBearerSchemeName
             )
 
         self.baseURL =
@@ -1136,6 +1151,37 @@ public final class OpenAPIReflector: CapabilityReflector {
         return url
     }
 
+    private static func validatedExternalBearerSchemeName(
+        _ raw: String?
+    ) throws -> String? {
+        guard
+            let raw
+        else {
+            return nil
+        }
+
+        let value =
+            raw.trimmingCharacters(
+                in:
+                    .whitespacesAndNewlines
+            )
+
+        guard
+            !value.isEmpty,
+            !value.contains("|"),
+            value.rangeOfCharacter(
+                from:
+                    .controlCharacters
+            ) == nil
+        else {
+            throw RightClickError(
+                "External OpenAPI bearer authority scheme name is invalid."
+            )
+        }
+
+        return value
+    }
+
     private static func canonicalBaseURL(
         _ url: URL
     ) throws -> URL {
@@ -1408,7 +1454,9 @@ public final class OpenAPIReflector: CapabilityReflector {
     private static func parseSpecification(
         _ data: Data,
         providerFingerprint: String,
-        authorityOrigin: String
+        authorityOrigin: String,
+        externalBearerSchemeName:
+            String?
     ) throws -> (
         providerName: String,
         operations: [Operation]
@@ -1460,6 +1508,14 @@ public final class OpenAPIReflector: CapabilityReflector {
             root.keys.contains(
                 "security"
             )
+
+        let rootSecurityIsExplicitlyEmpty =
+            rootHasSecurity
+            && (
+                root[
+                    "security"
+                ] as? [Any]
+            )?.isEmpty == true
 
         let components =
             root["components"]
@@ -1534,10 +1590,14 @@ public final class OpenAPIReflector: CapabilityReflector {
                         operation,
                     rootHasSecurity:
                         rootHasSecurity,
+                    rootSecurityIsExplicitlyEmpty:
+                        rootSecurityIsExplicitlyEmpty,
                     securitySchemes:
                         securitySchemes,
                     authorityOrigin:
-                        authorityOrigin
+                        authorityOrigin,
+                    externalBearerSchemeName:
+                        externalBearerSchemeName
                 ) {
                 case .publicAccess:
                     authorityRequirement =
@@ -1821,20 +1881,39 @@ public final class OpenAPIReflector: CapabilityReflector {
             [String: Any],
         rootHasSecurity:
             Bool,
+        rootSecurityIsExplicitlyEmpty:
+            Bool,
         securitySchemes:
             [String: Any],
         authorityOrigin:
-            String
+            String,
+        externalBearerSchemeName:
+            String?
     ) -> AuthorityResolution {
         guard
             operation.keys.contains(
                 "security"
             )
         else {
-            return
-                rootHasSecurity
-                ? .unsupported
-                : .publicAccess
+            if rootHasSecurity {
+                return
+                    rootSecurityIsExplicitlyEmpty
+                    ? .publicAccess
+                    : .unsupported
+            }
+
+            if let externalBearerSchemeName {
+                return .required(
+                    .httpBearer(
+                        schemeName:
+                            externalBearerSchemeName,
+                        origin:
+                            authorityOrigin
+                    )
+                )
+            }
+
+            return .publicAccess
         }
 
         guard

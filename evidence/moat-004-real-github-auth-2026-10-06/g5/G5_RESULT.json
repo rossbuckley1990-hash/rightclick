@@ -1,0 +1,44 @@
+{
+  "gate": "MOAT-004 G5",
+  "main": "cf0ff5bf66a3a949befb22a7ab1d7aafd99974c0",
+  "base": "5b1fa8f07b18862b29080cd57f4158bad19503d1",
+  "testFirstCommit": "94a012c845130eb61100adfcee2a111d3478d537",
+  "semanticRedConfirmed": true,
+  "invalidHarnessPreserved": true,
+  "failedImplementationAttemptPreserved": true,
+  "failedImplementationAttemptPatchSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "implementationPatchSHA256": "bb0574d0a8f9db3bb149ffb0f618b1ead9341659fbd593054245e304d7623458",
+  "externalAuthority": {
+    "metadataKey": "auth-scheme",
+    "kind": "http_bearer",
+    "credentialStoredInMetadata": false,
+    "boundToExactExecutionOrigin": true,
+    "existingKeychainStoreReused": true,
+    "missingCredentialFailsBeforeTransport": true,
+    "crossOriginCredentialRejected": true,
+    "schemeChangeChangesCapabilityIdentity": true
+  },
+  "precedence": {
+    "fallbackOnlyWhenContractSecurityUnspecified": true,
+    "explicitEmptyOperationSecurityRemainsPublic": true,
+    "explicitEmptyRootSecurityRemainsPublic": true,
+    "nonEmptyRootSecurityStillAbstains": true,
+    "unsupportedDeclaredSecurityStillAbstains": true,
+    "supportedOperationBearerTakesPrecedence": true
+  },
+  "frozenGitHubContract": {
+    "bytes": 12901084,
+    "sha256": "1429e93b5cbfa7547aa197e9553a6dacbd8d4aaf28012446ed730b152bcdf284",
+    "operationId": "users/get-authenticated",
+    "reflected": true,
+    "authorityRequired": true,
+    "authorityKind": "http_bearer",
+    "authorityScheme": "MOAT004ExternalBearer",
+    "authorityOrigin": "https://api.github.com",
+    "resultValidation": "json_syntax_only"
+  },
+  "realGitHubTokenUsed": false,
+  "secretPassedThroughMCP": false,
+  "providerSpecificProductionCode": false,
+  "result": "PASS"
+}
