@@ -89,11 +89,42 @@ struct RightClickCursorClientAdapter: RightClickClientAdapter {
 
 enum RightClickOnboardingMutation {
     case json(RightClickJSONConfigBackend.Plan)
+    case native(RightClickNativeRegistrationBackend.Plan)
+
     var operation: String {
-        switch self { case .json(let plan): return plan.operation }
+        switch self {
+        case .json(let plan):
+            return plan.operation
+        case .native(let plan):
+            return plan.operation
+        }
     }
+
     var changed: Bool {
-        switch self { case .json(let plan): return plan.changed }
+        switch self {
+        case .json(let plan):
+            return plan.changed
+        case .native(let plan):
+            return plan.changed
+        }
+    }
+
+    var backendID: String {
+        switch self {
+        case .json:
+            return "json-config"
+        case .native(let plan):
+            return plan.contract.backendID
+        }
+    }
+
+    var scope: String? {
+        switch self {
+        case .json:
+            return nil
+        case .native(let plan):
+            return plan.contract.scope
+        }
     }
 }
 
@@ -108,6 +139,7 @@ struct RightClickOnboardingPlan {
 struct RightClickOnboardingApplied {
     let operation: String
     let backup: URL?
+    let connectionState: RightClickClientState?
 }
 
 enum RightClickOnboardingEngine {
@@ -126,7 +158,21 @@ enum RightClickOnboardingEngine {
         switch plan.mutation {
         case .json(let mutation):
             let result = try RightClickJSONConfigBackend.apply(mutation)
-            return RightClickOnboardingApplied(operation: result.operation, backup: result.backup)
+
+            return RightClickOnboardingApplied(
+                operation: result.operation,
+                backup: result.backup,
+                connectionState: nil
+            )
+
+        case .native(let mutation):
+            let result = try RightClickNativeRegistrationBackend.apply(mutation)
+
+            return RightClickOnboardingApplied(
+                operation: result.operation,
+                backup: nil,
+                connectionState: result.connectionState
+            )
         }
     }
 }

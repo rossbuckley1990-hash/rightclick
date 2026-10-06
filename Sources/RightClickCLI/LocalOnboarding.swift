@@ -29,8 +29,13 @@ enum RightClickLocalOnboarding {
                 switch arg {
                 case "--client":
                     index += 1
-                    guard index < args.count, args[index] == "cursor" else {
-                        throw SetupError("RIGHTCLICK currently supports --client cursor only.")
+                    guard index < args.count,
+                          ["cursor", "claude"].contains(args[index])
+                    else {
+                        throw SetupError(
+                            "RIGHTCLICK currently supports "
+                            + "--client cursor or --client claude."
+                        )
                     }
                     client = args[index]
                 case "--yes": yes = true
@@ -43,7 +48,10 @@ enum RightClickLocalOnboarding {
                 index += 1
             }
             if yes && client == nil {
-                throw SetupError("Use --client cursor with --yes to explicitly select the client.")
+                throw SetupError(
+                    "Use --client cursor or --client claude "
+                    + "with --yes to explicitly select the client."
+                )
             }
         }
     }
@@ -52,10 +60,13 @@ enum RightClickLocalOnboarding {
     rightclick setup
     rightclick setup --client cursor [--yes] [--dry-run] [--json]
     rightclick setup --client cursor --disconnect [--yes] [--dry-run] [--json]
+    rightclick setup --client claude [--yes] [--dry-run] [--json]
+    rightclick setup --client claude --disconnect [--yes] [--dry-run] [--json]
 
-    Local setup changes only Cursor's rightclick entry. No tunnel is prepared or started.
-    Dry-run never writes configuration or runs the local probe.
-    Existing different rightclick entries are never silently replaced.
+    Cursor uses its local JSON MCP configuration.
+    Claude Code uses its native user-scope MCP registration CLI.
+    Dry-run may inspect current state but never mutates configuration.
+    Existing different rightclick registrations are never silently replaced.
     """
 
     static func bridgeArguments(_ args: [String]) throws -> Bool {
@@ -140,37 +151,90 @@ enum RightClickLocalOnboarding {
                 return 0
             }
 
-            let adapter = RightClickCursorClientAdapter()
-            guard options.client != nil || adapter.detected(home: home, applications: URL(fileURLWithPath: "/Applications")) else {
-                throw SetupError("No supported local client was detected. RIGHTCLICK currently supports Cursor; use --client cursor to explicitly prepare its configuration.")
-            }
-            guard options.disconnect || FileManager.default.isExecutableFile(atPath: executable) else {
-                throw SetupError("The RIGHTCLICK executable is missing or not executable: \(executable)")
+            let cursor = RightClickCursorClientAdapter()
+            let claude = RightClickClaudeClientAdapter()
+
+            let adapter: any RightClickClientAdapter
+
+            switch options.client {
+            case "cursor":
+                adapter = cursor
+
+            case "claude":
+                adapter = claude
+
+            case nil:
+                if cursor.detected(
+                    home: home,
+                    applications: URL(
+                        fileURLWithPath: "/Applications"
+                    )
+                ) {
+                    adapter = cursor
+                } else if claude.detected(
+                    home: home,
+                    applications: URL(
+                        fileURLWithPath: "/Applications"
+                    )
+                ) {
+                    adapter = claude
+                } else {
+                    throw SetupError(
+                        "No supported local client was detected. "
+                        + "Use --client cursor or --client claude "
+                        + "to explicitly select one."
+                    )
+                }
+
+            default:
+                throw SetupError(
+                    "Unsupported local client."
+                )
             }
 
-            let onboarding = try RightClickOnboardingEngine.plan(
-                adapter: adapter, home: home, executable: executable, disconnect: options.disconnect
-            )
-            guard case .json(let planned) = onboarding.mutation else {
-                throw SetupError("Cursor onboarding did not produce a supported local configuration plan.")
+            guard options.disconnect
+                    || FileManager.default
+                        .isExecutableFile(
+                            atPath: executable
+                        )
+            else {
+                throw SetupError(
+                    "The RIGHTCLICK executable is missing "
+                    + "or not executable: \(executable)"
+                )
             }
 
-            let file = onboarding.configurationFile
-            let recipe = onboarding.recipe
+            let onboarding =
+                try RightClickOnboardingEngine.plan(
+                    adapter: adapter,
+                    home: home,
+                    executable: executable,
+                    disconnect: options.disconnect
+                )
+
+            let file =
+                onboarding.configurationFile
+
+            let recipe =
+                onboarding.recipe
             var payload: [String: String] = [
                 "client": onboarding.clientID,
                 "configuration": file.path,
                 "command": recipe.command,
                 "arguments": recipe.arguments.joined(separator: " "),
                 "transport": recipe.transport.rawValue,
-                "operation": planned.operation,
+                "operation": onboarding.mutation.operation,
                 "configurationChanged": "false",
+                "registrationBackend": onboarding.mutation.backendID,
+                "registrationScope": onboarding.mutation.scope ?? "client-config",
                 "mcpConnection": "NOT_VERIFIED",
                 "outcomeVerification": "NOT_RUN",
                 "localProbe": "NOT_RUN",
                 "bridge": "NOT_TOUCHED",
                 "keychain": "NOT_TOUCHED",
-                "notice": "Cursor can launch this executable and request its discovered capabilities. Existing action confirmations still apply. Close Cursor while changing its configuration.",
+                "notice": onboarding.clientID == "claude"
+                    ? "Claude Code will use its native user-scope MCP registration. RIGHTCLICK does not write Claude JSON directly."
+                    : "Cursor can launch this executable and request its discovered capabilities. Existing action confirmations still apply. Close Cursor while changing its configuration.",
             ]
 
             if options.dryRun {
@@ -179,10 +243,14 @@ enum RightClickLocalOnboarding {
                 return 0
             }
 
-            if planned.changed && !options.yes {
+            if onboarding.mutation.changed && !options.yes {
                 if !interactive || options.json {
                     payload["status"] = "CONSENT_REQUIRED"
-                    payload["next"] = "Review this plan, then run setup --client cursor --yes" + (options.disconnect ? " --disconnect" : "")
+                    payload["next"] =
+                        "Review this plan, then run setup --client "
+                        + onboarding.clientID
+                        + " --yes"
+                        + (options.disconnect ? " --disconnect" : "")
                     emit(payload)
                     return 3
                 }
@@ -193,7 +261,7 @@ enum RightClickLocalOnboarding {
                 Configuration: \(file.path)
                 Executable: \(recipe.command)
                 Arguments: \(recipe.arguments.joined(separator: " "))
-                Change: \(planned.operation)
+                Change: \(onboarding.mutation.operation)
 
                 \(payload["notice"]!)
                 No tunnel, bridge, Keychain or other client will be configured.
@@ -210,12 +278,33 @@ enum RightClickLocalOnboarding {
 
             if !options.disconnect { payload["localProbe"] = try probe() }
             let result = try RightClickOnboardingEngine.apply(onboarding)
-            payload["status"] = result.operation
-            payload["configurationChanged"] = planned.changed ? "true" : "false"
-            if let backup = result.backup { payload["backup"] = backup.path }
-            payload["next"] = options.disconnect
-                ? "Reload Cursor to stop using this entry. No process was stopped by setup."
-                : "Open Cursor, enable RIGHTCLICK in its MCP settings if required, and start a new chat. Ask: Use RIGHTCLICK to inspect the exact text RightClick, then list applicable capabilities. Do not invoke any capability yet."
+            payload["status"] =
+                result.operation
+
+            payload["configurationChanged"] =
+                onboarding.mutation.changed
+                ? "true"
+                : "false"
+
+            if let backup = result.backup {
+                payload["backup"] = backup.path
+            }
+
+            if result.connectionState == .connected {
+                payload["mcpConnection"] = "CONNECTED"
+            }
+
+            if options.disconnect {
+                payload["next"] =
+                    onboarding.clientID == "claude"
+                    ? "Claude Code no longer has the RIGHTCLICK user-scope MCP registration."
+                    : "Reload Cursor to stop using this entry. No process was stopped by setup."
+            } else {
+                payload["next"] =
+                    onboarding.clientID == "claude"
+                    ? "Claude Code reports RIGHTCLICK connected. Start a new Claude Code session and ask it to use RIGHTCLICK."
+                    : "Open Cursor, enable RIGHTCLICK in its MCP settings if required, and start a new chat. Ask: Use RIGHTCLICK to inspect the exact text RightClick, then list applicable capabilities. Do not invoke any capability yet."
+            }
             emit(payload)
             return 0
         } catch {
