@@ -1,9 +1,7 @@
-name: Resolve gRPC dependencies
+name: Resolve gRPC dependencies (manual)
 
 on:
-  push:
-    branches:
-      - feature/grpc-capability-reflection
+  workflow_dispatch:
 
 permissions:
   contents: read
