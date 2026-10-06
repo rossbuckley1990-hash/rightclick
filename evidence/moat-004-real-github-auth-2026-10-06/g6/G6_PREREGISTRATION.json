@@ -1,0 +1,35 @@
+{
+  "gate": "MOAT-004 G6",
+  "base": "c12dbd38adc53e26ee19a57eab238a576c8516a9",
+  "main": "437cb4eb98a4c30f6f9165a27903693512b517cf",
+  "provider": "real GitHub REST API",
+  "officialContract": {
+    "upstreamCommit": "836ce198db13a6fb194547e53eea99c6ddae495b",
+    "url": "https://raw.githubusercontent.com/github/rest-api-description/836ce198db13a6fb194547e53eea99c6ddae495b/descriptions/api.github.com/api.github.com.2026-03-10.json",
+    "bytes": 12901084,
+    "sha256": "1429e93b5cbfa7547aa197e9553a6dacbd8d4aaf28012446ed730b152bcdf284"
+  },
+  "target": {
+    "operationId": "users/get-authenticated",
+    "title": "Get the authenticated user",
+    "method": "GET",
+    "path": "/user"
+  },
+  "authority": {
+    "scheme": "MOAT004G6RealGitHubBearer",
+    "kind": "http_bearer",
+    "origin": "https://api.github.com",
+    "credentialSource": "local Keychain",
+    "credentialPassedThroughMCP": false,
+    "credentialPassedThroughTestEnvironment": false,
+    "credentialPrinted": false
+  },
+  "control": {
+    "source": "gh api user",
+    "login": "rossbuckley1990-hash",
+    "id": 255341254,
+    "mustMatchFrozenREDControl": true
+  },
+  "productCodeChangesAllowed": false,
+  "chatGPTLiveExecution": false
+}
