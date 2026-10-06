@@ -1,0 +1,197 @@
+{
+  "info": {
+    "title": "MOAT-005 G3 Frozen GitHub Request Schema",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/repos/{owner}/{repo}/issues": {
+      "post": {
+        "operationId": "issues/create",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "owner",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "repo",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "default": {
+                  "value": {
+                    "assignees": [
+                      "octocat"
+                    ],
+                    "body": "I'm having a problem with this.",
+                    "labels": [
+                      "bug"
+                    ],
+                    "milestone": 1,
+                    "title": "Found a bug"
+                  }
+                }
+              },
+              "schema": {
+                "properties": {
+                  "assignees": {
+                    "description": "Logins for Users to assign to this issue. _NOTE: Only users with push access can set assignees for new issues. Assignees are silently dropped otherwise._",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "body": {
+                    "description": "The contents of the issue.",
+                    "type": "string"
+                  },
+                  "issue_field_values": {
+                    "description": "An array of issue field values to set on this issue. Each field value must include the field ID and the value to set. Issue fields are only available for organization-owned repositories with the feature enabled. Field values are silently dropped otherwise.",
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "field_id": {
+                          "description": "The ID of the issue field to set",
+                          "type": "integer"
+                        },
+                        "value": {
+                          "description": "The value to set for the field. For multi-select fields, provide an array of option names.",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "items": {
+                                "type": "string"
+                              },
+                              "type": "array"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "field_id",
+                        "value"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "labels": {
+                    "description": "Labels to associate with this issue. _NOTE: Only users with push access can set labels for new issues. Labels are silently dropped otherwise._",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "properties": {
+                            "color": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "description": {
+                              "nullable": true,
+                              "type": "string"
+                            },
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      ]
+                    },
+                    "type": "array"
+                  },
+                  "milestone": {
+                    "nullable": true,
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "description": "The `number` of the milestone to associate this issue with. _NOTE: Only users with push access can set the milestone for new issues. The milestone is silently dropped otherwise._",
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "parent_issue_id": {
+                    "description": "The id of the parent issue to add this issue to as a sub-issue. _NOTE: Only users with triage access to both the parent issue's repository and this repository can set the parent issue._",
+                    "type": "integer"
+                  },
+                  "title": {
+                    "description": "The title of the issue.",
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "type": {
+                    "description": "The name of the issue type to associate with this issue. _NOTE: Only users with push access can set the type for new issues. The type is silently dropped otherwise._",
+                    "example": "Epic",
+                    "nullable": true,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "$ref": "#/components/examples/issue"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/issue"
+                }
+              }
+            },
+            "description": "Response",
+            "headers": {
+              "Location": {
+                "example": "https://api.github.com/repos/octocat/Hello-World/issues/1347",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create an issue"
+      }
+    }
+  }
+}

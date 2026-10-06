@@ -1,0 +1,20 @@
+{
+  "experiment": "MOAT-005",
+  "fixtureBoundary": "G3 real request schema + G2 routing + exact frozen GitHub 201 response declaration.",
+  "gate": "G4",
+  "real201ResponseSHA256": "9a975254868c5beda200b7f3433c3b5fe904cc13d36051d5195cbe2535a9edcc",
+  "real201SchemaRef": "#/components/schemas/issue",
+  "real201SchemaSHA256": "66e382fe132e06cf28bb16e18308ff007a07bf0d0daf689b5c6570f9389960d8",
+  "resolvedSchemaTargetKeys": [
+    "description",
+    "properties",
+    "required",
+    "title",
+    "type"
+  ],
+  "resolvedSchemaTargetSHA256": "446f4d1dff11500801e0557239d3fe344d9cc6f412557f5461530f8532433a82",
+  "sourceMediaType": "application/json",
+  "sourceOperationId": "issues/create",
+  "sourcePath": "/repos/{owner}/{repo}/issues",
+  "sourceStatus": "201"
+}
