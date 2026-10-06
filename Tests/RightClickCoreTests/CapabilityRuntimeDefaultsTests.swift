@@ -88,7 +88,7 @@ final class CapabilityRuntimeDefaultsTests:
         }
     }
 
-    func testDefaultSourceRegistryContainsBonjourOpenAPISource()
+    func testDefaultSourceRegistryContainsDynamicProtocolSources()
         throws
     {
         let sources =
@@ -107,13 +107,14 @@ final class CapabilityRuntimeDefaultsTests:
 
         XCTAssertEqual(
             sources.count,
-            3
+            4
         )
 
         XCTAssertEqual(
             sourceIDs,
             Set([
                 "bonjour.graphql",
+                "bonjour.grpc",
                 "bonjour.openapi",
                 "configured.openapi",
             ])
@@ -128,6 +129,12 @@ final class CapabilityRuntimeDefaultsTests:
         XCTAssertTrue(
             sources.contains {
                 $0 is BonjourGraphQLSource
+            }
+        )
+
+        XCTAssertTrue(
+            sources.contains {
+                $0 is BonjourGRPCSource
             }
         )
     }
