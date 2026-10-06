@@ -11,6 +11,29 @@ public final class OpenAPIReflector: CapabilityReflector {
         let properties:
             [String: JSONStringProperty]
         let canonicalJSON: String
+        let multiSegmentPathArguments:
+            Set<String>
+
+        init(
+            required: Set<String>,
+            properties:
+                [String: JSONStringProperty],
+            canonicalJSON: String,
+            multiSegmentPathArguments:
+                Set<String> = []
+        ) {
+            self.required =
+                required
+
+            self.properties =
+                properties
+
+            self.canonicalJSON =
+                canonicalJSON
+
+            self.multiSegmentPathArguments =
+                multiSegmentPathArguments
+        }
     }
 
     private enum AuthorityResolution {
@@ -267,9 +290,30 @@ public final class OpenAPIReflector: CapabilityReflector {
                     requestContentType
             }
 
-            if let schema =
-                operation.requestJSONSchema
+            let argumentsSchema:
+                JSONObjectSchema?
+
+            if
+                let pathSchema =
+                    operation.pathArgumentsSchema,
+                let requestSchema =
+                    operation.requestJSONSchema
+            {
+                argumentsSchema =
+                    Self.combinedArgumentsSchema(
+                        pathSchema:
+                            pathSchema,
+                        requestSchema:
+                            requestSchema
+                    )
+            } else {
+                argumentsSchema =
+                    operation.requestJSONSchema
                     ?? operation.pathArgumentsSchema
+            }
+
+            if let schema =
+                argumentsSchema
             {
                 metadata[
                     "argumentsSchema"
@@ -459,6 +503,133 @@ public final class OpenAPIReflector: CapabilityReflector {
 
             requestBody =
                 nil
+
+        } else if
+            let pathSchema =
+                operation.pathArgumentsSchema,
+            let requestSchema =
+                operation.requestJSONSchema,
+            operation.requestContentType
+                == "application/json"
+        {
+            guard
+                let arguments,
+                let combinedSchema =
+                    Self.combinedArgumentsSchema(
+                        pathSchema:
+                            pathSchema,
+                        requestSchema:
+                            requestSchema
+                    )
+            else {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "The combined OpenAPI argument contract is unavailable.",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "RIGHTCLICK could not construct a collision-free combined path and JSON argument schema."
+                        )
+                )
+            }
+
+            do {
+                try Self.validateArguments(
+                    arguments,
+                    schema:
+                        combinedSchema
+                )
+
+                let pathArguments =
+                    Dictionary(
+                        uniqueKeysWithValues:
+                            arguments
+                            .compactMap {
+                                key,
+                                value
+                                in
+
+                                pathSchema
+                                    .properties[
+                                        key
+                                    ] != nil
+                                ? (
+                                    key,
+                                    value
+                                )
+                                : nil
+                            }
+                    )
+
+                let bodyArguments =
+                    Dictionary(
+                        uniqueKeysWithValues:
+                            arguments
+                            .compactMap {
+                                key,
+                                value
+                                in
+
+                                requestSchema
+                                    .properties[
+                                        key
+                                    ] != nil
+                                ? (
+                                    key,
+                                    value
+                                )
+                                : nil
+                            }
+                    )
+
+                targetPath =
+                    try Self.substitutedPath(
+                        operation.path,
+                        arguments:
+                            pathArguments,
+                        schema:
+                            pathSchema
+                    )
+
+                requestBody =
+                    try Self
+                    .validatedJSONObjectBody(
+                        bodyArguments,
+                        schema:
+                            requestSchema
+                    )
+
+            } catch {
+                return ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    title:
+                        capability.title,
+                    state:
+                        .failed,
+                    message:
+                        "Combined capability arguments failed schema validation: \(error)",
+                    evidence:
+                        OutcomeEvidence(
+                            type:
+                                "input_contract_failure",
+                            boundary:
+                                "RIGHTCLICK rejected combined path and JSON arguments before provider transport."
+                        )
+                )
+            }
 
         } else if let pathSchema =
             operation.pathArgumentsSchema
@@ -1654,13 +1825,17 @@ public final class OpenAPIReflector: CapabilityReflector {
                     }
 
                     let pathSchema =
-                        supportedGETPathArgumentSchema(
+                        supportedPathArgumentSchema(
                             path:
                                 path,
                             pathObject:
                                 pathObject,
                             operation:
-                                operation
+                                operation,
+                            root:
+                                root,
+                            allowRequestBody:
+                                false
                         )
 
                     if let pathSchema =
@@ -1708,19 +1883,6 @@ public final class OpenAPIReflector: CapabilityReflector {
                     zeroArgumentGET =
                         false
 
-                    responseJSONSyntaxOnly =
-                        false
-
-                    guard
-                        !path.contains("{"),
-                        !path.contains("}")
-                    else {
-                        continue
-                    }
-
-                    pathArgumentsSchema =
-                        nil
-
                     if
                         supportsPlainTextRequest(
                             operation
@@ -1729,6 +1891,19 @@ public final class OpenAPIReflector: CapabilityReflector {
                             operation
                         )
                     {
+                        guard
+                            !path.contains("{"),
+                            !path.contains("}")
+                        else {
+                            continue
+                        }
+
+                        pathArgumentsSchema =
+                            nil
+
+                        responseJSONSyntaxOnly =
+                            false
+
                         requestContentType =
                             "text/plain"
 
@@ -1745,12 +1920,70 @@ public final class OpenAPIReflector: CapabilityReflector {
                         let requestSchema =
                             supportedJSONObjectRequestSchema(
                                 operation
-                            ),
+                            )
+                    {
                         let responseSchema =
                             supportedJSONObjectResponseSchema(
                                 operation
                             )
-                    {
+
+                        let responseSyntaxOnly =
+                            responseSchema == nil
+                            && hasDeclaredJSONResponseSchema(
+                                operation
+                            )
+
+                        guard
+                            responseSchema != nil
+                            || responseSyntaxOnly
+                        else {
+                            continue
+                        }
+
+                        responseJSONSyntaxOnly =
+                            responseSyntaxOnly
+
+                        let pathSchema:
+                            JSONObjectSchema?
+
+                        if
+                            path.contains("{")
+                            || path.contains("}")
+                        {
+                            guard
+                                let supportedPathSchema =
+                                    supportedPathArgumentSchema(
+                                        path:
+                                            path,
+                                        pathObject:
+                                            pathObject,
+                                        operation:
+                                            operation,
+                                        root:
+                                            root,
+                                        allowRequestBody:
+                                            true
+                                    ),
+                                combinedArgumentsSchema(
+                                    pathSchema:
+                                        supportedPathSchema,
+                                    requestSchema:
+                                        requestSchema
+                                ) != nil
+                            else {
+                                continue
+                            }
+
+                            pathSchema =
+                                supportedPathSchema
+                        } else {
+                            pathSchema =
+                                nil
+                        }
+
+                        pathArgumentsSchema =
+                            pathSchema
+
                         requestContentType =
                             "application/json"
 
@@ -2046,20 +2279,258 @@ public final class OpenAPIReflector: CapabilityReflector {
         return true
     }
 
-    private static func supportedGETPathArgumentSchema(
+    private static func resolveLocalReferenceObject(
+        _ object: [String: Any],
+        root: [String: Any],
+        visited: Set<String> = [],
+        depth: Int = 0
+    ) -> [String: Any]? {
+        guard
+            depth <= 16
+        else {
+            return nil
+        }
+
+        guard
+            let rawReference =
+                object["$ref"]
+        else {
+            return object
+        }
+
+        let allowedReferenceKeys:
+            Set<String> = [
+                "$ref",
+                "summary",
+                "description",
+            ]
+
+        guard
+            Set(object.keys)
+                .isSubset(
+                    of:
+                        allowedReferenceKeys
+                ),
+            let reference =
+                rawReference
+                    as? String,
+            reference
+                .hasPrefix(
+                    "#/"
+                ),
+            !visited
+                .contains(
+                    reference
+                ),
+            depth < 16,
+            let target =
+                localJSONPointerValue(
+                    reference,
+                    root:
+                        root
+                )
+                    as? [String: Any]
+        else {
+            return nil
+        }
+
+        var nextVisited =
+            visited
+
+        nextVisited.insert(
+            reference
+        )
+
+        return resolveLocalReferenceObject(
+            target,
+            root:
+                root,
+            visited:
+                nextVisited,
+            depth:
+                depth + 1
+        )
+    }
+
+    private static func localJSONPointerValue(
+        _ reference: String,
+        root: [String: Any]
+    ) -> Any? {
+        guard
+            reference
+                .hasPrefix(
+                    "#/"
+                )
+        else {
+            return nil
+        }
+
+        let pointer =
+            String(
+                reference
+                    .dropFirst(
+                        2
+                    )
+            )
+
+        let rawTokens =
+            pointer.split(
+                separator:
+                    "/",
+                omittingEmptySubsequences:
+                    false
+            )
+
+        var current: Any =
+            root
+
+        for rawToken
+            in rawTokens
+        {
+            guard
+                let token =
+                    decodeJSONPointerToken(
+                        String(
+                            rawToken
+                        )
+                    )
+            else {
+                return nil
+            }
+
+            if
+                let object =
+                    current
+                        as? [String: Any]
+            {
+                guard
+                    let next =
+                        object[token]
+                else {
+                    return nil
+                }
+
+                current =
+                    next
+
+                continue
+            }
+
+            if
+                let array =
+                    current
+                        as? [Any],
+                let index =
+                    Int(
+                        token
+                    ),
+                index >= 0,
+                index < array.count
+            {
+                current =
+                    array[index]
+
+                continue
+            }
+
+            return nil
+        }
+
+        return current
+    }
+
+    private static func decodeJSONPointerToken(
+        _ rawToken: String
+    ) -> String? {
+        guard
+            let percentDecoded =
+                rawToken
+                    .removingPercentEncoding
+        else {
+            return nil
+        }
+
+        let characters =
+            Array(
+                percentDecoded
+            )
+
+        var output =
+            ""
+
+        var index =
+            0
+
+        while
+            index
+                < characters.count
+        {
+            let character =
+                characters[index]
+
+            guard
+                character
+                    == "~"
+            else {
+                output.append(
+                    character
+                )
+
+                index += 1
+
+                continue
+            }
+
+            guard
+                index + 1
+                    < characters.count
+            else {
+                return nil
+            }
+
+            let escape =
+                characters[
+                    index + 1
+                ]
+
+            switch escape {
+            case "0":
+                output.append(
+                    "~"
+                )
+
+            case "1":
+                output.append(
+                    "/"
+                )
+
+            default:
+                return nil
+            }
+
+            index += 2
+        }
+
+        return output
+    }
+
+    private static func supportedPathArgumentSchema(
         path: String,
         pathObject: [String: Any],
-        operation: [String: Any]
+        operation: [String: Any],
+        root: [String: Any],
+        allowRequestBody: Bool
     ) -> JSONObjectSchema? {
         guard
             pathObject["parameters"] == nil,
-            operation["requestBody"] == nil,
-            let parameters =
+            (
+                allowRequestBody
+                || operation["requestBody"] == nil
+            ),
+            let rawParameters =
                 operation["parameters"]
-                    as? [[String: Any]],
-            parameters.count == 1,
-            let parameter =
-                parameters.first
+                    as? [Any],
+            !rawParameters.isEmpty
         else {
             return nil
         }
@@ -2071,31 +2542,8 @@ public final class OpenAPIReflector: CapabilityReflector {
                 "required",
                 "schema",
                 "description",
+                "x-multi-segment",
             ]
-
-        guard
-            Set(parameter.keys)
-                .isSubset(
-                    of:
-                        allowedParameterKeys
-                ),
-            let name =
-                parameter["name"]
-                    as? String,
-            !name.isEmpty,
-            !name.contains("{"),
-            !name.contains("}"),
-            !name.contains("/"),
-            parameter["in"]
-                as? String == "path",
-            parameter["required"]
-                as? Bool == true,
-            let schema =
-                parameter["schema"]
-                    as? [String: Any]
-        else {
-            return nil
-        }
 
         let allowedSchemaKeys:
             Set<String> = [
@@ -2104,33 +2552,140 @@ public final class OpenAPIReflector: CapabilityReflector {
                 "description",
             ]
 
-        guard
-            Set(schema.keys)
-                .isSubset(
-                    of:
-                        allowedSchemaKeys
-                ),
-            schema["type"]
-                as? String == "string"
-        else {
-            return nil
+        var names:
+            Set<String> = []
+
+        var rawProperties:
+            [String: Any] = [:]
+
+        var multiSegmentNames:
+            Set<String> = []
+
+        for rawParameter
+            in rawParameters
+        {
+            guard
+                let rawObject =
+                    rawParameter
+                        as? [String: Any],
+                let parameter =
+                    resolveLocalReferenceObject(
+                        rawObject,
+                        root:
+                            root
+                    ),
+                Set(parameter.keys)
+                    .isSubset(
+                        of:
+                            allowedParameterKeys
+                    ),
+                let name =
+                    parameter["name"]
+                        as? String,
+                !name.isEmpty,
+                !name.contains("{"),
+                !name.contains("}"),
+                !name.contains("/"),
+                parameter["in"]
+                    as? String == "path",
+                parameter["required"]
+                    as? Bool == true,
+                let rawSchema =
+                    parameter["schema"]
+                        as? [String: Any],
+                let schema =
+                    resolveLocalReferenceObject(
+                        rawSchema,
+                        root:
+                            root
+                    ),
+                Set(schema.keys)
+                    .isSubset(
+                        of:
+                            allowedSchemaKeys
+                    ),
+                schema["type"]
+                    as? String == "string",
+                names.insert(
+                    name
+                ).inserted
+            else {
+                return nil
+            }
+
+            let isMultiSegment:
+                Bool
+
+            if
+                let rawMultiSegment =
+                    parameter[
+                        "x-multi-segment"
+                    ]
+            {
+                guard
+                    let declared =
+                        rawMultiSegment
+                            as? Bool
+                else {
+                    return nil
+                }
+
+                isMultiSegment =
+                    declared
+
+            } else {
+                isMultiSegment =
+                    false
+            }
+
+            if isMultiSegment {
+                multiSegmentNames.insert(
+                    name
+                )
+            }
+
+            let token =
+                "{\(name)}"
+
+            let pieces =
+                path.components(
+                    separatedBy:
+                        token
+                )
+
+            guard
+                pieces.count == 2
+            else {
+                return nil
+            }
+
+            rawProperties[
+                name
+            ] = [
+                "type":
+                    "string"
+            ]
         }
 
-        let token =
-            "{\(name)}"
+        var remainder =
+            path
 
-        let pieces =
-            path.components(
-                separatedBy:
-                    token
-            )
+        for name
+            in names.sorted()
+        {
+            remainder =
+                remainder
+                .replacingOccurrences(
+                    of:
+                        "{\(name)}",
+                    with:
+                        ""
+                )
+        }
 
         guard
-            pieces.count == 2,
-            !pieces[0].contains("{"),
-            !pieces[0].contains("}"),
-            !pieces[1].contains("{"),
-            !pieces[1].contains("}")
+            !remainder.contains("{"),
+            !remainder.contains("}")
         else {
             return nil
         }
@@ -2139,21 +2694,35 @@ public final class OpenAPIReflector: CapabilityReflector {
             [String: Any] = [
                 "type":
                     "object",
+
                 "additionalProperties":
                     false,
-                "required": [
-                    name
-                ],
-                "properties": [
-                    name: [
-                        "type":
-                            "string"
-                    ]
-                ],
+
+                "required":
+                    names.sorted(),
+
+                "properties":
+                    rawProperties,
             ]
 
-        return parseClosedJSONStringObjectSchema(
-            argumentsSchema
+        guard
+            let parsed =
+                parseClosedJSONStringObjectSchema(
+                    argumentsSchema
+                )
+        else {
+            return nil
+        }
+
+        return JSONObjectSchema(
+            required:
+                parsed.required,
+            properties:
+                parsed.properties,
+            canonicalJSON:
+                parsed.canonicalJSON,
+            multiSegmentPathArguments:
+                multiSegmentNames
         )
     }
 
@@ -2249,7 +2818,15 @@ public final class OpenAPIReflector: CapabilityReflector {
             return nil
         }
 
-        return parseClosedJSONStringObjectSchema(
+        if let strictSchema =
+            parseClosedJSONStringObjectSchema(
+                rawSchema
+            )
+        {
+            return strictSchema
+        }
+
+        return parseSafelyNarrowedJSONStringObjectSchema(
             rawSchema
         )
     }
@@ -2349,6 +2926,301 @@ public final class OpenAPIReflector: CapabilityReflector {
         }
 
         return nil
+    }
+
+    /// Conservatively project a provider request schema into the
+    /// existing closed string-object argument model.
+    ///
+    /// This is intentionally request-only and one-way:
+    ///
+    /// - every provider-required property must survive projection;
+    /// - unsupported optional properties are omitted;
+    /// - the projected object is always closed;
+    /// - oneOf is narrowed only when exactly one branch is a supported
+    ///   string schema and every other branch is provably non-string.
+    ///
+    /// Therefore every argument object RIGHTCLICK accepts through the
+    /// projection remains inside the provider's declared request space.
+    private static func parseSafelyNarrowedJSONStringObjectSchema(
+        _ schema:
+            [String: Any]
+    ) -> JSONObjectSchema? {
+        let allowedObjectKeys:
+            Set<String> = [
+                "type",
+                "additionalProperties",
+                "required",
+                "properties",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(schema.keys)
+                .isSubset(
+                    of:
+                        allowedObjectKeys
+                ),
+            schema["type"]
+                as? String == "object",
+            let rawRequired =
+                schema["required"]
+                    as? [String],
+            !rawRequired.isEmpty,
+            Set(rawRequired).count
+                == rawRequired.count,
+            let rawProperties =
+                schema["properties"]
+                    as? [String: Any],
+            !rawProperties.isEmpty
+        else {
+            return nil
+        }
+
+        let required =
+            Set(rawRequired)
+
+        guard
+            required.isSubset(
+                of:
+                    Set(
+                        rawProperties.keys
+                    )
+            )
+        else {
+            return nil
+        }
+
+        var narrowedProperties:
+            [String: Any] = [:]
+
+        for key
+            in rawProperties.keys.sorted()
+        {
+            guard
+                !key.isEmpty,
+                let raw =
+                    rawProperties[key]
+                        as? [String: Any]
+            else {
+                if required.contains(key) {
+                    return nil
+                }
+
+                continue
+            }
+
+            if let narrowed =
+                safelyNarrowedJSONStringProperty(
+                    raw
+                )
+            {
+                narrowedProperties[
+                    key
+                ] =
+                    narrowed
+
+            } else if
+                required.contains(key)
+            {
+                // A provider-required field that RIGHTCLICK cannot model
+                // cannot be silently discarded.
+                return nil
+            }
+        }
+
+        guard
+            required.isSubset(
+                of:
+                    Set(
+                        narrowedProperties.keys
+                    )
+            )
+        else {
+            return nil
+        }
+
+        let closedSchema:
+            [String: Any] = [
+                "type":
+                    "object",
+
+                "additionalProperties":
+                    false,
+
+                "required":
+                    required.sorted(),
+
+                "properties":
+                    narrowedProperties,
+            ]
+
+        return parseClosedJSONStringObjectSchema(
+            closedSchema
+        )
+    }
+
+    /// Return the normalized closed-string representation of one provider
+    /// property, or nil when RIGHTCLICK cannot prove a safe narrowing.
+    private static func safelyNarrowedJSONStringProperty(
+        _ property:
+            [String: Any]
+    ) -> [String: Any]? {
+        if let direct =
+            normalizedDirectJSONStringProperty(
+                property
+            )
+        {
+            return direct
+        }
+
+        let allowedUnionKeys:
+            Set<String> = [
+                "oneOf",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(property.keys)
+                .isSubset(
+                    of:
+                        allowedUnionKeys
+                ),
+            let branches =
+                property["oneOf"]
+                    as? [[String: Any]],
+            !branches.isEmpty
+        else {
+            return nil
+        }
+
+        var supportedStrings:
+            [[String: Any]] = []
+
+        for branch
+            in branches
+        {
+            if let supported =
+                normalizedDirectJSONStringProperty(
+                    branch
+                )
+            {
+                supportedStrings.append(
+                    supported
+                )
+
+                continue
+            }
+
+            guard
+                isProvablyNonStringJSONSchema(
+                    branch
+                )
+            else {
+                return nil
+            }
+        }
+
+        guard
+            supportedStrings.count == 1
+        else {
+            return nil
+        }
+
+        return supportedStrings[0]
+    }
+
+    /// Normalize only the existing strong direct string-property subset.
+    private static func normalizedDirectJSONStringProperty(
+        _ property:
+            [String: Any]
+    ) -> [String: Any]? {
+        let allowedKeys:
+            Set<String> = [
+                "type",
+                "enum",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(property.keys)
+                .isSubset(
+                    of:
+                        allowedKeys
+                ),
+            property["type"]
+                as? String == "string"
+        else {
+            return nil
+        }
+
+        var normalized:
+            [String: Any] = [
+                "type":
+                    "string"
+            ]
+
+        if let rawEnum =
+            property["enum"]
+        {
+            guard
+                let values =
+                    rawEnum as? [String],
+                !values.isEmpty,
+                Set(values).count
+                    == values.count
+            else {
+                return nil
+            }
+
+            normalized[
+                "enum"
+            ] =
+                values
+        }
+
+        return normalized
+    }
+
+    /// A branch can be discarded from a oneOf string narrowing only when
+    /// its top-level JSON type proves that a string accepted by RIGHTCLICK
+    /// cannot satisfy that branch.
+    private static func isProvablyNonStringJSONSchema(
+        _ schema:
+            [String: Any]
+    ) -> Bool {
+        let allowedKeys:
+            Set<String> = [
+                "type",
+                "title",
+                "description",
+            ]
+
+        guard
+            Set(schema.keys)
+                .isSubset(
+                    of:
+                        allowedKeys
+                ),
+            let type =
+                schema["type"]
+                    as? String
+        else {
+            return false
+        }
+
+        return [
+            "array",
+            "boolean",
+            "integer",
+            "number",
+            "object",
+            "null",
+        ].contains(
+            type
+        )
     }
 
     private static func parseClosedJSONStringObjectSchema(
@@ -2507,6 +3379,114 @@ public final class OpenAPIReflector: CapabilityReflector {
         )
     }
 
+    private static func combinedArgumentsSchema(
+        pathSchema:
+            JSONObjectSchema,
+        requestSchema:
+            JSONObjectSchema
+    ) -> JSONObjectSchema? {
+        let pathNames =
+            Set(
+                pathSchema
+                    .properties
+                    .keys
+            )
+
+        let requestNames =
+            Set(
+                requestSchema
+                    .properties
+                    .keys
+            )
+
+        guard
+            pathNames.isDisjoint(
+                with:
+                    requestNames
+            )
+        else {
+            return nil
+        }
+
+        var rawProperties:
+            [String: Any] = [:]
+
+        for (
+            name,
+            property
+        ) in pathSchema.properties {
+            var raw:
+                [String: Any] = [
+                    "type":
+                        "string"
+                ]
+
+            if let allowed =
+                property.allowedValues
+            {
+                raw[
+                    "enum"
+                ] =
+                    allowed.sorted()
+            }
+
+            rawProperties[
+                name
+            ] =
+                raw
+        }
+
+        for (
+            name,
+            property
+        ) in requestSchema.properties {
+            var raw:
+                [String: Any] = [
+                    "type":
+                        "string"
+                ]
+
+            if let allowed =
+                property.allowedValues
+            {
+                raw[
+                    "enum"
+                ] =
+                    allowed.sorted()
+            }
+
+            rawProperties[
+                name
+            ] =
+                raw
+        }
+
+        let rawSchema:
+            [String: Any] = [
+                "type":
+                    "object",
+
+                "additionalProperties":
+                    false,
+
+                "required":
+                    pathSchema
+                    .required
+                    .union(
+                        requestSchema
+                            .required
+                    )
+                    .sorted(),
+
+                "properties":
+                    rawProperties,
+            ]
+
+        return parseClosedJSONStringObjectSchema(
+            rawSchema
+        )
+    }
+
     private static func validateArguments(
         _ arguments:
             CapabilityArguments,
@@ -2579,6 +3559,71 @@ public final class OpenAPIReflector: CapabilityReflector {
         }
     }
 
+    private static func encodedMultiSegmentPathArgument(
+        _ value: String
+    ) throws -> String {
+        let segments =
+            value.split(
+                separator:
+                    "/",
+                omittingEmptySubsequences:
+                    false
+            )
+
+        guard
+            !segments.isEmpty
+        else {
+            throw RightClickError(
+                "Multi-segment path argument is empty."
+            )
+        }
+
+        var encodedSegments:
+            [String] = []
+
+        for rawSegment
+            in segments
+        {
+            let segment =
+                String(
+                    rawSegment
+                )
+
+            guard
+                !segment.isEmpty,
+                segment != ".",
+                segment != ".."
+            else {
+                throw RightClickError(
+                    "Multi-segment path argument contains an unsafe path segment."
+                )
+            }
+
+            guard
+                let encoded =
+                    segment
+                        .addingPercentEncoding(
+                            withAllowedCharacters:
+                                identifierCharacters
+                        )
+            else {
+                throw RightClickError(
+                    "Could not percent-encode multi-segment path argument."
+                )
+            }
+
+            encodedSegments.append(
+                encoded
+            )
+        }
+
+        return encodedSegments
+            .joined(
+                separator:
+                    "/"
+            )
+    }
+
     private static func substitutedPath(
         _ template: String,
         arguments:
@@ -2624,16 +3669,36 @@ public final class OpenAPIReflector: CapabilityReflector {
                 )
             }
 
-            guard
-                let encoded =
-                    value.addingPercentEncoding(
-                        withAllowedCharacters:
-                            identifierCharacters
+            let encoded:
+                String
+
+            if
+                schema
+                    .multiSegmentPathArguments
+                    .contains(
+                        name
                     )
-            else {
-                throw RightClickError(
-                    "Could not percent-encode path argument."
-                )
+            {
+                encoded =
+                    try encodedMultiSegmentPathArgument(
+                        value
+                    )
+
+            } else {
+                guard
+                    let singleSegment =
+                        value.addingPercentEncoding(
+                            withAllowedCharacters:
+                                identifierCharacters
+                        )
+                else {
+                    throw RightClickError(
+                        "Could not percent-encode path argument."
+                    )
+                }
+
+                encoded =
+                    singleSegment
             }
 
             result =

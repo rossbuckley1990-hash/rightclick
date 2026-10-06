@@ -675,7 +675,12 @@ final class MOAT004G4JSONSyntaxFallbackTests:
         )
     }
 
-    func testMutatingOperationWithUnsupportedJSONResponseStillAbstains()
+    // MOAT-004 originally froze JSON syntax fallback as GET-only.
+    // MOAT-005 G4 deliberately generalizes the same conservative
+    // response observation to supported mutation requests.
+    //
+    // Historical MOAT-004 evidence remains preserved in Git history.
+    func testMutatingOperationWithUnsupportedJSONResponseUsesSyntaxOnlyMetadata()
         throws
     {
         let engine =
@@ -688,14 +693,42 @@ final class MOAT004G4JSONSyntaxFallbackTests:
                 ]
             )
 
-        XCTAssertTrue(
-            try engine
-                .capabilities(
-                    for:
-                        "create record"
-                )
-                .capabilities
-                .isEmpty
+        let capability =
+            try XCTUnwrap(
+                engine
+                    .capabilities(
+                        for:
+                            "create record"
+                    )
+                    .capabilities
+                    .first
+            )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "method"
+            ],
+            "POST"
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "responseContentType"
+            ],
+            "application/json"
+        )
+
+        XCTAssertEqual(
+            capability.metadata[
+                "resultValidation"
+            ],
+            "json_syntax_only"
+        )
+
+        XCTAssertNil(
+            capability.metadata[
+                "resultSchema"
+            ]
         )
     }
 
