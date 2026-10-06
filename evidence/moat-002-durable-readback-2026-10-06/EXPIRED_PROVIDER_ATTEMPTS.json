@@ -1,0 +1,21 @@
+{
+  "failedCreateAttempts": [
+    {
+      "events": [],
+      "evidenceType": "provider_transport_failure",
+      "executionId": "D2BCBE1C-98FC-4953-B9A3-CFDA60E8E7E3",
+      "outcomeVerified": false,
+      "state": "failed"
+    },
+    {
+      "events": [],
+      "evidenceType": "provider_transport_failure",
+      "executionId": "B80185ED-423B-46CB-B1E9-8EC6B4E8F099",
+      "outcomeVerified": false,
+      "state": "failed"
+    }
+  ],
+  "providerAcceptanceObserved": false,
+  "reason": "The original temporary provider hostname expired before the final execution gate. The fixture was redeployed without changing its frozen OpenAPI bytes or Worker source.",
+  "recordCreationClaimedForFailedAttempts": false
+}

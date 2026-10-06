@@ -1,0 +1,41 @@
+{
+  "baseCommit": "0d4d88a09c9d9214aa36b06152ae649555aa1f35",
+  "candidateBinarySHA256": "8fd520a251108a1ac93bdb898b74de429fbf86b5e445b3669d41b7bf3beeae0f",
+  "capabilityGain": {
+    "newCreatePresent": true,
+    "newReadPresent": true,
+    "oldCreatePresent": true,
+    "oldReadPresent": false
+  },
+  "claimBoundary": "MOAT-002 proves generic acquisition and execution of a GET operation with one required string path parameter, reuse of the existing generic arguments envelope, creation of durable remote state, and independent read-back of that state through a separately discovered capability. It does not claim arbitrary OpenAPI parameter support.",
+  "date": "2026-10-06",
+  "execution": {
+    "createExecutionId": "E013275F-7375-403B-99E1-913C3F922D66",
+    "createHTTP": 201,
+    "createOutcomeVerified": false,
+    "persistedRecordID": "6a4c11b3-7813-4e58-9683-1c4341a89af5",
+    "readExecutionId": "F2933431-269F-46BE-BA9E-BD65CB9CE604",
+    "readHTTP": 200,
+    "readOutcomeVerified": true,
+    "readVerification": "VERIFIED_SUCCESS"
+  },
+  "experiment": "MOAT-002 Durable Remote State + Independent Read-Back",
+  "finalImplementationPatchSHA256": "4a4634884e2d6ac1a7bf303d6f4b164b7e716b34dc0c4c4e2da485a6675a61fa",
+  "firstImplementationPatchSHA256": "684ee5c9c9013869edd9dbf5be8d5ab5517ecd2436740998974d37afa27369dc",
+  "mcp": {
+    "contextRunSchemaChangedFromMOAT001": false,
+    "newToolNames": 0,
+    "providerSpecificToolAdded": false,
+    "toolCount": 7
+  },
+  "openapiSHA256": "e58eea412ca836a2c3c6aef0cfdc7f142296abf7d84d931d9b16d71efea9277d",
+  "preregisteredTestsPatchSHA256": "72ce3b0299f882daa8e0cbee5ef0189e13490f19a0795f430756278df6f6292c",
+  "productCommit": "b4d5d8f00faf6d6a830a1d749fede4ad85a093ec",
+  "result": "PASS",
+  "tests": {
+    "executed": 141,
+    "failed": 0,
+    "openAPIReflectorTests": 14,
+    "skipped": 8
+  }
+}

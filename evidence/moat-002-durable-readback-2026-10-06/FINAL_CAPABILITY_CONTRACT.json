@@ -1,0 +1,22 @@
+{
+  "baseURL": "https://rightclick-moat-002-023753.dandelion-pen.workers.dev",
+  "create": {
+    "actionId": "openapi:897dbbbd6d4306550ed0e588bc5e912156a401368cdc9871f8ff8f9993d5ff3c:138fa0876516412e:createDurableRecord",
+    "method": "POST",
+    "operationId": "createDurableRecord",
+    "path": "/records",
+    "requestContentType": "application/json",
+    "responseContentType": "application/json"
+  },
+  "provider": "RIGHTCLICK MOAT-002 Durable State Service",
+  "providerIdentity": "897dbbbd6d4306550ed0e588bc5e912156a401368cdc9871f8ff8f9993d5ff3c",
+  "read": {
+    "actionId": "openapi:897dbbbd6d4306550ed0e588bc5e912156a401368cdc9871f8ff8f9993d5ff3c:0ac0989fd45fdf7f:readDurableRecord",
+    "method": "GET",
+    "operationId": "readDurableRecord",
+    "path": "/records/{id}",
+    "requestBody": false,
+    "responseContentType": "application/json"
+  },
+  "specificationSHA256": "e58eea412ca836a2c3c6aef0cfdc7f142296abf7d84d931d9b16d71efea9277d"
+}

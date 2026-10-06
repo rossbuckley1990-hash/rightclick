@@ -1,0 +1,27 @@
+SOURCE_COMMIT=0d4d88a09c9d9214aa36b06152ae649555aa1f35
+
+=== SUPPORTED METHOD SET ===
+969:        let methods = [
+970-            "post",
+971-            "put",
+972-            "patch",
+973-        ]
+974-
+975-        var operations: [Operation] = []
+976-
+977-        for path in paths.keys.sorted() {
+
+=== PATH PARAMETER ABSTENTION ===
+977:        for path in paths.keys.sorted() {
+978-            guard
+979-                !path.contains("{"),
+980-                !path.contains("}")
+981-            else {
+982-                continue
+983-            }
+984-
+985-            guard
+986-                let pathObject =
+987-                    paths[path]
+988-                        as? [String: Any]
+989-            else {

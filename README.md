@@ -66,6 +66,8 @@ Services come from documented `NSServices` metadata and run through `NSPerformSe
 
 ### Evidence and limits
 
+- MOAT-002 proves durable remote state plus independent read-back through dynamically discovered OpenAPI POST and GET capabilities, while keeping the same seven MCP tools and unchanged generic `context_run` schema. See [the evidence](evidence/moat-002-durable-readback-2026-10-06/README.md).
+
 - MOAT-001 proves generic structured OpenAPI capability discovery and invocation: a previously unsupported remote JSON operation becomes a typed capability behind the same seven RIGHTCLICK tool names, executes with generic arguments, and returns VERIFIED_SUCCESS. See [the evidence](evidence/moat-001-structured-openapi-2026-10-06/README.md).
 
 - OpenAPI discovery, reflected execution, returned-text verification, and live capability removal pass in the v0.2.0 RC1 demo. See [the sanitized evidence](evidence/openapi-discovery-execution-verification-live-removal-2026-10-06/README.md).
