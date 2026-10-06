@@ -102,6 +102,86 @@ final class MOAT005G1PathAndJSONBodyTests:
         )
     }
 
+    private static func observedRequestBody(
+        _ request: URLRequest
+    ) throws -> Data {
+        if let body =
+            request.httpBody
+        {
+            return body
+        }
+
+        guard
+            let stream =
+                request.httpBodyStream
+        else {
+            throw NSError(
+                domain:
+                    "MOAT005G1PathAndJSONBodyTests",
+                code:
+                    2,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "The intercepted request exposed neither httpBody nor httpBodyStream."
+                ]
+            )
+        }
+
+        stream.open()
+
+        defer {
+            stream.close()
+        }
+
+        var data =
+            Data()
+
+        var buffer =
+            [UInt8](
+                repeating:
+                    0,
+                count:
+                    4096
+            )
+
+        while true {
+            let capacity =
+                buffer.count
+
+            let count =
+                stream.read(
+                    &buffer,
+                    maxLength:
+                        capacity
+                )
+
+            if count < 0 {
+                throw (
+                    stream.streamError
+                    ?? NSError(
+                        domain:
+                            "MOAT005G1PathAndJSONBodyTests",
+                        code:
+                            3
+                    )
+                )
+            }
+
+            if count == 0 {
+                break
+            }
+
+            data.append(
+                contentsOf:
+                    buffer.prefix(
+                        count
+                    )
+            )
+        }
+
+        return data
+    }
+
     private func closedStringObject(
         required: [String],
         properties: [String]
@@ -436,8 +516,8 @@ final class MOAT005G1PathAndJSONBodyTests:
             )
 
             let body =
-                try XCTUnwrap(
-                    request.httpBody
+                try Self.observedRequestBody(
+                    request
                 )
 
             let object =
