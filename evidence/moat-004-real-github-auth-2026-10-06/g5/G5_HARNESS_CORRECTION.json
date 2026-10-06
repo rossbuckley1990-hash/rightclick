@@ -1,0 +1,18 @@
+{
+  "gate": "MOAT-004 G5",
+  "productCodeChangedBeforeSemanticRed": false,
+  "historyRewritten": false,
+  "invalidHarness": {
+    "rawPatchSHA256": "99d4e8a3f518b89bd5ad055349925a51617f8f15f72701cfb3ea1bf6275c9518",
+    "archive": "G5-000-invalid-harness.patch.gz",
+    "compileLog": "G5-000-invalid-harness-compile.log.gz",
+    "failure": "Swift default argument referenced covariant Self type",
+    "affectedExpressions": 2
+  },
+  "correction": {
+    "scope": "test harness only",
+    "replacement": "explicit test type name",
+    "correctedRawPatchSHA256": "46eaf7b9781fef98b47a6c41e2cf18dd3046e418a512fd49357321c4809b513f"
+  },
+  "semanticRedStillRequiredBeforeImplementation": true
+}

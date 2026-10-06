@@ -1,0 +1,31 @@
+{
+  "gate": "MOAT-004 G5",
+  "main": "cf0ff5bf66a3a949befb22a7ab1d7aafd99974c0",
+  "base": "5b1fa8f07b18862b29080cd57f4158bad19503d1",
+  "g4Ancestor": "18661dab0d5fff8a72c0700b8740b4f2d9b5eed6",
+  "correctedTestPatchSHA256": "46eaf7b9781fef98b47a6c41e2cf18dd3046e418a512fd49357321c4809b513f",
+  "invalidHarnessPatchSHA256": "99d4e8a3f518b89bd5ad055349925a51617f8f15f72701cfb3ea1bf6275c9518",
+  "preimplementationResult": "SEMANTIC_RED",
+  "harnessCorrectionOccurredBeforeProductImplementation": true,
+  "discoveryMetadata": {
+    "key": "auth-scheme",
+    "kind": "http_bearer",
+    "containsCredential": false
+  },
+  "authority": {
+    "boundToExactExecutionOrigin": true,
+    "usesExistingKeychainStore": true,
+    "missingCredentialFailsBeforeTransport": true,
+    "credentialForDifferentOriginRejected": true,
+    "schemeChangeChangesCapabilityIdentity": true
+  },
+  "precedence": {
+    "onlyWhenContractSecurityUnspecified": true,
+    "explicitEmptyOperationSecurityRemainsPublic": true,
+    "explicitEmptyRootSecurityRemainsPublic": true,
+    "unsupportedDeclaredSecurityStillAbstains": true,
+    "supportedContractBearerWins": true
+  },
+  "realGitHubTokenUsed": false,
+  "providerSpecificProductionCodeAllowed": false
+}
