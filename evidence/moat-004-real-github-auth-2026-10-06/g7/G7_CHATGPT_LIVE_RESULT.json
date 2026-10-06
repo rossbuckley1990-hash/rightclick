@@ -1,0 +1,69 @@
+{
+  "gate": "MOAT-004 G7",
+  "result": "PASS",
+  "surface": "actual ChatGPT RIGHTCLICK MCP connection",
+  "mainSnapshotAtG7": "437cb4eb98a4c30f6f9165a27903693512b517cf",
+  "mainMovedBeforeClosure": false,
+  "preControl": {
+    "publicVersion": "0.2.1",
+    "publicSHA256": "fdfbfca344d1a6c95ecc1bde0e9f63f8a4f66a2074f3df16c1006b02cb813932",
+    "githubAuthenticatedUserCapabilityPresent": false
+  },
+  "runtime": {
+    "product": "RIGHTCLICK",
+    "version": "0.2.1",
+    "executablePath": "/opt/homebrew/bin/rightclick",
+    "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.1-moat004-g7/bin/rightclick",
+    "executableSHA256": "0163f5ef206c7fbb1ad2f206f4a0e6ec28db26be7fe1484a42ba7d04f234a92d",
+    "pid": 12248,
+    "transport": "stdio"
+  },
+  "discovery": {
+    "provider": "GitHub v3 REST API",
+    "title": "Get the authenticated user",
+    "actionId": "openapi:e743917a069a97e1e751f5171fac4b01c4c51c82ac8a0d1f834d370485ad8762:7ce6b0eb9cc7f3b3:users%2Fget-authenticated",
+    "operationId": "users/get-authenticated",
+    "method": "GET",
+    "path": "/user",
+    "baseURL": "https://api.github.com",
+    "specificationSHA256": "1429e93b5cbfa7547aa197e9553a6dacbd8d4aaf28012446ed730b152bcdf284",
+    "resultValidation": "json_syntax_only"
+  },
+  "authority": {
+    "required": true,
+    "kind": "http_bearer",
+    "scheme": "MOAT004G7RealGitHubBearer",
+    "origin": "https://api.github.com",
+    "credentialPassedThroughMCP": false,
+    "credentialPrinted": false
+  },
+  "execution": {
+    "executionId": "01F81A98-7FD7-42D8-9055-D3801F6DB394",
+    "state": "accepted",
+    "request": "HTTP GET https://api.github.com/user",
+    "providerStatus": 200,
+    "returnedLogin": "rossbuckley1990-hash",
+    "returnedID": 255341254,
+    "outcomeVerified": false,
+    "evidenceType": "provider_returned_text",
+    "evidenceBoundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified."
+  },
+  "independentControl": {
+    "source": "MOAT-004 G6 gh api user",
+    "expectedLogin": "rossbuckley1990-hash",
+    "expectedID": 255341254,
+    "liveLoginMatches": true,
+    "liveIDMatches": true
+  },
+  "claims": {
+    "realGitHubContract": true,
+    "realGitHubAPI": true,
+    "realGitHubCredential": true,
+    "actualChatGPTExecution": true,
+    "providerSpecificMCPTool": false,
+    "githubSpecificProductionCode": false,
+    "genericContextActions": true,
+    "genericContextExplain": true,
+    "genericContextRun": true
+  }
+}
