@@ -137,7 +137,7 @@ final class ARDAcquisitionGateTests: XCTestCase {
         override func stopLoading() {}
     }
 
-    final class DurableState:
+    final class DurableState {
         private let lock =
             NSLock()
 
