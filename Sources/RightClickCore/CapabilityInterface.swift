@@ -36,10 +36,12 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
     private let available: () -> Bool
     private let standaloneHost = RCIRExecutionHost()
     private let observerFactory: ((String) -> RCIRHostObserverFactory?)?
+    private let argumentEncoding: CapabilityCoreArgumentEncoding
 
     public init(id: String, provider: String, target: URL, substrate: String,
                 descriptorDigest: String, operations: [CapabilityInterfaceOperation],
                 provenance: [String: String] = [:], observerFactory: ((String) -> RCIRHostObserverFactory?)? = nil,
+                argumentEncoding: CapabilityCoreArgumentEncoding = .literalStrings,
                 available: @escaping () -> Bool,
                 boundInvoke: BoundInvocation? = nil,
                 invoke: @escaping Invocation) throws {
@@ -48,6 +50,7 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
         self.id = id; self.target = target; self.invoke = invoke; self.available = available
         self.boundInvoke = boundInvoke
         self.observerFactory = observerFactory
+        self.argumentEncoding = argumentEncoding
         var indexed: [String: CapabilityInterfaceOperation] = [:]
         var capabilities: [String: Capability] = [:]
         for operation in operations {
@@ -59,6 +62,7 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
             metadata.merge(["providerIdentity": provider, "interfaceKind": substrate,
                             "descriptorSHA256": descriptorDigest, "descriptorSource": target.absoluteString,
                             "operationName": operation.name, "executionMode": "unary",
+                            "coreArgumentEncoding": argumentEncoding.rawValue,
                             "effect": operation.effect.rawValue,
                             "argumentSchema": try operation.arguments.canonicalData().base64EncodedString(),
                             "resultSchema": try operation.result.canonicalData().base64EncodedString(),
@@ -96,10 +100,7 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
                               arguments: CapabilityArguments?, verification: VerificationSpec?, expectedOutput: String?,
                               host: RCIRExecutionHost, revalidate: @escaping () -> Bool) throws -> ExecutionRecord {
         guard let operation = operations[capability.id], available() else { throw RCIRError.unavailable }
-        let input = CapabilityValue.fromLegacyArguments(arguments) ?? .object([:])
-        // The seven-operation legacy surface is string-valued. Rich schemas are
-        // retained faithfully, but incompatible inputs fail closed, never coerced.
-        try operation.arguments.validate(input)
+        let input = try argumentEncoding.decode(arguments, schema: operation.arguments)
         var owner = CapabilityExperience.withoutExperience(admissionOwner)
         if owner.reflectorID == "unowned" { owner.reflectorID = id }
         let discovery = try owner.abiContract(arguments: operation.arguments, result: operation.result)
@@ -118,11 +119,13 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
             dispatch: { taskID, admit in
                 let value = try self.boundInvoke.map { try $0(operation.name, input, RCIRInvocationBinding(taskID: taskID), admit) }
                     ?? self.invoke(operation.name, input, admit)
-                try operation.result.validate(value)
+                if case .unit = operation.result {
+                    guard case .null = value else { throw CapabilityABIError.schemaMismatch }
+                } else { try operation.result.validate(value) }
                 returned = value
                 return ExecutionRecord(executionId: executionID, actionId: capability.id, title: capability.title,
                     state: .accepted, message: "The provider returned a schema-valid value; semantic success requires host verification.",
-                    output: try CapabilityJSON.display(value),
+                    output: try { if case .unit = operation.result { return nil }; return try CapabilityJSON.display(value) }(),
                     evidence: .init(type: "interface_provider_result", boundary: "Provider result only; not independent verification."))
             }, resultValue: { _ in guard let returned else { throw RCIRError.unverified }; return returned })
     }

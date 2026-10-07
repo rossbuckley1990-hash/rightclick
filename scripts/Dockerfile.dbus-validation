@@ -1,0 +1,3 @@
+FROM rightclick-portable-python-validation:local
+RUN apt-get update && apt-get install -y --no-install-recommends dbus systemd python3-dbus python3-gi passwd && rm -rf /var/lib/apt/lists/*
+RUN useradd -u 1100 -m rcwriter && useradd -u 1101 -m rcobserver && useradd -u 1102 -m rcservice

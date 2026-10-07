@@ -12,6 +12,9 @@ public enum CapabilityReflectorSourceDefaults {
             [any CapabilityReflectorSource] = [
                 ConfiguredOpenAPISource(),
             ]
+#if os(Linux)
+        sources.append(DBusSessionSource())
+#endif
 #if os(macOS)
         sources += [
                 BonjourOpenAPISource(
