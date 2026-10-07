@@ -1,0 +1,3153 @@
+warning: 'src': found 4 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /src/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+    /src/Tests/RightClickCoreTests/Fixtures/InstalledRuntime022Identity.json
+    /src/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /src/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/875] Write sources
+[5/875] Write swift-version-24593BA9C3E375BF.txt
+[6/875] Write sources
+[7/875] Compiling _AtomicsShims.c
+[9/880] Emitting module _NIOBase64
+[10/880] Compiling _NIOBase64 Base64.swift
+[12/906] Emitting module _NIODataStructures
+[13/906] Compiling SwiftProtobuf AnyMessageStorage.swift
+[14/906] Compiling SwiftProtobuf AnyUnpackError.swift
+[15/907] Compiling _NIODataStructures _TinyArray.swift
+[16/908] Wrapping AST for _NIOBase64 for debugging
+[17/908] Wrapping AST for _NIODataStructures for debugging
+[18/908] Write sources
+[21/908] Compiling RightClickHostFiles HostFiles.c
+[22/908] Write sources
+[30/910] Emitting module SwiftProtobuf
+[31/934] Emitting module RightClickARD
+[32/934] Compiling RightClickARD ARD.swift
+[33/935] Write sources
+[35/937] Emitting module RightClickARDTests
+[36/937] Compiling RightClickARDTests ARDPortableTests.swift
+[38/940] Compiling RightClickARDProbe main.swift
+[39/940] Emitting module RightClickARDProbe
+[40/941] Wrapping AST for RightClickARDTests for debugging
+[41/941] Wrapping AST for RightClickARDProbe for debugging
+[42/941] Wrapping AST for RightClickARD for debugging
+[43/941] Write sources
+[44/941] Write Objects.LinkFileList
+[45/941] Write sources
+[46/941] Linking rightclick-ard-probe
+[47/941] Write sources
+[61/948] Compiling Logging MultiplexLogHandler.swift
+[62/948] Compiling Logging StreamLogHandler.swift
+[63/948] Compiling Logging SwiftLogNoOpLogHandler.swift
+[64/948] Compiling Logging Locks.swift
+[65/948] Compiling Logging LogEvent.swift
+[66/948] Compiling Logging LogHandler.swift
+[67/948] Compiling SwiftProtobuf BinaryDelimited.swift
+[68/948] Compiling SwiftProtobuf BinaryEncoder.swift
+[69/948] Compiling SwiftProtobuf BinaryEncodingError.swift
+[70/948] Compiling SwiftProtobuf BinaryEncodingOptions.swift
+[71/948] Compiling SwiftProtobuf BinaryEncodingSizeVisitor.swift
+[72/948] Compiling SwiftProtobuf BinaryEncodingVisitor.swift
+[73/948] Compiling SwiftProtobuf BytecodeInterpreter.swift
+[74/948] Compiling SwiftProtobuf BytecodeReader.swift
+[75/948] Compiling SwiftProtobuf CustomJSONCodable.swift
+[76/948] Compiling SwiftProtobuf Decoder.swift
+[77/948] Compiling SwiftProtobuf DoubleParser.swift
+[78/948] Compiling SwiftProtobuf Enum.swift
+[79/948] Compiling SwiftProtobuf ExtensibleMessage.swift
+[80/948] Compiling SwiftProtobuf ExtensionFieldValueSet.swift
+[81/948] Compiling SwiftProtobuf ExtensionFields.swift
+[82/948] Compiling SwiftProtobuf ExtensionMap.swift
+[83/948] Compiling SwiftProtobuf FieldTag.swift
+[84/948] Compiling SwiftProtobuf FieldTypes.swift
+[85/971] Emitting module Logging
+[92/976] Compiling Logging Logger+Attributes.swift
+[93/976] Compiling Logging Logger+With.swift
+[94/976] Compiling Logging Logger.swift
+[95/976] Compiling Logging LoggingSystem.swift
+[96/976] Compiling Logging MetadataProvider.swift
+[97/976] Compiling SwiftProtobuf Google_Protobuf_Any+Extensions.swift
+[98/976] Compiling SwiftProtobuf Google_Protobuf_Any+Registry.swift
+[99/976] Compiling SwiftProtobuf Google_Protobuf_Duration+Extensions.swift
+[100/976] Compiling SwiftProtobuf Google_Protobuf_FieldMask+Extensions.swift
+[101/976] Compiling SwiftProtobuf Google_Protobuf_ListValue+Extensions.swift
+[102/976] Compiling SwiftProtobuf Google_Protobuf_NullValue+Extensions.swift
+[103/976] Compiling SwiftProtobuf Google_Protobuf_Struct+Extensions.swift
+[104/976] Compiling SwiftProtobuf Google_Protobuf_Timestamp+Extensions.swift
+[105/976] Compiling SwiftProtobuf Google_Protobuf_Value+Extensions.swift
+[106/976] Compiling SwiftProtobuf Google_Protobuf_Wrappers+Extensions.swift
+[107/976] Compiling SwiftProtobuf HashVisitor.swift
+[108/976] Compiling SwiftProtobuf Internal.swift
+[109/976] Compiling SwiftProtobuf JSONDecoder.swift
+[110/976] Compiling SwiftProtobuf JSONDecodingError.swift
+[111/976] Compiling SwiftProtobuf JSONDecodingOptions.swift
+[112/976] Compiling SwiftProtobuf JSONEncoder.swift
+[113/976] Compiling SwiftProtobuf JSONEncodingError.swift
+[114/976] Compiling SwiftProtobuf JSONEncodingOptions.swift
+[115/976] Compiling SwiftProtobuf JSONEncodingVisitor.swift
+[116/976] Compiling SwiftProtobuf JSONMapEncodingVisitor.swift
+[117/976] Compiling SwiftProtobuf JSONScanner.swift
+[118/976] Compiling SwiftProtobuf MathUtils.swift
+[119/976] Compiling SwiftProtobuf Message+AnyAdditions.swift
+[120/976] Compiling SwiftProtobuf Message+BinaryAdditions.swift
+[122/1016] Emitting module InternalCollectionsUtilities
+[123/1031] Compiling InternalCollectionsUtilities BorrowingIteratorProtocol+Equality.swift
+[124/1031] Compiling InternalCollectionsUtilities BorrowingIteratorProtocol+Extras.swift
+[125/1031] Compiling InternalCollectionsUtilities Debugging.swift
+[126/1031] Compiling InternalCollectionsUtilities Descriptions.swift
+[127/1031] Compiling InternalCollectionsUtilities FixedWidthInteger+roundUpToPowerOfTwo.swift
+[128/1031] Compiling InternalCollectionsUtilities Integer rank.swift
+[129/1031] Compiling InternalCollectionsUtilities UInt+first and last set bit.swift
+[130/1031] Compiling InternalCollectionsUtilities UInt+reversed.swift
+[131/1031] Compiling InternalCollectionsUtilities Iterable+CopyContents.swift
+[132/1031] Compiling InternalCollectionsUtilities Iterable+Equality.swift
+[133/1031] Compiling InternalCollectionsUtilities LifetimeOverride.swift
+[134/1031] Compiling InternalCollectionsUtilities MutableRef.swift
+[135/1031] Compiling InternalCollectionsUtilities MutableSpan+Extras.swift
+[136/1031] Compiling InternalCollectionsUtilities OutputSpan+Extras.swift
+[137/1031] Compiling InternalCollectionsUtilities RandomAccessCollection+Offsets.swift
+[138/1031] Compiling SwiftProtobuf Message+BinaryAdditions_Data.swift
+[139/1031] Compiling SwiftProtobuf Message+FieldMask.swift
+[140/1031] Compiling SwiftProtobuf Message+JSONAdditions.swift
+[141/1031] Compiling SwiftProtobuf Message+JSONAdditions_Data.swift
+[142/1031] Compiling SwiftProtobuf Message+JSONArrayAdditions.swift
+[143/1031] Compiling SwiftProtobuf Message+JSONArrayAdditions_Data.swift
+[144/1031] Compiling SwiftProtobuf Message+TextFormatAdditions.swift
+[145/1031] Compiling SwiftProtobuf Message.swift
+[146/1031] Compiling SwiftProtobuf MessageExtension.swift
+[147/1031] Compiling SwiftProtobuf NameMap.swift
+[148/1031] Compiling SwiftProtobuf PathDecoder.swift
+[149/1031] Compiling SwiftProtobuf PathVisitor.swift
+[150/1031] Compiling SwiftProtobuf ProtoNameProviding.swift
+[151/1031] Compiling SwiftProtobuf ProtobufAPIVersionCheck.swift
+[152/1031] Compiling SwiftProtobuf ProtobufMap.swift
+[153/1031] Compiling SwiftProtobuf SelectiveVisitor.swift
+[154/1031] Compiling SwiftProtobuf SimpleExtensionMap.swift
+[155/1031] Compiling SwiftProtobuf StringUtils.swift
+[156/1031] Compiling SwiftProtobuf SwiftProtobufContiguousBytes.swift
+[157/1031] Compiling SwiftProtobuf SwiftProtobufError.swift
+[158/1031] Compiling SwiftProtobuf TextFormatDecoder.swift
+[159/1031] Compiling SwiftProtobuf TextFormatDecodingError.swift
+[160/1031] Compiling SwiftProtobuf TextFormatDecodingOptions.swift
+[161/1031] Compiling InternalCollectionsUtilities Span+Extras.swift
+[162/1031] Compiling InternalCollectionsUtilities Strideable+LimitHelpers.swift
+[163/1031] Compiling InternalCollectionsUtilities String+Padding.swift
+[164/1031] Compiling InternalCollectionsUtilities TemporaryAllocation.swift
+[165/1031] Compiling InternalCollectionsUtilities _UnsafeBitSet+Index.swift
+[166/1031] Compiling InternalCollectionsUtilities _UnsafeBitSet+_Word.swift
+[167/1031] Compiling InternalCollectionsUtilities _UnsafeBitSet.swift
+[168/1031] Compiling InternalCollectionsUtilities UnsafeBufferPointer+Extras.swift
+[169/1031] Compiling InternalCollectionsUtilities UnsafeMutableBufferPointer+Extras.swift
+[170/1031] Compiling InternalCollectionsUtilities UnsafeMutablePointer+Extras.swift
+[171/1031] Compiling InternalCollectionsUtilities UnsafeMutableRawBufferPointer+Extras.swift
+[172/1031] Compiling InternalCollectionsUtilities UnsafePointer+Extras.swift
+[173/1031] Compiling InternalCollectionsUtilities UnsafeRawBufferPointer+Extras.swift
+[174/1031] Compiling InternalCollectionsUtilities _SortedCollection.swift
+[175/1031] Compiling InternalCollectionsUtilities _UniqueCollection.swift
+[176/1032] Wrapping AST for Logging for debugging
+[178/1035] Emitting module SpanPreview
+[179/1035] Compiling SpanPreview InputSpan.swift
+[180/1035] Compiling SpanPreview MutableSpan+InputSpanHelpers.swift
+[181/1036] Compiling SpanPreview OutputSpan+InputSpanHelpers.swift
+[182/1037] Wrapping AST for InternalCollectionsUtilities for debugging
+[183/1037] Wrapping AST for SpanPreview for debugging
+[184/1037] Write sources
+[188/1061] Compiling DequeModule Deque+Codable.swift
+[189/1061] Compiling DequeModule Deque+Collection.swift
+[190/1061] Compiling DequeModule Deque+CustomReflectable.swift
+[191/1061] Compiling DequeModule Deque+Descriptions.swift
+[192/1061] Compiling DequeModule Deque+Equatable.swift
+[193/1061] Compiling DequeModule Deque+ExpressibleByArrayLiteral.swift
+[194/1061] Compiling DequeModule Deque+Extras.swift
+[195/1061] Compiling DequeModule Deque+Hashable.swift
+[196/1061] Compiling DequeModule Deque+Testing.swift
+[197/1061] Compiling DequeModule Deque._Storage.swift
+[198/1061] Compiling DequeModule Deque._UnsafeHandle.swift
+[199/1061] Compiling DequeModule Deque.swift
+[200/1061] Compiling DequeModule _DequeBuffer.swift
+[201/1061] Compiling DequeModule _DequeBufferHeader.swift
+[202/1061] Compiling DequeModule RigidDeque+Append.swift
+[203/1061] Compiling DequeModule RigidDeque+Consumption.swift
+[204/1061] Compiling DequeModule RigidDeque+ContainerOperations.swift
+[205/1061] Compiling DequeModule RigidDeque+Deprecations.swift
+[206/1061] Compiling DequeModule RigidDeque+Descriptions.swift
+[207/1061] Compiling DequeModule RigidDeque+Equatable.swift
+[208/1061] Compiling DequeModule RigidDeque+Hashable.swift
+[209/1061] Compiling DequeModule RigidDeque+Initializers.swift
+[210/1061] Compiling DequeModule RigidDeque+Insertions.swift
+[211/1084] Emitting module DequeModule
+[212/1084] Compiling DequeModule RigidDeque+Iterable.swift
+[213/1084] Compiling DequeModule RigidDeque+Prepend.swift
+[214/1084] Compiling DequeModule RigidDeque+Removals.swift
+[215/1084] Compiling DequeModule RigidDeque+Replacements.swift
+[216/1084] Compiling DequeModule RigidDeque+Testing.swift
+[217/1084] Compiling DequeModule RigidDeque.swift
+[218/1084] Compiling DequeModule UniqueDeque+Append.swift
+[219/1084] Compiling DequeModule UniqueDeque+Consumption.swift
+[220/1084] Compiling DequeModule UniqueDeque+ContainerOperations.swift
+[221/1084] Compiling DequeModule UniqueDeque+Deprecations.swift
+[222/1084] Compiling DequeModule UniqueDeque+Descriptions.swift
+[223/1084] Compiling DequeModule UniqueDeque+Equatable.swift
+[224/1084] Compiling DequeModule UniqueDeque+Hashable.swift
+[225/1084] Compiling DequeModule UniqueDeque+Initializers.swift
+[226/1084] Compiling DequeModule UniqueDeque+Insertions.swift
+[227/1084] Compiling DequeModule UniqueDeque+Iterable.swift
+[228/1084] Compiling DequeModule UniqueDeque+Prepend.swift
+[229/1084] Compiling DequeModule UniqueDeque+Removals.swift
+[230/1084] Compiling DequeModule UniqueDeque+Replacements.swift
+[231/1084] Compiling DequeModule UniqueDeque.swift
+[232/1084] Compiling DequeModule _DequeSlot.swift
+[233/1084] Compiling DequeModule _UnsafeDequeHandle.swift
+[234/1084] Compiling DequeModule _UnsafeDequeSegments.swift
+[235/1085] Write sources
+[236/1085] Wrapping AST for DequeModule for debugging
+[237/1085] Compiling CXKCPShims shims.c
+[238/1085] Compiling SimpleFIPS202.c
+[239/1085] Compiling KeccakSponge.c
+[240/1085] Compiling KeccakP-1600-opt64.c
+[241/1085] Compiling KeccakHash.c
+[242/1085] Compiling CSystem shims.c
+[243/1085] Compiling CNIOWindows shim.c
+[245/1107] Compiling SwiftProtobuf TextFormatEncoder.swift
+[246/1107] Compiling SwiftProtobuf TextFormatEncodingOptions.swift
+[247/1107] Compiling SwiftProtobuf TextFormatEncodingVisitor.swift
+[248/1107] Compiling SwiftProtobuf TextFormatScanner.swift
+[249/1107] Compiling SwiftProtobuf TimeUtils.swift
+[250/1107] Compiling SwiftProtobuf UnknownStorage.swift
+[251/1107] Compiling SwiftProtobuf UnsafeRawPointer+Shims.swift
+[252/1107] Compiling SwiftProtobuf Varint.swift
+[253/1107] Compiling SwiftProtobuf Version.swift
+[254/1107] Compiling SwiftProtobuf Visitor.swift
+[255/1107] Compiling SwiftProtobuf WireFormat.swift
+[256/1107] Compiling SwiftProtobuf ZigZag.swift
+[257/1107] Compiling SwiftProtobuf any.pb.swift
+[258/1107] Compiling SwiftProtobuf api.pb.swift
+[259/1107] Compiling SwiftProtobuf descriptor.pb.swift
+[260/1107] Compiling SwiftProtobuf duration.pb.swift
+[261/1107] Compiling SwiftProtobuf empty.pb.swift
+[262/1107] Compiling SwiftProtobuf field_mask.pb.swift
+[263/1107] Compiling SwiftProtobuf source_context.pb.swift
+[264/1107] Compiling SwiftProtobuf struct.pb.swift
+[265/1107] Compiling SwiftProtobuf timestamp.pb.swift
+[266/1107] Compiling SwiftProtobuf type.pb.swift
+[267/1107] Compiling SwiftProtobuf wrappers.pb.swift
+[268/1108] Compiling CNIOWindows WSAStartup.c
+[269/1108] Wrapping AST for SwiftProtobuf for debugging
+[270/1108] Compiling CNIOWASI CNIOWASI.c
+[271/1108] Compiling CNIOPosix event_loop_id.c
+[272/1108] Compiling CNIOOpenBSD shim.c
+[274/1108] Emitting module SystemPackage
+[274/1128] Compiling CNIOLinux shim.c
+[275/1128] Compiling CNIOLinux liburing_shims.c
+[276/1128] Compiling CNIOLLHTTP c_nio_llhttp.c
+[277/1128] Compiling CNIOLLHTTP c_nio_http.c
+[278/1128] Compiling CNIOLLHTTP c_nio_api.c
+[279/1128] Compiling CNIOFreeBSD shim.c
+[280/1128] Compiling CNIODarwin shim.c
+[281/1128] Compiling CNIOBoringSSLShims shims.c
+[282/1128] Compiling fiat_p256_adx_sqr.S
+[283/1128] Compiling fiat_p256_adx_mul.S
+[284/1128] Compiling fiat_curve25519_adx_square.S
+[285/1128] Compiling fiat_curve25519_adx_mul.S
+[287/1128] Compiling SystemPackage Errno.swift
+[288/1128] Compiling SystemPackage ErrnoWindows.swift
+[289/1128] Compiling SystemPackage FileDescriptor.swift
+[290/1128] Compiling SystemPackage FileHelpers.swift
+[291/1128] Compiling SystemPackage FileOperations.swift
+[292/1128] Compiling SystemPackage FilePath.swift
+[293/1128] Compiling SystemPackage FilePathComponentView.swift
+[294/1128] Compiling SystemPackage FilePathComponents.swift
+[295/1128] Compiling SystemPackage FilePathParsing.swift
+[296/1128] Compiling SystemPackage FilePathString.swift
+[297/1128] Compiling SystemPackage FilePathSyntax.swift
+[298/1128] Compiling SystemPackage FilePathTemp.swift
+[299/1128] Compiling SystemPackage FilePathTempPosix.swift
+[300/1128] Compiling SystemPackage FilePathTempWindows.swift
+[301/1128] Compiling SystemPackage FilePathWindows.swift
+[302/1128] Compiling SystemPackage FilePermissions.swift
+[303/1128] Compiling SystemPackage FileFlags.swift
+[304/1128] Compiling SystemPackage FileMode.swift
+[305/1128] Compiling SystemPackage FileType.swift
+[306/1128] Compiling SystemPackage Identifiers.swift
+[307/1128] Compiling SystemPackage Stat.swift
+[307/1128] Compiling tls_record.cc
+[308/1128] Compiling tls_method.cc
+[310/1128] Compiling SystemPackage IOCompletion.swift
+[311/1128] Compiling SystemPackage IORequest.swift
+[312/1128] Compiling SystemPackage IORing+Util.swift
+[313/1128] Compiling SystemPackage IORing.swift
+[314/1128] Compiling SystemPackage RawIORequest.swift
+[315/1128] Compiling SystemPackage Backcompat.swift
+[316/1128] Compiling SystemPackage CInterop.swift
+[317/1128] Compiling SystemPackage Constants.swift
+[318/1128] Compiling SystemPackage Exports.swift
+[319/1128] Compiling SystemPackage Mocking.swift
+[320/1128] Compiling SystemPackage RawBuffer.swift
+[321/1128] Compiling SystemPackage Syscalls.swift
+[322/1128] Compiling SystemPackage WindowsSyscallAdapters.swift
+[323/1128] Compiling SystemPackage MachPort.swift
+[324/1128] Compiling SystemPackage PlatformString.swift
+[325/1128] Compiling SystemPackage SystemString.swift
+[326/1128] Compiling SystemPackage Util+StringArray.swift
+[327/1128] Compiling SystemPackage Util.swift
+[328/1128] Compiling SystemPackage UtilConsumers.swift
+[329/1128] Compiling SystemPackage WinSDK+Overlay.swift
+[330/1129] Compiling tls13_server.cc
+[331/1154] Compiling tls13_enc.cc
+[332/1154] Wrapping AST for SystemPackage for debugging
+[334/1154] Emitting module MCP
+[334/1177] Compiling tls13_client.cc
+[335/1177] Compiling tls13_both.cc
+[336/1177] Compiling t1_enc.cc
+[338/1177] Compiling MCP OAuthAuthorizationCodeFlow.swift
+[339/1177] Compiling MCP OAuthAuthorizer.swift
+[340/1177] Compiling MCP OAuthClientRegistrar.swift
+[341/1177] Compiling MCP OAuthConfiguration.swift
+[342/1177] Compiling MCP OAuthConstants.swift
+[343/1177] Compiling MCP OAuthDiscovery.swift
+[344/1177] Compiling MCP OAuthDiscoveryClient.swift
+[345/1177] Compiling MCP OAuthErrors.swift
+[346/1177] Compiling MCP OAuthModels.swift
+[347/1177] Compiling MCP OAuthTokenEndpointClient.swift
+[348/1177] Compiling MCP OAuthURLValidator.swift
+[349/1177] Compiling MCP OAuthWWWAuthenticateParser.swift
+[350/1177] Compiling MCP PKCE.swift
+[351/1177] Compiling MCP TokenStorage.swift
+[352/1177] Compiling MCP Error.swift
+[353/1177] Compiling MCP ID.swift
+[354/1177] Compiling MCP Icon.swift
+[355/1177] Compiling MCP Lifecycle.swift
+[356/1177] Compiling MCP Messages.swift
+[357/1177] Compiling MCP PendingRequest.swift
+[358/1177] Compiling MCP Transport.swift
+[359/1177] Compiling MCP HTTPClientTransport.swift
+[360/1177] Compiling MCP HTTPRequestValidation.swift
+[361/1177] Compiling MCP HTTPServerTypes.swift
+[361/1177] Compiling ssl_x509.cc
+[362/1177] Compiling ssl_versions.cc
+[363/1177] Compiling ssl_transcript.cc
+[364/1177] Compiling ssl_stat.cc
+[365/1177] Compiling ssl_session.cc
+[366/1177] Compiling ssl_privkey.cc
+[367/1177] Compiling ssl_lib.cc
+[369/1177] Compiling MCP StatefulHTTPServerTransport.swift
+[370/1177] Compiling MCP StatelessHTTPServerTransport.swift
+[371/1177] Compiling MCP InMemoryTransport.swift
+[372/1177] Compiling MCP NetworkTransport.swift
+[373/1177] Compiling MCP StdioTransport.swift
+[374/1177] Compiling MCP UnitInterval.swift
+[375/1177] Compiling MCP Cancellation.swift
+[376/1177] Compiling MCP Ping.swift
+[377/1177] Compiling MCP Progress.swift
+[378/1177] Compiling MCP RequestContext.swift
+[379/1177] Compiling MCP Value.swift
+[380/1177] Compiling MCP Versioning.swift
+[381/1177] Compiling MCP Client.swift
+[382/1177] Compiling MCP Elicitation.swift
+[383/1177] Compiling MCP Roots.swift
+[384/1177] Compiling MCP Sampling.swift
+[385/1177] Compiling MCP Data+Extensions.swift
+[386/1177] Compiling MCP Completion.swift
+[387/1177] Compiling MCP Logging.swift
+[388/1177] Compiling MCP Prompts.swift
+[389/1177] Compiling MCP Resources.swift
+[390/1177] Compiling MCP Server.swift
+[391/1177] Compiling MCP Tools.swift
+[391/1178] Compiling ssl_key_share.cc
+[393/1178] Compiling ssl_file.cc
+[394/1178] Wrapping AST for MCP for debugging
+[395/1178] Compiling ssl_credential.cc
+[396/1178] Compiling ssl_cipher.cc
+[397/1178] Compiling ssl_cert.cc
+[398/1178] Compiling ssl_buffer.cc
+[399/1178] Compiling ssl_asn1.cc
+[400/1178] Compiling ssl_aead_ctx.cc
+[401/1178] Compiling s3_pkt.cc
+[402/1178] Compiling s3_lib.cc
+[402/1178] Compiling s3_both.cc
+[404/1178] Compiling handshake_client.cc
+[404/1178] Compiling handshake_server.cc
+[406/1178] Compiling handoff.cc
+[406/1178] Compiling handshake.cc
+[408/1178] Compiling encrypted_client_hello.cc
+[409/1178] Compiling extensions.cc
+[410/1178] Compiling dtls_record.cc
+[411/1178] Compiling dtls_method.cc
+[412/1178] Compiling d1_srtp.cc
+[413/1178] Compiling d1_pkt.cc
+[414/1178] Compiling d1_lib.cc
+[415/1178] Compiling d1_both.cc
+[416/1178] Compiling md5-x86_64-linux.S
+[417/1178] Compiling md5-x86_64-apple.S
+[418/1178] Compiling md5-586-linux.S
+[419/1178] Compiling md5-586-apple.S
+[420/1178] Compiling err_data.cc
+[421/1178] Compiling chacha20_poly1305_x86_64-linux.S
+[422/1178] Compiling chacha20_poly1305_x86_64-apple.S
+[423/1178] Compiling chacha20_poly1305_armv8-win.S
+[424/1178] Compiling bio_ssl.cc
+[425/1178] Compiling chacha20_poly1305_armv8-linux.S
+[426/1178] Compiling chacha20_poly1305_armv8-apple.S
+[427/1178] Compiling chacha-x86_64-linux.S
+[428/1178] Compiling chacha-x86-linux.S
+[429/1178] Compiling chacha-x86_64-apple.S
+[430/1178] Compiling chacha-x86-apple.S
+[431/1178] Compiling chacha-armv8-win.S
+[432/1178] Compiling chacha-armv8-apple.S
+[433/1178] Compiling chacha-armv8-linux.S
+[434/1178] Compiling chacha-armv4-linux.S
+[435/1178] Compiling aes128gcmsiv-x86_64-linux.S
+[436/1178] Compiling aes128gcmsiv-x86_64-apple.S
+[437/1178] Compiling x86_64-mont5-linux.S
+[438/1178] Compiling x86_64-mont5-apple.S
+[439/1178] Compiling x86_64-mont-linux.S
+[440/1178] Compiling x86_64-mont-apple.S
+[441/1178] Compiling x86-mont-linux.S
+[442/1178] Compiling x86-mont-apple.S
+[443/1178] Compiling vpaes-x86_64-linux.S
+[444/1178] Compiling vpaes-x86_64-apple.S
+[445/1178] Compiling vpaes-x86-linux.S
+[446/1178] Compiling vpaes-x86-apple.S
+[447/1178] Compiling vpaes-armv8-win.S
+[448/1178] Compiling vpaes-armv8-apple.S
+[449/1178] Compiling vpaes-armv8-linux.S
+[450/1178] Compiling vpaes-armv7-linux.S
+[451/1178] Compiling sha512-x86_64-linux.S
+[452/1178] Compiling sha512-x86_64-apple.S
+[453/1178] Compiling sha512-armv8-win.S
+[454/1178] Compiling sha512-armv8-apple.S
+[455/1178] Compiling sha512-armv8-linux.S
+[456/1178] Compiling sha512-armv4-linux.S
+[457/1178] Compiling sha512-586-linux.S
+[458/1178] Compiling sha512-586-apple.S
+[459/1178] Compiling sha256-x86_64-linux.S
+[460/1178] Compiling sha256-x86_64-apple.S
+[461/1178] Compiling sha256-armv8-win.S
+[462/1178] Compiling sha256-armv8-linux.S
+[463/1178] Compiling sha256-armv8-apple.S
+[464/1178] Compiling sha256-armv4-linux.S
+[465/1178] Compiling sha256-586-linux.S
+[466/1178] Compiling sha256-586-apple.S
+[467/1178] Compiling sha1-x86_64-linux.S
+[468/1178] Compiling sha1-x86_64-apple.S
+[469/1178] Compiling sha1-armv8-win.S
+[470/1178] Compiling sha1-armv8-linux.S
+[471/1178] Compiling sha1-armv8-apple.S
+[472/1178] Compiling sha1-armv4-large-linux.S
+[473/1178] Compiling sha1-586-linux.S
+[474/1178] Compiling rsaz-avx2-linux.S
+[475/1178] Compiling sha1-586-apple.S
+[476/1178] Compiling rsaz-avx2-apple.S
+[477/1178] Compiling rdrand-x86_64-linux.S
+[478/1178] Compiling rdrand-x86_64-apple.S
+[479/1178] Compiling p256_beeu-x86_64-asm-linux.S
+[480/1178] Compiling p256_beeu-x86_64-asm-apple.S
+[481/1178] Compiling p256_beeu-armv8-asm-win.S
+[482/1178] Compiling p256_beeu-armv8-asm-linux.S
+[483/1178] Compiling p256_beeu-armv8-asm-apple.S
+[484/1178] Compiling p256-x86_64-asm-linux.S
+[485/1178] Compiling p256-x86_64-asm-apple.S
+[486/1178] Compiling p256-armv8-asm-win.S
+[487/1178] Compiling p256-armv8-asm-apple.S
+[488/1178] Compiling p256-armv8-asm-linux.S
+[489/1178] Compiling ghashv8-armv8-win.S
+[490/1178] Compiling ghashv8-armv8-linux.S
+[491/1178] Compiling ghashv8-armv8-apple.S
+[492/1178] Compiling ghashv8-armv7-linux.S
+[493/1178] Compiling ghash-x86_64-linux.S
+[494/1178] Compiling ghash-x86_64-apple.S
+[495/1178] Compiling ghash-x86-linux.S
+[496/1178] Compiling ghash-x86-apple.S
+[497/1178] Compiling ghash-ssse3-x86_64-linux.S
+[498/1178] Compiling ghash-ssse3-x86_64-apple.S
+[499/1178] Compiling ghash-ssse3-x86-linux.S
+[500/1178] Compiling ghash-ssse3-x86-apple.S
+[501/1178] Compiling ghash-neon-armv8-win.S
+[502/1178] Compiling ghash-neon-armv8-linux.S
+[503/1178] Compiling ghash-armv4-linux.S
+[504/1178] Compiling ghash-neon-armv8-apple.S
+[505/1178] Compiling co-586-linux.S
+[506/1178] Compiling co-586-apple.S
+[507/1178] Compiling bsaes-armv7-linux.S
+[508/1178] Compiling bn-armv8-win.S
+[509/1178] Compiling bn-armv8-linux.S
+[510/1178] Compiling bn-armv8-apple.S
+[511/1178] Compiling bn-586-apple.S
+[512/1178] Compiling bn-586-linux.S
+[513/1178] Compiling armv8-mont-win.S
+[514/1178] Compiling armv8-mont-linux.S
+[515/1178] Compiling armv8-mont-apple.S
+[516/1178] Compiling armv4-mont-linux.S
+[517/1178] Compiling aesv8-gcm-armv8-win.S
+[518/1178] Compiling aesv8-gcm-armv8-linux.S
+[519/1178] Compiling aesv8-armv8-win.S
+[520/1178] Compiling aesv8-gcm-armv8-apple.S
+[521/1178] Compiling aesv8-armv8-apple.S
+[522/1178] Compiling aesv8-armv8-linux.S
+[523/1178] Compiling aesni-x86_64-linux.S
+[524/1178] Compiling aesv8-armv7-linux.S
+[525/1178] Compiling aesni-x86_64-apple.S
+[526/1178] Compiling aesni-x86-linux.S
+[527/1178] Compiling aesni-x86-apple.S
+[528/1178] Compiling aesni-gcm-x86_64-linux.S
+[529/1178] Compiling aesni-gcm-x86_64-apple.S
+[530/1178] Compiling aes-gcm-avx2-x86_64-apple.S
+[530/1178] Compiling aes-gcm-avx2-x86_64-linux.S
+[532/1178] Compiling aes-gcm-avx10-x86_64-apple.S
+[532/1178] Compiling aes-gcm-avx10-x86_64-linux.S
+[534/1178] Compiling x_x509a.cc
+[534/1178] Compiling x_x509.cc
+[536/1178] Compiling x_val.cc
+[536/1178] Compiling x_spki.cc
+[538/1178] Compiling x_req.cc
+[539/1178] Compiling x_sig.cc
+[540/1178] Compiling x_pubkey.cc
+[540/1178] Compiling x_name.cc
+[542/1178] Compiling x_exten.cc
+[542/1178] Compiling x_crl.cc
+[544/1178] Compiling x_all.cc
+[545/1178] Compiling x_attrib.cc
+[546/1178] Compiling x_algor.cc
+[546/1178] Compiling x509spki.cc
+[548/1178] Compiling x509rset.cc
+[549/1178] Compiling x509name.cc
+[550/1178] Compiling x509cset.cc
+[550/1178] Compiling x509_vpm.cc
+[552/1178] Compiling x509_v3.cc
+[552/1178] Compiling x509_vfy.cc
+[554/1178] Compiling x509_trs.cc
+[554/1178] Compiling x509_txt.cc
+[556/1178] Compiling x509_req.cc
+[556/1178] Compiling x509_set.cc
+[558/1178] Compiling x509_lu.cc
+[558/1178] Compiling x509_obj.cc
+[560/1178] Compiling x509_ext.cc
+[561/1178] Compiling x509_def.cc
+[562/1178] Compiling x509_d2.cc
+[563/1178] Compiling x509_cmp.cc
+[564/1178] Compiling x509.cc
+[564/1178] Compiling x509_att.cc
+[566/1178] Compiling v3_skey.cc
+[567/1178] Compiling v3_utl.cc
+[568/1178] Compiling v3_prn.cc
+[569/1178] Compiling v3_purp.cc
+[570/1178] Compiling v3_pmaps.cc
+[570/1178] Compiling v3_pcons.cc
+[572/1178] Compiling v3_ocsp.cc
+[573/1178] Compiling v3_ncons.cc
+[574/1178] Compiling v3_int.cc
+[575/1178] Compiling v3_lib.cc
+[576/1178] Compiling v3_ia5.cc
+[577/1178] Compiling v3_info.cc
+[578/1178] Compiling v3_extku.cc
+[578/1178] Compiling v3_genn.cc
+[580/1178] Compiling v3_crld.cc
+[580/1178] Compiling v3_enum.cc
+[582/1178] Compiling v3_cpols.cc
+[582/1178] Compiling v3_conf.cc
+[584/1178] Compiling v3_bcons.cc
+[585/1178] Compiling v3_bitst.cc
+[586/1178] Compiling v3_alt.cc
+[586/1178] Compiling v3_akeya.cc
+[588/1178] Compiling t_x509a.cc
+[588/1178] Compiling v3_akey.cc
+[590/1178] Compiling t_x509.cc
+[591/1178] Compiling t_req.cc
+[592/1178] Compiling t_crl.cc
+[593/1178] Compiling rsa_pss.cc
+[594/1178] Compiling name_print.cc
+[594/1178] Compiling policy.cc
+[596/1178] Compiling i2d_pr.cc
+[597/1178] Compiling by_file.cc
+[598/1178] Compiling by_dir.cc
+[599/1178] Compiling asn1_gen.cc
+[600/1178] Compiling algorithm.cc
+[601/1178] Compiling a_verify.cc
+[602/1178] Compiling a_sign.cc
+[603/1178] Compiling a_digest.cc
+[604/1178] Compiling voprf.cc
+[605/1178] Compiling trust_token.cc
+[606/1178] Compiling thread_win.cc
+[607/1178] Compiling pmbtoken.cc
+[608/1178] Compiling thread_pthread.cc
+[608/1178] Compiling thread_none.cc
+[610/1178] Compiling thread.cc
+[611/1178] Compiling stack.cc
+[612/1178] Compiling slhdsa.cc
+[613/1178] Compiling spake2plus.cc
+[614/1178] Compiling sha512.cc
+[615/1178] Compiling siphash.cc
+[616/1178] Compiling sha256.cc
+[617/1178] Compiling sha1.cc
+[618/1178] Compiling rsa_extra.cc
+[619/1178] Compiling rsa_print.cc
+[620/1178] Compiling rsa_crypt.cc
+[621/1178] Compiling rsa_asn1.cc
+[622/1178] Compiling rc4.cc
+[623/1178] Compiling refcount.cc
+[624/1178] Compiling windows.cc
+[625/1178] Compiling urandom.cc
+[626/1178] Compiling trusty.cc
+[627/1178] Compiling rand.cc
+[628/1178] Compiling passive.cc
+[629/1178] Compiling ios.cc
+[630/1178] Compiling getentropy.cc
+[631/1178] Compiling forkunsafe.cc
+[632/1178] Compiling deterministic.cc
+[633/1178] Compiling fork_detect.cc
+[634/1178] Compiling poly1305_vec.cc
+[635/1178] Compiling poly1305_arm_asm.S
+[636/1178] Compiling pool.cc
+[637/1178] Compiling poly1305_arm.cc
+[638/1178] Compiling poly1305.cc
+[639/1178] Compiling pkcs8_x509.cc
+[640/1178] Compiling pkcs8.cc
+[641/1178] Compiling p5_pbev2.cc
+[642/1178] Compiling pkcs7_x509.cc
+[643/1178] Compiling pkcs7.cc
+[644/1178] Compiling pem_xaux.cc
+[645/1178] Compiling pem_x509.cc
+[646/1178] Compiling pem_pkey.cc
+[647/1178] Compiling pem_pk8.cc
+[648/1178] Compiling pem_oth.cc
+[649/1178] Compiling pem_lib.cc
+[650/1178] Compiling pem_info.cc
+[651/1178] Compiling pem_all.cc
+[652/1178] Compiling obj_xref.cc
+[653/1178] Compiling mlkem.cc
+[654/1178] Compiling obj.cc
+[655/1178] Compiling mldsa.cc
+[656/1178] Compiling mem.cc
+[657/1178] Compiling md5.cc
+[658/1178] Compiling md4.cc
+[659/1178] Compiling lhash.cc
+[660/1178] Compiling kyber.cc
+[661/1178] Compiling poly_rq_mul.S
+[662/1178] Compiling hrss.cc
+[663/1178] Compiling fips_shared_support.cc
+[664/1178] Compiling hpke.cc
+[665/1178] Compiling ex_data.cc
+[666/1178] Compiling sign.cc
+[667/1178] Compiling scrypt.cc
+[668/1178] Compiling print.cc
+[669/1178] Compiling pbkdf.cc
+[670/1178] Compiling p_x25519_asn1.cc
+[671/1178] Compiling p_x25519.cc
+[672/1178] Compiling bcm.cc
+[673/1178] Compiling p_rsa_asn1.cc
+[674/1178] Compiling p_rsa.cc
+[675/1178] Compiling p_hkdf.cc
+[676/1178] Compiling p_ed25519_asn1.cc
+[677/1178] Compiling p_ed25519.cc
+[678/1178] Compiling p_ec_asn1.cc
+[679/1178] Compiling p_ec.cc
+[680/1178] Compiling p_dsa_asn1.cc
+[681/1178] Compiling p_dh_asn1.cc
+[682/1178] Compiling p_dh.cc
+[683/1178] Compiling evp_ctx.cc
+[684/1178] Compiling evp.cc
+[685/1178] Compiling evp_asn1.cc
+[686/1178] Compiling err.cc
+[687/1178] Compiling engine.cc
+[688/1178] Compiling ecdh.cc
+[689/1178] Compiling ecdsa_asn1.cc
+[690/1178] Compiling ec_derive.cc
+[691/1178] Compiling hash_to_curve.cc
+[692/1178] Compiling ec_asn1.cc
+[692/1178] Compiling dsa_asn1.cc
+[694/1178] Compiling dsa.cc
+[695/1178] Compiling digest_extra.cc
+[696/1178] Compiling params.cc
+[697/1178] Compiling dh_asn1.cc
+[698/1178] Compiling des.cc
+[699/1178] Compiling spake25519.cc
+[700/1178] Compiling curve25519_64_adx.cc
+[701/1178] Compiling x25519-asm-arm.S
+[702/1178] Compiling curve25519.cc
+[703/1178] Compiling crypto.cc
+[704/1178] Compiling cpu_intel.cc
+[705/1178] Compiling cpu_arm_linux.cc
+[706/1178] Compiling cpu_arm_freebsd.cc
+[707/1178] Compiling cpu_aarch64_win.cc
+[708/1178] Compiling cpu_aarch64_sysreg.cc
+[709/1178] Compiling cpu_aarch64_openbsd.cc
+[710/1178] Compiling cpu_aarch64_linux.cc
+[710/1178] Compiling cpu_aarch64_fuchsia.cc
+[712/1178] Compiling cpu_aarch64_apple.cc
+[713/1178] Compiling conf.cc
+[714/1178] Compiling tls_cbc.cc
+[715/1178] Compiling get_cipher.cc
+[716/1178] Compiling e_rc4.cc
+[716/1178] Compiling e_tls.cc
+[718/1178] Compiling e_null.cc
+[719/1178] Compiling e_rc2.cc
+[720/1178] Compiling e_des.cc
+[721/1178] Compiling e_chacha20poly1305.cc
+[722/1178] Compiling e_aesgcmsiv.cc
+[723/1178] Compiling e_aesctrhmac.cc
+[724/1178] Compiling derive_key.cc
+[725/1178] Compiling chacha.cc
+[726/1178] Compiling unicode.cc
+[727/1178] Compiling cbs.cc
+[728/1178] Compiling cbb.cc
+[729/1178] Compiling ber.cc
+[730/1178] Compiling asn1_compat.cc
+[731/1178] Compiling buf.cc
+[732/1178] Compiling convert.cc
+[733/1178] Compiling bn_asn1.cc
+[734/1178] Compiling blake2.cc
+[735/1178] Compiling socket_helper.cc
+[736/1178] Compiling socket.cc
+[737/1178] Compiling printf.cc
+[738/1178] Compiling pair.cc
+[739/1178] Compiling hexdump.cc
+[740/1178] Compiling file.cc
+[741/1178] Compiling fd.cc
+[742/1178] Compiling errno.cc
+[743/1178] Compiling connect.cc
+[744/1178] Compiling bio_mem.cc
+[745/1178] Compiling bio.cc
+[746/1178] Compiling base64.cc
+[747/1178] Compiling tasn_utl.cc
+[748/1178] Compiling tasn_typ.cc
+[749/1178] Compiling tasn_fre.cc
+[750/1178] Compiling tasn_new.cc
+[751/1178] Compiling tasn_enc.cc
+[752/1178] Compiling tasn_dec.cc
+[753/1178] Compiling posix_time.cc
+[754/1178] Compiling f_string.cc
+[755/1178] Compiling f_int.cc
+[756/1178] Compiling asn_pack.cc
+[757/1178] Compiling asn1_par.cc
+[758/1178] Compiling asn1_lib.cc
+[759/1178] Compiling a_utctm.cc
+[760/1178] Compiling a_type.cc
+[761/1178] Compiling a_time.cc
+[762/1178] Compiling a_strnid.cc
+[763/1178] Compiling a_strex.cc
+[764/1178] Compiling a_octet.cc
+[765/1178] Compiling a_mbstr.cc
+[765/1178] Compiling a_object.cc
+[767/1178] Compiling a_i2d_fp.cc
+[768/1178] Compiling a_int.cc
+[769/1178] Compiling a_gentm.cc
+[770/1178] Compiling a_dup.cc
+[771/1178] Compiling a_d2i_fp.cc
+[772/1178] Compiling a_bool.cc
+[773/1178] Compiling a_bitstr.cc
+[774/1178] Compiling c-nioatomics.c
+[775/1178] Compiling CGRPCZlib empty.c
+[776/1178] Compiling c-atomics.c
+[777/1178] Compiling CCryptoBoringSSLShims shims.c
+[778/1178] Compiling fiat_p256_adx_sqr.S
+[779/1178] Compiling fiat_p256_adx_mul.S
+[780/1178] Compiling fiat_curve25519_adx_square.S
+[781/1182] Compiling fiat_curve25519_adx_mul.S
+[782/1182] Compiling md5-x86_64-linux.S
+[783/1182] Compiling md5-x86_64-apple.S
+[784/1182] Compiling md5-586-linux.S
+[785/1182] Compiling md5-586-apple.S
+[786/1182] Compiling err_data.cc
+[787/1182] Compiling chacha20_poly1305_x86_64-linux.S
+[789/1182] Emitting module NIOConcurrencyHelpers
+[789/1185] Compiling chacha20_poly1305_x86_64-apple.S
+[790/1185] Compiling chacha20_poly1305_armv8-win.S
+[791/1185] Compiling chacha20_poly1305_armv8-linux.S
+[792/1185] Compiling chacha20_poly1305_armv8-apple.S
+[793/1185] Compiling chacha-x86_64-linux.S
+[795/1185] Compiling NIOConcurrencyHelpers NIOAtomic.swift
+[796/1185] Compiling NIOConcurrencyHelpers NIOLock.swift
+[797/1185] Compiling NIOConcurrencyHelpers NIOLockedValueBox.swift
+[797/1185] Compiling chacha-x86_64-apple.S
+[798/1185] Compiling chacha-x86-linux.S
+[799/1185] Compiling chacha-x86-apple.S
+[800/1185] Compiling chacha-armv8-win.S
+[801/1185] Compiling chacha-armv8-linux.S
+[802/1185] Compiling chacha-armv8-apple.S
+[803/1185] Compiling chacha-armv4-linux.S
+[804/1185] Compiling aes128gcmsiv-x86_64-linux.S
+[805/1185] Compiling aes128gcmsiv-x86_64-apple.S
+[806/1185] Compiling x86_64-mont5-linux.S
+[808/1185] Compiling NIOConcurrencyHelpers NIOThreadPoolWorkAvailable.swift
+[809/1185] Compiling NIOConcurrencyHelpers atomics.swift
+[810/1185] Compiling NIOConcurrencyHelpers lock.swift
+[810/1186] Compiling x86_64-mont5-apple.S
+[812/1186] Compiling x86_64-mont-linux.S
+[813/1186] Compiling x86_64-mont-apple.S
+[814/1186] Compiling x86-mont-linux.S
+[815/1186] Wrapping AST for NIOConcurrencyHelpers for debugging
+[816/1186] Compiling x86-mont-apple.S
+[817/1186] Compiling vpaes-x86_64-linux.S
+[818/1186] Compiling vpaes-x86_64-apple.S
+[819/1186] Compiling vpaes-x86-linux.S
+[820/1186] Compiling vpaes-x86-apple.S
+[821/1186] Compiling vpaes-armv8-win.S
+[822/1186] Compiling vpaes-armv8-linux.S
+[823/1186] Compiling vpaes-armv8-apple.S
+[824/1186] Compiling vpaes-armv7-linux.S
+[825/1186] Compiling sha512-x86_64-linux.S
+[826/1186] Compiling sha512-x86_64-apple.S
+[827/1186] Compiling sha512-armv8-win.S
+[828/1186] Compiling sha512-armv8-linux.S
+[829/1186] Compiling sha512-armv8-apple.S
+[830/1186] Compiling sha512-armv4-linux.S
+[831/1186] Compiling sha512-586-linux.S
+[832/1186] Compiling sha512-586-apple.S
+[833/1186] Compiling sha256-x86_64-linux.S
+[834/1186] Compiling sha256-x86_64-apple.S
+[835/1186] Compiling sha256-armv8-win.S
+[836/1186] Compiling sha256-armv8-linux.S
+[837/1186] Compiling sha256-armv8-apple.S
+[838/1186] Compiling sha256-armv4-linux.S
+[839/1186] Compiling sha256-586-linux.S
+[840/1186] Compiling sha256-586-apple.S
+[841/1186] Compiling sha1-x86_64-linux.S
+[842/1186] Compiling sha1-x86_64-apple.S
+[843/1186] Compiling sha1-armv8-win.S
+[844/1186] Compiling sha1-armv8-apple.S
+[845/1186] Compiling sha1-armv8-linux.S
+[846/1186] Compiling sha1-armv4-large-linux.S
+[847/1186] Compiling sha1-586-linux.S
+[848/1186] Compiling sha1-586-apple.S
+[849/1186] Compiling rsaz-avx2-linux.S
+[850/1186] Compiling rsaz-avx2-apple.S
+[851/1186] Compiling rdrand-x86_64-linux.S
+[852/1186] Compiling rdrand-x86_64-apple.S
+[853/1186] Compiling p256_beeu-x86_64-asm-linux.S
+[854/1186] Compiling p256_beeu-x86_64-asm-apple.S
+[855/1186] Compiling p256_beeu-armv8-asm-win.S
+[856/1186] Compiling p256_beeu-armv8-asm-linux.S
+[857/1186] Compiling p256_beeu-armv8-asm-apple.S
+[858/1186] Compiling p256-x86_64-asm-linux.S
+[859/1186] Compiling p256-x86_64-asm-apple.S
+[860/1186] Compiling p256-armv8-asm-win.S
+[861/1186] Compiling p256-armv8-asm-linux.S
+[862/1186] Compiling p256-armv8-asm-apple.S
+[863/1186] Compiling ghashv8-armv8-win.S
+[864/1186] Compiling ghashv8-armv8-linux.S
+[865/1186] Compiling ghashv8-armv8-apple.S
+[866/1186] Compiling ghashv8-armv7-linux.S
+[867/1186] Compiling ghash-x86_64-linux.S
+[868/1186] Compiling ghash-x86_64-apple.S
+[869/1186] Compiling ghash-x86-linux.S
+[870/1186] Compiling ghash-x86-apple.S
+[871/1186] Compiling ghash-ssse3-x86_64-linux.S
+[872/1186] Compiling ghash-ssse3-x86_64-apple.S
+[873/1186] Compiling ghash-ssse3-x86-linux.S
+[874/1186] Compiling ghash-ssse3-x86-apple.S
+[875/1186] Compiling ghash-neon-armv8-win.S
+[876/1186] Compiling ghash-neon-armv8-linux.S
+[877/1186] Compiling ghash-neon-armv8-apple.S
+[878/1186] Compiling ghash-armv4-linux.S
+[879/1186] Compiling co-586-linux.S
+[880/1186] Compiling co-586-apple.S
+[881/1186] Compiling bsaes-armv7-linux.S
+[882/1186] Compiling bn-armv8-win.S
+[883/1186] Compiling bn-armv8-linux.S
+[884/1186] Compiling bn-armv8-apple.S
+[885/1186] Compiling bn-586-linux.S
+[886/1186] Compiling bn-586-apple.S
+[887/1186] Compiling armv8-mont-win.S
+[888/1186] Compiling armv8-mont-linux.S
+[889/1186] Compiling armv8-mont-apple.S
+[890/1186] Compiling armv4-mont-linux.S
+[891/1186] Compiling aesv8-gcm-armv8-win.S
+[892/1186] Compiling aesv8-gcm-armv8-linux.S
+[893/1186] Compiling aesv8-gcm-armv8-apple.S
+[894/1186] Compiling aesv8-armv8-win.S
+[895/1186] Compiling aesv8-armv8-linux.S
+[896/1186] Compiling aesv8-armv8-apple.S
+[897/1186] Compiling aesv8-armv7-linux.S
+[898/1186] Compiling aesni-x86_64-apple.S
+[898/1186] Compiling aesni-x86_64-linux.S
+[900/1186] Compiling aesni-x86-linux.S
+[901/1186] Compiling aesni-x86-apple.S
+[902/1186] Compiling aesni-gcm-x86_64-linux.S
+[903/1186] Compiling aesni-gcm-x86_64-apple.S
+[904/1186] Compiling aes-gcm-avx512-x86_64-linux.S
+[905/1186] Compiling aes-gcm-avx512-x86_64-apple.S
+[906/1186] Compiling aes-gcm-avx2-x86_64-apple.S
+[907/1186] Compiling aes-gcm-avx2-x86_64-linux.S
+[908/1186] Compiling xwing.cc
+[909/1186] Compiling x_x509a.cc
+[910/1186] Compiling x_x509.cc
+[911/1186] Compiling x_spki.cc
+[912/1186] Compiling x_sig.cc
+[913/1186] Compiling x_req.cc
+[914/1186] Compiling x_pubkey.cc
+[915/1186] Compiling x_name.cc
+[916/1186] Compiling x_exten.cc
+[917/1186] Compiling x_crl.cc
+[918/1186] Compiling x_attrib.cc
+[919/1186] Compiling x_all.cc
+[920/1186] Compiling x_algor.cc
+[921/1186] Compiling x509spki.cc
+[922/1186] Compiling x509rset.cc
+[923/1186] Compiling x509name.cc
+[924/1186] Compiling x509cset.cc
+[925/1186] Compiling x509_vpm.cc
+[926/1186] Compiling x509_vfy.cc
+[927/1186] Compiling x509_v3.cc
+[928/1186] Compiling x509_txt.cc
+[929/1186] Compiling x509_trs.cc
+[930/1186] Compiling x509_set.cc
+[931/1186] Compiling x509_req.cc
+[932/1186] Compiling x509_obj.cc
+[933/1186] Compiling x509_lu.cc
+[934/1186] Compiling x509_ext.cc
+[935/1186] Compiling x509_def.cc
+[936/1186] Compiling x509_d2.cc
+[937/1186] Compiling x509_cmp.cc
+[938/1186] Compiling x509_att.cc
+[939/1186] Compiling x509.cc
+[940/1186] Compiling v3_utl.cc
+[941/1186] Compiling v3_skey.cc
+[942/1186] Compiling v3_prn.cc
+[943/1186] Compiling v3_purp.cc
+[944/1186] Compiling v3_pmaps.cc
+[945/1186] Compiling v3_pcons.cc
+[946/1186] Compiling v3_ocsp.cc
+[947/1186] Compiling v3_ncons.cc
+[948/1186] Compiling v3_lib.cc
+[949/1186] Compiling v3_int.cc
+[950/1186] Compiling v3_ia5.cc
+[951/1186] Compiling v3_info.cc
+[952/1186] Compiling v3_genn.cc
+[953/1186] Compiling v3_extku.cc
+[954/1186] Compiling v3_enum.cc
+[955/1186] Compiling v3_crld.cc
+[956/1186] Compiling v3_cpols.cc
+[957/1186] Compiling v3_conf.cc
+[958/1186] Compiling v3_bitst.cc
+[959/1186] Compiling v3_bcons.cc
+[960/1186] Compiling v3_alt.cc
+[960/1186] Compiling v3_akeya.cc
+[962/1186] Compiling v3_akey.cc
+[963/1186] Compiling t_x509a.cc
+[964/1186] Compiling t_x509.cc
+[965/1186] Compiling t_req.cc
+[966/1186] Compiling t_crl.cc
+[967/1186] Compiling rsa_pss.cc
+[968/1186] Compiling name_print.cc
+[969/1186] Compiling policy.cc
+[970/1186] Compiling i2d_pr.cc
+[971/1186] Compiling by_file.cc
+[972/1186] Compiling by_dir.cc
+[973/1186] Compiling asn1_gen.cc
+[974/1186] Compiling algorithm.cc
+[975/1186] Compiling a_verify.cc
+[976/1186] Compiling a_sign.cc
+[977/1186] Compiling a_digest.cc
+[978/1186] Compiling voprf.cc
+[979/1186] Compiling trust_token.cc
+[980/1186] Compiling thread_win.cc
+[981/1186] Compiling pmbtoken.cc
+[982/1186] Compiling thread_none.cc
+[983/1186] Compiling thread_pthread.cc
+[984/1186] Compiling thread.cc
+[985/1186] Compiling stack.cc
+[986/1186] Compiling slhdsa.cc
+[987/1186] Compiling spake2plus.cc
+[988/1186] Compiling siphash.cc
+[989/1186] Compiling sha512.cc
+[990/1186] Compiling sha1.cc
+[990/1186] Compiling sha256.cc
+[992/1186] Compiling rsa_extra.cc
+[993/1186] Compiling rsa_print.cc
+[994/1186] Compiling rsa_crypt.cc
+[995/1186] Compiling rsa_asn1.cc
+[996/1186] Compiling refcount.cc
+[997/1186] Compiling rc4.cc
+[998/1186] Compiling windows.cc
+[999/1186] Compiling urandom.cc
+[1000/1186] Compiling trusty.cc
+[1001/1186] Compiling rand.cc
+[1002/1186] Compiling passive.cc
+[1003/1186] Compiling ios.cc
+[1004/1186] Compiling getentropy.cc
+[1005/1186] Compiling forkunsafe.cc
+[1006/1186] Compiling fork_detect.cc
+[1007/1186] Compiling deterministic.cc
+[1008/1186] Compiling pool.cc
+[1009/1186] Compiling poly1305_arm_asm.S
+[1010/1186] Compiling poly1305_vec.cc
+[1011/1186] Compiling poly1305_arm.cc
+[1012/1186] Compiling poly1305.cc
+[1013/1186] Compiling pkcs8.cc
+[1013/1186] Compiling pkcs8_x509.cc
+[1015/1186] Compiling pkcs7_x509.cc
+[1015/1186] Compiling p5_pbev2.cc
+[1017/1186] Compiling pkcs7.cc
+[1018/1186] Compiling pem_xaux.cc
+[1019/1186] Compiling pem_x509.cc
+[1020/1186] Compiling pem_pkey.cc
+[1021/1186] Compiling pem_pk8.cc
+[1022/1186] Compiling pem_oth.cc
+[1023/1186] Compiling pem_lib.cc
+[1024/1186] Compiling pem_info.cc
+[1025/1186] Compiling obj_xref.cc
+[1026/1186] Compiling pem_all.cc
+[1027/1186] Compiling mlkem.cc
+[1028/1186] Compiling obj.cc
+[1029/1186] Compiling mldsa.cc
+[1030/1186] Compiling mem.cc
+[1031/1186] Compiling md5.cc
+[1032/1186] Compiling md4.cc
+[1033/1186] Compiling lhash.cc
+[1034/1186] Compiling kyber.cc
+[1035/1186] Compiling poly_rq_mul.S
+[1036/1186] Compiling hrss.cc
+[1037/1186] Compiling hpke.cc
+[1038/1186] Compiling fips_shared_support.cc
+[1039/1186] Compiling fuzzer_mode.cc
+[1040/1186] Compiling ex_data.cc
+[1041/1186] Compiling sign.cc
+[1042/1186] Compiling scrypt.cc
+[1043/1186] Compiling print.cc
+[1044/1186] Compiling pbkdf.cc
+[1045/1186] Compiling p_x25519_asn1.cc
+[1046/1186] Compiling p_x25519.cc
+[1047/1186] Compiling p_rsa_asn1.cc
+[1048/1186] Compiling p_rsa.cc
+[1049/1186] Compiling p_hkdf.cc
+[1050/1186] Compiling p_ed25519_asn1.cc
+[1051/1186] Compiling p_ed25519.cc
+[1052/1186] Compiling p_ec_asn1.cc
+[1053/1186] Compiling p_ec.cc
+[1054/1186] Compiling p_dsa_asn1.cc
+[1055/1186] Compiling p_dh_asn1.cc
+[1056/1186] Compiling p_dh.cc
+[1057/1186] Compiling bcm.cc
+[1058/1186] Compiling evp_ctx.cc
+[1059/1186] Compiling evp.cc
+[1060/1186] Compiling evp_asn1.cc
+[1061/1186] Compiling err.cc
+[1062/1186] Compiling engine.cc
+[1063/1186] Compiling ecdsa_p1363.cc
+[1064/1186] Compiling ecdsa_asn1.cc
+[1065/1186] Compiling ecdh.cc
+[1066/1186] Compiling hash_to_curve.cc
+[1067/1186] Compiling ec_derive.cc
+[1068/1186] Compiling dsa_asn1.cc
+[1069/1186] Compiling ec_asn1.cc
+[1070/1186] Compiling dsa.cc
+[1071/1186] Compiling digest_extra.cc
+[1072/1186] Compiling params.cc
+[1073/1186] Compiling dh_asn1.cc
+[1074/1186] Compiling des.cc
+[1075/1186] Compiling spake25519.cc
+[1076/1186] Compiling curve25519_64_adx.cc
+[1077/1186] Compiling x25519-asm-arm.S
+[1078/1186] Compiling crypto.cc
+[1079/1186] Compiling curve25519.cc
+[1080/1186] Compiling cpu_intel.cc
+[1081/1186] Compiling cpu_arm_linux.cc
+[1082/1186] Compiling cpu_arm_freebsd.cc
+[1083/1186] Compiling cpu_aarch64_win.cc
+[1084/1186] Compiling cpu_aarch64_sysreg.cc
+[1085/1186] Compiling cpu_aarch64_openbsd.cc
+[1086/1186] Compiling cpu_aarch64_linux.cc
+[1087/1186] Compiling cpu_aarch64_fuchsia.cc
+[1088/1186] Compiling cpu_aarch64_apple.cc
+[1089/1186] Compiling conf.cc
+[1090/1186] Compiling tls_cbc.cc
+[1091/1186] Compiling cms.cc
+[1092/1186] Compiling get_cipher.cc
+[1093/1186] Compiling e_tls.cc
+[1094/1186] Compiling e_rc4.cc
+[1095/1186] Compiling e_rc2.cc
+[1096/1186] Compiling e_null.cc
+[1097/1186] Compiling e_des.cc
+[1098/1186] Compiling e_chacha20poly1305.cc
+[1099/1186] Compiling e_aesgcmsiv.cc
+[1100/1186] Compiling e_aeseax.cc
+[1101/1186] Compiling e_aesctrhmac.cc
+[1102/1186] Compiling derive_key.cc
+[1103/1186] Compiling chacha.cc
+[1104/1186] Compiling unicode.cc
+[1105/1186] Compiling cbs.cc
+[1106/1186] Compiling cbb.cc
+[1107/1186] Compiling ber.cc
+[1108/1186] Compiling asn1_compat.cc
+[1109/1186] Compiling buf.cc
+[1110/1186] Compiling sqrt.cc
+[1111/1186] Compiling div.cc
+[1112/1186] Compiling exponentiation.cc
+[1113/1186] Compiling bn_asn1.cc
+[1114/1186] Compiling convert.cc
+[1115/1186] Compiling printf.cc
+[1116/1186] Compiling blake2.cc
+[1117/1186] Compiling pair.cc
+[1118/1186] Compiling hexdump.cc
+[1119/1186] Compiling file.cc
+[1120/1186] Compiling fd.cc
+[1121/1186] Compiling errno.cc
+[1122/1186] Compiling bio_mem.cc
+[1123/1186] Compiling base64.cc
+[1124/1186] Compiling bio.cc
+[1125/1186] Compiling tasn_typ.cc
+[1126/1186] Compiling tasn_utl.cc
+[1127/1186] Compiling tasn_fre.cc
+[1128/1186] Compiling tasn_new.cc
+[1129/1186] Compiling tasn_enc.cc
+[1130/1186] Compiling tasn_dec.cc
+[1131/1186] Compiling posix_time.cc
+[1132/1186] Compiling f_string.cc
+[1133/1186] Compiling f_int.cc
+[1134/1186] Compiling asn_pack.cc
+[1135/1186] Compiling asn1_par.cc
+[1136/1186] Compiling asn1_lib.cc
+[1137/1186] Compiling a_utctm.cc
+[1138/1186] Compiling a_type.cc
+[1139/1186] Compiling a_time.cc
+[1140/1186] Compiling a_strex.cc
+[1140/1186] Compiling a_strnid.cc
+[1142/1186] Compiling a_octet.cc
+[1143/1186] Compiling a_object.cc
+[1144/1186] Compiling a_mbstr.cc
+[1145/1186] Compiling a_int.cc
+[1146/1186] Compiling a_i2d_fp.cc
+[1147/1186] Compiling a_gentm.cc
+[1148/1186] Compiling a_dup.cc
+[1149/1186] Compiling a_d2i_fp.cc
+[1150/1186] Compiling a_bool.cc
+[1151/1186] Compiling aes.cc
+[1152/1186] Write sources
+[1153/1186] Compiling a_bitstr.cc
+[1155/1202] Emitting module CryptoBoringWrapper
+[1156/1205] Emitting module Atomics
+[1157/1214] Compiling CryptoBoringWrapper BoringSSLAEAD.swift
+[1158/1214] Compiling CryptoBoringWrapper CryptoKitErrors_boring.swift
+[1159/1214] Compiling CryptoBoringWrapper EllipticCurve.swift
+[1160/1214] Compiling CryptoBoringWrapper EllipticCurvePoint.swift
+[1161/1214] Compiling CryptoBoringWrapper ArbitraryPrecisionInteger.swift
+[1162/1214] Compiling CryptoBoringWrapper FiniteFieldArithmeticContext.swift
+[1163/1214] Compiling CryptoBoringWrapper RandomBytes.swift
+[1165/1240] Compiling Crypto ASN1Identifier.swift
+[1166/1240] Compiling Crypto ASN1Integer.swift
+[1167/1240] Compiling Crypto ASN1Null.swift
+[1168/1240] Compiling Crypto ASN1OctetString.swift
+[1169/1240] Compiling Crypto ASN1Strings.swift
+[1170/1240] Compiling Crypto ArraySliceBigint.swift
+[1171/1240] Compiling Crypto GeneralizedTime.swift
+[1172/1240] Compiling Crypto ObjectIdentifier.swift
+[1173/1240] Compiling Crypto ECDSASignature.swift
+[1174/1240] Compiling Crypto AES-GCM.swift
+[1175/1240] Compiling Crypto AES-GCM_boring.swift
+[1176/1240] Compiling Crypto ChaChaPoly_boring.swift
+[1177/1240] Compiling Crypto ChaChaPoly.swift
+[1178/1240] Compiling Crypto Cipher.swift
+[1179/1240] Compiling Crypto Nonces.swift
+[1180/1240] Compiling Crypto ASN1.swift
+[1181/1240] Compiling Crypto ASN1Any.swift
+[1182/1240] Compiling Crypto ASN1BitString.swift
+[1183/1240] Compiling Crypto ASN1Boolean.swift
+[1184/1241] Wrapping AST for CryptoBoringWrapper for debugging
+[1186/1266] Emitting module Crypto
+[1187/1290] Compiling NIOCore AddressedEnvelope.swift
+[1188/1290] Compiling NIOCore AsyncAwaitSupport.swift
+[1189/1290] Compiling NIOCore AsyncChannel.swift
+[1190/1290] Compiling NIOCore AsyncChannelHandler.swift
+[1191/1290] Compiling NIOCore AsyncChannelInboundStream.swift
+[1192/1290] Compiling NIOCore AsyncChannelOutboundWriter.swift
+[1193/1290] Compiling NIOCore NIOAsyncSequenceProducer.swift
+[1194/1290] Compiling NIOCore NIOAsyncSequenceProducerStrategies.swift
+[1195/1290] Compiling NIOCore NIOAsyncWriter.swift
+[1196/1290] Compiling NIOCore NIOThrowingAsyncSequenceProducer.swift
+[1197/1290] Compiling NIOCore BSDSocketAPI.swift
+[1198/1290] Compiling NIOCore ByteBuffer-aux.swift
+[1199/1290] Compiling NIOCore ByteBuffer-binaryEncodedLengthPrefix.swift
+[1200/1290] Compiling NIOCore ByteBuffer-conversions.swift
+[1201/1290] Compiling NIOCore ByteBuffer-core.swift
+[1202/1290] Compiling NIOCore ByteBuffer-hex.swift
+[1203/1290] Compiling NIOCore ByteBuffer-int.swift
+[1204/1290] Compiling NIOCore ByteBuffer-lengthPrefix.swift
+[1205/1290] Compiling NIOCore ByteBuffer-multi-int.swift
+[1206/1290] Compiling NIOCore ByteBuffer-quicBinaryEncodingStrategy.swift
+[1207/1290] Compiling NIOCore ByteBuffer-views.swift
+[1208/1290] Compiling NIOCore Channel.swift
+[1209/1290] Compiling NIOCore ChannelHandler.swift
+[1210/1290] Compiling NIOCore ChannelHandlers.swift
+[1211/1313] Compiling Crypto CryptoKitErrors.swift
+[1212/1313] Compiling Crypto Digest_boring.swift
+[1213/1313] Compiling Crypto Digest.swift
+[1214/1313] Compiling Crypto Digests.swift
+[1215/1313] Compiling Crypto HashFunctions.swift
+[1216/1313] Compiling Crypto HashFunctions_SHA2.swift
+[1217/1313] Compiling Crypto HashFunctions_SHA3.swift
+[1218/1313] Compiling Crypto Digest_xkcp.swift
+[1219/1313] Compiling Crypto HPKE-AEAD.swift
+[1220/1313] Compiling Crypto HPKE-Ciphersuite.swift
+[1221/1313] Compiling Crypto HPKE-KDF.swift
+[1222/1313] Compiling Crypto HPKE-KexKeyDerivation.swift
+[1223/1313] Compiling Crypto HPKE-LabeledExtract.swift
+[1224/1313] Compiling Crypto HPKE-Utils.swift
+[1225/1313] Compiling Crypto DHKEM.swift
+[1226/1313] Compiling Crypto HPKE-KEM-Curve25519.swift
+[1227/1313] Compiling Crypto HPKE-NIST-EC-KEMs.swift
+[1228/1313] Compiling Crypto HPKE-KEM.swift
+[1229/1313] Compiling Crypto HPKE-Errors.swift
+[1230/1313] Compiling Crypto HPKE.swift
+[1231/1313] Compiling Crypto HPKE-Context.swift
+[1232/1313] Compiling Crypto HPKE-KeySchedule.swift
+[1233/1313] Compiling Crypto HPKE-Modes.swift
+[1234/1313] Compiling Crypto Insecure.swift
+[1235/1336] Compiling Crypto Insecure_HashFunctions.swift
+[1236/1336] Compiling Crypto MLKEM_boring.swift
+[1237/1336] Compiling Crypto MLKEM_wrapper.swift
+[1238/1336] Compiling Crypto XWing_boring.swift
+[1239/1336] Compiling Crypto KEM-Errors.swift
+[1240/1336] Compiling Crypto KEM.swift
+[1241/1336] Compiling Crypto MLKEM.swift
+[1242/1336] Compiling Crypto XWing.swift
+[1243/1336] Compiling Crypto ECDH_boring.swift
+[1244/1336] Compiling Crypto DH.swift
+[1245/1336] Compiling Crypto ECDH.swift
+[1246/1336] Compiling Crypto ANSIx963.swift
+[1247/1336] Compiling Crypto HKDF.swift
+[1248/1336] Compiling Crypto AESWrap.swift
+[1249/1336] Compiling Crypto AESWrap_boring.swift
+[1250/1336] Compiling Crypto Ed25519_boring.swift
+[1251/1336] Compiling Crypto NISTCurvesKeys_boring.swift
+[1252/1336] Compiling Crypto X25519Keys_boring.swift
+[1253/1336] Compiling Crypto Curve25519.swift
+[1254/1336] Compiling Crypto Ed25519Keys.swift
+[1255/1336] Compiling Crypto NISTCurvesKeys.swift
+[1256/1336] Compiling Crypto X25519Keys.swift
+[1257/1336] Compiling Crypto SymmetricKeys.swift
+[1258/1336] Compiling Crypto HMAC.swift
+[1259/1336] Compiling Crypto MACFunctions.swift
+[1260/1336] Compiling Crypto MessageAuthenticationCode.swift
+[1261/1336] Compiling Crypto AES.swift
+[1262/1336] Compiling Crypto ECDSASignature_boring.swift
+[1263/1336] Compiling Crypto ECDSA_boring.swift
+[1264/1336] Compiling Crypto EdDSA_boring.swift
+[1265/1336] Compiling Crypto MLDSA_boring.swift
+[1266/1336] Compiling Crypto MLDSA_wrapper.swift
+[1267/1336] Compiling Crypto ECDSA.swift
+[1268/1336] Compiling Crypto Ed25519.swift
+[1269/1336] Compiling Crypto MLDSA.swift
+[1270/1336] Compiling Crypto Signature.swift
+[1271/1336] Compiling Crypto CryptoKitErrors_boring.swift
+[1272/1336] Compiling Crypto Optional+withUnsafeBytes_boring.swift
+[1273/1336] Compiling Crypto RNG_boring.swift
+[1274/1336] Compiling Crypto SafeCompare_boring.swift
+[1275/1336] Compiling Crypto Zeroization_boring.swift
+[1276/1336] Compiling Crypto _CryptoModuleAnchor.swift
+[1277/1336] Compiling Crypto PrettyBytes.swift
+[1278/1336] Compiling Crypto SafeCompare.swift
+[1279/1336] Compiling Crypto SecureBytes.swift
+[1280/1336] Compiling Crypto Zeroization.swift
+[1281/1337] Wrapping AST for Atomics for debugging
+[1282/1337] Wrapping AST for Crypto for debugging
+[1284/1337] Emitting module NIOCore
+[1309/1384] Compiling NIOCore Interfaces.swift
+[1310/1384] Compiling NIOCore Linux.swift
+[1311/1384] Compiling NIOCore MarkedCircularBuffer.swift
+[1312/1384] Compiling NIOCore MulticastChannel.swift
+[1313/1384] Compiling NIOCore NIOAny.swift
+[1314/1384] Compiling NIOCore NIOCloseOnErrorHandler.swift
+[1315/1384] Compiling NIOCore NIOCoreSendableMetatype.swift
+[1316/1384] Compiling NIOCore NIODecodedAsyncSequence.swift
+[1317/1384] Compiling NIOCore NIOLoopBound.swift
+[1318/1384] Compiling NIOCore NIOPooledRecvBufferAllocator.swift
+[1319/1384] Compiling NIOCore NIOScheduledCallback.swift
+[1320/1384] Compiling NIOCore NIOSendable.swift
+[1321/1384] Compiling NIOCore NIOSplitLinesMessageDecoder.swift
+[1322/1384] Compiling NIOCore NIOTransportAccessibleChannelCore.swift
+[1323/1384] Compiling NIOCore RecvByteBufferAllocator.swift
+[1324/1384] Compiling NIOCore SingleStepByteToMessageDecoder.swift
+[1325/1384] Compiling NIOCore SocketAddresses.swift
+[1326/1384] Compiling NIOCore SocketOptionProvider.swift
+[1327/1384] Compiling NIOCore SystemCallHelpers.swift
+[1328/1384] Compiling NIOCore TimeAmount+Duration.swift
+[1329/1384] Compiling NIOCore TypeAssistedChannelHandler.swift
+[1330/1384] Compiling NIOCore UniversalBootstrapSupport.swift
+[1331/1384] Compiling NIOCore Utilities.swift
+[1332/1384] Compiling NIOCore ChannelInvoker.swift
+[1333/1384] Compiling NIOCore ChannelOption.swift
+[1334/1384] Compiling NIOCore ChannelPipeline.swift
+[1335/1384] Compiling NIOCore CircularBuffer.swift
+[1336/1384] Compiling NIOCore Codec.swift
+[1337/1384] Compiling NIOCore ConvenienceOptionSupport.swift
+[1338/1384] Compiling NIOCore DeadChannel.swift
+[1339/1384] Compiling NIOCore DispatchQueue+WithFuture.swift
+[1340/1384] Compiling NIOCore EventLoop+Deprecated.swift
+[1341/1384] Compiling NIOCore EventLoop+SerialExecutor.swift
+[1342/1384] Compiling NIOCore EventLoop.swift
+[1343/1384] Compiling NIOCore EventLoopFuture+AssumeIsolated.swift
+[1344/1384] Compiling NIOCore EventLoopFuture+Deprecated.swift
+[1345/1384] Compiling NIOCore EventLoopFuture+WithEventLoop.swift
+[1346/1384] Compiling NIOCore EventLoopFuture.swift
+[1347/1384] Compiling NIOCore FileDescriptor.swift
+[1348/1384] Compiling NIOCore FileHandle.swift
+[1349/1384] Compiling NIOCore FileRegion.swift
+[1350/1384] Compiling NIOCore GlobalSingletons.swift
+[1351/1384] Compiling NIOCore IO.swift
+[1352/1384] Compiling NIOCore IOData.swift
+[1353/1384] Compiling NIOCore IPProtocol.swift
+[1354/1384] Compiling NIOCore IntegerBitPacking.swift
+[1355/1384] Compiling NIOCore IntegerTypes.swift
+[1357/1407] Emitting module NIOFoundationEssentialsCompat
+[1358/1408] Compiling NIOFoundationEssentialsCompat Codable+ByteBuffer.swift
+[1359/1408] Compiling NIOFoundationEssentialsCompat ByteBuffer-foundation.swift
+[1361/1412] Compiling NIOEmbedded AsyncTestingChannel.swift
+[1362/1412] Compiling NIOEmbedded AsyncTestingEventLoop.swift
+[1363/1412] Emitting module NIOEmbedded
+[1364/1413] Compiling NIOEmbedded Embedded.swift
+[1365/1414] Wrapping AST for NIOFoundationEssentialsCompat for debugging
+[1366/1414] Wrapping AST for NIOEmbedded for debugging
+[1367/1414] Wrapping AST for NIOCore for debugging
+[1369/1414] Emitting module NIOPosix
+[1372/1414] Compiling NIOPosix BSDSocketAPIWindows.swift
+[1373/1414] Compiling NIOPosix BaseSocket.swift
+[1374/1414] Compiling NIOPosix BaseSocketChannel+AccessibleTransport.swift
+[1375/1414] Compiling NIOPosix BaseSocketChannel+SocketOptionProvider.swift
+[1376/1414] Compiling NIOPosix BaseSocketChannel.swift
+[1377/1414] Compiling NIOPosix BaseStreamSocketChannel.swift
+[1378/1414] Compiling NIOPosix Bootstrap.swift
+[1379/1414] Compiling NIOPosix ControlMessage.swift
+[1380/1414] Compiling NIOPosix DatagramVectorReadManager.swift
+[1381/1414] Compiling NIOPosix Errors+Any.swift
+[1382/1414] Compiling NIOPosix FileDescriptor.swift
+[1383/1414] Compiling NIOPosix GetaddrinfoResolver.swift
+[1384/1414] Compiling NIOPosix HappyEyeballs.swift
+[1385/1414] Compiling NIOPosix IO.swift
+[1386/1414] Compiling NIOPosix IntegerBitPacking.swift
+[1387/1414] Compiling NIOPosix IntegerTypes.swift
+[1388/1414] Compiling NIOPosix Linux.swift
+[1389/1451] Compiling NIOPosix SelectorEpoll.swift
+[1390/1451] Compiling NIOPosix SelectorGeneric.swift
+[1391/1451] Compiling NIOPosix SelectorKqueue.swift
+[1392/1451] Compiling NIOPosix SelectorUring.swift
+[1393/1451] Compiling NIOPosix SelectorWSAPoll.swift
+[1394/1451] Compiling NIOPosix ServerSocket.swift
+[1395/1451] Compiling NIOPosix Socket.swift
+[1396/1451] Compiling NIOPosix SocketChannel.swift
+[1397/1451] Compiling NIOPosix SocketProtocols.swift
+[1398/1451] Compiling NIOPosix StructuredConcurrencyHelpers.swift
+[1399/1451] Compiling NIOPosix System.swift
+[1400/1451] Compiling NIOPosix Thread.swift
+[1401/1451] Compiling NIOPosix ThreadPosix.swift
+[1402/1451] Compiling NIOPosix ThreadWindows.swift
+[1403/1451] Compiling NIOPosix Utilities.swift
+[1404/1451] Compiling NIOPosix VsockAddress.swift
+[1405/1451] Compiling NIOPosix VsockChannelEvents.swift
+[1406/1451] Compiling NIOPosix Windows.swift
+[1407/1451] Compiling NIOPosix LinuxCPUSet.swift
+[1408/1451] Compiling NIOPosix LinuxUring.swift
+[1409/1451] Compiling NIOPosix MultiThreadedEventLoopGroup.swift
+[1410/1451] Compiling NIOPosix NIOPosixSendableMetatype.swift
+[1411/1451] Compiling NIOPosix NIORandomizedDNSResolver.swift
+[1412/1451] Compiling NIOPosix NIOThreadPool.swift
+[1413/1451] Compiling NIOPosix NonBlockingFileIO.swift
+[1414/1451] Compiling NIOPosix PendingDatagramWritesManager.swift
+[1415/1451] Compiling NIOPosix PendingWritesManager.swift
+[1416/1451] Compiling NIOPosix PipeChannel.swift
+[1417/1451] Compiling NIOPosix PipePair.swift
+[1418/1451] Compiling NIOPosix Pool.swift
+[1419/1451] Compiling NIOPosix PosixSingletons+ConcurrencyTakeOver.swift
+[1420/1451] Compiling NIOPosix PosixSingletons.swift
+[1421/1451] Compiling NIOPosix RawSocketBootstrap.swift
+[1422/1451] Compiling NIOPosix Resolver.swift
+[1423/1451] Compiling NIOPosix Selectable.swift
+[1424/1451] Compiling NIOPosix SelectableChannel.swift
+[1425/1451] Compiling NIOPosix SelectableEventLoop.swift
+[1426/1452] Wrapping AST for NIOPosix for debugging
+[1428/1454] Compiling NIO Exports.swift
+[1429/1454] Emitting module NIO
+[1431/1469] Emitting module NIOTLS
+[1432/1471] Compiling NIOHTTP1 ByteCollectionUtils.swift
+[1433/1471] Compiling NIOHTTP1 HTTPDecoder.swift
+[1434/1471] Compiling NIOHTTP1 HTTPEncoder.swift
+[1435/1471] Emitting module NIOHTTP1
+[1436/1480] Compiling NIOTLS SNIHandler.swift
+[1437/1480] Compiling NIOTLS TLSEvents.swift
+[1439/1484] Compiling NIOFoundationCompat Exports.swift
+[1440/1484] Compiling NIOFoundationCompat JSONSerialization+ByteBuffer.swift
+[1441/1485] Emitting module NIOFoundationCompat
+[1442/1485] Compiling NIOFoundationCompat WaitSpinningRunLoop.swift
+[1444/1499] Emitting module NIOTransportServices
+[1445/1510] Compiling NIOTransportServices AcceptHandler.swift
+[1446/1510] Compiling NIOTransportServices NIOTSDatagramConnectionBootstrap.swift
+[1447/1510] Compiling NIOTransportServices NIOTSDatagramConnectionChannel.swift
+[1448/1510] Compiling NIOTransportServices NIOTSDatagramListenerBootstrap.swift
+[1449/1510] Compiling NIOTransportServices NIOTSDatagramListenerChannel.swift
+[1450/1510] Compiling NIOTransportServices NIOFilterEmptyWritesHandler.swift
+[1451/1510] Compiling NIOTransportServices NIOTSBootstraps.swift
+[1452/1510] Compiling NIOTransportServices NIOTSChannelOptions.swift
+[1453/1510] Compiling NIOTransportServices NIOTSConnectionBootstrap.swift
+[1454/1510] Compiling NIOTransportServices NIOTSConnectionChannel.swift
+[1455/1510] Compiling NIOTransportServices NIOTSErrors.swift
+[1456/1510] Compiling NIOTransportServices NIOTSEventLoop.swift
+[1457/1510] Compiling NIOTransportServices NIOTSEventLoopGroup.swift
+[1458/1510] Compiling NIOTransportServices NIOTSListenerBootstrap.swift
+[1459/1510] Compiling NIOTransportServices NIOTSListenerChannel.swift
+[1460/1510] Compiling NIOTransportServices NIOTSNetworkEvents.swift
+[1461/1510] Compiling NIOTransportServices NIOTSSingletons.swift
+[1462/1510] Compiling NIOTransportServices SocketAddress+NWEndpoint.swift
+[1463/1510] Compiling NIOTransportServices StateManagedChannel.swift
+[1464/1510] Compiling NIOTransportServices StateManagedListenerChannel.swift
+[1465/1510] Compiling NIOTransportServices StateManagedNWConnectionChannel.swift
+[1466/1510] Compiling NIOTransportServices TCPOptions+SocketChannelOption.swift
+[1467/1510] Compiling NIOTransportServices UDPOptions+SocketChannelOption.swift
+[1469/1529] Compiling NIOSSL AndroidCABundle.swift
+[1470/1529] Compiling NIOSSL ByteBufferBIO.swift
+[1471/1529] Compiling NIOSSL CustomPrivateKey.swift
+[1472/1529] Compiling NIOSSL FreeBSDCABundle.swift
+[1473/1529] Compiling NIOSSL IdentityVerification.swift
+[1474/1529] Compiling NIOSSL LinuxCABundle.swift
+[1475/1529] Compiling NIOSSL NIOSSLClientHandler.swift
+[1476/1529] Compiling NIOSSL NIOSSLHandler+Configuration.swift
+[1477/1529] Compiling NIOSSL NIOSSLHandler.swift
+[1478/1529] Emitting module NIOSSL
+[1479/1545] Compiling NIOSSL NIOSSLServerHandler.swift
+[1480/1545] Compiling NIOSSL ObjectIdentifier.swift
+[1481/1545] Compiling NIOSSL PosixPort.swift
+[1482/1545] Compiling NIOSSL SSLCallbacks.swift
+[1483/1545] Compiling NIOSSL SSLCertificate.swift
+[1484/1545] Compiling NIOSSL SSLCertificateExtensions.swift
+[1485/1545] Compiling NIOSSL SSLCertificateName.swift
+[1486/1545] Compiling NIOSSL SSLConnection.swift
+[1487/1545] Compiling NIOSSL SSLContext.swift
+[1488/1546] Wrapping AST for NIOTransportServices for debugging
+[1490/1553] Emitting module NIOHPACK
+[1491/1558] Compiling NIOHPACK DynamicHeaderTable.swift
+[1492/1558] Compiling NIOHPACK HPACKDecoder.swift
+[1493/1558] Compiling NIOHPACK HPACKEncoder.swift
+[1494/1558] Compiling NIOHPACK HPACKErrors.swift
+[1495/1558] Compiling NIOHPACK HPACKHeader.swift
+[1496/1558] Compiling NIOHPACK HeaderTables.swift
+[1497/1558] Compiling NIOHPACK HuffmanCoding.swift
+[1498/1558] Compiling NIOHPACK HuffmanTables.swift
+[1499/1558] Compiling NIOHPACK IndexedHeaderTable.swift
+[1500/1558] Compiling NIOHPACK IntegerCoding.swift
+[1501/1558] Compiling NIOHPACK StaticHeaderTable.swift
+[1503/1570] Emitting module NIOExtras
+[1504/1579] Compiling NIOExtras DebugInboundEventsHandler.swift
+[1505/1579] Compiling NIOExtras DebugOutboundEventsHandler.swift
+[1506/1579] Compiling NIOExtras FixedLengthFrameDecoder.swift
+[1507/1579] Compiling NIOExtras HTTP1ProxyConnectHandler.swift
+[1508/1579] Compiling NIOExtras JSONRPCFraming+ContentLengthHeader.swift
+[1509/1579] Compiling NIOExtras JSONRPCFraming.swift
+[1510/1579] Compiling NIOExtras LengthFieldBasedFrameDecoder.swift
+[1511/1579] Compiling NIOExtras LengthFieldPrepender.swift
+[1512/1579] Compiling NIOExtras LineBasedFrameDecoder.swift
+[1513/1579] Compiling NIOExtras MarkedCircularBuffer+PopFirstCheckMarked.swift
+[1514/1579] Compiling NIOExtras NIOExtrasError.swift
+[1515/1579] Compiling NIOExtras NIOLengthFieldBitLength.swift
+[1516/1579] Compiling NIOExtras NIORequestIdentifiable.swift
+[1517/1579] Compiling NIOExtras PCAPRingBuffer.swift
+[1518/1579] Compiling NIOExtras QuiescingHelper.swift
+[1519/1579] Compiling NIOExtras RequestResponseHandler.swift
+[1520/1579] Compiling NIOExtras RequestResponseHandlers+State.swift
+[1531/1579] Compiling NIOExtras RequestResponseWithIDHandler.swift
+[1532/1579] Compiling NIOExtras WritePCAPHandler.swift
+[1533/1579] Compiling NIOSSL SSLInit.swift
+[1534/1579] Compiling NIOSSL SSLPKCS12Bundle.swift
+[1535/1579] Compiling NIOSSL SSLPrivateKey.swift
+[1536/1579] Compiling NIOSSL SSLPublicKey.swift
+[1537/1579] Compiling NIOSSL SecurityFrameworkCertificateVerification.swift
+[1538/1579] Compiling NIOSSL String+unsafeUninitializedCapacity.swift
+[1539/1579] Compiling NIOSSL SubjectAlternativeName.swift
+[1540/1579] Compiling NIOSSL NIOSSLSecureBytes.swift
+[1541/1579] Compiling NIOSSL RNG.swift
+[1542/1579] Compiling NIOSSL SafeCompare.swift
+[1543/1579] Compiling NIOSSL Zeroization.swift
+[1544/1579] Compiling NIOSSL TLSConfiguration.swift
+[1545/1579] Compiling NIOSSL UniversalBootstrapSupport.swift
+[1546/1579] Compiling NIOSSL UnsafeKeyAndChainTarget.swift
+[1548/1605] Compiling NIOHTTP2 SendingDataState.swift
+[1549/1605] Compiling NIOHTTP2 SendingGoawayState.swift
+[1550/1605] Compiling NIOHTTP2 SendingHeadersState.swift
+[1551/1605] Compiling NIOHTTP2 SendingPushPromiseState.swift
+[1552/1605] Compiling NIOHTTP2 SendingRstStreamState.swift
+[1553/1605] Compiling NIOHTTP2 SendingWindowUpdateState.swift
+[1554/1605] Compiling NIOHTTP2 HTTP2SettingsState.swift
+[1555/1605] Compiling NIOHTTP2 HasExtendedConnectSettings.swift
+[1556/1605] Compiling NIOHTTP2 HasFlowControlWindows.swift
+[1557/1606] Wrapping AST for NIOTLS for debugging
+[1558/1606] Wrapping AST for NIOSSL for debugging
+[1559/1606] Wrapping AST for NIOHTTP1 for debugging
+[1560/1606] Wrapping AST for NIOHPACK for debugging
+[1561/1606] Wrapping AST for NIOFoundationCompat for debugging
+[1562/1606] Wrapping AST for NIOExtras for debugging
+[1563/1606] Wrapping AST for NIO for debugging
+[1565/1606] Emitting module NIOHTTP2
+[1566/1629] Compiling NIOHTTP2 ConnectionStateMachine.swift
+[1567/1629] Compiling NIOHTTP2 ConnectionStreamsState.swift
+[1568/1629] Compiling NIOHTTP2 MayReceiveFrames.swift
+[1569/1629] Compiling NIOHTTP2 ReceivingDataState.swift
+[1570/1629] Compiling NIOHTTP2 ReceivingGoAwayState.swift
+[1571/1629] Compiling NIOHTTP2 ReceivingHeadersState.swift
+[1572/1629] Compiling NIOHTTP2 ReceivingPushPromiseState.swift
+[1573/1629] Compiling NIOHTTP2 ReceivingRstStreamState.swift
+[1574/1629] Compiling NIOHTTP2 ReceivingWindowUpdateState.swift
+[1575/1629] Compiling NIOHTTP2 MaySendFrames.swift
+[1585/1629] Compiling NIOHTTP2 HasLocalSettings.swift
+[1586/1629] Compiling NIOHTTP2 HasRemoteSettings.swift
+[1587/1629] Compiling NIOHTTP2 LocallyQuiescingState.swift
+[1588/1629] Compiling NIOHTTP2 QuiescingState.swift
+[1589/1629] Compiling NIOHTTP2 RemotelyQuiescingState.swift
+[1590/1652] Compiling NIOHTTP2 HTTP2PipelineHelpers.swift
+[1591/1652] Compiling NIOHTTP2 HTTP2Settings.swift
+[1592/1652] Compiling NIOHTTP2 HTTP2Stream.swift
+[1593/1652] Compiling NIOHTTP2 HTTP2StreamChannel+OutboundStreamMultiplexer.swift
+[1594/1652] Compiling NIOHTTP2 HTTP2StreamChannel.swift
+[1595/1652] Compiling NIOHTTP2 HTTP2StreamDelegate.swift
+[1596/1652] Compiling NIOHTTP2 HTTP2StreamID.swift
+[1597/1652] Compiling NIOHTTP2 HTTP2StreamMultiplexer.swift
+[1598/1652] Compiling NIOHTTP2 HTTP2ToHTTP1Codec.swift
+[1599/1652] Compiling NIOHTTP2 HTTP2UserEvents.swift
+[1600/1652] Compiling NIOHTTP2 InboundEventBuffer.swift
+[1601/1652] Compiling NIOHTTP2 InboundWindowManager.swift
+[1602/1652] Compiling NIOHTTP2 MultiplexerAbstractChannel.swift
+[1603/1652] Compiling NIOHTTP2 NIOHTTP2FrameDelegate.swift
+[1604/1652] Compiling NIOHTTP2 NIOHTTP2ServerConnectionManagementHandler+StateMachine.swift
+[1605/1652] Compiling NIOHTTP2 NIOHTTP2ServerConnectionManagementHandler.swift
+[1606/1652] Compiling NIOHTTP2 StreamChannelFlowController.swift
+[1607/1652] Compiling NIOHTTP2 StreamChannelList.swift
+[1608/1652] Compiling NIOHTTP2 StreamMap.swift
+[1609/1652] Compiling NIOHTTP2 StreamStateMachine.swift
+[1610/1652] Compiling NIOHTTP2 Timer.swift
+[1611/1652] Compiling NIOHTTP2 UnsafeTransfer.swift
+[1612/1652] Compiling NIOHTTP2 WatermarkedFlowController.swift
+[1613/1652] Compiling NIOHTTP2 SendAndReceiveGoawayState.swift
+[1614/1652] Compiling NIOHTTP2 StateMachineResult.swift
+[1615/1652] Compiling NIOHTTP2 ContentLengthVerifier.swift
+[1616/1652] Compiling NIOHTTP2 DOSHeuristics.swift
+[1617/1652] Compiling NIOHTTP2 Error+Any.swift
+[1618/1652] Compiling NIOHTTP2 ConcurrentStreamBuffer.swift
+[1619/1652] Compiling NIOHTTP2 ControlFrameBuffer.swift
+[1620/1652] Compiling NIOHTTP2 OutboundFlowControlBuffer.swift
+[1621/1652] Compiling NIOHTTP2 OutboundFrameBuffer.swift
+[1622/1652] Compiling NIOHTTP2 GlitchesMonitor.swift
+[1623/1652] Compiling NIOHTTP2 HPACKHeaders+Validation.swift
+[1624/1652] Compiling NIOHTTP2 HTTP2ChannelHandler+InboundStreamMultiplexer.swift
+[1625/1652] Compiling NIOHTTP2 HTTP2ChannelHandler+InlineStreamMultiplexer.swift
+[1626/1652] Compiling NIOHTTP2 HTTP2ChannelHandler.swift
+[1627/1652] Compiling NIOHTTP2 HTTP2CommonInboundStreamMultiplexer.swift
+[1628/1652] Compiling NIOHTTP2 HTTP2ConnectionStateChange.swift
+[1629/1652] Compiling NIOHTTP2 HTTP2Error.swift
+[1630/1652] Compiling NIOHTTP2 HTTP2ErrorCode.swift
+[1631/1652] Compiling NIOHTTP2 HTTP2FlowControlWindow.swift
+[1632/1652] Compiling NIOHTTP2 HTTP2Frame.swift
+[1633/1652] Compiling NIOHTTP2 HTTP2FrameEncoder.swift
+[1634/1652] Compiling NIOHTTP2 HTTP2FrameParser.swift
+[1635/1652] Compiling NIOHTTP2 HTTP2PingData.swift
+[1636/1653] Wrapping AST for NIOHTTP2 for debugging
+[1638/1678] Emitting module GRPC
+[1639/1702] Compiling GRPC Array+BoundsCheck.swift
+[1640/1702] Compiling GRPC ServerHandlerStateMachine+Actions.swift
+[1641/1702] Compiling GRPC ServerHandlerStateMachine+Draining.swift
+[1642/1702] Compiling GRPC ServerHandlerStateMachine+Finished.swift
+[1643/1702] Compiling GRPC ServerHandlerStateMachine+Handling.swift
+[1644/1702] Compiling GRPC ServerHandlerStateMachine+Idle.swift
+[1645/1702] Compiling GRPC ServerHandlerStateMachine.swift
+[1646/1702] Compiling GRPC ServerInterceptorStateMachine+Actions.swift
+[1647/1702] Compiling GRPC ServerInterceptorStateMachine+Finished.swift
+[1648/1702] Compiling GRPC ServerInterceptorStateMachine+Intercepting.swift
+[1649/1702] Compiling GRPC ServerInterceptorStateMachine.swift
+[1650/1702] Compiling GRPC StreamState.swift
+[1651/1702] Compiling GRPC Call+AsyncRequestStreamWriter.swift
+[1652/1702] Compiling GRPC CancellationError+GRPCStatusTransformable.swift
+[1653/1702] Compiling GRPC GRPCAsyncBidirectionalStreamingCall.swift
+[1654/1702] Compiling GRPC GRPCAsyncClientStreamingCall.swift
+[1655/1702] Compiling GRPC GRPCAsyncRequestStream.swift
+[1656/1702] Compiling GRPC GRPCAsyncRequestStreamWriter.swift
+[1657/1702] Compiling GRPC GRPCAsyncResponseStream.swift
+[1658/1702] Compiling GRPC GRPCAsyncResponseStreamWriter.swift
+[1659/1702] Compiling GRPC GRPCAsyncSequenceProducerDelegate.swift
+[1660/1702] Compiling GRPC GRPCAsyncServerCallContext.swift
+[1661/1702] Compiling GRPC GRPCAsyncServerHandler.swift
+[1662/1702] Compiling GRPC GRPCAsyncServerStreamingCall.swift
+[1663/1726] Compiling GRPC GRPCAsyncUnaryCall.swift
+[1664/1726] Compiling GRPC GRPCAsyncWriterSinkDelegate.swift
+[1665/1726] Compiling GRPC GRPCChannel+AsyncAwaitSupport.swift
+[1666/1726] Compiling GRPC GRPCClient+AsyncAwaitSupport.swift
+[1667/1726] Compiling GRPC GRPCSendable.swift
+[1668/1726] Compiling GRPC NIOAsyncWrappers.swift
+[1669/1726] Compiling GRPC BidirectionalStreamingServerHandler.swift
+[1670/1726] Compiling GRPC ClientStreamingServerHandler.swift
+[1671/1726] Compiling GRPC ServerHandlerProtocol.swift
+[1672/1726] Compiling GRPC ServerStreamingServerHandler.swift
+[1673/1726] Compiling GRPC UnaryServerHandler.swift
+[1674/1726] Compiling GRPC CallOptions.swift
+[1675/1726] Compiling GRPC BidirectionalStreamingCall.swift
+[1676/1726] Compiling GRPC Call.swift
+[1677/1726] Compiling GRPC CallDetails.swift
+[1678/1726] Compiling GRPC ClientCall.swift
+[1679/1726] Compiling GRPC ClientStreamingCall.swift
+[1680/1726] Compiling GRPC LazyEventLoopPromise.swift
+[1681/1726] Compiling GRPC ResponseContainers.swift
+[1682/1726] Compiling GRPC ResponsePartContainer.swift
+[1683/1726] Compiling GRPC ServerStreamingCall.swift
+[1684/1726] Compiling GRPC UnaryCall.swift
+[1685/1726] Compiling GRPC ClientConnection.swift
+[1686/1726] Compiling GRPC ClientConnectionConfiguration+NIOSSL.swift
+[1687/1750] Compiling GRPC ClientErrorDelegate.swift
+[1688/1750] Compiling GRPC CoalescingLengthPrefixedMessageWriter.swift
+[1689/1750] Compiling GRPC CompressionAlgorithm.swift
+[1690/1750] Compiling GRPC DecompressionLimit.swift
+[1691/1750] Compiling GRPC MessageEncoding.swift
+[1692/1750] Compiling GRPC Zlib.swift
+[1693/1750] Compiling GRPC ConnectionBackoff.swift
+[1694/1750] Compiling GRPC ConnectionKeepalive.swift
+[1695/1750] Compiling GRPC ConnectionManager+Delegates.swift
+[1696/1750] Compiling GRPC ConnectionManager.swift
+[1697/1750] Compiling GRPC ConnectionManagerChannelProvider.swift
+[1698/1750] Compiling GRPC ConnectionManagerID.swift
+[1699/1750] Compiling GRPC ConnectionPool+PerConnectionState.swift
+[1700/1750] Compiling GRPC ConnectionPool+Waiter.swift
+[1701/1750] Compiling GRPC ConnectionPool.swift
+[1702/1750] Compiling GRPC ConnectionPoolIDs.swift
+[1703/1750] Compiling GRPC GRPCChannelPool.swift
+[1704/1750] Compiling GRPC PoolManager.swift
+[1705/1750] Compiling GRPC PoolManagerStateMachine+PerPoolState.swift
+[1706/1750] Compiling GRPC PoolManagerStateMachine.swift
+[1707/1750] Compiling GRPC PooledChannel.swift
+[1708/1750] Compiling GRPC StreamLender.swift
+[1709/1750] Compiling GRPC ConnectivityState.swift
+[1710/1750] Compiling GRPC DebugOnly.swift
+[1711/1774] Compiling GRPC DelegatingErrorHandler.swift
+[1712/1774] Compiling GRPC Error+NIOSSL.swift
+[1713/1774] Compiling GRPC EventLoopFuture+RecoverFromUncleanShutdown.swift
+[1714/1774] Compiling GRPC FakeChannel.swift
+[1715/1774] Compiling GRPC ClientConnection+NIOSSL.swift
+[1716/1774] Compiling GRPC ClientConnection+NWTLS.swift
+[1717/1774] Compiling GRPC GRPCChannel.swift
+[1718/1774] Compiling GRPC GRPCChannelBuilder.swift
+[1719/1774] Compiling GRPC GRPCClient.swift
+[1720/1774] Compiling GRPC GRPCClientChannelHandler.swift
+[1721/1774] Compiling GRPC GRPCClientStateMachine.swift
+[1722/1774] Compiling GRPC GRPCContentType.swift
+[1723/1774] Compiling GRPC GRPCError.swift
+[1724/1774] Compiling GRPC GRPCHeaderName.swift
+[1725/1774] Compiling GRPC GRPCIdleHandler.swift
+[1726/1774] Compiling GRPC GRPCIdleHandlerStateMachine.swift
+[1727/1774] Compiling GRPC GRPCKeepaliveHandlers.swift
+[1728/1774] Compiling GRPC GRPCPayload.swift
+[1729/1774] Compiling GRPC GRPCServerPipelineConfigurator.swift
+[1730/1774] Compiling GRPC GRPCServerRequestRoutingHandler.swift
+[1731/1774] Compiling GRPC GRPCServiceDescription.swift
+[1732/1774] Compiling GRPC GRPCStatus.swift
+[1733/1774] Compiling GRPC GRPCStatusAndMetadata.swift
+[1734/1774] Compiling GRPC GRPCStatusMessageMarshaller.swift
+[1735/1797] Compiling GRPC GRPCTLSConfiguration.swift
+[1736/1797] Compiling GRPC GRPCTimeout.swift
+[1737/1797] Compiling GRPC GRPCWebToHTTP2ServerCodec.swift
+[1738/1797] Compiling GRPC HTTP2ToRawGRPCServerCodec.swift
+[1739/1797] Compiling GRPC HTTP2ToRawGRPCStateMachine.swift
+[1740/1797] Compiling GRPC ClientInterceptorContext.swift
+[1741/1797] Compiling GRPC ClientInterceptorPipeline.swift
+[1742/1797] Compiling GRPC ClientInterceptorProtocol.swift
+[1743/1797] Compiling GRPC ClientInterceptors.swift
+[1744/1797] Compiling GRPC ClientTransport.swift
+[1745/1797] Compiling GRPC ClientTransportFactory.swift
+[1746/1797] Compiling GRPC MessageParts.swift
+[1747/1797] Compiling GRPC ServerInterceptorContext.swift
+[1748/1797] Compiling GRPC ServerInterceptorPipeline.swift
+[1749/1797] Compiling GRPC ServerInterceptors.swift
+[1750/1797] Compiling GRPC InterceptorContextList.swift
+[1751/1797] Compiling GRPC LengthPrefixedMessageReader.swift
+[1752/1797] Compiling GRPC Logger.swift
+[1753/1797] Compiling GRPC LoggingServerErrorDelegate.swift
+[1754/1797] Compiling GRPC MessageEncodingHeaderValidator.swift
+[1755/1797] Compiling GRPC PlatformSupport.swift
+[1756/1797] Compiling GRPC ReadWriteStates.swift
+[1757/1797] Compiling GRPC Ref.swift
+[1758/1797] Compiling GRPC Serialization.swift
+[1759/1797] Compiling GRPC Server+NIOSSL.swift
+[1760/1797] Compiling GRPC Server.swift
+[1761/1797] Compiling GRPC ServerBuilder+NIOSSL.swift
+[1762/1797] Compiling GRPC ServerBuilder.swift
+[1763/1797] Compiling GRPC ServerCallContext.swift
+[1764/1797] Compiling GRPC StreamingResponseCallContext.swift
+[1765/1797] Compiling GRPC UnaryResponseCallContext.swift
+[1766/1797] Compiling GRPC ServerChannelErrorHandler.swift
+[1767/1797] Compiling GRPC ServerErrorDelegate.swift
+[1768/1797] Compiling GRPC ServerErrorProcessor.swift
+[1769/1797] Compiling GRPC Stopwatch.swift
+[1770/1797] Compiling GRPC StreamEvent.swift
+[1771/1797] Compiling GRPC TLSVerificationHandler.swift
+[1772/1797] Compiling GRPC TLSVersion.swift
+[1773/1797] Compiling GRPC TimeLimit.swift
+[1774/1797] Compiling GRPC UserInfo.swift
+[1775/1797] Compiling GRPC Version.swift
+[1776/1797] Compiling GRPC WebCORSHandler.swift
+[1777/1797] Compiling GRPC WriteCapturingHandler.swift
+[1778/1797] Compiling GRPC _EmbeddedThroughput.swift
+[1779/1797] Compiling GRPC _FakeResponseStream.swift
+[1780/1797] Compiling GRPC _GRPCClientCodecHandler.swift
+[1781/1797] Compiling GRPC _MessageContext.swift
+[1782/1798] Wrapping AST for GRPC for debugging
+[1784/1820] Emitting module RightClickCore
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1785/1841] Compiling RightClickCore A2AReflector.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1786/1841] Compiling RightClickCore ARDRegistrySource.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1787/1841] Compiling RightClickCore ActionExtensionCatalog.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1788/1841] Compiling RightClickCore BonjourGRPCSource.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1789/1841] Compiling RightClickCore BonjourGraphQLSource.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1790/1841] Compiling RightClickCore BonjourOpenAPISource.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1791/1841] Compiling RightClickCore BoundedCapabilityProcess.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1792/1841] Compiling RightClickCore BundleScan.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1793/1841] Compiling RightClickCore Capability.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1794/1841] Compiling RightClickCore CapabilityABI.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1795/1841] Compiling RightClickCore CapabilityABIAdapter.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1796/1841] Compiling RightClickCore CapabilityArtifactResolver.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1797/1841] Compiling RightClickCore CapabilityArtifactSnapshot.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1798/1841] Compiling RightClickCore CapabilityCoreArgumentEncoding.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1799/1841] Compiling RightClickCore CapabilityEngine.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1800/1841] Compiling RightClickCore CapabilityExecutableSnapshotPool.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1801/1841] Compiling RightClickCore CapabilityExperience.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1802/1841] Compiling RightClickCore CapabilityExperienceLedger.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1803/1841] Compiling RightClickCore CapabilityInterface.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1804/1841] Compiling RightClickCore CapabilityProtectedReference.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1805/1841] Compiling RightClickCore CapabilityReflector.swift
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[1806/1861] Compiling RightClickCore CapabilityReflectorSource.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1807/1861] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1808/1861] Compiling RightClickCore CapabilitySensitiveMaterial.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1809/1861] Compiling RightClickCore CapabilitySnapshotFreshness.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1810/1861] Compiling RightClickCore ConfiguredOpenAPISource.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1811/1861] Compiling RightClickCore ContentItem.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1812/1861] Compiling RightClickCore DBusCapabilityArtifactResolver.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1813/1861] Compiling RightClickCore DBusIntrospection.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1814/1861] Compiling RightClickCore DBusSessionSource.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1815/1861] Compiling RightClickCore GRPCReflectionTransport.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1816/1861] Compiling RightClickCore GRPCReflector.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1817/1861] Compiling RightClickCore GRPCWireCodec.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1818/1861] Compiling RightClickCore GraphQLHTTP.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1819/1861] Compiling RightClickCore GraphQLReflector.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1820/1861] Compiling RightClickCore KafkaCapabilityArtifactResolver.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1821/1861] Compiling RightClickCore KubernetesCapabilityArtifactResolver.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1822/1861] Compiling RightClickCore MCPCapabilityArtifactResolver.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1823/1861] Compiling RightClickCore OAuthOIDCAuthority.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1824/1861] Compiling RightClickCore OpenAPIAuthority.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1825/1861] Compiling RightClickCore OpenAPIReflector.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1826/1861] Compiling RightClickCore OriginPinnedHTTP.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[1827/1861] Compiling RightClickCore OutcomeVerifier.swift
+[1828/1861] Compiling RightClickCore ProductSurface.swift
+[1829/1861] Compiling RightClickCore RCIR.swift
+[1830/1861] Compiling RightClickCore RCIRAuthority.swift
+[1831/1861] Compiling RightClickCore RCIRDeferredExecution.swift
+[1832/1861] Compiling RightClickCore RCIRExecutionHost.swift
+[1833/1861] Compiling RightClickCore RCIRHTTPObservation.swift
+[1834/1861] Compiling RightClickCore RCIRHostObservation.swift
+[1835/1861] Compiling RightClickCore RCIRProvisionedSigner.swift
+[1836/1861] Compiling RightClickCore RCIRSignedReceipt.swift
+[1837/1861] Compiling RightClickCore RCIRUnaryInvocation.swift
+[1838/1861] Compiling RightClickCore RuntimePlatform.swift
+[1839/1861] Compiling RightClickCore SafetyPolicy.swift
+[1840/1861] Compiling RightClickCore ServiceCatalog.swift
+[1841/1861] Compiling RightClickCore ServiceContext.swift
+[1842/1861] Compiling RightClickCore ServiceOutcome.swift
+[1843/1861] Compiling RightClickCore SharingCatalog.swift
+[1844/1861] Compiling RightClickCore SharingExecutionModel.swift
+[1845/1861] Compiling RightClickCore WASMCapabilityArtifactResolver.swift
+[1846/1861] Compiling RightClickCore WITComponentContract.swift
+[1848/1887] Emitting module RightClickMCP
+[1849/1889] Emitting module RightClickCoreTests
+[1850/1909] Compiling RightClickMCP PortableStdioTransport.swift
+/src/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |                 transport: transport
+317 |             )
+318 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/src/Sources/RightClickMCP/Server.swift:320:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+318 |             return .init(content: [.text(text)], isError: false)
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+321 |         }
+322 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[1851/1909] Compiling RightClickMCP Server.swift
+/src/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |                 transport: transport
+317 |             )
+318 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/src/Sources/RightClickMCP/Server.swift:320:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+318 |             return .init(content: [.text(text)], isError: false)
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+321 |         }
+322 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[1852/1909] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+/src/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1853/1909] Compiling RightClickCoreTests ARDAcquisitionGateTests.swift
+/src/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1854/1909] Compiling RightClickCoreTests BonjourOpenAPISourceTests.swift
+/src/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1855/1910] Wrapping AST for RightClickCore for debugging
+[1857/1912] Compiling RightClickMCPTests FederationTests.swift
+[1858/1912] Emitting module RightClickMCPTests
+[1859/1913] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[1861/1917] Emitting module RightClickCLI
+[1862/1917] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[1863/1917] Compiling RightClickCLI ProviderConfigurationCLI.swift
+[1864/1918] Compiling RightClickCLI main.swift
+[1865/1919] Wrapping AST for RightClickMCPTests for debugging
+[1866/1919] Wrapping AST for RightClickMCP for debugging
+[1867/1919] Wrapping AST for RightClickCLI for debugging
+[1868/1919] Write Objects.LinkFileList
+[1875/1919] Compiling RightClickCoreTests CapabilityABIBoundaryTests.swift
+[1876/1919] Compiling RightClickCoreTests CapabilityABITests.swift
+[1877/1919] Compiling RightClickCoreTests CapabilityAcquisitionLifecycleTests.swift
+[1878/1919] Compiling RightClickCoreTests CapabilityArtifactResolverTests.swift
+[1879/1919] Compiling RightClickCoreTests CapabilityExecutableSnapshotPoolTests.swift
+[1880/1919] Compiling RightClickCoreTests CapabilityExperienceLedgerTests.swift
+[1881/1919] Compiling RightClickCoreTests CapabilityExperienceTests.swift
+[1882/1919] Compiling RightClickCoreTests CapabilityIntegerRangeTests.swift
+[1883/1919] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[1884/1919] Compiling RightClickCoreTests CapabilityReflectorSourceTests.swift
+[1885/1919] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+[1886/1919] Compiling RightClickCoreTests CapabilitySnapshotBoundaryTests.swift
+[1887/1919] Compiling RightClickCoreTests CapabilityStringConstraintTests.swift
+[1888/1919] Compiling RightClickCoreTests CapabilityTypedCoreBoundaryTests.swift
+[1889/1919] Compiling RightClickCoreTests ConfiguredOpenAPISourceTests.swift
+[1890/1939] Compiling RightClickCoreTests DBusNativeOwnerAcceptanceTests.swift
+[1891/1939] Compiling RightClickCoreTests DBusRuntimeTests.swift
+[1892/1939] Compiling RightClickCoreTests DispatchContractBindingTests.swift
+[1893/1939] Compiling RightClickCoreTests ExecutionCapacityAdmissionTests.swift
+[1894/1939] Compiling RightClickCoreTests ExecutionRetentionTests.swift
+[1895/1939] Compiling RightClickCoreTests GRPCRealProviderAcceptanceTests.swift
+[1896/1939] Compiling RightClickCoreTests GRPCReflectionTransportTests.swift
+[1897/1939] Compiling RightClickCoreTests GRPCReflectorTests.swift
+[1898/1939] Compiling RightClickCoreTests GraphQLReflectorTests.swift
+[1899/1939] Compiling RightClickCoreTests HostProtectedReferenceTests.swift
+[1900/1939] Compiling RightClickCoreTests InvocationBindingTests.swift
+[1901/1939] Compiling RightClickCoreTests KafkaAcquisitionStabilityTests.swift
+[1902/1939] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+[1903/1939] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+[1904/1939] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+[1905/1939] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+[1906/1939] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+[1907/1939] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+[1908/1939] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+[1909/1939] Compiling RightClickCoreTests MOAT005G1PathAndJSONBodyTests.swift
+[1910/1959] Compiling RightClickCoreTests MOAT005G2MultiplePathArgumentsTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1911/1959] Compiling RightClickCoreTests MOAT005G3GitHubRequestSchemaTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1912/1959] Compiling RightClickCoreTests MOAT005G4MutationJSONResponseFallbackTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1913/1959] Compiling RightClickCoreTests MOAT005G5FullFrozenGitHubContractTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1914/1959] Compiling RightClickCoreTests MOAT005G6MultiSegmentPathTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1915/1959] Compiling RightClickCoreTests NativeBoundedHTTPTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1916/1959] Compiling RightClickCoreTests NativeHTTPFixture.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1917/1959] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1918/1959] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1919/1959] Compiling RightClickCoreTests OpenAPIAcknowledgementTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1920/1959] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1921/1959] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1922/1959] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1923/1959] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1924/1959] Compiling RightClickCoreTests PolicyTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1925/1959] Compiling RightClickCoreTests PortableRuntimeTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1926/1959] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1927/1959] Compiling RightClickCoreTests RCIRAuthorityDispatchTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1928/1959] Compiling RightClickCoreTests RCIRAuthorityTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1929/1959] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[1929/1959] Linking rightclick
+[1931/1959] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1932/1959] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1933/1959] Compiling RightClickCoreTests RCIRHTTPJSONCausalityTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1934/1959] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1935/1959] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1936/1959] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1937/1959] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1938/1959] Compiling RightClickCoreTests RCIRNoOutputTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1939/1959] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1940/1959] Compiling RightClickCoreTests RCIRProvisionedSignerTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1941/1959] Compiling RightClickCoreTests RCIRSigningLifecycleTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1942/1959] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1943/1959] Compiling RightClickCoreTests RCIRTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1944/1959] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1945/1959] Compiling RightClickCoreTests RCIRUnitCompletionTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1946/1959] Compiling RightClickCoreTests RuntimeIdentityCompatibilityTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1947/1959] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1948/1959] Compiling RightClickCoreTests SharingExecutionTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1949/1959] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1950/1959] Compiling RightClickCoreTests WITComponentContractTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[1951/1960] Wrapping AST for RightClickCoreTests for debugging
+[1952/1960] /build/aarch64-unknown-linux-gnu/debug/rightclick-mcpPackageDiscoveredTests.derived/all-discovered-tests.swift
+[1953/1960] Write sources
+[1955/1963] Emitting module rightclick_mcpPackageDiscoveredTests
+[1956/1963] Compiling rightclick_mcpPackageDiscoveredTests RightClickARDTests.swift
+[1957/1963] Compiling rightclick_mcpPackageDiscoveredTests RightClickCoreTests.swift
+[1958/1965] Compiling rightclick_mcpPackageDiscoveredTests RightClickMCPTests.swift
+[1959/1965] Compiling rightclick_mcpPackageDiscoveredTests all-discovered-tests.swift
+[1960/1966] /build/aarch64-unknown-linux-gnu/debug/rightclick-mcpPackageTests.derived/runner.swift
+[1961/1966] Write sources
+[1962/1966] Wrapping AST for rightclick-mcpPackageDiscoveredTests for debugging
+[1964/1968] Emitting module rightclick_mcpPackageTests
+[1965/1968] Compiling rightclick_mcpPackageTests runner.swift
+[1966/1969] Wrapping AST for rightclick-mcpPackageTests for debugging
+[1967/1969] Write Objects.LinkFileList
+[1968/1969] Linking rightclick-mcpPackageTests.xctest
+Build complete! (616.79s)
+Test Suite 'Selected tests' started at 2026-10-07 19:28:52.035
+Test Suite 'CapabilityIntegerRangeTests' started at 2026-10-07 19:28:52.047
+Test Case 'CapabilityIntegerRangeTests.testInclusiveNarrowRangeRejectsOverflowAndOtherValueKinds' started at 2026-10-07 19:28:52.047
+Test Case 'CapabilityIntegerRangeTests.testInclusiveNarrowRangeRejectsOverflowAndOtherValueKinds' passed (0.006 seconds)
+Test Case 'CapabilityIntegerRangeTests.testRangeIsPartOfCanonicalContractAndExistingIntegerBytesRemainStable' started at 2026-10-07 19:28:52.053
+Test Case 'CapabilityIntegerRangeTests.testRangeIsPartOfCanonicalContractAndExistingIntegerBytesRemainStable' passed (0.101 seconds)
+Test Suite 'CapabilityIntegerRangeTests' passed at 2026-10-07 19:28:52.154
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.106 (0.106) seconds
+Test Suite 'CapabilityInterfaceTests' started at 2026-10-07 19:28:52.154
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorAbstainsForOfflineTool' started at 2026-10-07 19:28:52.154
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorAbstainsForOfflineTool' passed (0.002 seconds)
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline' started at 2026-10-07 19:28:52.156
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline' passed (0.078 seconds)
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation' started at 2026-10-07 19:28:52.234
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation' passed (0.013 seconds)
+Test Case 'CapabilityInterfaceTests.testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint' started at 2026-10-07 19:28:52.248
+Test Case 'CapabilityInterfaceTests.testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint' passed (0.014 seconds)
+Test Case 'CapabilityInterfaceTests.testDuplicateInterfaceNamesFailClosed' started at 2026-10-07 19:28:52.262
+Test Case 'CapabilityInterfaceTests.testDuplicateInterfaceNamesFailClosed' passed (0.0 seconds)
+Test Case 'CapabilityInterfaceTests.testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings' started at 2026-10-07 19:28:52.262
+Test Case 'CapabilityInterfaceTests.testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings' passed (0.004 seconds)
+Test Case 'CapabilityInterfaceTests.testImporterRejectsUnsupportedConstraintsAndOpenObjects' started at 2026-10-07 19:28:52.265
+Test Case 'CapabilityInterfaceTests.testImporterRejectsUnsupportedConstraintsAndOpenObjects' passed (0.001 seconds)
+Test Case 'CapabilityInterfaceTests.testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess' started at 2026-10-07 19:28:52.266
+Test Case 'CapabilityInterfaceTests.testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess' passed (0.005 seconds)
+Test Case 'CapabilityInterfaceTests.testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity' started at 2026-10-07 19:28:52.271
+Test Case 'CapabilityInterfaceTests.testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity' passed (0.116 seconds)
+Test Case 'CapabilityInterfaceTests.testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles' started at 2026-10-07 19:28:52.388
+Test Case 'CapabilityInterfaceTests.testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles' passed (0.005 seconds)
+Test Case 'CapabilityInterfaceTests.testRealWASMComponentWhenProvisioned' started at 2026-10-07 19:28:52.393
+Test Case 'CapabilityInterfaceTests.testRealWASMComponentWhenProvisioned' passed (5.331 seconds)
+Test Case 'CapabilityInterfaceTests.testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial' started at 2026-10-07 19:28:57.724
+Test Case 'CapabilityInterfaceTests.testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial' passed (0.004 seconds)
+Test Case 'CapabilityInterfaceTests.testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues' started at 2026-10-07 19:28:57.729
+Test Case 'CapabilityInterfaceTests.testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues' passed (0.001 seconds)
+Test Case 'CapabilityInterfaceTests.testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability' started at 2026-10-07 19:28:57.730
+Test Case 'CapabilityInterfaceTests.testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability' passed (1.748 seconds)
+Test Suite 'CapabilityInterfaceTests' passed at 2026-10-07 19:28:59.478
+	 Executed 14 tests, with 0 failures (0 unexpected) in 7.323 (7.323) seconds
+Test Suite 'WITComponentContractTests' started at 2026-10-07 19:28:59.478
+Test Case 'WITComponentContractTests.testActualTypedComponentWhenProvisioned' started at 2026-10-07 19:28:59.478
+Test Case 'WITComponentContractTests.testActualTypedComponentWhenProvisioned' passed (5.968 seconds)
+Test Case 'WITComponentContractTests.testCyclesUnknownKindsOutOfRangeReferencesAndAmbiguousFieldsFailClosed' started at 2026-10-07 19:29:05.447
+Test Case 'WITComponentContractTests.testCyclesUnknownKindsOutOfRangeReferencesAndAmbiguousFieldsFailClosed' passed (0.11 seconds)
+Test Case 'WITComponentContractTests.testDeclaredUnitRequiresExactUnitWriterFormAndCannotBecomeNullResult' started at 2026-10-07 19:29:05.558
+Test Case 'WITComponentContractTests.testDeclaredUnitRequiresExactUnitWriterFormAndCannotBecomeNullResult' passed (0.001 seconds)
+Test Case 'WITComponentContractTests.testDepthAndExpandedDAGRemainBoundedBeforeBuildingSchemas' started at 2026-10-07 19:29:05.558
+Test Case 'WITComponentContractTests.testDepthAndExpandedDAGRemainBoundedBeforeBuildingSchemas' passed (0.042 seconds)
+Test Case 'WITComponentContractTests.testExactWITIntegerWidthsRejectUnrepresentableDeclarationsAndWrongValues' started at 2026-10-07 19:29:05.600
+Test Case 'WITComponentContractTests.testExactWITIntegerWidthsRejectUnrepresentableDeclarationsAndWrongValues' passed (0.004 seconds)
+Test Case 'WITComponentContractTests.testImportsAsyncAndMalformedComponentShapeAbstain' started at 2026-10-07 19:29:05.605
+Test Case 'WITComponentContractTests.testImportsAsyncAndMalformedComponentShapeAbstain' passed (0.001 seconds)
+Test Case 'WITComponentContractTests.testQualifiedInterfaceVersionAndResolvedTypeCommitmentsAreExact' started at 2026-10-07 19:29:05.605
+Test Case 'WITComponentContractTests.testQualifiedInterfaceVersionAndResolvedTypeCommitmentsAreExact' passed (0.007 seconds)
+Test Case 'WITComponentContractTests.testTypedRecordsListsAndBooleanDoNotCoerceOrDiscardFields' started at 2026-10-07 19:29:05.612
+Test Case 'WITComponentContractTests.testTypedRecordsListsAndBooleanDoNotCoerceOrDiscardFields' passed (0.002 seconds)
+Test Case 'WITComponentContractTests.testWAVEStringEscapesPreserveExactUTF8IncludingNulAndUnicode' started at 2026-10-07 19:29:05.614
+Test Case 'WITComponentContractTests.testWAVEStringEscapesPreserveExactUTF8IncludingNulAndUnicode' passed (0.001 seconds)
+Test Suite 'WITComponentContractTests' passed at 2026-10-07 19:29:05.615
+	 Executed 9 tests, with 0 failures (0 unexpected) in 6.135 (6.135) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 19:29:05.615
+	 Executed 25 tests, with 0 failures (0 unexpected) in 13.565 (13.565) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.2.4 (5ee435b15ad40ec)
+↳ Target Platform: aarch64-unknown-linux-gnu
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

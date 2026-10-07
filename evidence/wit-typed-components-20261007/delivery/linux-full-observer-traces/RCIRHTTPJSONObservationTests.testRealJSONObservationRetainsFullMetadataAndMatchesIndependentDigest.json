@@ -1,0 +1,23 @@
+{
+  "contract" : "structured-projection",
+  "effects" : [
+    {
+      "challenge" : "7077C87C-AD98-4022-8FE5-7807E2FA3956",
+      "invocationID" : "92D3082D-8BE7-4804-A0FE-F88F2168F455",
+      "mutationApplied" : true,
+      "value" : "actual independent file"
+    }
+  ],
+  "observations" : [
+    {
+      "authorizationKind" : "Bearer",
+      "cookiePresent" : false,
+      "credentialRole" : "readonly",
+      "path" : "\/observations\/7077C87C-AD98-4022-8FE5-7807E2FA3956"
+    }
+  ],
+  "redirectTrap" : [
+
+  ],
+  "test" : "RCIRHTTPJSONObservationTests.testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest"
+}

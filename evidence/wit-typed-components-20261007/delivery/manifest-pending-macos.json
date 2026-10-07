@@ -1,0 +1,51 @@
+{
+  "testedSourceSHA": "8a72a92763ac618ed38beecf530d56fa92cf6316",
+  "macOS": {
+    "binarySHA256": "a0002a60b21a660ed4c8564ff820058a7facb459a0d6a844d575707b60f1d410",
+    "targeted": {
+      "tests": 27,
+      "skips": 0,
+      "failures": 0
+    },
+    "public": "GREEN",
+    "explain": "GREEN",
+    "full": {
+      "tests": 802,
+      "skips": 33,
+      "failures": 7,
+      "status": "RED",
+      "boundary": "Existing local HTTP fixture startup failures; reviewed attributed fixture fix pending."
+    }
+  },
+  "linux": {
+    "binarySHA256": "17b1e98fd34891d3771feef80c5b58ef146d070a592649f7fe0b12d0be49e483",
+    "targeted": {
+      "tests": 27,
+      "skips": 0,
+      "failures": 0
+    },
+    "public": "GREEN",
+    "explain": "GREEN",
+    "full": {
+      "tests": 591,
+      "skips": 26,
+      "failures": 0
+    },
+    "imageID": "sha256:aeab1e2745498298dc6bfa875e82f6a223a87f9ececcde07b0438bba2bd45e26",
+    "imageRepoDigests": null
+  },
+  "proofScope": "Deterministic actual no-import component through seven public operations, independent returned-value oracle and pinned signature checks. No fresh-AI/all-eleven/Windows/release/clean-install claim.",
+  "historicalFailureScope": [
+    "First negative importer tests recorded thrown errors inside XCTUnwrap; test helper corrected at 519 without production changes.",
+    "Concurrent final public controls timed out at unchanged 35-second RPC deadline; isolated unchanged source/binary/harness passed afterward. Concurrency root cause not established.",
+    "First Linux full suite used network-none despite unconditional pinned public GitHub contract acquisition tests; setup corrected, exact public contract checksum verified before full pass.",
+    "Final Mac full fixture failure persists under isolated run; no runtime/test assertion weakening or another blind full rerun."
+  ],
+  "baselineProvenanceNote": "The original baseline provenance captured the early harness SHA 75cdb874a18dc337a2febc7ee9549eb54111a138db48b2ddf79ad18540b53bf0 before that outside path was replaced by the final c303 harness. Its exact early bytes/report are retained in history/initial-red-e09. Final frozen RED artifact hashes remain authoritative for the c303 harness.",
+  "deliverySourceInventory": {
+    "mainSHA": "daf07d04ee11be59e3f499f370f0bba5df9998ad",
+    "PR49HeadSHA": "bd5ed53f02c5cf76fc35796e665ef2c076296dd2",
+    "frozenREDSourceSHA": "e09f0179f738189fb30b87c652a5433fba648054",
+    "testedSourceSHA": "8a72a92763ac618ed38beecf530d56fa92cf6316"
+  }
+}

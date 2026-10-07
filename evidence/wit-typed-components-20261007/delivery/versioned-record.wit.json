@@ -1,0 +1,127 @@
+{
+  "worlds": [
+    {
+      "name": "root",
+      "imports": {},
+      "exports": {
+        "interface-0": {
+          "interface": {
+            "id": 0
+          }
+        }
+      },
+      "package": 1
+    }
+  ],
+  "interfaces": [
+    {
+      "name": "api",
+      "types": {
+        "request": 0,
+        "response": 1,
+        "octets": 2
+      },
+      "functions": {
+        "challenge-record": {
+          "name": "challenge-record",
+          "kind": "freestanding",
+          "params": [
+            {
+              "name": "request",
+              "type": 0
+            }
+          ],
+          "result": 1
+        },
+        "finish": {
+          "name": "finish",
+          "kind": "freestanding",
+          "params": []
+        },
+        "echo-octets": {
+          "name": "echo-octets",
+          "kind": "freestanding",
+          "params": [
+            {
+              "name": "octets",
+              "type": 2
+            }
+          ],
+          "result": 2
+        }
+      },
+      "package": 0
+    }
+  ],
+  "types": [
+    {
+      "name": "request",
+      "kind": {
+        "record": {
+          "fields": [
+            {
+              "name": "enabled",
+              "type": "bool"
+            },
+            {
+              "name": "offset",
+              "type": "s32"
+            },
+            {
+              "name": "challenge",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "owner": {
+        "interface": 0
+      }
+    },
+    {
+      "name": "response",
+      "kind": {
+        "record": {
+          "fields": [
+            {
+              "name": "fingerprint",
+              "type": "u32"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ]
+        }
+      },
+      "owner": {
+        "interface": 0
+      }
+    },
+    {
+      "name": "octets",
+      "kind": {
+        "list": "u8"
+      },
+      "owner": {
+        "interface": 0
+      }
+    }
+  ],
+  "packages": [
+    {
+      "name": "proof:typed@0.1.0",
+      "interfaces": {
+        "api": 0
+      },
+      "worlds": {}
+    },
+    {
+      "name": "root:component",
+      "interfaces": {},
+      "worlds": {
+        "root": 0
+      }
+    }
+  ]
+}

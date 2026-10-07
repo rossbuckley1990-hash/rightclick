@@ -1,0 +1,388 @@
+[
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "typed-wit-seven-operation-proof",
+          "version": "1"
+        }
+      }
+    },
+    "response": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.2"
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list"
+    },
+    "response": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"executablePath\" : \"/proof/final-binaries/linux/rightclick\",\n  \"executableRealPath\" : \"/proof/final-binaries/linux/rightclick\",\n  \"executableSHA256\" : \"17b1e98fd34891d3771feef80c5b58ef146d070a592649f7fe0b12d0be49e483\",\n  \"pid\" : 10,\n  \"platform\" : \"Linux\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"stdio\",\n  \"version\" : \"0.2.2\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "tools/call",
+      "params": {
+        "name": "context_providers",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "[\n\n]",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "method": "tools/call",
+      "params": {
+        "name": "context_inspect",
+        "arguments": {
+          "item": "RIGHTCLICK typed component proof"
+        }
+      }
+    },
+    "response": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"byteCount\" : 32,\n  \"display\" : \"RIGHTCLICK typed component proof\",\n  \"isDirectory\" : false,\n  \"kind\" : \"text\",\n  \"text\" : \"RIGHTCLICK typed component proof\",\n  \"typeDescription\" : \"Plain text\",\n  \"typeIdentifier\" : \"public.plain-text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK typed component proof"
+        }
+      }
+    },
+    "response": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actions\" : [\n\n  ],\n  \"contentType\" : \"public.plain-text\",\n  \"item\" : \"RIGHTCLICK typed component proof\",\n  \"kind\" : \"text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK typed component proof"
+        }
+      }
+    },
+    "response": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actions\" : [\n    {\n      \"explanation\" : \"proof:typed/api.challenge-record\",\n      \"id\" : \"wasm:typed-component:proof:typed/api.challenge-record\",\n      \"inputTypes\" : [\n        \"text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"name\" : \"typed-component\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"system\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"proof:typed/api.challenge-record\"\n    },\n    {\n      \"explanation\" : \"proof:typed/api.echo-octets\",\n      \"id\" : \"wasm:typed-component:proof:typed/api.echo-octets\",\n      \"inputTypes\" : [\n        \"text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"name\" : \"typed-component\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"system\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"proof:typed/api.echo-octets\"\n    },\n    {\n      \"explanation\" : \"proof:typed/api.finish\",\n      \"id\" : \"wasm:typed-component:proof:typed/api.finish\",\n      \"inputTypes\" : [\n        \"text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"name\" : \"typed-component\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"system\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"proof:typed/api.finish\"\n    }\n  ],\n  \"contentType\" : \"public.plain-text\",\n  \"item\" : \"RIGHTCLICK typed component proof\",\n  \"kind\" : \"text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "method": "tools/call",
+      "params": {
+        "name": "context_explain",
+        "arguments": {
+          "item": "RIGHTCLICK typed component proof",
+          "actionId": "wasm:typed-component:proof:typed/api.challenge-record"
+        }
+      }
+    },
+    "response": {
+      "id": 8,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"id\" : \"wasm:typed-component:proof:typed/api.challenge-record\",\n  \"inputs\" : [\n    \"text\"\n  ],\n  \"invocation\" : \"direct\",\n  \"metadata\" : {\n    \"acquisitionRuntimeSHA256\" : \"b70db2712eea56102939d60822e6d830e8c739ad35d6783955bfa916bbc7e497\",\n    \"argumentNames\" : \"request\",\n    \"argumentSchema\" : \"UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czc6cmVxdWVzdG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzM6czk6Y2hhbGxlbmdlczY6c3RyaW5nczc6ZW5hYmxlZHM3OmJvb2xlYW5zNjpvZmZzZXRvMTpzMTI6aW50ZWdlclJhbmdlbzI6czc6bWF4aW11bWkxMDoyMTQ3NDgzNjQ3czc6bWluaW11bWkxMTotMjE0NzQ4MzY0OHM4OnJlcXVpcmVkYTM6czk6Y2hhbGxlbmdlczc6ZW5hYmxlZHM2Om9mZnNldHM4OnJlcXVpcmVkYTE6czc6cmVxdWVzdA==\",\n    \"authorityScope\" : \"exact component/export; no host filesystem, network or environment imports\",\n    \"componentSHA256\" : \"98dc973dfd0cf49bae3c50358abfe7badf58e819400c2dbaf9c1dfc18d5467c5\",\n    \"coreArgumentEncoding\" : \"taggedNonStrings\",\n    \"coreArgumentEncodingGuidance\" : \"Pass a JSON object keyed by argument name. String fields stay literal strings. For each non-string field, pass a JSON string containing CapabilityValue tagged JSON: [\\\"boolean\\\",true], [\\\"integer\\\",\\\"-7\\\"], [\\\"number\\\",\\\"3ff0000000000000\\\"] (IEEE-754 binary64 bits in hex), [\\\"bytes\\\",\\\"BASE64\\\"], [\\\"null\\\"], [\\\"array\\\",[value,...]], or [\\\"object\\\",[[\\\"field\\\",value],...]]. Inside containers, strings are [\\\"string\\\",\\\"text\\\"]. Integers are exact decimal strings and must satisfy the acquired declaration's domain.\",\n    \"descriptorSHA256\" : \"b64029b54be3a0616d37436644faacd25da1fab5a652943e8f6803ab1aef402e\",\n    \"descriptorSource\" : \"file:///private/tmp/rightclick-wit-typed-awiqzbgn/introduced.component.wasm\",\n    \"effect\" : \"execute\",\n    \"executionArtifactBinding\" : \"host-private lifetime-managed read-only component/tools/runtime snapshots\",\n    \"executionMode\" : \"unary\",\n    \"hostImports\" : \"none\",\n    \"interfaceDeclaration\" : \"[\\\"object\\\",[[\\\"export\\\",[\\\"string\\\",\\\"proof:typed/api.challenge-record\\\"]],[\\\"function\\\",[\\\"object\\\",[[\\\"kind\\\",[\\\"string\\\",\\\"freestanding\\\"]],[\\\"name\\\",[\\\"string\\\",\\\"challenge-record\\\"]],[\\\"params\\\",[\\\"array\\\",[[\\\"object\\\",[[\\\"name\\\",[\\\"string\\\",\\\"request\\\"]],[\\\"type\\\",[\\\"integer\\\",\\\"0\\\"]]]]]]],[\\\"result\\\",[\\\"integer\\\",\\\"1\\\"]]]]],[\\\"types\\\",[\\\"array\\\",[[\\\"object\\\",[[\\\"id\\\",[\\\"integer\\\",\\\"0\\\"]],[\\\"type\\\",[\\\"object\\\",[[\\\"kind\\\",[\\\"object\\\",[[\\\"record\\\",[\\\"object\\\",[[\\\"fields\\\",[\\\"array\\\",[[\\\"object\\\",[[\\\"name\\\",[\\\"string\\\",\\\"enabled\\\"]],[\\\"type\\\",[\\\"string\\\",\\\"bool\\\"]]]],[\\\"object\\\",[[\\\"name\\\",[\\\"string\\\",\\\"offset\\\"]],[\\\"type\\\",[\\\"string\\\",\\\"s32\\\"]]]],[\\\"object\\\",[[\\\"name\\\",[\\\"string\\\",\\\"challenge\\\"]],[\\\"type\\\",[\\\"string\\\",\\\"string\\\"]]]]]]]]]]]]],[\\\"name\\\",[\\\"string\\\",\\\"request\\\"]],[\\\"owner\\\",[\\\"object\\\",[[\\\"interface\\\",[\\\"integer\\\",\\\"0\\\"]]]]]]]]]],[\\\"object\\\",[[\\\"id\\\",[\\\"integer\\\",\\\"1\\\"]],[\\\"type\\\",[\\\"object\\\",[[\\\"kind\\\",[\\\"object\\\",[[\\\"record\\\",[\\\"object\\\",[[\\\"fields\\\",[\\\"array\\\",[[\\\"object\\\",[[\\\"name\\\",[\\\"string\\\",\\\"fingerprint\\\"]],[\\\"type\\\",[\\\"string\\\",\\\"u32\\\"]]]],[\\\"object\\\",[[\\\"name\\\",[\\\"string\\\",\\\"enabled\\\"]],[\\\"type\\\",[\\\"string\\\",\\\"bool\\\"]]]]]]]]]]]]],[\\\"name\\\",[\\\"string\\\",\\\"response\\\"]],[\\\"owner\\\",[\\\"object\\\",[[\\\"interface\\\",[\\\"integer\\\",\\\"0\\\"]]]]]]]]]]]]]]]\",\n    \"interfaceDeclarationEncoding\" : \"CapabilityValue tagged JSON\",\n    \"interfaceKind\" : \"wasm\",\n    \"operationName\" : \"proof:typed/api.challenge-record\",\n    \"providerIdentity\" : \"typed-component\",\n    \"requiredArguments\" : \"request\",\n    \"resultSchema\" : \"UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzI6czc6ZW5hYmxlZHM3OmJvb2xlYW5zMTE6ZmluZ2VycHJpbnRvMTpzMTI6aW50ZWdlclJhbmdlbzI6czc6bWF4aW11bWkxMDo0Mjk0OTY3Mjk1czc6bWluaW11bWkxOjBzODpyZXF1aXJlZGEyOnM3OmVuYWJsZWRzMTE6ZmluZ2VycHJpbnQ=\",\n    \"runtimeExecutable\" : \"/tools/wasmtime-v49.0.2-aarch64-linux/wasmtime\",\n    \"runtimeSHA256\" : \"776cf37c495c70ee22144ff4c881bd18c1997edcb7a226dcc4583fd19cefc492\",\n    \"verificationBoundary\" : \"Provider completion is unverified until the host establishes a postcondition.\"\n  },\n  \"output\" : [\n    \"typed_value\"\n  ],\n  \"provider\" : {\n    \"name\" : \"typed-component\"\n  },\n  \"reflectorID\" : \"wasm:typed-component\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"unknown\",\n  \"source\" : \"system\",\n  \"supportLevel\" : \"public_supported\",\n  \"title\" : \"proof:typed/api.challenge-record\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

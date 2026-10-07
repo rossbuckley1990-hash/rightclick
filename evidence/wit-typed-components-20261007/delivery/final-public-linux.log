@@ -1,0 +1,14 @@
+RED: tools/call
+Traceback (most recent call last):
+  File "/src/scripts/acceptance-wit-typed.py", line 181, in <module>
+    accepted = run(record_id, {"request": wire(request)})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/src/scripts/acceptance-wit-typed.py", line 142, in run
+    return call("context_run", request, allow_error)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/src/scripts/acceptance-wit-typed.py", line 107, in call
+    result = rpc("tools/call", {"name": name, "arguments": arguments})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/src/scripts/acceptance-wit-typed.py", line 103, in rpc
+    raise TimeoutError(method)
+TimeoutError: tools/call

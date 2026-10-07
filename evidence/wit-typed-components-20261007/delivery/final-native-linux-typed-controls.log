@@ -1,0 +1,1491 @@
+warning: 'src': found 4 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /src/Tests/RightClickCoreTests/Fixtures/InstalledRuntime022Identity.json
+    /src/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /src/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /src/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/15] Write swift-version-24593BA9C3E375BF.txt
+[2/15] Write sources
+[11/16] Compiling RightClickHostFiles HostFiles.c
+[12/16] Write sources
+[14/43] Emitting module RightClickARD
+[15/43] Compiling RightClickARD ARD.swift
+[17/67] Emitting module MCP
+[18/90] Compiling RightClickCore A2AReflector.swift
+[19/90] Compiling RightClickCore ARDRegistrySource.swift
+[20/90] Compiling RightClickCore ActionExtensionCatalog.swift
+[21/90] Compiling RightClickCore BonjourGRPCSource.swift
+[22/90] Compiling RightClickCore BonjourGraphQLSource.swift
+[23/90] Compiling RightClickCore BonjourOpenAPISource.swift
+[24/90] Compiling RightClickCore BoundedCapabilityProcess.swift
+[25/90] Compiling RightClickCore BundleScan.swift
+[26/90] Compiling RightClickCore Capability.swift
+[27/90] Compiling RightClickCore CapabilityABI.swift
+[28/90] Compiling RightClickCore CapabilityABIAdapter.swift
+[29/90] Compiling RightClickCore CapabilityArtifactResolver.swift
+[30/90] Compiling RightClickCore CapabilityArtifactSnapshot.swift
+[31/90] Compiling RightClickCore CapabilityCoreArgumentEncoding.swift
+[32/90] Compiling RightClickCore CapabilityEngine.swift
+[33/90] Compiling RightClickCore CapabilityExecutableSnapshotPool.swift
+[34/90] Compiling RightClickCore CapabilityExperience.swift
+[35/90] Compiling RightClickCore CapabilityExperienceLedger.swift
+[36/90] Compiling RightClickCore CapabilityInterface.swift
+[37/90] Compiling RightClickCore CapabilityProtectedReference.swift
+[38/90] Compiling RightClickCore CapabilityReflector.swift
+[39/90] Compiling MCP HTTPClientTransport.swift
+[40/90] Compiling MCP HTTPRequestValidation.swift
+[41/90] Compiling MCP HTTPServerTypes.swift
+[42/90] Emitting module RightClickCore
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+/src/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[64/131] Compiling RightClickCore CapabilitySnapshotFreshness.swift
+[65/131] Compiling RightClickCore ConfiguredOpenAPISource.swift
+[66/131] Compiling RightClickCore ContentItem.swift
+[67/131] Compiling RightClickCore DBusCapabilityArtifactResolver.swift
+[68/131] Compiling RightClickCore DBusIntrospection.swift
+[69/131] Compiling RightClickCore DBusSessionSource.swift
+[70/131] Compiling RightClickCore GRPCReflectionTransport.swift
+[71/131] Compiling RightClickCore GRPCReflector.swift
+[72/131] Compiling RightClickCore GRPCWireCodec.swift
+[73/131] Compiling RightClickCore GraphQLHTTP.swift
+[74/131] Compiling RightClickCore GraphQLReflector.swift
+[75/131] Compiling RightClickCore KafkaCapabilityArtifactResolver.swift
+[76/131] Compiling RightClickCore KubernetesCapabilityArtifactResolver.swift
+[77/131] Compiling RightClickCore MCPCapabilityArtifactResolver.swift
+[78/131] Compiling RightClickCore OAuthOIDCAuthority.swift
+[79/131] Compiling RightClickCore OpenAPIAuthority.swift
+[80/131] Compiling RightClickCore OpenAPIReflector.swift
+[81/131] Compiling RightClickCore OriginPinnedHTTP.swift
+[82/131] Compiling RightClickCore OutcomeVerifier.swift
+[83/131] Compiling RightClickCore ProductSurface.swift
+[84/131] Compiling RightClickCore RCIR.swift
+[85/131] Compiling RightClickCore RCIRAuthority.swift
+[86/131] Compiling RightClickCore RCIRDeferredExecution.swift
+[88/146] Compiling RightClickARDTests ARDPortableTests.swift
+[89/146] Emitting module RightClickARDTests
+[96/146] Compiling RightClickCore RCIRExecutionHost.swift
+[97/146] Compiling RightClickCore RCIRHTTPObservation.swift
+[98/146] Compiling RightClickCore RCIRHostObservation.swift
+[99/146] Compiling RightClickCore RCIRProvisionedSigner.swift
+[100/146] Compiling RightClickCore RCIRSignedReceipt.swift
+[101/146] Compiling RightClickCore RCIRUnaryInvocation.swift
+[102/146] Compiling RightClickCore RuntimePlatform.swift
+[103/146] Compiling RightClickCore SafetyPolicy.swift
+[104/147] Compiling RightClickCore ServiceCatalog.swift
+[105/148] Compiling RightClickCore ServiceContext.swift
+[106/148] Compiling RightClickCore ServiceOutcome.swift
+[107/148] Compiling RightClickCore SharingCatalog.swift
+[108/148] Compiling RightClickCore SharingExecutionModel.swift
+[109/148] Compiling RightClickCore WASMCapabilityArtifactResolver.swift
+[110/148] Compiling RightClickCore WITComponentContract.swift
+[111/148] Emitting module RightClickARDProbe
+[112/148] Compiling RightClickARDProbe main.swift
+[114/147] Compiling RightClickCore CapabilityReflectorSource.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[115/147] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[116/147] Compiling RightClickCore CapabilitySensitiveMaterial.swift
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+/src/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/src/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[136/172] Emitting module RightClickCoreTests
+[137/192] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+/src/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[138/192] Compiling RightClickCoreTests ARDAcquisitionGateTests.swift
+/src/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[139/192] Compiling RightClickCoreTests BonjourOpenAPISourceTests.swift
+/src/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[140/192] Emitting module RightClickMCP
+[141/194] Compiling RightClickMCP PortableStdioTransport.swift
+/src/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |                 transport: transport
+317 |             )
+318 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/src/Sources/RightClickMCP/Server.swift:320:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+318 |             return .init(content: [.text(text)], isError: false)
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+321 |         }
+322 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[142/194] Compiling RightClickMCP Server.swift
+/src/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |                 transport: transport
+317 |             )
+318 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/src/Sources/RightClickMCP/Server.swift:320:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+318 |             return .init(content: [.text(text)], isError: false)
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+321 |         }
+322 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[144/196] Emitting module RightClickMCPTests
+[145/196] Compiling RightClickMCPTests FederationTests.swift
+[146/197] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[148/200] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[149/200] Compiling RightClickCLI ProviderConfigurationCLI.swift
+[150/200] Emitting module RightClickCLI
+[151/201] Compiling RightClickCLI main.swift
+[152/201] Write Objects.LinkFileList
+[159/201] Compiling RightClickCoreTests CapabilityABIBoundaryTests.swift
+[160/201] Compiling RightClickCoreTests CapabilityABITests.swift
+[161/201] Compiling RightClickCoreTests CapabilityAcquisitionLifecycleTests.swift
+[162/201] Compiling RightClickCoreTests CapabilityArtifactResolverTests.swift
+[163/201] Compiling RightClickCoreTests CapabilityExecutableSnapshotPoolTests.swift
+[164/201] Compiling RightClickCoreTests CapabilityExperienceLedgerTests.swift
+[165/201] Compiling RightClickCoreTests CapabilityExperienceTests.swift
+[166/201] Compiling RightClickCoreTests CapabilityIntegerRangeTests.swift
+[167/201] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[168/201] Compiling RightClickCoreTests CapabilityReflectorSourceTests.swift
+[169/201] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+[170/201] Compiling RightClickCoreTests CapabilitySnapshotBoundaryTests.swift
+[171/201] Compiling RightClickCoreTests CapabilityStringConstraintTests.swift
+[172/201] Compiling RightClickCoreTests CapabilityTypedCoreBoundaryTests.swift
+[173/201] Compiling RightClickCoreTests ConfiguredOpenAPISourceTests.swift
+[174/221] Compiling RightClickCoreTests DBusNativeOwnerAcceptanceTests.swift
+[175/221] Compiling RightClickCoreTests DBusRuntimeTests.swift
+[176/221] Compiling RightClickCoreTests DispatchContractBindingTests.swift
+[177/221] Compiling RightClickCoreTests ExecutionCapacityAdmissionTests.swift
+[178/221] Compiling RightClickCoreTests ExecutionRetentionTests.swift
+[179/221] Compiling RightClickCoreTests GRPCRealProviderAcceptanceTests.swift
+[180/221] Compiling RightClickCoreTests GRPCReflectionTransportTests.swift
+[181/221] Compiling RightClickCoreTests GRPCReflectorTests.swift
+[182/221] Compiling RightClickCoreTests GraphQLReflectorTests.swift
+[183/221] Compiling RightClickCoreTests HostProtectedReferenceTests.swift
+[184/221] Compiling RightClickCoreTests InvocationBindingTests.swift
+[185/221] Compiling RightClickCoreTests KafkaAcquisitionStabilityTests.swift
+[186/221] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+[187/221] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+[188/221] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+[189/221] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+[190/221] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+[191/221] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+[192/221] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+[193/221] Compiling RightClickCoreTests MOAT005G1PathAndJSONBodyTests.swift
+[194/241] Compiling RightClickCoreTests MOAT005G2MultiplePathArgumentsTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[195/241] Compiling RightClickCoreTests MOAT005G3GitHubRequestSchemaTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[196/241] Compiling RightClickCoreTests MOAT005G4MutationJSONResponseFallbackTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[197/241] Compiling RightClickCoreTests MOAT005G5FullFrozenGitHubContractTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[198/241] Compiling RightClickCoreTests MOAT005G6MultiSegmentPathTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[199/241] Compiling RightClickCoreTests NativeBoundedHTTPTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[200/241] Compiling RightClickCoreTests NativeHTTPFixture.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[201/241] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[202/241] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[203/241] Compiling RightClickCoreTests OpenAPIAcknowledgementTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[204/241] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[205/241] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[206/241] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[207/241] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[208/241] Compiling RightClickCoreTests PolicyTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[209/241] Compiling RightClickCoreTests PortableRuntimeTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[210/241] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[211/241] Compiling RightClickCoreTests RCIRAuthorityDispatchTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[212/241] Compiling RightClickCoreTests RCIRAuthorityTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[213/241] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[213/241] Linking rightclick
+[215/241] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[216/241] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[217/241] Compiling RightClickCoreTests RCIRHTTPJSONCausalityTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[218/241] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[219/241] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[220/241] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[221/241] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[222/241] Compiling RightClickCoreTests RCIRNoOutputTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[223/241] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[224/241] Compiling RightClickCoreTests RCIRProvisionedSignerTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[225/241] Compiling RightClickCoreTests RCIRSigningLifecycleTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[226/241] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[227/241] Compiling RightClickCoreTests RCIRTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[228/241] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[229/241] Compiling RightClickCoreTests RCIRUnitCompletionTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[230/241] Compiling RightClickCoreTests RuntimeIdentityCompatibilityTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[231/241] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[232/241] Compiling RightClickCoreTests SharingExecutionTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[233/241] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[234/241] Compiling RightClickCoreTests WITComponentContractTests.swift
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/src/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[235/242] Wrapping AST for RightClickCoreTests for debugging
+[236/242] /build/aarch64-unknown-linux-gnu/debug/rightclick-mcpPackageDiscoveredTests.derived/all-discovered-tests.swift
+[237/243] Write sources
+[239/246] Emitting module rightclick_mcpPackageDiscoveredTests
+[240/246] Compiling rightclick_mcpPackageDiscoveredTests RightClickARDTests.swift
+[241/246] Compiling rightclick_mcpPackageDiscoveredTests RightClickCoreTests.swift
+[242/248] Compiling rightclick_mcpPackageDiscoveredTests RightClickMCPTests.swift
+[243/248] Compiling rightclick_mcpPackageDiscoveredTests all-discovered-tests.swift
+[244/249] /build/aarch64-unknown-linux-gnu/debug/rightclick-mcpPackageTests.derived/runner.swift
+[245/250] Write sources
+[246/250] Wrapping AST for rightclick-mcpPackageDiscoveredTests for debugging
+[248/252] Compiling rightclick_mcpPackageTests runner.swift
+[249/252] Emitting module rightclick_mcpPackageTests
+[250/252] Write Objects.LinkFileList
+[251/252] Linking rightclick-mcpPackageTests.xctest
+Build complete! (109.71s)
+Test Suite 'Selected tests' started at 2026-10-07 19:32:55.997
+Test Suite 'CapabilityIntegerRangeTests' started at 2026-10-07 19:32:56.003
+Test Case 'CapabilityIntegerRangeTests.testInclusiveNarrowRangeRejectsOverflowAndOtherValueKinds' started at 2026-10-07 19:32:56.003
+Test Case 'CapabilityIntegerRangeTests.testInclusiveNarrowRangeRejectsOverflowAndOtherValueKinds' passed (0.012 seconds)
+Test Case 'CapabilityIntegerRangeTests.testRangeIsPartOfCanonicalContractAndExistingIntegerBytesRemainStable' started at 2026-10-07 19:32:56.016
+Test Case 'CapabilityIntegerRangeTests.testRangeIsPartOfCanonicalContractAndExistingIntegerBytesRemainStable' passed (0.004 seconds)
+Test Suite 'CapabilityIntegerRangeTests' passed at 2026-10-07 19:32:56.021
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.017 (0.017) seconds
+Test Suite 'CapabilityInterfaceTests' started at 2026-10-07 19:32:56.021
+Test Case 'CapabilityInterfaceTests.testAcquiredDeclarationAndSelectedArgumentEncodingAreReadableWithoutCanonicalByteDecoding' started at 2026-10-07 19:32:56.021
+Test Case 'CapabilityInterfaceTests.testAcquiredDeclarationAndSelectedArgumentEncodingAreReadableWithoutCanonicalByteDecoding' passed (0.028 seconds)
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorAbstainsForOfflineTool' started at 2026-10-07 19:32:56.049
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorAbstainsForOfflineTool' passed (0.004 seconds)
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline' started at 2026-10-07 19:32:56.053
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline' passed (0.081 seconds)
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation' started at 2026-10-07 19:32:56.134
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation' passed (0.013 seconds)
+Test Case 'CapabilityInterfaceTests.testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint' started at 2026-10-07 19:32:56.146
+Test Case 'CapabilityInterfaceTests.testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint' passed (0.049 seconds)
+Test Case 'CapabilityInterfaceTests.testDuplicateInterfaceNamesFailClosed' started at 2026-10-07 19:32:56.196
+Test Case 'CapabilityInterfaceTests.testDuplicateInterfaceNamesFailClosed' passed (0.0 seconds)
+Test Case 'CapabilityInterfaceTests.testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings' started at 2026-10-07 19:32:56.196
+Test Case 'CapabilityInterfaceTests.testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings' passed (0.003 seconds)
+Test Case 'CapabilityInterfaceTests.testImporterRejectsUnsupportedConstraintsAndOpenObjects' started at 2026-10-07 19:32:56.199
+Test Case 'CapabilityInterfaceTests.testImporterRejectsUnsupportedConstraintsAndOpenObjects' passed (0.002 seconds)
+Test Case 'CapabilityInterfaceTests.testOversizedWireDeclarationRejectsAcquisitionInsteadOfOmittingDisclosure' started at 2026-10-07 19:32:56.201
+Test Case 'CapabilityInterfaceTests.testOversizedWireDeclarationRejectsAcquisitionInsteadOfOmittingDisclosure' passed (0.028 seconds)
+Test Case 'CapabilityInterfaceTests.testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess' started at 2026-10-07 19:32:56.229
+Test Case 'CapabilityInterfaceTests.testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess' passed (0.006 seconds)
+Test Case 'CapabilityInterfaceTests.testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity' started at 2026-10-07 19:32:56.235
+Test Case 'CapabilityInterfaceTests.testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity' passed (0.017 seconds)
+Test Case 'CapabilityInterfaceTests.testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles' started at 2026-10-07 19:32:56.252
+Test Case 'CapabilityInterfaceTests.testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles' passed (0.008 seconds)
+Test Case 'CapabilityInterfaceTests.testRealWASMComponentWhenProvisioned' started at 2026-10-07 19:32:56.260
+Test Case 'CapabilityInterfaceTests.testRealWASMComponentWhenProvisioned' passed (32.395 seconds)
+Test Case 'CapabilityInterfaceTests.testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial' started at 2026-10-07 19:33:28.654
+Test Case 'CapabilityInterfaceTests.testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial' passed (0.023 seconds)
+Test Case 'CapabilityInterfaceTests.testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues' started at 2026-10-07 19:33:28.677
+Test Case 'CapabilityInterfaceTests.testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues' passed (0.004 seconds)
+Test Case 'CapabilityInterfaceTests.testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability' started at 2026-10-07 19:33:28.681
+Test Case 'CapabilityInterfaceTests.testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability' passed (9.321 seconds)
+Test Suite 'CapabilityInterfaceTests' passed at 2026-10-07 19:33:38.003
+	 Executed 16 tests, with 0 failures (0 unexpected) in 41.981 (41.981) seconds
+Test Suite 'WITComponentContractTests' started at 2026-10-07 19:33:38.004
+Test Case 'WITComponentContractTests.testActualTypedComponentWhenProvisioned' started at 2026-10-07 19:33:38.004
+Test Case 'WITComponentContractTests.testActualTypedComponentWhenProvisioned' passed (21.193 seconds)
+Test Case 'WITComponentContractTests.testCyclesUnknownKindsOutOfRangeReferencesAndAmbiguousFieldsFailClosed' started at 2026-10-07 19:33:59.198
+Test Case 'WITComponentContractTests.testCyclesUnknownKindsOutOfRangeReferencesAndAmbiguousFieldsFailClosed' passed (0.012 seconds)
+Test Case 'WITComponentContractTests.testDeclaredUnitRequiresExactUnitWriterFormAndCannotBecomeNullResult' started at 2026-10-07 19:33:59.210
+Test Case 'WITComponentContractTests.testDeclaredUnitRequiresExactUnitWriterFormAndCannotBecomeNullResult' passed (0.009 seconds)
+Test Case 'WITComponentContractTests.testDepthAndExpandedDAGRemainBoundedBeforeBuildingSchemas' started at 2026-10-07 19:33:59.218
+Test Case 'WITComponentContractTests.testDepthAndExpandedDAGRemainBoundedBeforeBuildingSchemas' passed (0.078 seconds)
+Test Case 'WITComponentContractTests.testExactWITIntegerWidthsRejectUnrepresentableDeclarationsAndWrongValues' started at 2026-10-07 19:33:59.297
+Test Case 'WITComponentContractTests.testExactWITIntegerWidthsRejectUnrepresentableDeclarationsAndWrongValues' passed (0.013 seconds)
+Test Case 'WITComponentContractTests.testImportsAsyncAndMalformedComponentShapeAbstain' started at 2026-10-07 19:33:59.310
+Test Case 'WITComponentContractTests.testImportsAsyncAndMalformedComponentShapeAbstain' passed (0.001 seconds)
+Test Case 'WITComponentContractTests.testQualifiedInterfaceVersionAndResolvedTypeCommitmentsAreExact' started at 2026-10-07 19:33:59.311
+Test Case 'WITComponentContractTests.testQualifiedInterfaceVersionAndResolvedTypeCommitmentsAreExact' passed (0.01 seconds)
+Test Case 'WITComponentContractTests.testTypedRecordsListsAndBooleanDoNotCoerceOrDiscardFields' started at 2026-10-07 19:33:59.321
+Test Case 'WITComponentContractTests.testTypedRecordsListsAndBooleanDoNotCoerceOrDiscardFields' passed (0.006 seconds)
+Test Case 'WITComponentContractTests.testWAVEStringEscapesPreserveExactUTF8IncludingNulAndUnicode' started at 2026-10-07 19:33:59.327
+Test Case 'WITComponentContractTests.testWAVEStringEscapesPreserveExactUTF8IncludingNulAndUnicode' passed (0.002 seconds)
+Test Suite 'WITComponentContractTests' passed at 2026-10-07 19:33:59.329
+	 Executed 9 tests, with 0 failures (0 unexpected) in 21.324 (21.324) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 19:33:59.329
+	 Executed 27 tests, with 0 failures (0 unexpected) in 63.322 (63.322) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.2.4 (5ee435b15ad40ec)
+↳ Target Platform: aarch64-unknown-linux-gnu
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
