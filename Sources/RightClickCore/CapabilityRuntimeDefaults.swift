@@ -15,6 +15,9 @@ public enum CapabilityReflectorSourceDefaults {
 #if os(Linux)
         sources.append(DBusSessionSource())
 #endif
+#if os(Windows)
+        sources.append(WindowsCOMRunningObjectSource())
+#endif
 #if os(macOS)
         sources += [
                 BonjourOpenAPISource(

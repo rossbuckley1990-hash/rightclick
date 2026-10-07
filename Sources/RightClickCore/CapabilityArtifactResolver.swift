@@ -284,6 +284,9 @@ public enum CapabilityArtifactResolverDefaults {
 #if os(Linux)
         result.append(DBusCapabilityArtifactResolver())
 #endif
+#if os(Windows)
+        result.append(WindowsCOMCapabilityArtifactResolver())
+#endif
 
 #if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
         result.append(

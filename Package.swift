@@ -58,6 +58,9 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-crypto.git", exact: "4.5.2"),
     ],
     targets: [
+        .target(name: "RightClickWindowsCOM", path: "Sources/RightClickWindowsCOM", publicHeadersPath: "include",
+            linkerSettings: [.linkedLibrary("Ole32", .when(platforms: [.windows])),
+                .linkedLibrary("OleAut32", .when(platforms: [.windows]))]),
         .target(name: "RightClickHostFiles", path: "Sources/RightClickHostFiles", publicHeadersPath: "include",
             linkerSettings: [.linkedLibrary("Advapi32", .when(platforms: [.windows])),
                 .linkedLibrary("pthread", .when(platforms: [.linux]))]),
@@ -72,6 +75,7 @@ let package = Package(
             dependencies: [
                 "RightClickARD",
                 "RightClickHostFiles",
+                "RightClickWindowsCOM",
                 .product(name: "Crypto", package: "swift-crypto"),
                 .product(name: "GRPC", package: "grpc-swift", condition: .when(platforms: [.macOS, .linux])),
                 .product(name: "SwiftProtobuf", package: "swift-protobuf"),
