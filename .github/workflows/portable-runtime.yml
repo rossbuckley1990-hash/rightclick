@@ -112,6 +112,20 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      # The previous exact-head macOS setup/doctor passed, but the Python MCP
+      # fixture missed its unchanged 5-second readiness deadline. Run a pinned
+      # interpreter while keeping native assertions and the deadline intact.
+      - name: Pin native adoption fixture Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Attest native adoption interpreter
+        run: |
+          python3 - <<'PY'
+          import sys
+          assert sys.version_info[:2] == (3, 12), sys.version
+          print("Native adoption fixture interpreter:", sys.executable, sys.version)
+          PY
       - run: swift test --force-resolved-versions
       - run: scripts/build-cli.sh
       - name: Real macOS setup, repair and dynamic connection
