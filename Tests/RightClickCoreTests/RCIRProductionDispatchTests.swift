@@ -16,6 +16,16 @@ final class RCIRProductionDispatchTests: XCTestCase {
     private var clock: Int64 = 1_000
     private var config = RCIRHostConfiguration()
 
+    private final class ConcurrentAdmission {
+        var admit: ((() -> Void) throws -> Void)?
+        var enqueue: (() -> Void)?
+        init(admit: @escaping (() -> Void) throws -> Void, enqueue: @escaping () -> Void) {
+            self.admit = admit; self.enqueue = enqueue
+        }
+        func invoke() throws { try admit!(enqueue!) }
+        func release() { admit = nil; enqueue = nil }
+    }
+
     private final class Source: CapabilityReflectorSource {
         let id = "test.real-http-source"
         var current: [any CapabilityReflector] = []
@@ -165,20 +175,24 @@ final class RCIRProductionDispatchTests: XCTestCase {
 
     func testCompetingConsumersStartAtMostOneRealRequest() throws {
         host.beforeStart = { _, admit, enqueue in
-            // Swift's closure lifetime is bounded by the group wait below.
+            // Group completion can precede destruction of the queued blocks.
+            // Blocks retain only this holder; release its callbacks explicitly
+            // after every synchronous invoke has returned.
             withoutActuallyEscaping(admit) { admit in
                 withoutActuallyEscaping(enqueue) { enqueue in
+                    let invocation = ConcurrentAdmission(admit: admit, enqueue: enqueue)
                     let group = DispatchGroup(); let lock = NSLock()
                     var permitted = 0; var replayed = 0
                     for _ in 0..<2 {
                         group.enter()
                         DispatchQueue.global().async {
                             defer { group.leave() }
-                            do { try admit(enqueue); lock.lock(); permitted += 1; lock.unlock() }
+                            do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
                             catch { lock.lock(); replayed += 1; lock.unlock() }
                         }
                     }
                     XCTAssertEqual(group.wait(timeout: .now() + 3), .success)
+                    invocation.release()
                     XCTAssertEqual(permitted, 1); XCTAssertEqual(replayed, 1)
                 }
             }
