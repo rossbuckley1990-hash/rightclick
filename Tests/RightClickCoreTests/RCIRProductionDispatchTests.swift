@@ -9,6 +9,11 @@ import Crypto
 #endif
 import XCTest
 @testable import RightClickCore
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 
 /// These controls invoke CapabilityEngine run/begin and the actual HTTP transport.
 /// A separate Python process records the requests that really reached the provider.
