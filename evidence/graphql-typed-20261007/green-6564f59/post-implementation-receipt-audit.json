@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "signature": {
+    "signature": "VALID",
+    "algorithm": "Ed25519",
+    "trustedKeyMatched": true,
+    "payloadBytes": 14443,
+    "signedClaims": {
+      "taskID": "ED7226E6-3E40-48C8-A265-60FB048D076D",
+      "leaseID": "8F04E2BC-EF0A-4610-98B3-AC2B492717A5",
+      "providerGeneration": 1,
+      "phase": "completed",
+      "semanticOutcome": "unverified",
+      "scopeCount": 1,
+      "effects": [
+        "execute"
+      ]
+    },
+    "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+    "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+  },
+  "argumentAndResultLeafTypes": "exactBoolean/Int32/Float/enum/null",
+  "boundary": "Post-implementation independent receipt semantic check; not preregistered RED nor current-mutation causal proof."
+}

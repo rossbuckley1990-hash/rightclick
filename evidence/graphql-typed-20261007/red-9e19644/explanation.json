@@ -1,0 +1,30 @@
+{
+  "id": "graphql:4d6594d0c7e6c1df5cc89a16fb1ff379dd8166431b8066113ed5c3bc0dab1b00:f9529de01cf0671b:record%5F7501f62cfd0a",
+  "inputs": [
+    "public.plain-text"
+  ],
+  "invocation": "interactive",
+  "metadata": {
+    "argumentsSchema": "{\"additionalProperties\":false,\"properties\":{\"nonce\":{\"description\":\"GraphQL type String!. Supply this argument as a string; RIGHTCLICK coerces it to the reflected GraphQL scalar or enum type.\",\"type\":\"string\"},\"payload\":{\"description\":\"GraphQL type Payload!. Supply this argument as a JSON-encoded string.\",\"type\":\"string\"}},\"required\":[\"nonce\",\"payload\"],\"type\":\"object\"}",
+    "endpointURL": "http://127.0.0.1:53785/graphql",
+    "field": "record_7501f62cfd0a",
+    "graphqlReturnType": "Record!",
+    "operationKind": "mutation",
+    "providerIdentity": "4d6594d0c7e6c1df5cc89a16fb1ff379dd8166431b8066113ed5c3bc0dab1b00",
+    "resultValidation": "graphql_response",
+    "schemaSHA256": "49163de87c33ae1c557f60edb60518da8e7cfad830f2748fea93d184da00cd60",
+    "substrate": "graphql"
+  },
+  "output": [
+    "public.json"
+  ],
+  "provider": {
+    "name": "GraphQL provider"
+  },
+  "reflectorID": "graphql-reflector:4d6594d0c7e6c1df5cc89a16fb1ff379dd8166431b8066113ed5c3bc0dab1b00",
+  "requiresConfirmation": true,
+  "safety": "unknown",
+  "source": "system",
+  "supportLevel": "experimental",
+  "title": "GraphQL mutation: record_7501f62cfd0a"
+}

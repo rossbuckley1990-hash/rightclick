@@ -126,6 +126,8 @@ public final class GraphQLReflector:
         let arguments: [InputField]
         let returnType: TypeRef
         let selection: String
+        let argumentSchema: CapabilitySchema
+        let resultSchema: CapabilitySchema
     }
 
     private let endpointURL: URL
@@ -294,7 +296,7 @@ public final class GraphQLReflector:
             return []
         }
 
-        return operations.map {
+        return try operations.map {
             operation in
 
             let policy =
@@ -333,8 +335,15 @@ public final class GraphQLReflector:
                             .returnType
                             .graphQLType,
                     "resultValidation":
-                        "graphql_response",
+                        "closed_typed_graphql_selection",
+                    "argumentEncoding":
+                        "graphql_legacy_text: scalar text; list/input-object JSON text; nullable null sentinel; nullable String/ID backslash forces literal text",
                 ]
+
+            metadata["argumentSchema"] = try operation.argumentSchema.canonicalData().base64EncodedString()
+            metadata["resultSchema"] = try operation.resultSchema.canonicalData().base64EncodedString()
+            metadata["typedArgumentsSchema"] = Self.canonicalJSON(try Self.schemaDescription(operation.argumentSchema))
+            metadata["typedResultSchema"] = Self.canonicalJSON(try Self.schemaDescription(operation.resultSchema))
 
             if
                 !operation
@@ -479,9 +488,13 @@ public final class GraphQLReflector:
                               executionID: String, arguments: CapabilityArguments?, verification: VerificationSpec?,
                               expectedOutput: String?, host: RCIRExecutionHost, revalidate: @escaping () -> Bool) throws -> ExecutionRecord {
         guard let operation = operationByCapabilityID[capability.id] else { throw RCIRError.unavailable }
+        let input: CapabilityValue
+        do { input = try typedArguments(arguments, operation: operation) }
+        catch { return inputFailure(executionID: executionID, capability: capability, message: String(describing: error)) }
         return try RCIRUnaryInvocation.execute(capability: capability, owner: admissionOwner, item: item,
-            executionID: executionID, arguments: arguments, names: operation.arguments.map(\.name),
-            required: operation.arguments.filter { $0.type.isNonNull && $0.defaultValue == nil }.map(\.name),
+            executionID: executionID, arguments: arguments, argumentSchema: operation.argumentSchema,
+            input: input, resultSchema: operation.resultSchema,
+            wireRepresentation: "GraphQL compiler coerces declared legacy text before admission; canonical typed variables and selected response data",
             target: endpointURL, verification: verification, expectedOutput: expectedOutput,
             host: host, available: {
                 guard let scheme = self.authoritySchemeName else { return true }
@@ -491,6 +504,10 @@ public final class GraphQLReflector:
                     try self.performBegin(capability: capability, item: item, executionID: executionID,
                                           arguments: arguments, admitStart: gate)
                 }
+            }, resultValue: { record in
+                guard let output = record.output, let data = output.data(using: .utf8) else { throw CapabilityABIError.schemaMismatch }
+                return try Self.typedValue(JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed]),
+                                           schema: operation.resultSchema)
             })
     }
 
@@ -615,6 +632,7 @@ public final class GraphQLReflector:
                     )
                 }
             }
+            _ = try Self.typedValue(variables, schema: operation.argumentSchema)
         } catch {
             return inputFailure(
                 executionID:
@@ -1092,7 +1110,11 @@ public final class GraphQLReflector:
         _ raw: String,
         type: TypeRef
     ) throws -> Any {
-        if raw == "null" {
+        if !type.isNonNull, let named = type.namedType, named.kind == "SCALAR",
+           ["String", "ID"].contains(named.name), raw.hasPrefix("\\") {
+            return String(raw.dropFirst())
+        }
+        if raw == "null" && !type.isNonNull {
             guard
                 !type.isNonNull
             else {
@@ -1108,6 +1130,9 @@ public final class GraphQLReflector:
         case let .nonNull(
             inner
         ):
+            if case let .named(kind, name) = inner, kind == "SCALAR" || kind == "ENUM" {
+                return try coerceScalar(raw, kind: kind, name: name)
+            }
             return
                 try coerceTopLevel(
                     raw,
@@ -1379,19 +1404,19 @@ public final class GraphQLReflector:
         case "Int":
             guard
                 let value =
-                    Int(raw)
+                    Int32(raw)
             else {
                 throw RightClickError(
                     "GraphQL Int argument is invalid."
                 )
             }
 
-            return value
+            return Int(value)
 
         case "Float":
             guard
                 let value =
-                    Double(raw)
+                    Double(raw), value.isFinite
             else {
                 throw RightClickError(
                     "GraphQL Float argument is invalid."
@@ -1452,7 +1477,8 @@ public final class GraphQLReflector:
         switch name {
         case "Int":
             if let number =
-                value as? NSNumber
+                value as? NSNumber, !CapabilityJSONNumber.isBoolean(number),
+                let exact = Int64(number.stringValue), exact >= Int64(Int32.min), exact <= Int64(Int32.max)
             {
                 let double =
                     number.doubleValue
@@ -1467,12 +1493,12 @@ public final class GraphQLReflector:
                 }
 
                 return
-                    number.intValue
+                    Int(exact)
             }
 
         case "Float":
             if let number =
-                value as? NSNumber
+                value as? NSNumber, !CapabilityJSONNumber.isBoolean(number), number.doubleValue.isFinite
             {
                 return
                     number.doubleValue
@@ -1480,7 +1506,7 @@ public final class GraphQLReflector:
 
         case "Boolean":
             if let number =
-                value as? NSNumber
+                value as? NSNumber, CapabilityJSONNumber.isBoolean(number)
             {
                 return
                     number.boolValue
@@ -1950,26 +1976,9 @@ public final class GraphQLReflector:
                 in
 
                 guard
-                    field
-                        .arguments
-                        .allSatisfy({
-                            supportsInputType(
-                                $0.type,
-                                types:
-                                    types
-                            )
-                        }),
-                    let selection =
-                        selection(
-                            for:
-                                field.type,
-                            types:
-                                types,
-                            depth:
-                                0,
-                            visited:
-                                []
-                        )
+                    let argumentSchema = try? inputSchema(fields: field.arguments, types: types),
+                    let result = try? resultPlan(for: field.type, types: types),
+                    let resultSchema = try? checkedSchema(.object(properties: ["rightclickResult": result.schema], required: ["rightclickResult"]))
                 else {
                     return nil
                 }
@@ -2055,200 +2064,163 @@ public final class GraphQLReflector:
                     returnType:
                         field.type,
                     selection:
-                        selection
+                        result.selection,
+                    argumentSchema: argumentSchema,
+                    resultSchema: resultSchema
                 )
             }
     }
 
-    private static func supportsInputType(
-        _ type: TypeRef,
-        types:
-            [String: TypeDefinition],
-        visited:
-            Set<String> = []
-    ) -> Bool {
-        switch type {
-        case let .nonNull(
-            inner
-        ),
-            let .list(
-                inner
-            ):
-            return
-                supportsInputType(
-                    inner,
-                    types:
-                        types,
-                    visited:
-                        visited
-                )
+    // One bounded compiler produces both the actual selection and its exact
+    // result schema. Unselected fields never masquerade as returned values.
+    private static func checkedSchema(_ schema: CapabilitySchema) throws -> CapabilitySchema {
+        _ = try schema.canonicalData(); return schema
+    }
 
-        case let .named(
-            kind,
-            name
-        ):
-            if
-                kind == "SCALAR"
-                || kind == "ENUM"
-            {
-                return true
-            }
-
-            guard
-                kind == "INPUT_OBJECT",
-                !visited
-                    .contains(
-                        name
-                    ),
-                let definition =
-                    types[
-                        name
-                    ]
-            else {
-                return false
-            }
-
-            var nextVisited =
-                visited
-
-            nextVisited.insert(
-                name
-            )
-
-            return definition
-                .inputFields
-                .allSatisfy {
-                    supportsInputType(
-                        $0.type,
-                        types:
-                            types,
-                        visited:
-                            nextVisited
-                    )
-                }
+    // Human-readable explanation accompanies the same canonical contract bytes.
+    // This is descriptive metadata, never an authority or schema importer.
+    private static func schemaDescription(_ schema: CapabilitySchema) throws -> [String: Any] {
+        switch schema {
+        case .string: return ["type": "string"]
+        case .boolean: return ["type": "boolean"]
+        case .number: return ["type": "number"]
+        case let .integerRange(minimum, maximum): return ["type": "integer", "minimum": minimum, "maximum": maximum]
+        case let .stringEnum(values): return ["type": "string", "enum": values.sorted()]
+        case let .array(inner): return ["type": "array", "items": try schemaDescription(inner)]
+        case let .nullable(inner): return ["anyOf": [try schemaDescription(inner), ["type": "null"]]]
+        case let .object(properties, required):
+            return ["type": "object", "properties": try properties.mapValues { try schemaDescription($0) },
+                    "required": required.sorted(), "additionalProperties": false]
+        default: throw CapabilityABIError.invalidSchema
         }
     }
 
-    private static func selection(
-        for type: TypeRef,
-        types:
-            [String: TypeDefinition],
-        depth: Int,
-        visited:
-            Set<String>
-    ) -> String? {
-        switch type {
-        case let .nonNull(
-            inner
-        ),
-            let .list(
-                inner
-            ):
-            return
-                selection(
-                    for:
-                        inner,
-                    types:
-                        types,
-                    depth:
-                        depth,
-                    visited:
-                        visited
-                )
-
-        case let .named(
-            kind,
-            name
-        ):
-            if
-                kind == "SCALAR"
-                || kind == "ENUM"
-            {
-                return ""
-            }
-
-            if
-                kind == "UNION"
-                || kind == "INTERFACE"
-            {
-                return
-                    " { __typename }"
-            }
-
-            guard
-                kind == "OBJECT",
-                let definition =
-                    types[
-                        name
-                    ]
-            else {
-                return nil
-            }
-
-            if
-                depth >= 3
-                || visited
-                    .contains(
-                        name
-                    )
-            {
-                return
-                    " { __typename }"
-            }
-
-            var nextVisited =
-                visited
-
-            nextVisited.insert(
-                name
-            )
-
-            var selections:
-                [String] = [
-                    "__typename"
-                ]
-
-            for field
-                in definition
-                    .fields
-                    .filter({
-                        $0.arguments
-                            .isEmpty
-                    })
-                    .prefix(16)
-            {
-                guard
-                    let nested =
-                        selection(
-                            for:
-                                field.type,
-                            types:
-                                types,
-                            depth:
-                                depth
-                                + 1,
-                            visited:
-                                nextVisited
-                        )
-                else {
-                    continue
-                }
-
-                selections.append(
-                    field.name
-                    + nested
-                )
-            }
-
-            return
-                " { "
-                + selections
-                    .joined(
-                        separator:
-                            " "
-                    )
-                + " }"
+    private static func scalarSchema(kind: String, name: String,
+                                     types: [String: TypeDefinition]) throws -> CapabilitySchema {
+        if kind == "ENUM", let definition = types[name], !definition.enumValues.isEmpty {
+            return .stringEnum(definition.enumValues.sorted())
         }
+        guard kind == "SCALAR" else { throw CapabilityABIError.invalidSchema }
+        switch name {
+        case "String", "ID": return .string
+        case "Boolean": return .boolean
+        case "Int": return .integerRange(minimum: Int64(Int32.min), maximum: Int64(Int32.max))
+        case "Float": return .number
+        default: throw CapabilityABIError.unknownSchema
+        }
+    }
+
+    private static func inputSchema(fields: [InputField], types: [String: TypeDefinition],
+                                    depth: Int = 0, visited: Set<String> = []) throws -> CapabilitySchema {
+        guard depth <= 16, fields.count <= 256, Set(fields.map(\.name)).count == fields.count else {
+            throw CapabilityABIError.limitExceeded
+        }
+        var properties: [String: CapabilitySchema] = [:]
+        for field in fields {
+            properties[field.name] = try inputTypeSchema(field.type, types: types, depth: depth + 1, visited: visited)
+        }
+        return try checkedSchema(.object(properties: properties,
+            required: fields.filter { $0.type.isNonNull && $0.defaultValue == nil }.map(\.name)))
+    }
+
+    private static func inputTypeSchema(_ type: TypeRef, types: [String: TypeDefinition],
+                                         depth: Int, visited: Set<String>, nonNull: Bool = false) throws -> CapabilitySchema {
+        guard depth <= 16 else { throw CapabilityABIError.limitExceeded }
+        let schema: CapabilitySchema
+        switch type {
+        case let .nonNull(inner):
+            return try inputTypeSchema(inner, types: types, depth: depth + 1, visited: visited, nonNull: true)
+        case let .list(inner):
+            schema = .array(try inputTypeSchema(inner, types: types, depth: depth + 1, visited: visited))
+        case let .named(kind, name):
+            if kind == "INPUT_OBJECT" {
+                guard !visited.contains(name), let definition = types[name], definition.kind == kind else {
+                    throw CapabilityABIError.unknownSchema
+                }
+                schema = try inputSchema(fields: definition.inputFields, types: types, depth: depth + 1,
+                                         visited: visited.union([name]))
+            } else {
+                schema = try scalarSchema(kind: kind, name: name, types: types)
+            }
+        }
+        return nonNull ? schema : .nullable(schema)
+    }
+
+    private static func resultPlan(for type: TypeRef, types: [String: TypeDefinition],
+                                    depth: Int = 0, visited: Set<String> = [],
+                                    wrappers: Int = 0, nonNull: Bool = false) throws -> (schema: CapabilitySchema, selection: String) {
+        guard wrappers <= 16, depth <= 3 else { throw CapabilityABIError.limitExceeded }
+        let plan: (schema: CapabilitySchema, selection: String)
+        switch type {
+        case let .nonNull(inner):
+            return try resultPlan(for: inner, types: types, depth: depth, visited: visited,
+                                  wrappers: wrappers + 1, nonNull: true)
+        case let .list(inner):
+            let nested = try resultPlan(for: inner, types: types, depth: depth, visited: visited, wrappers: wrappers + 1)
+            plan = (.array(nested.schema), nested.selection)
+        case let .named(kind, name):
+            if kind == "SCALAR" || kind == "ENUM" {
+                plan = (try scalarSchema(kind: kind, name: name, types: types), "")
+            } else {
+                guard ["OBJECT", "INTERFACE", "UNION"].contains(kind), let definition = types[name], definition.kind == kind else {
+                    throw CapabilityABIError.unknownSchema
+                }
+                var properties: [String: CapabilitySchema] = ["__typename": kind == "OBJECT" ? .stringEnum([name]) : .string]
+                var selections = ["__typename"]
+                if kind == "OBJECT", depth < 3, !visited.contains(name) {
+                    for field in definition.fields.filter({ $0.arguments.isEmpty }).prefix(16) {
+                        guard let nested = try? resultPlan(for: field.type, types: types, depth: depth + 1,
+                                                         visited: visited.union([name])) else { continue }
+                        guard properties[field.name] == nil else { throw CapabilityABIError.invalidSchema }
+                        properties[field.name] = nested.schema; selections.append(field.name + nested.selection)
+                    }
+                }
+                plan = (.object(properties: properties, required: Array(properties.keys)),
+                        " { " + selections.joined(separator: " ") + " }")
+            }
+        }
+        return (nonNull ? plan.schema : .nullable(plan.schema), plan.selection)
+    }
+
+    private func typedArguments(_ arguments: CapabilityArguments?, operation: Operation) throws -> CapabilityValue {
+        guard case let .object(properties, _) = operation.argumentSchema else { throw CapabilityABIError.invalidSchema }
+        let supplied = arguments ?? [:]
+        guard Set(supplied.keys).isSubset(of: Set(properties.keys)) else { throw CapabilityABIError.schemaMismatch }
+        var variables: [String: Any] = [:]
+        for field in operation.arguments {
+            if let text = supplied[field.name] { variables[field.name] = try coerceTopLevel(text, type: field.type) }
+        }
+        return try Self.typedValue(variables, schema: operation.argumentSchema)
+    }
+
+    /// Foundation can parse a whole-valued GraphQL Float as an integer. Decode
+    /// according to the compiler's declared type, never an incidental JSON tag.
+    private static func typedValue(_ raw: Any, schema: CapabilitySchema, depth: Int = 0) throws -> CapabilityValue {
+        guard depth <= 32 else { throw CapabilityABIError.limitExceeded }
+        let value: CapabilityValue
+        switch schema {
+        case let .nullable(inner):
+            value = raw is NSNull ? .null : try typedValue(raw, schema: inner, depth: depth + 1)
+        case let .array(inner):
+            guard let values = raw as? [Any], values.count <= 4096 else { throw CapabilityABIError.schemaMismatch }
+            value = .array(try values.map { try typedValue($0, schema: inner, depth: depth + 1) })
+        case let .object(properties, _):
+            guard let fields = raw as? [String: Any], Set(fields.keys).isSubset(of: Set(properties.keys)) else {
+                throw CapabilityABIError.schemaMismatch
+            }
+            var values: [String: CapabilityValue] = [:]
+            for (key, raw) in fields { values[key] = try typedValue(raw, schema: properties[key]!, depth: depth + 1) }
+            value = .object(values)
+        case .number:
+            guard let number = raw as? NSNumber, !CapabilityJSONNumber.isBoolean(number), number.doubleValue.isFinite else {
+                throw CapabilityABIError.schemaMismatch
+            }
+            value = .number(number.doubleValue)
+        default:
+            value = try CapabilityJSON.value(raw)
+        }
+        try schema.validate(value)
+        return value
     }
 
     private static func argumentsSchema(
@@ -2312,6 +2284,10 @@ public final class GraphQLReflector:
                                 ", "
                         )
                     + "."
+            }
+
+            if !argument.type.isNonNull, let named, named.kind == "SCALAR", ["String", "ID"].contains(named.name) {
+                description += " null supplies a null value; prefix a backslash to force literal text (including literal null or a leading backslash)."
             }
 
             properties[
