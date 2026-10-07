@@ -62,7 +62,7 @@ final class A2ARealLifecycleTests: XCTestCase {
             try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
             let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
             try encoder.encode(results).write(to: out.appendingPathComponent("runtime-records.json"))
-            for file in ["requests.jsonl", "polls.jsonl", "effects.jsonl", "observations.jsonl"] {
+            for file in ["requests.jsonl", "polls.jsonl", "effects.jsonl", "observations.jsonl", "observation-attempts.jsonl"] {
                 if let data = try? Data(contentsOf: directory.appendingPathComponent(file)) { try data.write(to: out.appendingPathComponent(file)) }
             }
             try publicKey.write(to: out.appendingPathComponent("trusted-public-key.raw"))
@@ -174,5 +174,25 @@ final class A2ARealLifecycleTests: XCTestCase {
         let final = engine.executionStatus(initial.executionId); results.append(final)
         XCTAssertEqual(final.state, .unknown); XCTAssertEqual(rows("requests.jsonl").count, 1)
         XCTAssertTrue(rows("effects.jsonl").isEmpty); try checkSignature(final)
+    }
+
+    func testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation() throws {
+        let completed = try finish(invoke("missing-effect"))
+        XCTAssertEqual(completed.state, .accepted); XCTAssertEqual(completed.rcir?.phase, "completed")
+        let attempts = rows("observation-attempts.jsonl").count
+        XCTAssertGreaterThan(attempts, 0)
+        config.deniedCapabilities = [capability.id]
+        let request = try XCTUnwrap(rows("requests.jsonl").first)
+        let challenge = try XCTUnwrap(request["challenge"] as? String)
+        // Make the real postcondition appear only after revocation. The retained
+        // verifier could prove it, but current policy no longer permits its read.
+        let message = String(data: try JSONSerialization.data(withJSONObject:
+            ["challenge": challenge, "value": "missing-effect"], options: [.sortedKeys]), encoding: .utf8)!
+        try Data(message.utf8).write(to: directory.appendingPathComponent("effects/" + challenge))
+        let final = engine.executionStatus(completed.executionId); results.append(final)
+        XCTAssertEqual(final.state, .accepted); XCTAssertEqual(final.rcir?.outcome, "unverified")
+        XCTAssertFalse(final.evidence.outcomeVerified)
+        XCTAssertEqual(rows("observation-attempts.jsonl").count, attempts)
+        try checkSignature(final)
     }
 }

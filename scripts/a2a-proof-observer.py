@@ -24,6 +24,8 @@ class Handler(BaseHTTPRequestHandler):
             challenge = json.loads(message)["challenge"]
             if not challenge or not challenge.isascii() or not all(c.isalnum() or c == "-" for c in challenge):
                 raise ValueError("invalid challenge")
+            with (args.directory / "observation-attempts.jsonl").open("a") as handle:
+                handle.write(json.dumps({"challenge": challenge, "invocation": self.headers.get("X-RightClick-Invocation")}, sort_keys=True) + "\n")
             result = (args.directory / "effects" / challenge).read_bytes()
             if len(result) > 65536:
                 raise ValueError("bounded observation required")
