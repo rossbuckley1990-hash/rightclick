@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+"""Actual separate mutation, read-only observer and redirect trap HTTP processes.
+Fixture tokens stay in protected disposable files, never logs or tool payloads.
+"""
+import hashlib
+import http.server
+import json
+import pathlib
+import sys
+import urllib.parse
+
+root, role = pathlib.Path(sys.argv[1]), sys.argv[2]
+root.mkdir(parents=True, exist_ok=True); (root / "records").mkdir(exist_ok=True)
+class Handler(http.server.BaseHTTPRequestHandler):
+    def log_message(self, *_): pass
+    def do_POST(self):
+        if role != "provider": self.send_error(403); return
+        body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+        challenge, value = body["id"], body["value"]
+        if not challenge or not all(c.isascii() and (c.isalnum() or c == "-") for c in challenge): self.send_error(400); return
+        with (root / "effects.jsonl").open("a") as handle: handle.write(json.dumps({"challenge": challenge, "value": value}) + "\n")
+        if value != "missing": (root / "records" / challenge).write_bytes(("different" if value == "mismatch" else value).encode())
+        response = json.dumps(body).encode(); self.send_response(200); self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(response))); self.end_headers(); self.wfile.write(response)
+    def do_GET(self):
+        if role == "trap":
+            with (root / "trap.jsonl").open("a") as handle: handle.write(json.dumps({"authorizationPresent": "Authorization" in self.headers, "cookiePresent": "Cookie" in self.headers}) + "\n")
+            self.send_response(200); self.end_headers(); return
+        if role != "observer": self.send_error(403); return
+        authorization = self.headers.get("Authorization", "")
+        readonly = (root / "observer.token").read_text().strip()
+        credential_role = "readonly" if authorization == "Bearer " + readonly else "none-or-wrong"
+        with (root / "observations.jsonl").open("a") as handle:
+            handle.write(json.dumps({"path": self.path, "credentialRole": credential_role, "cookiePresent": "Cookie" in self.headers, "authorizationKind": authorization.split(" ")[0] if authorization else "none"}) + "\n")
+        public = self.path.startswith("/public-json/")
+        if not public and credential_role != "readonly":
+            self.send_response(401); self.send_header("WWW-Authenticate", 'Basic realm="rightclick-observer-fixture"'); self.end_headers(); return
+        challenge = urllib.parse.unquote(self.path.split("/")[-1])
+        if challenge == "redirect":
+            self.send_response(302); self.send_header("Location", "http://127.0.0.1:" + (root / "trap-port").read_text() + "/stolen"); self.end_headers(); return
+        if not challenge or not all(c.isascii() and (c.isalnum() or c == "-") for c in challenge): self.send_error(400); return
+        try: artifact = (root / "records" / challenge).read_bytes()
+        except FileNotFoundError: self.send_error(404); return
+        body = {"challenge": challenge, "result": hashlib.sha256(artifact).hexdigest(), "machine": "disposable-native-http-fixture", "observation": "independent-file-sha256",
+            "observerPrincipal": "fixture-readonly", "platform": "fixture", "principal": "fixture-writer", "uid": None}
+        if challenge == "extra": body["undeclared"] = "rejected"
+        response = json.dumps(body).encode(); self.send_response(200); self.send_header("Content-Type", "application/json")
+        self.send_header("Set-Cookie", "rightclick-injected=must-not-persist; Path=/")
+        self.send_header("Content-Length", str(len(response))); self.end_headers(); self.wfile.write(response)
+server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+(root / (role + "-port")).write_text(str(server.server_address[1])); server.serve_forever()

@@ -46,8 +46,10 @@ public struct RCIRReceiptEnvelope: Codable, Sendable {
 struct RCIRHostConfiguration: Codable {
     struct Observer: Codable {
         let urlTemplate: String
-        let expectedArgument: String
+        var expectedArgument: String? = nil
         var trustedOrigin: String? = nil
+        var credentialFile: String? = nil
+        var jsonObservation: RCIRJSONObservationConfiguration? = nil
     }
     var version = 1
     var revision = "local-confirmation-1"
@@ -61,8 +63,14 @@ struct RCIRHostConfiguration: Codable {
         guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any],
               Set(object.keys).isSubset(of: ["version", "revision", "deniedCapabilities", "observers", "signingKeyFile"]) else { throw RCIRError.invalidContract }
         if let observers = object["observers"] as? [String: [String: Any]] {
-            for value in observers.values where !Set(value.keys).isSubset(of: ["urlTemplate", "expectedArgument", "trustedOrigin"]) {
-                throw RCIRError.invalidContract
+            for value in observers.values {
+                guard Set(value.keys).isSubset(of: ["urlTemplate", "expectedArgument", "trustedOrigin", "credentialFile", "jsonObservation"]) else { throw RCIRError.invalidContract }
+                if let json = value["jsonObservation"] as? [String: Any] {
+                    guard Set(json.keys) == ["schemaJSON", "fields"], let fields = json["fields"] as? [String: [String: Any]] else { throw RCIRError.invalidContract }
+                    for field in fields.values {
+                        guard Set(field.keys).isSubset(of: ["path", "argument", "expectedOutput"]) else { throw RCIRError.invalidContract }
+                    }
+                }
             }
         }
         let config = try JSONDecoder().decode(Self.self, from: data)
@@ -168,14 +176,18 @@ public final class RCIRExecutionHost {
             if deferred {
                 try reserveSession(executionID); reserved = true
             }
-            let observation = try observer(config, capabilityID: capability.id,
-                                           arguments: argumentStrings, target: target)
-            guard observerFactory == nil || observerFactories[capability.id] == nil else { throw RCIRError.invalidContract }
-            let structured = try (observerFactory ?? observerFactories[capability.id])?(arguments)
+            let configuredJSON = try config.observers?[capability.id]?.structuredObservation(arguments: argumentStrings,
+                expectedOutput: expectedOutput, target: target)
+            let observation = configuredJSON == nil ? try observer(config, capabilityID: capability.id,
+                                           arguments: argumentStrings, target: target) : nil
+            guard observerFactory == nil || observerFactories[capability.id] == nil,
+                  configuredJSON == nil || (observerFactory == nil && observerFactories[capability.id] == nil) else { throw RCIRError.invalidContract }
+            let structured = try configuredJSON ?? (observerFactory ?? observerFactories[capability.id])?(arguments)
             if let structured {
                 guard structured.contract.observerID.utf8.elementsEqual(structured.observer.observerID.utf8) else { throw RCIRError.observerMismatch }
             }
-            let returnedPostcondition = verification ?? expectedOutput.map {
+            let remainingExpectedOutput = config.observers?[capability.id]?.jsonObservation?.bindsExpectedOutput == true ? nil : expectedOutput
+            let returnedPostcondition = verification ?? remainingExpectedOutput.map {
                 VerificationSpec(predicates: [.init(type: .textEquals, value: $0)])
             }
             // Multiple observer authorities are ambiguous. A caller postcondition
@@ -319,7 +331,9 @@ public final class RCIRExecutionHost {
                     let mayObserve = revalidate() && currentContract() && lease.scopes.isSubset(of: authority()) &&
                         (try? policy(self.configuration()).revision) == (try? policy(config).revision)
                     if mayObserve, let value = try? structured.observer.observe(task.observationRequest) {
-                        try task.verify(observerID: structured.observer.observerID, now: now()) { _, _ in value }
+                        // Missing/malformed/out-of-bound observations abstain;
+                        // they must not discard known completion or its receipt.
+                        try? task.verify(observerID: structured.observer.observerID, now: now()) { _, _ in value }
                     }
                     record.state = task.outcome == .succeeded ? .succeeded : (task.outcome == .failed ? .failed : .accepted)
                     record.message = task.outcome == .unverified ? "Provider completed; independent structured observation is unavailable." : "Independent structured observation determined the exact requested outcome."
@@ -400,18 +414,9 @@ public final class RCIRExecutionHost {
     private func observer(_ config: RCIRHostConfiguration, capabilityID: String,
                           arguments: CapabilityArguments?, target: URL) throws -> (url: URL, expected: String, boundary: String)? {
         guard let observer = config.observers?[capabilityID] else { return nil }
-        guard let expected = arguments?[observer.expectedArgument] else { throw RCIRError.invalidContract }
-        var template = observer.urlTemplate
-        // Only path segments can be substituted. Disallow path/query/origin
-        // injection, traversal, and unresolved placeholders.
-        let segmentCharacters = CharacterSet(charactersIn:
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
-        for (key, value) in arguments ?? [:] where template.contains("{" + key + "}") {
-            guard !value.isEmpty, value != ".", value != "..",
-                  value.unicodeScalars.allSatisfy({ segmentCharacters.contains($0) }),
-                  let encoded = value.addingPercentEncoding(withAllowedCharacters: segmentCharacters) else { throw RCIRError.invalidContract }
-            template = template.replacingOccurrences(of: "{" + key + "}", with: encoded)
-        }
+        guard observer.jsonObservation == nil, observer.credentialFile == nil,
+              let argument = observer.expectedArgument, let expected = arguments?[argument] else { throw RCIRError.invalidContract }
+        let template = try RCIRObserverPath.interpolate(observer.urlTemplate, arguments: arguments)
         let observerOrigin: URL
         if let pin = observer.trustedOrigin {
             guard let url = URL(string: pin), let parts = URLComponents(url: url, resolvingAgainstBaseURL: false),
