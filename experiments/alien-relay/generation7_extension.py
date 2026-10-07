@@ -138,7 +138,7 @@ comparison=compare_caption_transcript(caption, transcript)
 roundtrip=comparison["observed"]
 success=gen6_ok and bool(tts_selected) and audio_ok and bool(asr_selected) and roundtrip
 
-proof["experiment"]="RIGHTCLICK Alien Relay Generation 7+§uçâçT multimodal semantic round trip"
+proof["experiment"]="RIGHTCLICK Alien Relay Generation 7 â€” multimodal semantic round trip"
 proof["recursive_path"]=(proof.get("recursive_path") or [])+[
     "runtime discovery of text-to-speech Spaces",
     "dynamically selected text -> audio capability",
