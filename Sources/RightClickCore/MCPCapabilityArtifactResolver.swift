@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// MCP is an internal acquisition/invocation substrate. Upstream tool names
 /// become capability data; they never enter RIGHTCLICK's AI tool registry.

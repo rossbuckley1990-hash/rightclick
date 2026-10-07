@@ -1,3 +1,4 @@
+#if os(macOS)
 import AppKit
 import Foundation
 import UniformTypeIdentifiers
@@ -471,3 +472,5 @@ private final class ServiceCallBox {
         return expired
     }
 }
+
+#endif

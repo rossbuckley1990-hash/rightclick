@@ -1,4 +1,8 @@
+#if canImport(Darwin)
 import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 import Foundation
 
 /// Generic host-selected executable boundary. Arguments are passed directly,
@@ -20,20 +24,28 @@ enum BoundedCapabilityProcess {
                     maximumBytes: Int = 1_048_576,
                     input: Data? = nil,
                     admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> Data {
-        guard executable.isFileURL, executable.path.hasPrefix("/"),
+        guard executable.isFileURL, RuntimePlatform.isAbsolutePath(executable.path),
               FileManager.default.isExecutableFile(atPath: executable.path),
               timeout.isFinite, timeout > 0, timeout <= 10,
               (1...1_048_576).contains(maximumBytes) else { throw RCIRError.invalidLimit }
         guard (input?.count ?? 0) <= 1_048_576 else { throw RCIRError.invalidLimit }
         let process = Process(); process.executableURL = executable; process.arguments = arguments
-        process.environment = ["PATH": "/usr/bin:/bin", "HOME": "/private/tmp"]
+#if os(Windows)
+        let environment = ProcessInfo.processInfo.environment
+        process.environment = ["SystemRoot": environment["SystemRoot"] ?? "C:\\Windows",
+            "TEMP": FileManager.default.temporaryDirectory.path, "TMP": FileManager.default.temporaryDirectory.path]
+#else
+        process.environment = ["PATH": "/usr/bin:/bin", "HOME": FileManager.default.temporaryDirectory.path]
+#endif
         let pipe = Pipe(); process.standardOutput = pipe; process.standardError = FileHandle.nullDevice
         let inputPipe = input.map { _ in Pipe() }
         if let inputPipe {
             process.standardInput = inputPipe
             // Suppress SIGPIPE on this descriptor without modifying process-
             // wide signal policy if a bounded child exits before reading stdin.
+            #if canImport(Darwin)
             _ = fcntl(inputPipe.fileHandleForWriting.fileDescriptor, F_SETNOSIGPIPE, 1)
+#endif
         } else { process.standardInput = FileHandle.nullDevice }
         let buffer = Buffer(); let reader = DispatchGroup()
         reader.enter()
@@ -69,12 +81,16 @@ enum BoundedCapabilityProcess {
         while process.isRunning {
             if DispatchTime.now().uptimeNanoseconds >= deadline || buffer.snapshot().1 {
                 process.terminate()
-                usleep(20_000)
+                Thread.sleep(forTimeInterval: 0.020)
+#if os(Windows)
+                if process.isRunning { process.terminate() }
+#else
                 if process.isRunning { kill(process.processIdentifier, SIGKILL) }
+#endif
                 process.waitUntilExit(); try? pipe.fileHandleForWriting.close()
                 throw RCIRError.invalidLimit
             }
-            usleep(2_000)
+            Thread.sleep(forTimeInterval: 0.002)
         }
         process.waitUntilExit(); try? pipe.fileHandleForWriting.close()
         guard reader.wait(timeout: .now() + 1) == .success else { throw RCIRError.unavailable }

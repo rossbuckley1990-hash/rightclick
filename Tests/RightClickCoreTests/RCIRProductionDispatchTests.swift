@@ -1,5 +1,12 @@
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import Foundation
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -52,8 +59,8 @@ final class RCIRProductionDispatchTests: XCTestCase {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("rcir-live-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        provider = Process(); provider.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
-        provider.arguments = [root.appendingPathComponent("scripts/rcir-dispatch-test-provider.py").path, directory.path]
+        provider = Process(); provider.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+        provider.arguments = ["python3", root.appendingPathComponent("scripts/rcir-dispatch-test-provider.py").path, directory.path]
         provider.standardOutput = FileHandle.nullDevice; provider.standardError = FileHandle.nullDevice
         try provider.run()
         let portFile = directory.appendingPathComponent("port")

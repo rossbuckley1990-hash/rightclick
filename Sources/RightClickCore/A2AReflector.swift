@@ -1,5 +1,12 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// A narrow A2A 0.2.6 text/JSON-RPC compiler. Skill descriptions inform discovery;
 /// A2A has no standard method that directly invokes an individual skill.

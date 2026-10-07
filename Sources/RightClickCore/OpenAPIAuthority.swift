@@ -1,5 +1,7 @@
 import Foundation
+#if canImport(Security)
 import Security
+#endif
 
 enum OpenAPIAuthorityRequirement:
     Equatable
@@ -59,6 +61,7 @@ public enum OpenAPIAuthorityStoreError:
     case invalidScheme
     case invalidCredential
     case keychain(Int32)
+    case unavailable
 
     public var errorDescription:
         String?
@@ -76,7 +79,10 @@ public enum OpenAPIAuthorityStoreError:
             return
                 "Bearer credential is empty, too large, or contains newline/control characters."
 
+        case .unavailable:
+            return "Secure credential storage is unavailable on this platform."
         case let .keychain(status):
+#if canImport(Security)
             if let message =
                 SecCopyErrorMessageString(
                     status,
@@ -93,6 +99,9 @@ public enum OpenAPIAuthorityStoreError:
                 + String(
                     status
                 )
+#else
+            return "Secure credential store error: \(status)"
+#endif
         }
     }
 }
@@ -199,6 +208,8 @@ public enum OpenAPIAuthorityStore {
         origin rawOrigin: String,
         schemeName rawSchemeName: String
     ) throws {
+#if canImport(Security)
+
         try validateBearerToken(
             token
         )
@@ -270,12 +281,18 @@ public enum OpenAPIAuthorityStore {
                     addStatus
                 )
         }
-    }
+
+#else
+        throw OpenAPIAuthorityStoreError.unavailable
+#endif
+}
 
     public static func containsBearerToken(
         origin rawOrigin: String,
         schemeName rawSchemeName: String
     ) throws -> Bool {
+#if canImport(Security)
+
         let requirement =
             try managedRequirement(
                 origin:
@@ -321,13 +338,19 @@ public enum OpenAPIAuthorityStore {
             .keychain(
                 status
             )
-    }
+
+#else
+        throw OpenAPIAuthorityStoreError.unavailable
+#endif
+}
 
     @discardableResult
     public static func deleteBearerToken(
         origin rawOrigin: String,
         schemeName rawSchemeName: String
     ) throws -> Bool {
+#if canImport(Security)
+
         let requirement =
             try managedRequirement(
                 origin:
@@ -356,12 +379,18 @@ public enum OpenAPIAuthorityStore {
             .keychain(
                 status
             )
-    }
+
+#else
+        throw OpenAPIAuthorityStoreError.unavailable
+#endif
+}
 
     static func bearerToken(
         for requirement:
             OpenAPIAuthorityRequirement
     ) -> String? {
+#if canImport(Security)
+
         var query =
             baseQuery(
                 for:
@@ -404,7 +433,11 @@ public enum OpenAPIAuthorityStore {
         }
 
         return token
-    }
+
+#else
+        return nil
+#endif
+}
 
     private static func managedRequirement(
         origin rawOrigin: String,
@@ -458,6 +491,8 @@ public enum OpenAPIAuthorityStore {
         for requirement:
             OpenAPIAuthorityRequirement
     ) -> [String: Any] {
+#if canImport(Security)
+
         [
             kSecClass as String:
                 kSecClassGenericPassword,
@@ -469,5 +504,9 @@ public enum OpenAPIAuthorityStore {
                 requirement
                     .keychainAccount,
         ]
-    }
+
+#else
+        return [:]
+#endif
+}
 }

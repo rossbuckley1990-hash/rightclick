@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// HTTP transport policy for capability providers whose authority is bound
 /// to one explicitly selected origin.
@@ -54,6 +57,9 @@ enum OriginPinnedHTTP {
         ) {
             completionHandler(nil)
         }
+        // A concrete witness is required on hosts using Swift protocol dispatch.
+        // The bounded subclass overrides completion to release its waiter.
+        func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {}
     }
 
     /// Incrementally collects one provider document.
@@ -184,7 +190,7 @@ enum OriginPinnedHTTP {
             }
         }
 
-        func urlSession(
+        override func urlSession(
             _ session: URLSession,
             task: URLSessionTask,
             didCompleteWithError error:
