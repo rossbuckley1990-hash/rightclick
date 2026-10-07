@@ -56,14 +56,53 @@ public struct RCIRTaskModel: Sendable {
     }
 }
 
+/// Exact host-declared projections allow unknown effect metadata (such as an
+/// assigned offset or resource UID) to remain in signed observation evidence
+/// while comparing only pre-bound desired fields. No wildcard or coercion.
+public struct RCIRObservationProjection: Sendable {
+    public let schema: CapabilitySchema
+    public let fields: [String: [String]]
+    public init(schema: CapabilitySchema, fields: [String: [String]]) {
+        self.schema = schema; self.fields = fields
+    }
+    func canonicalValue(expected: CapabilityValue) throws -> CapabilityValue {
+        guard !fields.isEmpty, fields.count <= 64,
+              case let .object(values) = expected, Set(values.keys) == Set(fields.keys) else { throw RCIRError.invalidContract }
+        for (name, path) in fields {
+            guard !name.isEmpty, name.utf8.count <= 4096, !name.contains("*"),
+                  name.rangeOfCharacter(from: .controlCharacters) == nil,
+                  !path.isEmpty, path.count <= 32,
+                  path.allSatisfy({ !$0.isEmpty && $0.utf8.count <= 4096 && !$0.contains("*") && $0.rangeOfCharacter(from: .controlCharacters) == nil }) else { throw RCIRError.invalidContract }
+        }
+        return .object(["schema": .bytes(try schema.canonicalData()),
+            "fields": .object(fields.mapValues { .array($0.map { .string($0) }) })])
+    }
+    func project(_ observation: CapabilityValue) throws -> CapabilityValue {
+        try schema.validate(observation)
+        var result: [String: CapabilityValue] = [:]
+        for (name, path) in fields {
+            var current = observation
+            for component in path {
+                guard case let .object(object) = current, let next = object[component] else { throw RCIRError.unverified }
+                current = next
+            }
+            result[name] = current
+        }
+        return .object(result)
+    }
+}
+
 /// The runtime/operator supplies the observer binding and expected postcondition.
 /// A provider response or description must never choose its own verifier.
 public struct RCIRVerificationContract: Sendable {
     public let observerID: String
     public let schema: CapabilitySchema
     public let expected: CapabilityValue
-    public init(observerID: String, schema: CapabilitySchema, expected: CapabilityValue) {
+    public let projection: RCIRObservationProjection?
+    public init(observerID: String, schema: CapabilitySchema, expected: CapabilityValue,
+                projection: RCIRObservationProjection? = nil) {
         self.observerID = observerID; self.schema = schema; self.expected = expected
+        self.projection = projection
     }
 }
 
@@ -87,11 +126,15 @@ public struct RCIRContract: Sendable {
         if let verification {
             try rcirIdentity(verification.observerID)
             try verification.schema.validate(verification.expected)
-            check = .object([
+            var fields: [String: CapabilityValue] = [
                 "observer": .string(verification.observerID),
                 "schema": .bytes(try verification.schema.canonicalData()),
                 "expected": verification.expected
-            ])
+            ]
+            if let projection = verification.projection {
+                fields["projection"] = try projection.canonicalValue(expected: verification.expected)
+            }
+            check = .object(fields)
         }
         return try rcirEnvelope("CONTRACT", .object([
             "abi": .bytes(try abi.canonicalData()), "effects": effects,
@@ -328,6 +371,14 @@ public struct RCIRObservationRequest: Sendable {
     public let leaseID: UUID
     public let binding: RCIRBinding
     public let arguments: CapabilityValue
+    /// Untrusted provider bytes may locate an observation, but never determine
+    /// the expected postcondition or expand the observer's authority.
+    public let providerResult: CapabilityValue?
+    public init(taskID: UUID, leaseID: UUID, binding: RCIRBinding, arguments: CapabilityValue,
+                providerResult: CapabilityValue? = nil) {
+        self.taskID = taskID; self.leaseID = leaseID; self.binding = binding
+        self.arguments = arguments; self.providerResult = providerResult
+    }
 }
 
 public protocol RCIRObserver {
@@ -364,6 +415,12 @@ public struct RCIRTask: Sendable {
     private var cancellationRequestedAt: Int64?
     private var observation: Data?
     private var observedAt: Int64?
+    private var providerResult: CapabilityValue?
+
+    public var observationRequest: RCIRObservationRequest {
+        .init(taskID: id, leaseID: lease.id, binding: lease.binding, arguments: lease.arguments,
+              providerResult: providerResult)
+    }
 
     public init(lease: RCIRLease, startedAt: Int64, deadline: Int64) throws {
         guard startedAt >= lease.issuedAt, startedAt < lease.expiresAt,
@@ -420,6 +477,7 @@ public struct RCIRTask: Sendable {
         guard eventCount < model.maxEvents, data.count <= model.maxBytes - usedBytes else { throw RCIRError.bufferFull }
         // Commit only after every shape, transition, sequence and budget check.
         events.append(data); usedBytes += data.count; eventCount += 1
+        if case let .completed(result) = event { providerResult = result }
         self.sequence = sequence; phase = next; lastTime = now
         if terminal { finishedAt = now }
         // No provider event can promote semantic outcome to succeeded.
@@ -460,17 +518,17 @@ public struct RCIRTask: Sendable {
         guard let contract = lease.binding.contract.verification else { throw RCIRError.unverified }
         guard observerID.utf8.elementsEqual(contract.observerID.utf8) else { throw RCIRError.observerMismatch }
         let value = try observe(id, lease.binding)
-        try contract.schema.validate(value)
+        let matchingValue = try contract.projection?.project(value) ?? value
+        try contract.schema.validate(matchingValue)
         let data = try value.canonicalData()
         guard data.count <= 131_072 else { throw RCIRError.invalidLimit }
-        let matched = data == (try contract.expected.canonicalData())
+        let matched = try matchingValue.canonicalData() == contract.expected.canonicalData()
         observation = data; observedAt = now; lastTime = now
         outcome = matched ? .succeeded : .failed
     }
 
     public mutating func verify(using observer: any RCIRObserver, now: Int64) throws {
-        let request = RCIRObservationRequest(taskID: id, leaseID: lease.id,
-                                              binding: lease.binding, arguments: lease.arguments)
+        let request = observationRequest
         try verify(observerID: observer.observerID, now: now) { _, _ in
             try observer.observe(request)
         }
