@@ -51,6 +51,9 @@ public final class ARDRegistrySource:
     private let providerSession:
         URLSession
 
+    private let artifactRegistry:
+        CapabilityArtifactResolverRegistry
+
     private let stateLock =
         NSLock()
 
@@ -109,6 +112,18 @@ public final class ARDRegistrySource:
 
         self.providerSession =
             providerSession
+
+        self.artifactRegistry =
+            CapabilityArtifactResolverRegistry(
+                resolvers: [
+                    OpenAPICapabilityArtifactResolver(
+                        specificationLoader:
+                            specificationLoader,
+                        session:
+                            providerSession
+                    )
+                ]
+            )
     }
 
     public static func fromEnvironment(
@@ -255,14 +270,19 @@ public final class ARDRegistrySource:
                             rawBaseURL
                         ),
                     let reflector =
-                        try? OpenAPIReflector(
-                            specificationData:
-                                specification,
-                            baseURL:
-                                baseURL,
-                            session:
-                                providerSession
-                        )
+                        try? artifactRegistry
+                            .resolve(
+                                CapabilityArtifactDescriptor(
+                                    id:
+                                        candidate.identifier,
+                                    kind:
+                                        "openapi",
+                                    baseURL:
+                                        baseURL.absoluteString,
+                                    inlineData:
+                                        specification
+                                )
+                            )
                 else {
                     continue
                 }
@@ -691,14 +711,14 @@ private final class ARDOpenAPIReflector:
         ARDOpenAPICandidate
 
     private let underlying:
-        OpenAPIReflector
+        any CapabilityReflector
 
     init(
         registryID: String,
         candidate:
             ARDOpenAPICandidate,
         underlying:
-            OpenAPIReflector
+            any CapabilityReflector
     ) {
         self.registryID =
             registryID

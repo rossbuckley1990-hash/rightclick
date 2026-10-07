@@ -68,16 +68,13 @@ struct FederationPeerConfiguration:
             components.scheme?
                 .lowercased()
                 == "http",
-            let host =
+            let rawHost =
                 components.host?
                     .lowercased(),
-            [
-                "localhost",
-                "127.0.0.1",
-                "::1",
-            ].contains(
-                host
-            ),
+            let host =
+                Self.canonicalLoopbackHost(
+                    rawHost
+                ),
             components.user == nil,
             components.password == nil,
             components.query == nil,
@@ -91,10 +88,52 @@ struct FederationPeerConfiguration:
         components.scheme =
             "http"
 
+        // macOS 14+ ATS blocks cleartext URLSession loads to IP
+        // addresses. The value above has already been proven to be
+        // loopback-only, so canonicalize IP literals to localhost
+        // before the MCP HTTP client sees them.
         components.host =
-            host
+            host == "localhost"
+            ? host
+            : "localhost"
 
         return components.url
+    }
+
+    private static func canonicalLoopbackHost(
+        _ rawHost: String
+    ) -> String? {
+        let host: String
+
+        if
+            rawHost.hasPrefix("["),
+            rawHost.hasSuffix("]"),
+            rawHost.count >= 2
+        {
+            host =
+                String(
+                    rawHost
+                        .dropFirst()
+                        .dropLast()
+                )
+        } else {
+            host =
+                rawHost
+        }
+
+        guard
+            [
+                "localhost",
+                "127.0.0.1",
+                "::1",
+            ].contains(
+                host
+            )
+        else {
+            return nil
+        }
+
+        return host
     }
 
     private var isValid: Bool {
@@ -836,8 +875,58 @@ private final class MCPFederationPeerTransport:
             )
         }
 
-        let token =
-            self.token
+        let body =
+            try JSONEncoder()
+                .encode(
+                    FederationJSONRPCToolRequest(
+                        id:
+                            UUID()
+                                .uuidString,
+                        name:
+                            name,
+                        arguments:
+                            arguments
+                    )
+                )
+
+        var request =
+            URLRequest(
+                url:
+                    endpoint
+            )
+
+        request.httpMethod =
+            "POST"
+
+        request.httpBody =
+            body
+
+        request.timeoutInterval =
+            10
+
+        request.setValue(
+            "application/json",
+            forHTTPHeaderField:
+                "Content-Type"
+        )
+
+        request.setValue(
+            "application/json",
+            forHTTPHeaderField:
+                "Accept"
+        )
+
+        request.setValue(
+            "2025-03-26",
+            forHTTPHeaderField:
+                "MCP-Protocol-Version"
+        )
+
+        request.setValue(
+            "Bearer \(token)",
+            forHTTPHeaderField:
+                "Authorization"
+        )
 
         return try waitForFederation {
             let configuration =
@@ -852,96 +941,178 @@ private final class MCPFederationPeerTransport:
                 .timeoutIntervalForResource =
                     10
 
-            let transport =
-                HTTPClientTransport(
-                    endpoint:
-                        endpoint,
+            let session =
+                URLSession(
                     configuration:
-                        configuration,
-                    streaming:
-                        false,
-                    requestModifier: {
-                        request in
-
-                        var request =
-                            request
-
-                        request.setValue(
-                            "Bearer \(token)",
-                            forHTTPHeaderField:
-                                "Authorization"
-                        )
-
-                        return request
-                    }
+                        configuration
                 )
 
-            let client =
-                Client(
-                    name:
-                        "rightclick-federation",
-                    version:
-                        RightClickVersion
-                            .current
-                )
-
-            do {
-                _ =
-                    try await client.connect(
-                        transport:
-                            transport
-                    )
-
-                let response =
-                    try await client.callTool(
-                        name:
-                            name,
-                        arguments:
-                            arguments
-                    )
-
-                await client.disconnect()
-
-                guard
-                    response.isError
-                        != true,
-                    let first =
-                        response
-                            .content
-                            .first,
-                    case
-                        .text(
-                            let text,
-                            _,
-                            _
-                        ) =
-                            first,
-                    let data =
-                        text.data(
-                            using:
-                                .utf8
-                        )
-                else {
-                    throw RightClickError(
-                        "Federated peer returned no decodable text result."
-                    )
-                }
-
-                return try JSONDecoder()
-                    .decode(
-                        ResultType.self,
-                        from:
-                            data
-                    )
-            } catch {
-                await client.disconnect()
-
-                throw error
+            defer {
+                session
+                    .invalidateAndCancel()
             }
+
+            let (
+                responseData,
+                response
+            ) =
+                try await session
+                    .data(
+                        for:
+                            request
+                    )
+
+            guard
+                let http =
+                    response
+                        as? HTTPURLResponse
+            else {
+                throw RightClickError(
+                    "Federated peer returned no HTTP response."
+                )
+            }
+
+            guard
+                http.statusCode
+                    == 200
+            else {
+                throw RightClickError(
+                    "Federated peer returned HTTP \(http.statusCode)."
+                )
+            }
+
+            let envelope =
+                try JSONDecoder()
+                    .decode(
+                        FederationJSONRPCResponse.self,
+                        from:
+                            responseData
+                    )
+
+            if let error =
+                envelope.error
+            {
+                throw RightClickError(
+                    "Federated peer JSON-RPC error \(error.code): \(error.message)"
+                )
+            }
+
+            guard
+                let result =
+                    envelope.result,
+                result.isError
+                    != true,
+                let first =
+                    result.content
+                        .first,
+                first.type
+                    == "text",
+                let text =
+                    first.text,
+                let data =
+                    text.data(
+                        using:
+                            .utf8
+                    )
+            else {
+                throw RightClickError(
+                    "Federated peer returned no decodable text result."
+                )
+            }
+
+            return try JSONDecoder()
+                .decode(
+                    ResultType.self,
+                    from:
+                        data
+                )
         }
     }
 }
 
+private struct FederationJSONRPCToolRequest:
+    Encodable
+{
+    let jsonrpc =
+        "2.0"
+
+    let id:
+        String
+
+    let method =
+        "tools/call"
+
+    let params:
+        FederationJSONRPCToolParameters
+
+    init(
+        id: String,
+        name: String,
+        arguments:
+            [String: Value]?
+    ) {
+        self.id =
+            id
+
+        self.params =
+            FederationJSONRPCToolParameters(
+                name:
+                    name,
+                arguments:
+                    arguments
+            )
+    }
+}
+
+private struct FederationJSONRPCToolParameters:
+    Encodable
+{
+    let name:
+        String
+
+    let arguments:
+        [String: Value]?
+}
+
+private struct FederationJSONRPCResponse:
+    Decodable
+{
+    let result:
+        FederationJSONRPCToolResult?
+
+    let error:
+        FederationJSONRPCError?
+}
+
+private struct FederationJSONRPCError:
+    Decodable
+{
+    let code:
+        Int
+
+    let message:
+        String
+}
+
+private struct FederationJSONRPCToolResult:
+    Decodable
+{
+    let content:
+        [FederationJSONRPCContent]
+
+    let isError:
+        Bool?
+}
+
+private struct FederationJSONRPCContent:
+    Decodable
+{
+    let type:
+        String
+
+    let text:
+        String?
+}
 private struct FederationActionsPayload:
     Codable,
     Sendable

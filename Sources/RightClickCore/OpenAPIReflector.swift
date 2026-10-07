@@ -1806,24 +1806,6 @@ public final class OpenAPIReflector: CapabilityReflector {
                     Bool
 
                 if method == "get" {
-                    let responseSchema =
-                        supportedJSONObjectResponseSchema(
-                            operation
-                        )
-
-                    responseJSONSyntaxOnly =
-                        responseSchema == nil
-                        && hasDeclaredJSONResponseSchema(
-                            operation
-                        )
-
-                    guard
-                        responseSchema != nil
-                        || responseJSONSyntaxOnly
-                    else {
-                        continue
-                    }
-
                     let pathSchema =
                         supportedPathArgumentSchema(
                             path:
@@ -1870,14 +1852,48 @@ public final class OpenAPIReflector: CapabilityReflector {
                     requestContentType =
                         nil
 
-                    responseContentType =
-                        "application/json"
-
                     requestJSONSchema =
                         nil
 
-                    responseJSONSchema =
-                        responseSchema
+                    if
+                        supportsPlainTextResponse(
+                            operation
+                        )
+                    {
+                        responseJSONSyntaxOnly =
+                            false
+
+                        responseContentType =
+                            "text/plain"
+
+                        responseJSONSchema =
+                            nil
+
+                    } else {
+                        let responseSchema =
+                            supportedJSONObjectResponseSchema(
+                                operation
+                            )
+
+                        responseJSONSyntaxOnly =
+                            responseSchema == nil
+                            && hasDeclaredJSONResponseSchema(
+                                operation
+                            )
+
+                        guard
+                            responseSchema != nil
+                            || responseJSONSyntaxOnly
+                        else {
+                            continue
+                        }
+
+                        responseContentType =
+                            "application/json"
+
+                        responseJSONSchema =
+                            responseSchema
+                    }
 
                 } else {
                     zeroArgumentGET =
