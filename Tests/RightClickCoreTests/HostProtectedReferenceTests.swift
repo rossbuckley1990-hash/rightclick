@@ -47,11 +47,13 @@ final class HostProtectedReferenceTests: XCTestCase {
     func testBroaderNativeReadAuthorityIsDenied() throws {
         let selected = try file("broader-reference", Data("dummy-private-reference".utf8))
 #if os(Windows)
-        let command = Process()
-        command.executableURL = URL(fileURLWithPath: (ProcessInfo.processInfo.environment["SystemRoot"] ?? "C:\\Windows") + "\\System32\\icacls.exe")
-        command.arguments = [selected.path, "/grant", "*S-1-1-0:(R)"]
-        command.standardOutput = FileHandle.nullDevice; command.standardError = FileHandle.nullDevice
-        try command.run(); command.waitUntilExit(); XCTAssertEqual(command.terminationStatus, 0)
+        for grant in ["*S-1-1-0:(R)", "*S-1-1-0:(F)"] {
+            try nativeCommand("icacls.exe", [selected.path, "/grant", grant])
+            XCTAssertThrowsError(try RCIRHostConfiguration.protectedRead(selected.path, maximum: 1024))
+            XCTAssertThrowsError(try CapabilityProtectedReference.read(selected.path, maximum: 1024))
+            XCTAssertEqual(selected.path.withCString { rc_host_harden_private($0, 0) }, 0)
+        }
+        try nativeCommand("icacls.exe", [selected.path, "/grant", "*S-1-1-0:(R)"])
 #else
         try FileManager.default.setAttributes([.posixPermissions: 0o644], ofItemAtPath: selected.path)
 #endif
@@ -62,6 +64,41 @@ final class HostProtectedReferenceTests: XCTestCase {
         XCTAssertEqual(selected.path.withCString { rc_host_harden_private($0, 0) }, 0)
 #endif
     }
+#if os(Windows)
+    private func nativeCommand(_ executable: String, _ arguments: [String]) throws {
+        let command = Process()
+        let system = ProcessInfo.processInfo.environment["SystemRoot"] ?? "C:\\Windows"
+        command.executableURL = URL(fileURLWithPath: system + "\\System32\\" + executable)
+        command.arguments = arguments
+        command.standardOutput = FileHandle.nullDevice; command.standardError = FileHandle.nullDevice
+        try command.run(); command.waitUntilExit()
+        XCTAssertEqual(command.terminationStatus, 0)
+        guard command.terminationStatus == 0 else { throw RCIRError.authorityDenied }
+    }
+    func testNullDACLNeverBecomesProtectedAuthority() throws {
+        let selected = try file("null-dacl", Data("dummy-private-reference".utf8))
+        let path = selected.path.replacingOccurrences(of: "'", with: "''")
+        let script = "$acl=Get-Acl -LiteralPath '\(path)'; $acl.SetSecurityDescriptorSddlForm('D:NO_ACCESS_CONTROL', [System.Security.AccessControl.AccessControlSections]::Access); Set-Acl -LiteralPath '\(path)' -AclObject $acl -ErrorAction Stop"
+        try nativeCommand("WindowsPowerShell\\v1.0\\powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", script])
+        XCTAssertThrowsError(try RCIRHostConfiguration.protectedRead(selected.path, maximum: 1024))
+        XCTAssertThrowsError(try CapabilityProtectedReference.read(selected.path, maximum: 1024))
+        XCTAssertEqual(selected.path.withCString { rc_host_harden_private($0, 0) }, 0)
+    }
+    func testParentDirectoryJunctionCannotRedirectProtectedReference() throws {
+        let actual = root.appendingPathComponent("actual", isDirectory: true)
+        try FileManager.default.createDirectory(at: actual, withIntermediateDirectories: false)
+        XCTAssertEqual(actual.path.withCString { rc_host_harden_private($0, 1) }, 0)
+        let selected = actual.appendingPathComponent("reference")
+        try Data("dummy-private-reference".utf8).write(to: selected, options: .withoutOverwriting)
+        files.append(selected)
+        XCTAssertEqual(selected.path.withCString { rc_host_harden_private($0, 0) }, 0)
+        let alias = root.appendingPathComponent("alias", isDirectory: true)
+        try nativeCommand("cmd.exe", ["/c", "mklink", "/J", alias.path, actual.path])
+        defer { try? FileManager.default.removeItem(at: alias) }
+        XCTAssertThrowsError(try CapabilityProtectedReference.read(alias.appendingPathComponent("reference").path, maximum: 1024))
+        XCTAssertEqual(try CapabilityProtectedReference.read(selected.path, maximum: 1024), Data("dummy-private-reference".utf8))
+    }
+#endif
     func testDirectoriesAndOversizedFilesNeverBecomeReferences() throws {
         XCTAssertThrowsError(try CapabilityProtectedReference.read(root.path, maximum: 64))
         let selected = try file("oversized-reference", Data(repeating: 19, count: 65))

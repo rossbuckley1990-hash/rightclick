@@ -45,6 +45,24 @@ static int same_final_path(HANDLE file, const WCHAR *path) {
     return _wcsicmp(expected, wcsncmp(actual, L"\\\\?\\", 4) == 0 ? actual + 4 : actual) == 0;
 }
 
+static int current_owner(HANDLE file, TOKEN_USER *user) {
+    PSID owner = NULL;
+    PSECURITY_DESCRIPTOR descriptor = NULL;
+    int result = GetSecurityInfo(file, SE_FILE_OBJECT, OWNER_SECURITY_INFORMATION,
+        &owner, NULL, NULL, NULL, &descriptor) == ERROR_SUCCESS &&
+        owner && IsValidSid(owner) && EqualSid(owner, user->User.Sid);
+    if (descriptor) LocalFree(descriptor);
+    return result;
+}
+
+static int set_readonly(HANDLE file, int readonly) {
+    FILE_BASIC_INFO information;
+    if (!GetFileInformationByHandleEx(file, FileBasicInfo, &information, sizeof(information))) return 0;
+    if (readonly) information.FileAttributes |= FILE_ATTRIBUTE_READONLY;
+    else information.FileAttributes &= ~FILE_ATTRIBUTE_READONLY;
+    return SetFileInformationByHandle(file, FileBasicInfo, &information, sizeof(information)) != 0;
+}
+
 static int protected_authority(HANDLE file) {
     TOKEN_USER *user = current_user();
     if (!user) return 0;
@@ -120,13 +138,15 @@ int rc_host_harden_private(const char *path, int directory) {
     WCHAR *wide = wide_path(path);
     TOKEN_USER *user = current_user();
     if (!wide || !user) { free(wide); free(user); return 2; }
-    HANDLE file = CreateFileW(wide, READ_CONTROL | WRITE_DAC | WRITE_OWNER, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+    HANDLE file = CreateFileW(wide, READ_CONTROL | WRITE_DAC | FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                               FILE_FLAG_OPEN_REPARSE_POINT | (directory ? FILE_FLAG_BACKUP_SEMANTICS : 0), NULL);
     int result = 2;
     if (file == INVALID_HANDLE_VALUE) goto done;
     BY_HANDLE_FILE_INFORMATION information;
-    if (!GetFileInformationByHandle(file, &information) ||
-        information.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT || !same_final_path(file, wide)) goto close;
+    if (GetFileType(file) != FILE_TYPE_DISK || !GetFileInformationByHandle(file, &information) ||
+        information.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT ||
+        !!(information.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != !!directory ||
+        !same_final_path(file, wide) || !current_owner(file, user)) goto close;
     EXPLICIT_ACCESS_W entry = {0};
     entry.grfAccessPermissions = FILE_ALL_ACCESS;
     entry.grfAccessMode = SET_ACCESS;
@@ -136,12 +156,12 @@ int rc_host_harden_private(const char *path, int directory) {
     entry.Trustee.ptstrName = (LPWSTR)user->User.Sid;
     PACL acl = NULL;
     if (SetEntriesInAclW(1, &entry, NULL, &acl) != ERROR_SUCCESS) goto close;
-    if (SetSecurityInfo(file, SE_FILE_OBJECT, OWNER_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION | PROTECTED_DACL_SECURITY_INFORMATION,
-                        user->User.Sid, NULL, acl, NULL) == ERROR_SUCCESS && protected_authority(file)) result = 0;
+    if (SetSecurityInfo(file, SE_FILE_OBJECT, DACL_SECURITY_INFORMATION | PROTECTED_DACL_SECURITY_INFORMATION,
+                        NULL, NULL, acl, NULL) == ERROR_SUCCESS && protected_authority(file) &&
+                        (directory || set_readonly(file, 1))) result = 0;
     LocalFree(acl);
 close:
     CloseHandle(file);
-    if (!directory && result == 0 && !SetFileAttributesW(wide, information.dwFileAttributes | FILE_ATTRIBUTE_READONLY)) result = 2;
 done:
     free(user); free(wide); return result;
 }
@@ -156,7 +176,7 @@ int rc_host_release_snapshot(const char *path) {
         if (GetFileInformationByHandle(file, &information) &&
             !(information.dwFileAttributes & (FILE_ATTRIBUTE_REPARSE_POINT | FILE_ATTRIBUTE_DIRECTORY)) &&
             same_final_path(file, wide) && protected_authority(file) &&
-            SetFileAttributesW(wide, information.dwFileAttributes & ~FILE_ATTRIBUTE_READONLY)) result = 0;
+            set_readonly(file, 0)) result = 0;
         CloseHandle(file);
     }
     free(wide); return result;

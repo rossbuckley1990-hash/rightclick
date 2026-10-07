@@ -32,11 +32,11 @@ The listener binds only to `127.0.0.1`. HTTP bearer authentication, MCP origin/h
 | Bonjour browsing | Available | Unavailable | Unavailable |
 | Keychain authority persistence | Available | Unavailable | Unavailable |
 | ImageIO metadata and macOS extended-attribute observation | Available | Abstains | Abstains |
-| Protected RCIR configuration/signing-key files | Available | Available | Unavailable until a Windows ACL adapter is implemented |
+| Protected RCIR configuration/signing-key files | Available | Available | Candidate handle-bound owner/ACL adapter; native validation pending |
 | Bounded experience ledger | Memory or protected disk | Memory or protected disk | Memory; explicit disk requests fail closed |
 | Native client registration and persistent ChatGPT bridge | Available | Manual MCP configuration | Manual MCP configuration |
 
-Unavailable adapters never enter the capability graph as invokable actions. Missing observation support does not establish success. An unsupported secure store does not fall back to plaintext credentials; authenticated capabilities remain unavailable without an authority backend. Windows refuses `RIGHTCLICK_RCIR_CONFIG` file reads rather than dropping POSIX ownership checks or silently ignoring operator policy. The generic in-process RCIR admission boundary remains active.
+Unavailable adapters never enter the capability graph as invokable actions. Missing observation support does not establish success. An unsupported secure store does not fall back to plaintext credentials; authenticated capabilities remain unavailable without an authority backend. The Windows candidate reads operator-selected configuration through a handle-bound owner and DACL adapter, rejecting null or unsupported DACLs, non-private grants, reparse points and redirected parent paths. Native Windows validation is still a release gate; the earlier explicit refusal is preserved in baseline evidence. The generic in-process RCIR admission boundary remains active.
 
 Windows support means the shared runtime can execute its supported substrates; it does not claim macOS integration parity. Every release must pass the Windows build and real-provider acceptance job before a Windows support claim or binary is published.
 
