@@ -18,13 +18,17 @@ canonical = importlib.util.module_from_spec(spec); spec.loader.exec_module(canon
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument("binary", type=pathlib.Path); parser.add_argument("output", type=pathlib.Path)
-    parser.add_argument("--expect-red", action="store_true"); parser.add_argument("--acknowledgement-only", action="store_true"); args = parser.parse_args()
+    parser.add_argument("--expect-red", action="store_true"); parser.add_argument("--acknowledgement-only", action="store_true")
+    parser.add_argument("--causal", action="store_true", help="Require an independently read host invocation marker; include old/no-op and protected-secret controls.")
+    args = parser.parse_args()
     if args.expect_red and args.acknowledgement_only: parser.error("Legacy text RED and ACK-only proof are separate boundaries.")
+    if args.expect_red and args.causal: parser.error("The legacy whole-text RED cannot express structured causal observation.")
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=True)
     report, processes = {"runKind": "NEW_RUN", "controls": {}}, []
     with tempfile.TemporaryDirectory(prefix="rightclick-http-json-acceptance-") as temporary:
         tmp = pathlib.Path(temporary)
         if args.acknowledgement_only: (tmp / "ack-response").write_text("fixture declaration has no output")
+        if args.causal: (tmp / "include-invocation").write_text("host marker required")
         for name in ["observer.token", "writer.token"]:
             (tmp / name).write_text(uuid.uuid4().hex); (tmp / name).chmod(0o600)
         for role in ["provider", "observer", "trap"]:
@@ -50,8 +54,11 @@ def main():
                 assert explanation["output"] == [] and explanation["metadata"]["resultValidation"] == "no_declared_output"
             schema = {"type": "object", "properties": {k: {"type": "string"} for k in ["challenge", "result", "machine", "observation", "observerPrincipal", "platform", "principal"]}, "additionalProperties": False}
             schema["properties"]["uid"] = {"type": "null"}; schema["required"] = list(schema["properties"])
+            if args.causal:
+                schema["properties"]["invocationID"] = {"type": "string"}; schema["required"].append("invocationID")
             settings["observers"] = {capability["id"]: {"urlTemplate": observer + "/observations/{id}", "trustedOrigin": observer, "credentialFile": str(tmp / "observer.token"),
                 "jsonObservation": {"schemaJSON": json.dumps(schema), "fields": {"challenge": {"path": ["challenge"], "argument": "id"}, "result": {"path": ["result"], "expectedOutput": True}}}}}
+            if args.causal: settings["observers"][capability["id"]]["jsonObservation"]["invocationBindingPath"] = ["invocationID"]
             if args.expect_red:
                 settings["observers"] = {capability["id"]: {"urlTemplate": observer + "/public-json/{id}", "trustedOrigin": observer, "expectedArgument": "id"}}
             save()
@@ -65,6 +72,17 @@ def main():
             settings["deniedCapabilities"] = [capability["id"]]; save()
             denied = invoke(); assert denied["state"] == "rejected" and not (tmp / "records" / challenge).exists()
             settings["deniedCapabilities"] = []; save()
+            if args.causal:
+                old_marker = "11111111-1111-4111-8111-111111111111"
+                (tmp / "records" / challenge).write_text(value); (tmp / "records" / (challenge + ".invocation")).write_text(old_marker)
+                (tmp / "noop-provider").write_text("accept without mutation")
+                old = invoke(); assert old["state"] == "failed" and old["rcir"]["outcome"] == "failed"
+                rows = [json.loads(row) for row in (tmp / "effects.jsonl").read_text().splitlines()]
+                assert len(rows) == 1 and rows[0]["mutationApplied"] is False
+                assert (tmp / "records" / (challenge + ".invocation")).read_text() == old_marker
+                canonical.verify(old, tmp, out, trusted); (out / "success-receipt.json").rename(out / "old-marker-failed-receipt.json")
+                (tmp / "noop-provider").unlink(); (tmp / "records" / challenge).unlink(); (tmp / "records" / (challenge + ".invocation")).unlink()
+                report["controls"]["oldMatchingArtifact"] = "PASS — actual no-op acknowledgement and independently read old matching artifact produce signed failed outcome; original marker unchanged"
             result = invoke(); assert (tmp / "records" / challenge).read_text() == value
             if args.expect_red:
                 assert result["state"] == "failed" and result["rcir"]["outcome"] == "failed"
@@ -76,12 +94,26 @@ def main():
             assert result["state"] == "succeeded" and result["rcir"]["outcome"] == "succeeded", result
             if args.acknowledgement_only: assert result.get("output") is None
             receipt = canonical.verify(result, tmp, out, trusted)
+            if args.causal:
+                assert (tmp / "records" / (challenge + ".invocation")).read_text() == result["rcir"]["taskID"]
+                report["controls"]["invocationBinding"] = "PASS — independently stored marker exactly matches current host task identity before semantic success"
             for field in [challenge, digest, "fixture-readonly", "independent-file-sha256"]: assert field.encode() in receipt
             status = runtime.call("context_run_status", {"executionId": result["executionId"]})
             assert status["rcir"]["signedReceipt"] == result["rcir"]["signedReceipt"]
             report["controls"]["independentStructuredDigest"] = "PASS — distinct read-only credential/origin/process reads actual file and computes expected caller digest; complete metadata signed"
             report["controls"]["signature"] = "PASS — separately pinned OpenSSL Ed25519 verification"
             report["controls"]["confirmationPolicy"] = "PASS — both denials leave resource absent"
+            if args.causal:
+                (tmp / "echo-observer-credential").write_text("raw")
+                contaminated = invoke(); assert contaminated["state"] == "accepted" and contaminated["rcir"]["outcome"] == "unverified"
+                token = (tmp / "observer.token").read_bytes()
+                import base64
+                payload = base64.b64decode(contaminated["rcir"]["receipt"], validate=True)
+                assert token not in payload and token not in json.dumps(contaminated).encode()
+                canonical.verify(contaminated, tmp, out, trusted); (out / "success-receipt.json").rename(out / "credential-reflection-unverified-receipt.json")
+                # Preserve the independently verified success receipt separately.
+                (out / "success-receipt.json").write_text(json.dumps(result["rcir"]["signedReceipt"], indent=2))
+                report["controls"]["protectedCredentialReflection"] = "PASS — real observer echoes private bearer into declared metadata; runtime abstains and emits uncontaminated signed unverified receipt"
             processes[0].terminate(); processes[0].wait(timeout=10); time.sleep(5.1)
             assert not any(a["id"] == capability["id"] for a in runtime.call("context_actions", {"item": item})["actions"])
             assert runtime.request("tools/list")["tools"] == runtime.tools
@@ -90,6 +122,8 @@ def main():
                 report["status"] = "GREEN_FOR_GENERIC_ACK_ONLY_BOUNDARY"
                 report["controls"]["noDeclaredOutput"] = "PASS — acquired202 ACK declaration emits no typed provider value; independently verified external file effect determines success"
             report["controls"]["liveProviderRemoval"] = "PASS — dynamically acquired operation disappears; seven tool definitions unchanged"
+            if args.causal:
+                report["status"] = "GREEN_FOR_GENERIC_HTTP_CAUSAL_AND_PROTECTED_OBSERVER_BOUNDARY"
             report["substrateBoundary"] = "Actual generic HTTP fixture/process proof; native Windows/Linux effects are separately required."
         finally:
             (out / "results.json").write_text(json.dumps(report, indent=2)); runtime.close()

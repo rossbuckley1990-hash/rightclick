@@ -13,6 +13,7 @@ struct RCIRJSONObservationConfiguration: Codable {
     }
     let schemaJSON: String
     let fields: [String: Field]
+    var invocationBindingPath: [String]? = nil
     var bindsExpectedOutput: Bool { fields.values.contains { $0.expectedOutput == true } }
 }
 
@@ -25,6 +26,7 @@ final class RCIRHTTPJSONObserver: RCIRObserver {
     private let origin: URL
     private let credential: CapabilityArtifactSnapshot?
     private let bearer: String?
+    private let sensitiveMaterial: CapabilitySensitiveMaterial?
 
     init(url: URL, origin: URL, credentialFile: String?) throws {
         self.url = url; self.origin = origin
@@ -36,7 +38,8 @@ final class RCIRHTTPJSONObserver: RCIRObserver {
                   !text.isEmpty, text.utf8.count <= 8192,
                   text.range(of: "^[A-Za-z0-9._~+/-]+=*$", options: .regularExpression) != nil else { throw RCIRError.authorityDenied }
             credential = snapshot; bearer = text
-        } else { credential = nil; bearer = nil }
+            sensitiveMaterial = try CapabilitySensitiveMaterial([Data(text.utf8)])
+        } else { credential = nil; bearer = nil; sensitiveMaterial = nil }
         observerID = "host:http-json:" + url.absoluteString + ":" + (credentialFile ?? "public")
     }
     func observe(_ request: RCIRObservationRequest) throws -> CapabilityValue {
@@ -48,7 +51,9 @@ final class RCIRHTTPJSONObserver: RCIRObserver {
         if let bearer { query.setValue("Bearer " + bearer, forHTTPHeaderField: "Authorization") }
         let bytes = try OriginPinnedHTTP.loadObservation(query, maximumBytes: 131_072)
         guard credential?.sourceStillMatches() ?? true else { throw RCIRError.authorityDenied }
-        return try CapabilityJSON.value(JSONSerialization.jsonObject(with: bytes))
+        let value = try CapabilityJSON.value(JSONSerialization.jsonObject(with: bytes))
+        try sensitiveMaterial?.requireAbsent(in: value)
+        return value
     }
 }
 
@@ -86,9 +91,14 @@ extension RCIRHostConfiguration.Observer {
         let observer = try RCIRHTTPJSONObserver(url: url, origin: origin, credentialFile: credentialFile)
         let contract = RCIRVerificationContract(observerID: observer.observerID,
             schema: .object(properties: expected.mapValues { _ in .string }, required: Array(expected.keys)),
-            expected: .object(expected), projection: .init(schema: fullSchema, fields: paths))
+            expected: .object(expected), projection: .init(schema: fullSchema, fields: paths),
+            invocationBindingPath: jsonObservation.invocationBindingPath)
         return .init(contract: contract, observer: observer,
-            boundary: "Independent host-pinned JSON GET with explicit protected read-only credential reference; no cookies or ambient credentials. Exact admitted argument/caller postconditions, complete typed observation retained.")
+            boundary: "Independent host-pinned JSON GET with explicit protected read-only credential reference; no cookies or ambient credentials. "
+                + (jsonObservation.invocationBindingPath == nil
+                    ? "Exact host-declared state predicate; this does not establish current mutation causality. "
+                    : "Exact admitted argument/caller postconditions and independent host task marker establish invocation binding. ")
+                + "Protected credential reflection is rejected before retaining the typed observation.")
     }
 }
 

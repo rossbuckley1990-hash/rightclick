@@ -77,7 +77,8 @@ struct RCIRHostConfiguration: Codable {
             for value in observers.values {
                 guard Set(value.keys).isSubset(of: ["urlTemplate", "expectedArgument", "trustedOrigin", "credentialFile", "jsonObservation"]) else { throw RCIRError.invalidContract }
                 if let json = value["jsonObservation"] as? [String: Any] {
-                    guard Set(json.keys) == ["schemaJSON", "fields"], let fields = json["fields"] as? [String: [String: Any]] else { throw RCIRError.invalidContract }
+                    guard Set(json.keys).isSubset(of: ["schemaJSON", "fields", "invocationBindingPath"]),
+                          let fields = json["fields"] as? [String: [String: Any]] else { throw RCIRError.invalidContract }
                     for field in fields.values {
                         guard Set(field.keys).isSubset(of: ["path", "argument", "expectedOutput"]) else { throw RCIRError.invalidContract }
                     }
@@ -374,7 +375,15 @@ public final class RCIRExecutionHost {
                         try? task.verify(observerID: structured.observer.observerID, now: now()) { _, _ in value }
                     }
                     record.state = task.outcome == .succeeded ? .succeeded : (task.outcome == .failed ? .failed : .accepted)
-                    record.message = task.outcome == .unverified ? "Provider completed; independent structured observation is unavailable." : "Independent structured observation determined the exact requested outcome."
+                    switch task.outcome {
+                    case .unverified: record.message = "Provider completed; independent structured observation is unavailable."
+                    case .succeeded:
+                        record.message = structured.contract.invocationBindingPath == nil
+                            ? "Independent observation matched the host-declared state predicate; this does not establish current mutation causality."
+                            : "Independent observation matched the exact requested state and the host invocation marker."
+                    case .failed: record.message = "Independent observation did not match the required state or invocation binding."
+                    case .unknown: record.message = "The external outcome is unknown."
+                    }
                     record.evidence = OutcomeEvidence(type: "rcir_structured_observation", boundary: structured.boundary,
                         outcomeVerified: task.outcome == .succeeded)
                 } else if task.phase == .completed, let observation {

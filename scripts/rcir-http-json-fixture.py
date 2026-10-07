@@ -2,6 +2,7 @@
 """Actual separate mutation, read-only observer and redirect trap HTTP processes.
 Fixture tokens stay in protected disposable files, never logs or tool payloads.
 """
+import base64
 import hashlib
 import http.server
 import json
@@ -64,9 +65,19 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if (root / "include-invocation").exists():
             marker = root / "records" / (challenge + ".invocation")
             if marker.exists(): body["invocationID"] = marker.read_text()
-        if (root / "echo-observer-credential").exists(): body["machine"] = readonly
+        echo = root / "echo-observer-credential"
+        mode = echo.read_text() if echo.exists() else "none"
+        if mode == "raw" or mode == "json-unicode": body["machine"] = readonly
+        elif mode == "base64": body["machine"] = base64.b64encode(readonly.encode()).decode()
+        elif mode == "base64url": body["machine"] = base64.urlsafe_b64encode(readonly.encode()).decode().rstrip("=")
+        elif mode == "base64-authorization": body["machine"] = base64.b64encode(("Bearer " + readonly).encode()).decode()
+        elif mode == "hex": body["machine"] = readonly.encode().hex()
         if challenge == "extra": body["undeclared"] = "rejected"
-        response = json.dumps(body).encode(); self.send_response(200); self.send_header("Content-Type", "application/json")
+        response_text = json.dumps(body)
+        if mode == "json-unicode":
+            escaped = '"' + ''.join('\\u%04x' % ord(c) for c in readonly) + '"'
+            response_text = response_text.replace(json.dumps(readonly), escaped)
+        response = response_text.encode(); self.send_response(200); self.send_header("Content-Type", "application/json")
         self.send_header("Set-Cookie", "rightclick-injected=must-not-persist; Path=/")
         self.send_header("Content-Length", str(len(response))); self.end_headers(); self.wfile.write(response)
 server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
