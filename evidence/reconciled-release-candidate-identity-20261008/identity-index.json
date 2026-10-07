@@ -87,11 +87,15 @@
       "lastOutputElapsedSeconds": 98.422,
       "outputDrainCompleted": true,
       "drainError": null,
-      "ownedCleanup": "Completed by native Job Object deadline; no manual cancellation",
+      "ownedCleanup": "Owned API cleanup and root reap/drain completed; descendant exit status/post-cleanup membership not attested",
       "actualSupervisorSelfChecks": "8 tests /0 skips /0 failures in9.833s",
       "fullDiscovery": "666 distinct test names /667 log lines",
       "releaseAndActualCore7": "SKIPPED after failed integrated deadline",
-      "cause": "UNKNOWN; no test-start rows or assertion summary retained; do not infer failing fixture/test, deadlock or inner buffering from process metadata"
+      "cause": "UNKNOWN; no test-start rows or assertion summary retained; do not infer failing fixture/test, deadlock or inner buffering from process metadata",
+      "reviewedEvidence": "windows-primary-terminal-20261008",
+      "evidenceManifestSHA256": "ba094ab0f42c410bff420dbbeb222c6fa372a04bd634dd634bfa4f112f32b6ca",
+      "outerPowerShellStepExit": 1,
+      "naturalSwiftPMOrXCTestExit": "NOT_OBSERVED; forced deadline is not a natural test result"
     },
     "separateDirectRunnerDiagnostic": {
       "head": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
