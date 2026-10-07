@@ -1,0 +1,35 @@
+{
+  "appleCryptoKitBackend": "NOT_RUN_ON_LINUX",
+  "cryptographyVersion": "50.0.1",
+  "keyProvenance": "EPHEMERAL_FIXTURE_ONLY",
+  "negativeControlsRejected": [
+    "tampered_payload",
+    "tampered_signature",
+    "algorithm_downgrade",
+    "boolean_version",
+    "unknown_field",
+    "truncated_signature",
+    "embedded_key_substitution",
+    "noncanonical_base64",
+    "wrong_trusted_key",
+    "duplicate_json_key",
+    "openssl_tampered_payload"
+  ],
+  "opensslVersion": "OpenSSL 3.6.5 29 Sep 2026 (Library: OpenSSL 3.6.5 29 Sep 2026)",
+  "privateKeyPersisted": false,
+  "receipts": [
+    {
+      "opensslVerification": "VALID",
+      "payloadSHA256": "35fec4e3b5a44dcc6938fccfa23e56ee9c461d172cf4b55136bbd46f4591ead4",
+      "pythonVerification": "VALID",
+      "receipt": "success"
+    },
+    {
+      "opensslVerification": "VALID",
+      "payloadSHA256": "38ef184a4fb2953076bce26818be16a677560c250d42ef8e2636d5c5b61493b4",
+      "pythonVerification": "VALID",
+      "receipt": "mismatch"
+    }
+  ],
+  "scope": "Real signatures on Swift-produced local fixture receipts; not production runtime signing"
+}

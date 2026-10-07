@@ -1,0 +1,37 @@
+{
+  "result": "LOCAL_ACCEPTANCE_PASSED",
+  "branch": "feature/rcir-signed-claim-verification-20261007",
+  "baseCommit": "46bda19cc4b9c62ad4a6d8bbfbebb872c2e11e91",
+  "sourceFiles": {
+    "Sources/RightClickCore/RCIR.swift": "cdefce47180952ff8993a29758a236ae21942127b3842e5c69971635d5a3d9a4",
+    "Sources/RightClickCore/RCIRExecutionHost.swift": "7eb52b597ddd428d3b796f11ba6bf5d00ad44319706ce2f6ae9101e0d206bce2",
+    "Sources/RightClickCore/RCIRSignedReceipt.swift": "bf119cb004eea66a425fb197033f6b8c03db479c5683025e3c5095ff6cf72c1b",
+    "scripts/verify-rcir-receipt.py": "5ba8ad9dadef3553a362918e84e43f04d1d4d3e3cc0fe02f8f4007caff2b750f",
+    "scripts/acceptance-rcir-signed-evidence.py": "2c6b1482780c8305f3779c7a2b6c6f9442927e520b4e5a781a7708587351b3f9",
+    "scripts/acceptance-rcir-openapi.py": "e64bc27bc32db2939d2d25216cf0e5e4750255132eb983e4f5d207a476435879",
+    "scripts/rcir-dispatch-test-provider.py": "03d6e204a89d6c0aa17a9a499200771a7d0745289a453daa2dc16c18cdadcf5e",
+    "Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift": "4f8414ca99b776bdc58dd88c7aa7086332ed66365714f272ad59698d84f4cedc",
+    "Tests/test_rcir_receipt_verifier.py": "9f265860576abcea95cad97bab988ce49f1d96d0325ba0a26b46bba909636cc2"
+  },
+  "candidateBinarySHA256": "b51807ea0a81e822aea55dd915d725925d5198d01f5651119314f657edaecd4c",
+  "installedBinaryChanged": false,
+  "toolInterface": "UNCHANGED_SEVEN_OPERATIONS",
+  "nativeTests": 579,
+  "environmentSkips": 26,
+  "httpDispatchControls": 21,
+  "independentReceiptTests": 11,
+  "originalCryptoFixture": "PASS_2_RECEIPTS_11_REJECTION_CONTROLS",
+  "signedOutcomes": [
+    "succeeded",
+    "failed",
+    "unverified",
+    "unknown"
+  ],
+  "restrictedAgentProof": "NOT_RUN",
+  "issuerDownscopedAuthority": "NOT_PROVEN",
+  "productionSignerTrust": "NOT_PROVEN",
+  "rawReceiptMinimization": "NOT_IMPLEMENTED",
+  "elevenSubstrateProof": "NOT_RUN",
+  "release": "NOT_CREATED",
+  "logs": "LOSSLESS_GZIP"
+}

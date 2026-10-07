@@ -178,6 +178,22 @@ KIND_RULES: list[dict[str, object]] = [
         "any_files": ["Sources/RightClickCore/OAuthOIDCAuthority.swift"],
         "any_patterns": [r"OAuthOIDCAuthority|OIDC"],
     },
+    {
+        "id": "artifact.resolver.mcp",
+        "title": "Acquired MCP tool/schema capability resolver",
+        "any_files": ["Sources/RightClickCore/MCPCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"MCPCapabilityArtifactResolver"],
+        "composition_patterns": [r"MCPCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "artifact.resolver.wasm",
+        "title": "Actual component-model WIT capability resolver",
+        "any_files": ["Sources/RightClickCore/WASMCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"WASMCapabilityArtifactResolver"],
+        "composition_patterns": [r"WASMCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
 ]
 
 

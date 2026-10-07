@@ -273,6 +273,8 @@ public enum CapabilityArtifactResolverDefaults {
             [any CapabilityArtifactResolver] = [
                 OpenAPICapabilityArtifactResolver(),
                 GraphQLCapabilityArtifactResolver(),
+                MCPCapabilityArtifactResolver(),
+                WASMCapabilityArtifactResolver(),
             ]
 
 #if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)

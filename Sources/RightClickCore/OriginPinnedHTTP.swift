@@ -297,6 +297,15 @@ enum OriginPinnedHTTP {
         try boundedLoad(request.url!, maximumBytes: maximumBytes, template: .shared, initialRequest: request)
     }
 
+    /// Shared bounded exchange for descriptor protocols requiring response
+    /// headers (for example negotiated session identifiers). The same no-redirect,
+    /// origin, response size and deadline rules apply to acquisition and calls.
+    static func exchange(_ request: URLRequest, maximumBytes: Int = maximumAcquisitionBytes,
+                         admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> (Data, HTTPURLResponse) {
+        guard let url = request.url else { throw RightClickError("Missing exchange target.") }
+        return try boundedExchange(url, maximumBytes: maximumBytes, template: .shared, initialRequest: request, admitStart: admitStart)
+    }
+
     /// Bounded shared invocation edge. Admission consumes authority atomically
     /// with enqueue; response collection and waiting happen after its lock.
     static func loadInvocation(_ request: URLRequest, maximumBytes: Int,
@@ -315,6 +324,13 @@ enum OriginPinnedHTTP {
         initialRequest: URLRequest? = nil,
         admitStart: ((_ enqueue: () -> Void) throws -> Void)? = nil
     ) throws -> Data {
+        try boundedExchange(url, maximumBytes: maximumBytes, template: template,
+                            initialRequest: initialRequest, admitStart: admitStart).0
+    }
+
+    private static func boundedExchange(_ url: URL, maximumBytes: Int, template: URLSession,
+                                        initialRequest: URLRequest?,
+                                        admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> (Data, HTTPURLResponse) {
         precondition(
             maximumBytes > 0
         )
@@ -436,7 +452,7 @@ enum OriginPinnedHTTP {
                 .responseTooLarge
         }
 
-        return result.data
+        return (result.data, response)
     }
 
     /// Origin equality follows URL origin semantics:
