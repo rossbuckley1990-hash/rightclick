@@ -17,17 +17,20 @@ configuration path:
     rightclick setup --client generic --config /absolute/path/mcp.json --yes
 
 Setup preserves unrelated configuration, refuses conflicts and unsafe links,
-backs up changes privately, and records only its owned connection recipe and
-executable hash. It runs an actual child MCP lifecycle before and after the
+backs up JSON configuration privately, and records only its owned connection recipe and
+executable hash. Native registrations use recipe-based rollback. Consented setup
+and repair run an actual child MCP lifecycle before and after the
 transaction: initialize, exact seven-operation schema, context_runtime, matching
 PID/path/hash/profile. This proves that selected executable's local transport.
 An AI client's own handshake remains NOT_OBSERVED unless its adapter observes it.
-A later configuration edit belongs to that client and is never overwritten by
-rollback. Native commands that mutate and then fail are re-inspected before
+A later configuration edit belongs to that client; rollback refuses newer state
+observed during its inspection. Native commands that mutate and then fail are re-inspected before
 conditional cleanup; conflicting later registrations are preserved. Rollback
 status distinguishes restoration from residual unknown changes.
 The POSIX client configuration backend still uses guarded pathname operations;
 parent-directory moves between checks need further hardening and acceptance.
+Native client commands also have an inspection-to-command race boundary.
+Dry runs and setup disconnection do not run these local transport probes.
 
     rightclick doctor --fix --dry-run --json
     rightclick doctor --fix --json
@@ -36,8 +39,9 @@ Repair accepts only recipes in the private ownership ledger, re-inspects current
 registration, verifies the selected runtime, and rolls back its own changes on
 failure. It does not adopt a same-name registration merely because it exists.
 The existing macOS ChatGPT setup/bridge flow is retained; it has separate live
-attestation. Windows process-group/job disposal and real Windows/Linux client
-integration still require native acceptance; source compilation is not that proof.
+attestation. Windows uses direct child termination; Job-based descendant disposal
+still needs implementation and native acceptance. Real Windows/Linux client
+integration remains an open gate; source compilation is not that proof.
 
     rightclick connect https://provider.example
     rightclick connect https://provider.example/openapi.json

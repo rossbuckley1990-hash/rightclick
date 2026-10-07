@@ -31,6 +31,13 @@ jobs:
           set -o pipefail
           swift build -c release --product rightclick --force-resolved-versions 2>&1 | tee linux-build.log
           sha256sum .build/release/rightclick | tee linux-binary-sha256.txt
+      - name: Real Linux setup, repair and dynamic connection
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 scripts/acceptance-setup-lifecycle.py --binary .build/release/rightclick | tee linux-adoption-setup.json
+          python3 scripts/acceptance-connect-happy-path.py --binary .build/release/rightclick --evidence adoption-connect
+          python3 scripts/acceptance-adoption-security.py --binary .build/release/rightclick --evidence adoption-security --symlink-retarget
       - name: Real Linux provider through seven operations
         shell: bash
         run: |
@@ -45,6 +52,9 @@ jobs:
             portable-toolchain.txt
             linux-*.log
             linux-binary-sha256.txt
+            linux-adoption-setup.json
+            adoption-connect/
+            adoption-security/
   windows:
     runs-on: windows-2022
     steps:
@@ -104,4 +114,23 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: swift test --force-resolved-versions
       - run: scripts/build-cli.sh
+      - name: Real macOS setup, repair and dynamic connection
+        shell: bash
+        run: |
+          set -o pipefail
+          git rev-parse HEAD > macos-adoption-source.txt
+          swift --version > macos-adoption-toolchain.txt
+          shasum -a 256 .build/release/rightclick > macos-adoption-binary-sha256.txt
+          python3 scripts/acceptance-setup-lifecycle.py --binary .build/release/rightclick | tee macos-adoption-setup.json
+          python3 scripts/acceptance-connect-happy-path.py --binary .build/release/rightclick --evidence adoption-connect
+          python3 scripts/acceptance-adoption-security.py --binary .build/release/rightclick --evidence adoption-security --symlink-retarget
       - run: python3 scripts/acceptance-portable.py .build/release/rightclick
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-macos-adoption-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            macos-adoption-*.txt
+            macos-adoption-setup.json
+            adoption-connect/
+            adoption-security/

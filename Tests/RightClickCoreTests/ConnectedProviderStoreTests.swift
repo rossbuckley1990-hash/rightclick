@@ -49,7 +49,34 @@ final class ConnectedProviderStoreTests: XCTestCase {
         }
     }
 
+    func testRawDuplicateAndEscapedEquivalentObjectMembersAreRejected() {
+        let documents = [
+            #"{"schemaVersion":1,"schemaVersion":1,"providers":[]}"#,
+            #"{"schemaVersion":1,"providers":[],"providers":[]}"#,
+            #"{"schemaVersion":1,"providers":[],"\u0070roviders":[]}"#,
+            #"{"schemaVersion":1,"providers":[{"id":"first","id":"last","kind":"mcp","endpointURL":"https://provider.example/mcp"}]}"#,
+            #"{"schemaVersion":1,"providers":[{"id":"fixture","kind":"mcp","endpointURL":"https://provider.example/mcp","\u0065ndpointURL":"https://other.example/mcp"}]}"#,
+        ]
+        for document in documents {
+            XCTAssertThrowsError(try ConfiguredArtifactProviderStore.decode(Data(document.utf8)), document)
+        }
+    }
+
 #if canImport(Darwin) || canImport(Glibc)
+    func testAmbiguousExistingRegistryIsPreservedAndWithdrawsLiveSource() throws {
+        let destination = try file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
+        let source = ConfiguredArtifactProviderSource(configurationFile: destination,
+            registry: CapabilityArtifactResolverRegistry(resolvers: [Resolver()]))
+        try ConfiguredArtifactProviderStore.upsert(provider(), in: destination)
+        XCTAssertEqual(source.reflectors().map(\.id), ["fixture"])
+        let ambiguous = Data(#"{"schemaVersion":1,"providers":[{"id":"first","kind":"mcp","endpointURL":"https://provider.example/mcp"}],"providers":[{"id":"last","kind":"mcp","endpointURL":"https://other.example/mcp"}]}"#.utf8)
+        try ambiguous.write(to: destination)
+        XCTAssertThrowsError(try ConfiguredArtifactProviderStore.read(from: destination))
+        XCTAssertThrowsError(try ConfiguredArtifactProviderStore.upsert(provider("replacement"), in: destination))
+        XCTAssertEqual(try Data(contentsOf: destination), ambiguous)
+        XCTAssertEqual(source.reflectors().map(\.id), [], "Ambiguous descriptor authority must withdraw from a retained runtime.")
+    }
+
     func testDefaultHomeKeepsCanonicalOperatorPathAndExplicitAliasStillFailsClosed() throws {
         let home = try file().deletingLastPathComponent()
         try FileManager.default.createDirectory(at: home, withIntermediateDirectories: true,

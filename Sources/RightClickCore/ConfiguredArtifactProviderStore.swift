@@ -91,8 +91,9 @@ public enum ConfiguredArtifactProviderStore {
     }
 
     public static func decode(_ data: Data) throws -> [CapabilityArtifactDescriptor] {
-        guard data.count <= maximumBytes,
-              let root = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+        guard data.count <= maximumBytes else { throw RightClickError("Connected provider registry exceeds its bound.") }
+        try rejectDuplicateObjectKeys(data)
+        guard let root = try JSONSerialization.jsonObject(with: data) as? [String: Any],
               Set(root.keys) == ["schemaVersion", "providers"], let version = root["schemaVersion"] as? NSNumber,
               CFGetTypeID(version) != CFBooleanGetTypeID(), version == 1,
               let rows = root["providers"] as? [[String: Any]], rows.count <= 64 else {
@@ -108,6 +109,73 @@ public enum ConfiguredArtifactProviderStore {
         guard Set(providers.map(\.id)).count == providers.count else { throw RightClickError("Connected provider identifiers must be unique.") }
         for provider in providers { try validate(provider) }
         return providers.sorted { $0.id < $1.id }
+    }
+
+    /// Inspect raw member names before Foundation collapses duplicate keys.
+    /// This bounded walk also decodes escaped names; the full JSON grammar is
+    /// still checked independently by JSONSerialization in decode(_:).
+    private static func rejectDuplicateObjectKeys(_ data: Data) throws {
+        let bytes = Array(data)
+        var index = 0
+        func invalid() -> RightClickError { RightClickError("Connected provider registry has ambiguous or malformed JSON object keys.") }
+        func skipSpace() {
+            while index < bytes.count && [UInt8(9), 10, 13, 32].contains(bytes[index]) { index += 1 }
+        }
+        func stringToken() throws -> String {
+            let start = index
+            index += 1
+            while index < bytes.count {
+                if bytes[index] == 92 { index += 2; continue }
+                if bytes[index] == 34 {
+                    index += 1
+                    guard let value = try JSONSerialization.jsonObject(with: Data(bytes[start..<index]),
+                        options: [.fragmentsAllowed]) as? String else { throw invalid() }
+                    return value
+                }
+                index += 1
+            }
+            throw invalid()
+        }
+        func visit(depth: Int) throws {
+            guard depth < 32 else { throw invalid() }
+            skipSpace()
+            guard index < bytes.count else { throw invalid() }
+            switch bytes[index] {
+            case 123:
+                index += 1; skipSpace()
+                if index < bytes.count && bytes[index] == 125 { index += 1; return }
+                var keys = Set<String>()
+                while index < bytes.count {
+                    skipSpace()
+                    guard index < bytes.count && bytes[index] == 34 else { throw invalid() }
+                    guard keys.insert(try stringToken()).inserted else { throw invalid() }
+                    skipSpace()
+                    guard index < bytes.count && bytes[index] == 58 else { throw invalid() }
+                    index += 1; try visit(depth: depth + 1); skipSpace()
+                    guard index < bytes.count else { throw invalid() }
+                    if bytes[index] == 125 { index += 1; return }
+                    guard bytes[index] == 44 else { throw invalid() }
+                    index += 1
+                }
+            case 91:
+                index += 1; skipSpace()
+                if index < bytes.count && bytes[index] == 93 { index += 1; return }
+                while index < bytes.count {
+                    try visit(depth: depth + 1); skipSpace()
+                    guard index < bytes.count else { throw invalid() }
+                    if bytes[index] == 93 { index += 1; return }
+                    guard bytes[index] == 44 else { throw invalid() }
+                    index += 1
+                }
+            case 34:
+                _ = try stringToken()
+            default:
+                while index < bytes.count && ![UInt8(9), 10, 13, 32, 44, 93, 125].contains(bytes[index]) { index += 1 }
+            }
+        }
+        if bytes.starts(with: [0xEF, 0xBB, 0xBF]) { index = 3 }
+        try visit(depth: 0); skipSpace()
+        guard index == bytes.count else { throw invalid() }
     }
 
     public static func read(from file: URL = defaultFile()) throws -> [CapabilityArtifactDescriptor] {

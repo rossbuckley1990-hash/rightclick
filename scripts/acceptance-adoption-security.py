@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 import queue
 import subprocess
+import sys
 import tempfile
 import threading
 import time
@@ -131,14 +132,17 @@ def main() -> int:
         except Exception as error:
             cases.append({"case": name, "passed": False, "error": str(error)})
 
-    with tempfile.TemporaryDirectory(prefix="rightclick-adoption-security-") as directory:
+    temporary_parent = "/private/tmp" if sys.platform == "darwin" else str(Path(tempfile.gettempdir()).resolve())
+    with tempfile.TemporaryDirectory(prefix="rightclick-adoption-security-", dir=temporary_parent) as directory:
         home = Path(directory).resolve()
-        environment = {key: value for key, value in os.environ.items()
-                       if not key.startswith("RIGHTCLICK_")}
-        environment.update({"HOME": str(home), "USERPROFILE": str(home),
+        (home / "tmp").mkdir(mode=0o700)
+        environment = {key: os.environ[key] for key in ("SystemRoot", "WINDIR") if key in os.environ}
+        environment.update({"PATH": os.defpath, "HOME": str(home), "CFFIXED_USER_HOME": str(home),
+                            "USERPROFILE": str(home),
                             "LOCALAPPDATA": str(home / "AppData/Local"),
                             "XDG_STATE_HOME": str(home / ".local/state"),
-                            "XDG_CONFIG_HOME": str(home / ".config")})
+                            "XDG_CONFIG_HOME": str(home / ".config"),
+                            "TMPDIR": str(home / "tmp"), "TMP": str(home / "tmp"), "TEMP": str(home / "tmp")})
 
         def live_runtime():
             child = MCPChild(binary, environment)

@@ -99,6 +99,63 @@ final class ConnectTests: XCTestCase {
         XCTAssertEqual(fetched.count, 2)
     }
 
+    func testDuplicateAndEscapedManifestMembersRejectBeforeLinkedAcquisitionOrPersistence() throws {
+        let documents = [
+            #"{"schemaVersion":1,"schemaVersion":1,"links":[{"kind":"mcp","url":"/mcp"}]}"#,
+            #"{"schemaVersion":1,"links":[{"kind":"mcp","url":"/mcp"}],"\u006cinks":[{"kind":"mcp","url":"/other-mcp"}]}"#,
+            #"{"schemaVersion":1,"links":[{"kind":"mcp","kind":"graphql","url":"/mcp"}]}"#,
+            #"{"schemaVersion":1,"links":[{"kind":"mcp","url":"/mcp","\u0075rl":"https://attacker.example/mcp"}]}"#,
+        ]
+        for target in ["https://provider.example", "https://provider.example/declaration"] {
+            for document in documents {
+                let destination = try file(); defer { remove(destination) }
+                try ConfiguredArtifactProviderStore.upsert(CapabilityArtifactDescriptor(id: "existing", kind: "mcp",
+                    endpointURL: "https://provider.example/existing-mcp"), in: destination)
+                let before = try Data(contentsOf: destination)
+                let resolver = Resolver("mcp")
+                var fetched: [URL] = []
+                var output: [String] = []
+                XCTAssertEqual(RightClickConnectCLI.run([target, "--id", "ambiguous", "--json"], file: destination,
+                    registry: CapabilityArtifactResolverRegistry(resolvers: [resolver]), documentLoader: { url in
+                        fetched.append(url); return (Data(document.utf8), 200)
+                    }, output: { output.append($0) }), 2)
+                XCTAssertEqual(fetched.count, 1, "Ambiguity must reject before following any declaration link.")
+                XCTAssertTrue(fetched.allSatisfy { $0.host == "provider.example" })
+                XCTAssertTrue(resolver.received.isEmpty)
+                XCTAssertEqual(try Data(contentsOf: destination), before)
+                XCTAssertTrue(output.joined().contains("ambiguous"))
+                XCTAssertFalse(output.joined().contains("attacker.example"))
+            }
+        }
+    }
+
+    func testDuplicateOpenAPIMembersRejectDirectAndLinkedDeclarationsWithoutPersistence() throws {
+        let original = String(decoding: declaration, as: UTF8.self)
+        let documents = [
+            original.replacingOccurrences(of: "\"openapi\":\"3.0.3\"", with: "\"openapi\":\"3.0.3\",\"openapi\":\"3.0.3\""),
+            original.replacingOccurrences(of: "\"servers\":", with: #""servers":[{"url":"https://provider.example/other"}],"\u0073ervers":"#),
+        ]
+        for linked in [false, true] {
+            for document in documents {
+                let destination = try file(); defer { remove(destination) }
+                let resolver = Resolver("openapi")
+                var fetched: [URL] = []
+                XCTAssertEqual(RightClickConnectCLI.run([linked ? "https://provider.example" : "https://provider.example/spec", "--json"], file: destination,
+                    registry: CapabilityArtifactResolverRegistry(resolvers: [resolver]), documentLoader: { url in
+                        fetched.append(url)
+                        if linked && url.path == "/.well-known/rightclick" {
+                            return (Data(#"{"schemaVersion":1,"links":[{"kind":"openapi","url":"/spec"}]}"#.utf8), 200)
+                        }
+                        return (Data(document.utf8), 200)
+                    }, output: { _ in }), 2)
+                XCTAssertEqual(fetched.count, linked ? 2 : 1)
+                XCTAssertTrue(fetched.allSatisfy { $0.host == "provider.example" })
+                XCTAssertTrue(resolver.received.isEmpty)
+                XCTAssertFalse(FileManager.default.fileExists(atPath: destination.path))
+            }
+        }
+    }
+
     func testCredentialURLsRejectedBeforeAcquisitionAndNeverEchoed() throws {
         for target in ["https://user:password-secret@provider.example/openapi.json", "https://provider.example/openapi.json?token=query-secret", "https://provider.example/openapi.json#fragment-secret", "http://provider.example/openapi.json"] {
             let destination = try file(); defer { remove(destination) }

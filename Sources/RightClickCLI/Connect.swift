@@ -123,6 +123,7 @@ enum RightClickConnectCLI {
         }
         let declaration = try fetch(target, loader: loader)
         guard declaration.status == 200 else { throw Failure(message: "The selected declaration returned an unsuccessful HTTP response; no configuration was changed.") }
+        try requireUnambiguousJSON(declaration.data)
         if let document = try? JSONSerialization.jsonObject(with: declaration.data) as? [String: Any], document["links"] != nil {
             return try linkedDescriptor(declaration.data, source: target, identity: identity, options: options, registry: registry, loader: loader)
         }
@@ -139,6 +140,7 @@ enum RightClickConnectCLI {
     }
 
     private static func openAPIDescriptor(_ data: Data, source: URL, identity: String, options: Options) throws -> (CapabilityArtifactDescriptor, CapabilityArtifactDescriptor) {
+        try requireUnambiguousJSON(data)
         guard let document = try? JSONSerialization.jsonObject(with: data) as? [String: Any], document["openapi"] is String else {
             throw Failure(message: "Expected a supported OpenAPI JSON declaration. YAML, A2A cards, ARD search results and executable manifests are not automatically imported.")
         }
@@ -164,6 +166,7 @@ enum RightClickConnectCLI {
     /// One explicit declaration is required; remote metadata selects no authority.
     private static func linkedDescriptor(_ data: Data, source: URL, identity: String, options: Options,
                                          registry: CapabilityArtifactResolverRegistry, loader: DocumentLoader) throws -> (CapabilityArtifactDescriptor, CapabilityArtifactDescriptor) {
+        try requireUnambiguousJSON(data)
         guard let manifest = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
               Set(manifest.keys) == ["schemaVersion", "links"], let version = manifest["schemaVersion"] as? NSNumber,
               CFGetTypeID(version) != CFBooleanGetTypeID(), version == 1,
@@ -188,5 +191,10 @@ enum RightClickConnectCLI {
         let descriptor = CapabilityArtifactDescriptor(id: identity, kind: kind, endpointURL: url.absoluteString, authorityScheme: options.authority)
         try ConfiguredArtifactProviderStore.validate(descriptor)
         return (descriptor, descriptor)
+    }
+
+    private static func requireUnambiguousJSON(_ data: Data) throws {
+        do { try RightClickJSONConfigBackend.rejectDuplicateJSONKeys(data) }
+        catch { throw Failure(message: "Provider declaration contains ambiguous or malformed JSON object keys; no configuration was changed.") }
     }
 }

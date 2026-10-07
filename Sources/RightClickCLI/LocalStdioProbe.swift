@@ -77,6 +77,16 @@ enum RightClickStdioProbe {
         let childEnvironment = ["SystemRoot": environment["SystemRoot"] ?? "C:\\Windows",
             "TEMP": FileManager.default.temporaryDirectory.path, "TMP": FileManager.default.temporaryDirectory.path,
             "USERPROFILE": FileManager.default.homeDirectoryForCurrentUser.path]
+#elseif os(macOS)
+        // Preserve an explicit home spelling without Foundation's system-alias
+        // normalization. Darwin Foundation needs its own home override too.
+        let selectedHome = environment["HOME"].flatMap { home in
+            RuntimePlatform.isAbsolutePath(home)
+                && !home.unicodeScalars.contains(where: { CharacterSet.controlCharacters.contains($0) })
+                ? home : nil
+        } ?? FileManager.default.homeDirectoryForCurrentUser.path
+        let childEnvironment = ["PATH": "/usr/bin:/bin", "HOME": selectedHome,
+            "CFFIXED_USER_HOME": selectedHome, "TMPDIR": FileManager.default.temporaryDirectory.path]
 #else
         let childEnvironment = ["PATH": "/usr/bin:/bin", "HOME": FileManager.default.homeDirectoryForCurrentUser.path,
             "TMPDIR": FileManager.default.temporaryDirectory.path]
@@ -144,6 +154,7 @@ enum RightClickStdioProbe {
               let content = call["content"] as? [[String: Any]], content.count == 1,
               content[0]["type"] as? String == "text", let text = content[0]["text"] as? String,
               let bytes = text.data(using: .utf8),
+              (try? RightClickJSONConfigBackend.rejectDuplicateJSONKeys(bytes)) != nil,
               let identity = try? JSONDecoder().decode(RightClickRuntimeIdentity.self, from: bytes),
               identity.product == "RIGHTCLICK", identity.version == RightClickVersion.current,
               identity.transport == "stdio", identity.pid == Int(process.identifier),
