@@ -30,3 +30,9 @@ Before finishing substrate work, run:
 
 If it exits `1`, follow `docs/BOTTLE-ALIGNMENT.md` and `docs/RELEASE.md` to cut the next immutable release. Never force-move an existing release tag.
 
+
+## Runtime review inventory
+
+Before stating that a substrate connector exists, is missing, or is available, report the exact main SHA, active candidate PR/head SHA and connected runtime attestation. Inspect active candidate source as well as main. Distinguish implementation present, merged into main, shipped/installed, and actually demonstrated live; each is a separate claim.
+
+Use `docs/CANDIDATE-INVENTORY.md` for the acquisition-path map and refresh its snapshots from actual Git refs and `context_runtime`. Enumerate the candidate A2A, Kafka, Kubernetes, WASM and Linux D-Bus compiler paths when reviewing PR49. Keep native Windows acquisition, remaining native runtime/authority controls, streams and complete eleven-substrate acceptance RED until their real evidence passes. New compilers must enter the existing RCIR/Core7 engine, not provider-specific AI tools or a competing runtime.

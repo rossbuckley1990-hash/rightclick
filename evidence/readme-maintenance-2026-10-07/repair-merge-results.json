@@ -1,0 +1,50 @@
+{
+  "at_utc": "2026-10-07T09:51:21.220759+00:00",
+  "reviewed_head": "150a3ffeac43433c9190376985210271d203bdb5",
+  "base": "05ace2fec149c62c7cfb24f41fafde863b377ff5",
+  "pr": 41,
+  "merged": true,
+  "local_native_attempt": {
+    "status": "BLOCKED before reproducing test assertions; not counted as test evidence",
+    "diagnostic": [
+      "error: emit-module command failed with exit code 1 (use -v to see invocation)",
+      "/private/tmp/rightclick-readme-maintenance-20261007/native-repair/Tests/RightClickARDTests/ARDPortableTests.swift:2:8: error: no such module 'XCTest'",
+      "    |        `- error: no such module 'XCTest'",
+      "/private/tmp/rightclick-readme-maintenance-20261007/native-repair/Tests/RightClickARDTests/ARDPortableTests.swift:2:8: error: no such module 'XCTest'",
+      "    |        `- error: no such module 'XCTest'",
+      "error: fatalError"
+    ]
+  },
+  "hosted_native_counts": [
+    "Executed 487 tests, with 26 tests skipped and 0 failures (0 unexpected) in 93.563 (93.637) seconds",
+    "Executed 487 tests, with 26 tests skipped and 0 failures (0 unexpected) in 93.563 (93.639) seconds",
+    "Executed 5 tests, with 0 failures (0 unexpected) in 0.008 (0.009) seconds",
+    "Executed 5 tests, with 0 failures (0 unexpected) in 0.008 (0.009) seconds",
+    "Executed 5 tests, with 0 failures (0 unexpected) in 0.008 (0.011) seconds",
+    "Executed 4 tests, with 0 failures (0 unexpected) in 0.129 (0.130) seconds",
+    "Executed 4 tests, with 0 failures (0 unexpected) in 0.129 (0.130) seconds",
+    "Executed 4 tests, with 0 failures (0 unexpected) in 0.129 (0.134) seconds"
+  ],
+  "ci_run": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37600991232",
+  "ci_jobs": [
+    {
+      "name": "test",
+      "conclusion": "success",
+      "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37600991232/job/112725037018"
+    },
+    {
+      "name": "Linux ARD portable acquisition",
+      "conclusion": "success",
+      "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37600991232/job/112725037315"
+    },
+    {
+      "name": "macOS ARD runtime gates",
+      "conclusion": "success",
+      "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37600991232/job/112725037515"
+    }
+  ],
+  "merge_sha": "1f2219eafb4514b08c6364cb0ec3bb8bf105cf80",
+  "merged_by_this_pass": true,
+  "main_after": "1f2219eafb4514b08c6364cb0ec3bb8bf105cf80",
+  "docs_integrated_main": "1f2219eafb4514b08c6364cb0ec3bb8bf105cf80"
+}

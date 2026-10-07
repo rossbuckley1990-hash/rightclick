@@ -1,0 +1,18 @@
+{
+  "at_utc": "2026-10-07T10:04:08.316079+00:00",
+  "demo-validation.json": {
+    "started_at_utc": "2026-10-07T10:01:57.226236+00:00",
+    "finished_at_utc": "2026-10-07T10:02:09.630903+00:00",
+    "verified": true,
+    "version": "0.2.2",
+    "binary_sha256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d"
+  },
+  "recorder_log_tail": [
+    "ffmpeg is not installed. Install it from: http://ffmpeg.org",
+    ""
+  ],
+  "gif_exists": false,
+  "gif_bytes": 0,
+  "cli_help": "RIGHTCLICK\nGive your AI the capabilities already installed on your Mac.\n\nrightclick doctor\nrightclick inspect <item>\nrightclick actions <item>\nrightclick run <action-id> <item> [--yes] [--expect-output <exact-text>] [--verify-json <VerificationSpec JSON>]\nrightclick status <execution-id>\nrightclick providers\nrightclick provider list [--json]\nrightclick provider add --id <id> --spec-url <https-url> --base-url <https-url> [--auth-scheme <scheme>]\nrightclick provider remove --id <id>\nrightclick authority set --origin <https-origin> --scheme <name>\nrightclick authority status --origin <https-origin> --scheme <name>\nrightclick authority delete --origin <https-origin> --scheme <name>\nrightclick refresh\nrightclick setup [--client cursor] [--yes] [--dry-run]\nrightclick setup --client cursor --disconnect [--yes] [--dry-run]\nrightclick setup --chatgpt-tunnel-id tunnel_...  (explicit legacy bridge preparation)\nrightclick bridge run\nrightclick bridge activate|status|deactivate\nrightclick bridge key set|status|delete\nrightclick serve [--tunnel] [--port 8765]\nrightclick auth rotate\nrightclick mcp\nrightclick version\n\n--json prints machine-readable output.\n--verify-json supplies provider-independent semantic postconditions.\n",
+  "documentation_draft_exit": 0
+}

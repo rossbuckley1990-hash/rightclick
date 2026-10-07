@@ -1,0 +1,331 @@
+{
+  "purpose": "Read-only repository audit; media inventory; no merges, releases, formula or runtime changes",
+  "runtime_expected": "0.2.2",
+  "repositories": {
+    "rightclick": {
+      "main": "05ace2fec149c62c7cfb24f41fafde863b377ff5",
+      "main_checks": [
+        {
+          "name": "macOS ARD runtime gates",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37594306485/job/112703506909",
+          "head_sha": "05ace2fec149c62c7cfb24f41fafde863b377ff5"
+        },
+        {
+          "name": "Linux ARD portable acquisition",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37594306485/job/112703506890",
+          "head_sha": "05ace2fec149c62c7cfb24f41fafde863b377ff5"
+        },
+        {
+          "name": "test",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37594306485/job/112703506882",
+          "head_sha": "05ace2fec149c62c7cfb24f41fafde863b377ff5"
+        }
+      ],
+      "latest_release": {
+        "tag": "v0.2.2",
+        "draft": false,
+        "prerelease": false,
+        "url": "https://github.com/rossbuckley1990-hash/rightclick/releases/tag/v0.2.2",
+        "published_at": "2026-10-07T08:10:30Z",
+        "assets": [
+          {
+            "name": "rightclick-0.2.2-source.tar.gz",
+            "size": 276823,
+            "digest": "sha256:a3953eb8f1be2f9123d694b90202244c94ee21971171972f8ce1d3bacf807ca5",
+            "url": "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.2.2/rightclick-0.2.2-source.tar.gz"
+          },
+          {
+            "name": "SHA256SUMS-source",
+            "size": 97,
+            "digest": "sha256:73b612edb0cd19131bb22491f19c8e1e67bb8b8b719679f853062ac3858e5f57",
+            "url": "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.2.2/SHA256SUMS-source"
+          }
+        ]
+      },
+      "open_prs": [
+        {
+          "number": 39,
+          "title": "feat: add capability argument preflight",
+          "head": "c686036691dbbc730bed57faab066ebac4db5c6a",
+          "branch": "feature/semantic-preflight-001",
+          "base": "main",
+          "draft": false,
+          "checks": [],
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/39"
+        },
+        {
+          "number": 38,
+          "title": "build(procedures): stage isolated one-shot native validation",
+          "head": "334377b2e4fb4691af672c7bbb55b37050fd1f84",
+          "branch": "feature/procedural-knowledge-002",
+          "base": "main",
+          "draft": false,
+          "checks": [
+            {
+              "name": "Linux ARD portable acquisition",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37596695292/job/112710966961",
+              "head_sha": "334377b2e4fb4691af672c7bbb55b37050fd1f84"
+            },
+            {
+              "name": "macOS ARD runtime gates",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37596695292/job/112710966959",
+              "head_sha": "334377b2e4fb4691af672c7bbb55b37050fd1f84"
+            },
+            {
+              "name": "test",
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37596695292/job/112710966685",
+              "head_sha": "334377b2e4fb4691af672c7bbb55b37050fd1f84"
+            }
+          ],
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/38"
+        },
+        {
+          "number": 37,
+          "title": "docs(portable): freeze source audit at current main",
+          "head": "75a8f0d40c78d4daf9010a3cba1a8413a2fe5f32",
+          "branch": "feature/portable-runtime-001",
+          "base": "main",
+          "draft": false,
+          "checks": [
+            {
+              "name": "test",
+              "status": "in_progress",
+              "conclusion": null,
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37599106273/job/112718835600",
+              "head_sha": "75a8f0d40c78d4daf9010a3cba1a8413a2fe5f32"
+            },
+            {
+              "name": "Linux ARD portable acquisition",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37599106273/job/112718835423",
+              "head_sha": "75a8f0d40c78d4daf9010a3cba1a8413a2fe5f32"
+            },
+            {
+              "name": "macOS ARD runtime gates",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37599106273/job/112718835141",
+              "head_sha": "75a8f0d40c78d4daf9010a3cba1a8413a2fe5f32"
+            }
+          ],
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/37"
+        },
+        {
+          "number": 35,
+          "title": "Feat/reviewed contract pins",
+          "head": "21ec3d3199c537eea332a36c52c38553b811f389",
+          "branch": "feat/reviewed-contract-pins",
+          "base": "main",
+          "draft": false,
+          "checks": [
+            {
+              "name": "test",
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37594375944/job/112703267229",
+              "head_sha": "21ec3d3199c537eea332a36c52c38553b811f389"
+            },
+            {
+              "name": "Linux ARD portable acquisition",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37594375944/job/112703267148",
+              "head_sha": "21ec3d3199c537eea332a36c52c38553b811f389"
+            },
+            {
+              "name": "macOS ARD runtime gates",
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37594375944/job/112703266903",
+              "head_sha": "21ec3d3199c537eea332a36c52c38553b811f389"
+            }
+          ],
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/35"
+        },
+        {
+          "number": 30,
+          "title": "Merge pull request #28 from rossbuckley1990-hash/main",
+          "head": "65802c219d57d62a8d760f55e77597e76cafe853",
+          "branch": "archive/merged-grpc-capability-reflection-pr22",
+          "base": "main",
+          "draft": false,
+          "checks": [
+            {
+              "name": "test",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37582672520/job/112665688241",
+              "head_sha": "65802c219d57d62a8d760f55e77597e76cafe853"
+            },
+            {
+              "name": "macOS ARD runtime gates",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37582672520/job/112665688171",
+              "head_sha": "65802c219d57d62a8d760f55e77597e76cafe853"
+            },
+            {
+              "name": "Linux ARD portable acquisition",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37582672520/job/112665688008",
+              "head_sha": "65802c219d57d62a8d760f55e77597e76cafe853"
+            }
+          ],
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/30"
+        },
+        {
+          "number": 14,
+          "title": "experiment: preserve v0.3 typed OpenAPI continuation",
+          "head": "48794f62c95d3a779dc7cd1fc53528191e574f02",
+          "branch": "promotion/v030-typed-openapi-github-write",
+          "base": "main",
+          "draft": false,
+          "checks": [
+            {
+              "name": "test",
+              "status": "completed",
+              "conclusion": "failure",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37529522597/job/112495015297",
+              "head_sha": "48794f62c95d3a779dc7cd1fc53528191e574f02"
+            }
+          ],
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/14"
+        },
+        {
+          "number": 1,
+          "title": "Developer magnet: README, llms.txt, live MCP example, Pages",
+          "head": "2cad342927e98a9a875929df161ab8048fec6837",
+          "branch": "feat/developer-magnet",
+          "base": "main",
+          "draft": false,
+          "checks": [
+            {
+              "name": "test",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37304185419/job/111743769754",
+              "head_sha": "2cad342927e98a9a875929df161ab8048fec6837"
+            },
+            {
+              "name": "test",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37304176906/job/111743740957",
+              "head_sha": "2cad342927e98a9a875929df161ab8048fec6837"
+            }
+          ],
+          "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/1"
+        }
+      ]
+    },
+    "homebrew-tap": {
+      "main": "e6231741dbe146ef2a6f9213c04dedd12296ea48",
+      "main_checks": [
+        {
+          "name": "test-bot (macos-26)",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37592055694/job/112695654205",
+          "head_sha": "e6231741dbe146ef2a6f9213c04dedd12296ea48"
+        }
+      ],
+      "latest_release": {
+        "tag": "rightclick-0.1.1",
+        "draft": false,
+        "prerelease": false,
+        "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/releases/tag/rightclick-0.1.1",
+        "published_at": "2026-10-05T18:51:29Z",
+        "assets": [
+          {
+            "name": "rightclick-0.1.1.arm64_tahoe.bottle.tar.gz",
+            "size": 1607523,
+            "digest": "sha256:35f4b9b8a6f206d9673ac4391d85d3bf13b050ba884adb37c1322e4a5400ac7c",
+            "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/releases/download/rightclick-0.1.1/rightclick-0.1.1.arm64_tahoe.bottle.tar.gz"
+          }
+        ]
+      },
+      "open_prs": [
+        {
+          "number": 4,
+          "title": "Repair RIGHTCLICK 0.2.1 bottle distribution and release invariants",
+          "head": "27187e68f7f7618d47cdd9f2cdd53384b5730f4e",
+          "branch": "fix/rightclick-0.2.1-distribution-sync",
+          "base": "main",
+          "draft": false,
+          "checks": [
+            {
+              "name": "test-bot (macos-26)",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37595821280/job/112708081217",
+              "head_sha": "27187e68f7f7618d47cdd9f2cdd53384b5730f4e"
+            },
+            {
+              "name": "distribution-invariants",
+              "status": "completed",
+              "conclusion": "success",
+              "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37595821315/job/112708072740",
+              "head_sha": "27187e68f7f7618d47cdd9f2cdd53384b5730f4e"
+            }
+          ],
+          "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/pull/4"
+        }
+      ]
+    }
+  },
+  "source_release_ref": {
+    "sha": "ec7faafb498e5e2022056f2aca39c5949adcc77e",
+    "type": "tag",
+    "url": "https://api.github.com/repos/rossbuckley1990-hash/rightclick/git/tags/ec7faafb498e5e2022056f2aca39c5949adcc77e"
+  },
+  "matched_uploaded_media": [
+    {
+      "attachment": "rightclick-triple-substrate.gif",
+      "sha256": "ff3b196cdc1eafafaa67cd2311dd8b72d4da3c5b0329f6da1a9142e980751982",
+      "bytes": 97496,
+      "byte_identical": true
+    },
+    {
+      "attachment": "rightclick-live.gif",
+      "sha256": "e8522e3a4bac51c6f27eaa64475f0832ab03c8ce77b7a1cbfa6bc3712faf6f25",
+      "bytes": 122539,
+      "byte_identical": true
+    },
+    {
+      "attachment": "rightclick-hero-architecture.gif",
+      "sha256": "ceb6bfa971854ad90121f05cf9411f726fc3f095b30fc2830a9afe55db49efd6",
+      "bytes": 299002,
+      "byte_identical": true
+    },
+    {
+      "attachment": "rightclick-punch.gif",
+      "sha256": "fcae9d35c1dfc85d290db7a3ced931906f1bffd31c1f17735f4c8e4c41eaeb57",
+      "bytes": 317227,
+      "byte_identical": true
+    }
+  ],
+  "missing_uploaded_media": [],
+  "native_tools": {
+    "git": true,
+    "gh": true,
+    "swift": true,
+    "vhs": true,
+    "gifski": true,
+    "ffmpeg": true,
+    "python3": true
+  }
+}
