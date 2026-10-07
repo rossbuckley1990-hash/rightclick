@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "acceptanceScope": "infrastructure readiness only",
+  "credentials": {
+    "linux": {
+      "source": "private-env-file",
+      "reference": "/tmp/rightclick-proof-lab-20261007/linux.env",
+      "authority": "isolated proof effect endpoint",
+      "principal": "container uid1000"
+    },
+    "kafka": {
+      "publisher": {
+        "source": "private-file",
+        "reference": "/tmp/rightclick-proof-lab-20261007/kafka-publisher.json",
+        "principal": "rightclick-proof-publisher",
+        "authority": "topic:rightclick.proof:write,describe"
+      },
+      "observer": {
+        "source": "private-file",
+        "reference": "/tmp/rightclick-proof-lab-20261007/kafka-observer.json",
+        "principal": "rightclick-proof-observer",
+        "authority": "topic:rightclick.proof:read,describe"
+      }
+    },
+    "kubernetes": {
+      "source": "Kubernetes TokenRequest",
+      "reference": "/tmp/rightclick-proof-lab-20261007/kubernetes-token",
+      "kubeconfigReference": "/tmp/rightclick-proof-lab-20261007/scoped.kubeconfig",
+      "principal": "system:serviceaccount:rightclick-proof:rightclick-proof",
+      "authority": "namespace:rightclick-proof:configmaps:get,create,update,patch,delete",
+      "expiry": "2026-10-07T14:02:00+00:00",
+      "server": "https://127.0.0.1:16443"
+    }
+  },
+  "resources": {
+    "linux": "rightclick-proof-linux",
+    "kafka": "rightclick-proof-kafka",
+    "cluster": "rightclick-proof",
+    "namespace": "rightclick-proof"
+  },
+  "endpoints": {
+    "linux": "http://127.0.0.1:19141",
+    "kafka": "127.0.0.1:19092",
+    "kubernetes": "https://127.0.0.1:16443"
+  }
+}
