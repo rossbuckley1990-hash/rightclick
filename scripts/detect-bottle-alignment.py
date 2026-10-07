@@ -194,6 +194,14 @@ KIND_RULES: list[dict[str, object]] = [
         "composition_patterns": [r"WASMCapabilityArtifactResolver\s*\("],
         "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
     },
+    {
+        "id": "artifact.resolver.kafka",
+        "title": "Acquired Kafka topic metadata capability resolver",
+        "any_files": ["Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"KafkaCapabilityArtifactResolver"],
+        "composition_patterns": [r"KafkaCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
 ]
 
 

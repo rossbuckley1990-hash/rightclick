@@ -7,9 +7,11 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
     public let kind = "kafka"
     private let client: URL?
     private let credentialReference: String?
+    private let observerReference: String?
     public init(environment: [String: String] = ProcessInfo.processInfo.environment) {
         client = environment["RIGHTCLICK_KAFKA_CLIENT"].map { URL(fileURLWithPath: $0) }
         credentialReference = environment["RIGHTCLICK_KAFKA_PUBLISHER_CONFIG"]
+        observerReference = environment["RIGHTCLICK_KAFKA_OBSERVER_CONFIG"]
     }
     public func resolve(_ descriptor: CapabilityArtifactDescriptor) throws -> any CapabilityReflector {
         guard descriptor.kind == kind, descriptor.inlineData == nil, descriptor.authorityScheme == nil,
@@ -20,16 +22,11 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
               endpoint.path.isEmpty || endpoint.path == "/", let client, let credentialReference else {
             throw CapabilityArtifactResolutionError.invalidDescriptor("Kafka requires a safe broker endpoint and operator-selected client/credential reference.")
         }
-        let credentialSnapshot = try CapabilityArtifactSnapshot(source: URL(fileURLWithPath: credentialReference),
-                                                               maximum: 65_536, protected: true)
+        let writer = try KafkaCredential(reference: credentialReference, broker: host + ":" + String(port))
+        let credentialSnapshot = writer.snapshot
+        let reader = try observerReference.map { try KafkaCredential(reference: $0, broker: host + ":" + String(port)) }
+        guard reader == nil || (observerReference != credentialReference && reader?.principal != writer.principal) else { throw RCIRError.authorityDenied }
         let clientSnapshot = try CapabilityArtifactSnapshot(source: client, maximum: 268_435_456, executable: true)
-        let credential = try CapabilityProtectedReference.read(credentialSnapshot.file.path)
-        guard let configuration = try JSONSerialization.jsonObject(with: credential) as? [String: Any],
-              let rpk = configuration["rpk"] as? [String: Any], let api = rpk["kafka_api"] as? [String: Any],
-              let brokers = api["brokers"] as? [String], brokers == [host + ":" + String(port)],
-              let sasl = api["sasl"] as? [String: Any], let principal = sasl["user"] as? String,
-              !principal.isEmpty, sasl["mechanism"] as? String == "SCRAM-SHA-256",
-              sasl["password"] is String else { throw RCIRError.authorityDenied }
         let clientDigest = clientSnapshot.sha256
         func topics() throws -> [[String: Any]] {
             let data = try BoundedCapabilityProcess.run(executable: clientSnapshot.file,
@@ -53,6 +50,7 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
         }
         func unchanged() -> Bool {
             guard credentialSnapshot.sourceStillMatches(), clientSnapshot.sourceStillMatches(),
+                  reader?.snapshot.sourceStillMatches() ?? true,
                   let currentTopics = try? topics(),
                   let latest = try? JSONSerialization.data(withJSONObject: currentTopics, options: [.sortedKeys]) else { return false }
             return CapabilityJSON.digest(latest) == CapabilityJSON.digest(declaration)
@@ -60,10 +58,30 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
         return try CapabilityInterfaceReflector(id: "kafka:" + descriptor.id, provider: descriptor.id, target: endpoint,
             substrate: kind, descriptorDigest: CapabilityJSON.digest(declaration), operations: operations,
             provenance: ["credentialSourceType": "protected_file_reference", "credentialReference": credentialReference,
-                         "providerPrincipal": principal, "authorityScheme": "SCRAM-SHA-256", "runtimeExecutable": client.path,
+                         "providerPrincipal": writer.principal, "observerPrincipal": reader?.principal ?? "not_configured",
+                         "observerCredentialReference": observerReference ?? "not_configured",
+                         "authorityScheme": "SCRAM-SHA-256", "runtimeExecutable": client.path,
                          "executionArtifactBinding": "host-private lifetime-managed read-only client and protected credential snapshots",
                          "runtimeSHA256": clientDigest, "verificationRequirement": "independent consumer of exact topic/partition/offset/key/payload"],
-            available: unchanged, invoke: { name, input, admit in
+            observerFactory: { name in
+                guard let reader, name.hasPrefix("publish."),
+                      let metadata = acquired.first(where: { "publish." + ($0["name"] as? String ?? "") == name }),
+                      let partitions = metadata["partitions"] as? Int else { return nil }
+                let topic = String(name.dropFirst("publish.".count))
+                let observerID = "kafka:consume:" + endpoint.absoluteString + ":" + topic + ":" + reader.principal
+                let observer = KafkaRecordObserver(observerID: observerID, client: clientSnapshot,
+                    credential: reader, topic: topic, partitions: partitions)
+                return { input in
+                    let desired = try KafkaRecord.arguments(input)
+                    let fields: [String: [String]] = ["topic": ["topic"], "key": ["key"], "value": ["value"]]
+                    let expected = CapabilityValue.object(["topic": .string(topic), "key": .string(desired.key), "value": .string(desired.payload)])
+                    return .init(contract: .init(observerID: observerID,
+                        schema: .object(properties: ["topic": .string, "key": .string, "value": .string], required: Array(fields.keys)),
+                        expected: expected, projection: .init(schema: KafkaRecord.observationSchema, fields: fields)),
+                        observer: observer,
+                        boundary: "Independent exact topic/partition/offset consumer under a distinct host-selected SASL principal; expected topic/key/UTF-8 payload bound before dispatch; full offset/partition/timestamp retained.")
+                }
+            }, available: unchanged, invoke: { name, input, admit in
                 guard unchanged(), name.hasPrefix("publish."), case let .object(arguments) = input,
                       case let .string(key)? = arguments["key"], case let .string(payload)? = arguments["payload"],
                       !key.isEmpty, key.utf8.count <= 4096, payload.utf8.count <= 131_072 else { throw CapabilityABIError.invalidWire }
@@ -82,5 +100,63 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                 return .object(["topic": .string(topic), "partition": .integer(Int64(partition)), "offset": .integer(offset),
                                 "key": .string(key), "value": .string(payload)])
             })
+    }
+}
+
+private final class KafkaCredential {
+    let snapshot: CapabilityArtifactSnapshot
+    let principal: String
+    init(reference: String, broker: String) throws {
+        snapshot = try CapabilityArtifactSnapshot(source: URL(fileURLWithPath: reference), maximum: 65_536, protected: true)
+        let bytes = try CapabilityProtectedReference.read(snapshot.file.path)
+        guard let configuration = try JSONSerialization.jsonObject(with: bytes) as? [String: Any],
+              let rpk = configuration["rpk"] as? [String: Any], let api = rpk["kafka_api"] as? [String: Any],
+              let brokers = api["brokers"] as? [String], brokers == [broker],
+              let sasl = api["sasl"] as? [String: Any], let principal = sasl["user"] as? String,
+              !principal.isEmpty, principal.utf8.count <= 256, sasl["mechanism"] as? String == "SCRAM-SHA-256",
+              sasl["password"] is String else { throw RCIRError.authorityDenied }
+        self.principal = principal
+    }
+}
+
+private enum KafkaRecord {
+    static let observationSchema = CapabilitySchema.object(properties: ["topic": .string, "partition": .integer,
+        "offset": .integer, "key": .string, "value": .string, "timestamp": .integer],
+        required: ["topic", "partition", "offset", "key", "value", "timestamp"])
+    static func arguments(_ input: CapabilityValue) throws -> (key: String, payload: String) {
+        guard case let .object(arguments) = input, Set(arguments.keys) == ["key", "payload"],
+              case let .string(key)? = arguments["key"], case let .string(payload)? = arguments["payload"],
+              !key.isEmpty, key.utf8.count <= 4096, payload.utf8.count <= 131_072 else { throw CapabilityABIError.invalidWire }
+        return (key, payload)
+    }
+}
+
+private final class KafkaRecordObserver: RCIRObserver {
+    let observerID: String
+    private let client: CapabilityArtifactSnapshot
+    private let credential: KafkaCredential
+    private let topic: String
+    private let partitions: Int
+    init(observerID: String, client: CapabilityArtifactSnapshot, credential: KafkaCredential, topic: String, partitions: Int) {
+        self.observerID = observerID; self.client = client; self.credential = credential; self.topic = topic; self.partitions = partitions
+    }
+    func observe(_ request: RCIRObservationRequest) throws -> CapabilityValue {
+        guard credential.snapshot.sourceStillMatches(), client.sourceStillMatches(),
+              case let .object(ack)? = request.providerResult, case let .string(ackTopic)? = ack["topic"], ackTopic == topic,
+              case let .integer(partition)? = ack["partition"], partition >= 0, partition < Int64(partitions),
+              case let .integer(offset)? = ack["offset"], offset >= 0 else { throw RCIRError.unverified }
+        _ = try KafkaRecord.arguments(request.arguments)
+        // ACK coordinates locate a single record only. They cannot widen the
+        // trusted topic or replace the pre-bound expected key/payload.
+        let bytes = try BoundedCapabilityProcess.run(executable: client.file,
+            arguments: ["--config", credential.snapshot.file.path, "topic", "consume", topic,
+                        "-p", String(partition), "-o", String(offset), "-n", "1", "--format", "json", "--pretty-print=false"], timeout: 5)
+        guard let observed = try JSONSerialization.jsonObject(with: bytes) as? [String: Any],
+              observed["topic"] as? String == topic, observed["partition"] as? Int64 == partition,
+              observed["offset"] as? Int64 == offset, let key = observed["key"] as? String,
+              let value = observed["value"] as? String, let timestamp = observed["timestamp"] as? Int64 else { throw RCIRError.unverified }
+        let result = CapabilityValue.object(["topic": .string(topic), "key": .string(key), "value": .string(value),
+            "partition": .integer(partition), "offset": .integer(offset), "timestamp": .integer(timestamp)])
+        try KafkaRecord.observationSchema.validate(result); return result
     }
 }
