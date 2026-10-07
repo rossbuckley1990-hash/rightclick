@@ -1,0 +1,11 @@
+
+      enum Mode { FIRST SECOND }
+      input ChildInput { flag: Boolean!, count: Int!, note: String }
+      input Payload { children: [ChildInput!]!, mode: Mode!, ratio: Float!, absent: Boolean }
+      input Recursive { child: Recursive, text: String }
+      scalar Unspecified
+      type Child { flag: Boolean!, count: Int!, note: String }
+      type Record { nonce: String!, children: [Child!]!, mode: Mode!, ratio: Float!, absent: Boolean }
+      type Query { number_a635f58b29e6: Float!, opaque_917fcc746a5e: Unspecified, recursive_59391905c11e(value: Recursive): String }
+      type Mutation { record_7501f62cfd0a(nonce: String!, payload: Payload!): Record! }
+    
