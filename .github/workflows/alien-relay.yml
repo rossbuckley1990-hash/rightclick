@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   alien-relay:
-    name: Remote Ubuntu multimodal semantic round-trip proof
+    name: Remote Ubuntu adaptive multimodal round-trip proof
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -41,11 +41,25 @@ jobs:
           PY
           alien-venv/bin/python generation6.py
 
-      - name: Recurse through dynamically discovered speech capabilities
+      - name: Adapt failed Generation 7 discovery schedule and retry
         shell: bash
         run: |
           set -e
-          alien-venv/bin/python experiments/alien-relay/generation7_extension.py
+          cp experiments/alien-relay/generation7_extension.py generation7_retry.py
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("generation7_retry.py")
+          s = p.read_text()
+          old1 = 'asr_spaces,asr_err=discover(api,["automatic speech recognition","speech to text","audio transcription"],20)'
+          new1 = 'asr_spaces,asr_err=discover(api,["speech to text","audio transcription","automatic spech recognition","whisper"],30)'
+          old2 = 'asr_matches,asr_inspect=contracts(asr_spaces,"asr",20,6)'
+          new2 = 'asr_matches,asr_inspect=contracts(asr_spaces,"asr",90,8)'
+          if old1 not in s or old2 not in s:
+              raise SystemExit("expected Generation 7 adaptation anchors not found")
+          s = s.replace(old1, new1).replace(old2, new2)
+          p.write_text(s)
+          PY
+          alien-venv/bin/python generation7_retry.py
 
       - name: Upload proof artifact
         if: always()
