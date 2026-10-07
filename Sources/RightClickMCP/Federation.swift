@@ -68,16 +68,13 @@ struct FederationPeerConfiguration:
             components.scheme?
                 .lowercased()
                 == "http",
-            let host =
+            let rawHost =
                 components.host?
                     .lowercased(),
-            [
-                "localhost",
-                "127.0.0.1",
-                "::1",
-            ].contains(
-                host
-            ),
+            let host =
+                Self.canonicalLoopbackHost(
+                    rawHost
+                ),
             components.user == nil,
             components.password == nil,
             components.query == nil,
@@ -101,6 +98,42 @@ struct FederationPeerConfiguration:
             : "localhost"
 
         return components.url
+    }
+
+    private static func canonicalLoopbackHost(
+        _ rawHost: String
+    ) -> String? {
+        let host: String
+
+        if
+            rawHost.hasPrefix("["),
+            rawHost.hasSuffix("]"),
+            rawHost.count >= 2
+        {
+            host =
+                String(
+                    rawHost
+                        .dropFirst()
+                        .dropLast()
+                )
+        } else {
+            host =
+                rawHost
+        }
+
+        guard
+            [
+                "localhost",
+                "127.0.0.1",
+                "::1",
+            ].contains(
+                host
+            )
+        else {
+            return nil
+        }
+
+        return host
     }
 
     private var isValid: Bool {
