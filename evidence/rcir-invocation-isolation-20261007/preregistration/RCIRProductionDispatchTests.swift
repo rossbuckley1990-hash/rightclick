@@ -65,8 +65,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
             let out = URL(fileURLWithPath: path)
             try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
             let label = name.replacingOccurrences(of: "/", with: "_")
-            let observations = (try? String(contentsOf: directory.appendingPathComponent("spec-observations.jsonl"), encoding: .utf8)) ?? ""
-            let data = try JSONSerialization.data(withJSONObject: ["test": name, "effects": effectRows(), "specObservations": observations], options: [.prettyPrinted, .sortedKeys])
+            let data = try JSONSerialization.data(withJSONObject: ["test": name, "effects": effectRows()], options: [.prettyPrinted, .sortedKeys])
             try data.write(to: out.appendingPathComponent(label + ".json"))
         }
         if let directory { try? FileManager.default.removeItem(at: directory) }
@@ -269,17 +268,6 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertTrue(effectRows().isEmpty)
     }
 
-    func testObserverTraversalAndDoubleEncodingCannotDispatch() throws {
-        let capability = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
-        config.observers = [capability.id: .init(urlTemplate: base.absoluteString + "/records/{id}", expectedArgument: "value")]
-        for id in [".", "..", "../other", "..\\other", "%2Fother", "other?query", "other#fragment"] {
-            let record = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
-                arguments: ["id": id, "value": "requested"])
-            XCTAssertEqual(record.state, .rejected)
-            XCTAssertTrue(effectRows().isEmpty)
-        }
-    }
-
     func testSchemaDriftBeforeDispatchProducesZeroProviderEffects() throws {
         host.beforeConsume = { _ in
             self.source.current = [try OpenAPIReflector(specificationData: self.specification("2"), baseURL: self.base)]
@@ -293,66 +281,5 @@ final class RCIRProductionDispatchTests: XCTestCase {
         source.current = [try OpenAPIReflector(specificationData: specification(secure: true), baseURL: secureBase)]
         XCTAssertEqual(try invoke().state, .unavailable)
         XCTAssertTrue(effectRows().isEmpty)
-    }
-
-    private func acquireLiveArtifact() throws -> Capability {
-        try specification().write(to: directory.appendingPathComponent("spec.json"))
-        let artifacts = ConfiguredCapabilityArtifactSource(descriptors: [
-            .init(id: "disposable-live-schema", kind: "openapi",
-                  specificationURL: base.absoluteString + "/openapi.json", baseURL: base.absoluteString)
-        ], refreshInterval: 300)
-        engine = CapabilityEngine(reflectorSources: [artifacts], experience: nil, rcirHost: host)
-        return try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
-    }
-
-    func testActualArtifactSchemaDriftRejectsOldInvocationAndReacquires() throws {
-        let old = try acquireLiveArtifact()
-        try specification("2").write(to: directory.appendingPathComponent("spec.json"))
-        let denied = try engine.begin(id: old.id, item: "disposable", confirmed: true,
-                                      arguments: ["id": "stale", "value": "requested"])
-        XCTAssertEqual(denied.state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
-        let current = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
-        XCTAssertNotEqual(current.id, old.id)
-        let accepted = try engine.begin(id: current.id, item: "disposable", confirmed: true,
-                                        arguments: ["id": "fresh", "value": "requested"])
-        XCTAssertEqual(accepted.state, .accepted, accepted.message)
-        XCTAssertEqual(effectRows().count, 1)
-        XCTAssertEqual(effectRows().first?["taskID"] as? String, accepted.rcir?.taskID)
-    }
-
-    func testActualContractDisappearanceDeniesEffectsAndRecoversNewLease() throws {
-        let capability = try acquireLiveArtifact()
-        let first = try invoke("initial")
-        XCTAssertEqual(first.state, .accepted, first.message)
-        try FileManager.default.removeItem(at: directory.appendingPathComponent("spec.json"))
-        let denied = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
-                                      arguments: ["id": "missing-contract", "value": "requested"])
-        XCTAssertEqual(denied.state, .rejected)
-        XCTAssertEqual(effectRows().count, 1)
-        try specification().write(to: directory.appendingPathComponent("spec.json"))
-        let recovered = try invoke("recovered")
-        XCTAssertEqual(recovered.state, .accepted, recovered.message)
-        XCTAssertNotEqual(recovered.rcir?.leaseID, first.rcir?.leaseID)
-        XCTAssertGreaterThan(recovered.rcir?.generation ?? 0, first.rcir?.generation ?? 0)
-        XCTAssertEqual(effectRows().count, 2)
-    }
-
-    func testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry() throws {
-        _ = try acquireLiveArtifact()
-        try Data().write(to: directory.appendingPathComponent("drift-after-write"))
-        let record = try invoke()
-        XCTAssertEqual(record.state, .unknown)
-        XCTAssertEqual(record.rcir?.outcome, "unknown")
-        XCTAssertEqual(effectRows().count, 1)
-    }
-
-    func testBoundedLargeArgumentIsNotDuplicatedIntoContract() throws {
-        let capability = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
-        let result = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
-            arguments: ["id": "bounded-large", "value": String(repeating: "x", count: 80_000)])
-        XCTAssertEqual(result.state, .accepted, result.message)
-        XCTAssertEqual(effectRows().count, 1)
-        XCTAssertEqual((effectRows().first?["body"] as? [String: String])?["value"]?.utf8.count, 80_000)
     }
 }

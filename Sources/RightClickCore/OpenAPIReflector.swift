@@ -984,7 +984,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         // POST is conservatively execute (never inferred pure from a title).
         let effect: RCIREffect = operation.method == "GET" ? .read : .execute
         let scope = RCIRScope(targetURL.absoluteString, effect)
-        return try host.execute(abi: abi, arguments: input, scope: scope,
+        return try host.execute(abi: abi, discovery: reflected, arguments: input, scope: scope,
             capability: admissionOwner, executionID: executionID, argumentStrings: arguments,
             item: item, verification: verification, expectedOutput: expectedOutput, target: targetURL, authority: {
                 if let required = operation.authorityRequirement {

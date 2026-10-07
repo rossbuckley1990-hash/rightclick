@@ -102,7 +102,7 @@ public final class RCIRExecutionHost {
         }
     }
 
-    func execute(abi: CapabilityContract, arguments: CapabilityValue,
+    func execute(abi: CapabilityContract, discovery: CapabilityContract, arguments: CapabilityValue,
                  scope: RCIRScope, capability: Capability, executionID: String,
                  argumentStrings: CapabilityArguments?, item: ContentItem,
                  verification: VerificationSpec?, expectedOutput: String?, target: URL,
@@ -133,7 +133,7 @@ public final class RCIRExecutionHost {
             } else { combinedObserverContract = observerContract }
             let contract = RCIRContract(abi: abi, scopes: [scope], verification: combinedObserverContract)
             let principal = "local-owner:" + abi.reflectorID
-            let binding = try admission.publish(contract, authenticatedPrincipal: principal)
+            let binding = try admission.publishInvocation(contract, discovery: discovery, authenticatedPrincipal: principal)
             func policy(_ config: RCIRHostConfiguration) throws -> RCIRPolicy {
                 let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
                 let encoded = try encoder.encode(config)
