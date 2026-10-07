@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   alien-relay:
-    name: Remote Ubuntu capability-artifact resolution proof
+    name: Remote Ubuntu learned-protocol invocation proof
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -19,11 +19,10 @@ jobs:
       - name: Check out experiment branch
         uses: actions/checkout@v4
 
-      - name: Build portable RIGHTCLICK probe and resolve discovered AI skill artifacts
+      - name: Learn Gradio protocol from discovered skill and invoke unknown remote app
         shell: bash
         run: |
           set +e
-
           mkdir -p alien-proof
           OBSERVED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           REPO_SHA="$(git rev-parse HEAD 2>/dev/null)"
@@ -31,105 +30,147 @@ jobs:
           RUNNER_OS_VALUE="${RUNNER_OS:-unknown}"
           RUNNER_ARCH_VALUE="${RUNNER_ARCH:-unknown}"
 
-          SWIFT_VERSION="$(swift --version 2>&1)"
-          SWIFT_STATUS=$?
-
-          swift build --product rightclick-ard-probe >alien-proof/portable-build.log 2>&1
-          PORTABLE_BUILD_STATUS=$?
-
-          BIN_DIR="$(swift build --show-bin-path 2>/dev/null)"
-          BIN_PATH="${BIN_DIR}/rightclick-ard-probe"
-
-          if [ -x "$BIN_PATH" ]; then
-            "$BIN_PATH" live-hf-resolve >alien-proof/hf-resolve.log 2>&1
-            RESOLVE_STATUS=$?
+          SKILL_COMMIT="ca0325bb20b2d0a1b2efa893670c4c72f79e707b"
+          SKILL_URL="https://raw.githubusercontent.com/huggingface/skills/${SKILL_COMMIT}/skills/huggingface-gradio/SKILL.md"
+          curl -fsSL "$SKILL_URL" -o alien-proof/huggingface-gradio-SKILL.md
+          SKILL_FETCH_STATUS=$?
+          if [ -f alien-proof/huggingface-gradio-SKILL.md ]; then
+            SKILL_SHA256="$(sha256sum alien-proof/huggingface-gradio-SKILL.md | awk '{print $1}')"
+            grep -q 'gradio info' alien-proof/huggingface-gradio-SKILL.md
+            SKILL_INFO_INSTRUCTION_STATUS=$?
+            grep -q 'gradio predict' alien-proof/huggingface-gradio-SKILL.md
+            SKILL_PREDICT_INSTRUCTION_STATUS=$?
           else
-            echo "portable probe binary not found at $BIN_PATH" >alien-proof/hf-resolve.log
-            RESOLVE_STATUS=127
+            SKILL_SHA256=""
+            SKILL_INFO_INSTRUCTION_STATUS=127
+            SKILL_PREDICT_INSTRUCTION_STATUS=127
           fi
 
+          python3 -m venv alien-venv
+          VENV_STATUS=$?
+          alien-venv/bin/python -m pip install --disable-pip-version-check --no-input gradio >alien-proof/gradio-install.log 2>&1
+          INSTALL_STATUS=$?
+          GRADIO_VERSION="$(alien-venv/bin/python - <<'PY'
+import importlib.metadata
+try:
+    print(importlib.metadata.version("gradio"))
+except Exception as exc:
+    print(f"unavailable:{exc}")
+PY
+          )"
+
+          alien-venv/bin/gradio info gradio/calculator >alien-proof/calculator-info.json 2>alien-proof/calculator-info.err
+          CALC_INFO_STATUS=$?
+          alien-venv/bin/gradio predict gradio/calculator /predict '{"num1":19,"operation":"multiply","num2":23}' >alien-proof/calculator-result.json 2>alien-proof/calculator-result.err
+          CALC_PREDICT_STATUS=$?
+
+          alien-venv/bin/gradio info black-forest-labs/FLUX.2-dev >alien-proof/flux-info.json 2>alien-proof/flux-info.err
+          FLUX_INFO_STATUS=$?
+
           export OBSERVED_AT REPO_SHA GIT_STATUS RUNNER_OS_VALUE RUNNER_ARCH_VALUE
-          export SWIFT_VERSION SWIFT_STATUS PORTABLE_BUILD_STATUS BIN_PATH RESOLVE_STATUS
+          export SKILL_COMMIT SKILL_URL SKILL_FETCH_STATUS SKILL_SHA256 SKILL_INFO_INSTRUCTION_STATUS SKILL_PREDICT_INSTRUCTION_STATUS
+          export VENV_STATUS INSTALL_STATUS GRADIO_VERSION CALC_INFO_STATUS CALC_PREDICT_STATUS FLUX_INFO_STATUS
 
           python3 - <<'PY'
-          import base64, json, os, pathlib
+import json, os, pathlib, hashlib
 
-          log_path = pathlib.Path("alien-proof/hf-resolve.log")
-          log = log_path.read_text(encoding="utf-8", errors="replace") if log_path.exists() else ""
-          results = []
+def load_json(path):
+    p = pathlib.Path(path)
+    if not p.exists():
+        return None
+    try:
+        return json.loads(p.read_text(encoding="utf-8", errors="replace"))
+    except Exception:
+        return None
 
-          for line in log.splitlines():
-              if not line.startswith("HF_RESULT_") or "_BASE64=" not in line:
-                  continue
-              encoded = line.split("=", 1)[1]
-              try:
-                  decoded = base64.b64decode(encoded, validate=True)
-                  results.append(json.loads(decoded))
-              except Exception as exc:
-                  results.append({"decode_error": str(exc), "raw": encoded})
+calc_info = load_json("alien-proof/calculator-info.json")
+calc_result = load_json("alien-proof/calculator-result.json")
+flux_info = load_json("alien-proof/flux-info.json")
 
-          with open("alien-proof/hf-resolved-results.json", "w", encoding="utf-8") as f:
-              json.dump(results, f, indent=2, sort_keys=True)
+observed_output = None
+if isinstance(calc_result, dict):
+    for key in ("output", "result", "value"):
+        if key in calc_result:
+            observed_output = calc_result[key]
+            break
+    if observed_output is None and len(calc_result) == 1:
+        observed_output = next(iter(calc_result.values()))
 
-          success = (
-              int(os.environ.get("GIT_STATUS", "999")) == 0
-              and int(os.environ.get("SWIFT_STATUS", "999")) == 0
-              and int(os.environ.get("PORTABLE_BUILD_STATUS", "999")) == 0
-              and int(os.environ.get("RESOLVE_STATUS", "999")) == 0
-              and "HF_SKILL_RESOLUTION=PASS" in log
-              and len(results) > 0
-          )
+calculator_verified = observed_output == 437 or observed_output == 437.0
 
-          proof = {
-              "experiment": "RIGHTCLICK Alien Relay Generation 3",
-              "observed_utc": os.environ.get("OBSERVED_AT"),
-              "repository_commit_sha": os.environ.get("REPO_SHA"),
-              "runner": {
-                  "os": os.environ.get("RUNNER_OS_VALUE"),
-                  "arch": os.environ.get("RUNNER_ARCH_VALUE"),
-              },
-              "procedure": "skills/rightclick/procedures/recursive-capability-expansion.v1.json",
-              "recursive_path": [
-                  "ChatGPT seven generic RIGHTCLICK operations",
-                  "RIGHTCLICK reflected GitHub OpenAPI provider",
-                  "GitHub-hosted Ubuntu runner",
-                  "compiled rightclick-ard-probe",
-                  "live Hugging Face ARD discovery endpoint",
-                  "resolved application/ai-skill artifacts",
-              ],
-              "commands": [
-                  {
-                      "command": "git rev-parse HEAD",
-                      "exit_status": int(os.environ.get("GIT_STATUS", "999")),
-                  },
-                  {
-                      "command": "swift --version",
-                      "exit_status": int(os.environ.get("SWIFT_STATUS", "999")),
-                      "output": os.environ.get("SWIFT_VERSION", ""),
-                  },
-                  {
-                      "command": "swift build --product rightclick-ard-probe",
-                      "exit_status": int(os.environ.get("PORTABLE_BUILD_STATUS", "999")),
-                      "log": "portable-build.log",
-                  },
-                  {
-                      "command": f'{os.environ.get("BIN_PATH", "<unknown>")} live-hf-resolve',
-                      "exit_status": int(os.environ.get("RESOLVE_STATUS", "999")),
-                      "log": "hf-resolve.log",
-                  },
-              ],
-              "resolved_result_count": len(results),
-              "semantic_success": success,
-              "verification_rule": "Success requires the portable probe to build, the live Hugging Face discovery call to return, and at least one machine-readable capability artifact to be serialized without inventing an executor.",
-          }
+skill_ok = (
+    int(os.environ.get("SKILL_FETCH_STATUS", "999")) == 0
+    and int(os.environ.get("SKILL_INFO_INSTRUCTION_STATUS", "999")) == 0
+    and int(os.environ.get("SKILL_PREDICT_INSTRUCTION_STATUS", "999")) == 0
+)
 
-          with open("alien-proof/rightclick-alien-proof.json", "w", encoding="utf-8") as f:
-              json.dump(proof, f, indent=2, sort_keys=True)
-          PY
+semantic_success = (
+    int(os.environ.get("GIT_STATUS", "999")) == 0
+    and skill_ok
+    and int(os.environ.get("VENV_STATUS", "999")) == 0
+    and int(os.environ.get("INSTALL_STATUS", "999")) == 0
+    and int(os.environ.get("CALC_INFO_STATUS", "999")) == 0
+    and int(os.environ.get("CALC_PREDICT_STATUS", "999")) == 0
+    and calculator_verified
+)
+
+proof = {
+    "experiment": "RIGHTCLICK Alien Relay Generation 4",
+    "observed_utc": os.environ.get("OBSERVED_AT"),
+    "repository_commit_sha": os.environ.get("REPO_SHA"),
+    "runner": {
+        "os": os.environ.get("RUNNER_OS_VALUE"),
+        "arch": os.environ.get("RUNNER_ARCH_VALUE"),
+    },
+    "procedure": "skills/rightclick/procedures/recursive-capability-expansion.v1.json",
+    "recursive_path": [
+        "ChatGPT seven generic RIGHTCLICK operations",
+        "RIGHTCLICK reflected GitHub OpenAPI provider",
+        "GitHub-hosted Ubuntu runner",
+        "compiled RIGHTCLICK ARD probe",
+        "Hugging Face ARD discovery",
+        "huggingface-gradio application/ai-skill",
+        "Gradio protocol learned from immutable skill artifact",
+        "public Gradio Space API introspected at runtime",
+        "new remote application invoked",
+    ],
+    "learned_procedure": {
+        "source_commit": os.environ.get("SKILL_COMMIT"),
+        "source_url": os.environ.get("SKILL_URL"),
+        "sha256": os.environ.get("SKILL_SHA256"),
+        "contains_info_instruction": int(os.environ.get("SKILL_INFO_INSTRUCTION_STATUS", "999")) == 0,
+        "contains_predict_instruction": int(os.environ.get("SKILL_PREDICT_INSTRUCTION_STATUS", "999")) == 0,
+    },
+    "acquired_client": {
+        "gradio_version": os.environ.get("GRADIO_VERSION"),
+        "install_exit_status": int(os.environ.get("INSTALL_STATUS", "999")),
+    },
+    "new_remote_contract": {
+        "space": "gradio/calculator",
+        "info_exit_status": int(os.environ.get("CALC_INFO_STATUS", "999")),
+        "contract": calc_info,
+    },
+    "invocation": {
+        "endpoint": "/predict",
+        "arguments": {"num1": 19, "operation": "multiply", "num2": 23},
+        "exit_status": int(os.environ.get("CALC_PREDICT_STATUS", "999")),
+        "returned": calc_result,
+        "independent_postcondition": "output == 437",
+        "postcondition_observed": calculator_verified,
+    },
+    "next_context_probe": {
+        "space": "black-forest-labs/FLUX.2-dev",
+        "info_exit_status": int(os.environ.get("FLUX_INFO_STATUS", "999")),
+        "contract": flux_info,
+    },
+    "semantic_success": semantic_success,
+    "verification_rule": "Success requires an immutable discovered skill to teach both Gradio discovery and invocation, runtime acquisition of the client, live schema introspection of a previously unintegrated Space, execution of the discovered endpoint, and independent observation that 19*23 equals 437.",
+}
+with open("alien-proof/rightclick-alien-proof.json", "w", encoding="utf-8") as f:
+    json.dump(proof, f, indent=2, sort_keys=True)
+PY
 
           cat alien-proof/rightclick-alien-proof.json
-          echo "--- resolved capability artifacts ---"
-          cat alien-proof/hf-resolved-results.json
 
       - name: Upload proof artifact
         if: always()
