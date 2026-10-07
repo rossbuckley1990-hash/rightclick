@@ -276,7 +276,7 @@ public final class CapabilityEngine {
                 actionID: capability.id,
                 title: capability.title,
                 message:
-                    "The reflector that discovered \(capability.title) is no longer available.",
+                    "The capability or its execution contract changed or is no longer available. Discover and review it again.",
                 supportLevel:
                     capability.supportLevel
             )
@@ -512,7 +512,7 @@ public final class CapabilityEngine {
                 title: capability.title,
                 state: .unavailable,
                 message:
-                    "The reflector that discovered \(capability.title) is no longer available."
+                    "The capability or its execution contract changed or is no longer available. Discover and review it again."
             )
 
             ExecutionStore.shared.put(
@@ -663,13 +663,34 @@ public final class CapabilityEngine {
         for capability: Capability,
         item: ContentItem
     ) -> (any CapabilityReflector)? {
-        currentReflectors(
-            for:
-                item
-        )
-        .first {
+        guard let reflector = currentReflectors(for: item).first(where: {
             $0.id == capability.reflectorID
+        }), let current = try? reflector.capabilities(for: item) else {
+            return nil
         }
+
+        // The execution edge must independently still declare the contract
+        // selected during this invocation. A stable reflector ID alone is
+        // not authority to dispatch a changed endpoint, schema or safety rule.
+        // Check only the selected owner's catalog, not every provider again.
+        let matches = current.filter { $0.id == capability.id }
+        guard !matches.isEmpty else { return nil }
+
+        // These are local, structured snapshots, not signed protocol proofs.
+        // Compare encoded bytes rather than Swift String equality, which can
+        // equate distinct Unicode spellings in authority-sensitive metadata.
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        guard let expected = try? encoder.encode(capability) else { return nil }
+
+        for var candidate in matches {
+            // As in discovery, only the engine assigns reflector ownership.
+            candidate.reflectorID = reflector.id
+            guard let actual = try? encoder.encode(candidate), actual == expected else {
+                return nil
+            }
+        }
+        return reflector
     }
 
     private func validatedDelegatedVerification(
