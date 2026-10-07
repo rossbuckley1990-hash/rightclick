@@ -1,0 +1,829 @@
+{
+  "base": "05ace2fec149c62c7cfb24f41fafde863b377ff5",
+  "scope": "Source audit only; no runtime or user configuration changes",
+  "files": [
+    {
+      "path": "Sources/RightClickARD/ARD.swift",
+      "lines": 392,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickARDProbe/main.swift",
+      "lines": 331,
+      "imports": [
+        "import Foundation",
+        "import FoundationNetworking",
+        "import RightClickARD"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCLI/AuthorityConfigurationCLI.swift",
+      "lines": 436,
+      "imports": [
+        "import Foundation",
+        "import RightClickCore"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCLI/BridgeRuntime.swift",
+      "lines": 1276,
+      "imports": [
+        "import Darwin",
+        "import Foundation",
+        "import Dispatch",
+        "import Security"
+      ],
+      "platform_lines": [
+        "1: import Darwin",
+        "4: import Security",
+        "70: let updateStatus = SecItemUpdate(",
+        "79: guard updateStatus == errSecItemNotFound else {",
+        "89: let addStatus = SecItemAdd(",
+        "109: let status = SecItemCopyMatching(",
+        "114: if status == errSecItemNotFound {",
+        "142: let status = SecItemDelete(",
+        "148: || status == errSecItemNotFound",
+        "843: Darwin.signal(",
+        "848: Darwin.signal(",
+        "901: Darwin.signal(",
+        "906: Darwin.signal("
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTBridge.swift",
+      "lines": 384,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "54: \"Library/Application Support/RIGHTCLICK\","
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTBridgeInstaller.swift",
+      "lines": 475,
+      "imports": [
+        "import Darwin",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "1: import Darwin"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTLiveAttestation.swift",
+      "lines": 664,
+      "imports": [
+        "import Darwin",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "1: import Darwin"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTOnboarding.swift",
+      "lines": 660,
+      "imports": [
+        "import Darwin",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "1: import Darwin"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTOnboardingTransaction.swift",
+      "lines": 551,
+      "imports": [
+        "import Darwin",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "1: import Darwin",
+        "121: \"Library/Application Support/RIGHTCLICK/backups\","
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/ClaudeClientAdapter.swift",
+      "lines": 221,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCLI/ClientRegistry.swift",
+      "lines": 41,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCLI/CodexClientAdapter.swift",
+      "lines": 308,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCLI/LocalOnboarding.swift",
+      "lines": 967,
+      "imports": [
+        "import Foundation",
+        "import Darwin",
+        "import Glibc"
+      ],
+      "platform_lines": [
+        "2: #if canImport(Darwin)",
+        "3: import Darwin"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/NativeRegistrationBackend.swift",
+      "lines": 590,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCLI/OnboardingEngine.swift",
+      "lines": 610,
+      "imports": [
+        "import Foundation",
+        "import Darwin",
+        "import Glibc"
+      ],
+      "platform_lines": [
+        "2: #if canImport(Darwin)",
+        "3: import Darwin"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/OpenAIPluginSetup.swift",
+      "lines": 268,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "99: \"macos\","
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/ProviderConfigurationCLI.swift",
+      "lines": 398,
+      "imports": [
+        "import Foundation",
+        "import RightClickCore"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCLI/Setup.swift",
+      "lines": 479,
+      "imports": [
+        "import Foundation",
+        "import RightClickCore",
+        "import RightClickMCP",
+        "import Security"
+      ],
+      "platform_lines": [
+        "4: import Security",
+        "141: \"macos\":",
+        "142: report.macosVersion,",
+        "252: Mac: \\(sharingNote) (\\(report.macosVersion))"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/SetupAllTransaction.swift",
+      "lines": 213,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCLI/SetupState.swift",
+      "lines": 228,
+      "imports": [
+        "import CryptoKit",
+        "import Foundation",
+        "import RightClickCore",
+        "import RightClickMCP"
+      ],
+      "platform_lines": [
+        "33: \"Library/Application Support/RIGHTCLICK\","
+      ]
+    },
+    {
+      "path": "Sources/RightClickCLI/StableEntrypoint.swift",
+      "lines": 159,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCLI/main.swift",
+      "lines": 389,
+      "imports": [
+        "import Foundation",
+        "import RightClickCore",
+        "import RightClickMCP"
+      ],
+      "platform_lines": [
+        "319: macOS \\(report.macosVersion) (\\(report.macosBuild))"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/ARDRegistrySource.swift",
+      "lines": 878,
+      "imports": [
+        "import Foundation",
+        "import RightClickARD"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/ActionExtensionCatalog.swift",
+      "lines": 163,
+      "imports": [
+        "import Foundation",
+        "import UniformTypeIdentifiers"
+      ],
+      "platform_lines": [
+        "2: import UniformTypeIdentifiers"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/BonjourGRPCSource.swift",
+      "lines": 715,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "104: [ServiceKey: NetService] = [:]",
+        "107: NetServiceBrowser?",
+        "317: NetServiceBrowser()",
+        "351: NetService",
+        "479: NetService,",
+        "535: NetService",
+        "598: NetServiceBrowserDelegate",
+        "601: _ browser: NetServiceBrowser,",
+        "602: didFind service: NetService,",
+        "638: _ browser: NetServiceBrowser,",
+        "639: didRemove service: NetService,",
+        "654: NetServiceDelegate",
+        "657: _ sender: NetService",
+        "682: _ sender: NetService,",
+        "703: _ sender: NetService,"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/BonjourGraphQLSource.swift",
+      "lines": 1005,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "89: [ServiceKey: NetService] = [:]",
+        "92: NetServiceBrowser?",
+        "342: NetServiceBrowser()",
+        "390: NetService",
+        "767: NetService,",
+        "825: NetService",
+        "888: NetServiceBrowserDelegate",
+        "891: _ browser: NetServiceBrowser,",
+        "892: didFind service: NetService,",
+        "929: _ browser: NetServiceBrowser,",
+        "930: didRemove service: NetService,",
+        "945: NetServiceDelegate",
+        "948: _ sender: NetService",
+        "973: _ sender: NetService,",
+        "994: _ sender: NetService,"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/BonjourOpenAPISource.swift",
+      "lines": 836,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "60: [ServiceKey: NetService] = [:]",
+        "63: NetServiceBrowser?",
+        "228: NetServiceBrowser()",
+        "266: _ service: NetService",
+        "616: from service: NetService,",
+        "672: NetService.dictionary(",
+        "727: NetServiceBrowserDelegate",
+        "730: _ browser: NetServiceBrowser,",
+        "731: didFind service: NetService,",
+        "762: _ browser: NetServiceBrowser,",
+        "763: didRemove service: NetService,",
+        "778: NetServiceDelegate",
+        "781: _ sender: NetService",
+        "805: _ sender: NetService,",
+        "825: _ sender: NetService,"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/BundleScan.swift",
+      "lines": 104,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "45: URL(fileURLWithPath: \"/Library/Application Support\"),",
+        "46: home.appendingPathComponent(\"Library/Application Support\"),"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/Capability.swift",
+      "lines": 296,
+      "imports": [
+        "import Foundation",
+        "import CryptoKit"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityABI.swift",
+      "lines": 314,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityABIAdapter.swift",
+      "lines": 42,
+      "imports": [
+        "import CryptoKit",
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityArtifactResolver.swift",
+      "lines": 1012,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityEngine.swift",
+      "lines": 995,
+      "imports": [
+        "import AppKit",
+        "import Darwin",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "1: import AppKit",
+        "2: import Darwin",
+        "25: public var macosVersion: String",
+        "26: public var macosBuild: String",
+        "91: let app = NSApplication.shared",
+        "359: pthread_main_np() != 0,",
+        "448: /// `NSPerformService` is synchronous, so its Boolean result is stored before return.",
+        "911: NSUpdateDynamicServices()",
+        "948: let version = macosVersion()",
+        "954: macosVersion: version.product,",
+        "955: macosBuild: version.build,",
+        "970: \"Services are read from the documented NSServices Info.plist key and invoked with NSPerformService.\",",
+        "978: private func macosVersion() -> (product: String, build: String) {"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityExperience.swift",
+      "lines": 95,
+      "imports": [
+        "import CryptoKit",
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityExperienceLedger.swift",
+      "lines": 209,
+      "imports": [
+        "import Foundation",
+        "import Darwin",
+        "import Glibc"
+      ],
+      "platform_lines": [
+        "2: #if canImport(Darwin)",
+        "3: import Darwin"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityReflector.swift",
+      "lines": 321,
+      "imports": [
+        "import AppKit",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "1: import AppKit",
+        "89: static let macOSService = \"macos.service\"",
+        "90: static let macOSSharing = \"macos.sharing\"",
+        "91: static let macOSActionExtension = \"macos.action-extension\"",
+        "203: if pthread_main_np() != 0 {"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityReflectorSource.swift",
+      "lines": 31,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityRuntimeDefaults.swift",
+      "lines": 90,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/ConfiguredOpenAPISource.swift",
+      "lines": 1110,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "100: \"Library/Application Support/RIGHTCLICK\","
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/ContentItem.swift",
+      "lines": 131,
+      "imports": [
+        "import Foundation",
+        "import UniformTypeIdentifiers"
+      ],
+      "platform_lines": [
+        "2: import UniformTypeIdentifiers"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/GRPCReflectionTransport.swift",
+      "lines": 941,
+      "imports": [
+        "import Foundation",
+        "import GRPC",
+        "import NIOCore",
+        "import NIOPosix"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/GRPCReflector.swift",
+      "lines": 2329,
+      "imports": [
+        "import CryptoKit",
+        "import Foundation",
+        "import SwiftProtobuf"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/GRPCWireCodec.swift",
+      "lines": 391,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/GraphQLHTTP.swift",
+      "lines": 593,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/GraphQLReflector.swift",
+      "lines": 2411,
+      "imports": [
+        "import CryptoKit",
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/OAuthOIDCAuthority.swift",
+      "lines": 664,
+      "imports": [
+        "import CryptoKit",
+        "import Foundation",
+        "import Security"
+      ],
+      "platform_lines": [
+        "3: import Security",
+        "426: let updateStatus = SecItemUpdate(",
+        "435: guard updateStatus == errSecItemNotFound else {",
+        "442: let addStatus = SecItemAdd(",
+        "461: let status = SecItemCopyMatching(",
+        "466: if status == errSecItemNotFound {",
+        "492: let status = SecItemDelete(",
+        "500: if status == errSecItemNotFound {"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/OpenAPIAuthority.swift",
+      "lines": 473,
+      "imports": [
+        "import Foundation",
+        "import Security"
+      ],
+      "platform_lines": [
+        "2: import Security",
+        "232: SecItemUpdate(",
+        "243: == errSecItemNotFound",
+        "260: SecItemAdd(",
+        "307: SecItemCopyMatching(",
+        "316: if status == errSecItemNotFound {",
+        "340: SecItemDelete(",
+        "351: if status == errSecItemNotFound {",
+        "385: SecItemCopyMatching("
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/OpenAPIReflector.swift",
+      "lines": 3964,
+      "imports": [
+        "import CryptoKit",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "1678: let rootHasSecurity =",
+        "1683: let rootSecurityIsExplicitlyEmpty =",
+        "1684: rootHasSecurity",
+        "1762: rootHasSecurity:",
+        "1763: rootHasSecurity,",
+        "1764: rootSecurityIsExplicitlyEmpty:",
+        "1765: rootSecurityIsExplicitlyEmpty,",
+        "2131: rootHasSecurity:",
+        "2133: rootSecurityIsExplicitlyEmpty:",
+        "2147: if rootHasSecurity {",
+        "2149: rootSecurityIsExplicitlyEmpty",
+        "2169: let rawSecurity =",
+        "2177: if rawSecurity.isEmpty {",
+        "2182: rawSecurity.count == 1,",
+        "2184: rawSecurity.first"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/OriginPinnedHTTP.swift",
+      "lines": 514,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/OutcomeVerifier.swift",
+      "lines": 887,
+      "imports": [
+        "import CryptoKit",
+        "import Darwin",
+        "import Foundation",
+        "import ImageIO"
+      ],
+      "platform_lines": [
+        "2: import Darwin",
+        "4: import ImageIO",
+        "19: case xattrPresent = \"xattr_present\"",
+        "20: case xattrAbsent = \"xattr_absent\"",
+        "504: case .xattrPresent:",
+        "511: \"xattr_present requires file path and key\"",
+        "532: case .xattrAbsent:",
+        "539: \"xattr_absent requires file path and key\"",
+        "688: getxattr(",
+        "722: let source = CGImageSourceCreateWithURL(",
+        "727: CGImageSourceCopyPropertiesAtIndex(",
+        "745: kCGImagePropertyPixelWidth",
+        "751: kCGImagePropertyPixelHeight",
+        "757: // Basic ImageIO properties expose dimensions and some metadata,",
+        "764: // CGImageMetadata exposes the richer embedded metadata graph.",
+        "766: // metadata ImageIO reports for the file rather than knowing",
+        "769: CGImageSourceCopyMetadataAtIndex(",
+        "789: _ metadata: CGImageMetadata,",
+        "793: (CGImageMetadataCopyTags(metadata)",
+        "794: as? [CGImageMetadataTag])",
+        "806: _ tag: CGImageMetadataTag,",
+        "810: CGImageMetadataTagCopyValue(tag)",
+        "819: value as? [CGImageMetadataTag]",
+        "832: // Arrays consisting of CGImageMetadataTag values are handled",
+        "833: // by the typed [CGImageMetadataTag] branch above. Remaining"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/ProductSurface.swift",
+      "lines": 193,
+      "imports": [
+        "import CryptoKit",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "132: .appendingPathComponent(\"Library/Application Support/RIGHTCLICK\", isDirectory: true)",
+        "174: return \"macOS Service \u201c\\(capability.title)\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\""
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/SafetyPolicy.swift",
+      "lines": 66,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickCore/ServiceCatalog.swift",
+      "lines": 473,
+      "imports": [
+        "import AppKit",
+        "import Foundation",
+        "import UniformTypeIdentifiers"
+      ],
+      "platform_lines": [
+        "1: import AppKit",
+        "3: import UniformTypeIdentifiers",
+        "75: NSUpdateDynamicServices()",
+        "94: ExecutionLog.write(\"NSPerformService name=\\(record.menuTitle) provider=\\(record.bundleIdentifier ?? \"\") sendFileTypes=\\(record.sendFileTypes) pasteboardTypes=\\(written.joined(separator: \",\")) main=\\(Thread.isMainThread)\")",
+        "97: box.finish(NSPerformService(record.menuTitle, pasteboard))",
+        "100: let accepted = NSPerformService(record.menuTitle, pasteboard)",
+        "352: _ = NSApplication.shared"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/ServiceContext.swift",
+      "lines": 82,
+      "imports": [
+        "import Foundation",
+        "import CoreFoundation"
+      ],
+      "platform_lines": [
+        "33: case \"NSApplicationIdentifier\":"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/ServiceOutcome.swift",
+      "lines": 39,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "15: message: \"NSPerformService returned false.\",",
+        "23: var message = \"NSPerformService returned true; semantic outcome is unverified.\""
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/SharingCatalog.swift",
+      "lines": 237,
+      "imports": [
+        "import AppKit",
+        "import Darwin",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "1: import AppKit",
+        "2: import Darwin",
+        "38: guard pthread_main_np() != 0 else {",
+        "63: let app = NSApplication.shared"
+      ]
+    },
+    {
+      "path": "Sources/RightClickCore/SharingExecutionModel.swift",
+      "lines": 102,
+      "imports": [
+        "import Foundation"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickMCP/Federation.swift",
+      "lines": 1237,
+      "imports": [
+        "import Foundation",
+        "import MCP",
+        "import RightClickCore"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickMCP/HTTPListener.swift",
+      "lines": 213,
+      "imports": [
+        "import Foundation",
+        "import MCP",
+        "import Network"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickMCP/ModernMCPStdioTransport.swift",
+      "lines": 223,
+      "imports": [
+        "import Foundation",
+        "import Logging",
+        "import MCP"
+      ],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickMCP/Server.swift",
+      "lines": 638,
+      "imports": [
+        "import CryptoKit",
+        "import Darwin",
+        "import Foundation",
+        "import MCP",
+        "import RightClickCore"
+      ],
+      "platform_lines": [
+        "2: import Darwin",
+        "135: // can run that block inline on the MCP worker, which AppKit then aborts.",
+        "136: if pthread_main_np() != 0 {",
+        "339: .string(\"xattr_present\"),",
+        "340: .string(\"xattr_absent\"),"
+      ]
+    },
+    {
+      "path": "Sources/RightClickMarker/main.swift",
+      "lines": 22,
+      "imports": [
+        "import AppKit",
+        "import Foundation"
+      ],
+      "platform_lines": [
+        "1: import AppKit",
+        "20: NSUpdateDynamicServices()",
+        "21: NSApplication.shared.setActivationPolicy(.accessory)"
+      ]
+    },
+    {
+      "path": "Sources/RightClickProbe/main.swift",
+      "lines": 1534,
+      "imports": [
+        "import AppKit",
+        "import AVFoundation",
+        "import CoreGraphics",
+        "import CoreVideo",
+        "import CryptoKit",
+        "import Foundation",
+        "import RightClickProbePrivate",
+        "import UniformTypeIdentifiers"
+      ],
+      "platform_lines": [
+        "1: import AppKit",
+        "8: import UniformTypeIdentifiers",
+        "100: var macosVersion: String",
+        "101: var macosBuild: String",
+        "245: let app = NSApplication.shared",
+        "312: let (product, build) = macosVersion()",
+        "315: macosVersion: product,",
+        "316: macosBuild: build,",
+        "335: discoverySource: \"Documented Info.plist key NSServices, read from installed .app, .service, and .workflow bundles. There is no public enumeration API; NSPerformService and NSUpdateDynamicServices are public.\",",
+        "374: func macosVersion() -> (String, String) {",
+        "922: NSUpdateDynamicServices()",
+        "938: notes.append(\"Stopped retrying after NSPerformService timed out for '\\(name)'.\")",
+        "942: notes.append(\"NSPerformService succeeded for '\\(name)' and the pasteboard result differed from the input.\")",
+        "997: let returned = NSPerformService(name, pasteboard)",
+        "1017: error: \"NSPerformService('\\(name)') did not return within 8 seconds\",",
+        "1037: error: ok ? nil : \"NSPerformService returned false for '\\(name)'\",",
+        "1092: URL(fileURLWithPath: \"/Library/Application Support\"),",
+        "1093: home.appendingPathComponent(\"Library/Application Support\"),",
+        "1374: reasons.append(\"NSPerformService('\\(serviceAttempt.invokedName)') returned true with an observable pasteboard result.\")",
+        "1377: reasons.append(\"NSPerformService did not return an observable result. Last error: \\(serviceAttempt?.error ?? \"none\").\")",
+        "1442: lines.append(\"macOS: \\(report.macosVersion) (\\(report.macosBuild))\")"
+      ]
+    },
+    {
+      "path": "Sources/RightClickProbePrivate/RCPrivateExtensionProbe.m",
+      "lines": 88,
+      "imports": [],
+      "platform_lines": []
+    },
+    {
+      "path": "Sources/RightClickProbePrivate/include/RCPrivateExtensionProbe.h",
+      "lines": 14,
+      "imports": [],
+      "platform_lines": []
+    }
+  ]
+}
