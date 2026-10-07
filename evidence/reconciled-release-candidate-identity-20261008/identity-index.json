@@ -75,7 +75,32 @@
     "integratedStartedAtUTC": "2026-10-07T23:15:14Z",
     "integratedStatusAtObservation": "IN_PROGRESS",
     "releaseAndActualCore7": "PENDING",
-    "scope": "No full Windows or reconciled-head GREEN claim"
+    "scope": "No full Windows or reconciled-head GREEN claim",
+    "diagnosticTerminalOutcome": {
+      "status": "FAILURE / TIMED_OUT",
+      "completedUTC": "2026-10-07T23:39:15.012276+00:00",
+      "exitCode": 124,
+      "deadlineSeconds": 1440,
+      "elapsedSeconds": 1440.0,
+      "outputBytes": 22,
+      "output": "[0/1] Planning build CRLF only",
+      "lastOutputElapsedSeconds": 98.422,
+      "outputDrainCompleted": true,
+      "drainError": null,
+      "ownedCleanup": "Completed by native Job Object deadline; no manual cancellation",
+      "actualSupervisorSelfChecks": "8 tests /0 skips /0 failures in9.833s",
+      "fullDiscovery": "666 distinct test names /667 log lines",
+      "releaseAndActualCore7": "SKIPPED after failed integrated deadline",
+      "cause": "UNKNOWN; no test-start rows or assertion summary retained; do not infer failing fixture/test, deadlock or inner buffering from process metadata"
+    },
+    "separateDirectRunnerDiagnostic": {
+      "head": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+      "runID": 37702810868,
+      "jobID": 113070045244,
+      "branch": "codex/windows-test-direct-diagnostic-20261008",
+      "status": "IN_PROGRESS at last23:33:46 observation; full native comparison pending",
+      "scope": "No product/test/source-package change; diagnostic requires exact full native inventory and both default test libraries before release/provider gates. Not a substitute for passing normal final-head platform CI."
+    }
   },
   "supersededFrozenProofIdentity": {
     "sourceArchiveSHA256": "d2d42b8f24d9bfda18e7f2b2e36ee529db4a33c7bf763b8e83f3fca139974741",
