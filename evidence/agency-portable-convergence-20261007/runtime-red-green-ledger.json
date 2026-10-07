@@ -1,0 +1,89 @@
+{
+  "scope": "Native runtime convergence; provider readiness and direct native OS reflection are distinct gates.",
+  "sourcePriorToControlCommit": "e481288",
+  "sevenCanonicalOperations": 7,
+  "providerSpecificAITools": 0,
+  "boundaries": [
+    {
+      "substrateExposingFailure": "Linux native runtime",
+      "genericRuntimeDeficiency": "Inherited URLSessionTaskDelegate default witness discarded bounded request completion even while actual native Foundation returned HTTP 200.",
+      "reusablePrimitive": "Concrete native delegate completion witness with bounded accumulator, cancellation and exactly-once finish.",
+      "thinProviderSpecificLayer": "None: configured acquired OpenAPI declaration is unchanged.",
+      "evidenceTurningGreen": [
+        "exact-pr51-native-linux-transport-red.log",
+        "native-linux-transport-green-retry.log",
+        "native-linux-seven-types-recheck.log",
+        "native-linux-bounded-http-controls.log"
+      ],
+      "transfer": "Descriptor acquisition, observer reads and invocation exchanges use the same bounded transport; Windows uses the same witness.",
+      "status": "GREEN for demonstrated Linux completion boundary; Windows transport still pending native gate"
+    },
+    {
+      "substrateExposingFailure": "Linux native test build after shared no-output completion update",
+      "genericRuntimeDeficiency": "New semantic acceptance fixture used Apple-only CryptoKit import and POSIX-only interpreter/permission provisioning.",
+      "reusablePrimitive": "Native fixture provisioning uses the same Crypto API, installed interpreter and actual host protected-reference backend.",
+      "thinProviderSpecificLayer": "Host interpreter path and private file permissions only; unchanged semantic ACK/observation assertions.",
+      "evidenceTurningGreen": [
+        "native-linux-types-recheck-fixed-path.log",
+        "native-linux-types-recheck-source-retry.log",
+        "native-macos-fixture-controls.log"
+      ],
+      "transfer": "Windows can run the same actual HTTP ACK and observation fixtures without skips.",
+      "status": "GREEN on Mac/Linux; Windows pending"
+    },
+    {
+      "substrateExposingFailure": "Windows native runtime",
+      "genericRuntimeDeficiency": "Protected configuration, signing and observer references had no native file-authority backend and intentionally denied acquisition.",
+      "reusablePrimitive": "Handle-bound regular-file, exact final path, actual owner/DACL validation, bounded read and immutable private copied artifacts.",
+      "thinProviderSpecificLayer": "Win32 filesystem security calls only; existing RCIR admission, currentContract and host observer remain shared.",
+      "evidenceTurningGreen": [],
+      "requiredNativeControls": [
+        "configured policy/signing/observer references",
+        "Everyone read/full-control denied",
+        "null DACL denied",
+        "parent directory junction denied",
+        "directory/oversize denied",
+        "copied bytes remain exact after source mutation",
+        "real seven-operation provider invocation"
+      ],
+      "transfer": "Protected references also underpin private origin trust and host authority without provider-specific tools.",
+      "status": "RED: C implementation and Mac/Linux controls do not prove native Windows behavior"
+    },
+    {
+      "substrateExposingFailure": "Linux/Windows direct native OS substrate acquisition",
+      "genericRuntimeDeficiency": "There is no native D-Bus/COM declared-contract compiler integrated in the current candidate.",
+      "reusablePrimitive": "Future native contract acquisition must retain existing CapabilityContract/RCIR and bind native owner/authority/lifecycle generations.",
+      "thinProviderSpecificLayer": "Documented Linux Introspectable XML or Windows ITypeInfo metadata plus typed native dispatch, not hardcoded commands.",
+      "evidenceTurningGreen": [],
+      "transfer": "Native graph mutation and ABI type fidelity pressure the same runtime used by descriptor protocols.",
+      "status": "RED: inspected documented boundaries only; not implemented or demonstrated"
+    }
+  ],
+  "nativeLinuxControls": {
+    "tests": 23,
+    "skipped": 0,
+    "failures": 0,
+    "additionalActualSocketControls": 5,
+    "additionalSocketFailures": 0
+  },
+  "nativeMacFixtureControls": {
+    "tests": 20,
+    "skipped": 0,
+    "failures": 0
+  },
+  "binaries": {
+    "Linux": {
+      "path": ".build/linux-native/debug/rightclick",
+      "SHA256": "2a755f50cc51d8d58bc3af12413d3de98980238c81f2cda040697bfb8d95689d"
+    },
+    "Mac": {
+      "path": ".build/debug/rightclick",
+      "SHA256": "5aa1e5a9f6de99eabda3315e131f60d5eb25784637744f6b3afda26a0c865c2d"
+    }
+  },
+  "sourceDigests": {
+    "Sources/RightClickCore/OriginPinnedHTTP.swift": "dc95771515189e0642fa5f9986a5b7816b5e098872b496968f1eda6341d15e22",
+    "Sources/RightClickHostFiles/HostFiles.c": "2ecdb122ab01eadfb82268e670823d13280293c2414b7c2981fa8181b32b644d",
+    "Tests/RightClickCoreTests/NativeBoundedHTTPTests.swift": "06238d07214f7da4d39d4e4b53b3c9955319f3a228b882204b7930ab0313a32f"
+  }
+}
