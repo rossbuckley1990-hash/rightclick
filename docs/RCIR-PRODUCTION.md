@@ -8,6 +8,10 @@ Admission serializes lease consumption with `URLSessionTask.resume()` under one 
 
 Run/status add optional `rcir` evidence containing task/lease identity, generation, phase, semantic outcome and canonical receipt bytes. A signed envelope is present only when a signer has actually been provisioned. Provider acceptance defaults to unverified. The seven operation schemas remain compatible; typed wire negotiation, cursor ownership and network streaming are later gates.
 
+## Invocation and graph identity
+
+The compiler supplies its stable discovered Capability ABI separately from the exact invocation binding. `RCIRAdmission.publishInvocation` retains the provider generation across different request bodies/resources/postconditions while keeping each value in its own lease. Changes to the discovered declaration, authenticated principal, effect kinds or task model invalidate leases. Withdrawal and reappearance create a new incarnation. See [invocation isolation and real-effect RED/GREEN](RCIR-INVOCATION-ISOLATION.md).
+
 ## Operator configuration
 
 Set `RIGHTCLICK_RCIR_CONFIG` to a local operator-owned JSON file. The file and any raw 32-byte Ed25519 private key must be owned by the runtime user, regular files, with no group/other permissions. Symlinks and unknown configuration keys are rejected. A malformed configured file denies dispatch. No implicit signing key is generated.
