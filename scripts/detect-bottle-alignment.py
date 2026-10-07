@@ -34,19 +34,22 @@ KIND_RULES: list[dict[str, object]] = [
     {
         "id": "reflector.macos.service",
         "title": "macOS Services reflector",
-        "any_files": ["Sources/RightClickCore/CapabilityReflector.swift"],
+        "any_files": ["Sources/RightClickCore/CapabilityReflector.swift",
+                      "Sources/RightClickCore/MacOSCapabilityReflectors.swift"],
         "any_patterns": [r"MacOSServiceReflector"],
     },
     {
         "id": "reflector.macos.sharing",
         "title": "macOS Sharing reflector",
-        "any_files": ["Sources/RightClickCore/CapabilityReflector.swift"],
+        "any_files": ["Sources/RightClickCore/CapabilityReflector.swift",
+                      "Sources/RightClickCore/MacOSCapabilityReflectors.swift"],
         "any_patterns": [r"MacOSSharingReflector"],
     },
     {
         "id": "reflector.macos.action_extension",
         "title": "macOS Action Extension reflector",
-        "any_files": ["Sources/RightClickCore/CapabilityReflector.swift"],
+        "any_files": ["Sources/RightClickCore/CapabilityReflector.swift",
+                      "Sources/RightClickCore/MacOSCapabilityReflectors.swift"],
         "any_patterns": [r"MacOSActionExtensionReflector"],
     },
     {
