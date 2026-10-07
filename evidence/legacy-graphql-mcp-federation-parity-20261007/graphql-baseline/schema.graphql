@@ -1,0 +1,4 @@
+input LegacyRecordInput { label: String! }
+type LegacyRecord { label: String! }
+type Query { legacyParityEcho(value: String!): String! }
+type Mutation { legacyParityRecord(input: LegacyRecordInput!): LegacyRecord! }
