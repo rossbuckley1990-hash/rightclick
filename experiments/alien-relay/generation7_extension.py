@@ -1,6 +1,7 @@
 
 import hashlib, json, os, pathlib, re, shutil, subprocess, sys
 from huggingface_hub import HfApi
+from observer import extract_transcript, compare_caption_transcript
 
 ROOT = pathlib.Path("alien-proof")
 GRADIO = str(pathlib.Path(sys.executable).with_name("gradio"))
@@ -63,7 +64,7 @@ def discover(api, queries, limit=18):
 def contracts(spaces, mode, maxspaces=18, maxmatches=6):
     matches=[]; evidence=[]
     for ent in spaces[:maxspaces]:
-        code,out,err=run([GRADIO,"info",ent["id"]],25)
+        code,out,err=run([GRADIO,"info",ent["id"]],12)
         info=jload(out); rec={"space":ent["id"],"query":ent["query"],"exit_status":code,"stderr_tail":err[-500:]}
         if code!=0 or not isinstance(info,dict):
             evidence.append(rec); continue
@@ -118,8 +119,8 @@ for c in tts_matches[:6]:
 audio_ok=audio_ev.get("found") is True and audio_ev.get("bytes",0)>1000
 (ROOT/"generation7-tts-invocation.json").write_text(json.dumps({"selected":tts_selected,"attempts":tts_attempts,"audio":audio_ev},indent=2,sort_keys=True))
 
-asr_spaces,asr_err=discover(api,["automatic speech recognition","speech to text","audio transcription"],20)
-asr_matches,asr_inspect=contracts(asr_spaces,"asr",20,6)
+asr_spaces,asr_err=discover(api,["speech to text","audio transcription","automatic speech recognition","whisper"],30)
+asr_matches,asr_inspect=contracts(asr_spaces,"asr",64,8)
 (ROOT/"generation7-asr-discovery.json").write_text(json.dumps({"spaces":asr_spaces,"errors":asr_err,"inspection":asr_inspect,"matches":asr_matches},indent=2,sort_keys=True))
 
 asr_selected=None; asr_attempts=[]; transcript=None
@@ -127,18 +128,17 @@ if audio:
     for c in asr_matches[:6]:
         payload={c["input_parameter"]:{"path":str(audio.resolve()),"meta":{"_type":"gradio.FileData"}}}
         code,out,err=run([GRADIO,"predict",c["space"],c["endpoint"],json.dumps(payload,separators=(",",":"))],180)
-        parsed=jload(out); ss=[]; strings(parsed if parsed is not None else out,ss); ss.sort(key=len,reverse=True)
-        asr_attempts.append({"space":c["space"],"endpoint":c["endpoint"],"exit_status":code,"stderr_tail":err[-800:],"returned":parsed if parsed is not None else out[-2000:],"text_candidates":ss[:8]})
-        if code==0 and ss: asr_selected=c; transcript=clean(ss[0]); break
+        parsed=jload(out)
+        candidate, observer_source = extract_transcript(parsed if parsed is not None else out, c["contract"])
+        asr_attempts.append({"space":c["space"],"endpoint":c["endpoint"],"exit_status":code,"stderr_tail":err[-800:],"returned":parsed if parsed is not None else out[-2000:],"observer_source":observer_source,"transcript_candidate":candidate})
+        if code==0 and candidate: asr_selected=c; transcript=clean(candidate); break
 (ROOT/"generation7-asr-invocation.json").write_text(json.dumps({"selected":asr_selected,"attempts":asr_attempts,"transcript":transcript},indent=2,sort_keys=True))
 
-stop={"the","and","that","this","with","from","into","over","under","above","below","there","their","his","her","its","are","was","were","has","have","had","for","you","your","but","image","photo","picture"}
-tok=lambda s:{w for w in re.findall(r"[a-z0-9]+",(s or "").lower()) if len(w)>=4 and w not in stop}
-a=tok(caption); b=tok(transcript); overlap=sorted(a&b); ratio=len(overlap)/max(1,min(len(a),len(b)))
-roundtrip=bool(transcript) and (len(overlap)>=2 or ratio>=0.25)
+comparison=compare_caption_transcript(caption, transcript)
+roundtrip=comparison["observed"]
 success=gen6_ok and bool(tts_selected) and audio_ok and bool(asr_selected) and roundtrip
 
-proof["experiment"]="RIGHTCLICK Alien Relay Generation 7 â€” multimodal semantic round trip"
+proof["experiment"]="RIGHTCLICK Alien Relay Generation 7+§uçâçT multimodal semantic round trip"
 proof["recursive_path"]=(proof.get("recursive_path") or [])+[
     "runtime discovery of text-to-speech Spaces",
     "dynamically selected text -> audio capability",
@@ -152,7 +152,7 @@ proof["generation7"]={
     "caption":caption,
     "tts":{"candidate_count":len(tts_spaces),"matching_contract_count":len(tts_matches),"selected":tts_selected,"attempt_count":len(tts_attempts),"audio":audio_ev,"verified":audio_ok},
     "asr":{"candidate_count":len(asr_spaces),"matching_contract_count":len(asr_matches),"selected":asr_selected,"attempt_count":len(asr_attempts),"transcript":transcript},
-    "roundtrip":{"rule":"separately discovered speech-to-text must share >=2 meaningful tokens with caption or >=25% overlap against smaller meaningful-token set","caption_tokens":sorted(a),"transcript_tokens":sorted(b),"overlap_tokens":overlap,"overlap_ratio":ratio,"observed":roundtrip},
+    "roundtrip":comparison,
 }
 proof["semantic_success"]=success
 proof_path.write_text(json.dumps(proof,indent=2,sort_keys=True),encoding="utf-8")
