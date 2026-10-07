@@ -22,14 +22,9 @@ public enum CapabilityReflectorSourceDefaults {
                 ),
             ]
 
-        if let configuredArtifacts =
-            ConfiguredCapabilityArtifactSource
-                .fromEnvironment()
-        {
-            sources.append(
-                configuredArtifacts
-            )
-        }
+        // Environment descriptors and confirmed in-session acquisitions share
+        // the existing resolver registry. No MCP tool or executor is added.
+        sources.append(LiveCapabilityArtifactSource())
 
 #if canImport(RightClickARD)
         if let ard =
