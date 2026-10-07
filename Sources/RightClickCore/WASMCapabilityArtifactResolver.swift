@@ -20,14 +20,18 @@ public final class WASMCapabilityArtifactResolver: CapabilityArtifactResolver {
               let tools, let runtime else {
             throw CapabilityArtifactResolutionError.invalidDescriptor("WASM requires a local component file and operator-selected tools/runtime; imports have no authority grant.")
         }
-        let componentBytes = try boundedArtifact(component)
+        let componentSnapshot = try CapabilityArtifactSnapshot(source: component, maximum: 16_777_216)
+        let toolsSnapshot = try CapabilityArtifactSnapshot(source: tools, maximum: 134_217_728, executable: true)
+        let runtimeSnapshot = try CapabilityArtifactSnapshot(source: runtime, maximum: 268_435_456, executable: true)
+        let componentBytes = try CapabilityArtifactSnapshot.read(source: componentSnapshot.file, maximum: 16_777_216)
         guard componentBytes.prefix(8) == Data([0, 97, 115, 109, 13, 0, 1, 0]) else {
             throw CapabilityArtifactResolutionError.invalidDescriptor("Expected an actual binary WebAssembly component.")
         }
-        let componentDigest = CapabilityJSON.digest(componentBytes)
-        let toolsDigest = CapabilityJSON.digest(try boundedArtifact(tools, maximum: 134_217_728))
-        let runtimeDigest = CapabilityJSON.digest(try boundedArtifact(runtime, maximum: 268_435_456))
-        let wit = try BoundedCapabilityProcess.run(executable: tools, arguments: ["component", "wit", component.path, "--json"])
+        let componentDigest = componentSnapshot.sha256
+        let toolsDigest = toolsSnapshot.sha256
+        let runtimeDigest = runtimeSnapshot.sha256
+        let wit = try BoundedCapabilityProcess.run(executable: toolsSnapshot.file,
+            arguments: ["component", "wit", componentSnapshot.file.path, "--json"])
         guard let json = try JSONSerialization.jsonObject(with: wit) as? [String: Any],
               let worlds = json["worlds"] as? [[String: Any]], worlds.count == 1,
               let world = worlds.first, let imports = world["imports"] as? [String: Any], imports.isEmpty,
@@ -56,16 +60,13 @@ public final class WASMCapabilityArtifactResolver: CapabilityArtifactResolver {
                 declaration: try CapabilityJSON.value(function))
         }
         func unchanged() -> Bool {
-            guard let bytes = try? self.boundedArtifact(component),
-                  let toolsBytes = try? self.boundedArtifact(tools, maximum: 134_217_728),
-                  let runtimeBytes = try? self.boundedArtifact(runtime, maximum: 268_435_456) else { return false }
-            return CapabilityJSON.digest(bytes) == componentDigest && CapabilityJSON.digest(toolsBytes) == toolsDigest
-                && CapabilityJSON.digest(runtimeBytes) == runtimeDigest
+            componentSnapshot.sourceStillMatches() && toolsSnapshot.sourceStillMatches() && runtimeSnapshot.sourceStillMatches()
         }
         return try CapabilityInterfaceReflector(id: "wasm:" + descriptor.id, provider: descriptor.id,
             target: component, substrate: kind, descriptorDigest: CapabilityJSON.digest(wit), operations: operations,
             provenance: ["componentSHA256": componentDigest, "runtimeSHA256": runtimeDigest,
                          "acquisitionRuntimeSHA256": toolsDigest, "runtimeExecutable": runtime.path,
+                         "executionArtifactBinding": "host-private lifetime-managed read-only component/tools/runtime snapshots",
                          "hostImports": "none", "authorityScope": "exact component/export; no host filesystem, network or environment imports"],
             available: unchanged, invoke: { name, input, admit in
                 guard unchanged(), case let .object(values) = input, let names = parameterNames[name] else { throw RCIRError.staleBinding }
@@ -77,21 +78,13 @@ public final class WASMCapabilityArtifactResolver: CapabilityArtifactResolver {
                 }
                 let invocation = name + "(" + parameters.joined(separator: ",") + ")"
                 let data = try withoutActuallyEscaping(admit) { gate in
-                    try BoundedCapabilityProcess.run(executable: runtime,
-                        arguments: ["run", "-C", "cache=n", "-W", "timeout=3s,max-memory-size=16777216,fuel=10000000", "--invoke", invocation, component.path],
+                    try BoundedCapabilityProcess.run(executable: runtimeSnapshot.file,
+                        arguments: ["run", "-C", "cache=n", "-W", "timeout=3s,max-memory-size=16777216,fuel=10000000", "--invoke", invocation, componentSnapshot.file.path],
                         admitStart: gate)
                 }
                 let trimmed = String(decoding: data, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
                 guard let bytes = trimmed.data(using: .utf8) else { throw CapabilityABIError.invalidWire }
                 return try CapabilityJSON.value(JSONSerialization.jsonObject(with: bytes, options: [.fragmentsAllowed]))
             })
-    }
-    private func boundedArtifact(_ url: URL, maximum: Int = 16_777_216) throws -> Data {
-        let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
-        guard attributes[.type] as? FileAttributeType == .typeRegular,
-              let size = attributes[.size] as? NSNumber, size.int64Value >= 0, size.int64Value <= maximum else { throw CapabilityABIError.limitExceeded }
-        let bytes = try Data(contentsOf: url)
-        guard bytes.count <= maximum else { throw CapabilityABIError.limitExceeded }
-        return bytes
     }
 }
