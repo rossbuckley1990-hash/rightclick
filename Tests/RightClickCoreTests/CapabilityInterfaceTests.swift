@@ -1,0 +1,79 @@
+import Foundation
+import XCTest
+@testable import RightClickCore
+
+final class CapabilityInterfaceTests: XCTestCase {
+    func testImporterRejectsUnsupportedConstraintsAndOpenObjects() throws {
+        XCTAssertThrowsError(try CapabilityJSON.schema(["type": "string", "pattern": "^safe$"]))
+        XCTAssertThrowsError(try CapabilityJSON.schema(["type": "object", "properties": [:]]))
+        XCTAssertThrowsError(try CapabilityJSON.schema(["type": "array", "items": ["type": "string"], "minItems": 1]))
+        XCTAssertThrowsError(try CapabilityJSON.schema(["type": "object", "properties": [:], "required": ["unknown"], "additionalProperties": false]))
+    }
+    func testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings() throws {
+        let schema = try CapabilityJSON.schema(["type": "object", "properties": ["count": ["type": "integer"]],
+                                                "required": ["count"], "additionalProperties": false])
+        try schema.validate(.object(["count": .integer(7)]))
+        XCTAssertThrowsError(try schema.validate(.object(["count": .string("7")])))
+        try CapabilitySchema.boolean.validate(CapabilityJSON.value(true))
+        try CapabilitySchema.integer.validate(CapabilityJSON.value(Int64(7)))
+    }
+    private func reflector(invocations: UnsafeMutablePointer<Int>) throws -> CapabilityInterfaceReflector {
+        try .init(id: "interface:controlled", provider: "controlled", target: URL(string: "http://127.0.0.1:19143/mcp")!,
+            substrate: "test", descriptorDigest: String(repeating: "a", count: 64),
+            operations: [.init(name: "challenge", title: "Controlled challenge",
+                arguments: .object(properties: ["challenge": .string], required: ["challenge"]),
+                result: .string, declaration: .object(["name": .string("challenge")]))],
+            available: { true }, invoke: { _, input, admit in
+                try admit { invocations.pointee += 1 }
+                guard case let .object(values) = input, let value = values["challenge"] else { throw RCIRError.invalidContract }
+                return value
+            })
+    }
+    func testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial() throws {
+        let calls = UnsafeMutablePointer<Int>.allocate(capacity: 1); calls.initialize(to: 0)
+        defer { calls.deinitialize(count: 1); calls.deallocate() }
+        let reflector = try reflector(invocations: calls)
+        let item = try ContentParser.parse("controlled")
+        let capability = try reflector.capabilities(for: item)[0]
+        let host = RCIRExecutionHost()
+        let accepted = try reflector.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+            executionID: "accepted", arguments: ["challenge": "unique"], verification: nil, expectedOutput: nil,
+            host: host, revalidate: { true })
+        XCTAssertEqual(accepted.state, .accepted); XCTAssertFalse(accepted.evidence.outcomeVerified)
+        XCTAssertEqual(accepted.rcir?.phase, "completed"); XCTAssertEqual(accepted.rcir?.outcome, "unverified")
+        let verified = try reflector.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+            executionID: "verified", arguments: ["challenge": "unique"], verification: nil, expectedOutput: "unique",
+            host: host, revalidate: { true })
+        XCTAssertEqual(verified.state, .succeeded); XCTAssertTrue(verified.evidence.outcomeVerified)
+        XCTAssertEqual(verified.rcir?.outcome, "succeeded"); XCTAssertEqual(calls.pointee, 2)
+        host.configuration = { RCIRHostConfiguration(deniedCapabilities: [capability.id]) }
+        let denied = try reflector.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+            executionID: "denied", arguments: ["challenge": "unique"], verification: nil, expectedOutput: nil,
+            host: host, revalidate: { true })
+        XCTAssertEqual(denied.state, .rejected); XCTAssertEqual(calls.pointee, 2)
+    }
+    func testBoundedExecutorAbstainsForOfflineTool() throws {
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/nonexistent/rightclick-runtime"), arguments: []))
+    }
+    func testRealWASMComponentWhenProvisioned() throws {
+        let environment = ProcessInfo.processInfo.environment
+        guard let path = environment["RIGHTCLICK_TEST_WASM_COMPONENT"],
+              environment["RIGHTCLICK_WASM_TOOLS"] != nil, environment["RIGHTCLICK_WASM_RUNTIME"] != nil else {
+            throw XCTSkip("Real component toolchain not provisioned; no WASM GREEN claimed by this skip.")
+        }
+        let resolver = WASMCapabilityArtifactResolver(environment: environment)
+        let reflector = try resolver.resolve(.init(id: "real", kind: "wasm", specificationURL: URL(fileURLWithPath: path).absoluteString))
+        let item = try ContentParser.parse("RIGHTCLICK:independent")
+        let capability = try reflector.capabilities(for: item)[0]
+        var expected: UInt32 = 2166136261
+        for byte in "RIGHTCLICK:independent".utf8 { expected = (expected ^ UInt32(byte)) &* 16777619 }
+        let host = RCIRExecutionHost()
+        let result = try (reflector as! RCIRExecutionReflector).admittedBegin(capability: capability,
+            admissionOwner: capability, item: item, executionID: "real", arguments: ["challenge": "RIGHTCLICK:independent"],
+            verification: nil, expectedOutput: String(expected), host: host, revalidate: { true })
+        XCTAssertEqual(result.output, String(expected)); XCTAssertEqual(result.state, .succeeded)
+        XCTAssertEqual(result.rcir?.outcome, "succeeded")
+        XCTAssertEqual(capability.metadata["hostImports"], "none")
+        XCTAssertNotNil(capability.metadata["componentSHA256"])
+    }
+}
