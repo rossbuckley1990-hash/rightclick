@@ -1,0 +1,53 @@
+name: Windows discarded stderr paired control
+on:
+  push:
+    branches: ['codex/windows-stderr-probe-*']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: windows-stderr-probe-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+        with:
+          swift-version: swift-6.2-release
+          swift-build: 6.2-RELEASE
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Native supervisor controls
+        timeout-minutes: 2
+        run: |
+          python -u .github/scripts/tests/test_windows_test_supervisor.py 2>&1 | Tee-Object -FilePath windows-supervisor-self-checks.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Compile existing Foundation paired control
+        timeout-minutes: 2
+        run: |
+          git rev-parse HEAD | Out-File -Encoding utf8 windows-probe-source.txt
+          swift --version | Out-File -Encoding utf8 windows-probe-toolchain.txt
+          swiftc .github/scripts/windows_discarded_stderr_probe.swift -o windows-discarded-stderr-probe.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-FileHash windows-discarded-stderr-probe.exe -Algorithm SHA256 | Format-List | Out-File windows-probe-binary-sha256.txt
+      - name: Actual paired null stderr and owned drained pipe
+        timeout-minutes: 2
+        run: |
+          $python = (Get-Command python.exe).Source
+          python -u .github/scripts/windows_test_supervisor.py --prefix windows-null-stderr --progress --deadline-seconds 30 --heartbeat-seconds 5 -- .\windows-discarded-stderr-probe.exe $python
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: windows-stderr-paired-control-${{ github.sha }}
+          path: |
+            windows-supervisor-self-checks.log
+            windows-probe-*.txt
+            windows-discarded-stderr-probe.json
+            windows-null-stderr-phase.json
+            windows-null-stderr-events.jsonl
+            windows-null-stderr-output.log
