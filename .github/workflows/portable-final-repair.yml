@@ -1,0 +1,191 @@
+name: Final portable guard repair and validation
+permissions:
+  contents: read
+concurrency:
+  group: portable-final-guard-repair
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: github.repository == 'rossbuckley1990-hash/rightclick' && github.ref == 'refs/heads/feature/portable-runtime-001'
+    runs-on: ubuntu-latest
+    container: swift:6.2.1
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.source.outputs.sha }}
+    steps:
+    - run: apt-get update && apt-get install -y --no-install-recommends python3
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      with:
+        ref: ${{ github.sha }}
+    - id: source
+      shell: bash
+      env:
+        EXPECTED_HEAD: ${{ github.sha }}
+      run: |
+        set -euo pipefail
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+        git switch -c feature/portable-runtime-001
+        python3 - <<'REPAIR'
+        from pathlib import Path
+        import hashlib, json, subprocess
+        root=Path.cwd()
+        assert subprocess.check_output(['git','branch','--show-current'],text=True).strip()=='feature/portable-runtime-001'
+        updates={}
+        def get(name):
+            return updates.get(name,(root/name).read_text())
+        def patch(name,old,new,count=1):
+            text=get(name);assert text.count(old)==count,(name,old[:60],text.count(old));updates[name]=text.replace(old,new)
+        sdk='Vendor/swift-sdk/Sources/MCP/Base/Transports/HTTPClientTransport.swift'
+        patch(sdk,'#if os(Linux)','#if os(Linux) || os(Windows)',3)
+        meta='Vendor/swift-sdk/UPSTREAM.json'
+        m=json.loads(get(meta));assert m['revision']=='a0ae212ebf6eab5f754c3129608bc5557637e605'
+        original=get(sdk).replace('#if canImport(EventSource)','#if !os(Linux)').replace('#if os(Linux) || os(Windows)','#if os(Linux)')
+        key='Sources/MCP/Base/Transports/HTTPClientTransport.swift'
+        assert hashlib.sha256(original.encode()).hexdigest()==m['files'][key]['upstream']
+        m['files'][key]['patched']=hashlib.sha256(get(sdk).encode()).hexdigest()
+        m['compatibility_patch']='Five compile-time availability guards in one file. Apple behaviour unchanged; Windows uses the existing non-streaming FoundationNetworking path.'
+        updates[meta]=json.dumps(m,sort_keys=True,indent=2)+'\n'
+        # Integrity checks still restore the exact pinned original bytes before comparing.
+        p='scripts/portable_bundle.py'
+        text=get(p)
+        old="            restored = data.replace(b'#if canImport(EventSource)',b'#if !os(Linux)')"
+        new="            if data.count(b'#if os(Linux) || os(Windows)') != 3: raise ValueError('Unexpected Windows guard count')\n            restored = data.replace(b'#if canImport(EventSource)',b'#if !os(Linux)').replace(b'#if os(Linux) || os(Windows)', b'#if os(Linux)')"
+        patch(p,old,new)
+        p='.github/workflows/portable-preparation.yml'
+        patch(p,"                  assert hashlib.sha256(data.replace(b'#if canImport(EventSource)', b'#if !os(Linux)')).hexdigest() == entry['upstream']", "                  assert data.count(b'#if os(Linux) || os(Windows)') == 3\n                  original = data.replace(b'#if canImport(EventSource)', b'#if !os(Linux)').replace(b'#if os(Linux) || os(Windows)', b'#if os(Linux)')\n                  assert hashlib.sha256(original).hexdigest() == entry['upstream']")
+        for file,expected,identifier,spec,scheme in [
+         ('MOAT005G5FullFrozenGitHubContractTests.swift','cb8de3f603c520bbf9d5138f866fbded01d87e9b','frozen-github-g5','specificationURL','authorityScheme'),
+         ('MOAT005G6MultiSegmentPathTests.swift','7ac4a2db300a5170cd5e36b4eb0088efd9033039','frozen-github-g6','"https://raw.githubusercontent.com/github/rest-api-description/836ce198db13a6fb194547e53eea99c6ddae495b/descriptions/api.github.com/api.github.com.2026-03-10.json"','"MOAT005G6Bearer"')]:
+            name='Tests/RightClickCoreTests/'+file;text=get(name);data=text.encode()
+            assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()==expected,name
+            start=text.index('        let source =\n            BonjourOpenAPISource(')
+            end=text.index('\n        XCTAssertEqual(',start)
+            native=text[start:end]
+            portable='''        // Exercise the same immutable full contract through the real configured
+                // artifact resolver on hosts without Bonjour. No assertions are skipped.
+                let source = ConfiguredCapabilityArtifactSource(descriptors: [
+                    CapabilityArtifactDescriptor(id: "%s", kind: "openapi",
+                        specificationURL: %s, baseURL: "https://api.github.com",
+                        authorityScheme: %s)
+                ], refreshInterval: 300)
+        ''' % (identifier,spec,scheme)
+            updates[name]=text[:start]+'#if os(macOS)\n'+native+'\n#else\n'+portable+'#endif\n'+text[end:]
+        readme='Vendor/swift-sdk/README.rightclick.md'
+        updates[readme]='''# Pinned MCP SDK compatibility snapshot
+
+        Upstream modelcontextprotocol/swift-sdk 0.12.1 at a0ae212ebf6eab5f754c3129608bc5557637e605. Original tests and licence retained.
+
+        Only five compile-time guards in HTTPClientTransport.swift differ: two use canImport(EventSource); three add os(Windows) to the existing Linux FoundationNetworking/non-streaming branch. Windows does not gain unsupported URLSession.AsyncBytes or SSE functionality. Apple execution remains unchanged. UPSTREAM.json binds every original/patched production file, the upstream manifest and licence. The verifier reverses only those five guards and must recover the exact upstream hash.
+
+        All hosts use the same SDK production sources. This is not a separately evolved protocol implementation. Return to a pinned upstream release when native Windows acceptance is proven there.
+        '''
+        # Docs describe the actual bounded delta, not the earlier incomplete two-guard patch.
+        name='docs/PORTABLE-RUNTIME.md'
+        if (root/name).exists():
+         text=get(name)
+         for a,b in [('Only two EventSource availability guards differ.','Five compile-time availability guards differ in one file.'),('Only two EventSource availability guards','Five compile-time availability guards'),('two EventSource availability guards','five compile-time availability guards')]:text=text.replace(a,b)
+         updates[name]=text
+        for name,text in updates.items():(root/name).write_text(text)
+        # This one-time workflow deletes itself from the resulting source commit.
+        (root/'.github/workflows/portable-final-repair.yml').unlink()
+        (root/'evidence/portable-runtime-001/final-guard-repair.json').write_text(json.dumps({'scope':'Source repair only; native execution remains separately gated','inputSHA':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'files':{name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in updates}},sort_keys=True,indent=2)+'\n')
+        print('Source repair applied; no runtime success or release implied.')
+        REPAIR
+        python3 scripts/portable-delivery.py sdk-check
+        python3 -m unittest discover -s Tests/Packaging -v
+        git add Vendor Tests scripts/portable_bundle.py docs/PORTABLE-RUNTIME.md .github/workflows/portable-preparation.yml .github/workflows/portable-final-repair.yml evidence/portable-runtime-001/final-guard-repair.json
+        git -c user.name='RIGHTCLICK portability repair' -c user.email='rightclick@users.noreply.github.com' commit -m 'fix(portable): complete Windows availability guards and portable full-contract fixtures'
+        git push origin HEAD:refs/heads/feature/portable-runtime-001
+        echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - id: linux
+          os: ubuntu-latest
+          container: swift:6.2.1@sha256:0e4716bd34384d22963a63afbdbc93be3129dfd0753185aa1ded27755abdcae8
+        - id: macos
+          os: macos-15
+          container: ''
+        - id: windows
+          os: windows-2022
+          container: ''
+    name: Native ${{ matrix.id }} candidate
+    runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
+    timeout-minutes: 40
+    steps:
+    - if: matrix.id == 'linux'
+      run: apt-get update && apt-get install -y --no-install-recommends python3
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      with:
+        ref: ${{ needs.prepare.outputs.sha }}
+        persist-credentials: false
+    - if: matrix.id == 'linux'
+      run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+    - if: matrix.id == 'macos'
+      run: echo "DEVELOPER_DIR=/Applications/Xcode_26.3.app/Contents/Developer" >> "$GITHUB_ENV"
+    - if: matrix.id == 'windows'
+      uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+      with:
+        swift-version: swift-6.2.1-release
+        swift-build: 6.2.1-RELEASE
+        build_arch: amd64
+    - name: Native tests, real acceptance, package and relocated execution
+      shell: bash
+      run: |
+        if [ "${{ matrix.id }}" = windows ]; then
+          python scripts/portable-delivery.py ci --output dist/portable
+        else
+          python3 scripts/portable-delivery.py ci --output dist/portable
+        fi
+    - name: Retain candidate and exact validation evidence, including failures
+      if: always()
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: portable-${{ matrix.id }}-${{ github.run_id }}
+        path: |
+          dist/portable/*.json
+          dist/portable/*.log
+          dist/portable/*-candidate.zip
+          dist/portable/*.sha256
+        retention-days: 14
+        if-no-files-found: error
+    needs: prepare
+  clean-linux:
+    needs:
+    - prepare
+    - native
+    runs-on: ubuntu-latest
+    container: ubuntu:24.04
+    timeout-minutes: 15
+    steps:
+    - run: apt-get update && apt-get install -y --no-install-recommends python3 ca-certificates libcurl4t64 libxml2 libicu74 libatomic1 libbsd0 libstdc++6 zlib1g libssl3t64
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      with:
+        ref: ${{ needs.prepare.outputs.sha }}
+        persist-credentials: false
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        name: portable-linux-${{ github.run_id }}
+        path: /tmp/candidate
+    - name: Execute verified bundle without Swift installed
+      run: python3 scripts/portable-clean-linux.py /tmp/candidate dist/clean-linux
+    - if: always()
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: portable-clean-linux-${{ github.run_id }}
+        path: |
+          dist/clean-linux/*.json
+          dist/clean-linux/*.log
+        retention-days: 14
+'on':
+  push:
+    branches:
+    - feature/portable-runtime-001
+    paths:
+    - .github/workflows/portable-final-repair.yml
