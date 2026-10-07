@@ -81,8 +81,13 @@ try:
     envelope=out/'verified-receipt.json';envelope.write_text(json.dumps(result['rcir']['signedReceipt'],indent=2)+'\n')
     reports['receipt']=verifier.verify(envelope,public,expected_outcome='succeeded',expected_task_id=result['rcir']['taskID'],expected_lease_id=result['rcir']['leaseID'])
     receipt=verifier._domain(base64.b64decode(result['rcir']['signedReceipt']['payload']),'RECEIPT')
-    observed=verifier._value(receipt['observation']);assert observed==external
+    observed=verifier._value(receipt['observation'])
+    markers=[h for h in external.get('headers',[]) if h.get('key')=='rightclick.invocation']
+    assert len(markers)==1 and markers[0]['value']==result['rcir']['taskID']
+    normalized={k:external[k] for k in ('topic','partition','offset','key','value','timestamp')}
+    normalized['invocationID']=markers[0]['value'];assert observed==normalized
     reports['fullSignedObservation']=observed;reports['independentWorkbenchObservation']=external
+    reports['hostInvocationMarkerVerified']=True
     policyBefore=offsets();configuration['deniedCapabilities']=[action];configure()
     denied=call('context_run',{'item':'Kafka proof','actionId':action,'confirmed':True,'arguments':{'key':'policy-denied-'+nonce,'payload':'must-not-publish'}})
     assert denied['state']=='rejected' and highwatermark(offsets())==highwatermark(policyBefore)

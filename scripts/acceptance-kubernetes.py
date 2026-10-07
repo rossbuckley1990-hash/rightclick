@@ -87,11 +87,13 @@ def main():
             assert status["rcir"]["signedReceipt"] == result["rcir"]["signedReceipt"]
             actual = kubectl(reader, "get", "configmap", name, "-o", "json"); assert actual.returncode == 0
             resource = json.loads(actual.stdout); assert resource["data"] == {"challenge": challenge, "value": arguments["value"]}
+            assert resource["metadata"]["annotations"]["rightclick.io/invocation"] == result["rcir"]["taskID"]
             (out / "independent-resource.json").write_text(actual.stdout)
             receipt = canonical.verify(result, tmp, out, trusted)
             for value in [resource["metadata"]["uid"], resource["metadata"]["resourceVersion"], challenge, arguments["value"]]: assert value.encode() in receipt
             report["controls"]["signatureAssignedMetadata"] = "PASS — independently pinned OpenSSL Ed25519; genuine UID/resourceVersion and exact desired fields retained"
             report["controls"]["independentScopedRead"] = "PASS — distinct GET-only identity reads actual resource; provider result does not define acceptance"
+            report["controls"]["hostInvocationMarkerVerified"] = "PASS — independent annotation equals the host task identity bound before dispatch"
             captured = writer.read_bytes(); writer.unlink()
             assert not any(a["id"] == capability["id"] for a in runtime.call("context_actions", {"item": item})["actions"])
             runtime.call("context_providers", {}); writer.write_bytes(captured); writer.chmod(0o600); time.sleep(5.1)
