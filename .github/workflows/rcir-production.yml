@@ -21,6 +21,16 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record exact candidate source
+        env:
+          RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p /tmp/rcir-evidence
+          test "$(git rev-parse HEAD)" = "$RIGHTCLICK_CI_SOURCE"
+          git rev-parse HEAD > /tmp/rcir-evidence/source-commit.txt
+          git rev-parse HEAD:Sources > /tmp/rcir-evidence/sources-tree.txt
       - name: Actual engine and real HTTP effect controls
         run: |
           mkdir -p /tmp/rcir-evidence

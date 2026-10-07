@@ -12,6 +12,16 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record exact candidate source
+        env:
+          RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p evidence/ci-universal-async
+          test "$(git rev-parse HEAD)" = "$RIGHTCLICK_CI_SOURCE"
+          git rev-parse HEAD > evidence/ci-universal-async/source-commit.txt
+          git rev-parse HEAD:Sources > evidence/ci-universal-async/sources-tree.txt
       - name: Select receipt verification backend
         run: echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
       - name: Real task and adversarial pressure controls

@@ -11,6 +11,16 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record exact candidate source
+        env:
+          RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p evidence/interface-ci
+          test "$(git rev-parse HEAD)" = "$RIGHTCLICK_CI_SOURCE"
+          git rev-parse HEAD > evidence/interface-ci/source-commit.txt
+          git rev-parse HEAD:Sources > evidence/interface-ci/sources-tree.txt
       - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
