@@ -1,0 +1,22 @@
+{
+  "effects" : [
+    {
+      "body" : {
+        "id" : "old-incarnation",
+        "value" : "requested"
+      },
+      "path" : "\/records",
+      "taskID" : "89852487-85F9-4FC8-BEDE-6F84EC06C499"
+    },
+    {
+      "body" : {
+        "id" : "new-incarnation",
+        "value" : "requested"
+      },
+      "path" : "\/records",
+      "taskID" : "DB865149-C79E-4365-B16D-A8ACDBBC50F5"
+    }
+  ],
+  "specObservations" : "",
+  "test" : "-[RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery]"
+}

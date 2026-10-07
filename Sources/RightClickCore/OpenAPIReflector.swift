@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 
-public final class OpenAPIReflector: RCIRExecutionReflector {
+public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractRefreshingReflector {
     private struct JSONStringProperty {
         let allowedValues: Set<String>?
     }
@@ -122,6 +122,11 @@ public final class OpenAPIReflector: RCIRExecutionReflector {
     private let providerName: String
     private let providerFingerprint: String
     private let specificationSHA256: String
+    private let revalidateSpecification: (() throws -> Data)?
+    private let externalBearerSchemeName: String?
+    private let acquisitionIncarnation: UUID?
+    private let freshnessLock = NSLock()
+    private var staleContract = false
     private let session: URLSession
 
     private let operations: [Operation]
@@ -133,7 +138,9 @@ public final class OpenAPIReflector: RCIRExecutionReflector {
         baseURL: URL,
         externalBearerSchemeName:
             String? = nil,
-        session: URLSession = .shared
+        session: URLSession = .shared,
+        revalidateSpecification: (() throws -> Data)? = nil,
+        acquisitionIncarnation: UUID? = nil
     ) throws {
         let canonicalBaseURL =
             try Self.canonicalBaseURL(
@@ -205,6 +212,10 @@ public final class OpenAPIReflector: RCIRExecutionReflector {
 
         self.specificationSHA256 =
             specificationSHA256
+
+        self.revalidateSpecification = revalidateSpecification
+        self.externalBearerSchemeName = resolvedExternalBearerSchemeName
+        self.acquisitionIncarnation = acquisitionIncarnation
 
         self.session =
             OriginPinnedHTTP.makeSession(
@@ -281,6 +292,12 @@ public final class OpenAPIReflector: RCIRExecutionReflector {
                         operation
                             .responseContentType,
                 ]
+
+            if let acquisitionIncarnation {
+                // Minted by the acquisition owner, never read from provider
+                // metadata. The existing ABI and engine snapshot bind it.
+                metadata["acquisitionIncarnation"] = acquisitionIncarnation.uuidString
+            }
 
             if let requestContentType =
                 operation.requestContentType
@@ -965,7 +982,10 @@ public final class OpenAPIReflector: RCIRExecutionReflector {
             providerID: reflected.providerID, arguments: reflected.arguments, result: resultSchema,
             declaration: .object(["capability": reflected.declaration,
                 "requestURL": .string(targetURL.absoluteString), "method": .string(operation.method),
-                "body": requestBody.map { .bytes($0) } ?? .null,
+                // Exact compiled bytes are committed without duplicating the
+                // full invocation value into the bounded declaration. The lease
+                // separately binds the complete typed arguments.
+                "bodySHA256": requestBody.map { .string(Self.sha256Hex($0)) } ?? .null,
                 "verification": try verification.map { .bytes(try JSONEncoder().encode($0)) } ?? .null,
                 "expectedOutput": expectedOutput.map { .string($0) } ?? .null]))
         let input = CapabilityValue.object(["item": .string(item.text ?? ""),
@@ -981,7 +1001,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector {
                           current.utf8.elementsEqual((bearerToken ?? "").utf8) else { return [] }
                 }
                 return [scope]
-            }, revalidate: revalidate, dispatch: { correlationID, admitStart in
+            }, revalidate: revalidate, currentContract: { self.contractIsCurrent() }, dispatch: { correlationID, admitStart in
                 var boundRequest = request
                 boundRequest.setValue(correlationID, forHTTPHeaderField: "X-RightClick-Invocation")
                 return try self.send(boundRequest, operation: operation, capability: capability,
@@ -998,6 +1018,28 @@ public final class OpenAPIReflector: RCIRExecutionReflector {
                 if operation.responseJSONSyntaxOnly { return .bytes(Data((record.output ?? "").utf8)) }
                 return .string(record.output ?? "")
             })
+    }
+
+    public var requiresContractRefresh: Bool {
+        freshnessLock.lock(); defer { freshnessLock.unlock() }
+        return staleContract
+    }
+
+    public func refreshContract() throws -> any CapabilityReflector {
+        guard let revalidateSpecification else { throw RCIRError.unavailable }
+        return try OpenAPIReflector(specificationData: revalidateSpecification(), baseURL: baseURL,
+            externalBearerSchemeName: externalBearerSchemeName, session: session,
+            revalidateSpecification: revalidateSpecification, acquisitionIncarnation: acquisitionIncarnation)
+    }
+
+    private func contractIsCurrent() -> Bool {
+        // Inline/operator-owned snapshots have no remote locator. Their graph
+        // owner is still revalidated by the engine. Acquired URL contracts must
+        // read current bounded source bytes before transport and after dispatch.
+        guard let revalidateSpecification else { return true }
+        let current = (try? revalidateSpecification()).map(Self.sha256Hex) == specificationSHA256
+        freshnessLock.lock(); staleContract = !current; freshnessLock.unlock()
+        return current
     }
 
     private func send(_ request: URLRequest, operation: Operation,

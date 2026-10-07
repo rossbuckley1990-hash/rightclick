@@ -66,7 +66,8 @@ final class RCIRProductionDispatchTests: XCTestCase {
             let out = URL(fileURLWithPath: path)
             try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
             let label = name.replacingOccurrences(of: "/", with: "_")
-            let data = try JSONSerialization.data(withJSONObject: ["test": name, "effects": effectRows()], options: [.prettyPrinted, .sortedKeys])
+            let observations = (try? String(contentsOf: directory.appendingPathComponent("spec-observations.jsonl"), encoding: .utf8)) ?? ""
+            let data = try JSONSerialization.data(withJSONObject: ["test": name, "effects": effectRows(), "specObservations": observations], options: [.prettyPrinted, .sortedKeys])
             try data.write(to: out.appendingPathComponent(label + ".json"))
         }
         if let directory { try? FileManager.default.removeItem(at: directory) }
@@ -292,6 +293,17 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertTrue(effectRows().isEmpty)
     }
 
+    func testObserverTraversalAndDoubleEncodingCannotDispatch() throws {
+        let capability = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
+        config.observers = [capability.id: .init(urlTemplate: base.absoluteString + "/records/{id}", expectedArgument: "value")]
+        for id in [".", "..", "../other", "..\\other", "%2Fother", "other?query", "other#fragment"] {
+            let record = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
+                arguments: ["id": id, "value": "requested"])
+            XCTAssertEqual(record.state, .rejected)
+            XCTAssertTrue(effectRows().isEmpty)
+        }
+    }
+
     func testSchemaDriftBeforeDispatchProducesZeroProviderEffects() throws {
         host.beforeConsume = { _ in
             self.source.current = [try OpenAPIReflector(specificationData: self.specification("2"), baseURL: self.base)]
@@ -305,5 +317,164 @@ final class RCIRProductionDispatchTests: XCTestCase {
         source.current = [try OpenAPIReflector(specificationData: specification(secure: true), baseURL: secureBase)]
         XCTAssertEqual(try invoke().state, .unavailable)
         XCTAssertTrue(effectRows().isEmpty)
+    }
+
+    private func acquireLiveArtifact() throws -> Capability {
+        try specification().write(to: directory.appendingPathComponent("spec.json"))
+        let artifacts = ConfiguredCapabilityArtifactSource(descriptors: [
+            .init(id: "disposable-live-schema", kind: "openapi",
+                  specificationURL: base.absoluteString + "/openapi.json", baseURL: base.absoluteString)
+        ], refreshInterval: 300)
+        engine = CapabilityEngine(reflectorSources: [artifacts], experience: nil, rcirHost: host)
+        return try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
+    }
+
+    func testActualArtifactSchemaDriftRejectsOldInvocationAndReacquires() throws {
+        let old = try acquireLiveArtifact()
+        try specification("2").write(to: directory.appendingPathComponent("spec.json"))
+        let denied = try engine.begin(id: old.id, item: "disposable", confirmed: true,
+                                      arguments: ["id": "stale", "value": "requested"])
+        XCTAssertEqual(denied.state, .rejected)
+        XCTAssertTrue(effectRows().isEmpty)
+        let current = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
+        XCTAssertNotEqual(current.id, old.id)
+        let accepted = try engine.begin(id: current.id, item: "disposable", confirmed: true,
+                                        arguments: ["id": "fresh", "value": "requested"])
+        XCTAssertEqual(accepted.state, .accepted, accepted.message)
+        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(effectRows().first?["taskID"] as? String, accepted.rcir?.taskID)
+    }
+
+    func testActualContractDisappearanceDeniesEffectsAndRecoversNewLease() throws {
+        let capability = try acquireLiveArtifact()
+        let first = try invoke("initial")
+        XCTAssertEqual(first.state, .accepted, first.message)
+        try FileManager.default.removeItem(at: directory.appendingPathComponent("spec.json"))
+        let denied = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
+                                      arguments: ["id": "missing-contract", "value": "requested"])
+        XCTAssertEqual(denied.state, .rejected)
+        XCTAssertEqual(effectRows().count, 1)
+        try specification().write(to: directory.appendingPathComponent("spec.json"))
+        let recovered = try invoke("recovered")
+        XCTAssertEqual(recovered.state, .accepted, recovered.message)
+        XCTAssertNotEqual(recovered.rcir?.leaseID, first.rcir?.leaseID)
+        XCTAssertGreaterThan(recovered.rcir?.generation ?? 0, first.rcir?.generation ?? 0)
+        XCTAssertEqual(effectRows().count, 2)
+    }
+
+    func testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry() throws {
+        _ = try acquireLiveArtifact()
+        try Data().write(to: directory.appendingPathComponent("drift-after-write"))
+        let record = try invoke()
+        XCTAssertEqual(record.state, .unknown)
+        XCTAssertEqual(record.rcir?.outcome, "unknown")
+        XCTAssertEqual(effectRows().count, 1)
+    }
+
+    func testBoundedLargeArgumentIsNotDuplicatedIntoContract() throws {
+        let capability = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
+        let result = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
+            arguments: ["id": "bounded-large", "value": String(repeating: "x", count: 80_000)])
+        XCTAssertEqual(result.state, .accepted, result.message)
+        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual((effectRows().first?["body"] as? [String: String])?["value"]?.utf8.count, 80_000)
+    }
+
+    func testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation() throws {
+        let entered = DispatchSemaphore(value: 0), unblock = DispatchSemaphore(value: 0)
+        let finished = DispatchSemaphore(value: 0), loaderLock = NSLock()
+        var loads = 0
+        let bytes = specification()
+        let descriptor = BonjourOpenAPIServiceDescriptor(instanceName: "disposable-race",
+            serviceType: BonjourOpenAPISource.serviceType, domain: "local.", host: "127.0.0.1",
+            port: base.port!, txt: ["kind": "openapi", "scheme": "http", "spec": "/openapi.json", "base": "/"])
+        let bonjour = BonjourOpenAPISource(startBrowsing: false, specificationLoader: { _ in
+            loaderLock.lock(); loads += 1; let count = loads; loaderLock.unlock()
+            if count == 2 {
+                entered.signal()
+                guard unblock.wait(timeout: .now() + 5) == .success else { throw RightClickError("Fixture acquisition timed out") }
+            }
+            return bytes
+        })
+        defer { unblock.signal() }
+        bonjour.update(resolved: descriptor)
+        engine = CapabilityEngine(reflectorSources: [bonjour], experience: nil, rcirHost: host)
+        let capability = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
+        host.beforeConsume = { _ in
+            DispatchQueue.global().async { bonjour.update(resolved: descriptor); finished.signal() }
+            guard entered.wait(timeout: .now() + 5) == .success else { throw RightClickError("Fixture did not enter acquisition") }
+            bonjour.remove(instanceName: descriptor.instanceName, serviceType: descriptor.serviceType, domain: descriptor.domain)
+            XCTAssertTrue(bonjour.reflectors().isEmpty)
+            unblock.signal()
+            guard finished.wait(timeout: .now() + 5) == .success else { throw RightClickError("Fixture acquisition did not finish") }
+            XCTAssertTrue(bonjour.reflectors().isEmpty, "An obsolete acquisition cannot restore a removed provider")
+        }
+        let result = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
+            arguments: ["id": "removed-acquisition", "value": "requested"])
+        XCTAssertEqual(result.state, .rejected)
+        XCTAssertTrue(effectRows().isEmpty)
+    }
+
+    func testCredentialFreeObserverCannotInheritInvocationCookie() throws {
+        let name = "RCIR_DISPOSABLE_" + UUID().uuidString.replacingOccurrences(of: "-", with: "")
+        let cookie = try XCTUnwrap(HTTPCookie(properties: [.name: name, .value: "fixture-only",
+            .domain: "127.0.0.1", .path: "/records"]))
+        defer { HTTPCookieStorage.shared.deleteCookie(cookie) }
+        try JSONSerialization.data(withJSONObject: ["name": name, "value": "fixture-only"])
+            .write(to: directory.appendingPathComponent("cookie-required.json"))
+        let capability = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
+        config.observers = [capability.id: .init(urlTemplate: base.absoluteString + "/records/{id}", expectedArgument: "value")]
+        let result = try invoke("cookie-gated")
+        XCTAssertEqual(result.state, .accepted, "A credential-free observer cannot verify this protected endpoint")
+        XCTAssertEqual(result.rcir?.outcome, "unverified")
+        XCTAssertEqual(effectRows().count, 1)
+        let observations = try String(contentsOf: directory.appendingPathComponent("observations.jsonl"), encoding: .utf8)
+        let first = try XCTUnwrap(observations.split(separator: "\n").first)
+        let row = try JSONSerialization.jsonObject(with: Data(first.utf8)) as! [String: Any]
+        XCTAssertEqual(row["disposableAuthCookieReceived"] as? Bool, false)
+    }
+
+    func testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery() throws {
+        let bytes = specification()
+        let descriptor = BonjourOpenAPIServiceDescriptor(instanceName: "disposable-incarnation",
+            serviceType: BonjourOpenAPISource.serviceType, domain: "local.", host: "127.0.0.1",
+            port: base.port!, txt: ["kind": "openapi", "scheme": "http", "spec": "/openapi.json", "base": "/"])
+        let bonjour = BonjourOpenAPISource(startBrowsing: false, specificationLoader: { _ in bytes })
+        bonjour.update(resolved: descriptor)
+        engine = CapabilityEngine(reflectorSources: [bonjour], experience: nil, rcirHost: host)
+        host.beforeConsume = { _ in
+            bonjour.remove(instanceName: descriptor.instanceName, serviceType: descriptor.serviceType, domain: descriptor.domain)
+            bonjour.update(resolved: descriptor)
+            // No engine/providers call observes the missing interval.
+        }
+        let stale = try invoke("old-incarnation")
+        XCTAssertEqual(stale.state, .rejected)
+        XCTAssertTrue(effectRows().isEmpty)
+        host.beforeConsume = nil
+        let fresh = try invoke("new-incarnation")
+        XCTAssertEqual(fresh.state, .accepted)
+        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual((effectRows().first?["body"] as? [String: String])?["id"], "new-incarnation")
+    }
+
+    func testBonjourReappearanceAfterDispatchPreservesUnknown() throws {
+        let bytes = specification()
+        let descriptor = BonjourOpenAPIServiceDescriptor(instanceName: "disposable-post-dispatch",
+            serviceType: BonjourOpenAPISource.serviceType, domain: "local.", host: "127.0.0.1",
+            port: base.port!, txt: ["kind": "openapi", "scheme": "http", "spec": "/openapi.json", "base": "/"])
+        let bonjour = BonjourOpenAPISource(startBrowsing: false, specificationLoader: { _ in bytes })
+        bonjour.update(resolved: descriptor)
+        engine = CapabilityEngine(reflectorSources: [bonjour], experience: nil, rcirHost: host)
+        host.beforeStart = { _, admit, enqueue in
+            try withoutActuallyEscaping(admit) { permit in
+                try withoutActuallyEscaping(enqueue) { start in try permit(start) }
+            }
+            bonjour.remove(instanceName: descriptor.instanceName, serviceType: descriptor.serviceType, domain: descriptor.domain)
+            bonjour.update(resolved: descriptor)
+        }
+        let result = try invoke("post-dispatch-incarnation")
+        XCTAssertEqual(result.state, .unknown)
+        XCTAssertEqual(result.rcir?.outcome, "unknown")
+        XCTAssertEqual(effectRows().count, 1)
     }
 }

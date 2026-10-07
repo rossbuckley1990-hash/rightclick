@@ -1,0 +1,22 @@
+{
+  "effects" : [
+    {
+      "body" : {
+        "id" : "independent-second",
+        "value" : "requested"
+      },
+      "path" : "\/records",
+      "taskID" : "F49EEEC7-1EC4-4FAE-9E0C-7C9245C48F2F"
+    },
+    {
+      "body" : {
+        "id" : "independent-first",
+        "value" : "requested"
+      },
+      "path" : "\/records",
+      "taskID" : "A8939DCB-4A23-4286-8084-F26D8236E2BD"
+    }
+  ],
+  "specObservations" : "",
+  "test" : "-[RCIRProductionDispatchTests testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration]"
+}

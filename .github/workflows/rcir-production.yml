@@ -33,6 +33,8 @@ jobs:
           /tmp/rcir-receipt-verifier/bin/python -m pip install cryptography==50.0.1
           /tmp/rcir-receipt-verifier/bin/python -m unittest discover -s Tests -p 'test_rcir_receipt_verifier.py' -v
           /tmp/rcir-receipt-verifier/bin/python scripts/acceptance-rcir-signed-evidence.py --public /tmp/rcir-evidence/public-mcp --native /tmp/rcir-evidence/native-effects --output /tmp/rcir-evidence/independent-signed-claims
+      - name: Actual live schema drift and reacquisition without reconnecting
+        run: python3 scripts/acceptance-rcir-openapi-freshness.py .build/debug/rightclick /tmp/rcir-evidence/live-schema
       - name: Preserve new-run transcripts, effects and signed receipts
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

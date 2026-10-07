@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/scripts/acceptance-rcir-openapi-freshness.py", line 182, in <module>
+    if __name__ == "__main__": main()
+                               ~~~~^^
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/scripts/acceptance-rcir-openapi-freshness.py", line 156, in main
+    assert len(effects) == before, "cached live specification drift reached the provider effect log"
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: cached live specification drift reached the provider effect log

@@ -152,6 +152,7 @@ public final class RCIRExecutionHost {
                  verification: VerificationSpec?, expectedOutput: String?, target: URL,
                  authority: @escaping () -> Set<RCIRScope>, revalidate: @escaping () -> Bool,
                  lifecycle: RCIRDeferredLifecycle? = nil, observerFactory: RCIRHostObserverFactory? = nil,
+                 currentContract: @escaping () -> Bool = { true },
                  dispatch: (String, (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord,
                  resultValue: (ExecutionRecord) throws -> CapabilityValue) throws -> ExecutionRecord {
         var dispatched = false
@@ -224,7 +225,10 @@ public final class RCIRExecutionHost {
                         // Refresh at the transport boundary too: transport setup
                         // may outlive the earlier graph check. Refresh outside
                         // the admission lock because it can withdraw bindings.
-                        guard revalidate() else { throw RCIRError.staleBinding }
+                        guard revalidate(), currentContract(), revalidate() else {
+                            self.admission.withdraw(reflectorID: abi.reflectorID)
+                            throw RCIRError.staleBinding
+                        }
                         try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments), authority: authority(),
                             policy: policy(self.configuration()), now: self.now()) {
                             dispatched = true
@@ -265,7 +269,8 @@ public final class RCIRExecutionHost {
                 record.events.append("RCIR admitted generation=\(binding.generation); provider start gate was not used.")
                 return record
             }
-            if !revalidate() {
+            if !revalidate() || !currentContract() {
+                admission.withdraw(reflectorID: abi.reflectorID)
                 record.state = .unknown
                 record.message = "Provider disappeared or changed after dispatch; the external outcome is unknown. Do not retry blindly."
                 record.evidence = OutcomeEvidence(type: "rcir_provider_disappeared",
@@ -277,7 +282,7 @@ public final class RCIRExecutionHost {
                 let session = try RCIRDeferredSession(task: task, record: record, lifecycle: lifecycle,
                     now: now, revalidate: {
                         guard let current = try? policy(self.configuration()), current.revision == initialPolicy else { return false }
-                        return revalidate()
+                        return revalidate() && currentContract()
                     }, authority: authority, signer: signer, boundary: boundary,
                     observe: { task, record in
                         if let structured {
@@ -311,7 +316,7 @@ public final class RCIRExecutionHost {
                 if task.phase == .completed, let structured {
                     // An exact host-selected observer reads actual state. Provider
                     // result coordinates are explicitly untrusted locators only.
-                    let mayObserve = revalidate() && lease.scopes.isSubset(of: authority()) &&
+                    let mayObserve = revalidate() && currentContract() && lease.scopes.isSubset(of: authority()) &&
                         (try? policy(self.configuration()).revision) == (try? policy(config).revision)
                     if mayObserve, let value = try? structured.observer.observe(task.observationRequest) {
                         try task.verify(observerID: structured.observer.observerID, now: now()) { _, _ in value }
@@ -323,7 +328,7 @@ public final class RCIRExecutionHost {
                 } else if task.phase == .completed, let observation {
                     // Observe through a separate bounded GET. It is independent
                     // of invocation output, but the same server remains a trust source.
-                    let mayObserve = revalidate() && lease.scopes.isSubset(of: authority()) &&
+                    let mayObserve = revalidate() && currentContract() && lease.scopes.isSubset(of: authority()) &&
                         (try? policy(self.configuration()).revision) == (try? policy(config).revision)
                     if mayObserve, let text = try? readBack(observation.url, taskID: task.id.uuidString) {
                         var observed: CapabilityValue = .string(text)
@@ -399,9 +404,12 @@ public final class RCIRExecutionHost {
         var template = observer.urlTemplate
         // Only path segments can be substituted. Disallow path/query/origin
         // injection, traversal, and unresolved placeholders.
+        let segmentCharacters = CharacterSet(charactersIn:
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
         for (key, value) in arguments ?? [:] where template.contains("{" + key + "}") {
             guard !value.isEmpty, value != ".", value != "..",
-                  let encoded = value.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else { throw RCIRError.invalidContract }
+                  value.unicodeScalars.allSatisfy({ segmentCharacters.contains($0) }),
+                  let encoded = value.addingPercentEncoding(withAllowedCharacters: segmentCharacters) else { throw RCIRError.invalidContract }
             template = template.replacingOccurrences(of: "{" + key + "}", with: encoded)
         }
         let observerOrigin: URL

@@ -46,6 +46,14 @@ public protocol CapabilityReflector: AnyObject {
     ) throws -> ExecutionRecord
 }
 
+/// Acquisition caches may retain a compiled snapshot. A compiler marks it stale
+/// when an execution-boundary check observes changed or unavailable source bytes.
+/// Reacquisition changes discovery only; it never grants execution authority.
+public protocol CapabilityContractRefreshingReflector: CapabilityReflector {
+    var requiresContractRefresh: Bool { get }
+    func refreshContract() throws -> any CapabilityReflector
+}
+
 public extension CapabilityReflector {
     var completionWaitSeconds: TimeInterval { 0 }
 

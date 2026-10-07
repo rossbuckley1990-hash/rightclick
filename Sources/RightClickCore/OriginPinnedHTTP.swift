@@ -294,7 +294,8 @@ enum OriginPinnedHTTP {
     }
 
     static func loadObservation(_ request: URLRequest, maximumBytes: Int) throws -> Data {
-        try boundedLoad(request.url!, maximumBytes: maximumBytes, template: .shared, initialRequest: request)
+        guard let url = request.url else { throw RightClickError("Observation request has no URL.") }
+        return try boundedLoad(url, maximumBytes: maximumBytes, template: .shared, initialRequest: request, credentialFree: true)
     }
 
     /// Shared bounded exchange for descriptor protocols requiring response
@@ -325,22 +326,28 @@ enum OriginPinnedHTTP {
         maximumBytes: Int,
         template: URLSession,
         initialRequest: URLRequest? = nil,
-        admitStart: ((_ enqueue: () -> Void) throws -> Void)? = nil
+        admitStart: ((_ enqueue: () -> Void) throws -> Void)? = nil,
+        credentialFree: Bool = false
     ) throws -> Data {
         try boundedExchange(url, maximumBytes: maximumBytes, template: template,
-                            initialRequest: initialRequest, admitStart: admitStart).0
+                            initialRequest: initialRequest, admitStart: admitStart, credentialFree: credentialFree).0
     }
 
     private static func boundedExchange(_ url: URL, maximumBytes: Int, template: URLSession,
                                         initialRequest: URLRequest?,
                                         admitStart: ((_ start: () -> Void) throws -> Void)? = nil,
                                         deadline: TimeInterval = acquisitionDeadline,
-                                        successfulStatusRequired: Bool = true) throws -> (Data, HTTPURLResponse) {
+                                        successfulStatusRequired: Bool = true, credentialFree: Bool = false) throws -> (Data, HTTPURLResponse) {
         guard maximumBytes > 0, maximumBytes <= maximumOpenAPISpecificationBytes,
               deadline.isFinite, deadline > 0, deadline <= 10 else { throw RCIRError.invalidLimit }
 
-        let configuration =
-            template.configuration
+        let configuration = credentialFree ? URLSessionConfiguration.ephemeral : template.configuration
+        if credentialFree {
+            configuration.httpCookieStorage = nil
+            configuration.httpShouldSetCookies = false
+            configuration.urlCredentialStorage = nil
+            configuration.urlCache = nil
+        }
 
         configuration
             .timeoutIntervalForRequest =
@@ -371,6 +378,8 @@ enum OriginPinnedHTTP {
         }
 
         var request = initialRequest ?? URLRequest(url: url)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        if credentialFree { request.httpShouldHandleCookies = false }
 
         request.timeoutInterval =
             deadline
