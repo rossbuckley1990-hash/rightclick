@@ -86,7 +86,7 @@ demonstrated. Narrow GREENs are recorded without promoting the enclosing gate.
 | G10 Portability | Genuine Linux product build from existing #51; Mac candidate runs | Reconciled native Linux effect/receipt and genuine Windows build/run/protected-file security |
 | G11 Compilers | Main Mac/REST/GraphQL/gRPC/federation; candidate MCP/A2A/Kafka/Kubernetes/WASM acquisition | Native Windows/Linux direct reflectors; complete consume/watch/stream and type coverage |
 | G12 Graph | Actual Kafka removal/restoration prior candidate; credential withdrawal/reacquisition; serialized discovery tests | Final source provider generations, old authority invalidation, near-dispatch disappearance/restoration races |
-| G13 Core proof | Outgoing catalogue 20→14→8→7; separate fresh AI discovery using isolated configuration | Same fresh AI must perform semantic effects/receipts/graph mutation across matrix; exact final installed bytes |
+| G13 Core proof | Outgoing catalogue 20→14→8→7; actual fresh AI Kafka single publish/status plus independent broker readback and pinned receipt verification | Same fresh AI must perform effects/receipts/graph mutation across full matrix; exact final installed bytes |
 | G14 Agency proof | No extra operations exposed yet | Meaningful authority/events/control REDs and universal necessity; versioned compatible profile plus restricted AI proof |
 | G15 Delegation | Frozen real lease-holder/budget failures against production admission | All represented child⊆parent invariants integrated with actual execution and receipts |
 | G16 Multi-agent | Engineering agents use RIGHTCLICK discovery themselves | Real principal/attenuated children, compromise/revocation and provenance proof |
