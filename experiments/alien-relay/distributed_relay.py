@@ -77,6 +77,12 @@ def sign(payload: dict[str, Any], key: Ed25519PrivateKey | None = None) -> dict[
     }
 
 
+def require_trust_anchor(signed: dict[str, Any], trusted_public_key: str | None) -> None:
+    """Require the public key conveyed by GitHub job outputs, not by this artifact."""
+    if not trusted_public_key or signed.get("public_key_b64") != trusted_public_key:
+        raise Denied("untrusted_cross_job_public_key")
+
+
 def verify_signature(signed: Any) -> dict[str, Any]:
     if not isinstance(signed, dict) or set(signed) != {"payload", "public_key_b64", "signature_b64"}:
         raise Denied("invalid_signature_envelope")
@@ -324,10 +330,13 @@ def cli(argv: list[str] | None = None) -> int:
         })
         print("PARENT_DELEGATION_SIGNED", digest(envelope))
         return 0
-    delegation = load(args.input / "delegation.json")
     if args.role == "child":
+        delegation = load(args.input / "delegation.json")
         if platform.system() != "Windows" or os.environ.get("RUNNER_OS") != "Windows":
             raise Denied("child_must_run_on_windows")
+        require_trust_anchor(delegation, os.environ.get("RIGHTCLICK_TRUSTED_PARENT_PUBLIC_KEY"))
+        if delegation["payload"].get("commit") != sha:
+            raise Denied("child_commit_mismatch")
         receipt, raw = make_child_receipt(delegation, now, run_id, repository, "Windows")
         save(args.out / "child-receipt.json", receipt)
         if raw is not None:
@@ -338,7 +347,12 @@ def cli(argv: list[str] | None = None) -> int:
             return 3
         return 0
     try:
+        delegation = load(args.input / "delegation.json")
         receipt = load(args.child_dir / "child-receipt.json")
+        require_trust_anchor(delegation, os.environ.get("RIGHTCLICK_TRUSTED_PARENT_PUBLIC_KEY"))
+        require_trust_anchor(receipt, os.environ.get("RIGHTCLICK_TRUSTED_CHILD_PUBLIC_KEY"))
+        if delegation["payload"].get("commit") != sha:
+            raise Denied("verifier_commit_mismatch")
         response_path = args.child_dir / "provider-response.json"
         raw = response_path.read_bytes() if response_path.exists() else None
         result = verify_chain(delegation, receipt, raw, run_id=run_id, repository=repository)
