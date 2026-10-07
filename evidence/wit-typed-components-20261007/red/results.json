@@ -1,0 +1,45 @@
+{
+  "sourceSHA": "e09f0179f738189fb30b87c652a5433fba648054",
+  "binarySHA256": "d722c02b4f639e47f56dc848d69e3348ff73435774d35560ead517a7319a6208",
+  "componentSHA256": "98dc973dfd0cf49bae3c50358abfe7badf58e819400c2dbaf9c1dfc18d5467c5",
+  "toolsSHA256": "ff29dc363d36c390ff0ef0f889f1234ef5f236590042a4b9c688de24e6a646de",
+  "runtimeSHA256": "4408e44af098f7581366b0396088924d7e181720b9309574b4c30bac1c86b6dc",
+  "receiptVerifierSHA256": "982fac8dfb1ef87d6703fe8e88fe970fe00f73624a14fd512424495d7ee47fef",
+  "receiptReports": {},
+  "expectedActions": [
+    "wasm:typed-component:proof:typed/api.challenge-record",
+    "wasm:typed-component:proof:typed/api.echo-octets",
+    "wasm:typed-component:proof:typed/api.finish"
+  ],
+  "boundary": "Actual typed component/public seven-operation engineering proof; no fresh-AI or portable-release claim.",
+  "toolCountBefore": 7,
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-wasm-wit-audit-20261007/baseline-e09/rightclick",
+    "executableRealPath": "/tmp/rightclick-wasm-wit-audit-20261007/baseline-e09/rightclick",
+    "executableSHA256": "d722c02b4f639e47f56dc848d69e3348ff73435774d35560ead517a7319a6208",
+    "pid": 66851,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "absentBeforeIntroduction": true,
+  "actualTypedActions": [],
+  "result": "RED",
+  "failure": "Valid typed component was not acquired"
+}
