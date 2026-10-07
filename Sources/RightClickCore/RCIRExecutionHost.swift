@@ -318,21 +318,25 @@ public final class RCIRExecutionHost {
                             self.admission.withdraw(reflectorID: abi.reflectorID)
                             throw RCIRError.staleBinding
                         }
-                        guard lease.scopes.isSubset(of: authority()) else { throw RCIRError.authorityDenied }
-                        // Configuration refresh is an operator callback and may
-                        // revoke issuer policy. Finish that refresh before the
-                        // final protected signing-authority check; never invoke
-                        // it again between that check and transport admission.
+                        // Input, authority and configuration refreshes are host
+                        // callbacks that may revoke issuer policy. Finish every
+                        // consumption input before the final signing check.
+                        let currentArguments = self.consumptionArguments(arguments)
+                        let currentAuthority = authority()
+                        guard lease.scopes.isSubset(of: currentAuthority) else { throw RCIRError.authorityDenied }
+                        let currentAuthenticated = try invocationAuthority?.authenticatedContext()
                         let currentPolicy = try policy(self.configuration())
+                        let currentTime = self.now()
                         try signer?.validateCurrentAuthority()
                         let start = { dispatched = true; enqueue() }
                         if let attachment = invocationAuthority {
-                            try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments),
-                                grant: attachment.grant, authenticated: attachment.authenticatedContext(),
-                                policy: currentPolicy, now: self.now(), start: start)
+                            guard let currentAuthenticated else { throw RCIRError.authorityDenied }
+                            try self.admission.consumeAndStart(lease, arguments: currentArguments,
+                                grant: attachment.grant, authenticated: currentAuthenticated,
+                                policy: currentPolicy, now: currentTime, start: start)
                         } else {
-                            try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments), authority: authority(),
-                                policy: currentPolicy, now: self.now(), start: start)
+                            try self.admission.consumeAndStart(lease, arguments: currentArguments, authority: currentAuthority,
+                                policy: currentPolicy, now: currentTime, start: start)
                         }
                     }
                     if let hook = self.beforeStart { try hook(lease, admit, start) }
