@@ -82,6 +82,19 @@
       ],
       "transfer": "Every host-selected child transport, including genuine WASM and native IPC, uses the same bounded process edge.",
       "status": "GREEN for demonstrated Linux pipe boundary; not a claim that an unprovisioned WASM fixture passed"
+    },
+    {
+      "substrateExposingFailure": "Windows Swift6.2 MCP entry point",
+      "genericRuntimeDeficiency": "An unconditional Apple CoreFoundation import remained despite its run-loop calls already being Mac-only.",
+      "reusablePrimitive": "Native main-loop compilation boundary: Mac run loop and other-host completion semaphore retain their existing paths.",
+      "thinProviderSpecificLayer": "os(macOS) import guard only; no provider-specific behavior.",
+      "evidenceTurningGreen": [
+        "native-macos-mcp-import-boundary-retry.log"
+      ],
+      "rejectedNativeEvidence": "native-ci-windows-red-1c1940c.log",
+      "requiredNativeControls": "Next actual Windows build, protected references, full tests, release and real Core7 provider invocation.",
+      "transfer": "All descriptor/native providers share the same MCP stdio runtime.",
+      "status": "Mac build GREEN; Windows RED pending native execution"
     }
   ],
   "nativeLinuxControls": {
@@ -134,6 +147,36 @@
   "nextExactHeadNativeRun": {
     "run": 37648145831,
     "sourceSHA": "1c1940c08733630837d470e574ff77a964d2a79a",
-    "status": "PENDING"
+    "status": "Windows failed MCP CoreFoundation import; Linux completed native integrated/release/stdio+HTTP gates; Mac failed RCIR Python fixture startup (missing port file)."
+  },
+  "nativeLinuxFullCI": {
+    "run": 37648145831,
+    "job": 112884189928,
+    "sourceSHA": "1c1940c08733630837d470e574ff77a964d2a79a",
+    "status": "SUCCESS",
+    "tests": 496,
+    "skipped": 22,
+    "failures": 0,
+    "scope": "Configured real-provider stdio and authenticated HTTP Core7 acceptance; accepted_unverified, not native D-Bus proof.",
+    "provenanceLimitation": "Acceptance checks actual runtime identity internally but old script stdout does not retain binary hash; next workflow uploads explicit toolchain/digest.",
+    "rawEvidence": "native-ci-linux-green-1c1940c.log",
+    "existingSkipReasons": [
+      "Genuine scoped Kafka broker not provisioned; no Kafka GREEN claimed.",
+      "Genuine scoped Kubernetes provider not provisioned; this skip is not substrate GREEN.",
+      "MOAT004_G1_SPEC_URL and MOAT004_G1_SPEC_SHA256 required.",
+      "MOAT004_G2_SPEC_PATH and MOAT004_G2_SPEC_URL required.",
+      "MOAT004_G3_SPEC_PATH required.",
+      "MOAT004_G4_SPEC_PATH required.",
+      "MOAT004_G6_EXPECTED_LOGIN required.",
+      "MOAT004_G6_SPEC_URL required.",
+      "NS004_OPENAPI_BASE_URL is required for the real-provider gate.",
+      "NS007_SOURCE_PORT and NS007_SINK_PORT required.",
+      "NS008_FIXTURE_PORT required.",
+      "Native Keychain adapter requires macOS",
+      "Native Keychain credential tests require macOS",
+      "RIGHTCLICK_GRPC_REAL_HOST required for real gRPC reflection acceptance.",
+      "Real component not provisioned; no source-race GREEN claimed by this skip.",
+      "Real component toolchain not provisioned; no WASM GREEN claimed by this skip."
+    ]
   }
 }

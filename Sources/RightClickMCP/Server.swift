@@ -3,7 +3,9 @@ import CryptoKit
 #else
 import Crypto
 #endif
+#if os(macOS)
 import CoreFoundation
+#endif
 import Foundation
 import MCP
 import RightClickCore

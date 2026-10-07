@@ -18,9 +18,33 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: apt-get update && apt-get install -y python3 ca-certificates
-      - run: swift test --force-resolved-versions
-      - run: swift build -c release --product rightclick --force-resolved-versions
-      - run: python3 scripts/acceptance-portable.py .build/release/rightclick
+      - name: Native Linux provenance and integrated tests
+        shell: bash
+        run: |
+          set -o pipefail
+          git rev-parse HEAD | tee portable-source.txt
+          swift --version | tee portable-toolchain.txt
+          swift test --force-resolved-versions 2>&1 | tee linux-tests.log
+      - name: Native Linux release build
+        shell: bash
+        run: |
+          set -o pipefail
+          swift build -c release --product rightclick --force-resolved-versions 2>&1 | tee linux-build.log
+          sha256sum .build/release/rightclick | tee linux-binary-sha256.txt
+      - name: Real Linux provider through seven operations
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 scripts/acceptance-portable.py .build/release/rightclick 2>&1 | tee linux-acceptance.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-linux-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            portable-source.txt
+            portable-toolchain.txt
+            linux-*.log
+            linux-binary-sha256.txt
   windows:
     runs-on: windows-2022
     steps:
@@ -35,6 +59,16 @@ jobs:
         run: |
           git rev-parse HEAD | Out-File -Encoding utf8 portable-source.txt
           swift --version | Out-File -Encoding utf8 portable-toolchain.txt
+          @'
+          #if canImport(FoundationXML)
+          import FoundationXML
+          print("FoundationXML=available")
+          #else
+          print("FoundationXML=unavailable")
+          #endif
+          '@ | Set-Content -Encoding utf8 portable-module-probe.swift
+          swift portable-module-probe.swift 2>&1 | Tee-Object -FilePath portable-module-availability.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           swift test --force-resolved-versions --filter HostProtectedReferenceTests 2>&1 | Tee-Object -FilePath windows-protected-files.log
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Native integrated tests
@@ -57,6 +91,7 @@ jobs:
           path: |
             portable-source.txt
             portable-toolchain.txt
+            portable-module-availability.log
             windows-*.log
             windows-binary-sha256.txt
   macos:
