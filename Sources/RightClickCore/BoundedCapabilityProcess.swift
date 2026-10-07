@@ -29,7 +29,12 @@ enum BoundedCapabilityProcess {
         process.environment = ["PATH": "/usr/bin:/bin", "HOME": "/private/tmp"]
         let pipe = Pipe(); process.standardOutput = pipe; process.standardError = FileHandle.nullDevice
         let inputPipe = input.map { _ in Pipe() }
-        process.standardInput = inputPipe ?? FileHandle.nullDevice
+        if let inputPipe {
+            process.standardInput = inputPipe
+            // Suppress SIGPIPE on this descriptor without modifying process-
+            // wide signal policy if a bounded child exits before reading stdin.
+            _ = fcntl(inputPipe.fileHandleForWriting.fileDescriptor, F_SETNOSIGPIPE, 1)
+        } else { process.standardInput = FileHandle.nullDevice }
         let buffer = Buffer(); let reader = DispatchGroup()
         reader.enter()
         DispatchQueue.global(qos: .utility).async {
@@ -46,9 +51,13 @@ enum BoundedCapabilityProcess {
             if let admitStart { try admitStart(start) } else { start() }
             if let startError { throw startError }
         } catch {
-            try? pipe.fileHandleForWriting.close(); throw error
+            try? pipe.fileHandleForWriting.close()
+            try? inputPipe?.fileHandleForReading.close()
+            try? inputPipe?.fileHandleForWriting.close()
+            throw error
         }
         if let inputPipe, let input {
+            try? inputPipe.fileHandleForReading.close()
             // Write only after the admitted child starts. A reader that never
             // consumes stdin cannot block the caller's monotonic timeout loop.
             DispatchQueue.global(qos: .utility).async {
