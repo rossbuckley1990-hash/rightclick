@@ -71,15 +71,16 @@
       "native_tests": "PASS",
       "live_runtime": "PASS",
       "restricted_agent": "NOT_RUN",
-      "review": "PASS_SCOPED; SIX_EXACT_HEAD_CI_SUCCESS",
+      "review": "PASS",
       "merge": "PASS",
       "artifact_build": "PASS",
       "artifact_publish": "NOT_RUN",
       "fresh_install": "NOT_RUN",
-      "client_acceptance": "NOT_RUN"
+      "client_acceptance": "NOT_RUN",
+      "reviewScope": "Scoped OpenAPI G2: independent security/evidence/package review plus all six exact candidate checks; does not close G3\u2013G11."
     },
     "G3": {
-      "implementation": "NOT_STARTED",
+      "implementation": "IN_PROGRESS",
       "local_tests": "NOT_RUN",
       "native_tests": "NOT_RUN",
       "live_runtime": "NOT_RUN",
@@ -92,7 +93,7 @@
       "client_acceptance": "NOT_RUN",
       "prerequisites": {
         "issuerProviderOption": "Existing real local Kubernetes TokenRequest/API lab inspected read-only; not newly acquired or accepted through RIGHTCLICK",
-        "transport": "Native Foundation HTTPS rejects unknown CA (-1202). Public-route RED/frozen tests and generic origin-scoped CA implementation next",
+        "transport": "Frozen public OpenAPI HTTPS pre-change RED captured on accepted implementation bytes: untrusted CA produces no provider effects and cannot produce verified success. Operator-origin CA trust implementation isolated on feature/rcir-origin-trust-20261007; not integrated or accepted yet.",
         "managedAuthority": "NOT_IMPLEMENTED for TokenRequest; imported bearer remains operator provisioning",
         "protectedObserver": "NOT_IMPLEMENTED; existing observer credential-free UTF8 only",
         "receiptTrust": "Minimisation, rotation/revocation and concurrent structural verification findings remain unfinished"
