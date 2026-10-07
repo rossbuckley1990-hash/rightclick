@@ -11,11 +11,13 @@ public struct CapabilityInterfaceOperation {
     public let arguments: CapabilitySchema
     public let result: CapabilitySchema
     public let declaration: CapabilityValue
+    public let effect: RCIREffect
 
     public init(name: String, title: String, arguments: CapabilitySchema,
-                result: CapabilitySchema, declaration: CapabilityValue) {
+                result: CapabilitySchema, declaration: CapabilityValue, effect: RCIREffect = .execute) {
         self.name = name; self.title = title; self.arguments = arguments
         self.result = result; self.declaration = declaration
+        self.effect = effect
     }
 }
 
@@ -47,6 +49,7 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
             metadata.merge(["providerIdentity": provider, "interfaceKind": substrate,
                             "descriptorSHA256": descriptorDigest, "descriptorSource": target.absoluteString,
                             "operationName": operation.name, "executionMode": "unary",
+                            "effect": operation.effect.rawValue,
                             "argumentSchema": try operation.arguments.canonicalData().base64EncodedString(),
                             "resultSchema": try operation.result.canonicalData().base64EncodedString(),
                             "verificationBoundary": "Provider completion is unverified until the host establishes a postcondition."]) { _, value in value }
@@ -95,7 +98,7 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
             declaration: .object(["capability": discovery.declaration, "interface": operation.declaration,
                 "verification": try verification.map { .bytes(try JSONEncoder().encode($0)) } ?? .null,
                 "expectedOutput": expectedOutput.map { .string($0) } ?? .null]))
-        let scope = RCIRScope(target.absoluteString + "#" + operation.name, .execute)
+        let scope = RCIRScope(target.absoluteString + "#" + operation.name, operation.effect)
         var returned: CapabilityValue?
         return try host.execute(abi: abi, discovery: discovery, arguments: input, scope: scope,
             capability: admissionOwner, executionID: executionID, argumentStrings: arguments, item: item,
