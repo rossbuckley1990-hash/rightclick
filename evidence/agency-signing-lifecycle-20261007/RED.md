@@ -4,6 +4,6 @@ Actual A2A agent and separate read-only observer processes: five tests, four fai
 
 Offline authenticated relay-envelope controls: eight tests, four failures. Malformed, absent, null and numeric expiry values pass the old Date.parse comparison and release private credential references. Real Node crypto generates synthetic encrypted fixtures in private temporary directories and removes all keys/tokens afterward. Finite future expiry, genuinely expired authority, wrong source SHA and tampered GCM ciphertext are controls. Evidence contains only acceptance/file-existence booleans.
 
-The cleanup callback test is separately being frozen; its results are not covered by these two confirmed REDs.
+The exact PowerShell hold script was then executed using the official SHA-pinned 7.6.6 macOS runtime with real disposable child processes/directories and controlled local-user callbacks. The successful cleanup control passes; three failure controls still report `withdrawn=true`: surviving real process, surviving user callback state, and surviving real private directory. This freezes acknowledgement-versus-postcondition failure in the supervisor, not native Windows account/ACL/tunnel proof. No OS account was created. Public logs contain only fixture failure messages and booleans.
 
 These are generic retained signing-authority and typed-expiry failures, not evidence of native Windows, distributed trust-root revocation or production key rotation acceptance. No public relay was started.

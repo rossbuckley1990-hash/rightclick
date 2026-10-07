@@ -1,0 +1,47 @@
+[
+  {
+    "case": "success",
+    "commandFailed": false,
+    "fixtureError": null,
+    "processSurvived": false,
+    "userCallbackStateSurvived": false,
+    "privateDirectorySurvived": false,
+    "withdrawalClaim": true,
+    "evidenceAccurate": true
+  },
+  {
+    "case": "process-survives",
+    "commandFailed": false,
+    "fixtureError": null,
+    "processSurvived": true,
+    "userCallbackStateSurvived": false,
+    "privateDirectorySurvived": false,
+    "withdrawalClaim": true,
+    "evidenceAccurate": false
+  },
+  {
+    "case": "user-survives",
+    "commandFailed": false,
+    "fixtureError": null,
+    "processSurvived": false,
+    "userCallbackStateSurvived": true,
+    "privateDirectorySurvived": false,
+    "withdrawalClaim": true,
+    "evidenceAccurate": false
+  },
+  {
+    "case": "private-state-survives",
+    "commandFailed": false,
+    "fixtureError": null,
+    "processSurvived": false,
+    "userCallbackStateSurvived": false,
+    "privateDirectorySurvived": true,
+    "withdrawalClaim": true,
+    "evidenceAccurate": false
+  }
+]
+Exception: /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-security/scripts/proof-lab/test-relay-hold.ps1:71
+Line |
+  71 |  … }).Count) { throw 'Proof withdrawal evidence did not match actual cle …
+     |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Proof withdrawal evidence did not match actual cleanup postconditions
