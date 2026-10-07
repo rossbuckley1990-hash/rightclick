@@ -27,9 +27,34 @@ jobs:
         with:
           swift-version: swift-6.2-release
           swift-build: 6.2-RELEASE
-      - run: swift test --force-resolved-versions
-      - run: swift build -c release --product rightclick --force-resolved-versions
-      - run: python scripts/acceptance-portable.py .build/release/rightclick.exe
+      - name: Native protected policy, signing and observer references
+        run: |
+          git rev-parse HEAD | Out-File -Encoding utf8 portable-source.txt
+          swift --version | Out-File -Encoding utf8 portable-toolchain.txt
+          swift test --force-resolved-versions --filter HostProtectedReferenceTests 2>&1 | Tee-Object -FilePath windows-protected-files.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Native integrated tests
+        run: |
+          swift test --force-resolved-versions 2>&1 | Tee-Object -FilePath windows-tests.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Native release build
+        run: |
+          swift build -c release --product rightclick --force-resolved-versions 2>&1 | Tee-Object -FilePath windows-build.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-FileHash .build/release/rightclick.exe -Algorithm SHA256 | Format-List | Out-File windows-binary-sha256.txt
+      - name: Real provider through seven operations
+        run: |
+          python scripts/acceptance-portable.py .build/release/rightclick.exe 2>&1 | Tee-Object -FilePath windows-acceptance.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-windows-evidence-${{ github.sha }}
+          path: |
+            portable-source.txt
+            portable-toolchain.txt
+            windows-*.log
+            windows-binary-sha256.txt
   macos:
     runs-on: macos-26
     steps:

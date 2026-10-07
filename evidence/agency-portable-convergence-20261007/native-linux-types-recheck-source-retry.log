@@ -1,0 +1,677 @@
+warning: 'work': found 3 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /work/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /work/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /work/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/35] Write swift-version-24593BA9C3E375BF.txt
+[3/46] Write sources
+[5/64] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[6/64] Compiling RightClickCLI ProviderConfigurationCLI.swift
+[7/64] Compiling RightClickMCPTests FederationTests.swift
+[8/64] Emitting module RightClickMCPTests
+[9/66] Emitting module RightClickCLI
+[10/66] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[12/65] Emitting module RightClickCoreTests
+[13/86] Compiling RightClickCLI main.swift
+[14/88] Write Objects.LinkFileList
+[16/88] Compiling RightClickCoreTests GraphQLReflectorTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[17/88] Compiling RightClickCoreTests HostProtectedReferenceTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[18/88] Compiling RightClickCoreTests InvocationBindingTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[19/88] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[20/88] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[21/88] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[22/88] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[23/88] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[24/88] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[25/88] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[26/88] Compiling RightClickCoreTests MOAT005G1PathAndJSONBodyTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[27/88] Compiling RightClickCoreTests MOAT005G2MultiplePathArgumentsTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[28/88] Compiling RightClickCoreTests MOAT005G3GitHubRequestSchemaTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[29/88] Compiling RightClickCoreTests MOAT005G4MutationJSONResponseFallbackTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[30/88] Compiling RightClickCoreTests MOAT005G5FullFrozenGitHubContractTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[31/88] Compiling RightClickCoreTests MOAT005G6MultiSegmentPathTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[32/88] Compiling RightClickCoreTests NativeHTTPFixture.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[33/88] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[34/88] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[35/88] Compiling RightClickCoreTests OpenAPIAcknowledgementTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[36/88] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[37/88] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[38/88] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[39/88] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[40/88] Compiling RightClickCoreTests PolicyTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[41/88] Compiling RightClickCoreTests PortableRuntimeTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[42/88] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[43/88] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[44/88] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[45/88] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[46/88] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[47/88] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[48/88] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[49/88] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[50/88] Compiling RightClickCoreTests RCIRNoOutputTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[51/88] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[52/88] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[53/88] Compiling RightClickCoreTests RCIRTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[54/88] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[55/88] Compiling RightClickCoreTests RCIRUnitCompletionTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[56/88] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[57/88] Compiling RightClickCoreTests SharingExecutionTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[58/88] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[59/88] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+[60/88] Compiling RightClickCoreTests ARDAcquisitionGateTests.swift
+[61/88] Compiling RightClickCoreTests BonjourOpenAPISourceTests.swift
+[62/88] Compiling RightClickCoreTests CapabilityABIAdapterTests.swift
+[63/88] Compiling RightClickCoreTests CapabilityABIBoundaryTests.swift
+[64/88] Compiling RightClickCoreTests CapabilityABITests.swift
+[65/88] Compiling RightClickCoreTests CapabilityAcquisitionLifecycleTests.swift
+[66/88] Compiling RightClickCoreTests CapabilityArtifactResolverTests.swift
+[67/88] Compiling RightClickCoreTests CapabilityExperienceLedgerTests.swift
+[68/88] Compiling RightClickCoreTests CapabilityExperienceTests.swift
+[69/88] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[70/88] Compiling RightClickCoreTests CapabilityReflectorSourceTests.swift
+[71/88] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+[72/88] Compiling RightClickCoreTests CapabilitySnapshotBoundaryTests.swift
+[73/88] Compiling RightClickCoreTests CapabilityStringConstraintTests.swift
+[74/88] Compiling RightClickCoreTests ConfiguredOpenAPISourceTests.swift
+[75/88] Compiling RightClickCoreTests DispatchContractBindingTests.swift
+[76/88] Compiling RightClickCoreTests ExecutionCapacityAdmissionTests.swift
+[77/88] Compiling RightClickCoreTests ExecutionRetentionTests.swift
+[78/88] Compiling RightClickCoreTests GRPCRealProviderAcceptanceTests.swift
+[79/88] Compiling RightClickCoreTests GRPCReflectionTransportTests.swift
+[80/88] Compiling RightClickCoreTests GRPCReflectorTests.swift
+[81/89] Wrapping AST for RightClickCoreTests for debugging
+[82/89] /work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick-mcpPackageDiscoveredTests.derived/all-discovered-tests.swift
+[83/90] Write sources
+[84/94] Linking rightclick
+[86/94] Compiling rightclick_mcpPackageDiscoveredTests RightClickMCPTests.swift
+[87/94] Emitting module rightclick_mcpPackageDiscoveredTests
+[88/94] Compiling rightclick_mcpPackageDiscoveredTests RightClickARDTests.swift
+[89/94] Compiling rightclick_mcpPackageDiscoveredTests RightClickCoreTests.swift
+[90/95] Compiling rightclick_mcpPackageDiscoveredTests all-discovered-tests.swift
+[91/96] /work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick-mcpPackageTests.derived/runner.swift
+[92/97] Write sources
+[93/97] Wrapping AST for rightclick-mcpPackageDiscoveredTests for debugging
+[95/99] Compiling rightclick_mcpPackageTests runner.swift
+[96/99] Emitting module rightclick_mcpPackageTests
+[97/99] Write Objects.LinkFileList
+[98/99] Linking rightclick-mcpPackageTests.xctest
+Build complete! (21.68s)
+Test Suite 'Selected tests' started at 2026-10-07 15:34:47.646
+Test Suite 'HostProtectedReferenceTests' started at 2026-10-07 15:34:47.658
+Test Case 'HostProtectedReferenceTests.testBroaderNativeReadAuthorityIsDenied' started at 2026-10-07 15:34:47.658
+Test Case 'HostProtectedReferenceTests.testBroaderNativeReadAuthorityIsDenied' passed (0.003 seconds)
+Test Case 'HostProtectedReferenceTests.testConfiguredPolicySigningAndObserverReferencesUseOneProtectedBackend' started at 2026-10-07 15:34:47.661
+Test Case 'HostProtectedReferenceTests.testConfiguredPolicySigningAndObserverReferencesUseOneProtectedBackend' passed (0.002 seconds)
+Test Case 'HostProtectedReferenceTests.testDirectoriesAndOversizedFilesNeverBecomeReferences' started at 2026-10-07 15:34:47.663
+Test Case 'HostProtectedReferenceTests.testDirectoriesAndOversizedFilesNeverBecomeReferences' passed (0.001 seconds)
+Test Case 'HostProtectedReferenceTests.testPrivateSnapshotRetainsExactBytesWhenSelectedSourceChanges' started at 2026-10-07 15:34:47.664
+Test Case 'HostProtectedReferenceTests.testPrivateSnapshotRetainsExactBytesWhenSelectedSourceChanges' passed (0.005 seconds)
+Test Suite 'HostProtectedReferenceTests' passed at 2026-10-07 15:34:47.669
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.011 (0.011) seconds
+Test Suite 'OpenAPIAcknowledgementTests' started at 2026-10-07 15:34:47.669
+Test Case 'OpenAPIAcknowledgementTests.testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition' started at 2026-10-07 15:34:47.669
+Test Case 'OpenAPIAcknowledgementTests.testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition' passed (0.261 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testAcknowledgementHasNoTypedOutputAndRemainsUnverified' started at 2026-10-07 15:34:47.929
+Test Case 'OpenAPIAcknowledgementTests.testAcknowledgementHasNoTypedOutputAndRemainsUnverified' passed (0.179 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testConfirmationAndCurrentHostPolicyStopAcknowledgementMutation' started at 2026-10-07 15:34:48.108
+Test Case 'OpenAPIAcknowledgementTests.testConfirmationAndCurrentHostPolicyStopAcknowledgementMutation' passed (0.176 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt' started at 2026-10-07 15:34:48.284
+Test Case 'OpenAPIAcknowledgementTests.testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt' passed (0.283 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testUndeclared2xxStatusRemainsUnknownDespiteActualEffect' started at 2026-10-07 15:34:48.567
+Test Case 'OpenAPIAcknowledgementTests.testUndeclared2xxStatusRemainsUnknownDespiteActualEffect' passed (0.166 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testWrongOrMissingExternalEffectNeverBecomesSuccess' started at 2026-10-07 15:34:48.734
+Test Case 'OpenAPIAcknowledgementTests.testWrongOrMissingExternalEffectNeverBecomesSuccess' passed (0.173 seconds)
+Test Suite 'OpenAPIAcknowledgementTests' passed at 2026-10-07 15:34:48.907
+	 Executed 6 tests, with 0 failures (0 unexpected) in 1.238 (1.238) seconds
+Test Suite 'RCIRHTTPJSONObservationTests' started at 2026-10-07 15:34:48.907
+Test Case 'RCIRHTTPJSONObservationTests.testAmbientCookiesCannotEnterObservationOrPersistResponseCookie' started at 2026-10-07 15:34:48.907
+Test Case 'RCIRHTTPJSONObservationTests.testAmbientCookiesCannotEnterObservationOrPersistResponseCookie' passed (0.255 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation' started at 2026-10-07 15:34:49.162
+Test Case 'RCIRHTTPJSONObservationTests.testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation' passed (0.259 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testDefaultCredentialStorageCannotSupplyObserverAuthority' started at 2026-10-07 15:34:49.421
+Test Case 'RCIRHTTPJSONObservationTests.testDefaultCredentialStorageCannotSupplyObserverAuthority' passed (5.25 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed' started at 2026-10-07 15:34:54.671
+Test Case 'RCIRHTTPJSONObservationTests.testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed' passed (0.323 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead' started at 2026-10-07 15:34:54.994
+Test Case 'RCIRHTTPJSONObservationTests.testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead' passed (0.266 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange' started at 2026-10-07 15:34:55.260
+Test Case 'RCIRHTTPJSONObservationTests.testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange' passed (0.377 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest' started at 2026-10-07 15:34:55.637
+Test Case 'RCIRHTTPJSONObservationTests.testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest' passed (0.251 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testRedirectNeverSendsObserverCredentialToAnotherOrigin' started at 2026-10-07 15:34:55.889
+Test Case 'RCIRHTTPJSONObservationTests.testRedirectNeverSendsObserverCredentialToAnotherOrigin' passed (0.261 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testWriterCredentialCannotActAsReadonlyObserver' started at 2026-10-07 15:34:56.150
+Test Case 'RCIRHTTPJSONObservationTests.testWriterCredentialCannotActAsReadonlyObserver' passed (5.28 seconds)
+Test Suite 'RCIRHTTPJSONObservationTests' passed at 2026-10-07 15:35:01.430
+	 Executed 9 tests, with 0 failures (0 unexpected) in 12.522 (12.522) seconds
+Test Suite 'RCIRUnitCompletionTests' started at 2026-10-07 15:35:01.430
+Test Case 'RCIRUnitCompletionTests.testNoOutputCompletionCannotBypassDeclaredOrUnknownOutput' started at 2026-10-07 15:35:01.430
+Test Case 'RCIRUnitCompletionTests.testNoOutputCompletionCannotBypassDeclaredOrUnknownOutput' passed (0.107 seconds)
+Test Case 'RCIRUnitCompletionTests.testNoOutputCompletionCarriesNoProviderValueAndRemainsUnverified' started at 2026-10-07 15:35:01.537
+Test Case 'RCIRUnitCompletionTests.testNoOutputCompletionCarriesNoProviderValueAndRemainsUnverified' passed (0.0 seconds)
+Test Case 'RCIRUnitCompletionTests.testNoOutputHasCanonicalIdentityDistinctFromJSONNull' started at 2026-10-07 15:35:01.538
+Test Case 'RCIRUnitCompletionTests.testNoOutputHasCanonicalIdentityDistinctFromJSONNull' passed (0.0 seconds)
+Test Case 'RCIRUnitCompletionTests.testOnlyIndependentObserverCanPromoteNoOutputOutcome' started at 2026-10-07 15:35:01.538
+Test Case 'RCIRUnitCompletionTests.testOnlyIndependentObserverCanPromoteNoOutputOutcome' passed (0.0 seconds)
+Test Suite 'RCIRUnitCompletionTests' passed at 2026-10-07 15:35:01.538
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.108 (0.108) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 15:35:01.538
+	 Executed 23 tests, with 0 failures (0 unexpected) in 13.879 (13.879) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.2.4 (5ee435b15ad40ec)
+↳ Target Platform: aarch64-unknown-linux-gnu
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
