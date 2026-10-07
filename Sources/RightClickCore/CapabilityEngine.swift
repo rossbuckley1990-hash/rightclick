@@ -330,7 +330,7 @@ public final class CapabilityEngine {
             startedRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
                 executionID: executionId, arguments: arguments, verification: verification,
                 expectedOutput: expectedOutput, host: rcirHost,
-                revalidate: { self.reflector(for: capability, item: item) != nil })
+                revalidate: { [weak self] in self?.reflector(for: capability, item: item) != nil })
         } else if let verification,
            let verificationReflector
         {
@@ -584,7 +584,7 @@ public final class CapabilityEngine {
             providerRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
                 executionID: executionId, arguments: arguments, verification: verification,
                 expectedOutput: expectedOutput, host: rcirHost,
-                revalidate: { self.reflector(for: capability, item: item) != nil })
+                revalidate: { [weak self] in self?.reflector(for: capability, item: item) != nil })
         } else if let verification,
            let verificationReflector
         {
@@ -941,7 +941,7 @@ public final class CapabilityEngine {
     }
 
     public func executionStatus(_ executionId: String) -> ExecutionRecord {
-        ExecutionStore.shared.get(executionId) ?? ExecutionRecord(
+        rcirHost.status(executionId) ?? ExecutionStore.shared.get(executionId) ?? ExecutionRecord(
             executionId: executionId,
             actionId: "",
             state: .unknown,

@@ -18,9 +18,10 @@ public struct RCIRExecutionEvidence: Codable, Sendable {
     public let leaseConsumed: Bool
     public let phase: String
     public let outcome: String
-    public let receipt: String
+    public let receipt: String?
     public let signedReceipt: RCIRReceiptEnvelope?
     public let observationBoundary: String
+    public let taskEvents: [String]?
 }
 
 public struct RCIRReceiptEnvelope: Codable, Sendable {
@@ -37,6 +38,7 @@ struct RCIRHostConfiguration: Codable {
     struct Observer: Codable {
         let urlTemplate: String
         let expectedArgument: String
+        var trustedOrigin: String? = nil
     }
     var version = 1
     var revision = "local-confirmation-1"
@@ -50,7 +52,7 @@ struct RCIRHostConfiguration: Codable {
         guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any],
               Set(object.keys).isSubset(of: ["version", "revision", "deniedCapabilities", "observers", "signingKeyFile"]) else { throw RCIRError.invalidContract }
         if let observers = object["observers"] as? [String: [String: Any]] {
-            for value in observers.values where Set(value.keys) != ["urlTemplate", "expectedArgument"] {
+            for value in observers.values where !Set(value.keys).isSubset(of: ["urlTemplate", "expectedArgument", "trustedOrigin"]) {
                 throw RCIRError.invalidContract
             }
         }
@@ -59,7 +61,7 @@ struct RCIRHostConfiguration: Codable {
         return config
     }
 
-    fileprivate static func protectedRead(_ path: String, maximum: Int) throws -> Data {
+    static func protectedRead(_ path: String, maximum: Int) throws -> Data {
         let descriptor = open(path, O_RDONLY | O_NOFOLLOW | O_CLOEXEC)
         guard descriptor >= 0 else { throw RCIRError.authorityDenied }
         defer { close(descriptor) }
@@ -86,6 +88,8 @@ struct RCIRHostConfiguration: Codable {
 /// before consumption. A consumed lease never causes an automatic HTTP retry.
 public final class RCIRExecutionHost {
     let admission = RCIRAdmission()
+    private let sessionLock = NSLock()
+    private var sessions: [String: RCIRDeferredSession] = [:]
     var now: () -> Int64 = { Int64(Date().timeIntervalSince1970 * 1000) }
     var configuration: () throws -> RCIRHostConfiguration = RCIRHostConfiguration.load
     // Internal fault hook for native transport adversarial controls. Not exposed
@@ -95,6 +99,19 @@ public final class RCIRExecutionHost {
     var beforeStart: ((RCIRLease, (_ enqueue: () -> Void) throws -> Void, () -> Void) throws -> Void)?
 
     public init() {}
+
+    /// Refresh a retained task through the existing context_run_status path.
+    /// A status read never replays the original provider mutation.
+    func status(_ executionID: String) -> ExecutionRecord? {
+        sessionLock.lock(); let session = sessions[executionID]; sessionLock.unlock()
+        guard let session else { return nil }
+        let record = session.status()
+        ExecutionStore.shared.put(record)
+        if [.succeeded, .failed, .cancelled, .unknown].contains(record.state) {
+            sessionLock.lock(); sessions.removeValue(forKey: executionID); sessionLock.unlock()
+        }
+        return record
+    }
 
     func synchronize(owners: Set<String>) {
         for binding in admission.discover() where !owners.contains(binding.contract.abi.reflectorID) {
@@ -107,11 +124,19 @@ public final class RCIRExecutionHost {
                  argumentStrings: CapabilityArguments?, item: ContentItem,
                  verification: VerificationSpec?, expectedOutput: String?, target: URL,
                  authority: @escaping () -> Set<RCIRScope>, revalidate: @escaping () -> Bool,
+                 lifecycle: RCIRDeferredLifecycle? = nil,
                  dispatch: (String, (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord,
                  resultValue: (ExecutionRecord) throws -> CapabilityValue) throws -> ExecutionRecord {
         var dispatched = false
         do {
             let config = try configuration()
+            let deferred = lifecycle != nil || capability.metadata["executionMode"] == "deferred"
+            let timeout = lifecycle?.timeoutMilliseconds ?? 30_000
+            guard timeout > 0, timeout <= 86_400_000 else { throw RCIRError.invalidTime }
+            if deferred {
+                sessionLock.lock(); let count = sessions.count; sessionLock.unlock()
+                guard count < 256 else { throw RCIRError.invalidLimit }
+            }
             let observation = try observer(config, capabilityID: capability.id,
                                            arguments: argumentStrings, target: target)
             let returnedPostcondition = verification ?? expectedOutput.map {
@@ -130,7 +155,8 @@ public final class RCIRExecutionHost {
                     schema: .object(properties: ["external": .string, "returned": .boolean], required: ["external", "returned"]),
                     expected: .object(["external": .string(observation.expected), "returned": .boolean(true)]))
             } else { combinedObserverContract = observerContract }
-            let contract = RCIRContract(abi: abi, scopes: [scope], verification: combinedObserverContract)
+            let contract = RCIRContract(abi: abi, scopes: [scope],
+                task: RCIRTaskModel(shape: deferred ? .deferred : .unary), verification: combinedObserverContract)
             let principal = "local-owner:" + abi.reflectorID
             let binding = try admission.publishInvocation(contract, discovery: discovery, authenticatedPrincipal: principal)
             func policy(_ config: RCIRHostConfiguration) throws -> RCIRPolicy {
@@ -147,7 +173,7 @@ public final class RCIRExecutionHost {
             }
             let lease = try admission.issue(binding, arguments: arguments, authority: authority(),
                                             policy: policy(config), now: now())
-            var task = try RCIRTask(lease: lease, startedAt: now(), deadline: now() + 30_000)
+            var task = try RCIRTask(lease: lease, startedAt: now(), deadline: now() + timeout)
             try beforeConsume?(lease)
             guard revalidate() else {
                 admission.withdraw(reflectorID: abi.reflectorID)
@@ -182,6 +208,29 @@ public final class RCIRExecutionHost {
                 record.evidence = OutcomeEvidence(type: "rcir_provider_disappeared",
                     boundary: "Dispatch occurred, but the current provider binding is no longer available.")
                 try task.providerDisappeared(now: now())
+            } else if deferred, record.state == .started || record.state == .accepted || record.state == .succeeded {
+                let boundary = observation?.boundary ?? "No host-selected independent observer; remote completion remains unverified."
+                let initialPolicy = try policy(config).revision
+                let session = try RCIRDeferredSession(task: task, record: record, lifecycle: lifecycle,
+                    now: now, revalidate: {
+                        guard let current = try? policy(self.configuration()), current.revision == initialPolicy else { return false }
+                        return revalidate()
+                    }, authority: authority, signer: signer, boundary: boundary,
+                    observe: { task, record in
+                        guard let observation,
+                              let text = try? self.readBack(observation.url, taskID: task.id.uuidString) else { return }
+                        var observed: CapabilityValue = .string(text)
+                        if let returnedPostcondition {
+                            let result = try OutcomeVerifier.verify(spec: returnedPostcondition, item: item,
+                                before: OutcomeVerifier.snapshot(item: item), returnedText: record.output)
+                            record.verification = result
+                            guard result.status == .verifiedSuccess || result.status == .verifiedFailure else { return }
+                            observed = .object(["external": .string(text), "returned": .boolean(result.status == .verifiedSuccess)])
+                        }
+                        try task.verify(observerID: observation.url.absoluteString, now: self.now()) { _, _ in observed }
+                    })
+                sessionLock.lock(); sessions[executionID] = session; sessionLock.unlock()
+                return session.status(refresh: false)
             } else if record.state == .accepted || record.state == .succeeded {
                 do {
                     try task.record(.completed(resultValue(record)), sequence: 1, now: now())
@@ -246,7 +295,7 @@ public final class RCIRExecutionHost {
                 observationBoundary: observation == nil
                     ? (returnedPostcondition == nil ? "No host observer configured; provider completion is unverified."
                         : "Caller-declared returned-value postcondition; no independent external effect observation.")
-                    : "Separate same-origin read-back, same service trust source; missing observation remains unverified.")
+                    : observation!.boundary, taskEvents: nil)
             record.events.append(contentsOf: ["RCIR admitted generation=\(binding.generation)",
                 "RCIR consumed lease=\(lease.id.uuidString)", "RCIR task=\(task.id.uuidString) outcome=\(task.outcome.rawValue)"])
             return record
@@ -260,7 +309,7 @@ public final class RCIRExecutionHost {
     }
 
     private func observer(_ config: RCIRHostConfiguration, capabilityID: String,
-                          arguments: CapabilityArguments?, target: URL) throws -> (url: URL, expected: String)? {
+                          arguments: CapabilityArguments?, target: URL) throws -> (url: URL, expected: String, boundary: String)? {
         guard let observer = config.observers?[capabilityID] else { return nil }
         guard let expected = arguments?[observer.expectedArgument] else { throw RCIRError.invalidContract }
         var template = observer.urlTemplate
@@ -271,11 +320,22 @@ public final class RCIRExecutionHost {
                   let encoded = value.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else { throw RCIRError.invalidContract }
             template = template.replacingOccurrences(of: "{" + key + "}", with: encoded)
         }
+        let observerOrigin: URL
+        if let pin = observer.trustedOrigin {
+            guard let url = URL(string: pin), let parts = URLComponents(url: url, resolvingAgainstBaseURL: false),
+                  parts.user == nil, parts.password == nil, parts.query == nil, parts.fragment == nil,
+                  parts.path.isEmpty || parts.path == "/",
+                  OriginPinnedHTTP.sameOrigin(url, url) else { throw RCIRError.invalidContract }
+            observerOrigin = url
+        } else { observerOrigin = target }
         guard !template.contains("{"), !template.contains("}"),
               let url = URL(string: template), let parts = URLComponents(url: url, resolvingAgainstBaseURL: false),
               parts.user == nil, parts.password == nil, parts.query == nil, parts.fragment == nil,
-              OriginPinnedHTTP.sameOrigin(target, url) else { throw RCIRError.invalidContract }
-        return (url, expected)
+              OriginPinnedHTTP.sameOrigin(observerOrigin, url) else { throw RCIRError.invalidContract }
+        let boundary = observer.trustedOrigin == nil
+            ? "Separate same-origin read-back, same service trust source; missing observation remains unverified."
+            : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification."
+        return (url, expected, boundary)
     }
 
     private func readBack(_ url: URL, taskID: String) throws -> String {
