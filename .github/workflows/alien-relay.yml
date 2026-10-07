@@ -154,7 +154,7 @@ jobs:
 
           semantic_success = (
               int(os.environ.get("GIT_STATUS", "999")) == 0
-              and skil_ok
+              and skill_ok
               and int(os.environ.get("VENV_STATUS", "999")) == 0
               and int(os.environ.get("INSTALL_STATUS", "999")) == 0
               and int(os.environ.get("FLUX_INFO_STATUS", "999")) == 0
