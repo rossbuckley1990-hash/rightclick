@@ -15,6 +15,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         with (out/'effects.jsonl').open('a') as f:
             f.write(json.dumps({'path':self.path,'body':body,'taskID':self.headers.get('X-RightClick-Invocation')})+'\n')
         values[body['id']]=body['value']
+        if body['id']=='drop-response':
+            # Deliberate fixture fault after the durable effect log, before any
+            # acceptance response. The production transport must retain unknown
+            # and must not send another mutation to recover the missing reply.
+            self.close_connection=True
+            return
         self.send_response(200); self.send_header('Content-Type','application/json'); self.end_headers()
         self.wfile.write(json.dumps(body).encode())
 server=http.server.HTTPServer(('127.0.0.1',0),Handler)
