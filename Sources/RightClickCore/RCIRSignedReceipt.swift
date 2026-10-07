@@ -1,6 +1,10 @@
 import Foundation
+#if canImport(CryptoKit) || canImport(Crypto)
 #if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 #endif
 
 public enum RCIRReceiptError: Error, Equatable {
@@ -52,7 +56,7 @@ public struct RCIRSignedReceipt: Sendable {
     }
 }
 
-#if canImport(CryptoKit)
+#if canImport(CryptoKit) || canImport(Crypto)
 /// Product backend on supported Apple platforms. Key provisioning/rotation is a
 /// runtime deployment responsibility; no ephemeral key is installed implicitly.
 public struct RCIREd25519Signer: RCIRReceiptSigning {

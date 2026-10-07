@@ -1,0 +1,1619 @@
+warning: 'work': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /work/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /work/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/20] Write sources
+[6/52] Write swift-version-24593BA9C3E375BF.txt
+[8/68] Emitting module RightClickARDTests
+[9/68] Compiling RightClickARDTests ARDPortableTests.swift
+[11/71] Emitting module RightClickMCPTests
+[12/71] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[13/71] Compiling RightClickMCPTests FederationTests.swift
+[14/71] Emitting module RightClickARDProbe
+[15/71] Compiling RightClickARDProbe main.swift
+[16/72] Wrapping AST for RightClickARDTests for debugging
+[17/73] Wrapping AST for RightClickARDProbe for debugging
+[18/73] Write Objects.LinkFileList
+[21/73] Emitting module RightClickCoreTests
+[21/93] Wrapping AST for RightClickMCPTests for debugging
+[22/93] Linking rightclick-ard-probe
+[24/93] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[25/93] Compiling RightClickCoreTests ARDAcquisitionGateTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[26/93] Compiling RightClickCoreTests BonjourOpenAPISourceTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[27/93] Compiling RightClickCoreTests CapabilityABIAdapterTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[28/93] Compiling RightClickCoreTests CapabilityABIBoundaryTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[29/93] Compiling RightClickCoreTests CapabilityABITests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[30/93] Compiling RightClickCoreTests CapabilityAcquisitionLifecycleTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[31/93] Compiling RightClickCoreTests CapabilityArtifactResolverTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[32/93] Compiling RightClickCoreTests CapabilityExperienceLedgerTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[33/93] Compiling RightClickCoreTests CapabilityExperienceTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[34/93] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[35/93] Compiling RightClickCoreTests CapabilityReflectorSourceTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[36/93] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[37/93] Compiling RightClickCoreTests CapabilitySnapshotBoundaryTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[38/93] Compiling RightClickCoreTests CapabilityStringConstraintTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[39/93] Compiling RightClickCoreTests ConfiguredOpenAPISourceTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[40/93] Compiling RightClickCoreTests DispatchContractBindingTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[41/93] Compiling RightClickCoreTests ExecutionCapacityAdmissionTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[42/93] Compiling RightClickCoreTests ExecutionRetentionTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[43/93] Compiling RightClickCoreTests GRPCRealProviderAcceptanceTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[44/93] Compiling RightClickCoreTests GRPCReflectionTransportTests.swift
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:113:53: error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+111 |         }
+112 |         defer { OpenAPIReflectorTests.StubURLProtocol.handler = nil }
+113 |         let configuration = URLSessionConfiguration.ephemeral
+    |                                                     `- error: type 'URLSessionConfiguration' (aka 'AnyObject') has no member 'ephemeral'
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:116:22: error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+114 |         configuration.protocolClasses = [OpenAPIReflectorTests.StubURLProtocol.self]
+115 |         let reflector = try OpenAPIReflector(specificationData: specification(), baseURL: URL(string: "https://api.example")!,
+116 |             session: URLSession(configuration: configuration))
+    |                      `- error: 'URLSession' (aka 'AnyObject') cannot be constructed because it has no accessible initializers
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:118:26: error: generic parameter 'T' could not be inferred
+116 |             session: URLSession(configuration: configuration))
+117 |         let engine = CapabilityEngine(reflectors: [reflector])
+118 |         let action = try XCTUnwrap(engine.capabilities(for: "proof").capabilities.first { $0.metadata["operationId"] == "proof" })
+    |                          `- error: generic parameter 'T' could not be inferred
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+
+XCTest.XCTUnwrap:1:13: note: in call to function 'XCTUnwrap(_:_:file:line:)'
+1 | public func XCTUnwrap<T>(_ expression: @autoclosure () throws -> T?, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) throws -> T
+  |             `- note: in call to function 'XCTUnwrap(_:_:file:line:)'
+
+/work/Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift:121:43: error: type 'Equatable' has no member 'failed'
+119 |         for challenge in ["x", "abcdefgh/", String(repeating: "a", count: 129)] {
+120 |             let record = try engine.begin(id: action.id, item: "proof", confirmed: true, arguments: ["challenge": challenge])
+121 |             XCTAssertEqual(record.state, .failed)
+    |                                           `- error: type 'Equatable' has no member 'failed'
+122 |             XCTAssertEqual(record.evidence.type, "input_contract_failure")
+123 |         }
+[45/93] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[46/93] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[47/93] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[48/93] Compiling RightClickCoreTests PolicyTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[49/93] Compiling RightClickCoreTests PortableRuntimeTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[50/93] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[51/93] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[52/93] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[53/93] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[54/93] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[55/93] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[56/93] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[57/93] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[58/93] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[59/93] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[60/93] Compiling RightClickCoreTests RCIRTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[61/93] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[62/93] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[63/93] Compiling RightClickCoreTests SharingExecutionTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[64/93] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:35:31: error: cannot find 'URLRequest' in scope
+33 |             item: try ContentParser.parse("proof"), verification: nil, expectedOutput: nil, target: base,
+34 |             authority: { [scope] }, revalidate: { true }, dispatch: { taskID, admit in
+35 |                 var request = URLRequest(url: base.appendingPathComponent("a2a")); request.httpMethod = "POST"
+   |                               `- error: cannot find 'URLRequest' in scope
+36 |                 request.httpBody = try JSONSerialization.data(withJSONObject: body)
+37 |                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+/work/Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift:44:39: error: type 'Equatable' has no member 'started'
+42 |                     message: "A2A submitted", output: String(data: response, encoding: .utf8))
+43 |             }, resultValue: { .string($0.output ?? "") })
+44 |         XCTAssertEqual(result.state, .started, "Accepted remote work must remain pending")
+   |                                       `- error: type 'Equatable' has no member 'started'
+45 |         XCTAssertEqual(result.rcir?.phase, "accepted", "The host must retain a nonterminal task")
+46 |         XCTAssertEqual(result.rcir?.outcome, "unverified")
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[65/93] Compiling RightClickCoreTests GRPCReflectorTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[66/93] Compiling RightClickCoreTests GraphQLReflectorTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[67/93] Compiling RightClickCoreTests HostProtectedReferenceTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[68/93] Compiling RightClickCoreTests InvocationBindingTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[69/93] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[70/93] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[71/93] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[72/93] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[73/93] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[74/93] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[75/93] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[76/93] Compiling RightClickCoreTests MOAT005G1PathAndJSONBodyTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[77/93] Compiling RightClickCoreTests MOAT005G2MultiplePathArgumentsTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[78/93] Compiling RightClickCoreTests MOAT005G3GitHubRequestSchemaTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[79/93] Compiling RightClickCoreTests MOAT005G4MutationJSONResponseFallbackTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[80/93] Compiling RightClickCoreTests MOAT005G5FullFrozenGitHubContractTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[81/93] Compiling RightClickCoreTests MOAT005G6MultiSegmentPathTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[82/93] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[83/93] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[84/93] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+error: fatalError

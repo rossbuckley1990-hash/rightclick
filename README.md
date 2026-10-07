@@ -30,6 +30,8 @@ RIGHTCLICK distinguishes provider acceptance from verified outcome
 
 **Stable:** v0.2.2 · Apple Silicon · macOS 14+ · Homebrew · MCP · Apache-2.0
 
+The shared macOS, Linux and Windows runtime is an unreleased candidate. See [portable runtime build instructions and adapter limits](docs/PORTABILITY.md) for its validation and release gates.
+
 ---
 
 # Try it in 30 seconds

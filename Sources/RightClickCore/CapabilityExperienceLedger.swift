@@ -1,7 +1,7 @@
 import Foundation
 #if canImport(Darwin)
 import Darwin
-#else
+#elseif canImport(Glibc)
 import Glibc
 #endif
 
@@ -46,6 +46,7 @@ public final class CapabilityExperienceLedger: @unchecked Sendable {
         self.maximumEntries = maximumEntries
         self.maximumAge = maximumAge
         guard let directory else { directoryFD = nil; return }
+#if !os(Windows)
         guard directory.isFileURL,
               directory.path == directory.standardizedFileURL.resolvingSymlinksInPath().path else {
             throw CapabilityExperienceError.unsafeStorage
@@ -62,9 +63,18 @@ public final class CapabilityExperienceLedger: @unchecked Sendable {
             throw CapabilityExperienceError.unsafeStorage
         }
         directoryFD = fd
+#else
+        throw CapabilityExperienceError.unsafeStorage
+#endif
     }
 
-    deinit { if let directoryFD { close(directoryFD) } }
+    deinit {
+#if !os(Windows)
+ if let directoryFD { close(directoryFD) }
+#else
+
+#endif
+}
 
     public func entries(now: Date = Date()) throws -> [CapabilityExperienceEntry] {
         try transaction(now: now) { $0.values.sorted { $0.executionID.uuidString < $1.executionID.uuidString } }
@@ -101,6 +111,7 @@ public final class CapabilityExperienceLedger: @unchecked Sendable {
         guard now.timeIntervalSince1970.isFinite else { throw CapabilityExperienceError.invalidBounds }
         lock.lock()
         defer { lock.unlock() }
+#if !os(Windows)
         var lockFD: Int32 = -1
         if let directoryFD {
             lockFD = openat(directoryFD, "experience.lock",
@@ -114,6 +125,7 @@ public final class CapabilityExperienceLedger: @unchecked Sendable {
             }
         }
         defer { if lockFD >= 0 { _ = flock(lockFD, LOCK_UN); close(lockFD) } }
+#endif
         let original = try load()
         var records = original.filter { _, entry in
             entry.observedAt <= now && now.timeIntervalSince(entry.observedAt) < maximumAge
@@ -136,6 +148,7 @@ public final class CapabilityExperienceLedger: @unchecked Sendable {
         }
     }
 
+#if !os(Windows)
     private func validateFile(_ fd: Int32) throws {
         var info = stat()
         guard fstat(fd, &info) == 0, info.st_mode & S_IFMT == S_IFREG,
@@ -145,7 +158,10 @@ public final class CapabilityExperienceLedger: @unchecked Sendable {
         }
     }
 
+#endif
     private func load() throws -> [UUID: CapabilityExperienceEntry] {
+#if !os(Windows)
+
         guard let directoryFD else { return memory }
         let fd = openat(directoryFD, "experience.json", O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
         if fd < 0 {
@@ -178,9 +194,15 @@ public final class CapabilityExperienceLedger: @unchecked Sendable {
             result[entry.executionID] = entry
         }
         return result
-    }
+
+#else
+        return memory
+#endif
+}
 
     private func save(_ records: [UUID: CapabilityExperienceEntry]) throws {
+#if !os(Windows)
+
         guard let directoryFD else { return }
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys]
@@ -205,5 +227,9 @@ public final class CapabilityExperienceLedger: @unchecked Sendable {
             throw CapabilityExperienceError.storageFailure
         }
         guard fsync(directoryFD) == 0 else { throw CapabilityExperienceError.storageFailure }
-    }
+
+#else
+        return
+#endif
+}
 }

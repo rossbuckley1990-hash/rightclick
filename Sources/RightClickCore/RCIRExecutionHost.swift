@@ -1,6 +1,17 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
+#if canImport(Darwin)
 import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// Optional generic execution edge. Substrate compilers retain their existing
 /// transports; the engine supplies the common admission owner and live graph.
@@ -79,25 +90,9 @@ struct RCIRHostConfiguration: Codable {
     }
 
     static func protectedRead(_ path: String, maximum: Int) throws -> Data {
-        let descriptor = open(path, O_RDONLY | O_NOFOLLOW | O_CLOEXEC)
-        guard descriptor >= 0 else { throw RCIRError.authorityDenied }
-        defer { close(descriptor) }
-        var info = stat()
-        guard fstat(descriptor, &info) == 0, info.st_mode & S_IFMT == S_IFREG,
-              info.st_uid == geteuid(), info.st_mode & 0o077 == 0,
-              info.st_size >= 0, info.st_size <= maximum else { throw RCIRError.authorityDenied }
-        var bytes = [UInt8](repeating: 0, count: maximum + 1)
-        var count = 0
-        while count < bytes.count {
-            let remaining = bytes.count - count
-            let n = bytes.withUnsafeMutableBytes { read(descriptor, $0.baseAddress!.advanced(by: count), remaining) }
-            guard n >= 0 else { throw RCIRError.authorityDenied }
-            if n == 0 { break }
-            count += n
-        }
-        guard count <= maximum else { throw RCIRError.invalidLimit }
-        return Data(bytes.prefix(count))
+        try CapabilityProtectedReference.read(path, maximum: maximum)
     }
+
 }
 
 /// One common in-process admission boundary; no alternate provider dispatcher.

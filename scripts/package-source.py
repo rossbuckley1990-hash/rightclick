@@ -25,7 +25,7 @@ subprocess.check_call(
     cwd=str(root),
 )
 
-inputs = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests",
+inputs = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests", "Vendor",
           "fixtures", "packaging/ThirdPartyLicenses", "packaging/substrate-kinds.json",
           "scripts/build-cli.sh", "scripts/rcir-dispatch-test-provider.py"]
 paths = []

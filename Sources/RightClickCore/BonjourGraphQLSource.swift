@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 public struct BonjourGraphQLServiceDescriptor:
@@ -1003,3 +1004,5 @@ extension BonjourGraphQLSource:
         )
     }
 }
+
+#endif

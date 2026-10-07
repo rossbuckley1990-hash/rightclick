@@ -1,5 +1,10 @@
+#if canImport(Darwin)
 import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 import Foundation
+import RightClickHostFiles
 
 /// Captures authorized local bytes once and holds a private, read-only launch
 /// incarnation for the full reflector/invocation lifetime. Provider-controlled
@@ -18,6 +23,19 @@ final class CapabilityArtifactSnapshot {
         let bytes = try Self.read(source: source, maximum: maximum, protected: protected)
         self.source = source; self.maximum = maximum; self.protected = protected
         sha256 = CapabilityJSON.digest(bytes)
+#if os(Windows)
+        directory = FileManager.default.temporaryDirectory.appendingPathComponent("rightclick-artifact-" + UUID().uuidString, isDirectory: true)
+        file = directory.appendingPathComponent(executable ? "executable.exe" : "artifact")
+        do {
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
+            guard directory.path.withCString({ rc_host_harden_private($0, 1) }) == 0 else { throw RCIRError.authorityDenied }
+            try bytes.write(to: file, options: .withoutOverwriting)
+            guard file.path.withCString({ rc_host_harden_private($0, 0) }) == 0 else { throw RCIRError.authorityDenied }
+        } catch {
+            try? FileManager.default.removeItem(at: directory)
+            throw error
+        }
+#else
         var template = Array((FileManager.default.temporaryDirectory.path + "/rightclick-artifact.XXXXXXXX").utf8CString)
         let path: String? = template.withUnsafeMutableBufferPointer { buffer in
             guard let result = mkdtemp(buffer.baseAddress!) else { return nil }
@@ -32,7 +50,7 @@ final class CapabilityArtifactSnapshot {
             try bytes.withUnsafeBytes { buffer in
                 var count = 0
                 while count < bytes.count {
-                    let next = Darwin.write(descriptor, buffer.baseAddress!.advanced(by: count), bytes.count - count)
+                    let next = write(descriptor, buffer.baseAddress!.advanced(by: count), bytes.count - count)
                     guard next > 0 else { throw RCIRError.unavailable }; count += next
                 }
             }
@@ -41,15 +59,29 @@ final class CapabilityArtifactSnapshot {
         } catch {
             close(descriptor); try? FileManager.default.removeItem(at: directory); throw error
         }
+#endif
     }
-    deinit { try? FileManager.default.removeItem(at: directory) }
+    deinit {
+#if os(Windows)
+        _ = file.path.withCString { rc_host_release_snapshot($0) }
+#endif
+        try? FileManager.default.removeItem(at: directory)
+    }
 
     func sourceStillMatches() -> Bool {
         guard let bytes = try? Self.read(source: source, maximum: maximum, protected: protected) else { return false }
         return CapabilityJSON.digest(bytes) == sha256
     }
     static func read(source: URL, maximum: Int, protected: Bool = false) throws -> Data {
-        guard source.isFileURL, source.path.hasPrefix("/"), (1...268_435_456).contains(maximum) else { throw RCIRError.invalidLimit }
+        guard source.isFileURL, RuntimePlatform.isAbsolutePath(source.path), (1...268_435_456).contains(maximum) else { throw RCIRError.invalidLimit }
+#if os(Windows)
+        var bytes: UnsafeMutablePointer<UInt8>? = nil
+        var count = 0
+        let result = source.path.withCString { rc_host_read_file($0, UInt64(maximum), protected ? 1 : 0, &bytes, &count) }
+        defer { if let bytes { rc_host_free(bytes) } }
+        guard result == 0, let bytes else { throw result == 3 ? RCIRError.invalidLimit : RCIRError.authorityDenied }
+        return Data(bytes: bytes, count: count)
+#else
         let descriptor = open(source.path, O_RDONLY | O_NOFOLLOW | O_CLOEXEC | O_NONBLOCK)
         guard descriptor >= 0 else { throw RCIRError.unavailable }
         defer { close(descriptor) }
@@ -63,12 +95,19 @@ final class CapabilityArtifactSnapshot {
         while true {
             let limit = min(chunk.count, maximum + 1 - result.count)
             guard limit > 0 else { throw RCIRError.invalidLimit }
-            let next = chunk.withUnsafeMutableBytes { Darwin.read(descriptor, $0.baseAddress!, limit) }
+            let next = chunk.withUnsafeMutableBytes { buffer in
+#if canImport(Darwin)
+                Darwin.read(descriptor, buffer.baseAddress!, limit)
+#else
+                Glibc.read(descriptor, buffer.baseAddress!, limit)
+#endif
+            }
             guard next >= 0 else { throw RCIRError.unavailable }
             if next == 0 { break }
             result.append(contentsOf: chunk.prefix(next))
             guard result.count <= maximum else { throw RCIRError.invalidLimit }
         }
         return result
+#endif
     }
 }

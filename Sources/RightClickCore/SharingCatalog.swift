@@ -1,3 +1,4 @@
+#if os(macOS)
 import AppKit
 import Darwin
 import Foundation
@@ -235,3 +236,5 @@ private final class ShareSession: NSObject, NSSharingServiceDelegate {
         ExecutionLog.write("\(executionId) \(line)")
     }
 }
+
+#endif

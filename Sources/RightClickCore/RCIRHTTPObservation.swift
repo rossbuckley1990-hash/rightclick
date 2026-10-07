@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// Protected operator configuration. Paths describe independently acquired JSON;
 /// binding sources are the exact admitted arguments or caller expectedOutput.

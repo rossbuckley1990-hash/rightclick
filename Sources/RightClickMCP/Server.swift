@@ -1,5 +1,9 @@
+#if canImport(CryptoKit)
 import CryptoKit
-import Darwin
+#else
+import Crypto
+#endif
+import CoreFoundation
 import Foundation
 import MCP
 import RightClickCore
@@ -70,11 +74,7 @@ enum StartupLog {
         \(stamp) pid=\(runtime.pid) transport=\(runtime.transport) version=\(runtime.version) path=\(runtime.executablePath) realpath=\(runtime.executableRealPath) sha256=\(runtime.executableSHA256)
         """
 
-        let directory = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent(
-                "Library/Logs/RIGHTCLICK",
-                isDirectory: true
-            )
+        let directory = RuntimePlatform.logDirectory()
 
         let file = directory.appendingPathComponent("startup.log")
 
@@ -127,13 +127,15 @@ final class StopFlag: @unchecked Sendable {
 }
 
 final class EngineBox: @unchecked Sendable {
+    private let lock = NSRecursiveLock()
     let engine: CapabilityEngine
     init(_ engine: CapabilityEngine) { self.engine = engine }
 
     func call<T>(_ body: @escaping (CapabilityEngine) throws -> T) throws -> T {
         // ShareKit creates NSWindows during perform(withItems:). DispatchQueue.main.sync
         // can run that block inline on the MCP worker, which AppKit then aborts.
-        if pthread_main_np() != 0 {
+#if os(macOS)
+        if Thread.isMainThread {
             return try body(engine)
         }
         let box = MainResultBox<T>()
@@ -142,6 +144,11 @@ final class EngineBox: @unchecked Sendable {
             box.finish(Result { try body(engine) })
         }
         return try box.wait()
+#else
+        lock.lock()
+        defer { lock.unlock() }
+        return try body(engine)
+#endif
     }
 }
 
@@ -152,6 +159,7 @@ final class StdioMCPServer {
     func run() {
         let engine = self.engine
         let stop = StopFlag()
+        let completion = DispatchSemaphore(value: 0)
         Task.detached {
             do {
                 try await Self.serve(engine)
@@ -159,11 +167,18 @@ final class StdioMCPServer {
                 fputs("MCP server failed: \(error)\n", stderr)
             }
             stop.stop = true
+            completion.signal()
+#if os(macOS)
             CFRunLoopStop(CFRunLoopGetMain())
+#endif
         }
+#if os(macOS)
         while !stop.stop {
             RunLoop.main.run(mode: .default, before: Date().addingTimeInterval(0.2))
         }
+#else
+        completion.wait()
+#endif
     }
 
     private static func serve(_ engine: EngineBox) async throws {
@@ -179,7 +194,7 @@ final class StdioMCPServer {
         )
         let transport = ModernMCPStdioTransport()
         try await server.start(transport: transport)
-        try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
+        await server.waitUntilCompleted()
     }
 }
 
@@ -199,7 +214,9 @@ final class HTTPMCPServer {
         let port = self.port
         let token = self.token
         let ready = DispatchSemaphore(value: 0)
+        let completion = DispatchSemaphore(value: 0)
         Task.detached {
+            defer { completion.signal() }
             do {
                 try await Self.serve(engine: engine, port: port, token: token, ready: ready)
             } catch {
@@ -207,7 +224,11 @@ final class HTTPMCPServer {
                 ready.signal()
             }
         }
+#if os(macOS)
         RunLoop.main.run()
+#else
+        completion.wait()
+#endif
     }
 
     private static func serve(engine: EngineBox, port: UInt16, token: String, ready: DispatchSemaphore) async throws {
