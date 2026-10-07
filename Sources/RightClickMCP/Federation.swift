@@ -91,8 +91,14 @@ struct FederationPeerConfiguration:
         components.scheme =
             "http"
 
+        // macOS 14+ ATS blocks cleartext URLSession loads to IP
+        // addresses. The value above has already been proven to be
+        // loopback-only, so canonicalize IP literals to localhost
+        // before the MCP HTTP client sees them.
         components.host =
-            host
+            host == "localhost"
+            ? host
+            : "localhost"
 
         return components.url
     }
