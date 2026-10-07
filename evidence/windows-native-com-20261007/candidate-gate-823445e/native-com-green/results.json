@@ -1,0 +1,77 @@
+{
+  "scope": "Native Windows COM disposable provider + production seven-operation transport; not eleven-world restricted-agent acceptance",
+  "binarySHA256": "a5bcae4f2689ad140ff66dc1da2434dc7aa8a8240c528a0d863f3415063c9182",
+  "fixtureSHA256": "7ee2f12dee0d1e9008e30581150215ad7a9736e97e096222ead2cd5f6fa85f0d",
+  "harnessSHA256": "eaf37cca2f9f72e37c8a50b374802a007133efbd40461cfb404ab9ead95a90fe",
+  "controls": {
+    "native_dynamic_metadata_oracle": {
+      "result": "PASS",
+      "detail": null
+    },
+    "exactly_seven_operations": {
+      "result": "PASS",
+      "detail": null
+    },
+    "production_dynamic_native_acquisition": {
+      "result": "FAIL",
+      "detail": {
+        "nativeMatches": 0
+      }
+    },
+    "confirmation_required_zero_native_effects": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "typed_schema_mismatch_zero_native_effects": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "typed_native_invoke_separately_observed_effect": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "acceptance_not_semantic_success": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "common_execution_identity_status": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "live_rot_withdrawal_removes_capability": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "stale_native_identity_zero_effects": {
+      "result": "NOT_RUN",
+      "detail": null
+    }
+  },
+  "status": "RED",
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "D:/a/rightclick/rightclick/native-com-green/rightclick-candidate.exe",
+    "executableRealPath": "D:/a/rightclick/rightclick/native-com-green/rightclick-candidate.exe",
+    "executableSHA256": "a5bcae4f2689ad140ff66dc1da2434dc7aa8a8240c528a0d863f3415063c9182",
+    "pid": 10340,
+    "platform": "Windows",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "failure": "production runtime does not acquire the native type-information declaration"
+}

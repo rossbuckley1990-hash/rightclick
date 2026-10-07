@@ -7,6 +7,7 @@ must discover, compile and invoke without containing the provider's catalogue.
 The infrastructure owner independently reads the disposable effect bytes.
 """
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -20,6 +21,19 @@ import uuid
 
 TOOLS = {"context_runtime", "context_providers", "context_inspect", "context_actions",
          "context_explain", "context_run", "context_run_status"}
+
+
+def canonical_schema(value):
+    """Independent framing of the small known expected schema, not runtime coercion."""
+    def encode(v):
+        if type(v) is bool: return b"b1" if v else b"b0"
+        if isinstance(v, str):
+            data = v.encode("utf-8"); return b"s" + str(len(data)).encode() + b":" + data
+        if isinstance(v, list): return b"a" + str(len(v)).encode() + b":" + b"".join(encode(x) for x in v)
+        if isinstance(v, dict):
+            return b"o" + str(len(v)).encode() + b":" + b"".join(encode(k) + encode(v[k]) for k in sorted(v, key=lambda x: x.encode("utf-8")))
+        raise AssertionError("unexpected expected-schema value")
+    return b"RIGHTCLICK-VALUE-1\0" + encode(value)
 
 
 def prepare(directory):
@@ -100,7 +114,7 @@ def run(binary, fixture, directory):
               "fixtureSHA256": hashlib.sha256(fixture.read_bytes()).hexdigest(),
               "harnessSHA256": hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),
               "controls": {name: {"result": "NOT_RUN", "detail": None} for name in [
-                  "native_dynamic_metadata_oracle", "exactly_seven_operations", "production_dynamic_native_acquisition",
+                  "native_dynamic_metadata_oracle", "exactly_seven_operations", "production_dynamic_native_acquisition", "exact_native_typed_declaration_explained",
                   "confirmation_required_zero_native_effects", "typed_schema_mismatch_zero_native_effects",
                   "typed_native_invoke_separately_observed_effect", "acceptance_not_semantic_success",
                   "common_execution_identity_status", "live_rot_withdrawal_removes_capability", "stale_native_identity_zero_effects"]},
@@ -129,12 +143,26 @@ def run(binary, fixture, directory):
                 item = "Disposable native metadata capability proof"
                 runtime.call("context_inspect", {"item": item}); runtime.call("context_providers", {})
                 actions = runtime.call("context_actions", {"item": item})["actions"]
-                native = [a for a in actions if a.get("metadata", {}).get("interfaceKind") == "windows.com" and a["title"] == context["member"]]
+                # Discovery exposes CapabilityView; full contract metadata is acquired
+                # through context_explain, the existing public declaration boundary.
+                native = [a for a in actions if a["id"].startswith("windows.com:") and a["title"] == context["member"]
+                          and a.get("provider", {}).get("name") == moniker]
                 control("production_dynamic_native_acquisition", len(native) == 1, {"nativeMatches": len(native)})
                 assert len(native) == 1, "production runtime does not acquire the native type-information declaration"
                 action = native[0]; args = {"message": context["message"], "count": json.dumps(["integer", str(context["count"])]),
                                          "flag": json.dumps(["boolean", context["flag"]])}
-                runtime.call("context_explain", {"item": item, "actionId": action["id"]})
+                explanation = runtime.call("context_explain", {"item": item, "actionId": action["id"]})
+                declaration = explanation.get("metadata", {})
+                expected_schema = {"object": {"message": "string", "count": "integer", "flag": "boolean"},
+                                   "required": ["count", "flag", "message"], "additionalProperties": False}
+                exact_declaration = (declaration.get("interfaceKind") == "windows.com"
+                    and declaration.get("windowsCOMInterfaceGUID", "").lower() == context["interfaceGUID"].lower()
+                    and declaration.get("windowsCOMTypeLibraryGUID", "").lower() == context["libraryGUID"].lower()
+                    and base64.b64decode(declaration.get("argumentSchema", ""), validate=True) == canonical_schema(expected_schema)
+                    and base64.b64decode(declaration.get("resultSchema", ""), validate=True) == canonical_schema("string")
+                    and declaration.get("effect") == "execute" and explanation.get("requiresConfirmation") is True)
+                control("exact_native_typed_declaration_explained", exact_declaration, explanation)
+                assert exact_declaration, "explanation does not contain the acquired exact native typed contract"
                 denied = runtime.call("context_run", {"item": item, "actionId": action["id"], "confirmed": False, "arguments": args})
                 control("confirmation_required_zero_native_effects", denied["state"] in ["rejected", "awaiting_user"] and not (directory / "effect-count").exists(), denied["state"])
                 malformed = dict(args); malformed["count"] = json.dumps(["number", "3ff0000000000000"])

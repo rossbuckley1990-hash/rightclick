@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "D:\a\rightclick\rightclick\scripts\acceptance-windows-com.py", line 183, in <module>
+    else: run(options.binary, options.fixture, options.directory)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\rightclick\rightclick\scripts\acceptance-windows-com.py", line 134, in run
+    assert len(native) == 1, "production runtime does not acquire the native type-information declaration"
+           ^^^^^^^^^^^^^^^^
+AssertionError: production runtime does not acquire the native type-information declaration
