@@ -107,7 +107,7 @@ final class CapabilityRuntimeDefaultsTests:
 
         XCTAssertEqual(
             sources.count,
-            4
+            5
         )
 
         XCTAssertEqual(
@@ -117,6 +117,7 @@ final class CapabilityRuntimeDefaultsTests:
                 "bonjour.grpc",
                 "bonjour.openapi",
                 "configured.openapi",
+                "live.capability-artifacts",
             ])
         )
 
