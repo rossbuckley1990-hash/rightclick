@@ -293,10 +293,15 @@ enum OriginPinnedHTTP {
         )
     }
 
+    static func loadObservation(_ request: URLRequest, maximumBytes: Int) throws -> Data {
+        try boundedLoad(request.url!, maximumBytes: maximumBytes, template: .shared, initialRequest: request)
+    }
+
     private static func boundedLoad(
         _ url: URL,
         maximumBytes: Int,
-        template: URLSession
+        template: URLSession,
+        initialRequest: URLRequest? = nil
     ) throws -> Data {
         precondition(
             maximumBytes > 0
@@ -333,10 +338,7 @@ enum OriginPinnedHTTP {
             session.invalidateAndCancel()
         }
 
-        var request =
-            URLRequest(
-                url: url
-            )
+        var request = initialRequest ?? URLRequest(url: url)
 
         request.timeoutInterval =
             acquisitionDeadline

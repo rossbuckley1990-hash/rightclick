@@ -1,0 +1,23 @@
+warning: 'rightclick': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/15] Write sources
+[4/15] Write swift-version--58304C5D6DBC2206.txt
+[6/11] Emitting module RightClickCore
+[7/11] Compiling RightClickCore RCIRExecutionHost.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Sources/RightClickCore/RCIRExecutionHost.swift:147:44: error: reference to property 'configuration' in closure requires explicit use of 'self' to make capture semantics explicit
+143 |             do {
+144 |                 record = try dispatch(task.id.uuidString) { start in
+145 |                     let admit: (_ enqueue: () -> Void) throws -> Void = { enqueue in
+    |                                                                         `- note: capture 'self' explicitly to enable implicit 'self' in this closure
+146 |                         try self.admission.consumeAndStart(lease, arguments: arguments, authority: authority(),
+147 |                             policy: policy(configuration()), now: self.now()) {
+    |                                            |- error: reference to property 'configuration' in closure requires explicit use of 'self' to make capture semantics explicit
+    |                                            `- note: reference 'self.' explicitly
+148 |                             dispatched = true
+149 |                             enqueue()
+error: fatalError
