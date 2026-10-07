@@ -131,6 +131,8 @@ public final class RCIRExecutionHost {
     private var receiptTrustReference: String?
     private var provisionedReceiptTrust: RCIRProvisionedReceiptTrust?
     private let observerFactories: [String: RCIRHostObserverFactory]
+    // Trusted, non-mutating time source. Read again at consumption after any
+    // protected/configuration callback that may take time.
     var now: () -> Int64 = { Int64(Date().timeIntervalSince1970 * 1000) }
     var configuration: () throws -> RCIRHostConfiguration = RCIRHostConfiguration.load
     // Internal fault hook for native transport adversarial controls. Not exposed
@@ -326,8 +328,8 @@ public final class RCIRExecutionHost {
                         guard lease.scopes.isSubset(of: currentAuthority) else { throw RCIRError.authorityDenied }
                         let currentAuthenticated = try invocationAuthority?.authenticatedContext()
                         let currentPolicy = try policy(self.configuration())
-                        let currentTime = self.now()
                         try signer?.validateCurrentAuthority()
+                        let currentTime = self.now()
                         let start = { dispatched = true; enqueue() }
                         if let attachment = invocationAuthority {
                             guard let currentAuthenticated else { throw RCIRError.authorityDenied }
