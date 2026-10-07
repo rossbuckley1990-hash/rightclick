@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/scripts/acceptance-a2a.py", line 189, in <module>
+    main()
+    ~~~~^^
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/scripts/acceptance-a2a.py", line 114, in main
+    capability = next(a for a in actions if a.get("metadata", {}).get("substrate") == "a2a")
+StopIteration

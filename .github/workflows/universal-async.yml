@@ -1,0 +1,28 @@
+name: Universal async pressure
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  a2a-real-lifecycle:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select receipt verification backend
+        run: echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
+      - name: Real task and adversarial pressure controls
+        env:
+          RCIR_DEFERRED_EVIDENCE: evidence/ci-universal-async/native
+        run: swift test --filter 'RCIRDeferredProductionTests|RCIRDeferredCapacityTests|A2ARealLifecycleTests|RCIRProductionDispatchTests'
+      - name: Seven-operation real A2A proof
+        run: |
+          swift build
+          python3 scripts/acceptance-a2a.py .build/debug/rightclick evidence/ci-universal-async/public-mcp
+          git rev-parse HEAD > evidence/ci-universal-async/source-commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: universal-async-evidence
+          path: evidence/ci-universal-async
