@@ -55,6 +55,16 @@ jobs:
         with:
           swift-version: swift-6.2-release
           swift-build: 6.2-RELEASE
+      - name: Preserve original Windows interpreter availability
+        run: |
+          $pathNames = @(Get-ChildItem Env: | Where-Object { $_.Name -ieq 'PATH' } | ForEach-Object { $_.Name })
+          $python = Get-Command python.exe -ErrorAction SilentlyContinue
+          @{ pathEnvironmentNames = $pathNames; pythonCommandPresent = ($null -ne $python) } |
+            ConvertTo-Json -Compress | Tee-Object -FilePath windows-python-before-setup.log
+      - name: Provision the native Python fixture interpreter
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
       - name: Native protected policy, signing and observer references
         run: |
           git rev-parse HEAD | Out-File -Encoding utf8 portable-source.txt
