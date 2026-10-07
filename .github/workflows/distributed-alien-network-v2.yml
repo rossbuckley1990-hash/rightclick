@@ -1,0 +1,104 @@
+name: RIGHTCLICK Distributed Alien Network v2
+
+on:
+  push:
+    branches:
+      - experiment/rightclick-v2-delegation-59afeda3-20261007
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  issuer-ubuntu:
+    name: A - Ubuntu signed lease issuer
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and run adversarial policy tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-input 'cryptography>=43,<48'
+          python -m py_compile experiments/alien-relay/v2_distributed.py
+          python experiments/alien-relay/v2_distributed.py selftest --output-dir v2-selftest
+      - name: Issue signed, attenuated one-use Windows capability
+        shell: bash
+        run: |
+          set -euo pipefail
+          python experiments/alien-relay/v2_distributed.py issue --output-dir v2-issuer
+          cp v2-selftest/unit-security-results.json v2-issuer/
+      - name: Preserve immutable issuer receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rightclick-v2-issuer
+          path: v2-issuer/
+          if-no-files-found: warn
+          retention-days: 7
+
+  child-windows:
+    name: B - Windows live discovery and delegated execution
+    needs: issuer-ubuntu
+    runs-on: windows-2022
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: rightclick-v2-issuer
+          path: v2-issuer
+      - name: Verify authority and discover Windows capability
+        shell: pwsh
+        run: |
+          python -m pip install --disable-pip-version-check --no-input 'cryptography>=43,<48'
+          python -m py_compile experiments/alien-relay/v2_distributed.py
+          python experiments/alien-relay/v2_distributed.py child --issuer-dir v2-issuer --output-dir v2-child
+      - name: Preserve signed child execution and denials
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rightclick-v2-child
+          path: v2-child/
+          if-no-files-found: warn
+          retention-days: 7
+
+  independent-verifier:
+    name: C - Ubuntu independent receipt-chain verifier
+    needs: [issuer-ubuntu, child-windows]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: rightclick-v2-issuer
+          path: v2-issuer
+      - uses: actions/download-artifact@v4
+        with:
+          name: rightclick-v2-child
+          path: v2-child
+      - name: Independently verify chained signatures and semantic result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check --no-input 'cryptography>=43,<48'
+          python experiments/alien-relay/v2_distributed.py verify --issuer-dir v2-issuer --child-dir v2-child --output-dir v2-verified
+      - name: Publish auditable independent verdict
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rightclick-v2-independent-verdict
+          path: v2-verified/
+          if-no-files-found: warn
+          retention-days: 7
