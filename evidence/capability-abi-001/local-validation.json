@@ -1,0 +1,52 @@
+{
+  "gate": "ABI-001",
+  "base_commit": "b6439f116af2bb19c7a02b816be0d4391ac087ee",
+  "preregistered_contract_commit": "68e385c794c7fb21161028e8e620646d80ffd370",
+  "environment": "Swift 6.2.1, x86_64 Linux",
+  "command": "bash scripts/test-capability-abi.sh",
+  "language_mode": "Swift 5 (same mode as product targets)",
+  "result": {
+    "portable_test_cases": 33,
+    "failures": 0,
+    "generated_round_trips_within_one_test": 512,
+    "native_adapter_tests": 4,
+    "native_adapter_test_status": "NOT_RUN_LOCALLY",
+    "full_runtime_test_status": "NOT_RUN_LOCALLY"
+  },
+  "red_boundary": "Original 26 tests did not compile in an isolated empty RightClickCore module before ABI implementation. This is an API absence baseline, not a runtime vulnerability reproduction. The 26-test source hash is unchanged.",
+  "scope": "Additive ABI values, schemas, immutable declaration snapshots and fingerprints. No live provider invocation, leases, policy enforcement, generic outcome verification or complete cross-platform runtime claim. Existing MCP schemas and executors are unchanged.",
+  "files": {
+    ".github/workflows/capability-abi.yml": {
+      "bytes": 952,
+      "sha256": "62bc6a554e6501a8307bffdbf76987e69c57c929d05e41e7648d16f41dd64ac5"
+    },
+    "Sources/RightClickCore/CapabilityABI.swift": {
+      "bytes": 15339,
+      "sha256": "3a4309f9d885f580d0f0517d6c927985f8e9c91d0818761243d1d45cd7dce979"
+    },
+    "Sources/RightClickCore/CapabilityABIAdapter.swift": {
+      "bytes": 1984,
+      "sha256": "8aa91c4f5115be33bbd6fb4b835a05c64196e5f4cd8599b2bb8ab6d8e2fdfb32"
+    },
+    "Tests/RightClickCoreTests/CapabilityABIAdapterTests.swift": {
+      "bytes": 2396,
+      "sha256": "2a36b49dda8d53f1091509b638147038314900d7130472ebbb55b6d5409da37e"
+    },
+    "Tests/RightClickCoreTests/CapabilityABIBoundaryTests.swift": {
+      "bytes": 3295,
+      "sha256": "526f4cb7c0ed6a58ae4cf651115c750e1307c4000beac954b72f9b29629a3b03"
+    },
+    "Tests/RightClickCoreTests/CapabilityABITests.swift": {
+      "bytes": 11044,
+      "sha256": "54e013339e00a062a8850a71e901a4826c539a0b662cf1d068a2f6a62ec2cd24"
+    },
+    "docs/CAPABILITY-ABI-001.md": {
+      "bytes": 3247,
+      "sha256": "66a9631cbd380d883c4325196a14ba6c01e54a8a65247d63eca051eb9a56c378"
+    },
+    "scripts/test-capability-abi.sh": {
+      "bytes": 1177,
+      "sha256": "8a336f9f6a838dd753ed48e313a0555159088b1b43897bc983b4f1ff0a15c030"
+    }
+  }
+}
