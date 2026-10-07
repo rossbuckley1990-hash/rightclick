@@ -1,5 +1,12 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -28,7 +35,7 @@ final class RCIRAuthorityDispatchTests: XCTestCase {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("rcir-authority-dispatch-"+UUID().uuidString)
         try FileManager.default.createDirectory(at:directory,withIntermediateDirectories:true)
         let repository = URL(fileURLWithPath:#filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        process = Process(); process.executableURL = URL(fileURLWithPath:"/usr/bin/python3")
+        process = Process(); process.executableURL = try NativeHTTPFixture.python()
         process.arguments = [repository.appendingPathComponent("scripts/rcir-dispatch-test-provider.py").path,directory.path]
         process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice; try process.run()
         let port = directory.appendingPathComponent("port")
@@ -42,7 +49,7 @@ final class RCIRAuthorityDispatchTests: XCTestCase {
         config.observers = [capability.id:.init(urlTemplate:base.absoluteString+"/records/{id}",expectedArgument:"value")]
         key = Curve25519.Signing.PrivateKey()
         let keyFile = directory.appendingPathComponent("signer.raw"); try key.rawRepresentation.write(to:keyFile)
-        try FileManager.default.setAttributes([.posixPermissions:0o600],ofItemAtPath:keyFile.path); config.signingKeyFile = keyFile.path
+        try NativeHTTPFixture.protect(keyFile); config.signingKeyFile = keyFile.path
         let verification = RCIRVerificationContract(observerID:base.absoluteString+"/records/bounded-child",schema:.string,expected:.string("requested"))
         binding = try host.admission.publishInvocation(.init(abi:abi,scopes:[scope],verification:verification),discovery:abi,
                                                        authenticatedPrincipal:"local-owner:"+abi.reflectorID)
@@ -58,7 +65,7 @@ final class RCIRAuthorityDispatchTests: XCTestCase {
             let rows = try JSONSerialization.data(withJSONObject:["test":name,"effects":effects()],options:[.prettyPrinted,.sortedKeys])
             try rows.write(to:target.appendingPathComponent(name+".json"))
         }
-        if let directory { try? FileManager.default.removeItem(at:directory) }
+        if let directory { try NativeHTTPFixture.remove(directory) }
     }
     private func effects() -> [[String:Any]] {
         let rows = (try? String(contentsOf:directory.appendingPathComponent("effects.jsonl"),encoding:.utf8)) ?? ""
