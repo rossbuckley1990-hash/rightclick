@@ -22,7 +22,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          git rev-parse HEAD | tee portable-source.txt
+          git -c safe.directory="$GITHUB_WORKSPACE" rev-parse HEAD | tee portable-source.txt
           swift --version | tee portable-toolchain.txt
           swift test --force-resolved-versions 2>&1 | tee linux-tests.log
       - name: Native Linux release build
@@ -67,7 +67,9 @@ jobs:
           print("FoundationXML=unavailable")
           #endif
           '@ | Set-Content -Encoding utf8 portable-module-probe.swift
-          swift portable-module-probe.swift 2>&1 | Tee-Object -FilePath portable-module-availability.log
+          swiftc portable-module-probe.swift -o portable-module-probe.exe 2>&1 | Tee-Object -FilePath portable-module-availability.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & .\portable-module-probe.exe 2>&1 | Tee-Object -FilePath portable-module-availability.log -Append
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           swift test --force-resolved-versions --filter HostProtectedReferenceTests 2>&1 | Tee-Object -FilePath windows-protected-files.log
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
