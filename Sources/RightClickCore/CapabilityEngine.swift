@@ -150,6 +150,20 @@ public final class CapabilityEngine {
         return current
     }
 
+    /// An arbitrary reflector can throw before or after starting an effect.
+    /// Release bookkeeping without converting an unobserved error into success
+    /// or claiming that no dispatch happened.
+    private func releaseReservationAfterThrow(_ executionID: String) {
+        ExecutionStore.shared.update(executionID) { record in
+            guard record.state == .started || record.state == .awaitingUser else { return }
+            record.state = .unknown
+            record.message = "The provider entry point threw; its effect was not independently established."
+            record.events.append("execution reservation released after thrown provider entry point")
+            record.evidence = OutcomeEvidence(type: "execution_error",
+                boundary: "A thrown provider entry point leaves the effect unknown; active capacity was released.")
+        }
+    }
+
     public func inspect(_ raw: String) throws -> ContentItem {
         try ContentParser.parse(raw)
     }
@@ -331,30 +345,35 @@ public final class CapabilityEngine {
 
         let startedRecord: ExecutionRecord
 
-        if let admitted = reflector as? any RCIRExecutionReflector {
-            startedRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
-                executionID: executionId, arguments: arguments, verification: verification,
-                expectedOutput: expectedOutput, host: rcirHost,
-                revalidate: { [weak self] in self?.reflector(for: capability, item: item) != nil })
-        } else if let verification,
-           let verificationReflector
-        {
-            startedRecord =
-                try verificationReflector.begin(
-                    capability: capability,
-                    item: item,
-                    executionID: executionId,
-                    arguments: arguments,
-                    verification: verification
-                )
-        } else {
-            startedRecord =
-                try reflector.begin(
-                    capability: capability,
-                    item: item,
-                    executionID: executionId,
-                    arguments: arguments
-                )
+        do {
+            if let admitted = reflector as? any RCIRExecutionReflector {
+                startedRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+                    executionID: executionId, arguments: arguments, verification: verification,
+                    expectedOutput: expectedOutput, host: rcirHost,
+                    revalidate: { [weak self] in self?.reflector(for: capability, item: item) != nil })
+            } else if let verification,
+               let verificationReflector
+            {
+                startedRecord =
+                    try verificationReflector.begin(
+                        capability: capability,
+                        item: item,
+                        executionID: executionId,
+                        arguments: arguments,
+                        verification: verification
+                    )
+            } else {
+                startedRecord =
+                    try reflector.begin(
+                        capability: capability,
+                        item: item,
+                        executionID: executionId,
+                        arguments: arguments
+                    )
+            }
+        } catch {
+            releaseReservationAfterThrow(executionId)
+            throw error
         }
 
         var started = startedRecord
@@ -590,30 +609,35 @@ public final class CapabilityEngine {
 
         var providerRecord: ExecutionRecord
 
-        if let admitted = reflector as? any RCIRExecutionReflector {
-            providerRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
-                executionID: executionId, arguments: arguments, verification: verification,
-                expectedOutput: expectedOutput, host: rcirHost,
-                revalidate: { [weak self] in self?.reflector(for: capability, item: item) != nil })
-        } else if let verification,
-           let verificationReflector
-        {
-            providerRecord =
-                try verificationReflector.begin(
-                    capability: capability,
-                    item: item,
-                    executionID: executionId,
-                    arguments: arguments,
-                    verification: verification
-                )
-        } else {
-            providerRecord =
-                try reflector.begin(
-                    capability: capability,
-                    item: item,
-                    executionID: executionId,
-                    arguments: arguments
-                )
+        do {
+            if let admitted = reflector as? any RCIRExecutionReflector {
+                providerRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+                    executionID: executionId, arguments: arguments, verification: verification,
+                    expectedOutput: expectedOutput, host: rcirHost,
+                    revalidate: { [weak self] in self?.reflector(for: capability, item: item) != nil })
+            } else if let verification,
+               let verificationReflector
+            {
+                providerRecord =
+                    try verificationReflector.begin(
+                        capability: capability,
+                        item: item,
+                        executionID: executionId,
+                        arguments: arguments,
+                        verification: verification
+                    )
+            } else {
+                providerRecord =
+                    try reflector.begin(
+                        capability: capability,
+                        item: item,
+                        executionID: executionId,
+                        arguments: arguments
+                    )
+            }
+        } catch {
+            releaseReservationAfterThrow(executionId)
+            throw error
         }
 
         providerRecord.executionId =

@@ -3,6 +3,33 @@ import XCTest
 @testable import RightClickCore
 
 final class ExecutionCapacityAdmissionTests: XCTestCase {
+    private enum AdmissionFailure: Error { case malformedArguments }
+    private final class ThrowingReflector: CapabilityReflector {
+        let id = "capacity.throwing"
+        func capabilities(for item: ContentItem) throws -> [Capability] {
+            [Capability(id: "capacity:throwing", title: "Rejected arguments", source: .system,
+                        reflectorID: id, safety: .localReversible, invocation: .direct,
+                        supportLevel: .publicSupported, requiresConfirmation: false)]
+        }
+        func begin(capability: Capability, item: ContentItem, executionID: String) throws -> ExecutionRecord {
+            throw AdmissionFailure.malformedArguments
+        }
+    }
+    func testThrowingBeginReleasesReservationForBothEngineEntryPoints() throws {
+        let store = ExecutionStore.shared
+        let baseline = store.statistics().activeRecords
+        let engine = CapabilityEngine(reflectors: [ThrowingReflector()], experience: nil)
+        for _ in 0..<3 {
+            XCTAssertThrowsError(try engine.begin(id: "capacity:throwing", item: "bad arguments", confirmed: true)) {
+                XCTAssertTrue($0 is AdmissionFailure)
+            }
+            XCTAssertEqual(store.statistics().activeRecords, baseline)
+            XCTAssertThrowsError(try engine.run(id: "capacity:throwing", item: "bad arguments", confirmed: true)) {
+                XCTAssertTrue($0 is AdmissionFailure)
+            }
+            XCTAssertEqual(store.statistics().activeRecords, baseline)
+        }
+    }
     private final class CountingReflector: CapabilityReflector {
         let id = "capacity.pressure"
         var starts = 0
