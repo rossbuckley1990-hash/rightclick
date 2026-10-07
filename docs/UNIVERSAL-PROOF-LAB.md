@@ -27,7 +27,10 @@ with write/describe and read/describe ACLs respectively. Publishing to
 `rightclick.forbidden` must be denied. Kubernetes is cluster `rightclick-proof`,
 namespace `rightclick-proof`, with a service account permitted only to create,
 get, update, patch and delete ConfigMaps in that namespace. The token expires in
-one hour. Nodes and ConfigMaps in another namespace must be actually Forbidden.
+one hour. A separately issued observer identity can only get ConfigMaps in that
+namespace and must be denied mutation. Nodes and ConfigMaps in another namespace
+must be actually Forbidden. `renew-authority --state "$proof_state"` issues fresh
+one-hour writer and observer credentials without widening their authority.
 
 All secrets and kubeconfigs remain in the private temporary state directory.
 Evidence includes credential references, authority and expiry, never credentials.
@@ -39,9 +42,10 @@ available; run `down` before retrying `up`.
 The readiness verifier distinguishes acceptance from observation: Linux HTTP 202
 is compared with a separate container file read; Kafka producer ACK is compared
 with a separately authenticated consumer record containing topic, partition,
-offset, nonce and payload; Kubernetes creation is compared with an administrator
-readback of the actual resource UID, resource version and data. The administrator
-is solely the isolated bootstrap/independent observer, never the runtime identity.
+offset, nonce and payload; Kubernetes creation is compared with a separately
+issued get-only observer's readback of the actual resource UID, resource version
+and data. The administrator is solely the isolated bootstrap issuer, never the
+runtime or observer identity.
 
 ## Native Windows
 

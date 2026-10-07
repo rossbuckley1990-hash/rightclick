@@ -17,10 +17,19 @@ ROOT = Path(os.environ.get("RIGHTCLICK_PROOF_EFFECTS", "/state"))
 TOKEN = os.environ["RIGHTCLICK_PROOF_HOST_TOKEN"]
 ORIGIN = os.environ.get("RIGHTCLICK_PROOF_HOST_ORIGIN", "http://127.0.0.1:19141")
 ROOT.mkdir(parents=True, exist_ok=True)
-try:
-    PRINCIPAL = getpass.getuser()
-except KeyError:
-    PRINCIPAL = str(os.getuid())
+if os.name == "nt":
+    # Query the actual Windows process identity rather than inherited USERNAME.
+    import ctypes
+    name = ctypes.create_unicode_buffer(257)
+    length = ctypes.c_ulong(257)
+    if not ctypes.windll.advapi32.GetUserNameW(name, ctypes.byref(length)):
+        raise ctypes.WinError()
+    PRINCIPAL = name.value
+else:
+    try:
+        PRINCIPAL = getpass.getuser()
+    except KeyError:
+        PRINCIPAL = str(os.getuid())
 
 
 class Handler(BaseHTTPRequestHandler):

@@ -120,25 +120,34 @@ def prepare_kafka(state):
     return credentials
 
 
-def prepare_kubernetes(state):
-    kubectl(state, "admin", "apply", "-f", str(HERE / "kubernetes-authority.json"))
-    token = kubectl(state, "admin", "-n", CLUSTER, "create", "token", CLUSTER, "--duration=1h", sensitive=True).stdout.strip()
-    private_write(state / "kubernetes-token", token)
+def issue_kubernetes_credential(state, identity, config_name, token_name, authority):
+    token = kubectl(state, "admin", "-n", CLUSTER, "create", "token", identity, "--duration=1h", sensitive=True).stdout.strip()
+    private_write(state / token_name, token)
     admin = json.loads(kubectl(state, "admin", "config", "view", "--raw", "--minify", "-o", "json", sensitive=True).stdout)
     cluster = admin["clusters"][0]
     config = {"apiVersion": "v1", "kind": "Config", "clusters": [cluster],
-              "users": [{"name": CLUSTER, "user": {"token": token}}],
-              "contexts": [{"name": CLUSTER, "context": {"cluster": cluster["name"], "user": CLUSTER, "namespace": CLUSTER}}],
+              "users": [{"name": identity, "user": {"token": token}}],
+              "contexts": [{"name": CLUSTER, "context": {"cluster": cluster["name"], "user": identity, "namespace": CLUSTER}}],
               "current-context": CLUSTER}
-    private_write(state / "scoped.kubeconfig", json.dumps(config))
+    private_write(state / (config_name + ".kubeconfig"), json.dumps(config))
     import base64
     claims = json.loads(base64.urlsafe_b64decode(token.split(".")[1] + "=="))
-    return {"source": "Kubernetes TokenRequest", "reference": str(state / "kubernetes-token"),
-            "kubeconfigReference": str(state / "scoped.kubeconfig"),
-            "principal": "system:serviceaccount:rightclick-proof:rightclick-proof",
-            "authority": "namespace:rightclick-proof:configmaps:get,create,update,patch,delete",
+    return {"source": "Kubernetes TokenRequest", "reference": str(state / token_name),
+            "kubeconfigReference": str(state / (config_name + ".kubeconfig")),
+            "principal": "system:serviceaccount:rightclick-proof:" + identity,
+            "authority": authority,
             "expiry": dt.datetime.fromtimestamp(claims["exp"], dt.timezone.utc).isoformat(),
             "server": cluster["cluster"]["server"]}
+
+
+def prepare_kubernetes(state):
+    kubectl(state, "admin", "apply", "-f", str(HERE / "kubernetes-authority.json"))
+    writer = issue_kubernetes_credential(state, CLUSTER, "scoped", "kubernetes-token",
+                                         "namespace:rightclick-proof:configmaps:get,create,update,patch,delete")
+    writer["observerCredential"] = issue_kubernetes_credential(state, CLUSTER + "-observer", "observer",
+                                                               "kubernetes-observer-token",
+                                                               "namespace:rightclick-proof:configmaps:get")
+    return writer
 
 
 def up(state, image):
@@ -215,8 +224,10 @@ def verify(state):
     name = "proof-" + challenge.lower().replace("_", "-")
     resource = {"apiVersion": "v1", "kind": "ConfigMap", "metadata": {"name": name, "namespace": CLUSTER}, "data": payload}
     accepted_cm = json.loads(kubectl(state, "scoped", "create", "-f", "-", "-o", "json", stdin=json.dumps(resource)).stdout)
-    observed = json.loads(kubectl(state, "admin", "-n", CLUSTER, "get", "configmap", name, "-o", "json").stdout)
+    observed = json.loads(kubectl(state, "observer", "-n", CLUSTER, "get", "configmap", name, "-o", "json").stdout)
     assert observed["data"] == payload and observed["metadata"]["uid"] == accepted_cm["metadata"]["uid"]
+    observer_denied = kubectl(state, "observer", "create", "-f", "-", stdin=json.dumps(resource), check=False)
+    assert observer_denied.returncode != 0 and "Forbidden" in observer_denied.stderr
     denied = kubectl(state, "scoped", "get", "nodes", "-o", "json", check=False)
     assert denied.returncode != 0 and "Forbidden" in denied.stderr
     namespace_denied = kubectl(state, "scoped", "-n", "default", "get", "configmap", "out-of-scope", check=False)
@@ -234,7 +245,8 @@ def verify(state):
             "kubernetes": {"state": "GREEN", "acceptedUID": accepted_cm["metadata"]["uid"],
                            "observedUID": observed["metadata"]["uid"], "observedResourceVersion": observed["metadata"]["resourceVersion"],
                            "observedData": observed["data"], "clusterWideDenied": True, "otherNamespaceDenied": True,
-                           "denialEvidence": denied.stderr.strip(), "unavailableAuthorityDenied": True},
+                           "denialEvidence": denied.stderr.strip(), "unavailableAuthorityDenied": True,
+                           "readOnlyObserverMutationDenied": True},
             "sevenOperationRuntimeAcceptance": "RED: infrastructure controls do not exercise the runtime"}
 
 
@@ -246,7 +258,8 @@ def down(state):
             docker("rm", "-f", name, timeout=60)
     # Only explicit secret files created by this script are removed, never a
     # supplied directory or unrelated files. Evidence lives outside this state.
-    for name in ("admin.kubeconfig", "scoped.kubeconfig", "unavailable.kubeconfig", "kubernetes-token", "linux.env",
+    for name in ("admin.kubeconfig", "scoped.kubeconfig", "observer.kubeconfig", "unavailable.kubeconfig",
+                 "kubernetes-token", "kubernetes-observer-token", "linux.env",
                  "kafka-publisher.json", "kafka-observer.json", "metadata.json"):
         (state / name).unlink(missing_ok=True)
     return {"teardown": "GREEN", "resourceNames": [CLUSTER, KAFKA, LINUX]}
@@ -254,7 +267,7 @@ def down(state):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("operation", choices=["up", "verify", "down", "health"])
+    parser.add_argument("operation", choices=["up", "verify", "down", "health", "renew-authority"])
     parser.add_argument("--state", type=Path)
     parser.add_argument("--evidence", type=Path)
     parser.add_argument("--kind-image", default=KIND_IMAGE)
@@ -266,6 +279,11 @@ def main():
         result = up(state, args.kind_image)
     elif args.operation == "verify":
         result = verify(state)
+    elif args.operation == "renew-authority":
+        result = prepare_kubernetes(state)
+        metadata = json.loads((state / "metadata.json").read_text())
+        metadata["credentials"]["kubernetes"] = result
+        private_write(state / "metadata.json", json.dumps(metadata, indent=2))
     else:
         result = down(state)
     if args.evidence:

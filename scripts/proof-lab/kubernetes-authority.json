@@ -21,6 +21,22 @@
       "metadata": {"name": "rightclick-proof-configmaps", "namespace": "rightclick-proof"},
       "subjects": [{"kind": "ServiceAccount", "name": "rightclick-proof", "namespace": "rightclick-proof"}],
       "roleRef": {"apiGroup": "rbac.authorization.k8s.io", "kind": "Role", "name": "rightclick-proof-configmaps"}
+    },
+    {
+      "apiVersion": "v1", "kind": "ServiceAccount",
+      "metadata": {"name": "rightclick-proof-observer", "namespace": "rightclick-proof"},
+      "automountServiceAccountToken": false
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1", "kind": "Role",
+      "metadata": {"name": "rightclick-proof-configmaps-observer", "namespace": "rightclick-proof"},
+      "rules": [{"apiGroups": [""], "resources": ["configmaps"], "verbs": ["get"]}]
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1", "kind": "RoleBinding",
+      "metadata": {"name": "rightclick-proof-configmaps-observer", "namespace": "rightclick-proof"},
+      "subjects": [{"kind": "ServiceAccount", "name": "rightclick-proof-observer", "namespace": "rightclick-proof"}],
+      "roleRef": {"apiGroup": "rbac.authorization.k8s.io", "kind": "Role", "name": "rightclick-proof-configmaps-observer"}
     }
   ]
 }
