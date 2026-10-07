@@ -1,0 +1,81 @@
+[
+  {
+    "activity": "export exact source",
+    "argv": [
+      "git",
+      "archive",
+      "3320d2fbf3fad75e337622da72f8d2dbec6acb65"
+    ],
+    "cwd": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick",
+    "exit": 0,
+    "output": "/private/tmp/rightclick-package-3320d2f-jry0sxod/git-archive.tar"
+  },
+  {
+    "activity": "package repeat1",
+    "argv": [
+      "/usr/bin/python3",
+      "/private/tmp/rightclick-package-3320d2f-jry0sxod/checkout/scripts/package-source.py"
+    ],
+    "cwd": "/private/tmp/rightclick-package-3320d2f-jry0sxod/checkout",
+    "exit": 0,
+    "sha256": "1a400bdc3421a3e164e398dcacb4d1f7ce4d5ce0c599d3ad61e6ae66acb76f3f",
+    "log": "package-1.log"
+  },
+  {
+    "activity": "package repeat2",
+    "argv": [
+      "/usr/bin/python3",
+      "/private/tmp/rightclick-package-3320d2f-jry0sxod/checkout/scripts/package-source.py"
+    ],
+    "cwd": "/private/tmp/rightclick-package-3320d2f-jry0sxod/checkout",
+    "exit": 0,
+    "sha256": "1a400bdc3421a3e164e398dcacb4d1f7ce4d5ce0c599d3ad61e6ae66acb76f3f",
+    "log": "package-2.log"
+  },
+  {
+    "activity": "initial sandbox fixture startup",
+    "argv": [
+      "/usr/bin/python3",
+      "/private/tmp/rightclick-package-3320d2f-jry0sxod/extracted/rightclick-0.2.2/scripts/rcir-dispatch-test-provider.py",
+      "/private/tmp/rightclick-package-3320d2f-jry0sxod/startup-provider-state"
+    ],
+    "cwd": "/private/tmp/rightclick-package-3320d2f-jry0sxod/extracted/rightclick-0.2.2",
+    "exit": "not individually captured; parent reproduction driver exit1",
+    "log": "provider-startup.log",
+    "status": "Environment FAIL: bindPermissionError"
+  },
+  {
+    "activity": "authorised packaged provider startup",
+    "argv": [
+      "/usr/bin/python3",
+      "/private/tmp/rightclick-package-3320d2f-jry0sxod/extracted/rightclick-0.2.2/scripts/rcir-dispatch-test-provider.py",
+      "/private/tmp/rightclick-package-3320d2f-jry0sxod/startup-provider-state-green"
+    ],
+    "cwd": "/private/tmp/rightclick-package-3320d2f-jry0sxod/extracted/rightclick-0.2.2",
+    "pid": 5487,
+    "port": 63525,
+    "httpGet": "/openapi.json",
+    "httpStatus": 404,
+    "exitAfterRequestedTermination": -15,
+    "outcome": "PASS; actual packaged provider listened/responded. Startup only, no RCIR invocation claimed."
+  },
+  {
+    "activity": "unchanged packaged production test suite",
+    "argv": [
+      "swift",
+      "test",
+      "--force-resolved-versions",
+      "--filter",
+      "RCIRProductionDispatchTests"
+    ],
+    "cwd": "/private/tmp/rightclick-package-3320d2f-jry0sxod/extracted/rightclick-0.2.2",
+    "explicitEnv": {
+      "RCIR_DISPATCH_EVIDENCE": "/private/tmp/rightclick-package-3320d2f-jry0sxod/evidence/native-provider-effects",
+      "CLANG_MODULE_CACHE_PATH": "/private/tmp/rightclick-package-3320d2f-jry0sxod/module-cache/clang",
+      "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/rightclick-package-3320d2f-jry0sxod/module-cache/swift"
+    },
+    "exit": 0,
+    "log": "native.log",
+    "elapsedSeconds": 62.016
+  }
+]
