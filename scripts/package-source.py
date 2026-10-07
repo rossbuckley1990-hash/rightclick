@@ -5,6 +5,8 @@ Only build inputs and their licences are packaged. No checkout, build cache,
 personal configuration, credentials, or private evidence enters this asset.
 """
 import gzip
+import subprocess
+import sys
 import hashlib
 import json
 import pathlib
@@ -14,8 +16,18 @@ import tarfile
 root = pathlib.Path(__file__).resolve().parent.parent
 version = re.search(r'current = "([0-9]+\.[0-9]+\.[0-9]+)"', (root / "Sources/RightClickCore/ProductSurface.swift").read_text())[1]
 output = root / "dist" / f"rightclick-{version}-source.tar.gz"
+# Durably record substrate kinds inside the immutable source asset so
+# detect-bottle-alignment.py can inventory a published bottle without guessing.
+manifest = root / "packaging" / "substrate-kinds.json"
+subprocess.check_call(
+    [sys.executable, str(root / "scripts" / "detect-bottle-alignment.py"),
+     "--write-manifest", str(manifest)],
+    cwd=str(root),
+)
+
 inputs = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests",
-          "fixtures", "packaging/ThirdPartyLicenses", "scripts/build-cli.sh"]
+          "fixtures", "packaging/ThirdPartyLicenses", "packaging/substrate-kinds.json",
+          "scripts/build-cli.sh"]
 paths = []
 for name in inputs:
     path = root / name

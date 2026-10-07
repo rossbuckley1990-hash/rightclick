@@ -2,7 +2,7 @@ import CryptoKit
 import Foundation
 
 public enum RightClickVersion {
-    public static let current = "0.2.1"
+    public static let current = "0.2.2"
 }
 
 
