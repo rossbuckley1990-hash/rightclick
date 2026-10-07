@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Meaningful tampering controls for the actual eleven-case evidence auditor.
+"""Meaningful tampering controls for the actual twelve-case evidence auditor.
 
 Requires fresh native fixture evidence; runs the existing auditor, then mutates
 only private temporary copies of those artifacts. No fabricated provider effect
@@ -61,6 +61,9 @@ def bad_history_digest(root):
 def unexercised_callback(root):
     path = selected(root, "testConsumptionCallback") / "control-summary.json"
     rewrite(path, lambda value: value.update(revokedDuringConsumptionCallback=False))
+def unexercised_expiry_wait(root):
+    path = selected(root, "testActualLeaseExpiryDuring") / "control-summary.json"
+    rewrite(path, lambda value: value.update(actualHostClockReachedLeaseExpiry=False))
 def unsigned_claims_are_not_a_signature(root):
     path = selected(root, "testRevokedPolicyAfter") / "runtime-records.json"
     # Relabelling observed unsigned truth as a signed envelope lacks actual math.
@@ -81,6 +84,7 @@ for name, mutation in [
     ("mutually_matching_journals_swap_bound_effect", swapped_effect),
     ("altered_public_policy_history_digest", bad_history_digest),
     ("unexercised_revocation_callback", unexercised_callback),
+    ("unexercised_actual_expiry_wait", unexercised_expiry_wait),
     ("unsigned_truth_relabelled_as_signature", unsigned_claims_are_not_a_signature),
 ]:
     with tempfile.TemporaryDirectory(prefix="rcir-evidence-audit-negative-") as temporary:

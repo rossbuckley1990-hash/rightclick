@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independently audit the eleven actual production-trust GREEN controls.
+"""Independently audit the twelve actual production-trust GREEN controls.
 
 Unsigned canonical receipts are runtime assertions, never authenticated receipts.
 Separate fixture journals establish the observed effect. Policy replay uses the
@@ -18,7 +18,9 @@ receipt = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(receipt)
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("evidence", type=Path)
-parser.add_argument("--intermediate-ten", action="store_true", help="Audit the explicitly intermediate ten-case source before the consumption-callback repair")
+intermediate = parser.add_mutually_exclusive_group()
+intermediate.add_argument("--intermediate-ten", action="store_true", help="Audit the explicitly intermediate ten-case source before the consumption-callback repair")
+intermediate.add_argument("--intermediate-eleven", action="store_true", help="Audit the explicitly intermediate eleven-case source before actual lease-expiry repair")
 args = parser.parse_args()
 # requests/effects/observations, rejected executions, actually signed receipts.
 expected = {
@@ -33,7 +35,10 @@ expected = {
     "testActualClockExpiryAfterHeldAdmissionWithholdsSignature": (1, 0, 0),
     "testConfigurationRefreshRevokesPolicyBeforeFinalAdmissionHasZeroEffects": (0, 1, 0),
     "testConsumptionCallbackRevokesPolicyBeforeFinalAdmissionHasZeroEffects": (0, 1, 0),
+    "testActualLeaseExpiryDuringProtectedSigningValidationHasZeroEffects": (0, 1, 0),
 }
+if args.intermediate_ten or args.intermediate_eleven:
+    del expected["testActualLeaseExpiryDuringProtectedSigningValidationHasZeroEffects"]
 if args.intermediate_ten:
     del expected["testConsumptionCallbackRevokesPolicyBeforeFinalAdmissionHasZeroEffects"]
 def read(path):
@@ -182,6 +187,12 @@ for name, (count, rejected_count, signed_count) in expected.items():
         assert summary["revokedDuringConsumptionCallback"] is True
         assert not summary.get("revocationWriteFailed")
         assert len(history) == 2 and policies[0]["keys"][0]["revoked"] is False and policies[1]["keys"][0]["revoked"] is True
+    if "ActualLeaseExpiryDuring" in name:
+        assert summary["actualHostClockReachedLeaseExpiry"] is True
+        assert type(summary["leaseExpiresAt"]) is int and summary["leaseExpiresAt"] >= 0
+        assert len(history) == 1 and policies[0]["keys"][0]["revoked"] is False
+        key = policies[0]["keys"][0]
+        assert key["notBefore"] <= summary["leaseExpiresAt"] < key["notAfter"]
     if "ActualClockExpiryAfter" in name:
         assert summary["actualHostClockReachedExpiry"] is True
         policy = document(case / "host-policy-current.json")
@@ -198,7 +209,7 @@ for name, (count, rejected_count, signed_count) in expected.items():
         "rejectedExecutions": rejected_count, "actuallySignedReceipts": signed_count,
         "policyWriteHistoryRows": len(history), "policyHistoryDigests": "MATCHED", "receipts": receipts})
 print(json.dumps({"independentCanonicalMathAndJournalAudit": "PASS", "cases": len(results),
-    "evidenceStage": "INTERMEDIATE_TEN" if args.intermediate_ten else "FINAL_ELEVEN",
+    "evidenceStage": "INTERMEDIATE_TEN" if args.intermediate_ten else "INTERMEDIATE_ELEVEN" if args.intermediate_eleven else "FINAL_TWELVE",
     "actualEffects": sum(row["effects"] for row in results), "rejectedExecutions": sum(row["rejectedExecutions"] for row in results),
     "signedReceiptsVerified": sum(row["actuallySignedReceipts"] for row in results),
     "unsignedAssertions": sum(len(row["receipts"]) - row["actuallySignedReceipts"] for row in results),
