@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - experiment/alien-relay-20261007
+      - experiment/alien-verifier-v1-fixed-20261007
   workflow_dispatch:
 
 permissions:
@@ -18,6 +19,9 @@ jobs:
     steps:
       - name: Check out experiment branch
         uses: actions/checkout@v4
+
+      - name: Preflight ASR observer regressions
+        run: python3 -m unittest discover -s experiments/alien-relay -p 'test_*.py' -v
 
       - name: Acquire learned clients
         shell: bash
@@ -41,38 +45,11 @@ jobs:
           PY
           alien-venv/bin/python generation6.py
 
-      - name: Adapt failed Generation 7 observer and retry
+      - name: Replay Generation 7 with contract-derived observer (new experiment run)
         shell: bash
         run: |
           set -e
-          cp experiments/alien-relay/generation7_extension.py generation7_retry.py
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path("generation7_retry.py")
-          s = p.read_text()
-
-          old1 = 'asr_spaces,asr_err=discover(api,["automatic speech recognition","speech to text","audio transcription"],20)'
-          new1 = 'asr_spaces,asr_err=discover(api,["speech to text","audio transcription","automatic speech recognition","whisper"],30)'
-          old2 = 'asr_matches,asr_inspect=contracts(asr_spaces,"asr",20,6)'
-          new2 = 'asr_matches,asr_inspect=contracts(asr_spaces,"asr",90,8)'
-          old3 = '        if code==0 and ss: asr_selected=c; transcript=clean(ss[0]); break'
-          new3 = '''        if code==0 and ss:
-            caption_words=set(re.findall(r"[a-z0-9]+", caption.lower()))
-            def semantic_score(candidate_text):
-                cleaned=clean(candidate_text)
-                candidate_words=set(re.findall(r"[a-z0-9]+", cleaned.lower()))
-                return (len(candidate_words & caption_words), -abs(len(cleaned)-len(caption)))
-            asr_selected=c
-            transcript=clean(max(ss,key=semantic_score))
-            break'''
-
-          for old in (old1, old2, old3):
-              if old not in s:
-                  raise SystemExit("expected Generation 7 adaptation anchor not found")
-          s = s.replace(old1, new1).replace(old2, new2).replace(old3, new3)
-          p.write_text(s)
-          PY
-          alien-venv/bin/python generation7_retry.py
+          alien-venv/bin/python experiments/alien-relay/generation7_extension.py
 
       - name: Upload proof artifact
         if: always()
