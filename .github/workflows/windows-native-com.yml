@@ -59,6 +59,7 @@ jobs:
           if ($observedExit -eq 0 -or $report.status -ne 'RED') { throw 'Frozen baseline unexpectedly passed; reassess deficiency before implementation' }
           if ($report.controls.native_dynamic_metadata_oracle.result -ne 'PASS' -or $report.controls.exactly_seven_operations.result -ne 'PASS' -or $report.controls.production_dynamic_native_acquisition.result -ne 'FAIL') { throw 'Native fixture/setup failure is not the required production RED' }
           $observedExit | Out-File -Encoding utf8 native-com-red/acceptance.exit
+          exit 0
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -66,3 +67,4 @@ jobs:
           path: |
             native-com-red/
             windows-com-live.exe
+            native-com-baseline/.build/debug/rightclick.exe

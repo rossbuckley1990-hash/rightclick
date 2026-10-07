@@ -1,0 +1,30 @@
+{
+  "runURL": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37667006619",
+  "controlsSource": "c4f7225cdec236ed1dcb371419fdad1ebe7dbe06",
+  "productionSource": "38b27e45e9f566588b398ace20ca3ed07a529da3",
+  "scope": "Measured native Windows acquisition RED; not eleven-world acceptance",
+  "notes": [
+    "Driver measured native metadata PASS, seven operations PASS, production acquisition FAIL; later controls NOT_RUN.",
+    "Workflow wrapper retained expected Python exit1 after validating RED; reporting repair adds explicit exit0.",
+    "Raw Windows harness hash reflects CRLF checkout; Git LF source remains frozen.",
+    "First run retained executable SHA attestation and complete native transcript but omitted raw baseline executable from artifact. Subsequent gates explicitly retain it."
+  ],
+  "artifactSHA256": {
+    "native-com-red/acceptance.exit": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04",
+    "native-com-red/acceptance.log": "12aab5daa497b7d55a9963ae76422ae76f2c497975a9f92e8924afd41fd49b02",
+    "native-com-red/baseline-source.txt": "cc6975a13c73aeabafebbe8f61638314689b9fa47586c032d96fe56842a3b048",
+    "native-com-red/build.log": "2328da0dc530b528fa423d23baf7731c188e93bb38f3da7512e3753e20a15ce0",
+    "native-com-red/fixture-context.json": "33e5a17b32684f80f66629fcf4166c6394909fbfc111691e1d71c457fac36bec",
+    "native-com-red/fixture.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-com-red/native-metadata-oracle.json": "116b7eabba7573c24d72b7f8f6b7f593e4bf5d45f647454392ca2313f83ea6ac",
+    "native-com-red/proof.idl": "19a96955563b9ef586b5eb454a770f0d1793053cccb6091d3f3d7aae3a9fd055",
+    "native-com-red/proof.tlb": "4eb71f7f6d94f8948ed6d1b1510adfb2e7667ddb8a6ec98ad60146e08031a8d2",
+    "native-com-red/ready.json": "7e239831f9816a031b4c3937eea651c39e3a9380d4d7c0604be6b7a661673431",
+    "native-com-red/results.json": "ac2b4baa3d614d838885f80225d5ecadc8a394facfea2708a3fa1e0f946078f1",
+    "native-com-red/runtime.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-com-red/stop": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-com-red/toolchain.txt": "fa5f6abcb1a722939e20fac6e0f878c8e366d6fd43567690b60beaac53fc53d2",
+    "native-com-red/transcript.json": "01d9577cc1e006a30a27c24031c2346a52e8e84038a30b5028dbe3c0b10ce270",
+    "windows-com-live.exe": "5cfa3ad3b4389f867e17fc4df0e5d34106da4311d4b2a9999db819696a7283f6"
+  }
+}

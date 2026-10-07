@@ -1,0 +1,14 @@
+import "oaidl.idl";
+import "ocidl.idl";
+[uuid(ab536fa1-bd5a-4ce6-a2c7-fd6639de286f), version(1.0)]
+library DisposableNativeLibrary {
+  importlib("stdole2.tlb");
+  [uuid(e05e9b30-bac6-4a5f-8fd9-3871dffb020a)]
+  dispinterface DisposableNativeInterface {
+    properties:
+    methods:
+      [id(41)] BSTR Commit_1dec8a0970c2406cbfadd92662b7c4d9([in] BSTR message, [in] hyper count, [in] VARIANT_BOOL flag);
+  };
+  [uuid(5581a694-dc49-4d7e-890b-e0ffeed5ff8a)]
+  coclass DisposableNativeClass { [default] dispinterface DisposableNativeInterface; };
+};
