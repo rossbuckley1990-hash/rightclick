@@ -34,6 +34,9 @@ lab = pathlib.Path("/private/tmp") / ("rightclick-interface-acceptance-" + uuid.
 lab.mkdir(mode=0o700)
 component = lab / "fingerprint.component.wasm"; shutil.copyfile(args.component, component)
 unseen = lab / "unseen.component.wasm"
+trap = lab / "trap.component.wasm"
+subprocess.run([str(args.tools.resolve()), "parse", str(root / "examples/universal-descriptors/trap.component.wat"),
+                "-o", str(trap)], check=True)
 signer = Ed25519PrivateKey.generate()
 key = lab / "signing-key.raw"
 key.write_bytes(signer.private_bytes(serialization.Encoding.Raw, serialization.PrivateFormat.Raw, serialization.NoEncryption()))
@@ -56,7 +59,8 @@ environment.update(RIGHTCLICK_WASM_TOOLS=str(args.tools.resolve()), RIGHTCLICK_W
                    RIGHTCLICK_CAPABILITY_ARTIFACTS=json.dumps([
                        {"id": "controlled-mcp", "kind": "mcp", "endpointURL": "http://127.0.0.1:19143/mcp"},
                        {"id": "controlled-wasm", "kind": "wasm", "specificationURL": component.as_uri()},
-                       {"id": "unseen-wasm", "kind": "wasm", "specificationURL": unseen.as_uri()}]))
+                       {"id": "unseen-wasm", "kind": "wasm", "specificationURL": unseen.as_uri()},
+                       {"id": "trap-wasm", "kind": "wasm", "specificationURL": trap.as_uri()}]))
 transcript = []
 process = subprocess.Popen([str(args.binary.resolve()), "mcp"], env=environment, stdin=subprocess.PIPE,
                            stdout=subprocess.PIPE, stderr=(evidence / "runtime.stderr").open("w"), text=True, bufsize=1)
@@ -149,6 +153,10 @@ try:
                                     "arguments": {"challenge": challenge}, "expectedOutput": str(expected ^ 1)})
     assert mismatch["state"] == "failed" and not mismatch["evidence"]["outcomeVerified"]
     verify_receipt("wasm-mismatch", mismatch, "failed")
+    trapped = call("context_run", {"item": "proof", "actionId": "wasm:trap-wasm:trap", "confirmed": True,
+                                   "arguments": {"challenge": challenge}, "expectedOutput": "0"})
+    assert trapped["state"] == "unknown" and not trapped["evidence"]["outcomeVerified"]
+    verify_receipt("wasm-trap", trapped, "unknown")
     effects_before = args.mcp_effects.joinpath("effects.jsonl").read_text()
     configuration["deniedCapabilities"] = [mcp_id]; configure()
     denied = call("context_run", {"item": "proof", "actionId": mcp_id, "confirmed": True, "arguments": {"challenge": "policy-must-not-dispatch"}})
@@ -166,12 +174,13 @@ try:
     time.sleep(5.2)
     introduced = actions(); assert new_id in {a["id"] for a in introduced}
     after = rpc("tools/list")["tools"]; assert {tool["name"] for tool in after} == canonical
-    result = {"runtime": runtime, "subtrates": ["MCP", "WASM"], "toolCountBefore": len(before), "toolCountAfter": len(after),
+    result = {"runtime": runtime, "substrates": ["MCP", "WASM"], "toolCountBefore": len(before), "toolCountAfter": len(after),
               "providerSpecificToolsAdded": 0, "acceptedRemainsUnverified": True, "mcpIndependentFilesystemVerification": str(effect),
               "wasmIndependentAlgorithm": "FNV-1a32 over exact UTF-8 challenge; separate Python calculation",
               "wasmChallenge": challenge, "wasmExpected": expected, "wasmActual": wasm["output"],
               "malformedDescriptorRemoved": True, "offlineComponentRemoved": True, "unseenComponentDiscoveredLive": True,
               "policyDenialNoEffect": True, "receiptReports": reports,
+              "wasmTrapFailsClosed": True, "wasmTrapBoundary": "Consumed process invocation failed; generic host conservatively reports unknown, never success.",
               "capabilityEvidence": {"mcp": mcp_explain, "wasm": wasm_explain},
               "boundary": "Real MCP/WASM seven-operation transcript proof. Final fresh-AI eleven-substrate acceptance remains a separate required gate."}
     (evidence / "results.json").write_text(json.dumps(result, indent=2))
