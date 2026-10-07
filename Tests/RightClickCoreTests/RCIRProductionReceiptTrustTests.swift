@@ -316,4 +316,23 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         XCTAssertTrue(rows("requests.jsonl").isEmpty)
         XCTAssertTrue(rows("effects.jsonl").isEmpty)
     }
+
+    func testConsumptionCallbackRevokesPolicyBeforeFinalAdmissionHasZeroEffects() throws {
+        var revoked = false
+        host.consumptionArguments = { [weak self] arguments in
+            guard let self else { return arguments }
+            do { try self.revokeOriginal(); revoked = true }
+            catch { self.summary["revocationWriteFailed"] = true }
+            return arguments
+        }
+        let initial = try begin()
+        if initial.state == .started { try release(); _ = finish(initial) }
+        summary["revokedDuringConsumptionCallback"] = revoked
+        summary["requests"] = rows("requests.jsonl").count
+        summary["effects"] = rows("effects.jsonl").count
+        XCTAssertTrue(revoked)
+        XCTAssertEqual(initial.state,.rejected)
+        XCTAssertTrue(rows("requests.jsonl").isEmpty)
+        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+    }
 }
