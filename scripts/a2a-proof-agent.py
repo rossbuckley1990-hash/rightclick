@@ -10,7 +10,8 @@ import pathlib
 import threading
 import time
 import uuid
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler
+from fixture_http import LoopbackThreadingHTTPServer
 
 
 def main():
@@ -113,8 +114,10 @@ def main():
             except (KeyError, ValueError, TypeError):
                 self.reply({"jsonrpc": "2.0", "id": None, "error": {"code": -32602, "message": "Invalid params"}})
 
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
-    (args.directory / "port").write_text(str(server.server_port))
+    server = LoopbackThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+    pending = args.directory / "port.tmp"
+    pending.write_text(str(server.server_port))
+    pending.replace(args.directory / "port")
     server.serve_forever()
 
 
