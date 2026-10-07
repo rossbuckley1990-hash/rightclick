@@ -1,0 +1,39 @@
+name: Native Windows protected-reference diagnostics
+on:
+  pull_request:
+    paths:
+      - 'Sources/RightClickHostFiles/**'
+      - 'Tests/Fixtures/windows-protected-reference-probe.c'
+      - '.github/workflows/windows-native-reference.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-reference-boundary:
+    runs-on: windows-2022
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Compile exact native backend without package dependency build
+        shell: pwsh
+        run: |
+          $installation = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $installation) { throw 'Native C toolchain unavailable' }
+          $setup = Join-Path $installation 'VC\Auxiliary\Build\vcvars64.bat'
+          cmd /c "`"$setup`" && cl /nologo /std:c17 /I Sources\RightClickHostFiles\include Tests\Fixtures\windows-protected-reference-probe.c /Fe:native-reference-probe.exe /link Advapi32.lib"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Observe native creation, owner, handle and authority gates
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force native-reference-evidence | Out-Null
+          git rev-parse HEAD | Out-File -Encoding utf8 native-reference-evidence/source.txt
+          Get-FileHash Sources/RightClickHostFiles/HostFiles.c, native-reference-probe.exe -Algorithm SHA256 | Format-List | Out-File native-reference-evidence/sha256.txt
+          ./native-reference-probe.exe | Tee-Object -FilePath native-reference-evidence/boundary.jsonl
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-reference-diagnostics-${{ github.event.pull_request.head.sha || github.sha }}
+          path: native-reference-evidence/
