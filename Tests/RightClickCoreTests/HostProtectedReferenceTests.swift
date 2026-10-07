@@ -98,9 +98,22 @@ final class HostProtectedReferenceTests: XCTestCase {
         let system = ProcessInfo.processInfo.environment["SystemRoot"] ?? "C:\\Windows"
         command.executableURL = URL(fileURLWithPath: system + "\\System32\\" + executable)
         command.arguments = arguments
-        command.standardOutput = FileHandle.nullDevice; command.standardError = FileHandle.nullDevice
+        // Retain bounded fixture diagnostics without blocking a child on a pipe.
+        // These commands operate only on this test's synthetic owned paths.
+        let output = root.appendingPathComponent("command-" + UUID().uuidString + ".log")
+        try Data().write(to: output, options: .withoutOverwriting)
+        let handle = try FileHandle(forWritingTo: output)
+        defer { try? handle.close(); try? FileManager.default.removeItem(at: output) }
+        command.standardOutput = handle; command.standardError = handle
         try command.run(); command.waitUntilExit()
-        XCTAssertEqual(command.terminationStatus, 0)
+        try handle.synchronize()
+        let reader = try FileHandle(forReadingFrom: output)
+        defer { try? reader.close() }
+        let bytes = try reader.read(upToCount: 16_384) ?? Data()
+        let diagnostic = String(decoding: bytes, as: UTF8.self)
+            .replacingOccurrences(of: root.path, with: "<owned-fixture>")
+            .replacingOccurrences(of: root.path.replacingOccurrences(of: "/", with: "\\"), with: "<owned-fixture>")
+        XCTAssertEqual(command.terminationStatus, 0, "Native fixture command \(executable): \(diagnostic)")
         guard command.terminationStatus == 0 else { throw RCIRError.authorityDenied }
     }
     func testNullDACLNeverBecomesProtectedAuthority() throws {

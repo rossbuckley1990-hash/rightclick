@@ -4,6 +4,8 @@ on:
     paths:
       - 'Sources/RightClickHostFiles/**'
       - 'Tests/Fixtures/windows-protected-reference-probe.c'
+      - 'Tests/Fixtures/windows-fixture-command-probe.swift'
+      - 'Tests/RightClickCoreTests/HostProtectedReferenceTests.swift'
       - '.github/workflows/windows-native-reference.yml'
   workflow_dispatch:
 permissions:
@@ -11,7 +13,7 @@ permissions:
 jobs:
   native-reference-boundary:
     runs-on: windows-2022
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
@@ -31,6 +33,18 @@ jobs:
           git rev-parse HEAD | Out-File -Encoding utf8 native-reference-evidence/source.txt
           Get-FileHash Sources/RightClickHostFiles/HostFiles.c, native-reference-probe.exe -Algorithm SHA256 | Format-List | Out-File native-reference-evidence/sha256.txt
           ./native-reference-probe.exe | Tee-Object -FilePath native-reference-evidence/boundary.jsonl
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+        with:
+          swift-version: swift-6.2-release
+          swift-build: 6.2-RELEASE
+      - name: Diagnose actual Foundation fixture commands without package build
+        shell: pwsh
+        run: |
+          swiftc Tests/Fixtures/windows-fixture-command-probe.swift -o native-fixture-command-probe.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-FileHash Tests/Fixtures/windows-fixture-command-probe.swift, native-fixture-command-probe.exe -Algorithm SHA256 | Format-List | Out-File native-reference-evidence/fixture-sha256.txt
+          ./native-fixture-command-probe.exe | Tee-Object -FilePath native-reference-evidence/fixture-commands.jsonl
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
