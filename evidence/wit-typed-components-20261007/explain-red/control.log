@@ -1,0 +1,6 @@
+RED: KeyError('interfaceDeclarationEncoding')
+Traceback (most recent call last):
+  File "/private/tmp/rightclick-wasm-wit-audit-20261007/acceptance-wit-explain.py", line 133, in <module>
+    assert metadata["interfaceDeclarationEncoding"] == "CapabilityValue tagged JSON"
+           ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'interfaceDeclarationEncoding'
