@@ -132,7 +132,7 @@ public enum CapabilityJSON {
         guard depth <= 32, let object = raw as? [String: Any],
               let type = object["type"] as? String else { throw CapabilityABIError.invalidSchema }
         let annotations: Set<String> = ["title", "description", "$schema"]
-        let structural: Set<String> = ["type", "properties", "required", "additionalProperties", "items", "enum"]
+        let structural: Set<String> = ["type", "properties", "required", "additionalProperties", "items", "enum", "pattern", "minLength", "maxLength"]
         guard Set(object.keys).isSubset(of: annotations.union(structural)) else { throw CapabilityABIError.invalidSchema }
         let keys = Set(object.keys).subtracting(annotations)
         switch type {
@@ -148,12 +148,7 @@ public enum CapabilityJSON {
             guard keys == ["type", "items"], let item = object["items"] else { throw CapabilityABIError.invalidSchema }
             return .array(try schema(item, depth: depth + 1))
         case "string":
-            guard keys.isSubset(of: ["type", "enum"]) else { throw CapabilityABIError.invalidSchema }
-            if let enumeration = object["enum"] {
-                guard let values = enumeration as? [String] else { throw CapabilityABIError.invalidSchema }
-                let result = CapabilitySchema.stringEnum(values); _ = try result.canonicalData(); return result
-            }
-            return .string
+            return try CapabilitySchema.stringContract(object)
         case "null", "boolean", "integer", "number":
             guard keys == ["type"] else { throw CapabilityABIError.invalidSchema }
             switch type { case "null": return .null; case "boolean": return .boolean; case "integer": return .integer; default: return .number }

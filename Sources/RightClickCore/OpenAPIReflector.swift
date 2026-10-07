@@ -3,7 +3,8 @@ import Foundation
 
 public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractRefreshingReflector {
     private struct JSONStringProperty {
-        let allowedValues: Set<String>?
+        let schema: CapabilitySchema
+        let raw: [String: Any]
     }
 
     private struct JSONObjectSchema {
@@ -961,7 +962,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         // remain authoritative. Lower their exact output into the existing ABI.
         func schema(_ object: JSONObjectSchema) -> CapabilitySchema {
             .object(properties: object.properties.mapValues {
-                $0.allowedValues.map { .stringEnum($0.sorted()) } ?? .string
+                $0.schema
             }, required: object.required.sorted())
         }
         let argumentSchema: CapabilitySchema
@@ -3269,52 +3270,8 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         _ property:
             [String: Any]
     ) -> [String: Any]? {
-        let allowedKeys:
-            Set<String> = [
-                "type",
-                "enum",
-                "title",
-                "description",
-            ]
-
-        guard
-            Set(property.keys)
-                .isSubset(
-                    of:
-                        allowedKeys
-                ),
-            property["type"]
-                as? String == "string"
-        else {
-            return nil
-        }
-
-        var normalized:
-            [String: Any] = [
-                "type":
-                    "string"
-            ]
-
-        if let rawEnum =
-            property["enum"]
-        {
-            guard
-                let values =
-                    rawEnum as? [String],
-                !values.isEmpty,
-                Set(values).count
-                    == values.count
-            else {
-                return nil
-            }
-
-            normalized[
-                "enum"
-            ] =
-                values
-        }
-
-        return normalized
+        guard (try? CapabilitySchema.stringContract(property)) != nil else { return nil }
+        return property.filter { ["type", "enum", "pattern", "minLength", "maxLength"].contains($0.key) }
     }
 
     /// A branch can be discarded from a oneOf string narrowing only when
@@ -3425,56 +3382,9 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 return nil
             }
 
-            let allowedPropertyKeys:
-                Set<String> = [
-                    "type",
-                    "enum",
-                    "title",
-                    "description",
-                ]
+            guard let stringSchema = try? CapabilitySchema.stringContract(raw) else { return nil }
+            properties[key] = JSONStringProperty(schema: stringSchema, raw: raw)
 
-            guard
-                Set(raw.keys)
-                    .isSubset(
-                        of:
-                            allowedPropertyKeys
-                    ),
-                raw["type"]
-                    as? String
-                    == "string"
-            else {
-                return nil
-            }
-
-            let allowedValues:
-                Set<String>?
-
-            if let rawEnum =
-                raw["enum"]
-            {
-                guard
-                    let values =
-                        rawEnum
-                            as? [String],
-                    !values.isEmpty,
-                    Set(values).count
-                        == values.count
-                else {
-                    return nil
-                }
-
-                allowedValues =
-                    Set(values)
-            } else {
-                allowedValues =
-                    nil
-            }
-
-            properties[key] =
-                JSONStringProperty(
-                    allowedValues:
-                        allowedValues
-                )
         }
 
         guard
@@ -3541,58 +3451,9 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
             return nil
         }
 
-        var rawProperties:
-            [String: Any] = [:]
-
-        for (
-            name,
-            property
-        ) in pathSchema.properties {
-            var raw:
-                [String: Any] = [
-                    "type":
-                        "string"
-                ]
-
-            if let allowed =
-                property.allowedValues
-            {
-                raw[
-                    "enum"
-                ] =
-                    allowed.sorted()
-            }
-
-            rawProperties[
-                name
-            ] =
-                raw
-        }
-
-        for (
-            name,
-            property
-        ) in requestSchema.properties {
-            var raw:
-                [String: Any] = [
-                    "type":
-                        "string"
-                ]
-
-            if let allowed =
-                property.allowedValues
-            {
-                raw[
-                    "enum"
-                ] =
-                    allowed.sorted()
-            }
-
-            rawProperties[
-                name
-            ] =
-                raw
-        }
+        var rawProperties: [String: Any] = [:]
+        for (name, property) in pathSchema.properties { rawProperties[name] = property.raw }
+        for (name, property) in requestSchema.properties { rawProperties[name] = property.raw }
 
         let rawSchema:
             [String: Any] = [
@@ -3681,14 +3542,8 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 )
             }
 
-            if let allowed =
-                property.allowedValues,
-                !allowed.contains(value)
-            {
-                throw RightClickError(
-                    "Argument \(key) is not one of the declared enum values."
-                )
-            }
+            try property.schema.validate(.string(value))
+
         }
     }
 
@@ -4011,14 +3866,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 )
             }
 
-            if let allowed =
-                property.allowedValues,
-                !allowed.contains(value)
-            {
-                throw RightClickError(
-                    "Response field \(key) is outside its declared enum."
-                )
-            }
+            try property.schema.validate(.string(value))
 
             canonical[key] =
                 value
