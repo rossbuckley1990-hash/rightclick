@@ -15,7 +15,7 @@ jobs:
       - name: Real task and adversarial pressure controls
         env:
           RCIR_DEFERRED_EVIDENCE: evidence/ci-universal-async/native
-        run: swift test --filter 'RCIRDeferredProductionTests|RCIRDeferredCapacityTests|A2ARealLifecycleTests|RCIRProductionDispatchTests'
+        run: swift test --filter 'RCIRDeferredProductionTests|RCIRDeferredCapacityTests|A2ARealLifecycleTests|RCIRProductionDispatchTests|CapabilityInterfaceTests|RCIRStructuredObservationTests|KubernetesCapabilityArtifactTests'
       - name: Seven-operation real A2A proof
         run: |
           swift build
