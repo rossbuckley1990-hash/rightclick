@@ -1,0 +1,23 @@
+{
+  "structure_status": "valid_RED_inventory",
+  "scorecard_tests": {
+    "tests": 37,
+    "failures": 0,
+    "exit": 0
+  },
+  "grpc_stream_red": {
+    "source": "2dd7bd2fafbbaa994812d1bc904730b74aa74816",
+    "test_origin": "6795dc594ae07185edc62e6c3b9a329b97ea7173",
+    "native_messages": 3,
+    "runtime_state": "unsupported",
+    "task_evidence": null,
+    "assertion_failures": 2,
+    "exit": 1
+  },
+  "chronology": "First9 scorecard tests accompanied the implementation. Independent19 adversarial tests were frozen before fixes (31subtest failures+1error); exact original uncommitted code was later reconstructed to its logged SHA and RED replayed. Additional6path/number tests were frozen before8failures were fixed; nativeMac case-alias RED was frozen before its fix. Twofile-open/hardlink controls were written after fixes. UnchangedgRPC pressure control predates this work.",
+  "acceptance_prerequisite": {
+    "exit": 1,
+    "reason": "All eleven real restricted-agent rows remain RED"
+  },
+  "separate_release_gate": "RED; structural acceptance is only one prerequisite"
+}

@@ -1,0 +1,276 @@
+{
+  "version": 1,
+  "boundary": "Engineering and structural-gate evidence only; all eleven restricted-agent acceptance rows remain RED.",
+  "audited_source": "2dd7bd2fafbbaa994812d1bc904730b74aa74816",
+  "source_files": [
+    {
+      "path": "scripts/check-universal-scorecard.py",
+      "sha256": "ce2e60aaf74ec71b4ba44571224f01bb052c83a26a96e0c23f00b0d87d0a7d1e"
+    },
+    {
+      "path": "Tests/test_universal_scorecard.py",
+      "sha256": "2a0198d1925b6df07e8d0d6471f6d134eef7d3aedd06be54314e5eeea74b6992"
+    },
+    {
+      "path": "Tests/test_universal_scorecard_adversarial.py",
+      "sha256": "284aae27f0aed4d9e97367a6a87273184e780ca3b222f12079980244b6433f4b"
+    },
+    {
+      "path": "Tests/test_universal_scorecard_case_alias.py",
+      "sha256": "d6c5e465cdd195a0243a7c135e1c8b7c8c26136f064292816977e32e6fe1b557"
+    },
+    {
+      "path": "Tests/test_universal_scorecard_path_numeric.py",
+      "sha256": "b94edaca56d65f47ed800a825d015ba9e2d0b1b41fbaf0a42a8921e62b42ca2d"
+    },
+    {
+      "path": "Tests/test_universal_scorecard_protected_reads.py",
+      "sha256": "40fe7667af42b93312ddc74a05cbb2839bfcd9299cf16ec22c3661a8859e4b42"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/GRPCStreamingRuntimePressureTests.swift",
+      "sha256": "99e1210152ac38499d3f4eb454b5dda5605b4217fc4e83927ed2effcd6c7a73f"
+    },
+    {
+      "path": "scripts/grpc-stream-pressure-provider.py",
+      "sha256": "db00185856bc736338d16e530732e545bc6264a292aa6ebdc0d824ca2b483441"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "evidence/universal-programme-20261007/__pycache__/scorecard-adversarial-red-validator-reconstructed.cpython-314.pyc",
+      "sha256": "d625cf2de36dc0ec7519dd945e11123dc696e8d571c24817cc2718bc41864fc1",
+      "bytes": 15004
+    },
+    {
+      "path": "evidence/universal-programme-20261007/baseline-native.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/baseline-native.log.gz",
+      "sha256": "c24f967d21d9dce7031988b20ec31e98ebfe30768b1917752e09db3e99fa10d4",
+      "bytes": 43778
+    },
+    {
+      "path": "evidence/universal-programme-20261007/baseline-source.json",
+      "sha256": "09b49a9ffffde1f0747f5525aa91e7e66eafa13bd4333736cb11ebd5b360584f",
+      "bytes": 468
+    },
+    {
+      "path": "evidence/universal-programme-20261007/bottle-alignment.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/bottle-alignment.log",
+      "sha256": "16e112532f0f0e3e6fe73fb733f174f4210c58ceca5420eadacba3d3348fabc7",
+      "bytes": 1356
+    },
+    {
+      "path": "evidence/universal-programme-20261007/compression-manifest.json",
+      "sha256": "64fd10c3496caf999d153c41ccd43bb58bec6a4b28eacf2c8f6c5ea1c816740e",
+      "bytes": 585
+    },
+    {
+      "path": "evidence/universal-programme-20261007/gate-results.json",
+      "sha256": "142be0588eb1ae0904d09558007ed1c16ba654f6b622c101f9e7300535873c08",
+      "bytes": 1086
+    },
+    {
+      "path": "evidence/universal-programme-20261007/grpc-stream-red/acquired-capability.json",
+      "sha256": "d20f80890d6d6f9dcff15715f231451c6b36509b6e7afaf186f5d4560389e397",
+      "bytes": 1291
+    },
+    {
+      "path": "evidence/universal-programme-20261007/grpc-stream-red/actual-descriptor-0.pb",
+      "sha256": "80f7176f215d72994fd5136f365f1fdf51611622f1f31ff060b736ed1f3d843a",
+      "bytes": 207
+    },
+    {
+      "path": "evidence/universal-programme-20261007/grpc-stream-red/independent-native-journal.jsonl",
+      "sha256": "4f04613b25bd60af70bf905a5155e5d5c3fcbc7aa113c108e5c8881c68c0dfe9",
+      "bytes": 801
+    },
+    {
+      "path": "evidence/universal-programme-20261007/grpc-stream-red/native-control.json",
+      "sha256": "76608172ac70258334097c7ae09987573179cc820fa7482151c39d2131fe1e23",
+      "bytes": 256
+    },
+    {
+      "path": "evidence/universal-programme-20261007/grpc-stream-red/runtime-result.json",
+      "sha256": "537c413f3d88656bba8aac7615eab6fbcbf18998bbd4d56d0a9357dcdec50c8b",
+      "bytes": 503
+    },
+    {
+      "path": "evidence/universal-programme-20261007/grpc-stream-red.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/grpc-stream-red.log.gz",
+      "sha256": "ebd16123cbc1393016670131c48ee75ff25895e4dcb26f52eefd9c2fcb2075e7",
+      "bytes": 1035
+    },
+    {
+      "path": "evidence/universal-programme-20261007/ref-refresh.json",
+      "sha256": "e7c7c7dae6a0cf1f23e569d51c9eb014fe261dea47ef018037fcc0536b66e72a",
+      "bytes": 347
+    },
+    {
+      "path": "evidence/universal-programme-20261007/runtime-branches.json",
+      "sha256": "26f6bb44860f588dcd9b9fd8bb9d77afe6305266cd9cf1443fe0fedad1b0ca1c",
+      "bytes": 30653
+    },
+    {
+      "path": "evidence/universal-programme-20261007/runtime-open-prs.json",
+      "sha256": "29388f80c938dbfabd894fea31cc36ed897cd2dd51b653378bc5f5fb45366e57",
+      "bytes": 19699
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-adversarial-red-reconstruction.json",
+      "sha256": "4544e4937156ed71618eff0e77115586edfe9b4ea6d37ff2f282919d9faa26f1",
+      "bytes": 559
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-adversarial-red-replay.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-adversarial-red-replay.log",
+      "sha256": "88c142ad19c47c2e324304207e2f97994a199d0d4760ba509f853b93bc32f029",
+      "bytes": 36692
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-adversarial-red-validator-reconstructed.py",
+      "sha256": "4fc9fda2a0fc2a865fd8cf5ed597e11c1581544138390304df79fe92c2c98e55",
+      "bytes": 8421
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-adversarial-red.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-adversarial-red.log",
+      "sha256": "8b599ccc157be5dadca5f4b6dff0668af84f34283adcacd55b625325910164e5",
+      "bytes": 36413
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-case-alias-red-validator.py",
+      "sha256": "cebe5e59e20806ce496987bd0baffb9c87c4aeeb0f0bb450de04e0b871fe615c",
+      "bytes": 14765
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-case-alias-red.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-case-alias-red.log",
+      "sha256": "5e977fc3dd2991428eeb67f9f6ecbd40a8f5d990d3aa97af69a7e255e20ba7fe",
+      "bytes": 1504
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-final-acceptance-denial.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-final-acceptance-denial.json",
+      "sha256": "4b50852698c63bb95b235640d6dc2887d1e741fa4ac4f10a373625960e527f10",
+      "bytes": 88
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-final-status.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-final-status.json",
+      "sha256": "97f3183564b9d37f7db1b60ad8bb9168bbdba029ed063bfd1ff51b6d2bb2a7c0",
+      "bytes": 166
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-green.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-green.log",
+      "sha256": "f4694458026a8b21ccf77e16f83d4022a66b82f48a35dd56359ae14840f0959a",
+      "bytes": 128
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-independent-controls.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-independent-controls.log",
+      "sha256": "33379e8d509799e45f289ef343a0f25bc7ece0d252db28c2b562293a1d5d8e2f",
+      "bytes": 7006
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-independent-final-review.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-independent-final-review.log",
+      "sha256": "af11060c71cd0d42ee972e07df75f48813d309548f6900278f34f55c7d941fef",
+      "bytes": 7729
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-independent-reviewed-validator.py",
+      "sha256": "ce2e60aaf74ec71b4ba44571224f01bb052c83a26a96e0c23f00b0d87d0a7d1e",
+      "bytes": 15192
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-independent-reviewed.exit",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-independent-reviewed.log",
+      "sha256": "12bcb4e1f2f966395b8da1b0fde0bfa03fed9e54e431ab06ad7e9f731e19e071",
+      "bytes": 7892
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-path-numeric-red-validator.py",
+      "sha256": "b18701ed4d0abeefd3b870c077d9b92e19de939a036d01b6bad16794dc81db02",
+      "bytes": 13136
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-path-numeric-red.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-path-numeric-red.log",
+      "sha256": "31240c7f234a73f581d3fd50751e35d0d0835abe286e52f8842620f37cee0c1a",
+      "bytes": 8564
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-protected-read-reviewed-validator.py",
+      "sha256": "cebe5e59e20806ce496987bd0baffb9c87c4aeeb0f0bb450de04e0b871fe615c",
+      "bytes": 14765
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-release-denial.json",
+      "sha256": "4b50852698c63bb95b235640d6dc2887d1e741fa4ac4f10a373625960e527f10",
+      "bytes": 88
+    },
+    {
+      "path": "evidence/universal-programme-20261007/scorecard-status.json",
+      "sha256": "97f3183564b9d37f7db1b60ad8bb9168bbdba029ed063bfd1ff51b6d2bb2a7c0",
+      "bytes": 166
+    },
+    {
+      "path": "evidence/universal-programme-20261007/tap-open-prs.json",
+      "sha256": "eaf9da65d0203576b6ae19ff810c9f19dcfaa43642c6e9f69494e59c790d2c26",
+      "bytes": 1265
+    }
+  ]
+}
