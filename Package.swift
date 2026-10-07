@@ -28,7 +28,7 @@ let cliExclusions = [
 ]
 let coreTestExclusions = [
     "AcquisitionTests.swift", "EngineTests.swift", "ServiceContextTests.swift", "OutcomeVerifierTests.swift",
-    "BonjourOpenAPISourceTests.swift", "BonjourGRPCSourceTests.swift",
+    "BonjourGRPCSourceTests.swift",
     "BonjourRealLifecycleAcceptanceTests.swift", "MOAT004G5ExternalBearerAuthorityTests.swift",
     "OpenAPIAuthorityManagementTests.swift",
 ]
@@ -51,7 +51,7 @@ let package = Package(
         .executable(name: "rightclick-ard-probe", targets: ["RightClickARDProbe"]),
     ] + nativeProducts,
     dependencies: [
-        .package(url: "https://github.com/modelcontextprotocol/swift-sdk.git", from: "0.11.0"),
+        .package(path: "Vendor/mcp-swift-sdk"),
         .package(url: "https://github.com/grpc/grpc-swift.git", exact: "1.26.2"),
         .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.28.1"),
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
@@ -89,7 +89,7 @@ let package = Package(
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
                 .product(name: "NIOHTTP1", package: "swift-nio"),
-                .product(name: "MCP", package: "swift-sdk"),
+                .product(name: "MCP", package: "mcp-swift-sdk"),
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),

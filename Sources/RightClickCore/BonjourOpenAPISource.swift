@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 
 public struct BonjourOpenAPIServiceDescriptor:
@@ -61,10 +60,12 @@ public final class BonjourOpenAPISource:
     private var acquisitionTokens: [ServiceKey: UUID] = [:]
 
     private var discoveredServices:
-        [ServiceKey: NetService] = [:]
+        [ServiceKey: AnyObject] = [:]
 
+#if os(macOS)
     private var browser:
         NetServiceBrowser?
+#endif
 
     private let acquisitionQueue =
         DispatchQueue(
@@ -99,13 +100,15 @@ public final class BonjourOpenAPISource:
 
         super.init()
 
-        if startBrowsing {
-            start()
-        }
+#if os(macOS)
+        if startBrowsing { start() }
+#endif
     }
 
     deinit {
+#if os(macOS)
         browser?.stop()
+#endif
 
         lock.lock()
 
@@ -119,9 +122,9 @@ public final class BonjourOpenAPISource:
 
         lock.unlock()
 
-        for service in services {
-            service.stop()
-        }
+#if os(macOS)
+        for case let service as NetService in services { service.stop() }
+#endif
     }
 
     public func reflectors()
@@ -157,7 +160,7 @@ public final class BonjourOpenAPISource:
         update(descriptor, key: key, token: token)
     }
 
-    private func beginAcquisition(for key: ServiceKey, requiring service: NetService? = nil) -> UUID? {
+    private func beginAcquisition(for key: ServiceKey, requiring service: AnyObject? = nil) -> UUID? {
         lock.lock(); defer { lock.unlock() }
         if let service, discoveredServices[key] !== service { return nil }
         let token = UUID()
@@ -193,16 +196,19 @@ public final class BonjourOpenAPISource:
         remove(for: ServiceKey(instanceName: instanceName, serviceType: serviceType, domain: domain))
     }
 
-    private func remove(for key: ServiceKey, requiring expected: NetService? = nil) {
+    private func remove(for key: ServiceKey, requiring expected: AnyObject? = nil) {
         lock.lock()
         if let expected, discoveredServices[key] !== expected { lock.unlock(); return }
         acquisitionTokens.removeValue(forKey: key)
         currentReflectors.removeValue(forKey: key)
         let service = discoveredServices.removeValue(forKey: key)
         lock.unlock()
-        service?.stop()
+#if os(macOS)
+        (service as? NetService)?.stop()
+#endif
     }
 
+#if os(macOS)
     private func start() {
         let startBrowser = {
             let browser =
@@ -228,6 +234,8 @@ public final class BonjourOpenAPISource:
             )
         }
     }
+#endif
+
 
     private func serviceKey(
         _ descriptor:
@@ -243,6 +251,7 @@ public final class BonjourOpenAPISource:
         )
     }
 
+#if os(macOS)
     private func serviceKey(
         _ service: NetService
     ) -> ServiceKey {
@@ -255,8 +264,10 @@ public final class BonjourOpenAPISource:
                 service.domain
         )
     }
+#endif
 
-    private func removeReflector(for key: ServiceKey, requiring service: NetService? = nil) {
+
+    private func removeReflector(for key: ServiceKey, requiring service: AnyObject? = nil) {
         lock.lock(); defer { lock.unlock() }
         if let service, discoveredServices[key] !== service { return }
         acquisitionTokens.removeValue(forKey: key)
@@ -588,6 +599,7 @@ public final class BonjourOpenAPISource:
         return components.url
     }
 
+#if os(macOS)
     private func descriptor(
         from service: NetService,
         txtData: Data? = nil
@@ -692,8 +704,10 @@ public final class BonjourOpenAPISource:
             self?.update(descriptor, key: key, token: token)
         }
     }
+#endif
 }
 
+#if os(macOS)
 extension BonjourOpenAPISource:
     NetServiceBrowserDelegate
 {
