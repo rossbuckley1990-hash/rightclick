@@ -1,7 +1,11 @@
 # Universal Agency Runtime — evidence gates
 
 This is the amended programme, continuing the existing RCIR architecture.
-Objective SHA-256: `d0b14e04ffd301975377d6c3a8e5d4274acff84a95d660d4596badb58638c054`.
+Current amended objective SHA-256: `4af7b3444226307c48e7a181cd2c896a6403fff203a585eaeecf0682b9bf2f15`.
+The earlier objective `d0b14e04ffd301975377d6c3a8e5d4274acff84a95d660d4596badb58638c054`
+is retained as historical scope. The amendment adds mandatory product simplicity:
+one `rightclick` runtime, automatic useful discovery where safe, and a short
+install/connect/first-execution journey. See `PRODUCT-SIMPLICITY-GATES.md`.
 No provider-specific AI operation is authorised. Core keeps its seven operations;
 authority/events/control need independent universal evidence before a versioned
 Agency Profile is exposed. Delegation must be enforceable internally first.
@@ -13,14 +17,18 @@ in `evidence/agency-repository-truth-20261007/`. A subsequent fetch at about
 15:03 UTC advanced main from `1c3d8c91be5b419e3e4af882972dba025fad2794` to
 `7622c133d6db92424f0b959880fa09d7655daad2` (README-only changes); it is merged
 into the candidate. A snapshot is not a claim that later remote state is frozen.
+The next fetch advanced main to `28de3d8396fc7f144e6734eb6923cdc7219d5c5d`,
+merging #46's proof infrastructure. That main is merged into the same candidate;
+its Python host/relay fixtures do not establish native substrate acceptance.
 
 The released tag is v0.2.2, commit `7a935fea719601492fe05beba1a4223c283eb350`.
 GitHub reported `immutable: false`. Its source archive SHA-256 is
 `a3953eb8f1be2f9123d694b90202244c94ee21971171972f8ce1d3bacf807ca5`.
 Installed Homebrew bytes are v0.2.2 with executable SHA-256
 `d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d`;
-the observed process advertises seven operations and 42 providers. The plugin
-skill's 0.2.7 version does not change that runtime identity.
+the observed process advertises seven operations and 42 providers. The current
+registered connector independently reports the same executable hash. Plugin
+skill versions do not change that runtime identity.
 
 Tap main was `dc3485807481b2c5c30aa963e19c644cdb05ec5b`, still v0.2.2,
 arm64_tahoe bottle rebuild 1 with SHA-256
@@ -38,7 +46,7 @@ No new release or tap version is claimed by this programme yet.
 | #37 portable runtime | `a41c277`, conflicts; native jobs failed | Preserve useful packaging/integrity/relocated-install controls; do not retain duplicate portable engine |
 | #51 portable runtime | Draft `c201420`, conflicts; native Linux product builds, acceptance still fails; Windows compile fails | Converge existing shared core/host boundaries in isolated branch; native protected file backend and dependency repair required |
 | #49 async runtime | `29f5527`, conflicts; A2A CI failed | Candidate reconciles task lifecycle/capacity/observation work; repair and rerun against final source before publication |
-| #46 isolated proof lab | Draft `9e223a5` | Keep issuer-scoped Kafka/Kubernetes and separate observers; Python Windows/Linux hosts support boundaries, not native acceptance |
+| #46 isolated proof lab | Merged in `28de3d8`, source `9e223a5` | Reuse issuer-scoped Kafka/Kubernetes and separate observers; Python Windows/Linux hosts support boundaries, not native acceptance; do not restart the withdrawn public relay |
 | #50 RCIR acceptance docs | `0fb4b64`, checks passed | Preserve source/package proof with its exact tested SHA; it is not proof of the combined candidate |
 | #39 preflight | `14af1ea`, checks failed | Reuse existing boundary conversion only after review; cannot stand in for genuine RCIR types |
 | #38 procedural knowledge | `334377b`, checks failed | Advisory experience only; never skip discovery, policy, authority or verification |
@@ -76,19 +84,19 @@ demonstrated. Narrow GREENs are recorded without promoting the enclosing gate.
 | G0 Repository truth | Exact main/release/installed/tap/PR/CI snapshot and dependency map | Reconcile overlaps; refresh state before final review/merge |
 | G1 RCIR | Existing closed typed ABI; bounded string constraints; common task contracts | Maps/unions/resources/handles/identities/refs/typed errors/events; descriptor-native GraphQL/gRPC types; coherent versioned effects |
 | G2 Admission | OpenAPI and generic unary/acquired process/task routes; replay/argument/policy/current-contract controls | Demonstrate every relevant production route on final shared core |
-| G3 Authority | Exact resource/effect/argument leases, private credential refs; real Kafka ACL and Kubernetes RBAC | Authenticated invoking subject/audience, shared ancestor budgets, revocation and all delegation dimensions; issuer/local distinction |
+| G3 Authority | Exact resource/effect/argument leases, private credential refs; real Kafka ACL/Kubernetes RBAC; internal represented child-subset, shared ancestor budgets, revocation and bound subject/audience controls | Authenticated production caller wiring, issuer credential brokering/downscoping, durable/distributed grant lifecycle; issuer/local distinction |
 | G4 Policy | Confirmation/policy denial with actual zero side effect; current-policy checks during tasks | One full effect/authority/delegation-aware decision model and consistent final routes |
 | G5 Tasks | Real A2A async tests, admission/capacity/deadline/uncertainty; explicit ACK remains unverified | Required universal states, native streams/checkpoints and durable recovery semantics |
 | G6 Events | Bounded internal task history | Generic graph/authority/approval/resource events; legal cursors/checkpoints and replay controls |
 | G7 Control | Explicit cancellation boundary in task model | Actual legal cancel/pause/resume/retry/checkpoint semantics driven by effects |
 | G8 Verification | Real exact JSON/file/Kafka/Kubernetes/WASM observations; host invocation causality; mismatch/missing controls | Full matrix; verification timeout/unavailability and causal stream observations |
 | G9 Receipts | Provisioned Ed25519; pinned independent decoder/signature/claim checks | Runtime/ABI/authority/delegation bindings, privacy-minimized public receipt, production key IDs/rotation/expiry/revocation/trust lifecycle |
-| G10 Portability | Genuine Linux product build from existing #51; Mac candidate runs | Reconciled native Linux effect/receipt and genuine Windows build/run/protected-file security |
+| G10 Portability | Genuine Linux product build, seven-operation stdio/authenticated-HTTP boundary, real bounded sockets and protected files; Mac combined regression | Final-source native Linux discovery/effect/receipt and genuine Windows build/run/protected-file security |
 | G11 Compilers | Main Mac/REST/GraphQL/gRPC/federation; candidate MCP/A2A/Kafka/Kubernetes/WASM acquisition | Native Windows/Linux direct reflectors; complete consume/watch/stream and type coverage |
 | G12 Graph | Actual Kafka removal/restoration prior candidate; credential withdrawal/reacquisition; serialized discovery tests | Final source provider generations, old authority invalidation, near-dispatch disappearance/restoration races |
 | G13 Core proof | Outgoing catalogue 20→14→8→7; actual fresh AI Kafka single publish/status plus independent broker readback and pinned receipt verification | Same fresh AI must perform effects/receipts/graph mutation across full matrix; exact final installed bytes |
 | G14 Agency proof | No extra operations exposed yet | Meaningful authority/events/control REDs and universal necessity; versioned compatible profile plus restricted AI proof |
-| G15 Delegation | Frozen real lease-holder/budget failures against production admission | All represented child⊆parent invariants integrated with actual execution and receipts |
+| G15 Delegation | Internal child⊆parent constraints, atomic ancestor budgets/revocation and real bounded HTTP child execution with independently decoded signed ancestry | Production principal identity, issuer/distributed constraints, durable task controls, genuine child-agent compromise/revocation proof before any public delegation operation |
 | G16 Multi-agent | Engineering agents use RIGHTCLICK discovery themselves | Real principal/attenuated children, compromise/revocation and provenance proof |
 | G17 Eleven substrates | Individual genuine effect/readback pressure tests | Full restricted-agent matrix; native platforms, gRPC streams, Kafka consume and Kubernetes watches |
 | G18 Release | Existing v0.2.2 source/assets inspected | Appropriate immutable tested publication of accepted final source/artifacts |
