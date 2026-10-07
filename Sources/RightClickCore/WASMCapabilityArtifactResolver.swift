@@ -32,33 +32,9 @@ public final class WASMCapabilityArtifactResolver: CapabilityArtifactResolver {
         let runtimeDigest = runtimeSnapshot.sha256
         let wit = try BoundedCapabilityProcess.run(executable: toolsSnapshot.file,
             arguments: ["component", "wit", componentSnapshot.file.path, "--json"])
-        guard let json = try JSONSerialization.jsonObject(with: wit) as? [String: Any],
-              let worlds = json["worlds"] as? [[String: Any]], worlds.count == 1,
-              let world = worlds.first, let imports = world["imports"] as? [String: Any], imports.isEmpty,
-              let exports = world["exports"] as? [String: Any], !exports.isEmpty, exports.count <= 256 else {
-            throw CapabilityArtifactResolutionError.invalidDescriptor("Only one no-import component world is supported; host imports require an explicit reusable authority model.")
-        }
-        var parameterNames: [String: [String]] = [:]
-        let operations = try exports.keys.sorted().map { name -> CapabilityInterfaceOperation in
-            guard name.range(of: "^[a-z][a-z0-9-]*$", options: .regularExpression) != nil,
-                  let export = exports[name] as? [String: Any], Set(export.keys) == ["function"],
-                  let function = export["function"] as? [String: Any], function["kind"] as? String == "freestanding",
-                  let parameters = function["params"] as? [[String: Any]], parameters.count <= 32,
-                  let resultType = function["result"] as? String else { throw CapabilityABIError.invalidSchema }
-            var properties: [String: CapabilitySchema] = [:]; var names: [String] = []
-            for parameter in parameters {
-                guard let name = parameter["name"] as? String, !name.isEmpty,
-                      properties[name] == nil, parameter["type"] as? String == "string" else { throw CapabilityABIError.invalidSchema }
-                names.append(name); properties[name] = .string
-            }
-            let result: CapabilitySchema
-            switch resultType { case "string": result = .string; case "u32", "s32": result = .integer
-            case "bool": result = .boolean; default: throw CapabilityABIError.invalidSchema }
-            parameterNames[name] = names
-            return .init(name: name, title: name,
-                arguments: .object(properties: properties, required: names), result: result,
-                declaration: try CapabilityJSON.value(function))
-        }
+        let compiled = try WITComponentContract.operations(wit)
+        let operations = compiled.map(\.interface)
+        let indexed = Dictionary(uniqueKeysWithValues: compiled.map { ($0.name, $0) })
         func unchanged() -> Bool {
             componentSnapshot.sourceStillMatches() && toolsSnapshot.sourceStillMatches() && runtimeSnapshot.sourceStillMatches()
         }
@@ -68,23 +44,18 @@ public final class WASMCapabilityArtifactResolver: CapabilityArtifactResolver {
                          "acquisitionRuntimeSHA256": toolsDigest, "runtimeExecutable": runtime.path,
                          "executionArtifactBinding": "host-private lifetime-managed read-only component/tools/runtime snapshots",
                          "hostImports": "none", "authorityScope": "exact component/export; no host filesystem, network or environment imports"],
+            argumentEncoding: .taggedNonStrings,
             available: unchanged, invoke: { name, input, admit in
-                guard unchanged(), case let .object(values) = input, let names = parameterNames[name] else { throw RCIRError.staleBinding }
-                let parameters = try names.map { name -> String in
-                    guard case let .string(value)? = values[name] else { throw CapabilityABIError.schemaMismatch }
-                    // Wasmtime's component argument grammar accepts JSON string
-                    // syntax. This is one argv token, never shell interpolation.
-                    return String(decoding: try JSONSerialization.data(withJSONObject: value, options: [.fragmentsAllowed]), as: UTF8.self)
-                }
-                let invocation = name + "(" + parameters.joined(separator: ",") + ")"
+                guard unchanged(), let operation = indexed[name] else { throw RCIRError.staleBinding }
+                // Exact declared values in one argv token. WAVE is distinct
+                // from JSON, including record labels and Unicode escapes.
+                let invocation = try operation.invocation(input)
                 let data = try withoutActuallyEscaping(admit) { gate in
                     try BoundedCapabilityProcess.run(executable: runtimeSnapshot.file,
                         arguments: ["run", "-C", "cache=n", "-W", "timeout=3s,max-memory-size=16777216,fuel=10000000", "--invoke", invocation, componentSnapshot.file.path],
                         admitStart: gate)
                 }
-                let trimmed = String(decoding: data, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
-                guard let bytes = trimmed.data(using: .utf8) else { throw CapabilityABIError.invalidWire }
-                return try CapabilityJSON.value(JSONSerialization.jsonObject(with: bytes, options: [.fragmentsAllowed]))
+                return try operation.returned(data)
             })
     }
 }
