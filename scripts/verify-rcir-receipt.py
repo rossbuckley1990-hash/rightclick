@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify exact RCIR receipt bytes using Ed25519 and a separately pinned raw key.
+"""Verify exact RCIR receipt bytes with a separate pin or explicit issuer policy.
 
 Requires cryptography>=46. No trust-on-first-use, embedded-key self-trust, or
 claims that a valid signature proves an external action actually happened.
@@ -14,6 +14,7 @@ from pathlib import Path
 import re
 import struct
 import sys
+import time
 import uuid
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
@@ -291,7 +292,8 @@ def _signed_claims(payload: bytes) -> dict:
             raise ValueError("unknown effect scope")
         effects.add(scope["effect"])
     result = {"taskID": task, "leaseID": lease, "providerGeneration": generation, "phase": phase,
-              "semanticOutcome": outcome, "scopeCount": len(scopes), "effects": sorted(effects)}
+              "semanticOutcome": outcome, "scopeCount": len(scopes), "effects": sorted(effects),
+              **{name: receipt[name] for name in ("startedAt", "deadline", "finishedAt", "lastObservationTime")}}
     if "authority" in request: result["authority"] = _authority_claims(request["authority"], binding, request)
     return result
 
@@ -304,7 +306,7 @@ def unique(pairs):
     return obj
 
 
-def verify(envelope: Path, trusted_key: Path, *, expected_outcome=None, expected_task_id=None, expected_lease_id=None, expected_authority=None) -> dict:
+def _envelope(envelope: Path):
     # A bounded read, rather than an unbounded read after a racy stat check.
     with envelope.open("rb") as file:
         raw = file.read(1_500_001)
@@ -320,10 +322,12 @@ def verify(envelope: Path, trusted_key: Path, *, expected_outcome=None, expected
         if base64.b64encode(decoded).decode("ascii") != data[name]: raise ValueError("noncanonical base64")
         return decoded
     payload, signature, embedded = decode("payload"), decode("signature"), decode("publicKey")
-    with trusted_key.open("rb") as file: pinned = file.read(33)
-    if len(pinned) != 32 or embedded != pinned: raise ValueError("untrusted public key")
-    if len(signature) != 64 or not len(PREFIX) < len(payload) <= MAX_PAYLOAD or not payload.startswith(PREFIX):
+    if len(embedded) != 32 or len(signature) != 64 or not len(PREFIX) < len(payload) <= MAX_PAYLOAD or not payload.startswith(PREFIX):
         raise ValueError("malformed signed receipt")
+    return payload, signature, embedded
+
+
+def _verify_claims(payload, signature, pinned, *, expected_outcome=None, expected_task_id=None, expected_lease_id=None, expected_authority=None):
     Ed25519PublicKey.from_public_bytes(pinned).verify(signature, payload)
     try:
         claims = _signed_claims(payload)
@@ -341,10 +345,94 @@ def verify(envelope: Path, trusted_key: Path, *, expected_outcome=None, expected
             "semanticClaim": "SIGNED_RUNTIME_ASSERTION", "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"}
 
 
+def verify(envelope: Path, trusted_key: Path, *, expected_outcome=None, expected_task_id=None, expected_lease_id=None, expected_authority=None) -> dict:
+    payload, signature, embedded = _envelope(envelope)
+    with trusted_key.open("rb") as file: pinned = file.read(33)
+    if len(pinned) != 32 or embedded != pinned: raise ValueError("untrusted public key")
+    return _verify_claims(payload, signature, pinned, expected_outcome=expected_outcome,
+        expected_task_id=expected_task_id, expected_lease_id=expected_lease_id, expected_authority=expected_authority)
+
+
+def _trust_policy(policy):
+    """Caller-trusted bounded snapshot. This reader cannot attest its provenance,
+    persistent revocation state, or freshness of an externally supplied document.
+    Do not load a trust policy from provider metadata or an envelope.
+    """
+    if isinstance(policy, Path):
+        with policy.open("rb") as source: raw = source.read(131_073)
+        if len(raw) > 131_072: raise ValueError("trust policy size limit")
+        policy = json.loads(raw, object_pairs_hook=unique)
+
+    def identity(value):
+        if not isinstance(value,str) or not 0 < len(value.encode("utf-8")) <= 512 or "*" in value or any(ord(c) < 32 or 127 <= ord(c) <= 159 for c in value):
+            raise ValueError("invalid trust identity")
+        return value
+    def integer(value):
+        if type(value) is not int or not 0 <= value < (1 << 63): raise ValueError("invalid trust interval")
+        return value
+    if not isinstance(policy,dict) or set(policy) != {"version","issuerID","maximumLiveAge","keys"} or type(policy["version"]) is not int or policy["version"] != 1:
+        raise ValueError("unsupported trust policy")
+    identity(policy["issuerID"])
+    if not 1 <= integer(policy["maximumLiveAge"]) <= 86_400_000: raise ValueError("invalid freshness budget")
+    if not isinstance(policy["keys"],list) or not 1 <= len(policy["keys"]) <= 64: raise ValueError("trust record count limit")
+    keys = {}; ids = set()
+    for record in policy["keys"]:
+        if not isinstance(record,dict) or set(record) != {"keyID","publicKey","notBefore","notAfter","retiredAt","revoked"}:
+            raise ValueError("unsupported trust key fields")
+        key_id = identity(record["keyID"])
+        if not isinstance(record["publicKey"],str) or len(record["publicKey"]) != 44: raise ValueError("invalid public locator")
+        key = base64.b64decode(record["publicKey"],validate=True)
+        if len(key) != 32 or base64.b64encode(key).decode("ascii") != record["publicKey"] or key in keys or key_id in ids:
+            raise ValueError("duplicate or invalid trust key")
+        before,after = integer(record["notBefore"]),integer(record["notAfter"])
+        if before >= after or type(record["revoked"]) is not bool: raise ValueError("invalid key lifecycle")
+        retirement = record["retiredAt"]
+        if retirement is not None and not before <= integer(retirement) <= after: raise ValueError("invalid retirement")
+        keys[key] = {**record,"cutoff":min(after,retirement if retirement is not None else after)}; ids.add(key_id)
+    return {"version":1,"issuerID":policy["issuerID"],"maximumLiveAge":policy["maximumLiveAge"]},keys
+
+
+def verify_with_policy(envelope: Path, trusted_policy, *, mode, expected_issuer,
+                       expected_task_id, expected_lease_id, expected_outcome=None,
+                       expected_authority=None, verification_time=None) -> dict:
+    """Explicit live/historical policy around the same Ed25519/canonical reader.
+    Revoked keys deny both modes because v1 has no trusted signing timestamp.
+    The optional clock is for evidence replay; CLI uses the current wall clock.
+    """
+    policy,keys = _trust_policy(trusted_policy)
+    if mode not in ("live","historical") or expected_issuer != policy["issuerID"]:
+        raise ValueError("untrusted issuer or mode")
+    _identifier(expected_task_id); _identifier(expected_lease_id)
+    payload,signature,embedded = _envelope(envelope)
+    record = keys.get(embedded)
+    if record is None or record["revoked"]: raise ValueError("untrusted or revoked key")
+    def now():
+        value = int(time.time() * 1000) if verification_time is None else verification_time
+        if type(value) is not int or not 0 <= value < (1 << 63): raise ValueError("invalid verification time")
+        return value
+    initial_time = now()
+    if mode == "live" and not record["notBefore"] <= initial_time < record["cutoff"]: raise ValueError("key not active")
+    result = _verify_claims(payload,signature,embedded,expected_outcome=expected_outcome,
+        expected_task_id=expected_task_id,expected_lease_id=expected_lease_id,expected_authority=expected_authority)
+    claims = result["signedClaims"]; final_time = max(initial_time,now())
+    if mode == "live" and not record["notBefore"] <= final_time < record["cutoff"]: raise ValueError("key not active")
+    if not record["notBefore"] <= claims["startedAt"] <= claims["lastObservationTime"] < record["cutoff"] or claims["lastObservationTime"] > final_time:
+        raise ValueError("receipt outside declared key interval")
+    if mode == "live" and final_time - claims["lastObservationTime"] > policy["maximumLiveAge"]: raise ValueError("receipt too old")
+    result["trustPolicy"] = {"issuerID":policy["issuerID"],"keyID":record["keyID"],"mode":mode,
+        "identitySource":"CALLER_PROVISIONED_POLICY","signingTimestamp":"NOT_INDEPENDENTLY_ESTABLISHED",
+        "liveRevocation":"CALLER_SNAPSHOT_ONLY"}
+    return result
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("envelope", type=Path)
-    p.add_argument("--trusted-key", type=Path, required=True)
+    trust = p.add_mutually_exclusive_group(required=True)
+    trust.add_argument("--trusted-key", type=Path)
+    trust.add_argument("--trusted-policy", type=Path, help="Separately provisioned bounded issuer/key-lifecycle JSON")
+    p.add_argument("--mode", choices=("live","historical"))
+    p.add_argument("--expected-issuer")
     p.add_argument("--expected-outcome", choices=("succeeded", "failed", "unknown", "unverified"))
     p.add_argument("--expected-task-id")
     p.add_argument("--expected-lease-id")
@@ -356,9 +444,17 @@ def main():
             with a.expected_authority.open("rb") as source: encoded = source.read(65_537)
             if len(encoded) > 65_536: raise ValueError("expected authority size limit")
             expected_authority = json.loads(encoded, object_pairs_hook=unique)
-        print(json.dumps(verify(a.envelope, a.trusted_key, expected_outcome=a.expected_outcome,
-                                expected_task_id=a.expected_task_id, expected_lease_id=a.expected_lease_id,
-                                expected_authority=expected_authority), indent=2))
+        if a.trusted_policy is not None:
+            if a.mode is None or a.expected_issuer is None or a.expected_task_id is None or a.expected_lease_id is None:
+                raise ValueError("explicit mode, issuer, task and lease required for policy verification")
+            result = verify_with_policy(a.envelope,a.trusted_policy,mode=a.mode,expected_issuer=a.expected_issuer,
+                expected_task_id=a.expected_task_id,expected_lease_id=a.expected_lease_id,
+                expected_outcome=a.expected_outcome,expected_authority=expected_authority)
+        else:
+            if a.mode is not None or a.expected_issuer is not None: raise ValueError("issuer policy options require trusted policy")
+            result = verify(a.envelope,a.trusted_key,expected_outcome=a.expected_outcome,
+                expected_task_id=a.expected_task_id,expected_lease_id=a.expected_lease_id,expected_authority=expected_authority)
+        print(json.dumps(result,indent=2))
         return 0
     except ReceiptClaimMismatch:
         print(json.dumps({"signature": "VALID", "requestedClaim": "MISMATCH"}), file=sys.stderr)
