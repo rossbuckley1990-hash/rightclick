@@ -5,6 +5,7 @@ import RightClickMCP
 @main
 struct RightClickCLIMain {
     static func main() {
+        RightClickRuntime.captureStartupIdentity()
         let args = Array(CommandLine.arguments.dropFirst())
         let code = CLI().run(args)
         if code != 0 {
@@ -27,6 +28,16 @@ struct CLI {
             print(usage())
             return 0
         case "doctor":
+            if rest.contains("--fix") {
+                let executable = RightClickRuntime.executablePath()
+                return RightClickLocalLifecycle.runRepair(args: rest, executable: executable) {
+                    try RightClickLocalLifecycle.liveProbe(executable: executable)
+                }
+            }
+            guard rest.allSatisfy({ $0 == "--json" }), Set(rest).count == rest.count else {
+                fputs("usage: rightclick doctor [--fix] [--dry-run] [--json]\n", stderr)
+                return 2
+            }
             return emit(RightClickMCPRuntime.makeEngine().doctor(), json: json)
         case "inspect":
             return inspect(positional, json: json)
@@ -37,11 +48,16 @@ struct CLI {
         case "run":
             return runCapability(rest, positional: positional, json: json)
         case "status":
+            if positional.isEmpty { return RightClickStatusCLI.run(rest) }
             return status(positional, json: json)
         case "providers":
             return providers(json: json)
         case "provider":
             return RightClickProviderCLI.run(rest)
+        case "connect":
+            return RightClickConnectCLI.run(rest)
+        case "sandbox":
+            return RightClickSandboxCLI.run(rest)
         case "authority":
             return RightClickAuthorityCLI.run(rest)
         case "refresh":
@@ -51,9 +67,9 @@ struct CLI {
         case "version", "--version":
             print(RightClickVersion.current)
             return 0
-#if os(macOS)
         case "setup":
             do {
+#if os(macOS)
                 if rest.first == "chatgpt" {
                     return RightClickChatGPTOnboarding.run(
                         args: rest,
@@ -64,17 +80,13 @@ struct CLI {
                 if try RightClickLocalOnboarding.bridgeArguments(rest) {
                     return RightClickSetup.run(args: rest, json: json)
                 }
+#endif
+                let executable = RightClickRuntime.executablePath()
                 return RightClickLocalOnboarding.run(
                     args: rest,
-                    executable: RightClickSetup.executablePath()
+                    executable: executable
                 ) {
-                    let item = try RightClickMCPRuntime.makeEngine().inspect("RIGHTCLICK onboarding probe")
-                    guard item.typeIdentifier == "public.plain-text" else {
-                        throw RightClickLocalOnboarding.SetupError(
-                            "Local text inspection did not return public.plain-text."
-                        )
-                    }
-                    return "PASS: local text inspection; not an MCP connection test"
+                    try RightClickLocalLifecycle.liveProbe(executable: executable)
                 }
             } catch {
                 if json {
@@ -89,6 +101,7 @@ struct CLI {
                 }
                 return 2
             }
+#if os(macOS)
         case "bridge":
             return RightClickBridgeCLI.run(rest)
         case "auth":
@@ -96,11 +109,6 @@ struct CLI {
         case "serve":
             return RightClickServe.run(rest)
 #else
-        case "setup":
-            struct Registration: Encodable { let command: String; let args: [String] }
-            print(RightClickJSON.encode(["mcpServers": ["rightclick": Registration(
-                command: RightClickRuntime.executablePath(), args: ["mcp"])]]))
-            return 0
         case "bridge", "auth", "serve":
             fputs("This command requires the macOS bridge adapter. Use rightclick mcp or rightclick mcp --http --token <token>.\n", stderr)
             return 4
@@ -280,13 +288,16 @@ struct CLI {
     private func usage() -> String {
         """
         RIGHTCLICK
-        Give your AI the capabilities already installed on your Mac.
+        Give your AI the capabilities exposed by your environment.
 
-        rightclick doctor
+        rightclick doctor [--fix] [--dry-run] [--json]
         rightclick inspect <item>
         rightclick actions <item>
         rightclick run <action-id> <item> [--yes] [--expect-output <exact-text>] [--verify-json <VerificationSpec JSON>]
         rightclick status <execution-id>
+        rightclick status [--json]
+        rightclick connect <target> [--json]
+        rightclick sandbox [--json | --mcp]
         rightclick providers
         rightclick provider list [--json]
         rightclick provider add --id <id> --spec-url <https-url> --base-url <https-url> [--auth-scheme <scheme>]
@@ -296,6 +307,7 @@ struct CLI {
         rightclick authority delete --origin <https-origin> --scheme <name>
         rightclick refresh
         rightclick setup [--client cursor] [--yes] [--dry-run]
+        rightclick setup --client generic --config <absolute-mcp-config> --yes
         rightclick setup --client cursor --disconnect [--yes] [--dry-run]
         rightclick setup --chatgpt-tunnel-id tunnel_...  (explicit legacy bridge preparation)
         rightclick bridge run

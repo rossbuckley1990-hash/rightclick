@@ -428,6 +428,8 @@ public final class GraphQLCapabilityArtifactResolver:
     private let introspectionLoader:
         IntrospectionLoader
 
+    private let session: URLSession
+
     public convenience init() {
         self.init(
             schemaLoader: {
@@ -455,13 +457,16 @@ public final class GraphQLCapabilityArtifactResolver:
         schemaLoader:
             @escaping SchemaLoader,
         introspectionLoader:
-            @escaping IntrospectionLoader
+            @escaping IntrospectionLoader,
+        session: URLSession = .shared
     ) {
         self.schemaLoader =
             schemaLoader
 
         self.introspectionLoader =
             introspectionLoader
+
+        self.session = session
     }
 
     public func resolve(
@@ -575,7 +580,8 @@ public final class GraphQLCapabilityArtifactResolver:
             endpointURL:
                 endpoint,
             externalBearerSchemeName:
-                descriptor.authorityScheme
+                descriptor.authorityScheme,
+            session: session
         )
     }
 }

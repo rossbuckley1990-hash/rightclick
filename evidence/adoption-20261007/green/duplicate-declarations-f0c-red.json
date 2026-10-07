@@ -1,0 +1,70 @@
+{
+  "scope": "Original f0c executable bytes; private owned project HOME; actual CLI declaration discovery only",
+  "binarySHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+  "providerExecution": "NOT_RUN",
+  "status": "RED_REPRODUCED",
+  "cases": [
+    {
+      "case": "duplicated closed-envelope version",
+      "result": {
+        "capabilityCount": 1,
+        "configuration": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/rightclick-declaration-duplicate-red-7p5c11mg/Library/Application Support/RIGHTCLICK/Connections/capability-providers.json",
+        "credentialStored": false,
+        "execution": "NOT_RUN",
+        "id": "declaration-red-269af87b3763",
+        "kind": "mcp",
+        "outcomeVerification": "NOT_RUN",
+        "reflectorID": "mcp:declaration-red-269af87b3763",
+        "status": "CONNECTED"
+      },
+      "ownedRegistrySHA256": "cca7c6042b617a0bc07d548a9e21f7681e263c6508cccccd15908335f16ec48e"
+    },
+    {
+      "case": "duplicated OpenAPI version",
+      "result": {
+        "capabilityCount": 1,
+        "configuration": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/rightclick-declaration-duplicate-red-7p5c11mg/Library/Application Support/RIGHTCLICK/Connections/capability-providers.json",
+        "credentialStored": false,
+        "execution": "NOT_RUN",
+        "id": "declaration-red-c2d659644a5c",
+        "kind": "openapi",
+        "outcomeVerification": "NOT_RUN",
+        "reflectorID": "openapi-reflector:9f78623df01e8a9f7f0b01577a47c30f6b89d0ac8a3a18bb6797942621ed52dc",
+        "status": "CONNECTED"
+      },
+      "ownedRegistrySHA256": "9a533694d7b67aaa07c38d799758244fcdea53d6d74184ed6fe1a9b00c9809ba"
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/.well-known/rightclick",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "initialize",
+      "path": "/mcp",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "notifications/initialized",
+      "path": "/mcp",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "tools/list",
+      "path": "/mcp",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/openapi.json",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    }
+  ]
+}

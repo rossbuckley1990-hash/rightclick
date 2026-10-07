@@ -138,8 +138,13 @@ enum RightClickSetupAllTransaction {
                 var rollbackErrors:
                     [String] = []
 
-                var rollbackRequired =
-                    false
+                let currentRollback = (error as? RightClickNativeRegistrationBackend.MutationFailure)?.rollbackStatus
+                    ?? (error as? RightClickJSONConfigBackend.MutationFailure)?.rollbackStatus
+                var rollbackRequired = currentRollback == "RESTORED"
+                if currentRollback == "ROLLBACK_FAILED" {
+                    rollbackErrors.append(client.plan.clientID + ": current mutation could not safely be restored")
+                    rollbackRequired = true
+                }
 
                 for prior in
                     applied.reversed()

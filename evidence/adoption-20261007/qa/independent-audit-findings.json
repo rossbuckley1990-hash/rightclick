@@ -1,0 +1,55 @@
+{
+  "scope": "Independent code audit; acceptance remains pending coordinator build window",
+  "confirmedBoundaries": [
+    {
+      "id": "newer-client-config-rollback",
+      "risk": "Setup failure clobbered newer valid JSON or native registration",
+      "tests": [
+        "AdoptionSecurityRollbackTests"
+      ],
+      "fixOwner": "setup_repair"
+    },
+    {
+      "id": "native-output-deadlock-and-authority-diagnostics",
+      "risk": "waitUntilExit before pipe drain could deadlock and raw client stderr could disclose secrets",
+      "tests": [
+        "AdoptionSecurityProcessTests"
+      ],
+      "fixOwner": "setup_repair"
+    },
+    {
+      "id": "native-descendant-containment",
+      "risk": "Timeout killing only Foundation direct child leaves pipe-inheriting descendants alive",
+      "tests": [
+        "AdoptionSecurityProcessTests.testTimedOutNativeCommandDoesNotLeaveDescendantRunning"
+      ],
+      "fixOwner": "setup_repair; POSIX spawn/process group now planned; Windows jobs separately needed"
+    },
+    {
+      "id": "live-runtime-launch-alias",
+      "risk": "Live process identity changed after launcher symlink retarget",
+      "evidence": "qa/before/acceptance.json",
+      "fixOwner": "root"
+    },
+    {
+      "id": "ambient-mcp-authority",
+      "risk": "MCP initialize/catalog used URLSession.shared credentials/cookies and persisted Set-Cookie",
+      "tests": [
+        "AdoptionSecurityMCPCookiesTests"
+      ],
+      "fixOwner": "root/connect_discovery"
+    },
+    {
+      "id": "canonical-core7-schema",
+      "risk": "Probe originally checked seven names and only inputSchema.type=object, missing same-version canonical schema drift",
+      "fixOwner": "setup_repair; reported"
+    }
+  ],
+  "claimReview": {
+    "status": "Root status labels client connections NOT_OBSERVED and provider execution NOT_PROBED; unverified channel without compiled metadata",
+    "sandbox": "Awaiting source; requested acceptance explicitly scoped disposable capability fixture, not OS isolation or eleven-world release",
+    "unsupportedConnect": "Agent explicitly abstains ARD/A2A/federation/multi-link manifests/YAML/Windows protected transactions"
+  },
+  "reconstructed": true,
+  "reconstructionScope": "Historical audit map recovered by parsing constant literal from own safe writer; no execution evidence or present GREEN acceptance."
+}

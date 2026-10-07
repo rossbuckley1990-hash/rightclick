@@ -39,8 +39,29 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
             process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
             try process.run(); processes.append(process)
             let port = directory.appendingPathComponent(role + "-port")
-            for _ in 0..<300 { if FileManager.default.fileExists(atPath: port.path) { break }; Thread.sleep(forTimeInterval: 0.01) }
-            let address = URL(string: "http://127.0.0.1:" + (try String(contentsOf: port, encoding: .utf8)))!
+            var publishedPort: UInt16?
+            for _ in 0..<300 {
+                guard process.isRunning else {
+                    throw NSError(domain: "RightClickHTTPFixtureReadiness", code: 1,
+                        userInfo: [NSLocalizedDescriptionKey: "HTTP fixture exited before publishing its port."])
+                }
+                if let handle = try? FileHandle(forReadingFrom: port) {
+                    defer { try? handle.close() }
+                    let bytes = try handle.read(upToCount: 6) ?? Data()
+                    if !bytes.isEmpty {
+                        guard bytes.count <= 5, bytes.allSatisfy({ (48...57).contains($0) }),
+                              let value = UInt16(String(decoding: bytes, as: UTF8.self)), value > 0 else {
+                            throw NSError(domain: "RightClickHTTPFixtureReadiness", code: 2,
+                                userInfo: [NSLocalizedDescriptionKey: "HTTP fixture published a malformed bounded port."])
+                        }
+                        publishedPort = value
+                        break
+                    }
+                }
+                Thread.sleep(forTimeInterval: 0.01)
+            }
+            let value = try XCTUnwrap(publishedPort, "HTTP fixture did not publish a valid port before its deadline.")
+            let address = try XCTUnwrap(URL(string: "http://127.0.0.1:\(value)"))
             if role == "provider" { provider = address }; if role == "observer" { observer = address }
         }
         let schema: [String: Any] = ["type": "object", "additionalProperties": false, "required": ["id", "value"],

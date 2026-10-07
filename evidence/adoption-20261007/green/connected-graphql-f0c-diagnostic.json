@@ -1,0 +1,29 @@
+{
+  "scope": "Existing f0c binary, real loopback headers, isolated temporary HOME only",
+  "binarySHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+  "rawHTTPHeadersSeconds": 0.002,
+  "declaredLength": "16777217",
+  "cliSeconds": 2.0658,
+  "cliExit": 2,
+  "cliReport": {
+    "credentialStored": "false",
+    "error": "The provider declaration could not be acquired or compiled. Check its public schema, supported transport and operator-managed authority; no configuration was changed.",
+    "execution": "NOT_RUN",
+    "status": "FAILED"
+  },
+  "ownedRegistryFiles": [],
+  "requests": [
+    {
+      "path": "/oversize",
+      "operation": "RightClickIntrospection",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "path": "/oversize",
+      "operation": "RightClickIntrospection",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    }
+  ]
+}

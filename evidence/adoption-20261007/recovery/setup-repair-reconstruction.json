@@ -1,0 +1,68 @@
+{
+  "timestampUTC": "2026-10-07T18:23:31.607327+00:00",
+  "base": "2dd7bd2",
+  "sessionRecords": "rollout-2026-10-07T18-22-57-01a11763-c6b8-7261-8ef7-8898a2a488d4.jsonl",
+  "restoredOwnOperations": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "skippedOperation18": "Original build/process acceptance script not replayed",
+  "upstreamHostFilesSource": "6ea1d3096eb7bba55417d46e7820796bef24daff; converger confirms creation45 transplanted38b; supplied authoritative blobs a85c508ebd18d7552c0aa2b85e8265a3e0535696 and eef6d5f1491f75de03b58375e10cc89f06f33045",
+  "CMatchesOriginalFrozenSourceSHA256": true,
+  "note": "Source reconstructed from own safe patch/write inputs. Only C/header have original complete source hashes for byte comparison. Root added final catalogue/duplicate response checks to LocalStdioProbe after reconstruction. New scoped fixes: bounded directory ancestor traversal and final planned executable digest binding.",
+  "sourceSHA256": {
+    "Sources/RightClickCLI/PortableClientSupport.swift": "b712af274093f35bea5ff2883dd0fb538875658dcf4003d008d3a6b7d6fb795d",
+    "Sources/RightClickCLI/OnboardingEngine.swift": "4a4db8eb2c0ef27200a01b246d40e8ccd33537fd70478ff2cc21f102489969bc",
+    "Sources/RightClickCLI/ClaudeClientAdapter.swift": "b76824959bd30641471673953828a5cb56aeb2e39c95670627c7d9ec5f53a336",
+    "Sources/RightClickCLI/CodexClientAdapter.swift": "73d525fce01509389334b081ed7aab5b0084c297ab269203bb912e380048f7b6",
+    "Sources/RightClickCLI/NativeRegistrationBackend.swift": "eef9218c9d7da06a9c8d33bddcc5be6467148fbf4bf871346a00aad96291dbc6",
+    "Sources/RightClickCLI/LocalLifecycle.swift": "36283e4cd8f8d496fdc90477a5e95937e64a947d3ee7aec245b4d2fb73f75d70",
+    "Sources/RightClickCLI/LocalStdioProbe.swift": "6eadd062cd028151154f72ed64d49be25a76c59d7511ff9d963507eff7a42274",
+    "Sources/RightClickCLI/ClientChildProcess.swift": "1bd9d5bdf6b39a4edd07bcfba211de2bfc6592877014d3584e9df47106079aec",
+    "Sources/RightClickCLI/ClientRegistry.swift": "8a6528310488a058c268e5cf9af8841e607a1eca1ca4394cb30ea52c49a81130",
+    "Sources/RightClickCLI/LocalOnboarding.swift": "d32bc06cd0a514cec4ba55b8e686ad601e27adda5e55db79cfd6b3c8b3a514cd",
+    "Sources/RightClickCLI/SetupAllTransaction.swift": "a7d8d69100f6ca97a397253b7b174aec56f399c269f7c14ed969f6e03c9604d4",
+    "Sources/RightClickHostFiles/HostFiles.c": "e2f303bb6fe5733c448c94430eff60ee650edad36fa5831cced25a1aa77c9638",
+    "Sources/RightClickHostFiles/include/RightClickHostFiles.h": "99ca3e3416b6a85a6d0023618dc57ed6ea93ce73125dd2303270aba22dc57df6",
+    "Tests/RightClickCLITests/Portable/PortableClientLifecycleTests.swift": "d153f8850cb2f9ed36205c0b1b9a1d2ff1df81c04edc9eda3535c33839c8d22f",
+    "Tests/RightClickCLITests/OnboardingEngineTests.swift": "de69bd13dff17f4fbf8dd54d5bb99c71e8be4a6482e0cd758163cb0eba081a40",
+    "Tests/RightClickCLITests/LocalOnboardingTests.swift": "0f03166c15b85bb0b283cdf7bcb814f2c5cb62c937b5b255d08a767a5b946caa"
+  },
+  "archivalProcessHostLog": "Recovered verbatim original successful tool output from own session record442; prior macOS run, not rerun. Source C/header SHA256 matches recovered current bytes.",
+  "postFreezeUpdates": [
+    {
+      "timestampUTC": "2026-10-07T18:32:14.589955+00:00",
+      "reason": "Root-authorized final ledger failure propagation and actual ownership postcondition conflict regression; preserve sanitized native registration failed diagnostic contract.",
+      "sourceSHA256": {
+        "Sources/RightClickCLI/LocalLifecycle.swift": "45bf9e2254fa670d72b2a27c515b649483f7858d919bb62f8a5995679d1ce87f",
+        "Sources/RightClickCLI/NativeRegistrationBackend.swift": "fe702b4e624e0fefb03c84956bbeaeaf9efa356e15dab851bba72e180bc667dc",
+        "Tests/RightClickCLITests/Portable/PortableClientLifecycleTests.swift": "43b85188425074e0a19b9a75aee95c1ce63f231559273e28b0db3364653687f1"
+      },
+      "validation": "Swift parser passed; integrated focused/full tests delegated to root."
+    }
+  ]
+}

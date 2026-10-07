@@ -1,0 +1,47 @@
+{
+  "acceptance": "generic setup and owned doctor repair",
+  "acceptanceScriptSHA256": "05b2fc41e42ccbd4ae884f05fc150077b99b257bcb8d68ad79b9210824d01b57",
+  "binarySHA256": "b776122ccf521a46ff0149001bb918e9f00a14138ba9f3db121c50d578c05a68",
+  "cases": [
+    {
+      "case": "independent stdio before setup",
+      "details": {
+        "executableSHA256": "b776122ccf521a46ff0149001bb918e9f00a14138ba9f3db121c50d578c05a68",
+        "pid": 3371,
+        "realAIClient": "NOT_OBSERVED",
+        "status": "VERIFIED",
+        "tools": [
+          "context_actions",
+          "context_explain",
+          "context_inspect",
+          "context_providers",
+          "context_run",
+          "context_run_status",
+          "context_runtime"
+        ],
+        "transport": "stdio"
+      },
+      "passed": true
+    }
+  ],
+  "cliInvocations": [
+    {
+      "command": "setup",
+      "report": {
+        "configurationChanged": "false",
+        "error": "The local MCP probe timed out, exited, or returned invalid bounded output.",
+        "mcpConnection": "NOT_VERIFIED",
+        "outcomeVerification": "NOT_RUN",
+        "rollbackStatus": "NOT_REQUIRED",
+        "status": "FAILED"
+      },
+      "returncode": 1
+    }
+  ],
+  "error": "Failure: Generic setup did not configure the selected file",
+  "host": "darwin",
+  "passed": false,
+  "provenance": "Actual immutable d207 bytes after mandatory single-SIGKILL harness fix; instrumented sanitized CLI reports retained",
+  "realAIClient": "NOT_OBSERVED",
+  "temporaryHomeCleanup": "COMPLETED"
+}

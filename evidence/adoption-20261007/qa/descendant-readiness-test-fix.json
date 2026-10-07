@@ -1,0 +1,13 @@
+{
+  "scope": "QA fixture readiness fix only; no production changes or rebuilt test execution",
+  "testSource": "Tests/RightClickCLITests/AdoptionSecurityProcessTests.swift",
+  "testSourceSHA256": "79f761b5188fc594384462c7f70c31e1cc80397beb3c5499ef2cc38374a681d4",
+  "runnerDeadlineSeconds": 2,
+  "readinessAcknowledgmentDeadlineSeconds": 1,
+  "completionJoinDeadlineSeconds": 4,
+  "containmentAssertion": "kill(descendant, 0) == -1 after bounded observation",
+  "readinessFailure": "Explicit failing assertion; no skipped gate",
+  "unchangedDeadlineRegression": "testNativeProcessDeadlineReturnsAndDoesNotEchoSecretOutput still timeout0.1",
+  "oldBinaryDiagnosticSHA256": "8cae3cc3a9f8bf0293ac5c2b12e98f9b2d0a7401ba81b368541f915314181c44",
+  "oldBinaryUnsandboxedRerun": "1 test /0 failures; source fix requires coordinator rebuild"
+}

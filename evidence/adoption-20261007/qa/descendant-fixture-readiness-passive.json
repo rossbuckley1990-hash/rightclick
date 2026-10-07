@@ -1,0 +1,36 @@
+{
+  "scope": "Supplemental passive fixture startup diagnostic, not production runner or containment acceptance; child exits autonomously after0.1s, no signals issued",
+  "fixtureSHA256": "d6501b3bb7b6a7c1f5b12c1e929cb5596919fcb41dcafee52cd04eff11327ffb",
+  "trials": [
+    {
+      "trial": 1,
+      "spawnReturnedSeconds": 0.001094,
+      "descendantReadinessSeconds": 0.227012,
+      "readyWithin200msOfLaunch": false,
+      "descendantCreated": true,
+      "exitCode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "trial": 2,
+      "spawnReturnedSeconds": 0.002292,
+      "descendantReadinessSeconds": 0.14349,
+      "readyWithin200msOfLaunch": true,
+      "descendantCreated": true,
+      "exitCode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    {
+      "trial": 3,
+      "spawnReturnedSeconds": 0.0014,
+      "descendantReadinessSeconds": 0.105982,
+      "readyWithin200msOfLaunch": true,
+      "descendantCreated": true,
+      "exitCode": 0,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    }
+  ]
+}

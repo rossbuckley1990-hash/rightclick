@@ -14,9 +14,7 @@ enum RightClickClientRegistry {
     static var supportedIDs:
         [String]
     {
-        adapters.map {
-            $0.id
-        }
+        adapters.map { $0.id } + ["generic"]
     }
 
     static func adapter(

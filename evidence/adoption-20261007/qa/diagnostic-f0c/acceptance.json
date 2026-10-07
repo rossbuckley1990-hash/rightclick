@@ -1,0 +1,177 @@
+{
+  "scope": "Local built executable blackbox security acceptance; no installed client or portable release attestation",
+  "binary": "/private/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+  "binarySHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+  "passed": 8,
+  "failed": 0,
+  "cases": [
+    {
+      "case": "live Core7 catalogue and executable/PID identity",
+      "passed": true,
+      "details": {
+        "pid": 43649,
+        "runtime": {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "buildSHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+          "capabilityABIVersion": 1,
+          "channel": "unverified",
+          "contractSchemaVersion": 1,
+          "executableMeasurement": "startup-file-bytes",
+          "executablePath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+          "executableRealPath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+          "executableSHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+          "mcpSchemaVersion": 1,
+          "pid": 43649,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "transport": "stdio",
+          "version": "0.2.2"
+        },
+        "tools": [
+          "context_runtime",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status",
+          "context_providers"
+        ]
+      }
+    },
+    {
+      "case": "connect adoption command available",
+      "passed": true
+    },
+    {
+      "case": "reject URL userinfo without persistence or secret echo",
+      "passed": true,
+      "details": {
+        "exitCode": 2,
+        "elapsedSeconds": 0.031
+      }
+    },
+    {
+      "case": "reject URL query without persistence or secret echo",
+      "passed": true,
+      "details": {
+        "exitCode": 2,
+        "elapsedSeconds": 0.029
+      }
+    },
+    {
+      "case": "reject URL fragment without persistence or secret echo",
+      "passed": true,
+      "details": {
+        "exitCode": 2,
+        "elapsedSeconds": 0.029
+      }
+    },
+    {
+      "case": "sandbox adoption command available",
+      "passed": true
+    },
+    {
+      "case": "real sandbox Core7, independent effect readback and graceful cleanup",
+      "passed": true,
+      "details": {
+        "tools": [
+          "context_runtime",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status",
+          "context_providers"
+        ],
+        "pid": 43654,
+        "hostConfigIgnored": true,
+        "confirmationRequired": true,
+        "traversalRejected": true,
+        "readbackBoundToInvocation": true,
+        "gracefulCleanup": true
+      }
+    },
+    {
+      "case": "live identity survives retargeted launch symlink",
+      "passed": true,
+      "details": {
+        "before": {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "buildSHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+          "capabilityABIVersion": 1,
+          "channel": "unverified",
+          "contractSchemaVersion": 1,
+          "executableMeasurement": "startup-file-bytes",
+          "executablePath": "/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-security-3zu090ui/launch-rightclick",
+          "executableRealPath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+          "executableSHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+          "mcpSchemaVersion": 1,
+          "pid": 43655,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "transport": "stdio",
+          "version": "0.2.2"
+        },
+        "after": {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "buildSHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+          "capabilityABIVersion": 1,
+          "channel": "unverified",
+          "contractSchemaVersion": 1,
+          "executableMeasurement": "startup-file-bytes",
+          "executablePath": "/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-security-3zu090ui/launch-rightclick",
+          "executableRealPath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+          "executableSHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+          "mcpSchemaVersion": 1,
+          "pid": 43655,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "transport": "stdio",
+          "version": "0.2.2"
+        }
+      }
+    }
+  ]
+}

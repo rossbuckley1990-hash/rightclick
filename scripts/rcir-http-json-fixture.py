@@ -81,4 +81,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_header("Set-Cookie", "rightclick-injected=must-not-persist; Path=/")
         self.send_header("Content-Length", str(len(response))); self.end_headers(); self.wfile.write(response)
 server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
-(root / (role + "-port")).write_text(str(server.server_address[1])); server.serve_forever()
+# Closing a staged same-directory file before replacement makes existence of
+# the published path mean that its complete port value is available.
+published_port = root / (role + "-port")
+staged_port = root / (role + "-port.pending")
+staged_port.write_text(str(server.server_address[1]), encoding="ascii")
+staged_port.replace(published_port)
+server.serve_forever()

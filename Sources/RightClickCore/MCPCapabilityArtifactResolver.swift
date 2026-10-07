@@ -81,7 +81,10 @@ private final class MCPDescriptorSession {
             request.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
         }
         request.httpBody = try JSONSerialization.data(withJSONObject: object, options: [.sortedKeys])
-        let (data, response) = try OriginPinnedHTTP.exchange(request, admitStart: admit)
+        // The origin-bound operator bearer above is the only credential on the
+        // request. Discovery and invocation cannot borrow or persist cookies,
+        // HTTP authentication or cache state from the host's shared session.
+        let (data, response) = try OriginPinnedHTTP.exchange(request, credentialFree: true, admitStart: admit)
         if let identifier = response.value(forHTTPHeaderField: "MCP-Session-Id") {
             guard identifier.utf8.count <= 256, identifier.rangeOfCharacter(from: .controlCharacters) == nil else { throw CapabilityABIError.invalidWire }
             sessionID = identifier

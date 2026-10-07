@@ -32,6 +32,15 @@ public struct RightClickRuntimeIdentity: Codable, Sendable {
     public var pid: Int
     public var transport: String
     public var agentABIProfiles: [RightClickAgentABIProfile]?
+    public var channel: String = "unverified"
+    public var gitCommit: String?
+    public var sourceRepository: String?
+    public var sourceDirty: Bool?
+    public var buildSHA256: String?
+    public var capabilityABIVersion: Int?
+    public var contractSchemaVersion: Int?
+    public var mcpSchemaVersion: Int?
+    public var executableMeasurement: String?
 
     public init(
         product: String,
@@ -56,6 +65,8 @@ public struct RightClickRuntimeIdentity: Codable, Sendable {
     private enum CodingKeys: String, CodingKey {
         case platform, product, version, executablePath, executableRealPath
         case executableSHA256, pid, transport, agentABIProfiles
+        case channel, gitCommit, sourceRepository, sourceDirty, buildSHA256
+        case capabilityABIVersion, contractSchemaVersion, mcpSchemaVersion, executableMeasurement
     }
 
     public init(from decoder: any Decoder) throws {
@@ -71,32 +82,72 @@ public struct RightClickRuntimeIdentity: Codable, Sendable {
         pid = try fields.decode(Int.self, forKey: .pid)
         transport = try fields.decode(String.self, forKey: .transport)
         agentABIProfiles = try fields.decodeIfPresent([RightClickAgentABIProfile].self, forKey: .agentABIProfiles)
+        channel = try fields.decodeIfPresent(String.self, forKey: .channel) ?? "unverified"
+        gitCommit = try fields.decodeIfPresent(String.self, forKey: .gitCommit)
+        sourceRepository = try fields.decodeIfPresent(String.self, forKey: .sourceRepository)
+        sourceDirty = try fields.decodeIfPresent(Bool.self, forKey: .sourceDirty)
+        buildSHA256 = try fields.decodeIfPresent(String.self, forKey: .buildSHA256)
+        capabilityABIVersion = try fields.decodeIfPresent(Int.self, forKey: .capabilityABIVersion)
+        contractSchemaVersion = try fields.decodeIfPresent(Int.self, forKey: .contractSchemaVersion)
+        mcpSchemaVersion = try fields.decodeIfPresent(Int.self, forKey: .mcpSchemaVersion)
+        executableMeasurement = try fields.decodeIfPresent(String.self, forKey: .executableMeasurement)
     }
 }
 
 public enum RightClickRuntime {
+    // Capture once before serving. A later launcher symlink change must not
+    // make an existing process report another executable's identity.
+    private static let startupIdentity = measuredIdentity(
+        transport: "unknown", executablePath: executablePath(),
+        pid: Int(ProcessInfo.processInfo.processIdentifier)
+    )
+
+    public static func captureStartupIdentity() { _ = startupIdentity }
+
     public static func identity(
         transport: String,
         executablePath: String? = nil,
         pid: Int? = nil
     ) -> RightClickRuntimeIdentity {
-        let invokedPath = executablePath ?? self.executablePath()
+        if executablePath == nil && pid == nil {
+            var result = startupIdentity
+            result.transport = transport
+            return result
+        }
+        return measuredIdentity(transport: transport,
+            executablePath: executablePath ?? self.executablePath(),
+            pid: pid ?? Int(ProcessInfo.processInfo.processIdentifier))
+    }
+
+    private static func measuredIdentity(transport: String, executablePath: String,
+                                         pid: Int) -> RightClickRuntimeIdentity {
+        let invokedPath = executablePath
         let standardPath = URL(fileURLWithPath: invokedPath).standardizedFileURL.path
         let realPath = URL(fileURLWithPath: standardPath)
             .resolvingSymlinksInPath()
             .standardizedFileURL
             .path
 
-        return RightClickRuntimeIdentity(
+        var identity = RightClickRuntimeIdentity(
             product: "RIGHTCLICK",
             version: RightClickVersion.current,
             executablePath: standardPath,
             executableRealPath: realPath,
             executableSHA256: sha256File(realPath),
-            pid: pid ?? Int(ProcessInfo.processInfo.processIdentifier),
+            pid: pid,
             transport: transport,
             agentABIProfiles: [.core]
         )
+        identity.channel = RightClickBuildProvenance.channel
+        identity.gitCommit = RightClickBuildProvenance.gitCommit
+        identity.sourceRepository = RightClickBuildProvenance.sourceRepository
+        identity.sourceDirty = RightClickBuildProvenance.sourceDirty
+        identity.buildSHA256 = identity.executableSHA256
+        identity.capabilityABIVersion = 1
+        identity.contractSchemaVersion = CapabilityContract.version
+        identity.mcpSchemaVersion = 1
+        identity.executableMeasurement = "startup-file-bytes"
+        return identity
     }
 
     public static func executablePath() -> String {
@@ -153,17 +204,13 @@ public enum RightClickRuntime {
     }
 
     private static func sha256File(_ path: String) -> String {
-        guard let data = try? Data(
-            contentsOf: URL(fileURLWithPath: path)
-        ) else {
-            return "unreadable"
-        }
-
-        let digest = SHA256.hash(data: data)
-
-        return digest
-            .map { String(format: "%02x", $0) }
-            .joined()
+        guard let handle = try? FileHandle(forReadingFrom: URL(fileURLWithPath: path)) else { return "unreadable" }
+        defer { try? handle.close() }
+        do {
+            var hash = SHA256()
+            while let chunk = try handle.read(upToCount: 1_048_576), !chunk.isEmpty { hash.update(data: chunk) }
+            return hash.finalize().map { String(format: "%02x", $0) }.joined()
+        } catch { return "unreadable" }
     }
 }
 

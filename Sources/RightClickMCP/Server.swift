@@ -41,13 +41,14 @@ public enum RightClickMCPRuntime {
 }
 
 public enum RightClickMCPMain {
-    public static func run(_ args: [String]) -> Int {
+    public static func run(_ args: [String], engine: CapabilityEngine? = nil) -> Int {
+        RightClickRuntime.captureStartupIdentity()
         let http = args.contains("--http")
         let port = UInt16(flag(args, "--port") ?? "") ?? 8765
         let token = flag(args, "--token") ?? ProcessInfo.processInfo.environment["RIGHTCLICK_MCP_TOKEN"]
-        StartupLog.record(transport: http ? "http" : "stdio")
+        if engine == nil { StartupLog.record(transport: http ? "http" : "stdio") }
         let box = EngineBox(
-            RightClickMCPRuntime.makeEngine()
+            engine ?? RightClickMCPRuntime.makeEngine()
         )
         if http {
             guard let token, !token.isEmpty else {
@@ -637,6 +638,23 @@ private extension Value {
 
 public enum RightClickMCPContract {
     public static let schemaVersion = 1
+
+    public static func matchesToolSchema(_ toolsJSON: Data) -> Bool {
+        guard toolsJSON.count <= 1_048_576,
+              let received = try? JSONSerialization.jsonObject(with: toolsJSON) as? [[String: Any]],
+              let actual = try? JSONSerialization.data(withJSONObject: received,
+                options: [.sortedKeys, .withoutEscapingSlashes]),
+              let expected = try? toolSchemaJSON() else { return false }
+        // Preserve every received field. A typed SDK round trip silently drops
+        // unknown declarations and cannot establish equality of the catalogue.
+        return actual == expected
+    }
+
+    static func toolSchemaJSON() throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+        return try encoder.encode(rightClickTools())
+    }
 
     public static func toolSchemaSHA256() -> String {
         let encoder = JSONEncoder()

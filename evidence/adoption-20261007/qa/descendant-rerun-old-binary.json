@@ -1,0 +1,20 @@
+{
+  "scope": "Diagnostic rerun against old compiled test binary; no rebuilt source validation",
+  "command": [
+    "/usr/bin/swift",
+    "test",
+    "--skip-build",
+    "--scratch-path",
+    "/private/tmp/rightclick-adoption-build-01a1175f",
+    "--filter",
+    "AdoptionSecurityProcessTests.testTimedOutNativeCommandDoesNotLeaveDescendantRunning"
+  ],
+  "artifacts": [
+    {
+      "path": "/private/tmp/rightclick-adoption-build-01a1175f/debug/rightclick-mcpPackageTests.xctest/Contents/MacOS/rightclick-mcpPackageTests",
+      "sha256": "8cae3cc3a9f8bf0293ac5c2b12e98f9b2d0a7401ba81b368541f915314181c44"
+    }
+  ],
+  "elapsedSeconds": 0.648,
+  "exitCode": 1
+}

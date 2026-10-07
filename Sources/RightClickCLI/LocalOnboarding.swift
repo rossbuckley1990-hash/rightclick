@@ -1,7 +1,8 @@
 import Foundation
+import RightClickCore
 #if canImport(Darwin)
 import Darwin
-#else
+#elseif canImport(Glibc)
 import Glibc
 #endif
 
@@ -14,6 +15,7 @@ enum RightClickLocalOnboarding {
 
     struct Options {
         var client: String?
+        var configuration: URL?
         var all = false
         var yes = false
         var dryRun = false
@@ -32,10 +34,7 @@ enum RightClickLocalOnboarding {
                     index += 1
                     guard
                         index < args.count,
-                        RightClickClientRegistry
-                            .adapter(
-                                id: args[index]
-                            ) != nil
+                        RightClickClientRegistry.supportedIDs.contains(args[index])
                     else {
                         let supported =
                             RightClickClientRegistry
@@ -55,6 +54,13 @@ enum RightClickLocalOnboarding {
                     }
 
                     client = args[index]
+                case "--config":
+                    index += 1
+                    guard index < args.count, RuntimePlatform.isAbsolutePath(args[index]),
+                          !args[index].unicodeScalars.contains(where: { CharacterSet.controlCharacters.contains($0) }) else {
+                        throw SetupError("--config needs an absolute, safe configuration file path.")
+                    }
+                    configuration = URL(fileURLWithPath: args[index]).standardizedFileURL
                 case "--all":
                     all = true
                 case "--yes":
@@ -67,6 +73,12 @@ enum RightClickLocalOnboarding {
                 default: throw SetupError("Unknown local setup option: \(arg)")
                 }
                 index += 1
+            }
+            if configuration != nil && client != "generic" {
+                throw SetupError("Use --config only with --client generic.")
+            }
+            if client == "generic" && configuration == nil && !help {
+                throw SetupError("Generic MCP setup requires --config /absolute/path/to/client-mcp.json.")
             }
             if all && client != nil {
                 throw SetupError(
@@ -115,6 +127,7 @@ enum RightClickLocalOnboarding {
             )
         }
 
+        lines.append("Generic MCP requires --client generic --config /absolute/path/to/client-mcp.json.")
         lines.append("")
 
         for adapter in
@@ -646,10 +659,15 @@ enum RightClickLocalOnboarding {
 
         do {
             applied =
-                try RightClickSetupAllTransaction
-                    .apply(
-                        prepared
-                    )
+                try RightClickLocalLifecycle.apply(prepared, home: home, disconnect: options.disconnect) {
+                    if !options.disconnect { probeResult = try probe() }
+                }
+        } catch let failure as RightClickLocalLifecycle.ValidationFailure {
+            emitAggregate(["client": "all", "status": "FAILED", "detectedClients": detectedIDs,
+                "configurationChanged": failure.configurationChanged, "rollbackStatus": failure.rollbackStatus,
+                "localProbe": probeResult, "clients": plannedRecords, "error": failure.description],
+                json: json, output: output)
+            return 1
         } catch let failure
             as RightClickSetupAllTransaction
                 .ApplyFailure
@@ -663,7 +681,7 @@ enum RightClickLocalOnboarding {
                     "failedClient":
                         failure.clientID,
                     "configurationChanged":
-                        "false",
+                        failure.rollbackStatus == "ROLLBACK_FAILED" ? "UNKNOWN" : "false",
                     "rollbackStatus":
                         failure.rollbackStatus,
                     "localProbe":
@@ -758,7 +776,7 @@ enum RightClickLocalOnboarding {
     static func run(
         args: [String], executable: String,
         home: URL = FileManager.default.homeDirectoryForCurrentUser,
-        interactive: Bool = isatty(STDIN_FILENO) != 0,
+        interactive: Bool = RightClickClientHost.interactive,
         readAnswer: () -> String? = { readLine() },
         output: (String) -> Void = { print($0) },
         probe: () throws -> String
@@ -810,18 +828,14 @@ enum RightClickLocalOnboarding {
             if let clientID =
                 options.client
             {
-                guard let selected =
-                    RightClickClientRegistry
-                        .adapter(
-                            id: clientID
-                        )
-                else {
-                    throw SetupError(
-                        "Unsupported local client."
-                    )
+                if clientID == "generic", let file = options.configuration {
+                    adapter = RightClickGenericClientAdapter(file: file)
+                } else {
+                    guard let selected = RightClickClientRegistry.adapter(id: clientID) else {
+                        throw SetupError("Unsupported local client.")
+                    }
+                    adapter = selected
                 }
-
-                adapter = selected
             } else {
                 let detected =
                     RightClickClientRegistry
@@ -906,6 +920,7 @@ enum RightClickLocalOnboarding {
                         "Review this plan, then run setup --client "
                         + onboarding.clientID
                         + " --yes"
+                        + (options.configuration.map { " --config " + $0.path } ?? "")
                         + (options.disconnect ? " --disconnect" : "")
                     emit(payload)
                     return 3
@@ -933,7 +948,11 @@ enum RightClickLocalOnboarding {
             }
 
             if !options.disconnect { payload["localProbe"] = try probe() }
-            let result = try RightClickOnboardingEngine.apply(onboarding)
+            let prepared = RightClickSetupAllTransaction.PreparedClient(adapter: adapter, plan: onboarding)
+            let applied = try RightClickLocalLifecycle.apply([prepared], home: home, disconnect: options.disconnect) {
+                if !options.disconnect { payload["localProbe"] = try probe() }
+            }
+            let result = applied[0].result
             payload["status"] =
                 result.operation
 
@@ -959,8 +978,17 @@ enum RightClickLocalOnboarding {
             emit(payload)
             return 0
         } catch {
-            emit(["status": "FAILED", "error": String(describing: error),
-                  "mcpConnection": "NOT_VERIFIED", "outcomeVerification": "NOT_RUN"])
+            var failurePayload = ["status": "FAILED", "error": String(describing: error),
+                "mcpConnection": "NOT_VERIFIED", "outcomeVerification": "NOT_RUN",
+                "configurationChanged": "false", "rollbackStatus": "NOT_REQUIRED"]
+            if let failure = error as? RightClickLocalLifecycle.ValidationFailure {
+                failurePayload["configurationChanged"] = failure.configurationChanged
+                failurePayload["rollbackStatus"] = failure.rollbackStatus
+            } else if let failure = error as? RightClickSetupAllTransaction.ApplyFailure {
+                failurePayload["configurationChanged"] = failure.rollbackStatus == "ROLLBACK_FAILED" ? "UNKNOWN" : "false"
+                failurePayload["rollbackStatus"] = failure.rollbackStatus
+            }
+            emit(failurePayload)
             return 1
         }
     }

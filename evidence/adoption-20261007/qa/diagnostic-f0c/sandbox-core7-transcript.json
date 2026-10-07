@@ -1,0 +1,525 @@
+[
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "independent-adoption-security",
+          "version": "1"
+        }
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.2"
+        }
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list",
+      "params": {}
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"buildSHA256\" : \"02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9\",\n  \"capabilityABIVersion\" : 1,\n  \"channel\" : \"unverified\",\n  \"contractSchemaVersion\" : 1,\n  \"executableMeasurement\" : \"startup-file-bytes\",\n  \"executablePath\" : \"/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick\",\n  \"executableRealPath\" : \"/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick\",\n  \"executableSHA256\" : \"02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9\",\n  \"mcpSchemaVersion\" : 1,\n  \"pid\" : 43654,\n  \"platform\" : \"macOS\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"stdio\",\n  \"version\" : \"0.2.2\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "tools/call",
+      "params": {
+        "name": "context_inspect",
+        "arguments": {
+          "item": "independent_sandbox_challenge"
+        }
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"byteCount\" : 29,\n  \"display\" : \"independent_sandbox_challenge\",\n  \"isDirectory\" : false,\n  \"kind\" : \"text\",\n  \"text\" : \"independent_sandbox_challenge\",\n  \"typeDescription\" : \"Plain text\",\n  \"typeIdentifier\" : \"public.plain-text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "method": "tools/call",
+      "params": {
+        "name": "context_providers",
+        "arguments": {}
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "[\n  {\n    \"capabilityTitles\" : [\n      \"Record a disposable challenge\"\n    ],\n    \"name\" : \"Disposable provider fixture\",\n    \"source\" : \"interface\"\n  }\n]",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "independent_sandbox_challenge"
+        }
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actions\" : [\n    {\n      \"explanation\" : \"Record a disposable challenge\",\n      \"id\" : \"sandbox:fixture:record_challenge\",\n      \"inputTypes\" : [\n        \"text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"name\" : \"Disposable provider fixture\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"system\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Record a disposable challenge\"\n    }\n  ],\n  \"contentType\" : \"public.plain-text\",\n  \"item\" : \"independent_sandbox_challenge\",\n  \"kind\" : \"text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "tools/call",
+      "params": {
+        "name": "context_explain",
+        "arguments": {
+          "item": "independent_sandbox_challenge",
+          "actionId": "sandbox:fixture:record_challenge"
+        }
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"id\" : \"sandbox:fixture:record_challenge\",\n  \"inputs\" : [\n    \"text\"\n  ],\n  \"invocation\" : \"direct\",\n  \"metadata\" : {\n    \"argumentNames\" : \"challenge\",\n    \"argumentSchema\" : \"UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlbzU6czE1OmFzY2lpQ2hhcmFjdGVyc3M2NDotMDEyMzQ1Njc4OUFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaX2FiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6czE3OmNvbnN0cmFpbmVkU3RyaW5nYjFzNDplbnVtbnM5Om1heExlbmd0aGkzOjEyOHM5Om1pbkxlbmd0aGkxOjFzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZQ==\",\n    \"coreArgumentEncoding\" : \"literalStrings\",\n    \"descriptorSHA256\" : \"5d158e8e1676e667db4e45ec1b9817a78d38bf3d680c5bdd1dd7a05408805f94\",\n    \"descriptorSource\" : \"file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-sandbox-21ECB3E3-E80F-436B-8BA4-9E9B36C56C9D/\",\n    \"effect\" : \"write\",\n    \"executionMode\" : \"unary\",\n    \"interfaceKind\" : \"sandbox-fixture\",\n    \"operationName\" : \"record_challenge\",\n    \"providerIdentity\" : \"Disposable provider fixture\",\n    \"requiredArguments\" : \"challenge\",\n    \"resultSchema\" : \"UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzOTpjaGFsbGVuZ2U=\",\n    \"verificationBoundary\" : \"Provider completion is unverified until the host establishes a postcondition.\"\n  },\n  \"output\" : [\n    \"typed_value\"\n  ],\n  \"provider\" : {\n    \"name\" : \"Disposable provider fixture\"\n  },\n  \"reflectorID\" : \"sandbox:fixture\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"unknown\",\n  \"source\" : \"system\",\n  \"supportLevel\" : \"public_supported\",\n  \"title\" : \"Record a disposable challenge\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "independent_sandbox_challenge",
+          "actionId": "sandbox:fixture:record_challenge",
+          "arguments": {
+            "challenge": "independent_sandbox_challenge"
+          }
+        }
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 8,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"sandbox:fixture:record_challenge\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No outcome observation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"none\"\n  },\n  \"executionId\" : \"8E9E87E6-D0FC-45E1-B663-1D2AC40AF1A5\",\n  \"message\" : \"CONFIRMATION_REQUIRED. Record a disposable challenge is unknown.\",\n  \"state\" : \"awaiting_user\",\n  \"title\" : \"Record a disposable challenge\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 9,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "independent_sandbox_challenge",
+          "actionId": "sandbox:fixture:record_challenge",
+          "arguments": {
+            "challenge": "../outside"
+          },
+          "confirmed": true
+        }
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 9,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "schemaMismatch",
+            "type": "text"
+          }
+        ],
+        "isError": true
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 10,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "independent_sandbox_challenge",
+          "actionId": "sandbox:fixture:record_challenge",
+          "arguments": {
+            "challenge": "independent_sandbox_challenge"
+          },
+          "confirmed": true
+        }
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 10,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"sandbox:fixture:record_challenge\",\n  \"events\" : [\n    \"RCIR admitted generation=1\",\n    \"RCIR consumed lease=CD95DAFA-CDC0-4DBF-8BCE-79DDD1BED375\",\n    \"RCIR task=821C79AD-B0BF-4561-99AE-C7F829D3FB15 outcome=succeeded\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"Host-selected private-file read-back bound to this invocation; disposable local fixture.\",\n    \"outcomeVerified\" : true,\n    \"type\" : \"rcir_structured_observation\"\n  },\n  \"executionId\" : \"C3D017FD-BF67-4243-BAA9-779F11D5A0A1\",\n  \"message\" : \"Independent observation matched the exact requested state and the host invocation marker.\",\n  \"output\" : \"{\\\"challenge\\\":\\\"independent_sandbox_challenge\\\"}\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"CD95DAFA-CDC0-4DBF-8BCE-79DDD1BED375\",\n    \"observationBoundary\" : \"Host-selected private-file read-back bound to this invocation; disposable local fixture.\",\n    \"outcome\" : \"succeeded\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxMzk4MTEzNTExczY6ZXZlbnRzYTE6eDEzNjpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5ODA4MzUxMnM1OnZhbHVlbzE6czk6Y2hhbGxlbmdlczI5OmluZGVwZW5kZW50X3NhbmRib3hfY2hhbGxlbmdlczEwOmZpbmlzaGVkQXRpMTM6MTc5MTM5ODA4MzUxMnMxOTpsYXN0T2JzZXJ2YXRpb25UaW1laTEzOjE3OTEzOTgwODM1MTJzMTI6bGFzdFNlcXVlbmNlaTE6MXM3OmxlYXNlSURzMzY6Q0Q5NURBRkEtQ0RDMC00REJGLThCQ0UtNzlEREQxQkVEMzc1czExOm9ic2VydmF0aW9ueDExNjpSSUdIVENMSUNLLVZBTFVFLTEAbzI6czk6Y2hhbGxlbmdlczI5OmluZGVwZW5kZW50X3NhbmRib3hfY2hhbGxlbmdlczY6dGFza0lEczM2OjgyMUM3OUFELUIwQkYtNDU2MS05OUFFLUM3RjgyOUQzRkIxNXMxMDpvYnNlcnZlZEF0aTEzOjE3OTEzOTgwODM1MTJzNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NjM3MDpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4Njc6UklHSFRDTElDSy1WQUxVRS0xAG8xOnM5OmNoYWxsZW5nZXMyOTppbmRlcGVuZGVudF9zYW5kYm94X2NoYWxsZW5nZXM3OmJpbmRpbmd4NTYwMzpSSUdIVENMSUNLLVJDSVItQklORElORy0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzODpjb250cmFjdHgzMjY0OlJJR0hUQ0xJQ0stUkNJUi1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzMzphYml4MjQ1MzpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gyNTM6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlbzU6czE1OmFzY2lpQ2hhcmFjdGVyc3M2NDotMDEyMzQ1Njc4OUFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaX2FiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6czE3OmNvbnN0cmFpbmVkU3RyaW5nYjFzNDplbnVtbnM5Om1heExlbmd0aGkzOjEyOHM5Om1pbkxlbmd0aGkxOjFzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXMxMDpjYXBhYmlsaXR5czMyOnNhbmRib3g6Zml4dHVyZTpyZWNvcmRfY2hhbGxlbmdlczExOmRlY2xhcmF0aW9ubzQ6czEwOmNhcGFiaWxpdHlvMTE6czY6aW5wdXRzYTE6czQ6dGV4dHMxMDppbnZvY2F0aW9uczY6ZGlyZWN0czg6bWV0YWRhdGFvMTM6czEzOmFyZ3VtZW50TmFtZXNzOTpjaGFsbGVuZ2VzMTQ6YXJndW1lbnRTY2hlbWFzMzQwOlVrbEhTRlJEVEVsRFN5MVdRVXhWUlMweEFHOHpPbk15TURwaFpHUnBkR2x2Ym1Gc1VISnZjR1Z5ZEdsbGMySXdjelk2YjJKcVpXTjBiekU2Y3prNlkyaGhiR3hsYm1kbGJ6VTZjekUxT21GelkybHBRMmhoY21GamRHVnljM00yTkRvdE1ERXlNelExTmpjNE9VRkNRMFJGUmtkSVNVcExURTFPVDFCUlVsTlVWVlpYV0ZsYVgyRmlZMlJsWm1kb2FXcHJiRzF1YjNCeGNuTjBkWFozZUhsNmN6RTNPbU52Ym5OMGNtRnBibVZrVTNSeWFXNW5ZakZ6TkRwbGJuVnRibk01T20xaGVFeGxibWQwYUdrek9qRXlPSE01T20xcGJreGxibWQwYUdreE9qRnpPRHB5WlhGMWFYSmxaR0V4T25NNU9tTm9ZV3hzWlc1blpRPT1zMjA6Y29yZUFyZ3VtZW50RW5jb2RpbmdzMTQ6bGl0ZXJhbFN0cmluZ3NzMTY6ZGVzY3JpcHRvclNIQTI1NnM2NDo1ZDE1OGU4ZTE2NzZlNjY3ZGI0ZTQ1ZWMxYjk4MTdhNzhkMzhiZjNkNjgwYzViZGQxZGQ3YTA1NDA4ODA1Zjk0czE2OmRlc2NyaXB0b3JTb3VyY2VzMTEyOmZpbGU6Ly8vdmFyL2ZvbGRlcnMvdHoveTA0dDRkMDkwMHhkYm16OTZqcDYwODE4MDAwMGduL1QvcmlnaHRjbGljay1zYW5kYm94LTIxRUNCM0UzLUU4MEYtNDM2Qi04QkE0LTlFOUIzNkM1NkM5RC9zNjplZmZlY3RzNTp3cml0ZXMxMzpleGVjdXRpb25Nb2RlczU6dW5hcnlzMTM6aW50ZXJmYWNlS2luZHMxNTpzYW5kYm94LWZpeHR1cmVzMTM6b3BlcmF0aW9uTmFtZXMxNjpyZWNvcmRfY2hhbGxlbmdlczE2OnByb3ZpZGVySWRlbnRpdHlzMjc6RGlzcG9zYWJsZSBwcm92aWRlciBmaXh0dXJlczE3OnJlcXVpcmVkQXJndW1lbnRzczk6Y2hhbGxlbmdlczEyOnJlc3VsdFNjaGVtYXMxNDQ6VWtsSFNGUkRURWxEU3kxV1FVeFZSUzB4QUc4ek9uTXlNRHBoWkdScGRHbHZibUZzVUhKdmNHVnlkR2xsYzJJd2N6WTZiMkpxWldOMGJ6RTZjems2WTJoaGJHeGxibWRsY3pZNmMzUnlhVzVuY3pnNmNtVnhkV2x5WldSaE1UcHpPVHBqYUdGc2JHVnVaMlU9czIwOnZlcmlmaWNhdGlvbkJvdW5kYXJ5czc3OlByb3ZpZGVyIGNvbXBsZXRpb24gaXMgdW52ZXJpZmllZCB1bnRpbCB0aGUgaG9zdCBlc3RhYmxpc2hlcyBhIHBvc3Rjb25kaXRpb24uczc6b3V0cHV0c2ExOnMxMTp0eXBlZF92YWx1ZXMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzMjc6RGlzcG9zYWJsZSBwcm92aWRlciBmaXh0dXJlczIwOnJlcXVpcmVzQ29uZmlybWF0aW9uYjFzNjpzYWZldHlzNzp1bmtub3duczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxNjpwdWJsaWNfc3VwcG9ydGVkczU6dGl0bGVzMjk6UmVjb3JkIGEgZGlzcG9zYWJsZSBjaGFsbGVuZ2VzMTQ6ZXhwZWN0ZWRPdXRwdXRuczk6aW50ZXJmYWNlbzQ6czExOmlucHV0U2NoZW1hbzQ6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzMTA6cHJvcGVydGllc28xOnM5OmNoYWxsZW5nZW8yOnM3OnBhdHRlcm5zMjI6XltBLVphLXowLTlfLV17MSwxMjh9JHM0OnR5cGVzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXM0OnR5cGVzNjpvYmplY3RzNDpuYW1lczE2OnJlY29yZF9jaGFsbGVuZ2VzMTI6b3V0cHV0U2NoZW1hbzQ6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzMTA6cHJvcGVydGllc28xOnM5OmNoYWxsZW5nZW8xOnM0OnR5cGVzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXM0OnR5cGVzNjpvYmplY3RzNTp0aXRsZXMyOTpSZWNvcmQgYSBkaXNwb3NhYmxlIGNoYWxsZW5nZXMxMjp2ZXJpZmljYXRpb25uczg6cHJvdmlkZXJzMjc6RGlzcG9zYWJsZSBwcm92aWRlciBmaXh0dXJlczk6cmVmbGVjdG9yczE1OnNhbmRib3g6Zml4dHVyZXM2OnJlc3VsdHgxMDc6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzOTpjaGFsbGVuZ2VzNzp2ZXJzaW9uaTE6MXM3OmVmZmVjdHNhMTpvMjpzNjplZmZlY3RzNTp3cml0ZXM4OnJlc291cmNlczEyOTpmaWxlOi8vL3Zhci9mb2xkZXJzL3R6L3kwNHQ0ZDA5MDB4ZGJtejk2anA2MDgxODAwMDBnbi9UL3JpZ2h0Y2xpY2stc2FuZGJveC0yMUVDQjNFMy1FODBGLTQzNkItOEJBNC05RTlCMzZDNTZDOUQvI3JlY29yZF9jaGFsbGVuZ2VzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25vNTpzODpleHBlY3RlZG8xOnM5OmNoYWxsZW5nZXMyOTppbmRlcGVuZGVudF9zYW5kYm94X2NoYWxsZW5nZXMxNzppbnZvY2F0aW9uQmluZGluZ2ExOnM2OnRhc2tJRHM4Om9ic2VydmVyczI5OnNhbmRib3g6cHJpdmF0ZS1maWxlLW9ic2VydmVyczEwOnByb2plY3Rpb25vMjpzNjpmaWVsZHNvMTpzOTpjaGFsbGVuZ2VhMTpzOTpjaGFsbGVuZ2VzNjpzY2hlbWF4MTM0OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8yOnM5OmNoYWxsZW5nZXM2OnN0cmluZ3M2OnRhc2tJRHM2OnN0cmluZ3M4OnJlcXVpcmVkYTI6czk6Y2hhbGxlbmdlczY6dGFza0lEczY6c2NoZW1heDEwNzpSSUdIVENMSUNLLVZBTFVFLTEAbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMTpzOTpjaGFsbGVuZ2VzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXM5OmRpc2NvdmVyeXgyMTk1OlJJR0hUQ0xJQ0stUkNJUi1HUkFQSC1ERUNMQVJBVElPTi0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMzphYml4MjAxMjpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gyNTM6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlbzU6czE1OmFzY2lpQ2hhcmFjdGVyc3M2NDotMDEyMzQ1Njc4OUFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaX2FiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6czE3OmNvbnN0cmFpbmVkU3RyaW5nYjFzNDplbnVtbnM5Om1heExlbmd0aGkzOjEyOHM5Om1pbkxlbmd0aGkxOjFzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXMxMDpjYXBhYmlsaXR5czMyOnNhbmRib3g6Zml4dHVyZTpyZWNvcmRfY2hhbGxlbmdlczExOmRlY2xhcmF0aW9ubzExOnM2OmlucHV0c2ExOnM0OnRleHRzMTA6aW52b2NhdGlvbnM2OmRpcmVjdHM4Om1ldGFkYXRhbzEzOnMxMzphcmd1bWVudE5hbWVzczk6Y2hhbGxlbmdlczE0OmFyZ3VtZW50U2NoZW1hczM0MDpVa2xIU0ZSRFRFbERTeTFXUVV4VlJTMHhBRzh6T25NeU1EcGhaR1JwZEdsdmJtRnNVSEp2Y0dWeWRHbGxjMkl3Y3pZNmIySnFaV04wYnpFNmN6azZZMmhoYkd4bGJtZGxielU2Y3pFMU9tRnpZMmxwUTJoaGNtRmpkR1Z5YzNNMk5Eb3RNREV5TXpRMU5qYzRPVUZDUTBSRlJrZElTVXBMVEUxT1QxQlJVbE5VVlZaWFdGbGFYMkZpWTJSbFptZG9hV3ByYkcxdWIzQnhjbk4wZFhaM2VIbDZjekUzT21OdmJuTjBjbUZwYm1Wa1UzUnlhVzVuWWpGek5EcGxiblZ0Ym5NNU9tMWhlRXhsYm1kMGFHa3pPakV5T0hNNU9tMXBia3hsYm1kMGFHa3hPakZ6T0RweVpYRjFhWEpsWkdFeE9uTTVPbU5vWVd4c1pXNW5aUT09czIwOmNvcmVBcmd1bWVudEVuY29kaW5nczE0OmxpdGVyYWxTdHJpbmdzczE2OmRlc2NyaXB0b3JTSEEyNTZzNjQ6NWQxNThlOGUxNjc2ZTY2N2RiNGU0NWVjMWI5ODE3YTc4ZDM4YmYzZDY4MGM1YmRkMWRkN2EwNTQwODgwNWY5NHMxNjpkZXNjcmlwdG9yU291cmNlczExMjpmaWxlOi8vL3Zhci9mb2xkZXJzL3R6L3kwNHQ0ZDA5MDB4ZGJtejk2anA2MDgxODAwMDBnbi9UL3JpZ2h0Y2xpY2stc2FuZGJveC0yMUVDQjNFMy1FODBGLTQzNkItOEJBNC05RTlCMzZDNTZDOUQvczY6ZWZmZWN0czU6d3JpdGVzMTM6ZXhlY3V0aW9uTW9kZXM1OnVuYXJ5czEzOmludGVyZmFjZUtpbmRzMTU6c2FuZGJveC1maXh0dXJlczEzOm9wZXJhdGlvbk5hbWVzMTY6cmVjb3JkX2NoYWxsZW5nZXMxNjpwcm92aWRlcklkZW50aXR5czI3OkRpc3Bvc2FibGUgcHJvdmlkZXIgZml4dHVyZXMxNzpyZXF1aXJlZEFyZ3VtZW50c3M5OmNoYWxsZW5nZXMxMjpyZXN1bHRTY2hlbWFzMTQ0OlVrbEhTRlJEVEVsRFN5MVdRVXhWUlMweEFHOHpPbk15TURwaFpHUnBkR2x2Ym1Gc1VISnZjR1Z5ZEdsbGMySXdjelk2YjJKcVpXTjBiekU2Y3prNlkyaGhiR3hsYm1kbGN6WTZjM1J5YVc1bmN6ZzZjbVZ4ZFdseVpXUmhNVHB6T1RwamFHRnNiR1Z1WjJVPXMyMDp2ZXJpZmljYXRpb25Cb3VuZGFyeXM3NzpQcm92aWRlciBjb21wbGV0aW9uIGlzIHVudmVyaWZpZWQgdW50aWwgdGhlIGhvc3QgZXN0YWJsaXNoZXMgYSBwb3N0Y29uZGl0aW9uLnM3Om91dHB1dHNhMTpzMTE6dHlwZWRfdmFsdWVzMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczI3OkRpc3Bvc2FibGUgcHJvdmlkZXIgZml4dHVyZXMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTY6cHVibGljX3N1cHBvcnRlZHM1OnRpdGxlczI5OlJlY29yZCBhIGRpc3Bvc2FibGUgY2hhbGxlbmdlczg6cHJvdmlkZXJzMjc6RGlzcG9zYWJsZSBwcm92aWRlciBmaXh0dXJlczk6cmVmbGVjdG9yczE1OnNhbmRib3g6Zml4dHVyZXM2OnJlc3VsdHgxMDc6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzOTpjaGFsbGVuZ2VzNzp2ZXJzaW9uaTE6MXM3OmVmZmVjdHNhMTpzNTp3cml0ZXM0OnRhc2tvNTpzMTE6Y2FuY2VsbGFibGViMHM3OmVsZW1lbnRuczg6bWF4Qnl0ZXNpNjoyNjIxNDRzOTptYXhFdmVudHNpMzoyNTZzNTpzaGFwZXM1OnVuYXJ5czEwOmdlbmVyYXRpb25pMToxczk6cHJpbmNpcGFsczI3OmxvY2FsLW93bmVyOnNhbmRib3g6Zml4dHVyZXM5OmV4cGlyZXNBdGkxMzoxNzkxMzk4MTEzNTExczg6aXNzdWVkQXRpMTM6MTc5MTM5ODA4MzUxMXM2OnBvbGljeXgzNzI6UklHSFRDTElDSy1SQ0lSLVBPTElDWS0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMTA6cHJpbmNpcGFsc2ExOnMyNzpsb2NhbC1vd25lcjpzYW5kYm94OmZpeHR1cmVzODpyZXZpc2lvbnM4NTpsb2NhbC1jb25maXJtYXRpb24tMTo2M2M1OWVjNmM0NjE3YTZjYThlODI1NGYwMDcwNTQ5M2MxOTIzYjZmZGMxZGQ2NzZlN2M1YzlmYzA1YmIwZjU3czY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czU6d3JpdGVzODpyZXNvdXJjZXMxMjk6ZmlsZTovLy92YXIvZm9sZGVycy90ei95MDR0NGQwOTAweGRibXo5NmpwNjA4MTgwMDAwZ24vVC9yaWdodGNsaWNrLXNhbmRib3gtMjFFQ0IzRTMtRTgwRi00MzZCLThCQTQtOUU5QjM2QzU2QzlELyNyZWNvcmRfY2hhbGxlbmdlczY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czU6d3JpdGVzODpyZXNvdXJjZXMxMjk6ZmlsZTovLy92YXIvZm9sZGVycy90ei95MDR0NGQwOTAweGRibXo5NmpwNjA4MTgwMDAwZ24vVC9yaWdodGNsaWNrLXNhbmRib3gtMjFFQ0IzRTMtRTgwRi00MzZCLThCQTQtOUU5QjM2QzU2QzlELyNyZWNvcmRfY2hhbGxlbmdlczE1OnNlbWFudGljT3V0Y29tZXM5OnN1Y2NlZWRlZHM5OnN0YXJ0ZWRBdGkxMzoxNzkxMzk4MDgzNTExczY6dGFza0lEczM2OjgyMUM3OUFELUIwQkYtNDU2MS05OUFFLUM3RjgyOUQzRkIxNQ==\",\n    \"taskID\" : \"821C79AD-B0BF-4561-99AE-C7F829D3FB15\",\n    \"version\" : 1\n  },\n  \"state\" : \"succeeded\",\n  \"title\" : \"Record a disposable challenge\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "direction": "request",
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 11,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "C3D017FD-BF67-4243-BAA9-779F11D5A0A1"
+        }
+      }
+    }
+  },
+  {
+    "direction": "response",
+    "message": {
+      "id": 11,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"sandbox:fixture:record_challenge\",\n  \"events\" : [\n    \"RCIR admitted generation=1\",\n    \"RCIR consumed lease=CD95DAFA-CDC0-4DBF-8BCE-79DDD1BED375\",\n    \"RCIR task=821C79AD-B0BF-4561-99AE-C7F829D3FB15 outcome=succeeded\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"Host-selected private-file read-back bound to this invocation; disposable local fixture.\",\n    \"outcomeVerified\" : true,\n    \"type\" : \"rcir_structured_observation\"\n  },\n  \"executionId\" : \"C3D017FD-BF67-4243-BAA9-779F11D5A0A1\",\n  \"message\" : \"Independent observation matched the exact requested state and the host invocation marker.\",\n  \"output\" : \"{\\\"challenge\\\":\\\"independent_sandbox_challenge\\\"}\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"CD95DAFA-CDC0-4DBF-8BCE-79DDD1BED375\",\n    \"observationBoundary\" : \"Host-selected private-file read-back bound to this invocation; disposable local fixture.\",\n    \"outcome\" : \"succeeded\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxMzk4MTEzNTExczY6ZXZlbnRzYTE6eDEzNjpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5ODA4MzUxMnM1OnZhbHVlbzE6czk6Y2hhbGxlbmdlczI5OmluZGVwZW5kZW50X3NhbmRib3hfY2hhbGxlbmdlczEwOmZpbmlzaGVkQXRpMTM6MTc5MTM5ODA4MzUxMnMxOTpsYXN0T2JzZXJ2YXRpb25UaW1laTEzOjE3OTEzOTgwODM1MTJzMTI6bGFzdFNlcXVlbmNlaTE6MXM3OmxlYXNlSURzMzY6Q0Q5NURBRkEtQ0RDMC00REJGLThCQ0UtNzlEREQxQkVEMzc1czExOm9ic2VydmF0aW9ueDExNjpSSUdIVENMSUNLLVZBTFVFLTEAbzI6czk6Y2hhbGxlbmdlczI5OmluZGVwZW5kZW50X3NhbmRib3hfY2hhbGxlbmdlczY6dGFza0lEczM2OjgyMUM3OUFELUIwQkYtNDU2MS05OUFFLUM3RjgyOUQzRkIxNXMxMDpvYnNlcnZlZEF0aTEzOjE3OTEzOTgwODM1MTJzNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NjM3MDpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4Njc6UklHSFRDTElDSy1WQUxVRS0xAG8xOnM5OmNoYWxsZW5nZXMyOTppbmRlcGVuZGVudF9zYW5kYm94X2NoYWxsZW5nZXM3OmJpbmRpbmd4NTYwMzpSSUdIVENMSUNLLVJDSVItQklORElORy0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzODpjb250cmFjdHgzMjY0OlJJR0hUQ0xJQ0stUkNJUi1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzMzphYml4MjQ1MzpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gyNTM6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlbzU6czE1OmFzY2lpQ2hhcmFjdGVyc3M2NDotMDEyMzQ1Njc4OUFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaX2FiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6czE3OmNvbnN0cmFpbmVkU3RyaW5nYjFzNDplbnVtbnM5Om1heExlbmd0aGkzOjEyOHM5Om1pbkxlbmd0aGkxOjFzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXMxMDpjYXBhYmlsaXR5czMyOnNhbmRib3g6Zml4dHVyZTpyZWNvcmRfY2hhbGxlbmdlczExOmRlY2xhcmF0aW9ubzQ6czEwOmNhcGFiaWxpdHlvMTE6czY6aW5wdXRzYTE6czQ6dGV4dHMxMDppbnZvY2F0aW9uczY6ZGlyZWN0czg6bWV0YWRhdGFvMTM6czEzOmFyZ3VtZW50TmFtZXNzOTpjaGFsbGVuZ2VzMTQ6YXJndW1lbnRTY2hlbWFzMzQwOlVrbEhTRlJEVEVsRFN5MVdRVXhWUlMweEFHOHpPbk15TURwaFpHUnBkR2x2Ym1Gc1VISnZjR1Z5ZEdsbGMySXdjelk2YjJKcVpXTjBiekU2Y3prNlkyaGhiR3hsYm1kbGJ6VTZjekUxT21GelkybHBRMmhoY21GamRHVnljM00yTkRvdE1ERXlNelExTmpjNE9VRkNRMFJGUmtkSVNVcExURTFPVDFCUlVsTlVWVlpYV0ZsYVgyRmlZMlJsWm1kb2FXcHJiRzF1YjNCeGNuTjBkWFozZUhsNmN6RTNPbU52Ym5OMGNtRnBibVZrVTNSeWFXNW5ZakZ6TkRwbGJuVnRibk01T20xaGVFeGxibWQwYUdrek9qRXlPSE01T20xcGJreGxibWQwYUdreE9qRnpPRHB5WlhGMWFYSmxaR0V4T25NNU9tTm9ZV3hzWlc1blpRPT1zMjA6Y29yZUFyZ3VtZW50RW5jb2RpbmdzMTQ6bGl0ZXJhbFN0cmluZ3NzMTY6ZGVzY3JpcHRvclNIQTI1NnM2NDo1ZDE1OGU4ZTE2NzZlNjY3ZGI0ZTQ1ZWMxYjk4MTdhNzhkMzhiZjNkNjgwYzViZGQxZGQ3YTA1NDA4ODA1Zjk0czE2OmRlc2NyaXB0b3JTb3VyY2VzMTEyOmZpbGU6Ly8vdmFyL2ZvbGRlcnMvdHoveTA0dDRkMDkwMHhkYm16OTZqcDYwODE4MDAwMGduL1QvcmlnaHRjbGljay1zYW5kYm94LTIxRUNCM0UzLUU4MEYtNDM2Qi04QkE0LTlFOUIzNkM1NkM5RC9zNjplZmZlY3RzNTp3cml0ZXMxMzpleGVjdXRpb25Nb2RlczU6dW5hcnlzMTM6aW50ZXJmYWNlS2luZHMxNTpzYW5kYm94LWZpeHR1cmVzMTM6b3BlcmF0aW9uTmFtZXMxNjpyZWNvcmRfY2hhbGxlbmdlczE2OnByb3ZpZGVySWRlbnRpdHlzMjc6RGlzcG9zYWJsZSBwcm92aWRlciBmaXh0dXJlczE3OnJlcXVpcmVkQXJndW1lbnRzczk6Y2hhbGxlbmdlczEyOnJlc3VsdFNjaGVtYXMxNDQ6VWtsSFNGUkRURWxEU3kxV1FVeFZSUzB4QUc4ek9uTXlNRHBoWkdScGRHbHZibUZzVUhKdmNHVnlkR2xsYzJJd2N6WTZiMkpxWldOMGJ6RTZjems2WTJoaGJHeGxibWRsY3pZNmMzUnlhVzVuY3pnNmNtVnhkV2x5WldSaE1UcHpPVHBqYUdGc2JHVnVaMlU9czIwOnZlcmlmaWNhdGlvbkJvdW5kYXJ5czc3OlByb3ZpZGVyIGNvbXBsZXRpb24gaXMgdW52ZXJpZmllZCB1bnRpbCB0aGUgaG9zdCBlc3RhYmxpc2hlcyBhIHBvc3Rjb25kaXRpb24uczc6b3V0cHV0c2ExOnMxMTp0eXBlZF92YWx1ZXMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzMjc6RGlzcG9zYWJsZSBwcm92aWRlciBmaXh0dXJlczIwOnJlcXVpcmVzQ29uZmlybWF0aW9uYjFzNjpzYWZldHlzNzp1bmtub3duczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxNjpwdWJsaWNfc3VwcG9ydGVkczU6dGl0bGVzMjk6UmVjb3JkIGEgZGlzcG9zYWJsZSBjaGFsbGVuZ2VzMTQ6ZXhwZWN0ZWRPdXRwdXRuczk6aW50ZXJmYWNlbzQ6czExOmlucHV0U2NoZW1hbzQ6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzMTA6cHJvcGVydGllc28xOnM5OmNoYWxsZW5nZW8yOnM3OnBhdHRlcm5zMjI6XltBLVphLXowLTlfLV17MSwxMjh9JHM0OnR5cGVzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXM0OnR5cGVzNjpvYmplY3RzNDpuYW1lczE2OnJlY29yZF9jaGFsbGVuZ2VzMTI6b3V0cHV0U2NoZW1hbzQ6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzMTA6cHJvcGVydGllc28xOnM5OmNoYWxsZW5nZW8xOnM0OnR5cGVzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXM0OnR5cGVzNjpvYmplY3RzNTp0aXRsZXMyOTpSZWNvcmQgYSBkaXNwb3NhYmxlIGNoYWxsZW5nZXMxMjp2ZXJpZmljYXRpb25uczg6cHJvdmlkZXJzMjc6RGlzcG9zYWJsZSBwcm92aWRlciBmaXh0dXJlczk6cmVmbGVjdG9yczE1OnNhbmRib3g6Zml4dHVyZXM2OnJlc3VsdHgxMDc6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzOTpjaGFsbGVuZ2VzNzp2ZXJzaW9uaTE6MXM3OmVmZmVjdHNhMTpvMjpzNjplZmZlY3RzNTp3cml0ZXM4OnJlc291cmNlczEyOTpmaWxlOi8vL3Zhci9mb2xkZXJzL3R6L3kwNHQ0ZDA5MDB4ZGJtejk2anA2MDgxODAwMDBnbi9UL3JpZ2h0Y2xpY2stc2FuZGJveC0yMUVDQjNFMy1FODBGLTQzNkItOEJBNC05RTlCMzZDNTZDOUQvI3JlY29yZF9jaGFsbGVuZ2VzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25vNTpzODpleHBlY3RlZG8xOnM5OmNoYWxsZW5nZXMyOTppbmRlcGVuZGVudF9zYW5kYm94X2NoYWxsZW5nZXMxNzppbnZvY2F0aW9uQmluZGluZ2ExOnM2OnRhc2tJRHM4Om9ic2VydmVyczI5OnNhbmRib3g6cHJpdmF0ZS1maWxlLW9ic2VydmVyczEwOnByb2plY3Rpb25vMjpzNjpmaWVsZHNvMTpzOTpjaGFsbGVuZ2VhMTpzOTpjaGFsbGVuZ2VzNjpzY2hlbWF4MTM0OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8yOnM5OmNoYWxsZW5nZXM2OnN0cmluZ3M2OnRhc2tJRHM2OnN0cmluZ3M4OnJlcXVpcmVkYTI6czk6Y2hhbGxlbmdlczY6dGFza0lEczY6c2NoZW1heDEwNzpSSUdIVENMSUNLLVZBTFVFLTEAbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMTpzOTpjaGFsbGVuZ2VzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXM5OmRpc2NvdmVyeXgyMTk1OlJJR0hUQ0xJQ0stUkNJUi1HUkFQSC1ERUNMQVJBVElPTi0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMzphYml4MjAxMjpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gyNTM6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlbzU6czE1OmFzY2lpQ2hhcmFjdGVyc3M2NDotMDEyMzQ1Njc4OUFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaX2FiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6czE3OmNvbnN0cmFpbmVkU3RyaW5nYjFzNDplbnVtbnM5Om1heExlbmd0aGkzOjEyOHM5Om1pbkxlbmd0aGkxOjFzODpyZXF1aXJlZGExOnM5OmNoYWxsZW5nZXMxMDpjYXBhYmlsaXR5czMyOnNhbmRib3g6Zml4dHVyZTpyZWNvcmRfY2hhbGxlbmdlczExOmRlY2xhcmF0aW9ubzExOnM2OmlucHV0c2ExOnM0OnRleHRzMTA6aW52b2NhdGlvbnM2OmRpcmVjdHM4Om1ldGFkYXRhbzEzOnMxMzphcmd1bWVudE5hbWVzczk6Y2hhbGxlbmdlczE0OmFyZ3VtZW50U2NoZW1hczM0MDpVa2xIU0ZSRFRFbERTeTFXUVV4VlJTMHhBRzh6T25NeU1EcGhaR1JwZEdsdmJtRnNVSEp2Y0dWeWRHbGxjMkl3Y3pZNmIySnFaV04wYnpFNmN6azZZMmhoYkd4bGJtZGxielU2Y3pFMU9tRnpZMmxwUTJoaGNtRmpkR1Z5YzNNMk5Eb3RNREV5TXpRMU5qYzRPVUZDUTBSRlJrZElTVXBMVEUxT1QxQlJVbE5VVlZaWFdGbGFYMkZpWTJSbFptZG9hV3ByYkcxdWIzQnhjbk4wZFhaM2VIbDZjekUzT21OdmJuTjBjbUZwYm1Wa1UzUnlhVzVuWWpGek5EcGxiblZ0Ym5NNU9tMWhlRXhsYm1kMGFHa3pPakV5T0hNNU9tMXBia3hsYm1kMGFHa3hPakZ6T0RweVpYRjFhWEpsWkdFeE9uTTVPbU5vWVd4c1pXNW5aUT09czIwOmNvcmVBcmd1bWVudEVuY29kaW5nczE0OmxpdGVyYWxTdHJpbmdzczE2OmRlc2NyaXB0b3JTSEEyNTZzNjQ6NWQxNThlOGUxNjc2ZTY2N2RiNGU0NWVjMWI5ODE3YTc4ZDM4YmYzZDY4MGM1YmRkMWRkN2EwNTQwODgwNWY5NHMxNjpkZXNjcmlwdG9yU291cmNlczExMjpmaWxlOi8vL3Zhci9mb2xkZXJzL3R6L3kwNHQ0ZDA5MDB4ZGJtejk2anA2MDgxODAwMDBnbi9UL3JpZ2h0Y2xpY2stc2FuZGJveC0yMUVDQjNFMy1FODBGLTQzNkItOEJBNC05RTlCMzZDNTZDOUQvczY6ZWZmZWN0czU6d3JpdGVzMTM6ZXhlY3V0aW9uTW9kZXM1OnVuYXJ5czEzOmludGVyZmFjZUtpbmRzMTU6c2FuZGJveC1maXh0dXJlczEzOm9wZXJhdGlvbk5hbWVzMTY6cmVjb3JkX2NoYWxsZW5nZXMxNjpwcm92aWRlcklkZW50aXR5czI3OkRpc3Bvc2FibGUgcHJvdmlkZXIgZml4dHVyZXMxNzpyZXF1aXJlZEFyZ3VtZW50c3M5OmNoYWxsZW5nZXMxMjpyZXN1bHRTY2hlbWFzMTQ0OlVrbEhTRlJEVEVsRFN5MVdRVXhWUlMweEFHOHpPbk15TURwaFpHUnBkR2x2Ym1Gc1VISnZjR1Z5ZEdsbGMySXdjelk2YjJKcVpXTjBiekU2Y3prNlkyaGhiR3hsYm1kbGN6WTZjM1J5YVc1bmN6ZzZjbVZ4ZFdseVpXUmhNVHB6T1RwamFHRnNiR1Z1WjJVPXMyMDp2ZXJpZmljYXRpb25Cb3VuZGFyeXM3NzpQcm92aWRlciBjb21wbGV0aW9uIGlzIHVudmVyaWZpZWQgdW50aWwgdGhlIGhvc3QgZXN0YWJsaXNoZXMgYSBwb3N0Y29uZGl0aW9uLnM3Om91dHB1dHNhMTpzMTE6dHlwZWRfdmFsdWVzMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczI3OkRpc3Bvc2FibGUgcHJvdmlkZXIgZml4dHVyZXMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTY6cHVibGljX3N1cHBvcnRlZHM1OnRpdGxlczI5OlJlY29yZCBhIGRpc3Bvc2FibGUgY2hhbGxlbmdlczg6cHJvdmlkZXJzMjc6RGlzcG9zYWJsZSBwcm92aWRlciBmaXh0dXJlczk6cmVmbGVjdG9yczE1OnNhbmRib3g6Zml4dHVyZXM2OnJlc3VsdHgxMDc6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzOTpjaGFsbGVuZ2VzNzp2ZXJzaW9uaTE6MXM3OmVmZmVjdHNhMTpzNTp3cml0ZXM0OnRhc2tvNTpzMTE6Y2FuY2VsbGFibGViMHM3OmVsZW1lbnRuczg6bWF4Qnl0ZXNpNjoyNjIxNDRzOTptYXhFdmVudHNpMzoyNTZzNTpzaGFwZXM1OnVuYXJ5czEwOmdlbmVyYXRpb25pMToxczk6cHJpbmNpcGFsczI3OmxvY2FsLW93bmVyOnNhbmRib3g6Zml4dHVyZXM5OmV4cGlyZXNBdGkxMzoxNzkxMzk4MTEzNTExczg6aXNzdWVkQXRpMTM6MTc5MTM5ODA4MzUxMXM2OnBvbGljeXgzNzI6UklHSFRDTElDSy1SQ0lSLVBPTElDWS0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMTA6cHJpbmNpcGFsc2ExOnMyNzpsb2NhbC1vd25lcjpzYW5kYm94OmZpeHR1cmVzODpyZXZpc2lvbnM4NTpsb2NhbC1jb25maXJtYXRpb24tMTo2M2M1OWVjNmM0NjE3YTZjYThlODI1NGYwMDcwNTQ5M2MxOTIzYjZmZGMxZGQ2NzZlN2M1YzlmYzA1YmIwZjU3czY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czU6d3JpdGVzODpyZXNvdXJjZXMxMjk6ZmlsZTovLy92YXIvZm9sZGVycy90ei95MDR0NGQwOTAweGRibXo5NmpwNjA4MTgwMDAwZ24vVC9yaWdodGNsaWNrLXNhbmRib3gtMjFFQ0IzRTMtRTgwRi00MzZCLThCQTQtOUU5QjM2QzU2QzlELyNyZWNvcmRfY2hhbGxlbmdlczY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czU6d3JpdGVzODpyZXNvdXJjZXMxMjk6ZmlsZTovLy92YXIvZm9sZGVycy90ei95MDR0NGQwOTAweGRibXo5NmpwNjA4MTgwMDAwZ24vVC9yaWdodGNsaWNrLXNhbmRib3gtMjFFQ0IzRTMtRTgwRi00MzZCLThCQTQtOUU5QjM2QzU2QzlELyNyZWNvcmRfY2hhbGxlbmdlczE1OnNlbWFudGljT3V0Y29tZXM5OnN1Y2NlZWRlZHM5OnN0YXJ0ZWRBdGkxMzoxNzkxMzk4MDgzNTExczY6dGFza0lEczM2OjgyMUM3OUFELUIwQkYtNDU2MS05OUFFLUM3RjgyOUQzRkIxNQ==\",\n    \"taskID\" : \"821C79AD-B0BF-4561-99AE-C7F829D3FB15\",\n    \"version\" : 1\n  },\n  \"state\" : \"succeeded\",\n  \"title\" : \"Record a disposable challenge\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "cases": [
+    {
+      "case": "session",
+      "pid": 96532,
+      "pgid": 96532,
+      "operations": [
+        {
+          "signal": "SIGTERM",
+          "passed": true
+        },
+        {
+          "signal": "SIGKILL",
+          "passed": false,
+          "errno": 1,
+          "error": "[Errno 1] Operation not permitted"
+        }
+      ],
+      "exitCode": -15
+    },
+    {
+      "case": "privateGroup",
+      "pid": 96533,
+      "pgid": 96533,
+      "operations": [
+        {
+          "signal": "SIGTERM",
+          "passed": true
+        },
+        {
+          "signal": "SIGKILL",
+          "passed": false,
+          "errno": 1,
+          "error": "[Errno 1] Operation not permitted"
+        }
+      ],
+      "exitCode": -15
+    }
+  ],
+  "acceptanceScriptSHA256": "ba7f8e70e20aa93be7f6f2ebb7ef04739844f3a7349994f0c5156b9dea706f62",
+  "provenance": "Recovered exact own diagnostic tool output before script-only teardown fix"
+}

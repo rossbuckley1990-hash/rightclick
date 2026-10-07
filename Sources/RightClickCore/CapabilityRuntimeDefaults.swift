@@ -11,6 +11,7 @@ public enum CapabilityReflectorSourceDefaults {
         var sources:
             [any CapabilityReflectorSource] = [
                 ConfiguredOpenAPISource(),
+                ConfiguredArtifactProviderSource(),
             ]
 #if os(Linux)
         sources.append(DBusSessionSource())

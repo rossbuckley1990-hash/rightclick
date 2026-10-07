@@ -385,7 +385,7 @@ final class LocalOnboardingTests: XCTestCase {
             XCTAssertEqual(S.run(args: ["--client", "cursor", "--yes", "--json"], executable: binary, home: home,
                                  interactive: false, output: { output.append($0) },
                                  probe: { calls += 1; return "inspect text: public.plain-text" }), 0)
-            XCTAssertEqual(calls, 1)
+            XCTAssertEqual(calls, 2)
             XCTAssertEqual(output.count, 1)
             XCTAssertTrue(output[0].contains("CONFIGURED"))
             XCTAssertTrue(output[0].contains("NOT_VERIFIED"))

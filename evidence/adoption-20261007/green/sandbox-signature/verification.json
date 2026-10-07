@@ -1,0 +1,28 @@
+{
+  "binarySHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+  "verification": {
+    "signature": "VALID",
+    "algorithm": "Ed25519",
+    "trustedKeyMatched": true,
+    "payloadBytes": 7125,
+    "signedClaims": {
+      "taskID": "C2D92047-E121-450B-9D9E-E112B38182E7",
+      "leaseID": "A047F47C-3B40-42B2-820C-2494BD5EA09D",
+      "providerGeneration": 1,
+      "phase": "completed",
+      "semanticOutcome": "succeeded",
+      "scopeCount": 1,
+      "effects": [
+        "write"
+      ]
+    },
+    "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+    "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+  },
+  "tamperedPayload": {
+    "status": "REJECTED",
+    "errorType": "InvalidSignature"
+  },
+  "keyScope": "Ephemeral self-asserted local demo public key copied out of sandbox report; NOT production trust or an independently enrolled provider key",
+  "externalEffectEvidence": "See independent blackbox sandbox invocation-bound readback; signature alone establishes no external truth"
+}
