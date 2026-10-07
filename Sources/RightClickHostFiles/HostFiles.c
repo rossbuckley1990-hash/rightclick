@@ -189,3 +189,40 @@ int rc_host_harden_private(const char *path, int directory) { (void)path; (void)
 int rc_host_release_snapshot(const char *path) { (void)path; return 2; }
 #endif
 void rc_host_free(void *value) { free(value); }
+
+#ifdef __linux__
+#include <errno.h>
+#include <pthread.h>
+#include <signal.h>
+#include <time.h>
+#include <unistd.h>
+int rc_host_write_pipe(int32_t descriptor, const unsigned char *bytes, size_t length) {
+    if (descriptor < 0 || length > 1048576 || (!bytes && length)) return EINVAL;
+    sigset_t blocked, previous, pending;
+    sigemptyset(&blocked); sigaddset(&blocked, SIGPIPE);
+    int status = pthread_sigmask(SIG_BLOCK, &blocked, &previous);
+    if (status) return status;
+    int was_blocked = sigismember(&previous, SIGPIPE);
+    int was_pending = sigpending(&pending) == 0 ? sigismember(&pending, SIGPIPE) : 1;
+    size_t offset = 0;
+    int failure = 0;
+    while (offset < length) {
+        ssize_t count = write(descriptor, bytes + offset, length - offset);
+        if (count > 0) offset += (size_t)count;
+        else if (count < 0 && errno == EINTR) continue;
+        else { failure = count < 0 ? errno : EIO; break; }
+    }
+    /* Consume only a new pipe signal from this write, not an existing signal
+       or one the caller deliberately had blocked. Never alter global policy. */
+    if (failure == EPIPE && !was_blocked && !was_pending) {
+        struct timespec immediate = {0, 0};
+        while (sigtimedwait(&blocked, NULL, &immediate) < 0 && errno == EINTR) {}
+    }
+    status = pthread_sigmask(SIG_SETMASK, &previous, NULL);
+    return failure ? failure : status;
+}
+#else
+int rc_host_write_pipe(int32_t descriptor, const unsigned char *bytes, size_t length) {
+    (void)descriptor; (void)bytes; (void)length; return 2;
+}
+#endif

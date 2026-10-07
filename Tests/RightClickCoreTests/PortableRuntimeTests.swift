@@ -3,6 +3,22 @@ import XCTest
 @testable import RightClickCore
 
 final class PortableRuntimeTests: XCTestCase {
+    func testNativeJSONBooleanIdentityCannotBecomeNumericLength() throws {
+        let payload = Data("[true,false,0,1,-1,1.5]".utf8)
+        let values = try JSONSerialization.jsonObject(with: payload) as! [NSNumber]
+        XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+        let typed = try CapabilityJSON.value(values)
+        XCTAssertEqual(try typed.canonicalData(), try CapabilityValue.array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]).canonicalData())
+        for number in [NSNumber(value: true), NSNumber(value: false)] {
+            XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+            XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "maxLength": number]))
+        }
+        for number in [NSNumber(value: Int8(0)), NSNumber(value: UInt8(1)), NSNumber(value: Int64(1))] {
+            XCTAssertFalse(CapabilityJSONNumber.isBoolean(number))
+            XCTAssertNoThrow(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+        }
+    }
+
     func testStableTextAndURLClassification() throws {
         let text = try ContentParser.parse("portable 🧭")
         XCTAssertEqual(text.typeIdentifier, "public.plain-text")

@@ -1,0 +1,967 @@
+warning: 'work': found 3 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /work/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /work/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+    /work/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/8] Write swift-version-24593BA9C3E375BF.txt
+[3/9] Write sources
+[6/10] Compiling RightClickCore CapabilityABI.swift
+[7/10] Compiling RightClickCore CapabilityInterface.swift
+[8/10] Emitting module RightClickCore
+/work/Sources/RightClickCore/OriginPinnedHTTP.swift:45:19: warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 43 |     }
+ 44 | 
+ 45 |     private class RedirectRejectingDelegate:
+    |                   `- warning: non-final class 'RedirectRejectingDelegate' cannot conform to 'Sendable'; use '@unchecked Sendable'; this is an error in the Swift 6 language mode
+ 46 |         NSObject,
+ 47 |         URLSessionTaskDelegate
+
+/work/Sources/RightClickCore/OriginPinnedHTTP.swift:86:21: warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 84 |             Int
+ 85 | 
+ 86 |         private var storedData =
+    |                     `- warning: stored property 'storedData' of 'Sendable'-conforming class 'BoundedLoadDelegate' is mutable; this is an error in the Swift 6 language mode
+ 87 |             Data()
+ 88 | 
+[9/28] Compiling RightClickCore RCIRExecutionHost.swift
+[10/28] Compiling RightClickCore RCIRHTTPObservation.swift
+[11/28] Compiling RightClickCore RCIRHostObservation.swift
+[12/28] Compiling RightClickCore RCIRSignedReceipt.swift
+[13/28] Compiling RightClickCore RCIRUnaryInvocation.swift
+[14/28] Compiling RightClickCore WASMCapabilityArtifactResolver.swift
+[15/29] Compiling RightClickCore A2AReflector.swift
+/work/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[16/29] Compiling RightClickCore BonjourOpenAPISource.swift
+/work/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[17/29] Compiling RightClickCore CapabilityABIAdapter.swift
+/work/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[18/29] Compiling RightClickCore CapabilityArtifactResolver.swift
+/work/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[19/29] Compiling RightClickCore CapabilityEngine.swift
+/work/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[20/29] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+/work/Sources/RightClickCore/CapabilityEngine.swift:427:33: warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 425 |                 }
+ 426 | 
+ 427 |                 RunLoop.current.run(
+     |                                 `- warning: result of call to 'run(mode:before:)' is unused [#no-usage]
+ 428 |                     mode: .default,
+ 429 |                     before:
+[21/29] Compiling RightClickCore CapabilityArtifactSnapshot.swift
+[22/29] Compiling RightClickCore KafkaCapabilityArtifactResolver.swift
+[23/29] Compiling RightClickCore KubernetesCapabilityArtifactResolver.swift
+[24/29] Compiling RightClickCore MCPCapabilityArtifactResolver.swift
+[25/29] Compiling RightClickCore OpenAPIReflector.swift
+[26/29] Compiling RightClickCore RCIR.swift
+[27/29] Compiling RightClickCore RCIRDeferredExecution.swift
+[29/79] Compiling RightClickMCP ModernMCPStdioTransport.swift
+[30/80] Emitting module RightClickCoreTests
+[31/101] Emitting module RightClickMCP
+[32/101] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+/work/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[33/101] Compiling RightClickCoreTests ARDAcquisitionGateTests.swift
+/work/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[34/101] Compiling RightClickMCP Server.swift
+/work/Sources/RightClickMCP/Server.swift:316:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+314 |                 transport: transport
+315 |             )
+316 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+317 |         } catch {
+318 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/work/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |             return .init(content: [.text(text)], isError: false)
+317 |         } catch {
+318 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         }
+320 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[36/108] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[37/108] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[38/108] Compiling RightClickCoreTests PolicyTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[39/108] Compiling RightClickCoreTests PortableRuntimeTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[40/108] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[41/108] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[42/108] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[43/108] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[44/108] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[45/108] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[46/108] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[47/108] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[48/108] Compiling RightClickCoreTests RCIRNoOutputTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[49/108] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[50/108] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[51/108] Compiling RightClickCoreTests RCIRTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[52/108] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[53/108] Compiling RightClickCoreTests RCIRUnitCompletionTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[54/108] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[55/108] Compiling RightClickCoreTests SharingExecutionTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[56/108] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+/work/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #file, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:197:72: warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+195 |                         DispatchQueue.global().async {
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+    |                                                                        `- warning: mutation of captured var 'permitted' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+199 |                         }
+
+/work/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:198:50: warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+196 |                             defer { group.leave() }
+197 |                             do { try invocation.invoke(); lock.lock(); permitted += 1; lock.unlock() }
+198 |                             catch { lock.lock(); replayed += 1; lock.unlock() }
+    |                                                  `- warning: mutation of captured var 'replayed' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+199 |                         }
+200 |                     }
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[57/108] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[58/108] Emitting module RightClickMCPTests
+[59/108] Compiling RightClickMCPTests FederationTests.swift
+[60/109] Compiling RightClickCLI ProviderConfigurationCLI.swift
+[61/109] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[62/109] Emitting module RightClickCLI
+[64/110] Compiling RightClickCLI main.swift
+[66/111] Compiling RightClickCoreTests GraphQLReflectorTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[67/111] Compiling RightClickCoreTests HostProtectedReferenceTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[68/111] Compiling RightClickCoreTests InvocationBindingTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[69/111] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[70/111] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[71/111] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[72/111] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[73/111] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[74/111] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[75/111] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[76/111] Compiling RightClickCoreTests MOAT005G1PathAndJSONBodyTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[77/111] Compiling RightClickCoreTests MOAT005G2MultiplePathArgumentsTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[78/111] Compiling RightClickCoreTests MOAT005G3GitHubRequestSchemaTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[79/111] Compiling RightClickCoreTests MOAT005G4MutationJSONResponseFallbackTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[80/111] Compiling RightClickCoreTests MOAT005G5FullFrozenGitHubContractTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[81/111] Compiling RightClickCoreTests MOAT005G6MultiSegmentPathTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[82/111] Compiling RightClickCoreTests NativeBoundedHTTPTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[83/111] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[84/111] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[85/111] Compiling RightClickCoreTests OpenAPIAcknowledgementTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[86/111] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[87/111] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+/work/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:359:9: warning: code after 'throw' will never be executed
+357 |         throw XCTSkip("Native Keychain adapter requires macOS")
+358 | #endif
+359 |         let unique =
+    |         `- warning: code after 'throw' will never be executed
+360 |             UUID()
+361 |                 .uuidString
+[87/113] Wrapping AST for RightClickCore for debugging
+[88/113] Write Objects.LinkFileList
+[92/113] Compiling RightClickCoreTests BonjourOpenAPISourceTests.swift
+[93/113] Compiling RightClickCoreTests CapabilityABIAdapterTests.swift
+[94/113] Compiling RightClickCoreTests CapabilityABIBoundaryTests.swift
+[95/113] Compiling RightClickCoreTests CapabilityABITests.swift
+[96/113] Compiling RightClickCoreTests CapabilityAcquisitionLifecycleTests.swift
+[97/113] Compiling RightClickCoreTests CapabilityArtifactResolverTests.swift
+[98/113] Compiling RightClickCoreTests CapabilityExperienceLedgerTests.swift
+[99/113] Compiling RightClickCoreTests CapabilityExperienceTests.swift
+[100/113] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[101/113] Compiling RightClickCoreTests CapabilityReflectorSourceTests.swift
+[102/113] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+[103/113] Compiling RightClickCoreTests CapabilitySnapshotBoundaryTests.swift
+[104/113] Compiling RightClickCoreTests CapabilityStringConstraintTests.swift
+[105/113] Compiling RightClickCoreTests ConfiguredOpenAPISourceTests.swift
+[106/113] Compiling RightClickCoreTests DispatchContractBindingTests.swift
+[107/113] Compiling RightClickCoreTests ExecutionCapacityAdmissionTests.swift
+[108/113] Compiling RightClickCoreTests ExecutionRetentionTests.swift
+[109/113] Compiling RightClickCoreTests GRPCRealProviderAcceptanceTests.swift
+[110/113] Compiling RightClickCoreTests GRPCReflectionTransportTests.swift
+[111/113] Compiling RightClickCoreTests GRPCReflectorTests.swift
+[111/113] Linking rightclick
+error: fatalError

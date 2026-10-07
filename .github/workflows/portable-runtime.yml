@@ -15,6 +15,8 @@ jobs:
     container: swift:6.2
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: apt-get update && apt-get install -y python3 ca-certificates
       - run: swift test --force-resolved-versions
       - run: swift build -c release --product rightclick --force-resolved-versions
@@ -23,6 +25,8 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
         with:
           swift-version: swift-6.2-release
@@ -49,7 +53,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: native-windows-evidence-${{ github.sha }}
+          name: native-windows-evidence-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             portable-source.txt
             portable-toolchain.txt
@@ -59,6 +63,8 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: swift test --force-resolved-versions
       - run: scripts/build-cli.sh
       - run: python3 scripts/acceptance-portable.py .build/release/rightclick

@@ -4,6 +4,7 @@ import Darwin
 import Glibc
 #endif
 import Foundation
+import RightClickHostFiles
 
 /// Generic host-selected executable boundary. Arguments are passed directly,
 /// never through a shell. Discovery data cannot select an executable or grant
@@ -74,7 +75,14 @@ enum BoundedCapabilityProcess {
             // consumes stdin cannot block the caller's monotonic timeout loop.
             DispatchQueue.global(qos: .utility).async {
                 defer { try? inputPipe.fileHandleForWriting.close() }
+#if os(Linux)
+                input.withUnsafeBytes { bytes in
+                    _ = rc_host_write_pipe(inputPipe.fileHandleForWriting.fileDescriptor,
+                        bytes.bindMemory(to: UInt8.self).baseAddress, bytes.count)
+                }
+#else
                 try? inputPipe.fileHandleForWriting.write(contentsOf: input)
+#endif
             }
         }
         let deadline = DispatchTime.now().uptimeNanoseconds + UInt64(timeout * 1_000_000_000)

@@ -59,7 +59,8 @@ let package = Package(
     ],
     targets: [
         .target(name: "RightClickHostFiles", path: "Sources/RightClickHostFiles", publicHeadersPath: "include",
-            linkerSettings: [.linkedLibrary("Advapi32", .when(platforms: [.windows]))]),
+            linkerSettings: [.linkedLibrary("Advapi32", .when(platforms: [.windows])),
+                .linkedLibrary("pthread", .when(platforms: [.linux]))]),
         .target(
             name: "RightClickARD",
             swiftSettings: [

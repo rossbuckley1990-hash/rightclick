@@ -1,5 +1,4 @@
 import Foundation
-import CoreFoundation
 
 public enum CapabilityABIError: Error, Equatable {
     case invalidWire
@@ -342,7 +341,7 @@ public extension CapabilitySchema {
               raw["type"] as? String == "string" else { throw CapabilityABIError.invalidSchema }
         func length(_ key: String) throws -> Int? {
             guard let value = raw[key] else { return nil }
-            guard let number = value as? NSNumber, CFGetTypeID(number) != CFBooleanGetTypeID(),
+            guard let number = value as? NSNumber, !CapabilityJSONNumber.isBoolean(number),
                   number.doubleValue.isFinite, number.doubleValue >= 0, number.doubleValue <= 1_048_576,
                   number.doubleValue.rounded(.towardZero) == number.doubleValue else { throw CapabilityABIError.invalidSchema }
             return Int(number.doubleValue)
@@ -384,5 +383,16 @@ public extension CapabilitySchema {
         let schema: CapabilitySchema = constrained ? .constrainedString(minimum: minimum, maximum: maximum, asciiCharacters: characters, enumeration: enumeration)
             : enumeration.map { .stringEnum($0) } ?? .string
         _ = try schema.canonicalData(); return schema
+    }
+}
+
+/// Foundation JSON preserves boolean identity even where CoreFoundation is not
+/// exposed. ObjC type codes cannot distinguish Bool from every narrow integer.
+/// This bounded scalar classification never accepts numeric zero/one as Bool.
+enum CapabilityJSONNumber {
+    static func isBoolean(_ number: NSNumber) -> Bool {
+        guard number.doubleValue.isFinite,
+              let data = try? JSONSerialization.data(withJSONObject: [number]) else { return false }
+        return data == Data("[true]".utf8) || data == Data("[false]".utf8)
     }
 }
