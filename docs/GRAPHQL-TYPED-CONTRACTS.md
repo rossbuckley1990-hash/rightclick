@@ -59,6 +59,8 @@ deterministic engineering infrastructure, not a fresh restricted AI.
 | Candidate `8de249b` | Full native macOS suite | 777 tests, 31 explicit skips, zero failures |
 | Final `6564f59`, binary SHA256 `3f798561ec1e285c52ed0d7ffe21ac1aa2b53c42d99886d2f8bc2006ef324644` | Frozen 27-control superset | 27 pass |
 | Final `6564f59` | Full native macOS suite | 777 tests, 31 explicit skips, zero failures |
+| Integrated `6d7154d`, binary SHA256 `e4a4b007830a606b4086fa0a503eba963c0ce43e4c22cc43d4a39c2af932bef5` | Frozen 31-control superset | 31 pass |
+| Integrated `6d7154d` | Full native macOS first / serial repeat | 791 tests, 35 explicit skips; 5 / 9 assertions fail in existing HTTP ACK fixture tests |
 
 The nine baseline failures cover custom-scalar abstention, typed input/result
 schemas and receipt values, numeric-boolean pretransport denial, integer range
@@ -72,6 +74,22 @@ the preserved `8de249b` executable before the escape correction: 24 of 27 contro
 passed and exactly three literal-string escape cases failed. All original 21
 controls remained unchanged in meaning. The new source supplies an explicit,
 lossless nullable-string escape rather than conflating literal `null` and null.
+
+Independent read-only review of delivery `9f40589` found no blocking typed
+admission/authority/result regression. It found misleading scalar escape guidance
+for nullable String/ID lists. Four review controls were frozen at `c30641b` and
+run against the preserved `6564f59` binary: 29 passed, and exactly the two list
+guidance controls failed. `6d7154d` restricts the escape to top-level named scalars
+and passes all 31 unchanged controls after merging exact convergence `e09f017`.
+The review copies and both measured runs remain separately attributed.
+
+The integrated full regression gate remains RED. Its two full runs returned
+transport UNKNOWN with zero effects in existing `OpenAPIAcknowledgementTests`;
+the exact failed case and subsequent unchanged six-test ACK class pass when run
+separately. Signed diagnostic receipts and every failed log are preserved. The
+transport root cause is not established, and semantic assertions were not changed.
+The earlier 777-test passes describe their historical sources, not this merged
+binary. Fixture repair and a passing integrated full suite remain required.
 
 The scalar domains follow the [GraphQL September 2025 specification](https://spec.graphql.org/September2025/).
 The real provider uses the [official GraphQL-core reference port](https://github.com/graphql-python/graphql-core).

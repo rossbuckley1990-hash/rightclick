@@ -1,0 +1,102 @@
+{
+  "validatedProductionSource": "6d7154d40e97a1ec55ac949f680583e250c81e4a",
+  "convergenceParent": "e09f0179f738189fb30b87c652a5433fba648054",
+  "frozenControlSource": "c30641b65e963fb72e9d439071327455f109f7ba",
+  "binarySHA256": "e4a4b007830a606b4086fa0a503eba963c0ce43e4c22cc43d4a39c2af932bef5",
+  "proofKind": "ENGINEERING_GRAPHQL_NOT_RESTRICTED_AI_ALL11",
+  "publicControls": {
+    "passed": 31,
+    "failed": 0
+  },
+  "fullNativeFirst": {
+    "tests": 791,
+    "skips": 35,
+    "assertionFailures": 5,
+    "exit": 1
+  },
+  "fullNativeSerial": {
+    "tests": 791,
+    "skips": 35,
+    "assertionFailures": 9,
+    "exit": 1
+  },
+  "focusedExactCase": {
+    "tests": 1,
+    "failures": 0,
+    "exit": 0
+  },
+  "focusedWholeAcknowledgementClass": {
+    "tests": 6,
+    "failures": 0,
+    "exit": 0
+  },
+  "fullRegressionGate": "RED",
+  "failureScope": "Existing OpenAPIAcknowledgementTests transport UNKNOWN with zero fixture effects; root cause not established. No third unchanged full run or altered semantic assertions.",
+  "runtimeFiles": {
+    "Sources/RightClickCore/CapabilityABI.swift": "cb7a2c93dfad987bf1ae9245fd79be315cb1d052dfea8b51758eeda78ece8671",
+    "Sources/RightClickCore/GraphQLReflector.swift": "2afc5b3132510a766fe8734e3df4f25651934de17feb872d2f023e52a5f725f7",
+    "Sources/RightClickCore/RCIRUnaryInvocation.swift": "ba091c384d6155d0ff2ee9e8c0a7b6107f4954c6485ce0b81307c1546a034e4c",
+    "Sources/RightClickCore/RCIRExecutionHost.swift": "a36d84d7629adf080114e3df19c1421b9ef255c4245486d572217834cfd87c9e",
+    "Sources/RightClickCore/BoundedCapabilityProcess.swift": "00e313e94603b977d06aef3d86d24a96421f6614559dd40ec6de67e766b4bb08",
+    "Sources/RightClickCore/CapabilityExecutableSnapshotPool.swift": "557c7adc201452cdeed563badad7ee27558d08adca9e989b659cde8b3fa565fe",
+    "Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift": "5bdc5b3fbb2e121f1b22ecb551f10a1c79cd4ccd27ddc6f0002d3156273b806d",
+    "Package.swift": "9c5cb61e7088911eae476014e0487e782f4f313f0316b86fb78f99940cb56b69",
+    "Package.resolved": "05d21463a6dca3ac8fb23f81c664b0db1035564f2c9f090a22d01e4aab36fa60",
+    "Vendor/mcp-swift-sdk/Package.swift": "e2162bb2e8dff0e49fd5be063e72018e9a8b7a54c2443ff3a72fd3c55231c517",
+    "scripts/acceptance-graphql-typed.py": "70062394a2f88a80d95b1aecca473f3a2f9f02424ab2939240a0f060e2eaf11f"
+  },
+  "logs": {
+    "full-native-first": {
+      "rawSHA256": "268e4341963226b3f33656f79630910761caf4f505e2ef0432cb49ba3bf6cccd",
+      "gzipSHA256": "ac39963bfcec75597c7020b86b3b51f92dd1e91786fc782df980a98970c8f8d9"
+    },
+    "full-native-serial": {
+      "rawSHA256": "fa9f95d7001d15234030dbd109b81734a28191160a6141afdb0b633adc4b50c8",
+      "gzipSHA256": "90ad9740da0ff04248d27ac8adb42ea824f51ab90e6d421615bdfc6def115ce2"
+    },
+    "focused-exact-case": {
+      "rawSHA256": "94c231439365f8b74631ca85938582d621f58a370f1713fa4bb9f113979ff936",
+      "gzipSHA256": "fee9804f2943ea2a7ceedbdf291a517dd0143c767fe480a7fd217a36c2e56c7c"
+    }
+  },
+  "files": {
+    "3bb826a7a609edd361b84fd7a845337d0153dbc1be3a022e40574d03946b0823.state.json": "bacd05fb9f65a385896306de707a3d1776697d37360030a07a9f16612bcfd359",
+    "4b260b14b839f0b1280dbf3924b69b6abbc3c4adff324d5d10361a52115e2dd2.state.json": "96b7c55bc0f7a0f57a0202aa8a9b519b4be78e8d57c4da1f20eb7a034c195396",
+    "54c3041453d4923f9f7c166ae803f1658e6dbac48d3aa54bd6111d7bc7414b61.state.json": "aa1c152e48b504f2d01b779ca3f4a565fbd5d8f09ab9b4e1f718f4c7a29ac357",
+    "ack-diagnostic-receipts/failure-effects.jsonl": "ae4f0c0a320294c62f3e4754ba63310a1532049f598831c64c1281f3c0049729",
+    "ack-diagnostic-receipts/failure-observations.jsonl": "ea2f95ac85028b562d87c2e42a582e2378815185f44e23f4e230974e1bb52a06",
+    "ack-diagnostic-receipts/failure-receipt.json": "0cee4e12a1245b5b09414122cd8fa644ba2a7f55699e294be43190c520b46d39",
+    "ack-diagnostic-receipts/failure-trusted-key.raw": "68f17a5b12dfacf3d8ca354f2c5e0ec230abb2c8dfe151af19c1553780c2c47e",
+    "ack-diagnostic-receipts/success-effects.jsonl": "eec512b1aa3b8e511fa2b8946ac2d1c885f3c1bd57aec943e21415b65d13b6f9",
+    "ack-diagnostic-receipts/success-observations.jsonl": "a579a53d282388c9ebe75a7aadd9b3e394662e70227450bb0df9366b62326028",
+    "ack-diagnostic-receipts/success-receipt.json": "01a4aa57e93c3ccb988ea785dcc1b574c4242ea27c74543a2ff4b4ff25d4f219",
+    "ack-diagnostic-receipts/success-trusted-key.raw": "85754a019e5ba89f2ed5433ce3eb0ab7e0afb989dc2283e6ef5c82c28c27d93a",
+    "ack-diagnostic-receipts/unverified-effects.jsonl": "82848cd7fae6a750d10c4de30fd6c1fbb882202b26064656dcb76f01ec6c3e1c",
+    "ack-diagnostic-receipts/unverified-receipt.json": "9d7a4f2d207df18983f03b88d7de3bbfe5952cbb34d353a7f0c4589edb6acee1",
+    "ack-diagnostic-receipts/unverified-trusted-key.raw": "ef3c654c8d4790738f648e2aff17d31fc1eb3140344b8ca964c77c597f9b487f",
+    "binary-provenance.json": "fcc6881831df51fd32e569e39eafa22dee72be60c6aa92085d1e00bfce933b01",
+    "e8b290fd2249b339760dbadf43c423fe3d462441da2812d52a3e751463281575.state.json": "8de92bb3d82dfe028e0fc078aa04f8668c7091ad40f9520b35e10313779bd036",
+    "effects.jsonl": "3ec4179daf9ea062911db49571735e43333e702d656507666c89e84700814997",
+    "explanation.json": "95abc3cf692bf58b3815c3cdbd46078f5e3196bf8bfe438d13894cb56e3d37f8",
+    "focused-ack-diagnostic.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "focused-ack-diagnostic.log": "75e193e1027215d0b90adc28d9fea0b7ffe3905d83a53b7e9906ed45904cb809",
+    "focused-exact-case.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "focused-exact-case.log.gz": "fee9804f2943ea2a7ceedbdf291a517dd0143c767fe480a7fd217a36c2e56c7c",
+    "full-native-first.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "full-native-first.log.gz": "ac39963bfcec75597c7020b86b3b51f92dd1e91786fc782df980a98970c8f8d9",
+    "full-native-serial.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "full-native-serial.log.gz": "90ad9740da0ff04248d27ac8adb42ea824f51ab90e6d421615bdfc6def115ce2",
+    "mcp.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-control.json": "52a264cf9ef55a4bc64f0fbe1331a25c01f47b9215449e163df740de4842d8a2",
+    "observations.jsonl": "9fb1388ebc15452e319696bcbfcb0d14dbbea2ce5ab7820c21ac7cf7847b2cf8",
+    "provider-requests.jsonl": "8ae82a2ea14807578bb3ce0e35ebb86a95b72a81d2ddbd78e8e284a9ef095754",
+    "results.json": "76e935954e2c0b19940d8ede1b68cd4670a9d672ed8b527361d2839590e8680f",
+    "run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "run.log": "3f73e89d55fb307a16281e27baff8ef11ff101f241c435fcaf28c280b018ca39",
+    "schema.graphql": "52bf7275a8a3229ccb2a2ad16aa251f63436858a7e4ad7681961d4b2b74432d5",
+    "success-receipt.json": "fba77912b0c3edb53bea3d6e555393436fe93b613aaccb1dc3147bf0a6f1c005",
+    "transcript.json": "06544ab753e732618f3704aaf0b98abc71afdcdbaca48edad9b5987ecb065c87",
+    "trusted-public-key.raw": "fefea0903d4ea39c2523ff04dfb2a1cdba662081a9c964d94edc6a38c452fa73",
+    "typed-mutation-receipt.json": "b8f86c8c9142b7739507413006f00931bae497fa29722abc1b41ca9bc1b598e5"
+  }
+}
