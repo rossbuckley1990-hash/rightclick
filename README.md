@@ -4,7 +4,7 @@
 
 **RIGHTCLICK is a dynamic capability runtime for AI.**
 
-It discovers supported capability contracts from the software and services around an agent, reflects them into one live capability graph, and exposes them through **seven generic AI-facing operations**.
+It discovers supported capability contracts from the environment, software and services around an agent, reflects them into one live capability graph, and exposes them through **seven generic AI-facing operations**.
 
 Install an app. Start a service. Expose a compatible API. Connect another RIGHTCLICK runtime.
 
