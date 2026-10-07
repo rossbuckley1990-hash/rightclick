@@ -3,7 +3,10 @@
 The engineering source is current PR49 `6ea1d3096eb7bba55417d46e7820796bef24daff`
 plus reviewed PR53 source `c7de941bebdba4037eed0bd4c8eae5821ec384e9`, locally
 cherry-picked as `b819d4e`. Remote main was fetched at
-`d953f1a34675a65cf47abd67c4d678069b6536b5`. The three unique PR39 helpers are
+`d953f1a34675a65cf47abd67c4d678069b6536b5` at the initial handoff; the recovery
+manifest records its later read as `33fc2c33f70445e47104c4e8abc0d91987ec2b4e`.
+The candidate base remains explicitly PR49 plus PR53, rather than claiming a
+later main tree. The three unique PR39 helpers are
 reused rather than introducing a second execution, policy or authority engine.
 
 The mirrored workspace unexpectedly disappeared at approximately 18:06 UTC.
@@ -91,6 +94,11 @@ queryable unchanged runtime ACK receipt, advisory effects and unchanged Core7.
 The explicit ACK receipt remains unverified. The final native Mac control run
 passed 137 tests without skips, including unchanged Experience, gRPC and PR53
 pin assertions, OpenAPI/GraphQL controls and the new collision tests.
+The unchanged PR53 real HTTP MCP control also passes all twenty checks on the
+same binary, including live schema mutation, stale pins, malformed pins with
+zero provider requests, valid rediscovery, aliases and deliberate legacy
+unpinned calls. Complete manifests and lossless output archives are retained
+in `evidence/preflight-reconciliation-20261007`.
 
 The required bottle check exits 1: this recovered checkout's inventory contains
 Kafka/MCP/WASM resolver kinds missing from published 0.2.2 source

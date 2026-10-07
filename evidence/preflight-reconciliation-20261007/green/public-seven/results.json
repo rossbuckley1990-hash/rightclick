@@ -1,0 +1,105 @@
+{
+  "result": "PASS",
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-preflight-recovery-20261007/.build/arm64-apple-macosx/debug/rightclick",
+    "executableRealPath": "/tmp/rightclick-preflight-recovery-20261007/.build/arm64-apple-macosx/debug/rightclick",
+    "executableSHA256": "6c5b1e3dbdeef200e5bc24181f94c492963e7ccfeb1b3cd691f86287458d7995",
+    "pid": 53141,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "binarySHA256": "6c5b1e3dbdeef200e5bc24181f94c492963e7ccfeb1b3cd691f86287458d7995",
+  "controls": {
+    "exact_core_seven": {
+      "result": "PASS",
+      "detail": null
+    },
+    "two_real_discovered_same_title": {
+      "result": "PASS",
+      "detail": null
+    },
+    "canonical_pin_preserved": {
+      "result": "PASS",
+      "detail": null
+    },
+    "declared_post_advice_never_authority": {
+      "result": "PASS",
+      "detail": null
+    },
+    "missing_rejected_before_confirmation": {
+      "result": "PASS",
+      "detail": {
+        "state": "failed",
+        "effectDelta": 0
+      }
+    },
+    "valid_envelope_still_requires_confirmation": {
+      "result": "PASS",
+      "detail": null
+    },
+    "matching_pin_and_preflight_cannot_bypass_policy": {
+      "result": "PASS",
+      "detail": null
+    },
+    "ambiguous_title_never_dispatches": {
+      "result": "PASS",
+      "detail": {
+        "state": "unavailable",
+        "effectDelta": 0
+      }
+    },
+    "pin_cannot_choose_ambiguous_title": {
+      "result": "PASS",
+      "detail": null
+    },
+    "exact_id_mutates_only_intended_provider": {
+      "result": "PASS",
+      "detail": null
+    },
+    "undeclared_ack_stays_unverified": {
+      "result": "PASS",
+      "detail": null
+    },
+    "operator_independent_readback_matches_fresh_bytes": {
+      "result": "PASS",
+      "detail": null
+    },
+    "status_retains_same_execution": {
+      "result": "PASS",
+      "detail": null
+    },
+    "declared_read_advice_preserves_confirmation": {
+      "result": "PASS",
+      "detail": null
+    },
+    "exact_id_wins_over_other_provider_title_with_pin": {
+      "result": "PASS",
+      "detail": {
+        "state": "accepted",
+        "effectDelta": 1
+      }
+    },
+    "catalog_stays_exactly_seven": {
+      "result": "PASS",
+      "detail": null
+    }
+  },
+  "boundary": "Deterministic Core7 engineering driver, disposable real HTTP providers; operator readback is separate evidence, never promoted to runtime verification."
+}
