@@ -181,7 +181,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 def discover(grant: dict[str, Any], limits: dict[str, Any], opener=None) -> tuple[bytes, dict[str, Any]]:
     """Generic, constrained JSON-over-HTTPS, not a provider-specific top-level AI tool."""
     enforce_action(grant, grant["origin"], grant["path"], grant["method"])
-    payload = canonical({"query": grant["query"], "page_size": grant["page_size"], "federation": grant["federation"]})
+    payload = canonical({"query": {"text": grant["query"]}, "pageSize": grant["page_size"], "federation": grant["federation"]})
     req = urllib.request.Request(
         grant["origin"] + grant["path"], data=payload, method=grant["method"],
         headers={"Accept": "application/json", "Content-Type": "application/json"},
