@@ -10,6 +10,7 @@ public struct CapabilityArtifactDescriptor:
     public let specificationURL: String?
     public let baseURL: String?
     public let endpointURL: String?
+    public let inlineData: Data?
     public let authorityScheme: String?
 
     public init(
@@ -18,6 +19,7 @@ public struct CapabilityArtifactDescriptor:
         specificationURL: String? = nil,
         baseURL: String? = nil,
         endpointURL: String? = nil,
+        inlineData: Data? = nil,
         authorityScheme: String? = nil
     ) {
         self.id = id
@@ -25,6 +27,7 @@ public struct CapabilityArtifactDescriptor:
         self.specificationURL = specificationURL
         self.baseURL = baseURL
         self.endpointURL = endpointURL
+        self.inlineData = inlineData
         self.authorityScheme = authorityScheme
     }
 }
@@ -185,6 +188,8 @@ public final class CapabilityArtifactResolverRegistry {
                 raw.baseURL,
             endpointURL:
                 raw.endpointURL,
+            inlineData:
+                raw.inlineData,
             authorityScheme:
                 authority
         )
@@ -298,6 +303,9 @@ public final class OpenAPICapabilityArtifactResolver:
     private let specificationLoader:
         SpecificationLoader
 
+    private let session:
+        URLSession
+
     public convenience init() {
         self.init(
             specificationLoader: {
@@ -305,16 +313,23 @@ public final class OpenAPICapabilityArtifactResolver:
                     .loadOpenAPISpecification(
                         $0
                     )
-            }
+            },
+            session:
+                .shared
         )
     }
 
     public init(
         specificationLoader:
-            @escaping SpecificationLoader
+            @escaping SpecificationLoader,
+        session:
+            URLSession = .shared
     ) {
         self.specificationLoader =
             specificationLoader
+
+        self.session =
+            session
     }
 
     public func resolve(
@@ -323,31 +338,52 @@ public final class OpenAPICapabilityArtifactResolver:
     ) throws -> any CapabilityReflector {
         guard
             descriptor.kind == kind,
-            let rawSpecification =
-                descriptor.specificationURL,
             let rawBase =
                 descriptor.baseURL,
-            let specificationURL =
-                CapabilityArtifactURLPolicy
-                    .httpURL(
-                        rawSpecification
-                    ),
             let baseURL =
                 CapabilityArtifactURLPolicy
                     .httpURL(
                         rawBase
-                    )
+                    ),
+            descriptor.endpointURL == nil,
+            !(
+                descriptor.specificationURL != nil
+                && descriptor.inlineData != nil
+            )
         else {
             throw CapabilityArtifactResolutionError
                 .invalidDescriptor(
-                    "OpenAPI requires safe specificationURL and baseURL"
+                    "OpenAPI requires baseURL and exactly one specification source"
                 )
         }
 
-        let specification =
-            try specificationLoader(
-                specificationURL
-            )
+        let specification:
+            Data
+
+        if let inline =
+            descriptor.inlineData
+        {
+            specification =
+                inline
+        } else if
+            let rawSpecification =
+                descriptor.specificationURL,
+            let specificationURL =
+                CapabilityArtifactURLPolicy
+                    .httpURL(
+                        rawSpecification
+                    )
+        {
+            specification =
+                try specificationLoader(
+                    specificationURL
+                )
+        } else {
+            throw CapabilityArtifactResolutionError
+                .invalidDescriptor(
+                    "OpenAPI requires specificationURL or inlineData"
+                )
+        }
 
         return try OpenAPIReflector(
             specificationData:
@@ -355,7 +391,9 @@ public final class OpenAPICapabilityArtifactResolver:
             baseURL:
                 baseURL,
             externalBearerSchemeName:
-                descriptor.authorityScheme
+                descriptor.authorityScheme,
+            session:
+                session
         )
     }
 }
@@ -438,10 +476,27 @@ public final class GraphQLCapabilityArtifactResolver:
                 )
         }
 
+        guard
+            !(
+                descriptor.specificationURL != nil
+                && descriptor.inlineData != nil
+            )
+        else {
+            throw CapabilityArtifactResolutionError
+                .invalidDescriptor(
+                    "GraphQL accepts only one schema source"
+                )
+        }
+
         let schema:
             Data
 
-        if
+        if let inline =
+            descriptor.inlineData
+        {
+            schema =
+                inline
+        } else if
             let rawSchema =
                 descriptor.specificationURL
         {
@@ -556,6 +611,7 @@ public final class GRPCCapabilityArtifactResolver:
         guard
             descriptor.kind == kind,
             descriptor.specificationURL == nil,
+            descriptor.inlineData == nil,
             descriptor.baseURL == nil,
             descriptor.authorityScheme == nil,
             let rawEndpoint =
