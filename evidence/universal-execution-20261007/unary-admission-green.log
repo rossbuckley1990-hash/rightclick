@@ -1,0 +1,31 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: 'rightclick-universal': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/16] Write sources
+[4/16] Write swift-version--58304C5D6DBC2206.txt
+[6/20] Compiling RightClickCore WASMCapabilityArtifactResolver.swift
+[7/20] Compiling RightClickCore CapabilityInterface.swift
+[8/20] Compiling RightClickCore CapabilityProtectedReference.swift
+[9/20] Compiling RightClickCore RCIRUnaryInvocation.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickCore/RCIRUnaryInvocation.swift:30:41: error: passing a non-escaping function parameter 'admit' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+28 |             verification: verification, expectedOutput: expectedOutput, target: target,
+29 |             authority: { available() ? [scope] : [] }, revalidate: { available() && revalidate() },
+30 |             dispatch: { _, admit in try invoke(admit) },
+   |                                         `- error: passing a non-escaping function parameter 'admit' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+31 |             resultValue: { .string($0.output ?? "") })
+32 |     }
+[10/21] Compiling RightClickCore KafkaCapabilityArtifactResolver.swift
+[11/21] Compiling RightClickCore CapabilityArtifactResolver.swift
+[12/21] Emitting module RightClickCore
+[13/21] Compiling RightClickCore CapabilityArtifactSnapshot.swift
+[14/21] Compiling RightClickCore GRPCReflector.swift
+[15/21] Compiling RightClickCore GRPCReflectionTransport.swift
+[16/23] Compiling RightClickCore MCPCapabilityArtifactResolver.swift
+[17/23] Compiling RightClickCore BonjourGRPCSource.swift
+[18/23] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+error: fatalError

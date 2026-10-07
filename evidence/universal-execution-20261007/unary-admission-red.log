@@ -1,0 +1,42 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/13] Write sources
+[3/13] Write swift-version--58304C5D6DBC2206.txt
+[5/7] Emitting module RightClickCoreTests
+[6/7] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+[6/8] Write Objects.LinkFileList
+[7/8] Linking rightclick-mcpPackageTests
+Build complete! (2.36s)
+Test Suite 'Selected tests' started at 2026-10-07 14:26:04.870.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 14:26:04.871.
+Test Suite 'RCIRUnaryAdmissionTests' started at 2026-10-07 14:26:04.871.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:31: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt] : XCTAssertEqual failed: ("nil") is not equal to ("Optional(true)")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:32: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("unverified")")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:33: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt] : XCTAssertNotNil failed
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt]' failed (0.251 seconds).
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testChangedArgumentsAtAdmissionStopLegacyUnaryTransport]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:40: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testChangedArgumentsAtAdmissionStopLegacyUnaryTransport] : XCTAssertEqual failed: ("1") is not equal to ("0")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:41: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testChangedArgumentsAtAdmissionStopLegacyUnaryTransport] : XCTAssertEqual failed: ("accepted") is not equal to ("rejected")
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testChangedArgumentsAtAdmissionStopLegacyUnaryTransport]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testCurrentHostPolicyDenialStopsLegacyUnaryTransport]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:22: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testCurrentHostPolicyDenialStopsLegacyUnaryTransport] : XCTAssertEqual failed: ("1") is not equal to ("0")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:23: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testCurrentHostPolicyDenialStopsLegacyUnaryTransport] : XCTAssertEqual failed: ("accepted") is not equal to ("rejected")
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testCurrentHostPolicyDenialStopsLegacyUnaryTransport]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:48: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay] : XCTAssertEqual failed: ("failed") is not equal to ("unknown")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:49: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("unknown")")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift:50: error: -[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay] : XCTAssertNotNil failed
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay]' failed (0.001 seconds).
+Test Suite 'RCIRUnaryAdmissionTests' failed at 2026-10-07 14:26:05.125.
+	 Executed 4 tests, with 10 failures (0 unexpected) in 0.254 (0.254) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 14:26:05.125.
+	 Executed 4 tests, with 10 failures (0 unexpected) in 0.254 (0.254) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 14:26:05.125.
+	 Executed 4 tests, with 10 failures (0 unexpected) in 0.254 (0.255) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
