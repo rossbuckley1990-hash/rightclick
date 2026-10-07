@@ -128,6 +128,30 @@ The machine-readable form is `skills/rightclick/procedures/recursive-capability-
 - Prefer read-only or isolated experiment branches/ephemeral compute until a stronger mutation is explicitly authorised.
 - Keep a deterministic depth/step budget so recursive discovery cannot become an unbounded loop.
 
+## Experimental distributed delegation (v2)
+
+For an explicitly authorised cross-host experiment, use
+`skills/rightclick/procedures/distributed-capability-delegation.v2.json`
+together with the v1 recursive procedure above. The v2 experiment is
+described at `experiments/alien-relay/DISTRIBUTED_V2.md`.
+
+- Keep the same **seven** RIGHTCLICK AI-facing operations; do not replace
+  unavailable native runtimes with a fabricated attestation.
+- Sign and attenuate capability delegation. Bind the child audience, origin,
+  HTTP method, path, query, expiry, nonce and execution budget to a specific
+  observed remote workflow identity.
+- Check trusted public keys through an independent transport channel when
+  crossing job boundaries. Preserve signed failure receipts.
+- Run denial controls before invoking an allowed external action; independently
+  parse and hash the response when verifying success.
+- Retain immutable evidence for failed generations. Preserve original
+  max-depth/max-generation budgets; never increase them automatically.
+- The demonstrated Ubuntu→Windows→Ubuntu proof is a portable **protocol
+  harness**, not evidence that the native Windows RIGHTCLICK runtime exists.
+  Cross-run revocation, genuine remote-runtime attestation and the native
+  seven-operation contract remain promotion gates. Do not merge or release it
+  as a fully distributed product on that evidence alone.
+
 ## Core principle
 
 ```
