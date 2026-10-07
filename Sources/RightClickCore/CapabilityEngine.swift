@@ -260,19 +260,6 @@ public final class CapabilityEngine {
             )
         }
 
-        if let issue = CapabilityArgumentPreflight.issue(for: capability, arguments: arguments) {
-            let record = ExecutionRecord(
-                executionId: executionId,
-                actionId: capability.id,
-                title: capability.title,
-                state: .failed,
-                message: issue.message,
-                evidence: OutcomeEvidence(type: issue.code, boundary: "Argument-envelope preflight rejected the request before confirmation and provider invocation.")
-            )
-            ExecutionStore.shared.put(record)
-            return record
-        }
-
         if capability.requiresConfirmation
             && !confirmed
         {
@@ -500,6 +487,19 @@ public final class CapabilityEngine {
                 record
             )
 
+            return record
+        }
+
+        if let issue = CapabilityArgumentPreflight.issue(for: capability, arguments: arguments) {
+            let record = ExecutionRecord(
+                executionId: executionId,
+                actionId: capability.id,
+                title: capability.title,
+                state: .failed,
+                message: issue.message,
+                evidence: OutcomeEvidence(type: issue.code, boundary: "Argument-envelope preflight rejected the request before confirmation and provider invocation.")
+            )
+            ExecutionStore.shared.put(record)
             return record
         }
 
