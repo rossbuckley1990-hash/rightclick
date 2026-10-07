@@ -857,6 +857,9 @@ public final class ConfiguredOpenAPISource:
     private let reloadLock =
         NSLock()
 
+    private let clock: () -> TimeInterval
+    private var freshness: CapabilitySnapshotFreshness
+
     private let stateLock =
         NSLock()
 
@@ -889,6 +892,8 @@ public final class ConfiguredOpenAPISource:
 
     public init(
         configurationFile: URL,
+        refreshInterval: TimeInterval = 5,
+        clock: @escaping () -> TimeInterval = { ProcessInfo.processInfo.systemUptime },
         specificationLoader:
             @escaping SpecificationLoader
     ) {
@@ -897,6 +902,9 @@ public final class ConfiguredOpenAPISource:
 
         self.specificationLoader =
             specificationLoader
+
+        self.clock = clock
+        self.freshness = CapabilitySnapshotFreshness(lifetime: refreshInterval)
     }
 
     public func reflectors()
@@ -907,6 +915,18 @@ public final class ConfiguredOpenAPISource:
         reloadIfNeeded()
 
         reloadLock.unlock()
+
+        stateLock.lock()
+        let compiled = currentReflectors
+        stateLock.unlock()
+        for (key, old) in compiled where old.requiresContractRefresh {
+            // Keep an unavailable snapshot pending reacquisition; its mandatory
+            // execution check denies dispatch. A later read can recover it.
+            guard let refreshed = try? old.refreshContract() as? OpenAPIReflector else { continue }
+            stateLock.lock()
+            if currentReflectors[key] === old { currentReflectors[key] = refreshed }
+            stateLock.unlock()
+        }
 
         stateLock.lock()
 
@@ -952,6 +972,7 @@ public final class ConfiguredOpenAPISource:
             didLoadConfiguration
             && lastConfigurationData
                 == data
+            && freshness.isFresh(at: clock())
 
         stateLock.unlock()
 
@@ -1034,9 +1055,12 @@ public final class ConfiguredOpenAPISource:
                             specification,
                         baseURL:
                             baseURL,
-                        externalBearerSchemeName:
-                            provider
-                                .authorityScheme
+                    externalBearerSchemeName:
+                        provider
+                                .authorityScheme,
+                    revalidateSpecification: { [loader = specificationLoader] in
+                        try loader(specificationURL)
+                    }
                     )
 
                 next[
@@ -1105,6 +1129,17 @@ public final class ConfiguredOpenAPISource:
         didLoadConfiguration =
             didLoad
 
+        freshness.recordAcquisition(at: clock())
+
+        stateLock.unlock()
+    }
+
+    public func invalidateSnapshot() {
+        reloadLock.lock()
+        defer { reloadLock.unlock() }
+        stateLock.lock()
+        freshness.invalidate()
+        currentReflectors.removeAll()
         stateLock.unlock()
     }
 }

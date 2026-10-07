@@ -198,6 +198,7 @@ public struct ExecutionRecord: Codable, Sendable {
     public var events: [String]
     public var evidence: OutcomeEvidence
     public var verification: OutcomeVerification?
+    public var rcir: RCIRExecutionEvidence?
 
     public init(
         executionId: String,
@@ -208,7 +209,8 @@ public struct ExecutionRecord: Codable, Sendable {
         output: String? = nil,
         events: [String] = [],
         evidence: OutcomeEvidence = OutcomeEvidence(),
-        verification: OutcomeVerification? = nil
+        verification: OutcomeVerification? = nil,
+        rcir: RCIRExecutionEvidence? = nil
     ) {
         self.executionId = executionId
         self.actionId = actionId
@@ -219,6 +221,7 @@ public struct ExecutionRecord: Codable, Sendable {
         self.events = events
         self.evidence = evidence
         self.verification = verification
+        self.rcir = rcir
     }
 }
 
@@ -260,6 +263,7 @@ public struct RunResult: Codable, Sendable {
     public var supportLevel: SupportLevel?
     public var evidence: OutcomeEvidence
     public var verification: OutcomeVerification?
+    public var rcir: RCIRExecutionEvidence?
 
     public init(
         status: RunStatus,
@@ -270,7 +274,8 @@ public struct RunResult: Codable, Sendable {
         requiresConfirmation: Bool = false,
         supportLevel: SupportLevel? = nil,
         evidence: OutcomeEvidence = OutcomeEvidence(),
-        verification: OutcomeVerification? = nil
+        verification: OutcomeVerification? = nil,
+        rcir: RCIRExecutionEvidence? = nil
     ) {
         self.status = status
         self.actionID = actionID
@@ -281,6 +286,7 @@ public struct RunResult: Codable, Sendable {
         self.supportLevel = supportLevel
         self.evidence = evidence
         self.verification = verification
+        self.rcir = rcir
     }
 }
 

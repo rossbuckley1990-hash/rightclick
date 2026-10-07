@@ -379,6 +379,10 @@ public final class OpenAPICapabilityArtifactResolver:
                 )
         }
 
+        let revalidate: (() throws -> Data)? = descriptor.specificationURL.flatMap { raw in
+            guard let url = CapabilityArtifactURLPolicy.httpURL(raw) else { return nil }
+            return { [loader = specificationLoader] in try loader(url) }
+        }
         return try OpenAPIReflector(
             specificationData:
                 specification,
@@ -387,7 +391,8 @@ public final class OpenAPICapabilityArtifactResolver:
             externalBearerSchemeName:
                 descriptor.authorityScheme,
             session:
-                session
+                session,
+            revalidateSpecification: revalidate
         )
     }
 }
@@ -828,14 +833,11 @@ public final class ConfiguredCapabilityArtifactSource:
     private let registry:
         CapabilityArtifactResolverRegistry
 
-    private let refreshInterval:
-        TimeInterval
-
-    private let stateLock =
+    private let reloadLock =
         NSLock()
 
-    private var lastRefresh:
-        Date?
+    private let clock: () -> TimeInterval
+    private var freshness: CapabilitySnapshotFreshness
 
     private var cachedReflectors:
         [any CapabilityReflector] = []
@@ -847,7 +849,8 @@ public final class ConfiguredCapabilityArtifactSource:
             CapabilityArtifactResolverRegistry =
                 CapabilityArtifactResolverRegistry(),
         refreshInterval:
-            TimeInterval = 5
+            TimeInterval = 5,
+        clock: @escaping () -> TimeInterval = { ProcessInfo.processInfo.systemUptime }
     ) {
         self.descriptors =
             Array(
@@ -859,14 +862,8 @@ public final class ConfiguredCapabilityArtifactSource:
         self.registry =
             registry
 
-        self.refreshInterval =
-            max(
-                0,
-                min(
-                    refreshInterval,
-                    300
-                )
-            )
+        self.clock = clock
+        self.freshness = CapabilitySnapshotFreshness(lifetime: refreshInterval)
     }
 
     public static func fromEnvironment(
@@ -910,43 +907,32 @@ public final class ConfiguredCapabilityArtifactSource:
     public func reflectors()
         -> [any CapabilityReflector]
     {
-        stateLock.lock()
-
-        if
-            let lastRefresh,
-            refreshInterval > 0,
-            Date()
-                .timeIntervalSince(
-                    lastRefresh
-                ) < refreshInterval
-        {
-            let snapshot =
-                cachedReflectors
-
-            stateLock.unlock()
-
-            return snapshot
+        // Serialize acquisition/publication and preserve the shared monotonic
+        // lifetime. Compilers needing live contract refresh cannot reuse it.
+        reloadLock.lock()
+        defer { reloadLock.unlock() }
+        if freshness.isFresh(at: clock()),
+           !cachedReflectors.contains(where: {
+               ($0 as? any CapabilityContractRefreshingReflector)?.requiresContractRefresh == true
+           }) {
+            return cachedReflectors
         }
-
-        stateLock.unlock()
 
         let next =
             resolvedSnapshot()
 
-        stateLock.lock()
-
         cachedReflectors =
             next
 
-        lastRefresh =
-            Date()
+        freshness.recordAcquisition(at: clock())
+        return cachedReflectors
+    }
 
-        let snapshot =
-            cachedReflectors
-
-        stateLock.unlock()
-
-        return snapshot
+    public func invalidateSnapshot() {
+        reloadLock.lock()
+        defer { reloadLock.unlock() }
+        freshness.invalidate()
+        cachedReflectors.removeAll()
     }
 
     private func resolvedSnapshot()

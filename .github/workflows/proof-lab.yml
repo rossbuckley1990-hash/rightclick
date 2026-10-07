@@ -1,0 +1,63 @@
+name: Isolated universal-runtime proof lab
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/proof-lab/**'
+      - '.github/workflows/proof-lab.yml'
+permissions:
+  contents: read
+concurrency:
+  group: proof-lab-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux-kafka-kubernetes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Install pinned official kind and kubectl
+        shell: bash
+        run: |
+          set -euo pipefail
+          tools="$RUNNER_TEMP/rightclick-proof-tools"
+          mkdir -p "$tools"
+          cd "$tools"
+          curl -fsSLO https://github.com/kubernetes-sigs/kind/releases/download/v0.32.0/kind-linux-amd64
+          curl -fsSLO https://github.com/kubernetes-sigs/kind/releases/download/v0.32.0/kind-linux-amd64.sha256sum
+          sha256sum --check kind-linux-amd64.sha256sum
+          mv kind-linux-amd64 kind
+          curl -fsSLo kubectl https://dl.k8s.io/release/v1.36.1/bin/linux/amd64/kubectl
+          curl -fsSLo kubectl.sha256 https://dl.k8s.io/release/v1.36.1/bin/linux/amd64/kubectl.sha256
+          echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+          chmod +x kind kubectl
+          echo "$tools" >> "$GITHUB_PATH"
+      - name: Provision genuine Linux, Kafka and Kubernetes substrates
+        run: python3 scripts/proof-lab/lab.py up --state "$RUNNER_TEMP/rightclick-proof-private" --evidence evidence/proof-lab/provisioning.json
+      - name: Independent effects and least-authority denial controls
+        run: python3 scripts/proof-lab/lab.py verify --state "$RUNNER_TEMP/rightclick-proof-private" --evidence evidence/proof-lab/readiness.json
+      - name: Remove only owned proof resources and private credentials
+        if: always()
+        run: python3 scripts/proof-lab/lab.py down --state "$RUNNER_TEMP/rightclick-proof-private" --evidence evidence/proof-lab/teardown.json
+      - name: Preserve non-secret infrastructure evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: proof-lab-linux-kafka-kubernetes
+          path: evidence/proof-lab/*.json
+          if-no-files-found: error
+  native-windows:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Real Windows identity, scoped effect, independent readback and denied administrator resource
+        shell: pwsh
+        run: ./scripts/proof-lab/windows-lab.ps1
+      - name: Preserve non-secret native Windows readiness evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: proof-lab-native-windows
+          path: evidence/proof-lab/*.json
+          if-no-files-found: error

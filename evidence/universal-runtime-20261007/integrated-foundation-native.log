@@ -1,0 +1,168 @@
+swift-driver version: 1.148.6 Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)
+Target: arm64-apple-macosx26.0
+
+Scope: exact ABI + RCIR foundation. No live providers or production engine.
+Linux: 61 tests. CryptoKit platforms: two additional real-backend tests.
+Building for debugging...
+[0/7] Write sources
+[2/7] /private/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-rcir.WU8MNOXY/.build/arm64-apple-macosx/debug/RightClickRCIRValidationPackageTests.derived/runner.swift
+[3/7] Write sources
+[4/7] Write swift-version--58304C5D6DBC2206.txt
+[6/11] Emitting module RightClickCore
+[7/11] Compiling RightClickCore RCIR.swift
+[8/11] Compiling RightClickCore CapabilityABI.swift
+[9/11] Compiling RightClickCore RCIRSignedReceipt.swift
+[10/15] Emitting module RightClickCoreTests
+[11/15] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+[12/15] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+[13/15] Compiling RightClickCoreTests RCIRTests.swift
+[14/17] Emitting module RightClickRCIRValidationPackageTests
+[15/17] Compiling RightClickRCIRValidationPackageTests runner.swift
+[15/17] Write Objects.LinkFileList
+[16/17] Linking RightClickRCIRValidationPackageTests
+Build complete! (13.06s)
+Test Suite 'All tests' started at 2026-10-07 13:55:36.505.
+Test Suite 'RightClickRCIRValidationPackageTests.xctest' started at 2026-10-07 13:55:36.505.
+Test Suite 'RCIRBoundaryTests' started at 2026-10-07 13:55:36.505.
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testConcurrentConsumptionHasOneWinner]' started.
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testConcurrentConsumptionHasOneWinner]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testFailedProviderResultStillDoesNotVerifyAnExternalFailure]' started.
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testFailedProviderResultStillDoesNotVerifyAnExternalFailure]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testInvalidObservationCannotSetSemanticSuccess]' started.
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testInvalidObservationCannotSetSemanticSuccess]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testRejectedArgumentsDoNotSpendAnOtherwiseValidLease]' started.
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testRejectedArgumentsDoNotSpendAnOtherwiseValidLease]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testTaskCannotPredateLease]' started.
+Test Case '-[RightClickCoreTests.RCIRBoundaryTests testTaskCannotPredateLease]' passed (0.000 seconds).
+Test Suite 'RCIRBoundaryTests' passed at 2026-10-07 13:55:36.510.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'RCIRIntegrationTests' started at 2026-10-07 13:55:36.510.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testBackendSignatureRejectionIsNotIgnored]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testBackendSignatureRejectionIsNotIgnored]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEmbeddedKeyCannotEstablishTrust]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEmbeddedKeyCannotEstablishTrust]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEmptyTerminalPageIsDistinguishableFromLiveIdle]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEmptyTerminalPageIsDistinguishableFromLiveIdle]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEnvelopeRejectsNonReceiptPayload]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEnvelopeRejectsNonReceiptPayload]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEnvelopeRejectsWrongSignatureAndKeyLengths]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEnvelopeRejectsWrongSignatureAndKeyLengths]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEventPagesHaveBoundedStableCursors]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testEventPagesHaveBoundedStableCursors]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testObserverReceivesExactArgumentsAndBinding]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testObserverReceivesExactArgumentsAndBinding]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testPagesRejectInvalidCursorsAndLimits]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testPagesRejectInvalidCursorsAndLimits]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testRealCryptoKitSignatureAndPinnedKey]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testRealCryptoKitSignatureAndPinnedKey]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testRealCryptoKitSignatureDetectsPayloadTampering]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testRealCryptoKitSignatureDetectsPayloadTampering]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testUnsignedFixtureIsExplicitlyNotCryptographicEvidence]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testUnsignedFixtureIsExplicitlyNotCryptographicEvidence]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testWireTransportPreservesExactPayload]' started.
+Test Case '-[RightClickCoreTests.RCIRIntegrationTests testWireTransportPreservesExactPayload]' passed (0.001 seconds).
+Test Suite 'RCIRIntegrationTests' passed at 2026-10-07 13:55:36.516.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.005 (0.006) seconds
+Test Suite 'RCIRTests' started at 2026-10-07 13:55:36.516.
+Test Case '-[RightClickCoreTests.RCIRTests testAcceptanceAndCompletionAreNotSemanticSuccess]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testAcceptanceAndCompletionAreNotSemanticSuccess]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testArgumentTamperingRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testArgumentTamperingRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testBufferOverflowNeverSilentlyDropsEvents]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testBufferOverflowNeverSilentlyDropsEvents]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testByteBudgetEnforcedBeforeMutation]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testByteBudgetEnforcedBeforeMutation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testCancellationRequestIsNotAcknowledgement]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testCancellationRequestIsNotAcknowledgement]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testCannotIssueFinalReceiptForRunningTask]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testCannotIssueFinalReceiptForRunningTask]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testChangedContractInvalidatesLease]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testChangedContractInvalidatesLease]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testClockRegressionRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testClockRegressionRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testContractBindsEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testContractBindsEffects]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testContractBindsTaskShape]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testContractBindsTaskShape]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testContractBindsVerification]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testContractBindsVerification]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testContractRejectsUnboundedStream]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testContractRejectsUnboundedStream]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testDeadlineProducesUnknownNotSuccessOrRetry]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testDeadlineProducesUnknownNotSuccessOrRetry]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testExistingABIStillDistinguishesIntegerNumberAndString]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testExistingABIStillDistinguishesIntegerNumberAndString]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testExternalMismatchIsSemanticFailure]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testExternalMismatchIsSemanticFailure]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testIncorrectTypedArgumentsRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testIncorrectTypedArgumentsRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testInvalidScopeFailsClosed]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testInvalidScopeFailsClosed]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testLeaseCannotCrossAdmissionInstances]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testLeaseCannotCrossAdmissionInstances]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testLeaseConsumesOnce]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testLeaseConsumesOnce]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testLeaseExpiryBoundary]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testLeaseExpiryBoundary]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testLeaseInvalidTimesAndTTLRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testLeaseInvalidTimesAndTTLRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testLeastAuthorityIsExactRequiredSubset]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testLeastAuthorityIsExactRequiredSubset]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testMissingAuthorityRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testMissingAuthorityRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testMissingVerificationContractCannotSucceed]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testMissingVerificationContractCannotSucceed]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testObserverTransportFailureDoesNotBecomeSuccess]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testObserverTransportFailureDoesNotBecomeSuccess]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testOnlyBoundIndependentObserverCanVerify]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testOnlyBoundIndependentObserverCanVerify]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testPolicyChangeAndAuthorityRevocationRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testPolicyChangeAndAuthorityRevocationRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testPolicyDenyOverridesAuthority]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testPolicyDenyOverridesAuthority]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testPrincipalBoundToSnapshot]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testPrincipalBoundToSnapshot]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testProviderLossDuringWorkIsUnknown]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testProviderLossDuringWorkIsUnknown]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testPureOperationNeedsNoAuthority]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testPureOperationNeedsNoAuthority]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testReappearanceCannotResurrectOldLease]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testReappearanceCannotResurrectOldLease]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testReceiptBindsObservedOutcomeAndHasDomainSeparator]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testReceiptBindsObservedOutcomeAndHasDomainSeparator]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testRemovedProviderDisappearsAndOldBindingRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testRemovedProviderDisappearsAndOldBindingRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testResultShapeCheckedWithoutPromotion]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testResultShapeCheckedWithoutPromotion]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testSamePublicationDoesNotInvalidateBinding]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testSamePublicationDoesNotInvalidateBinding]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testScopesUseExactUTF8]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testScopesUseExactUTF8]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testStreamElementAndUnaryChunkValidation]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testStreamElementAndUnaryChunkValidation]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testStreamSequenceReplayAndGapRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testStreamSequenceReplayAndGapRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testTaskDeadlineMustBeFiniteAndForward]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testTaskDeadlineMustBeFiniteAndForward]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testTerminalTaskCannotBeReopened]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testTerminalTaskCannotBeReopened]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testUnknownArgumentSchemaRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testUnknownArgumentSchemaRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testUnknownEffectsRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testUnknownEffectsRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testUnsupportedCancellationRejected]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testUnsupportedCancellationRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testUnsupportedClientAndDuplexStreamsAbstain]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testUnsupportedClientAndDuplexStreamsAbstain]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRTests testVerifierCannotRunBeforeProviderCompletion]' started.
+Test Case '-[RightClickCoreTests.RCIRTests testVerifierCannotRunBeforeProviderCompletion]' passed (0.000 seconds).
+Test Suite 'RCIRTests' passed at 2026-10-07 13:55:36.532.
+	 Executed 46 tests, with 0 failures (0 unexpected) in 0.014 (0.017) seconds
+Test Suite 'RightClickRCIRValidationPackageTests.xctest' passed at 2026-10-07 13:55:36.532.
+	 Executed 63 tests, with 0 failures (0 unexpected) in 0.024 (0.027) seconds
+Test Suite 'All tests' passed at 2026-10-07 13:55:36.532.
+	 Executed 63 tests, with 0 failures (0 unexpected) in 0.024 (0.028) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

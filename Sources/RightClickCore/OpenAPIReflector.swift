@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 
-public final class OpenAPIReflector: CapabilityReflector {
+public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractRefreshingReflector {
     private struct JSONStringProperty {
         let allowedValues: Set<String>?
     }
@@ -117,10 +117,16 @@ public final class OpenAPIReflector: CapabilityReflector {
 
     public let id: String
 
+    private let standaloneHost = RCIRExecutionHost()
     private let baseURL: URL
     private let providerName: String
     private let providerFingerprint: String
     private let specificationSHA256: String
+    private let revalidateSpecification: (() throws -> Data)?
+    private let externalBearerSchemeName: String?
+    private let acquisitionIncarnation: UUID?
+    private let freshnessLock = NSLock()
+    private var staleContract = false
     private let session: URLSession
 
     private let operations: [Operation]
@@ -132,7 +138,9 @@ public final class OpenAPIReflector: CapabilityReflector {
         baseURL: URL,
         externalBearerSchemeName:
             String? = nil,
-        session: URLSession = .shared
+        session: URLSession = .shared,
+        revalidateSpecification: (() throws -> Data)? = nil,
+        acquisitionIncarnation: UUID? = nil
     ) throws {
         let canonicalBaseURL =
             try Self.canonicalBaseURL(
@@ -204,6 +212,10 @@ public final class OpenAPIReflector: CapabilityReflector {
 
         self.specificationSHA256 =
             specificationSHA256
+
+        self.revalidateSpecification = revalidateSpecification
+        self.externalBearerSchemeName = resolvedExternalBearerSchemeName
+        self.acquisitionIncarnation = acquisitionIncarnation
 
         self.session =
             OriginPinnedHTTP.makeSession(
@@ -280,6 +292,12 @@ public final class OpenAPIReflector: CapabilityReflector {
                         operation
                             .responseContentType,
                 ]
+
+            if let acquisitionIncarnation {
+                // Minted by the acquisition owner, never read from provider
+                // metadata. The existing ABI and engine snapshot bind it.
+                metadata["acquisitionIncarnation"] = acquisitionIncarnation.uuidString
+            }
 
             if let requestContentType =
                 operation.requestContentType
@@ -442,6 +460,14 @@ public final class OpenAPIReflector: CapabilityReflector {
         executionID: String,
         arguments: CapabilityArguments?
     ) throws -> ExecutionRecord {
+        try admittedBegin(capability: capability, admissionOwner: capability, item: item, executionID: executionID,
+                          arguments: arguments, verification: nil, expectedOutput: nil,
+                          host: standaloneHost, revalidate: { true })
+    }
+
+    public func admittedBegin(capability: Capability, admissionOwner: Capability, item: ContentItem, executionID: String,
+                              arguments: CapabilityArguments?, verification: VerificationSpec?, expectedOutput: String?,
+                              host: RCIRExecutionHost, revalidate: @escaping () -> Bool) throws -> ExecutionRecord {
         guard
             let operation =
                 operationByCapabilityID[
@@ -931,6 +957,95 @@ public final class OpenAPIReflector: CapabilityReflector {
                 "Accept"
         )
 
+        // The existing request compiler and credential origin checks above
+        // remain authoritative. Lower their exact output into the existing ABI.
+        func schema(_ object: JSONObjectSchema) -> CapabilitySchema {
+            .object(properties: object.properties.mapValues {
+                $0.allowedValues.map { .stringEnum($0.sorted()) } ?? .string
+            }, required: object.required.sorted())
+        }
+        let argumentSchema: CapabilitySchema
+        if let path = operation.pathArgumentsSchema, let body = operation.requestJSONSchema,
+           let combined = Self.combinedArgumentsSchema(pathSchema: path, requestSchema: body) {
+            argumentSchema = schema(combined)
+        } else if let object = operation.requestJSONSchema ?? operation.pathArgumentsSchema {
+            argumentSchema = schema(object)
+        } else { argumentSchema = .null }
+        let resultSchema: CapabilitySchema = operation.responseJSONSchema.map(schema)
+            ?? (operation.responseJSONSyntaxOnly ? .bytes : .string)
+        var owned = CapabilityExperience.withoutExperience(admissionOwner)
+        if owned.reflectorID == "unowned" { owned.reflectorID = id }
+        let reflected = try owned.abiContract(arguments: .object(properties: [
+            "item": .string, "arguments": argumentSchema
+        ], required: ["item", "arguments"]), result: resultSchema)
+        let abi = CapabilityContract(capabilityID: reflected.capabilityID, reflectorID: reflected.reflectorID,
+            providerID: reflected.providerID, arguments: reflected.arguments, result: resultSchema,
+            declaration: .object(["capability": reflected.declaration,
+                "requestURL": .string(targetURL.absoluteString), "method": .string(operation.method),
+                // Exact compiled bytes are committed without duplicating the
+                // full invocation value into the bounded declaration. The lease
+                // separately binds the complete typed arguments.
+                "bodySHA256": requestBody.map { .string(Self.sha256Hex($0)) } ?? .null,
+                "verification": try verification.map { .bytes(try JSONEncoder().encode($0)) } ?? .null,
+                "expectedOutput": expectedOutput.map { .string($0) } ?? .null]))
+        let input = CapabilityValue.object(["item": .string(item.text ?? ""),
+            "arguments": CapabilityValue.fromLegacyArguments(arguments) ?? .null])
+        // POST is conservatively execute (never inferred pure from a title).
+        let effect: RCIREffect = operation.method == "GET" ? .read : .execute
+        let scope = RCIRScope(targetURL.absoluteString, effect)
+        return try host.execute(abi: abi, discovery: reflected, arguments: input, scope: scope,
+            capability: admissionOwner, executionID: executionID, argumentStrings: arguments,
+            item: item, verification: verification, expectedOutput: expectedOutput, target: targetURL, authority: {
+                if let required = operation.authorityRequirement {
+                    guard let current = OpenAPIAuthorityStore.bearerToken(for: required),
+                          current.utf8.elementsEqual((bearerToken ?? "").utf8) else { return [] }
+                }
+                return [scope]
+            }, revalidate: revalidate, currentContract: { self.contractIsCurrent() }, dispatch: { correlationID, admitStart in
+                var boundRequest = request
+                boundRequest.setValue(correlationID, forHTTPHeaderField: "X-RightClick-Invocation")
+                return try self.send(boundRequest, operation: operation, capability: capability,
+                                     executionID: executionID, admitStart: admitStart)
+            }, resultValue: { record in
+                if let object = operation.responseJSONSchema, let output = record.output {
+                    guard let json = try JSONSerialization.jsonObject(with: Data(output.utf8)) as? [String: String] else {
+                        throw RCIRError.invalidContract
+                    }
+                    let value = CapabilityValue.object(json.mapValues { .string($0) })
+                    try schema(object).validate(value)
+                    return value
+                }
+                if operation.responseJSONSyntaxOnly { return .bytes(Data((record.output ?? "").utf8)) }
+                return .string(record.output ?? "")
+            })
+    }
+
+    public var requiresContractRefresh: Bool {
+        freshnessLock.lock(); defer { freshnessLock.unlock() }
+        return staleContract
+    }
+
+    public func refreshContract() throws -> any CapabilityReflector {
+        guard let revalidateSpecification else { throw RCIRError.unavailable }
+        return try OpenAPIReflector(specificationData: revalidateSpecification(), baseURL: baseURL,
+            externalBearerSchemeName: externalBearerSchemeName, session: session,
+            revalidateSpecification: revalidateSpecification, acquisitionIncarnation: acquisitionIncarnation)
+    }
+
+    private func contractIsCurrent() -> Bool {
+        // Inline/operator-owned snapshots have no remote locator. Their graph
+        // owner is still revalidated by the engine. Acquired URL contracts must
+        // read current bounded source bytes before transport and after dispatch.
+        guard let revalidateSpecification else { return true }
+        let current = (try? revalidateSpecification()).map(Self.sha256Hex) == specificationSHA256
+        freshnessLock.lock(); staleContract = !current; freshnessLock.unlock()
+        return current
+    }
+
+    private func send(_ request: URLRequest, operation: Operation,
+                      capability: Capability, executionID: String,
+                      admitStart: (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord {
+        guard let targetURL = request.url else { throw RCIRError.invalidContract }
         let semaphore =
             DispatchSemaphore(
                 value: 0
@@ -956,7 +1071,9 @@ public final class OpenAPIReflector: CapabilityReflector {
                 semaphore.signal()
             }
 
-        task.resume()
+        // Only enqueue while the admission lock is held. Waiting below happens
+        // after unlocking, so disappearance can invalidate other live bindings.
+        try admitStart { task.resume() }
 
         let wait =
             semaphore.wait(
@@ -1000,9 +1117,9 @@ public final class OpenAPIReflector: CapabilityReflector {
                 title:
                     capability.title,
                 state:
-                    .failed,
+                    .unknown,
                 message:
-                    "The OpenAPI provider request failed: \(error.localizedDescription)",
+                    "The OpenAPI transport ended without acceptance: \(error.localizedDescription). External effects are unknown; do not retry blindly.",
                 evidence:
                     OutcomeEvidence(
                         type:
