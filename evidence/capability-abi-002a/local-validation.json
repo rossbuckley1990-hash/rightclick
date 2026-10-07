@@ -1,0 +1,57 @@
+{
+  "gate": "ABI-002A",
+  "base_commit": "42e62afcbdbfbc0f5acd05fb97c09b878b9a9d02",
+  "pr": 33,
+  "preregistered_commit": "2e29438d5989d68f4ecfb2c6451cf1bb2c856805",
+  "portable_test_commit": "d09989267faef9eba90b4c4df1eb745bc508861e",
+  "native_test_commit": "b0e0b6dd9d2b5b1e22067c38d8feb01d30ee856c",
+  "environment": "Swift 6.2.1 x86_64 Linux, Swift 5 language mode",
+  "command": "bash scripts/test-capability-binding.sh",
+  "result": {
+    "portable_tests": 51,
+    "new_portable_tests": 18,
+    "failures": 0,
+    "native_tests_added": 23,
+    "native_test_status": "NOT_RUN_LOCALLY; GitHub macOS CI is authoritative",
+    "native_syntax_parse": "PASS; not a typecheck or test run"
+  },
+  "red_boundary": "New portable tests failed because CapabilityInvocationBinding did not exist. API-absence baseline only, not a reproduced live vulnerability. The 18-test source is unchanged after implementation. Native tests were committed before native implementation.",
+  "scope": "Opt-in core execution using immutable request binding and exact declaration revalidation. Existing MCP, legacy execution, confirmation and provider schemas unchanged. Plain-text contexts only. Not a signature, approval issuer, single-use lease, replay defense or independently verified provider implementation. No merge, release or installed-runtime replacement.",
+  "files": {
+    ".github/workflows/capability-binding.yml": {
+      "bytes": 896,
+      "sha256": "7882c3f929c20b18361fa5df6c224e257f5d2cdf5482df630a2b1833b3ff821c",
+      "git_blob": "54dba755485a8eafaca567fc5e195141de52ab6b"
+    },
+    "Sources/RightClickCore/CapabilityInvocationBinding.swift": {
+      "bytes": 1656,
+      "sha256": "aafe900279a5525acfc2709e19595456c88c771f80bda0ca489b238c4b026d8e",
+      "git_blob": "2551b646378cc543a69df28ec1a0cd0aaac07fd1"
+    },
+    "Sources/RightClickCore/ContractBoundCapabilityEngine.swift": {
+      "bytes": 9850,
+      "sha256": "4344747eb04deb5317ee41f7ef283b17415bc491e3d00aebe4ce621ba6a06dcc",
+      "git_blob": "31fd4ffaebb3d726699d700dfbe895cec0d2e969"
+    },
+    "Tests/RightClickCoreTests/CapabilityInvocationBindingTests.swift": {
+      "bytes": 4941,
+      "sha256": "c83bdece4711555639fa9b3247d43586a03a60fa9b556518786dda720a83d98f",
+      "git_blob": "b24a7cbdec30736eb5c487a4f1aefbe81d3be245"
+    },
+    "Tests/RightClickCoreTests/ContractBoundCapabilityEngineTests.swift": {
+      "bytes": 11285,
+      "sha256": "085fe4e27429237b0698cf210bcd4f49bb8d7f3d899858832b6475dc6ad78475",
+      "git_blob": "2b1304812edd7423c3bdd982d04a14cd4ecfe940"
+    },
+    "docs/CAPABILITY-ABI-002A.md": {
+      "bytes": 2794,
+      "sha256": "72e94f5c3e10e61820239d0a8ffdb1e4635444850c32f46ab843dc9e29bf7f28",
+      "git_blob": "4c8c1617722e0bc016691aa04898ae8cde78eed9"
+    },
+    "scripts/test-capability-binding.sh": {
+      "bytes": 1277,
+      "sha256": "b8a0245bf00975baa6c44d1e3756f3d0b20a5da773a83af327a5730b8b67f213",
+      "git_blob": "71f9e6e2939e3f29e8a0fcf29cb4f0a2f0c6c7ec"
+    }
+  }
+}
