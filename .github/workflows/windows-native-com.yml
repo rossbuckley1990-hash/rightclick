@@ -1,0 +1,68 @@
+name: Native Windows COM metadata boundary
+on:
+  push:
+    branches: [feature/windows-native-contracts-20261007]
+  pull_request:
+    paths:
+      - 'Sources/RightClickWindowsCOM/**'
+      - 'Sources/RightClickCore/WindowsCOM*.swift'
+      - 'Tests/Fixtures/windows-com-live.cpp'
+      - 'scripts/acceptance-windows-com.py'
+      - '.github/workflows/windows-native-com.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-com-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  frozen-native-red:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+        with:
+          swift-version: swift-6.2-release
+          swift-build: 6.2-RELEASE
+      - name: Generate unseen native type-library declarations and compile actual COM provider
+        shell: pwsh
+        run: |
+          python scripts/acceptance-windows-com.py --prepare native-com-red
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $installation = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+          if (-not $installation) { throw 'Native C++ toolchain unavailable' }
+          $setup = Join-Path $installation 'VC\Auxiliary\Build\vcvars64.bat'
+          cmd /c "`"$setup`" && midl /nologo /env x64 /out native-com-red /tlb proof.tlb native-com-red\proof.idl && cl /nologo /EHsc /std:c++17 Tests\Fixtures\windows-com-live.cpp /Fe:windows-com-live.exe /link Ole32.lib OleAut32.lib Uuid.lib"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Build exact frozen production baseline
+        shell: pwsh
+        run: |
+          git worktree add native-com-baseline 38b27e45e9f566588b398ace20ca3ed07a529da3
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          git -C native-com-baseline rev-parse HEAD | Out-File -Encoding utf8 native-com-red/baseline-source.txt
+          swift --version | Out-File -Encoding utf8 native-com-red/toolchain.txt
+          Push-Location native-com-baseline
+          swift build --product rightclick --force-resolved-versions --jobs 4 2>&1 | Tee-Object -FilePath ../native-com-red/build.log
+          $code = $LASTEXITCODE
+          Pop-Location
+          if ($code -ne 0) { exit $code }
+      - name: Preserve measured native RED rather than waive missing acquisition
+        shell: pwsh
+        run: |
+          python scripts/acceptance-windows-com.py --binary native-com-baseline/.build/debug/rightclick.exe --fixture windows-com-live.exe --directory native-com-red 2>&1 | Tee-Object -FilePath native-com-red/acceptance.log
+          $observedExit = $LASTEXITCODE
+          $report = Get-Content native-com-red/results.json -Raw | ConvertFrom-Json
+          if ($observedExit -eq 0 -or $report.status -ne 'RED') { throw 'Frozen baseline unexpectedly passed; reassess deficiency before implementation' }
+          if ($report.controls.native_dynamic_metadata_oracle.result -ne 'PASS' -or $report.controls.exactly_seven_operations.result -ne 'PASS' -or $report.controls.production_dynamic_native_acquisition.result -ne 'FAIL') { throw 'Native fixture/setup failure is not the required production RED' }
+          $observedExit | Out-File -Encoding utf8 native-com-red/acceptance.exit
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: frozen-native-windows-com-red-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            native-com-red/
+            windows-com-live.exe
