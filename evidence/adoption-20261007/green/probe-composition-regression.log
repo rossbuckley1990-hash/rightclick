@@ -1,0 +1,58 @@
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/15] Write sources
+[5/15] Write swift-version--58304C5D6DBC2206.txt
+[7/13] Compiling RightClickCLI LocalStdioProbe.swift
+[8/13] Emitting module RightClickCLI
+[8/14] Write Objects.LinkFileList
+[10/14] Emitting module RightClickCoreTests
+[11/14] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+[11/14] Linking rightclick
+[12/14] Applying rightclick
+[14/16] Emitting module RightClickCLITests
+[15/16] Compiling RightClickCLITests AdoptionSecurityStdioIdentityTests.swift
+[15/17] Write Objects.LinkFileList
+[16/17] Linking rightclick-mcpPackageTests
+Build complete! (13.41s)
+Test Suite 'Selected tests' started at 2026-10-07 20:16:08.226.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 20:16:08.230.
+Test Suite 'AdoptionSecurityProcessTests' started at 2026-10-07 20:16:08.230.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testExcessNativeOutputIsBoundedAndDoesNotEchoSecretOutput]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testExcessNativeOutputIsBoundedAndDoesNotEchoSecretOutput]' passed (0.502 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testNativeOutputLargerThanPipeBufferCompletesWithoutDeadlock]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testNativeOutputLargerThanPipeBufferCompletesWithoutDeadlock]' passed (0.453 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testNativeProcessDeadlineReturnsAndDoesNotEchoSecretOutput]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testNativeProcessDeadlineReturnsAndDoesNotEchoSecretOutput]' passed (0.127 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning]' passed (2.112 seconds).
+Test Suite 'AdoptionSecurityProcessTests' passed at 2026-10-07 20:16:11.426.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 3.194 (3.195) seconds
+Test Suite 'AdoptionSecurityStdioIdentityTests' started at 2026-10-07 20:16:11.426.
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testExactCounterfeitProtocolControlCompletesLocalProbe]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testExactCounterfeitProtocolControlCompletesLocalProbe]' passed (0.428 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testProbeChildFoundationHomeRemainsInsideExplicitLexicalHome]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testProbeChildFoundationHomeRemainsInsideExplicitLexicalHome]' passed (0.786 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testRuntimeIdentityTextRejectsConflictingPIDWithExpectedValueFirst]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testRuntimeIdentityTextRejectsConflictingPIDWithExpectedValueFirst]' passed (0.325 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testRuntimeIdentityTextRejectsConflictingPIDWithExpectedValueLast]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testRuntimeIdentityTextRejectsConflictingPIDWithExpectedValueLast]' passed (0.461 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testRuntimeIdentityTextRejectsDuplicateIdenticalPID]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityStdioIdentityTests testRuntimeIdentityTextRejectsDuplicateIdenticalPID]' passed (0.356 seconds).
+Test Suite 'AdoptionSecurityStdioIdentityTests' passed at 2026-10-07 20:16:13.782.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 2.356 (2.356) seconds
+Test Suite 'CapabilityRuntimeDefaultsTests' started at 2026-10-07 20:16:13.782.
+Test Case '-[RightClickCoreTests.CapabilityRuntimeDefaultsTests testDefaultSourceRegistryContainsDynamicProtocolSources]' started.
+Test Case '-[RightClickCoreTests.CapabilityRuntimeDefaultsTests testDefaultSourceRegistryContainsDynamicProtocolSources]' passed (0.012 seconds).
+Test Case '-[RightClickCoreTests.CapabilityRuntimeDefaultsTests testRuntimeDefaultsConsumeLiveSuppliedSource]' started.
+Test Case '-[RightClickCoreTests.CapabilityRuntimeDefaultsTests testRuntimeDefaultsConsumeLiveSuppliedSource]' passed (18.064 seconds).
+Test Suite 'CapabilityRuntimeDefaultsTests' passed at 2026-10-07 20:16:31.858.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 18.076 (18.077) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 20:16:31.859.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 23.626 (23.629) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 20:16:31.859.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 23.626 (23.633) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

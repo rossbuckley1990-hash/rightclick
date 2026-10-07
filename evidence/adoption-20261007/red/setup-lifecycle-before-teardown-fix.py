@@ -6,9 +6,6 @@ HOME. The supplied binary is a read-only input; identical bytes are copied into
 that HOME before invocation. JSON evidence goes to stdout. This observes local
 stdio and registration behavior, never an AI client handshake or a release.
 The independent owner/mode proof currently requires a POSIX host.
-Normally exited CLI invocations are reaped for their exit status; that path is
-not a blanket adversarial descendant-cleanup proof. Native product containment
-has separate acceptance tests.
 """
 from __future__ import annotations
 
@@ -213,10 +210,13 @@ class Child:
         # Do not poll/reap the direct PID before disposing its initial group.
         # This keeps the group identity tied to this invocation during teardown.
         if self.process.returncode is None:
-            try:
-                os.killpg(self.process.pid, signal.SIGKILL)
-            except ProcessLookupError:
-                pass
+            for sig in (signal.SIGTERM, signal.SIGKILL):
+                try:
+                    os.killpg(self.process.pid, sig)
+                except ProcessLookupError:
+                    pass
+                if sig == signal.SIGTERM:
+                    time.sleep(0.02)
             self.process.wait(timeout=3)
         for pipe in (self.process.stdin, self.process.stdout, self.process.stderr):
             pipe.close()
@@ -234,9 +234,6 @@ def run_cli(binary: Path, arguments: list[str], environment: dict[str, str], hom
         output = bytearray()
         while (line := child.line(deadline)) is not None:
             output.extend(line)
-        # Preserve the actual CLI exit status. Its native product descendants
-        # have separate containment tests; this already-exited path is not an
-        # adversarial process-tree cleanup proof.
         status = child.process.wait(timeout=max(0.01, deadline - time.monotonic()))
         payload = decode(output)
         require(isinstance(payload, dict), "CLI did not return one JSON object")

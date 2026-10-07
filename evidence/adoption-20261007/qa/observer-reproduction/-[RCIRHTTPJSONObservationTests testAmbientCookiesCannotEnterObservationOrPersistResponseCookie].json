@@ -1,0 +1,23 @@
+{
+  "contract" : "structured-projection",
+  "effects" : [
+    {
+      "challenge" : "108AAF29-408E-4A2C-AC73-736A9AF2D674",
+      "invocationID" : "71AAF076-2BE1-498E-9E40-BDA1461FB69D",
+      "mutationApplied" : true,
+      "value" : "actual independent file"
+    }
+  ],
+  "observations" : [
+    {
+      "authorizationKind" : "Bearer",
+      "cookiePresent" : false,
+      "credentialRole" : "readonly",
+      "path" : "\/observations\/108AAF29-408E-4A2C-AC73-736A9AF2D674"
+    }
+  ],
+  "redirectTrap" : [
+
+  ],
+  "test" : "-[RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]"
+}

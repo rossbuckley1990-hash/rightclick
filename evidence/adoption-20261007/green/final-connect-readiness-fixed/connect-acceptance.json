@@ -1,0 +1,223 @@
+{
+  "scope": "Supplied executable; isolated HOME; real CLI connection and same-PID dynamic MCP graph only",
+  "status": "PASSED",
+  "startedUTC": "2026-10-07T19:27:36.026110+00:00",
+  "binary": "/private/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+  "binarySHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+  "platform": "Darwin",
+  "architecture": "arm64",
+  "scriptSHA256": "f099813f608b1fc277d31d19d01e232a9100ab851922c264d8c7425ef07aadaa",
+  "helperSHA256": "38c90894e50de262d3688efe5feccafacdd7c817adef59593ca871b9b2b04480",
+  "fixtureSHA256": "77693efcd1658af2463b77b631003adf7cb7dba0aa7fa9efd2205d59f8423889",
+  "realAIClient": "NOT_OBSERVED",
+  "providerExecution": "NOT_RUN",
+  "effectVerification": "NOT_RUN",
+  "cleanReleaseInstall": "NOT_RUN",
+  "elevenWorldProof": "NOT_RUN",
+  "phases": [
+    {
+      "phase": "loopback declaration fixture ready",
+      "elapsedSeconds": 0.12,
+      "endpoint": "http://127.0.0.1:54816/mcp",
+      "fixturePID": 5092
+    },
+    {
+      "phase": "real stdio Core7 baseline",
+      "elapsedSeconds": 2.564,
+      "pid": 5093,
+      "catalogue": {
+        "names": [
+          "context_runtime",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status",
+          "context_providers"
+        ],
+        "schemaSHA256": "4e2661a32122479d49b9e83261a767a9af36948a6280dd1db7a492c08b385fd5"
+      },
+      "runtime": {
+        "agentABIProfiles": [
+          {
+            "id": "core",
+            "operations": [
+              "context_runtime",
+              "context_providers",
+              "context_inspect",
+              "context_actions",
+              "context_explain",
+              "context_run",
+              "context_run_status"
+            ],
+            "version": 1
+          }
+        ],
+        "buildSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+        "capabilityABIVersion": 1,
+        "channel": "development",
+        "contractSchemaVersion": 1,
+        "executableMeasurement": "startup-file-bytes",
+        "executablePath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+        "executableRealPath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+        "executableSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+        "gitCommit": "9e0190000f464e59d7697599e2f47bc87ba3eb39",
+        "mcpSchemaVersion": 1,
+        "pid": 5093,
+        "platform": "macOS",
+        "product": "RIGHTCLICK",
+        "sourceDirty": true,
+        "sourceRepository": "https://github.com/rossbuckley1990-hash/rightclick",
+        "transport": "stdio",
+        "version": "0.2.2"
+      },
+      "ownedCapabilities": 0
+    },
+    {
+      "phase": "actual CLI connect persisted only owned declaration",
+      "elapsedSeconds": 0.105,
+      "configuration": "/private/tmp/rightclick-connect-live-bc2zhuv7/Library/Application Support/RIGHTCLICK/Connections/capability-providers.json",
+      "registrySHA256": "0a5120b52d4c29be75f9dd948728821832d1bae371bd0e717dd6a7d48b8a73ea",
+      "result": {
+        "capabilityCount": 1,
+        "configuration": "/private/tmp/rightclick-connect-live-bc2zhuv7/Library/Application Support/RIGHTCLICK/Connections/capability-providers.json",
+        "credentialStored": false,
+        "execution": "NOT_RUN",
+        "id": "adoption-live-22ca176fae294abc",
+        "kind": "mcp",
+        "outcomeVerification": "NOT_RUN",
+        "reflectorID": "mcp:adoption-live-22ca176fae294abc",
+        "status": "CONNECTED"
+      }
+    },
+    {
+      "phase": "live descriptor gain in unchanged stdio process",
+      "elapsedSeconds": 7.628,
+      "pid": 5093,
+      "capability": {
+        "explanation": "echo",
+        "id": "mcp:adoption-live-22ca176fae294abc:echo",
+        "inputTypes": [
+          "text"
+        ],
+        "invocation": "direct",
+        "provider": {
+          "name": "adoption-live-22ca176fae294abc"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "public_supported",
+        "title": "echo"
+      },
+      "explanation": {
+        "id": "mcp:adoption-live-22ca176fae294abc:echo",
+        "inputs": [
+          "text"
+        ],
+        "invocation": "direct",
+        "metadata": {
+          "argumentNames": "value",
+          "argumentSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czU6dmFsdWVzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM1OnZhbHVl",
+          "authorityScheme": "none",
+          "coreArgumentEncoding": "literalStrings",
+          "descriptorSHA256": "01d168d07a2c0605dc724d564ce2163dd42dd683522b2a53880df1bfb6a1e783",
+          "descriptorSource": "http://127.0.0.1:54816/mcp",
+          "effect": "execute",
+          "executionMode": "unary",
+          "interfaceKind": "mcp",
+          "operationName": "echo",
+          "protocolVersion": "2025-03-26",
+          "providerIdentity": "adoption-live-22ca176fae294abc",
+          "requiredArguments": "value",
+          "resultSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czU6dmFsdWVzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM1OnZhbHVl",
+          "transport": "mcp-streamable-http-json",
+          "verificationBoundary": "Provider completion is unverified until the host establishes a postcondition."
+        },
+        "output": [
+          "typed_value"
+        ],
+        "provider": {
+          "name": "adoption-live-22ca176fae294abc"
+        },
+        "reflectorID": "mcp:adoption-live-22ca176fae294abc",
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "public_supported",
+        "title": "echo"
+      }
+    },
+    {
+      "phase": "owned registry removal withdraws graph in same PID",
+      "elapsedSeconds": 7.361,
+      "pid": 5093,
+      "ownedCapabilities": 0,
+      "catalogue": {
+        "names": [
+          "context_runtime",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status",
+          "context_providers"
+        ],
+        "schemaSHA256": "4e2661a32122479d49b9e83261a767a9af36948a6280dd1db7a492c08b385fd5"
+      }
+    }
+  ],
+  "isolatedHome": "/private/tmp/rightclick-connect-live-bc2zhuv7",
+  "fixtureRequests": [
+    {
+      "method": "initialize",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "notifications/initialized",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "tools/list",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "initialize",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "notifications/initialized",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "tools/list",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "initialize",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "notifications/initialized",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    },
+    {
+      "method": "tools/list",
+      "cookiePresent": false,
+      "authorizationPresent": false
+    }
+  ],
+  "sevenOperationsUnchanged": true,
+  "sameRuntimePID": 5093,
+  "elapsedSeconds": 17.987,
+  "finishedUTC": "2026-10-07T19:27:54.057551+00:00",
+  "binaryUnchanged": true
+}

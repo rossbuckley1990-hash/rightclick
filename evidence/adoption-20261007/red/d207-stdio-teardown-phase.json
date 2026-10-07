@@ -1,0 +1,101 @@
+{
+  "interpreter": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+  "binarySHA256": "b776122ccf521a46ff0149001bb918e9f00a14138ba9f3db121c50d578c05a68",
+  "events": [
+    {
+      "phase": "Popen",
+      "event": "begin"
+    },
+    {
+      "phase": "Popen",
+      "event": "ok",
+      "pid": 94656,
+      "pgid": 94656
+    },
+    {
+      "phase": "send",
+      "method": "initialize",
+      "event": "begin"
+    },
+    {
+      "phase": "send",
+      "method": "initialize",
+      "event": "ok"
+    },
+    {
+      "phase": "read",
+      "event": "begin"
+    },
+    {
+      "phase": "read",
+      "event": "ok",
+      "bytes": 167
+    },
+    {
+      "phase": "send",
+      "method": "notifications/initialized",
+      "event": "begin"
+    },
+    {
+      "phase": "send",
+      "method": "notifications/initialized",
+      "event": "ok"
+    },
+    {
+      "phase": "send",
+      "method": "tools/list",
+      "event": "begin"
+    },
+    {
+      "phase": "send",
+      "method": "tools/list",
+      "event": "ok"
+    },
+    {
+      "phase": "read",
+      "event": "begin"
+    },
+    {
+      "phase": "read",
+      "event": "ok",
+      "bytes": 4516
+    },
+    {
+      "phase": "send",
+      "method": "tools/call",
+      "event": "begin"
+    },
+    {
+      "phase": "send",
+      "method": "tools/call",
+      "event": "ok"
+    },
+    {
+      "phase": "read",
+      "event": "begin"
+    },
+    {
+      "phase": "read",
+      "event": "ok",
+      "bytes": 1209
+    },
+    {
+      "phase": "close",
+      "event": "begin",
+      "pid": 94656,
+      "pgid": 94656
+    },
+    {
+      "phase": "close",
+      "event": "failed",
+      "errno": 1,
+      "error": "[Errno 1] Operation not permitted"
+    }
+  ],
+  "error": "[Errno 1] Operation not permitted",
+  "errno": 1,
+  "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 31, in <module>\n  File \"scripts/acceptance-setup-lifecycle.py\", line 294, in stdio_probe\n    child.close()\n    ~~~~~~~~~~~^^\n  File \"<stdin>\", line 23, in close\n  File \"scripts/acceptance-setup-lifecycle.py\", line 215, in close\n    os.killpg(self.process.pid, sig)\n    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 1] Operation not permitted\n",
+  "temporaryHomeCleanup": "COMPLETED",
+  "acceptanceScriptSHA256": "ba7f8e70e20aa93be7f6f2ebb7ef04739844f3a7349994f0c5156b9dea706f62",
+  "provenance": "Recovered exact own diagnostic tool output before script-only teardown fix"
+}

@@ -1,0 +1,19 @@
+{
+  "scope": "Script-only optimization guard check; no RIGHTCLICK execution or Swift build.",
+  "checks": [
+    {
+      "file": "scripts/acceptance-connect-happy-path.py",
+      "sha256": "13ae5c74ca81c0880dbb040d99efb9fbbc632ca17d608b9b2809e130bf194084",
+      "normalHelpExit": 0,
+      "optimizedHelpExit": 1,
+      "optimizedMessage": "Acceptance requires Python assertions enabled; optimized mode is unsupported."
+    },
+    {
+      "file": "scripts/acceptance-adoption-security.py",
+      "sha256": "38c90894e50de262d3688efe5feccafacdd7c817adef59593ca871b9b2b04480",
+      "normalHelpExit": 0,
+      "optimizedHelpExit": 1,
+      "optimizedMessage": "Acceptance requires Python assertions enabled; optimized mode is unsupported."
+    }
+  ]
+}

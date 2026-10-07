@@ -1,0 +1,186 @@
+{
+  "scope": "Local built executable blackbox security acceptance; no installed client or portable release attestation",
+  "binary": "/private/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+  "binarySHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+  "passed": 8,
+  "failed": 0,
+  "cases": [
+    {
+      "case": "live Core7 catalogue and executable/PID identity",
+      "passed": true,
+      "details": {
+        "pid": 1383,
+        "runtime": {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "buildSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+          "capabilityABIVersion": 1,
+          "channel": "development",
+          "contractSchemaVersion": 1,
+          "executableMeasurement": "startup-file-bytes",
+          "executablePath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+          "executableRealPath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+          "executableSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+          "gitCommit": "9e0190000f464e59d7697599e2f47bc87ba3eb39",
+          "mcpSchemaVersion": 1,
+          "pid": 1383,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "sourceDirty": true,
+          "sourceRepository": "https://github.com/rossbuckley1990-hash/rightclick",
+          "transport": "stdio",
+          "version": "0.2.2"
+        },
+        "tools": [
+          "context_runtime",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status",
+          "context_providers"
+        ]
+      }
+    },
+    {
+      "case": "connect adoption command available",
+      "passed": true
+    },
+    {
+      "case": "reject URL userinfo without persistence or secret echo",
+      "passed": true,
+      "details": {
+        "exitCode": 2,
+        "elapsedSeconds": 0.454
+      }
+    },
+    {
+      "case": "reject URL query without persistence or secret echo",
+      "passed": true,
+      "details": {
+        "exitCode": 2,
+        "elapsedSeconds": 0.722
+      }
+    },
+    {
+      "case": "reject URL fragment without persistence or secret echo",
+      "passed": true,
+      "details": {
+        "exitCode": 2,
+        "elapsedSeconds": 0.456
+      }
+    },
+    {
+      "case": "sandbox adoption command available",
+      "passed": true
+    },
+    {
+      "case": "real sandbox Core7, independent effect readback and graceful cleanup",
+      "passed": true,
+      "details": {
+        "tools": [
+          "context_runtime",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status",
+          "context_providers"
+        ],
+        "pid": 1434,
+        "hostConfigIgnored": true,
+        "confirmationRequired": true,
+        "traversalRejected": true,
+        "readbackBoundToInvocation": true,
+        "gracefulCleanup": true
+      }
+    },
+    {
+      "case": "live identity survives retargeted launch symlink",
+      "passed": true,
+      "details": {
+        "before": {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "buildSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+          "capabilityABIVersion": 1,
+          "channel": "development",
+          "contractSchemaVersion": 1,
+          "executableMeasurement": "startup-file-bytes",
+          "executablePath": "/tmp/rightclick-adoption-security-h1y8x831/launch-rightclick",
+          "executableRealPath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+          "executableSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+          "gitCommit": "9e0190000f464e59d7697599e2f47bc87ba3eb39",
+          "mcpSchemaVersion": 1,
+          "pid": 1437,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "sourceDirty": true,
+          "sourceRepository": "https://github.com/rossbuckley1990-hash/rightclick",
+          "transport": "stdio",
+          "version": "0.2.2"
+        },
+        "after": {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "buildSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+          "capabilityABIVersion": 1,
+          "channel": "development",
+          "contractSchemaVersion": 1,
+          "executableMeasurement": "startup-file-bytes",
+          "executablePath": "/tmp/rightclick-adoption-security-h1y8x831/launch-rightclick",
+          "executableRealPath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+          "executableSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+          "gitCommit": "9e0190000f464e59d7697599e2f47bc87ba3eb39",
+          "mcpSchemaVersion": 1,
+          "pid": 1437,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "sourceDirty": true,
+          "sourceRepository": "https://github.com/rossbuckley1990-hash/rightclick",
+          "transport": "stdio",
+          "version": "0.2.2"
+        }
+      }
+    }
+  ]
+}

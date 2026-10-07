@@ -1,0 +1,86 @@
+{
+  "scope": "Independent QA review of recovered adoption increment; no installed-client, portable release, operating-system sandbox or eleven-world completion claim.",
+  "currentFileSHA256": {
+    "Sources/RightClickCLI/LocalStdioProbe.swift": "64841609984f1bf8a056785054e85d8d548b23af3bea28177f7f10d7f524a570",
+    "Tests/RightClickCLITests/AdoptionSecurityStdioIdentityTests.swift": "d3a9093ef2721359b5b1d518a3650daa3e6b3b1d4149a6579612f65ad60f0b68",
+    "scripts/acceptance-adoption-security.py": "38c90894e50de262d3688efe5feccafacdd7c817adef59593ca871b9b2b04480",
+    "scripts/acceptance-connect-happy-path.py": "13ae5c74ca81c0880dbb040d99efb9fbbc632ca17d608b9b2809e130bf194084"
+  },
+  "confirmedReaderDefect": {
+    "evidence": "qa/foundation-short-pipe-read-diagnostic.json",
+    "observation": "A short flushed JSON-RPC frame stays blocked under Foundation readDataOfLength(4096) until EOF; availableData returns it while pipe remains open.",
+    "reviewedFix": "Interactive reader now uses availableData; bounded aggregate validation remains."
+  },
+  "identityTestQuality": {
+    "reviewedFix": "Duplicate cases require runtime identity rejection, distinct from timeout/protocol/catalogue errors.",
+    "gate": "Valid protocol control, Darwin home control, duplicate cases and actual setup must pass on fresh compiled bytes before GREEN credit."
+  },
+  "preFixCompiledRun": {
+    "scope": "d207 old compiled snapshot only",
+    "nativeSuite": "860 tests,35 skipped,4 failures reported by coordinator; two identity valid controls timed out and two composition assertions were stale.",
+    "duplicateCases": "Unverified: old bare throws assertions could pass via timeout."
+  },
+  "acceptanceOptimizationGuard": {
+    "evidence": "qa/acceptance-optimization-guard.json",
+    "status": "Both normal help exit0 and optimized help exit1 before process/file work."
+  },
+  "staticReview": {
+    "runtimeCatalogue": "Full raw catalogue equality retains unknown declarations; outer and nested runtime JSON duplicate keys rejected.",
+    "runtimeIdentity": "Cached startup file-byte measurement; does not establish loaded memory identity.",
+    "sandbox": "Only injected disposable declared fixture and private read-back observer; no host RCIR signing configuration or experience import. Receipt signature verifies under explicitly ephemeral key. Normal lifetime cleanup only.",
+    "connectRegistry": "Raw escaped-key duplicate scan, byte/depth bounds and independent full JSON grammar fail closed; malformed retained declarations withdrawn.",
+    "connectAcceptance": "Owned lexical/physical path checks and inode/hash checks precede registry removal; retained runtime PID and exact schema measured across graph gain/withdrawal."
+  },
+  "remainingLimits": [
+    "JSON setup checks are path snapshots, not a descriptor-pinned atomic ancestor-retarget proof against hostile same-UID writers.",
+    "Windows process tree and private cleanup lack native acceptance here.",
+    "Sandbox cleanup is graceful-lifetime only; crash/signals can retain temporary state.",
+    "Actual AI client connectivity, clean distribution installs and eleven-world restricted-agent proof remain separate gates."
+  ],
+  "freshCompiledAcceptance": "PENDING coordinator-only build of exact latest committed source plus mergedGraphQL6d7154d/d0e4667; historical9e019 acceptance is retained separately.",
+  "historical9e019Acceptance": {
+    "scope": "Historical development binary for9e0190000f464e59d7697599e2f47bc87ba3eb39 with sourceDirty=true. Not current mergedGraphQL6d7154d/d0e4667 or latest fixture/readiness snapshot acceptance.",
+    "binarySHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+    "setup": {
+      "passed": 9,
+      "failed": 0,
+      "temporaryHomeCleanup": "COMPLETED",
+      "evidence": "green/final-setup-lifecycle.json"
+    },
+    "security": {
+      "passed": 8,
+      "failed": 0,
+      "evidence": "green/final-security/acceptance.json"
+    },
+    "connect": {
+      "status": "PASSED",
+      "sevenOperationsUnchanged": true,
+      "sameRuntimePID": 5093,
+      "evidence": "green/final-connect-readiness-fixed/connect-acceptance.json"
+    },
+    "signature": {
+      "status": "VALID",
+      "tamperedPayload": {
+        "status": "REJECTED",
+        "errorType": "InvalidSignature"
+      },
+      "keyScope": "Ephemeral self-asserted local demo public key copied out of sandbox report; NOT production trust or an independently enrolled provider key",
+      "semanticLimit": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE",
+      "evidence": "green/sandbox-signature/verification.json"
+    }
+  },
+  "portPublication": {
+    "scope": "Fixture-only native test readiness fix; observation semantic assertions/configuration unchanged.",
+    "controlledEvidence": "qa/port-publication-controlled-red-green.json",
+    "freshPythonFixtureEvidence": "qa/port-publication-fresh-fixture-green.json",
+    "patchReview": "qa/port-publication-patch-review.json",
+    "historicalCausalProof": "NOT_ESTABLISHED",
+    "nativeAcceptance": "PENDING coordinator rebuild"
+  },
+  "frozenHarnessReview": {
+    "setupSHA256": "05b2fc41e42ccbd4ae884f05fc150077b99b257bcb8d68ad79b9210824d01b57",
+    "connectSHA256": "f099813f608b1fc277d31d19d01e232a9100ab851922c264d8c7425ef07aadaa",
+    "setup": "Private-home/explicit-require checks retained. SIGKILL group cleanup before reap for live/unreaped child; already-reaped CLI path explicitly excludes adversarial descendant-cleanup proof.",
+    "connect": "Readiness retries missing/empty port, bounded ASCII decimal1...65535, fixture liveness checked before using port; other acceptance assertions unchanged."
+  }
+}

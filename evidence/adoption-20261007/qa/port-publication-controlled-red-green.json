@@ -1,0 +1,42 @@
+{
+  "scope": "Deterministic actual Python fixture publication-boundary scheduling experiment; no Swift build or observation outcome changes.",
+  "causalLimit": "Reproduces a feasible readiness race. Does not establish that this race caused any historical intermittent native test failure.",
+  "baselineFixtureSHA256": "5c55e52a57e4933eec4855b146cc10399b41e56e4324eb21a59a37efce7f2032",
+  "candidatePublication": "(root / (role + \"-port.pending\")).write_text(str(server.server_address[1]))\n(root / (role + \"-port.pending\")).replace(root / (role + \"-port\"))\nserver.serve_forever()",
+  "observations": [
+    {
+      "mode": "baseline",
+      "barrierReached": true,
+      "consumerExistencePredicate": true,
+      "visiblePortBytesBeforeWrite": "",
+      "prematureReady": true,
+      "strictConsumerReadyAfterRelease": true,
+      "publishedPort": 57752,
+      "httpStatus": 200,
+      "providerOperation": "write"
+    },
+    {
+      "mode": "atomic-candidate",
+      "barrierReached": true,
+      "consumerExistencePredicate": false,
+      "visiblePortBytesBeforeWrite": null,
+      "prematureReady": false,
+      "strictConsumerReadyAfterRelease": true,
+      "publishedPort": 57754,
+      "httpStatus": 200,
+      "providerOperation": "write"
+    }
+  ],
+  "invalidPortCasesRejected": [
+    "b''",
+    "b'0'",
+    "b'65536'",
+    "b'-1'",
+    "b'+1'",
+    "b'1\\n'",
+    "b' 1'",
+    "b'123456'",
+    "b'\\xff'"
+  ],
+  "cleanedPrivateTemporaryPaths": true
+}

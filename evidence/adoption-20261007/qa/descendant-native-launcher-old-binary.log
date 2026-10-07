@@ -1,0 +1,14 @@
+Scope: direct native XCTest rerun of old compiled test bundle; no source build/current GREEN attestation.
+Test Suite 'Selected tests' started at 2026-10-07 19:36:21.470.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 19:36:21.471.
+Test Suite 'AdoptionSecurityProcessTests' started at 2026-10-07 19:36:21.471.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/AdoptionSecurityProcessTests.swift:64: error: -[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning] : XCTUnwrap failed: threw error "Error Domain=NSCocoaErrorDomain Code=260 "The file “descendant.pid” couldn’t be opened because there is no such file." UserInfo={NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-process-F49729B7-8ECC-4C73-9218-5C0285DFBA18/descendant.pid, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-process-F49729B7-8ECC-4C73-9218-5C0285DFBA18/descendant.pid, NSUnderlyingError=0xa40c50cf0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/AdoptionSecurityProcessTests.swift:64: error: -[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=260 "The file “descendant.pid” couldn’t be opened because there is no such file." UserInfo={NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-process-F49729B7-8ECC-4C73-9218-5C0285DFBA18/descendant.pid, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-process-F49729B7-8ECC-4C73-9218-5C0285DFBA18/descendant.pid, NSUnderlyingError=0xa40c50cf0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning]' failed (0.576 seconds).
+Test Suite 'AdoptionSecurityProcessTests' failed at 2026-10-07 19:36:22.047.
+	 Executed 1 test, with 2 failures (2 unexpected) in 0.576 (0.576) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 19:36:22.047.
+	 Executed 1 test, with 2 failures (2 unexpected) in 0.576 (0.576) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 19:36:22.047.
+	 Executed 1 test, with 2 failures (2 unexpected) in 0.576 (0.577) seconds

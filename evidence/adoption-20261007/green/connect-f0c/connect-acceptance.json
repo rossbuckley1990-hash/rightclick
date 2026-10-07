@@ -1,0 +1,79 @@
+{
+  "scope": "Supplied executable; isolated HOME; real CLI connection and same-PID dynamic MCP graph only",
+  "status": "FAILED",
+  "startedUTC": "2026-10-07T18:46:33.048763+00:00",
+  "binary": "/private/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+  "binarySHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+  "platform": "Darwin",
+  "architecture": "arm64",
+  "scriptSHA256": "66fb61c3c99718a592b92ce70de0c836384ca22cdefe4544ae994b9c87dc1fe3",
+  "helperSHA256": "46bc95bb4c991f6eb9d71b2b578cdf7c1d978819d05776e1c4b7a4d8d9b347df",
+  "fixtureSHA256": "77693efcd1658af2463b77b631003adf7cb7dba0aa7fa9efd2205d59f8423889",
+  "realAIClient": "NOT_OBSERVED",
+  "providerExecution": "NOT_RUN",
+  "effectVerification": "NOT_RUN",
+  "cleanReleaseInstall": "NOT_RUN",
+  "elevenWorldProof": "NOT_RUN",
+  "phases": [
+    {
+      "phase": "loopback declaration fixture ready",
+      "elapsedSeconds": 0.062,
+      "endpoint": "http://127.0.0.1:57404/mcp",
+      "fixturePID": 56667
+    },
+    {
+      "phase": "real stdio Core7 baseline",
+      "elapsedSeconds": 1.081,
+      "pid": 56668,
+      "catalogue": {
+        "names": [
+          "context_runtime",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status",
+          "context_providers"
+        ],
+        "schemaSHA256": "4e2661a32122479d49b9e83261a767a9af36948a6280dd1db7a492c08b385fd5"
+      },
+      "runtime": {
+        "agentABIProfiles": [
+          {
+            "id": "core",
+            "operations": [
+              "context_runtime",
+              "context_providers",
+              "context_inspect",
+              "context_actions",
+              "context_explain",
+              "context_run",
+              "context_run_status"
+            ],
+            "version": 1
+          }
+        ],
+        "buildSHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+        "capabilityABIVersion": 1,
+        "channel": "unverified",
+        "contractSchemaVersion": 1,
+        "executableMeasurement": "startup-file-bytes",
+        "executablePath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+        "executableRealPath": "/tmp/rightclick-adoption-build-01a1175f/arm64-apple-macosx/debug/rightclick",
+        "executableSHA256": "02083696b0427cfea0c4e2cc3e29f856092fc0587ffff3258caa7cfe97d7afe9",
+        "mcpSchemaVersion": 1,
+        "pid": 56668,
+        "platform": "macOS",
+        "product": "RIGHTCLICK",
+        "transport": "stdio",
+        "version": "0.2.2"
+      },
+      "ownedCapabilities": 0
+    }
+  ],
+  "isolatedHome": "/private/tmp/rightclick-connect-live-d17kgcvl",
+  "error": "CLI connection failed: {\n  \"credentialStored\" : \"false\",\n  \"error\" : \"The connection registry could not be updated safely. Check that its directory and file are private, owned by you, and free of links; retry if another connection is active.\",\n  \"execution\" : \"NOT_RUN\",\n  \"status\" : \"FAILED\"\n}\n",
+  "elapsedSeconds": 1.354,
+  "finishedUTC": "2026-10-07T18:46:34.421500+00:00",
+  "binaryUnchanged": true
+}

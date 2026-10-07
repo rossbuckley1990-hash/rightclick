@@ -1,0 +1,27 @@
+{
+  "scope": "Independent native Darwin Foundation pipe demonstration; no Swift build, no RIGHTCLICK execution; stdin held open after a short flushed JSON-RPC initialize frame.",
+  "observations": [
+    {
+      "operation": "readDataOfLength(4096)",
+      "ready": true,
+      "payloadBytes": 162,
+      "responseBeforeEOF": false,
+      "earlyResult": null,
+      "afterEOF": "{\"bytes\":162}",
+      "stderr": "2026-10-07 20:13:14.581 osascript[90637:11228953] Error received in message reply handler: Connection invalid\n2026-10-07 20:13:14.581 osascript[90637:11228955] Connection Invalid error for service com.apple.hiservices-xpcservice.",
+      "exit": 0,
+      "elapsedSeconds": 0.96
+    },
+    {
+      "operation": "availableData",
+      "ready": true,
+      "payloadBytes": 162,
+      "responseBeforeEOF": true,
+      "earlyResult": "{\"bytes\":162}",
+      "afterEOF": "",
+      "stderr": "2026-10-07 20:13:15.394 osascript[90642:11228974] Error received in message reply handler: Connection invalid\n2026-10-07 20:13:15.394 osascript[90642:11228977] Connection Invalid error for service com.apple.hiservices-xpcservice.",
+      "exit": 0,
+      "elapsedSeconds": 0.161
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "scope": "Root-authorized minimal probe isolation and nested identity fixes; Python fixture offline checks only. Swift counterpart not built or run by QA.",
+  "pythonSyntax": "PASS",
+  "fixtureProtocolChecks": [
+    {
+      "mode": "valid",
+      "pidFieldCount": 1,
+      "valuesMatchExpectedOrder": true,
+      "exitCode": 0
+    },
+    {
+      "mode": "same_pid",
+      "pidFieldCount": 2,
+      "valuesMatchExpectedOrder": true,
+      "exitCode": 0
+    },
+    {
+      "mode": "conflicting_expected_first",
+      "pidFieldCount": 2,
+      "valuesMatchExpectedOrder": true,
+      "exitCode": 0
+    },
+    {
+      "mode": "conflicting_expected_last",
+      "pidFieldCount": 2,
+      "valuesMatchExpectedOrder": true,
+      "exitCode": 0
+    }
+  ],
+  "sourceHashes": {
+    "Sources/RightClickCLI/LocalStdioProbe.swift": "36f7fead049d78644a8c96b38768fe43b70b8904311dc1dac11c56caf6125a9a",
+    "Tests/RightClickCLITests/AdoptionSecurityStdioIdentityTests.swift": "f897f4cb611121c57b537cea8ebf2510f8b28c0e76980147227cf95c8d60188d",
+    "scripts/acceptance-adoption-stdio-fixture.py": "ea3ce998376215b06229e117009193db8f86c91e35cbdf0e00ac549b9611acb0",
+    "scripts/acceptance-adoption-security.py": "5aac44d5cba75f71a7021403f9734523a6cbdce4acf70646860a00800ac0717d"
+  },
+  "f0cEvidenceIsolationLimit": "Prior f0c security harness and probe environment set HOME without CFFIXED_USER_HOME on Darwin. Native Foundation can resolve operator home and startup logging may fall outside isolated HOME; prior reports are retained with this limitation, not promoted to clean-isolation proof. No provider execution claim.",
+  "nativeFoundationReadOnlyObservation": {
+    "HOMEOnlyReportsOperatorHome": true,
+    "CFFIXEDReportsRequestedPhysicalHomeWithMacAliasNormalization": true
+  },
+  "newSourceAcceptance": "Five actual local counterfeit stdio tests queued for sole coordinator build: valid control, duplicate samePID, conflictingPID both orders, Darwin Foundation home isolation."
+}

@@ -1,0 +1,928 @@
+warning: 'rightclick-adoption-recovered-01a1175f': found 4 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+    /private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/Fixtures/InstalledRuntime022Identity.json
+    /private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/23] Write sources
+[14/28] Compiling RightClickHostFiles HostFiles.c
+[15/28] Compiling RightClickProbePrivate RCPrivateExtensionProbe.m
+[16/28] Write swift-version--58304C5D6DBC2206.txt
+[18/78] Emitting module RightClickARD
+[19/78] Compiling RightClickMarker main.swift
+[20/78] Emitting module RightClickMarker
+[20/79] Write Objects.LinkFileList
+[22/79] Emitting module RightClickProbe
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:231:27: warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 229 |     KnownShareName(name: .useAsDesktopPicture, status: "PUBLIC_SUPPORTED"),
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:232:27: warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:233:27: warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:234:27: warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:235:27: warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:236:27: warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:237:27: warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:238:27: warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+ 240 | ]
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:239:27: warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 240 | ]
+ 241 | 
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[23/79] Compiling RightClickARD ARD.swift
+[23/82] Linking rightclick-marker
+[24/84] Applying rightclick-marker
+[26/142] Compiling RightClickARDProbe main.swift
+[27/142] Emitting module RightClickARDProbe
+[27/142] Write Objects.LinkFileList
+[29/142] Compiling RightClickARDTests ARDPortableTests.swift
+[30/142] Emitting module RightClickARDTests
+[30/142] Linking rightclick-ard-probe
+[31/142] Applying rightclick-ard-probe
+[33/142] Compiling RightClickCore CapabilityProtectedReference.swift
+[34/142] Compiling RightClickCore CapabilityReflector.swift
+[35/142] Compiling RightClickCore BuildProvenance.swift
+[36/142] Compiling RightClickCore BundleScan.swift
+[37/142] Compiling RightClickCore Capability.swift
+[38/142] Emitting module MCP
+[39/146] Compiling RightClickCore CapabilityCoreArgumentEncoding.swift
+[40/146] Compiling RightClickCore CapabilityEngine.swift
+[41/146] Compiling RightClickCore CapabilityExperience.swift
+[42/146] Compiling RightClickCore CapabilityExperienceLedger.swift
+[43/146] Compiling RightClickCore CapabilityInterface.swift
+[44/146] Compiling RightClickCore CapabilityABI.swift
+[45/146] Compiling RightClickCore CapabilityABIAdapter.swift
+[46/146] Compiling RightClickCore CapabilityArtifactResolver.swift
+[47/146] Compiling RightClickCore CapabilityArtifactSnapshot.swift
+[48/146] Compiling RightClickCore OAuthOIDCAuthority.swift
+[49/146] Compiling RightClickCore OpenAPIAuthority.swift
+[50/146] Compiling RightClickCore OpenAPIReflector.swift
+[51/146] Compiling RightClickCore OriginPinnedHTTP.swift
+[52/146] Compiling RightClickCore OutcomeVerifier.swift
+[53/146] Compiling RightClickCore ProductSurface.swift
+[54/146] Compiling RightClickCore RCIRHostObservation.swift
+[55/146] Compiling RightClickCore RCIRProvisionedSigner.swift
+[56/146] Compiling RightClickCore RCIRSignedReceipt.swift
+[57/146] Compiling RightClickCore RCIRUnaryInvocation.swift
+[58/146] Compiling RightClickCore RuntimePlatform.swift
+[64/146] Compiling RightClickCore SafetyPolicy.swift
+[72/152] Compiling RightClickProbe main.swift
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:231:27: warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 229 |     KnownShareName(name: .useAsDesktopPicture, status: "PUBLIC_SUPPORTED"),
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:232:27: warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:233:27: warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:234:27: warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:235:27: warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:236:27: warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:237:27: warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:238:27: warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+ 240 | ]
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:239:27: warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 240 | ]
+ 241 | 
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:582:30: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 580 |         var errors: [String] = []
+ 581 |         let deprecated = safeShares {
+ 582 |             NSSharingService.sharingServices(forItems: items).map {
+     |                              `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 583 |                 record(for: $0, items: items, sourceAPI: "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED")
+ 584 |             }
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickProbe/main.swift:748:39: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 746 | func executeHarmlessShare(fixtures: FixtureSet) -> SharingExecution {
+ 747 |     let items: [Any] = [fixtures.webURL as NSURL]
+ 748 |     let discovered = NSSharingService.sharingServices(forItems: items)
+     |                                       `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 749 |     let titles = discovered.map(\.title)
+ 750 |     let readingListName = NSSharingService.Name.addToSafariReadingList
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[72/153] Write Objects.LinkFileList
+[74/153] Compiling RightClickCore CapabilityReflectorSource.swift
+[75/153] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+[76/153] Compiling RightClickCore CapabilitySensitiveMaterial.swift
+[77/153] Compiling RightClickCore CapabilitySnapshotFreshness.swift
+[79/153] Compiling RightClickCore A2AReflector.swift
+[80/153] Compiling RightClickCore ARDRegistrySource.swift
+[81/153] Compiling RightClickCore ActionExtensionCatalog.swift
+[82/153] Compiling RightClickCore BonjourGRPCSource.swift
+[83/153] Compiling RightClickCore RCIRAuthority.swift
+[84/153] Compiling RightClickCore RCIRDeferredExecution.swift
+[85/153] Compiling RightClickCore RCIRDisposableHost.swift
+[86/153] Compiling RightClickCore RCIRExecutionHost.swift
+[87/153] Compiling RightClickCore RCIRHTTPObservation.swift
+[88/153] Compiling RightClickCore BonjourGraphQLSource.swift
+[89/153] Compiling RightClickCore BonjourOpenAPISource.swift
+[90/153] Compiling RightClickCore BoundedCapabilityProcess.swift
+[91/153] Compiling RightClickCore RCIR.swift
+[98/153] Linking rightclick-probe
+[100/153] Compiling RightClickCore ContentItem.swift
+[101/153] Compiling RightClickCore DBusCapabilityArtifactResolver.swift
+[102/153] Compiling RightClickCore DBusIntrospection.swift
+[103/153] Compiling RightClickCore DBusSessionSource.swift
+[104/153] Compiling RightClickCore GRPCReflectionTransport.swift
+[105/153] Compiling RightClickCore GRPCReflector.swift
+[105/153] Applying rightclick-probe
+[111/153] Compiling MCP Prompts.swift
+[112/153] Compiling MCP Resources.swift
+[113/153] Compiling MCP Server.swift
+[114/153] Compiling MCP Tools.swift
+[115/153] Compiling RightClickCore GraphQLReflector.swift
+[116/153] Compiling RightClickCore KafkaCapabilityArtifactResolver.swift
+[117/153] Compiling RightClickCore KubernetesCapabilityArtifactResolver.swift
+[118/153] Compiling RightClickCore MCPCapabilityArtifactResolver.swift
+[132/153] Emitting module RightClickCore
+[139/153] Compiling RightClickCore ServiceCatalog.swift
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:26:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 24 |         let items = pasteboardItems(for: item)
+ 25 |         guard !items.isEmpty else { return [] }
+ 26 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 27 |         return services.compactMap { service in
+ 28 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:37:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 35 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 36 |         let items = pasteboardItems(for: item)
+ 37 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 38 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 39 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[140/153] Compiling RightClickCore ServiceContext.swift
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:26:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 24 |         let items = pasteboardItems(for: item)
+ 25 |         guard !items.isEmpty else { return [] }
+ 26 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 27 |         return services.compactMap { service in
+ 28 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:37:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 35 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 36 |         let items = pasteboardItems(for: item)
+ 37 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 38 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 39 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[141/153] Compiling RightClickCore ServiceOutcome.swift
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:26:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 24 |         let items = pasteboardItems(for: item)
+ 25 |         guard !items.isEmpty else { return [] }
+ 26 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 27 |         return services.compactMap { service in
+ 28 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:37:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 35 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 36 |         let items = pasteboardItems(for: item)
+ 37 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 38 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 39 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[142/153] Compiling RightClickCore SharingCatalog.swift
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:26:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 24 |         let items = pasteboardItems(for: item)
+ 25 |         guard !items.isEmpty else { return [] }
+ 26 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 27 |         return services.compactMap { service in
+ 28 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:37:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 35 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 36 |         let items = pasteboardItems(for: item)
+ 37 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 38 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 39 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[143/153] Compiling RightClickCore SharingExecutionModel.swift
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:26:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 24 |         let items = pasteboardItems(for: item)
+ 25 |         guard !items.isEmpty else { return [] }
+ 26 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 27 |         return services.compactMap { service in
+ 28 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:37:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 35 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 36 |         let items = pasteboardItems(for: item)
+ 37 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 38 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 39 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[144/153] Compiling RightClickCore WASMCapabilityArtifactResolver.swift
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:26:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 24 |         let items = pasteboardItems(for: item)
+ 25 |         guard !items.isEmpty else { return [] }
+ 26 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 27 |         return services.compactMap { service in
+ 28 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickCore/SharingCatalog.swift:37:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 35 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 36 |         let items = pasteboardItems(for: item)
+ 37 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 38 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 39 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[145/234] Compiling RightClickCoreTests MOAT005G1PathAndJSONBodyTests.swift
+[146/234] Compiling RightClickCoreTests MOAT005G2MultiplePathArgumentsTests.swift
+[147/234] Compiling RightClickCoreTests MOAT005G3GitHubRequestSchemaTests.swift
+[148/234] Compiling RightClickCoreTests MOAT005G4MutationJSONResponseFallbackTests.swift
+[149/240] Compiling RightClickMCP ModernMCPStdioTransport.swift
+[150/240] Compiling RightClickMCP HTTPListener.swift
+[151/240] Emitting module RightClickCoreTests
+[152/248] Compiling RightClickMCP PortableStdioTransport.swift
+[153/248] Compiling RightClickMCP Server.swift
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickMCP/Server.swift:319:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+317 |                 transport: transport
+318 |             )
+319 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+320 |         } catch {
+321 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickMCP/Server.swift:321:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |             return .init(content: [.text(text)], isError: false)
+320 |         } catch {
+321 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+322 |         }
+323 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[154/248] Emitting module RightClickMCP
+[155/248] Compiling RightClickMCP Federation.swift
+/private/tmp/rightclick-adoption-recovered-01a1175f/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[156/278] Compiling RightClickMCPTests FederationTests.swift
+[157/278] Emitting module RightClickMCPTests
+[158/278] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[159/278] Compiling RightClickMCPTests ToolCatalogueVerificationTests.swift
+[160/278] Compiling RightClickCLI SetupAllTransaction.swift
+[161/278] Compiling RightClickCLI SetupState.swift
+[162/278] Compiling RightClickCLI PortableClientSupport.swift
+[163/278] Compiling RightClickCLI ProviderConfigurationCLI.swift
+[164/278] Compiling RightClickCLI RuntimeStatus.swift
+[165/278] Compiling RightClickCLI Sandbox.swift
+[166/278] Compiling RightClickCLI Setup.swift
+[167/278] Compiling RightClickCoreTests InvocationBindingTests.swift
+[168/278] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+[171/278] Compiling RightClickCoreTests MOAT005G5FullFrozenGitHubContractTests.swift
+[172/278] Compiling RightClickCoreTests MOAT005G6MultiSegmentPathTests.swift
+[173/278] Compiling RightClickCoreTests NativeBoundedHTTPTests.swift
+[174/278] Compiling RightClickCoreTests NativeHTTPFixture.swift
+[175/278] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+[176/278] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+[177/278] Compiling RightClickCoreTests OpenAPIAcknowledgementTests.swift
+[178/278] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+[179/278] Compiling RightClickCoreTests OpenAPIAuthorityManagementTests.swift
+[180/278] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+[181/278] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+[182/278] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+[183/278] Compiling RightClickCoreTests OutcomeVerifierTests.swift
+[184/278] Compiling RightClickCoreTests PolicyTests.swift
+[185/278] Compiling RightClickCoreTests PortableRuntimeTests.swift
+[186/278] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+[187/278] Compiling RightClickCLI ChatGPTOnboardingTransaction.swift
+[188/278] Compiling RightClickCLI ClaudeClientAdapter.swift
+[189/278] Compiling RightClickCLI ClientChildProcess.swift
+[190/280] Compiling RightClickCoreTests RCIRUnitCompletionTests.swift
+[191/280] Compiling RightClickCoreTests RuntimeIdentityCompatibilityTests.swift
+[192/280] Compiling RightClickCoreTests RuntimeProvenanceTests.swift
+[193/280] Compiling RightClickCoreTests ServiceContextTests.swift
+[194/280] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[195/280] Compiling RightClickCoreTests SharingExecutionTests.swift
+[196/280] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+[197/280] Compiling RightClickCoreTests VerificationIntegrationTests.swift
+[198/280] Compiling RightClickCLI ChatGPTBridgeInstaller.swift
+[199/280] Compiling RightClickCLI ChatGPTLiveAttestation.swift
+[200/280] Compiling RightClickCLI ChatGPTOnboarding.swift
+[201/280] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[202/280] Compiling RightClickCLI BridgeRuntime.swift
+[203/280] Compiling RightClickCLI ChatGPTBridge.swift
+[207/280] Compiling RightClickCLI LocalLifecycle.swift
+[208/280] Compiling RightClickCLI LocalOnboarding.swift
+[209/280] Compiling RightClickCLI LocalStdioProbe.swift
+[210/280] Compiling RightClickCLI ClientRegistry.swift
+[211/280] Compiling RightClickCLI CodexClientAdapter.swift
+[212/280] Compiling RightClickCLI Connect.swift
+[213/280] Compiling RightClickCLI NativeRegistrationBackend.swift
+[214/280] Compiling RightClickCLI OnboardingEngine.swift
+[215/280] Compiling RightClickCLI OpenAIPluginSetup.swift
+[227/280] Emitting module RightClickCLI
+[228/280] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+[229/280] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+[230/280] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+[231/280] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+[232/280] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+[233/280] Compiling RightClickCoreTests MOAT004G5ExternalBearerAuthorityTests.swift
+[234/280] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+[237/280] Compiling RightClickCoreTests CapabilityABITests.swift
+[238/280] Compiling RightClickCoreTests CapabilityAcquisitionLifecycleTests.swift
+[239/280] Compiling RightClickCoreTests CapabilityArtifactResolverTests.swift
+[240/280] Compiling RightClickCoreTests CapabilityExperienceLedgerTests.swift
+[241/280] Compiling RightClickCoreTests CapabilityExperienceTests.swift
+[242/280] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[243/280] Compiling RightClickCoreTests CapabilityReflectorSourceTests.swift
+[244/280] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+[245/280] Compiling RightClickCoreTests CapabilitySnapshotBoundaryTests.swift
+[251/280] Compiling RightClickCLI StableEntrypoint.swift
+[252/280] Compiling RightClickCLI main.swift
+[253/280] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+[254/280] Compiling RightClickCoreTests RCIRNoOutputTests.swift
+[255/280] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[256/280] Compiling RightClickCoreTests RCIRProvisionedSignerTests.swift
+[257/280] Compiling RightClickCoreTests RCIRSigningLifecycleTests.swift
+[258/280] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+[259/280] Compiling RightClickCoreTests RCIRTests.swift
+[260/280] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+[266/280] Write Objects.LinkFileList
+[268/280] Compiling RightClickCoreTests RCIRAuthorityDispatchTests.swift
+[269/280] Compiling RightClickCoreTests RCIRAuthorityTests.swift
+[270/280] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+[271/280] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+[272/280] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+[273/280] Compiling RightClickCoreTests RCIRHTTPJSONCausalityTests.swift
+[274/280] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+[275/280] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+[276/280] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+[276/280] Linking rightclick
+[277/280] Applying rightclick
+[279/307] Emitting module RightClickCLITests
+[280/309] Compiling RightClickCLITests AdoptionSecurityClaudeIdentityTests.swift
+[281/309] Compiling RightClickCLITests AdoptionSecurityNativeFailureTests.swift
+[282/309] Compiling RightClickCLITests AdoptionSecurityProcessTests.swift
+[283/309] Compiling RightClickCLITests SetupTests.swift
+[284/309] Compiling RightClickCLITests StableEntrypointTests.swift
+[285/309] Compiling RightClickCLITests BridgeRuntimeTests.swift
+[286/309] Compiling RightClickCLITests ChatGPTBridgeInstallerTests.swift
+[287/309] Compiling RightClickCLITests ChatGPTBridgeTests.swift
+[288/309] Compiling RightClickCLITests StableProfileIntegrityTests.swift
+[289/309] Compiling RightClickCLITests StableUpgradeReconciliationTests.swift
+[290/309] Compiling RightClickCLITests AdoptionSecurityRollbackTests.swift
+[291/309] Compiling RightClickCLITests AdoptionSecuritySandboxTests.swift
+[292/309] Compiling RightClickCLITests AuthorityConfigurationCLITests.swift
+[293/309] Compiling RightClickCLITests ChatGPTLiveAttestationTests.swift
+[294/309] Compiling RightClickCLITests ChatGPTOnboardingTests.swift
+[295/309] Compiling RightClickCLITests ChatGPTOnboardingTransactionTests.swift
+[296/309] Compiling RightClickCLITests ProviderConfigurationCLITests.swift
+[297/309] Compiling RightClickCLITests SetupAllTransactionRedTests.swift
+[298/309] Compiling RightClickCLITests SetupStateTests.swift
+[299/309] Compiling RightClickCLITests NativeMutationLeaseRedTests.swift
+[300/309] Compiling RightClickCLITests OnboardingEngineTests.swift
+[301/309] Compiling RightClickCLITests PortableClientLifecycleTests.swift
+[302/309] Compiling RightClickCLITests ClaudeConfigDirTruthTests.swift
+[303/309] Compiling RightClickCLITests ClaudeOnboardingRedTests.swift
+[304/309] Compiling RightClickCLITests ClientRegistryRedTests.swift
+[305/309] Compiling RightClickCLITests CodexOnboardingRedTests.swift
+[306/309] Compiling RightClickCLITests ConnectTests.swift
+[307/309] Compiling RightClickCLITests LocalOnboardingTests.swift
+[308/311] Compiling rightclick_mcpPackageTests runner.swift
+[309/311] Emitting module rightclick_mcpPackageTests
+[309/311] Write Objects.LinkFileList
+[310/311] Linking rightclick-mcpPackageTests
+Build complete! (59.87s)
+Test Suite 'Selected tests' started at 2026-10-07 19:26:03.459.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 19:26:03.460.
+Test Suite 'AdoptionSecurityClaudeIdentityTests' started at 2026-10-07 19:26:03.460.
+Test Case '-[RightClickCLITests.AdoptionSecurityClaudeIdentityTests testClaudeCannotReportConnectedFromNotConnectedHealthText]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityClaudeIdentityTests testClaudeCannotReportConnectedFromNotConnectedHealthText]' passed (0.425 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityClaudeIdentityTests testClaudeRejectsAdditionalArgumentsAfterMCPPrefix]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityClaudeIdentityTests testClaudeRejectsAdditionalArgumentsAfterMCPPrefix]' passed (0.346 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityClaudeIdentityTests testClaudeRejectsCommandWithExpectedPathOnlyAsPrefix]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityClaudeIdentityTests testClaudeRejectsCommandWithExpectedPathOnlyAsPrefix]' passed (0.327 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityClaudeIdentityTests testClaudeRejectsDuplicateCommandAuthorityFields]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityClaudeIdentityTests testClaudeRejectsDuplicateCommandAuthorityFields]' passed (0.408 seconds).
+Test Suite 'AdoptionSecurityClaudeIdentityTests' passed at 2026-10-07 19:26:04.967.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 1.507 (1.507) seconds
+Test Suite 'AdoptionSecurityMCPCookiesTests' started at 2026-10-07 19:26:04.968.
+Test Case '-[RightClickCoreTests.AdoptionSecurityMCPCookiesTests testDescriptorAcquisitionCannotBorrowAmbientCookiesOrPersistProviderCookies]' started.
+Test Case '-[RightClickCoreTests.AdoptionSecurityMCPCookiesTests testDescriptorAcquisitionCannotBorrowAmbientCookiesOrPersistProviderCookies]' passed (0.235 seconds).
+Test Suite 'AdoptionSecurityMCPCookiesTests' passed at 2026-10-07 19:26:05.203.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.235 (0.235) seconds
+Test Suite 'AdoptionSecurityNativeFailureTests' started at 2026-10-07 19:26:05.203.
+Test Case '-[RightClickCLITests.AdoptionSecurityNativeFailureTests testFailedNativeAddPreservesNewerConflictingRegistration]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityNativeFailureTests testFailedNativeAddPreservesNewerConflictingRegistration]' passed (0.490 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityNativeFailureTests testFailedNativeAddThatAlreadyMutatedRestoresUnconfiguredState]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityNativeFailureTests testFailedNativeAddThatAlreadyMutatedRestoresUnconfiguredState]' passed (0.558 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityNativeFailureTests testFailedNativeRemoveThatAlreadyMutatedRestoresExactRegistration]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityNativeFailureTests testFailedNativeRemoveThatAlreadyMutatedRestoresExactRegistration]' passed (0.616 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityNativeFailureTests testTimedOutNativeAddThatAlreadyMutatedRestoresUnconfiguredState]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityNativeFailureTests testTimedOutNativeAddThatAlreadyMutatedRestoresUnconfiguredState]' passed (5.575 seconds).
+Test Suite 'AdoptionSecurityNativeFailureTests' passed at 2026-10-07 19:26:12.443.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 7.239 (7.240) seconds
+Test Suite 'AdoptionSecurityProcessTests' started at 2026-10-07 19:26:12.443.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testExcessNativeOutputIsBoundedAndDoesNotEchoSecretOutput]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testExcessNativeOutputIsBoundedAndDoesNotEchoSecretOutput]' passed (0.338 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testNativeOutputLargerThanPipeBufferCompletesWithoutDeadlock]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testNativeOutputLargerThanPipeBufferCompletesWithoutDeadlock]' passed (0.423 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testNativeProcessDeadlineReturnsAndDoesNotEchoSecretOutput]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testNativeProcessDeadlineReturnsAndDoesNotEchoSecretOutput]' passed (0.125 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/AdoptionSecurityProcessTests.swift:64: error: -[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning] : XCTUnwrap failed: threw error "Error Domain=NSCocoaErrorDomain Code=260 "The file “descendant.pid” couldn’t be opened because there is no such file." UserInfo={NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-process-E7925A76-2707-4440-B14D-53A3353F4785/descendant.pid, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-process-E7925A76-2707-4440-B14D-53A3353F4785/descendant.pid, NSUnderlyingError=0xa20d5c660 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/AdoptionSecurityProcessTests.swift:64: error: -[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=260 "The file “descendant.pid” couldn’t be opened because there is no such file." UserInfo={NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-process-E7925A76-2707-4440-B14D-53A3353F4785/descendant.pid, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-adoption-process-E7925A76-2707-4440-B14D-53A3353F4785/descendant.pid, NSUnderlyingError=0xa20d5c660 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCLITests.AdoptionSecurityProcessTests testTimedOutNativeCommandDoesNotLeaveDescendantRunning]' failed (3.841 seconds).
+Test Suite 'AdoptionSecurityProcessTests' failed at 2026-10-07 19:26:17.171.
+	 Executed 4 tests, with 2 failures (2 unexpected) in 4.727 (4.727) seconds
+Test Suite 'AdoptionSecurityRollbackTests' started at 2026-10-07 19:26:17.171.
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testFailedJSONPostconditionPreservesNewerFileCreatedFromNothing]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testFailedJSONPostconditionPreservesNewerFileCreatedFromNothing]' passed (0.008 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testFailedJSONPostconditionPreservesNewerValidClientEdit]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testFailedJSONPostconditionPreservesNewerValidClientEdit]' passed (0.007 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testJSONRollbackRejectsPathReplacedWithSymlinkWithoutTouchingTarget]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testJSONRollbackRejectsPathReplacedWithSymlinkWithoutTouchingTarget]' passed (0.005 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testNativeConfigureRollbackPreservesNewerRegistration]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testNativeConfigureRollbackPreservesNewerRegistration]' passed (0.511 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testNativeDisconnectRollbackPreservesNewerRegistration]' started.
+Test Case '-[RightClickCLITests.AdoptionSecurityRollbackTests testNativeDisconnectRollbackPreservesNewerRegistration]' passed (0.572 seconds).
+Test Suite 'AdoptionSecurityRollbackTests' passed at 2026-10-07 19:26:18.274.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 1.103 (1.104) seconds
+Test Suite 'AdoptionSecuritySandboxTests' started at 2026-10-07 19:26:18.274.
+Test Case '-[RightClickCLITests.AdoptionSecuritySandboxTests testDisposableSandboxCannotImportHostPolicyObserversOrSigningReferences]' started.
+Test Case '-[RightClickCLITests.AdoptionSecuritySandboxTests testDisposableSandboxCannotImportHostPolicyObserversOrSigningReferences]' passed (0.225 seconds).
+Test Case '-[RightClickCLITests.AdoptionSecuritySandboxTests testSandboxCleanupRemovesEffectAndDirectoryAfterFixtureLifetime]' started.
+Test Case '-[RightClickCLITests.AdoptionSecuritySandboxTests testSandboxCleanupRemovesEffectAndDirectoryAfterFixtureLifetime]' passed (0.005 seconds).
+Test Suite 'AdoptionSecuritySandboxTests' passed at 2026-10-07 19:26:18.505.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.231 (0.231) seconds
+Test Suite 'ClaudeOnboardingRedTests' started at 2026-10-07 19:26:18.505.
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeConflictingRegistrationFailsClosed]' started.
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeConflictingRegistrationFailsClosed]' passed (0.336 seconds).
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeDisconnectRefusesConflictingRegistration]' started.
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeDisconnectRefusesConflictingRegistration]' passed (0.333 seconds).
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeDisconnectUsesNativeUserScopeRemove]' started.
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeDisconnectUsesNativeUserScopeRemove]' passed (0.474 seconds).
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeDryRunUsesNativeInspectionAndNeverMutates]' started.
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeDryRunUsesNativeInspectionAndNeverMutates]' passed (0.327 seconds).
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeExactExistingRegistrationIsIdempotent]' started.
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeExactExistingRegistrationIsIdempotent]' passed (0.368 seconds).
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeNonInteractiveRequiresConsentWithoutNativeMutation]' started.
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeNonInteractiveRequiresConsentWithoutNativeMutation]' passed (0.327 seconds).
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeYesUsesFrozenNativeUserScopeBackendAndVerifiesConnection]' started.
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeYesUsesFrozenNativeUserScopeBackendAndVerifiesConnection]' passed (0.510 seconds).
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testOptionsAcceptClaudeAsSecondClient]' started.
+Test Case '-[RightClickCLITests.ClaudeOnboardingRedTests testOptionsAcceptClaudeAsSecondClient]' passed (0.000 seconds).
+Test Suite 'ClaudeOnboardingRedTests' passed at 2026-10-07 19:26:21.182.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 2.676 (2.677) seconds
+Test Suite 'CodexOnboardingRedTests' started at 2026-10-07 19:26:21.182.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexConflictingCommandFailsClosedBeforeNativeAdd]' started.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexConflictingCommandFailsClosedBeforeNativeAdd]' passed (0.308 seconds).
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexDisconnectRefusesConflictingRegistration]' started.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexDisconnectRefusesConflictingRegistration]' passed (0.315 seconds).
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexDisconnectUsesNativeGlobalRemove]' started.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexDisconnectUsesNativeGlobalRemove]' passed (0.451 seconds).
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexDryRunUsesNativeInspectionAndNeverMutates]' started.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexDryRunUsesNativeInspectionAndNeverMutates]' passed (0.329 seconds).
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexExactExistingRegistrationIsIdempotent]' started.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexExactExistingRegistrationIsIdempotent]' passed (0.386 seconds).
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexNonInteractiveRequiresConsentWithoutMutation]' started.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexNonInteractiveRequiresConsentWithoutMutation]' passed (0.327 seconds).
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexSameCommandDifferentArgsAlsoFailsClosed]' started.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexSameCommandDifferentArgsAlsoFailsClosed]' passed (0.336 seconds).
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexYesUsesNativeGlobalBackendWithoutFalseConnectionClaim]' started.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testCodexYesUsesNativeGlobalBackendWithoutFalseConnectionClaim]' passed (0.415 seconds).
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testOptionsAcceptCodexAsThirdClient]' started.
+Test Case '-[RightClickCLITests.CodexOnboardingRedTests testOptionsAcceptCodexAsThirdClient]' passed (0.000 seconds).
+Test Suite 'CodexOnboardingRedTests' passed at 2026-10-07 19:26:24.050.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 2.867 (2.868) seconds
+Test Suite 'ConnectTests' started at 2026-10-07 19:26:24.050.
+Test Case '-[RightClickCLITests.ConnectTests testCompilationFailureIsSanitizedAndPreservesRegistry]' started.
+Test Case '-[RightClickCLITests.ConnectTests testCompilationFailureIsSanitizedAndPreservesRegistry]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testCredentialURLsRejectedBeforeAcquisitionAndNeverEchoed]' started.
+Test Case '-[RightClickCLITests.ConnectTests testCredentialURLsRejectedBeforeAcquisitionAndNeverEchoed]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testCrossOriginServerAndManifestLinksDoNotRegisterOrFetchEscapedTarget]' started.
+Test Case '-[RightClickCLITests.ConnectTests testCrossOriginServerAndManifestLinksDoNotRegisterOrFetchEscapedTarget]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testDirectOpenAPICompilesRealDeclarationBeforeDurableRegistration]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:49: error: -[RightClickCLITests.ConnectTests testDirectOpenAPICompilesRealDeclarationBeforeDurableRegistration] : XCTAssertEqual failed: ("2") is not equal to ("0")
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:41: error: -[RightClickCLITests.ConnectTests testDirectOpenAPICompilesRealDeclarationBeforeDurableRegistration] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=4 "“connect-tests-D62C1775-0885-43A1-AAAA-3488B5692322” couldn’t be removed." UserInfo={NSUserStringVariant=(
+    Remove
+), NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connect-tests-D62C1775-0885-43A1-AAAA-3488B5692322, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connect-tests-D62C1775-0885-43A1-AAAA-3488B5692322, NSUnderlyingError=0xa20882fd0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCLITests.ConnectTests testDirectOpenAPICompilesRealDeclarationBeforeDurableRegistration]' failed (0.004 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testExplicitGRPCUsesGenericReflectionAndRejectsRemotePlaintext]' started.
+The connection registry could not be updated safely. Check that its directory and file are private, owned by you, and free of links; retry if another connection is active.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:155: error: -[RightClickCLITests.ConnectTests testExplicitGRPCUsesGenericReflectionAndRejectsRemotePlaintext] : XCTAssertEqual failed: ("2") is not equal to ("0")
+Test Case '-[RightClickCLITests.ConnectTests testExplicitGRPCUsesGenericReflectionAndRejectsRemotePlaintext]' failed (0.001 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testGraphQLAndMCPUseGenericLiveResolverWithoutGETOrSecrets]' started.
+The connection registry could not be updated safely. Check that its directory and file are private, owned by you, and free of links; retry if another connection is active.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:141: error: -[RightClickCLITests.ConnectTests testGraphQLAndMCPUseGenericLiveResolverWithoutGETOrSecrets] : XCTAssertEqual failed: ("2") is not equal to ("0")
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:139: error: -[RightClickCLITests.ConnectTests testGraphQLAndMCPUseGenericLiveResolverWithoutGETOrSecrets] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=4 "“connect-tests-ED0DDF6F-D2B0-4A44-AC9C-F550079DB26F” couldn’t be removed." UserInfo={NSUserStringVariant=(
+    Remove
+), NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connect-tests-ED0DDF6F-D2B0-4A44-AC9C-F550079DB26F, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connect-tests-ED0DDF6F-D2B0-4A44-AC9C-F550079DB26F, NSUnderlyingError=0xa20882340 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCLITests.ConnectTests testGraphQLAndMCPUseGenericLiveResolverWithoutGETOrSecrets]' failed (0.001 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testOriginFallbackOnlyAfterAbsentManifest]' started.
+The connection registry could not be updated safely. Check that its directory and file are private, owned by you, and free of links; retry if another connection is active.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:79: error: -[RightClickCLITests.ConnectTests testOriginFallbackOnlyAfterAbsentManifest] : XCTAssertEqual failed: ("2") is not equal to ("0")
+Test Case '-[RightClickCLITests.ConnectTests testOriginFallbackOnlyAfterAbsentManifest]' failed (0.001 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testOriginFindsSingleStandardManifestLink]' started.
+The connection registry could not be updated safely. Check that its directory and file are private, owned by you, and free of links; retry if another connection is active.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:70: error: -[RightClickCLITests.ConnectTests testOriginFindsSingleStandardManifestLink] : XCTAssertEqual failed: ("2") is not equal to ("0")
+Test Case '-[RightClickCLITests.ConnectTests testOriginFindsSingleStandardManifestLink]' failed (0.001 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testRealMCPTransportConnectsDurablyAndIsDiscoverableInNewSource]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:193: error: -[RightClickCLITests.ConnectTests testRealMCPTransportConnectsDurablyAndIsDiscoverableInNewSource] : XCTAssertEqual failed: ("2") is not equal to ("0")
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:194: error: -[RightClickCLITests.ConnectTests testRealMCPTransportConnectsDurablyAndIsDiscoverableInNewSource] : XCTAssertEqual failed: threw error "Connection registry directories must not be symlinks."
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:197: error: -[RightClickCLITests.ConnectTests testRealMCPTransportConnectsDurablyAndIsDiscoverableInNewSource] : XCTAssertEqual failed: ("0") is not equal to ("1")
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:199: error: -[RightClickCLITests.ConnectTests testRealMCPTransportConnectsDurablyAndIsDiscoverableInNewSource] : XCTAssertEqual failed: ("nil") is not equal to ("Optional(1)")
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:200: error: -[RightClickCLITests.ConnectTests testRealMCPTransportConnectsDurablyAndIsDiscoverableInNewSource] : XCTAssertTrue failed
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:201: error: -[RightClickCLITests.ConnectTests testRealMCPTransportConnectsDurablyAndIsDiscoverableInNewSource] : XCTAssertTrue failed: threw error "Connection registry directories must not be symlinks."
+Test Case '-[RightClickCLITests.ConnectTests testRealMCPTransportConnectsDurablyAndIsDiscoverableInNewSource]' failed (0.151 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testRedirectOversizeAndHTTPFailuresLeaveExistingRegistryIntact]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/ConnectTests.swift:118: error: -[RightClickCLITests.ConnectTests testRedirectOversizeAndHTTPFailuresLeaveExistingRegistryIntact] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=4 "“connect-tests-CD3353A8-C6C1-4DB1-87F4-CB517D84A684” couldn’t be removed." UserInfo={NSUserStringVariant=(
+    Remove
+), NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connect-tests-CD3353A8-C6C1-4DB1-87F4-CB517D84A684, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connect-tests-CD3353A8-C6C1-4DB1-87F4-CB517D84A684, NSUnderlyingError=0xa20882fa0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCLITests.ConnectTests testRedirectOversizeAndHTTPFailuresLeaveExistingRegistryIntact]' failed (0.001 seconds).
+Test Case '-[RightClickCLITests.ConnectTests testUnknownFlagsDuplicateFlagsAndUnsupportedStandardsFailBeforeAcquisition]' started.
+Test Case '-[RightClickCLITests.ConnectTests testUnknownFlagsDuplicateFlagsAndUnsupportedStandardsFailBeforeAcquisition]' passed (0.001 seconds).
+Test Suite 'ConnectTests' failed at 2026-10-07 19:26:24.216.
+	 Executed 11 tests, with 14 failures (5 unexpected) in 0.165 (0.166) seconds
+Test Suite 'ConnectedGraphQLTransportTests' started at 2026-10-07 19:26:24.216.
+Test Case '-[RightClickCoreTests.ConnectedGraphQLTransportTests testConnectedGraphQLIntrospectionAndInvocationExcludeAmbientAuthorityAndRejectDeclaredOversizeEarly]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/ConnectedGraphQLTransportTests.swift:52: error: -[RightClickCoreTests.ConnectedGraphQLTransportTests testConnectedGraphQLIntrospectionAndInvocationExcludeAmbientAuthorityAndRejectDeclaredOversizeEarly] : XCTAssertLessThan failed: ("2.0034669637680054") is not less than ("1.5") - Declared oversize must be rejected at response headers before the stalled full body completes.
+Test Case '-[RightClickCoreTests.ConnectedGraphQLTransportTests testConnectedGraphQLIntrospectionAndInvocationExcludeAmbientAuthorityAndRejectDeclaredOversizeEarly]' failed (2.153 seconds).
+Test Suite 'ConnectedGraphQLTransportTests' failed at 2026-10-07 19:26:26.369.
+	 Executed 1 test, with 1 failure (0 unexpected) in 2.153 (2.153) seconds
+Test Suite 'ConnectedProviderStoreTests' started at 2026-10-07 19:26:26.369.
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testConcurrentTransactionFailsWithoutPartialPublication]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/ConnectedProviderStoreTests.swift:0: error: -[RightClickCoreTests.ConnectedProviderStoreTests testConcurrentTransactionFailsWithoutPartialPublication] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=4 "“connected-store-3AD0E805-C3E5-47D2-AAED-82208142030A” couldn’t be removed." UserInfo={NSUserStringVariant=(
+    Remove
+), NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-3AD0E805-C3E5-47D2-AAED-82208142030A, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-3AD0E805-C3E5-47D2-AAED-82208142030A, NSUnderlyingError=0xa20883f90 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testConcurrentTransactionFailsWithoutPartialPublication]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testExistingMalformedRegistryIsNeverOverwritten]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/ConnectedProviderStoreTests.swift:0: error: -[RightClickCoreTests.ConnectedProviderStoreTests testExistingMalformedRegistryIsNeverOverwritten] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=4 "“connected-store-37573AAD-3D73-42E9-9700-A169188B0069” couldn’t be removed." UserInfo={NSUserStringVariant=(
+    Remove
+), NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-37573AAD-3D73-42E9-9700-A169188B0069, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-37573AAD-3D73-42E9-9700-A169188B0069, NSUnderlyingError=0xa1f888270 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testExistingMalformedRegistryIsNeverOverwritten]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testLinkedDirectoryAndPublicFileRefused]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/ConnectedProviderStoreTests.swift:0: error: -[RightClickCoreTests.ConnectedProviderStoreTests testLinkedDirectoryAndPublicFileRefused] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=4 "“connected-store-54B18B29-088E-4CFD-8A69-3643A97ABC32” couldn’t be removed." UserInfo={NSUserStringVariant=(
+    Remove
+), NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-54B18B29-088E-4CFD-8A69-3643A97ABC32, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-54B18B29-088E-4CFD-8A69-3643A97ABC32, NSUnderlyingError=0xa1f888e40 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testLinkedDirectoryAndPublicFileRefused]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testProtectedRoundTripAndRemoval]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/ConnectedProviderStoreTests.swift:46: error: -[RightClickCoreTests.ConnectedProviderStoreTests testProtectedRoundTripAndRemoval] : XCTAssertEqual failed: threw error "Connection registry directories must not be symlinks."
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/ConnectedProviderStoreTests.swift:47: error: -[RightClickCoreTests.ConnectedProviderStoreTests testProtectedRoundTripAndRemoval] : XCTAssertEqual failed: threw error "Connection registry directories must not be symlinks."
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/ConnectedProviderStoreTests.swift:0: error: -[RightClickCoreTests.ConnectedProviderStoreTests testProtectedRoundTripAndRemoval] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=4 "“connected-store-F3DA756E-DF70-4080-B748-09DF95364F0A” couldn’t be removed." UserInfo={NSUserStringVariant=(
+    Remove
+), NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-F3DA756E-DF70-4080-B748-09DF95364F0A, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-F3DA756E-DF70-4080-B748-09DF95364F0A, NSUnderlyingError=0xa1f888240 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testProtectedRoundTripAndRemoval]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testSourceReloadsAdditionsAndWithdrawsRemovalAndMalformedConfiguration]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/ConnectedProviderStoreTests.swift:0: error: -[RightClickCoreTests.ConnectedProviderStoreTests testSourceReloadsAdditionsAndWithdrawsRemovalAndMalformedConfiguration] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=4 "“connected-store-5EFB6317-2641-4458-8935-8713259B64DF” couldn’t be removed." UserInfo={NSUserStringVariant=(
+    Remove
+), NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-5EFB6317-2641-4458-8935-8713259B64DF, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-5EFB6317-2641-4458-8935-8713259B64DF, NSUnderlyingError=0xa1f8883f0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testSourceReloadsAdditionsAndWithdrawsRemovalAndMalformedConfiguration]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testStrictNumericVersionAcceptsOneAndRejectsBoolean]' started.
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testStrictNumericVersionAcceptsOneAndRejectsBoolean]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testSymlinkAndHardlinkRegistryRefusedWithoutChangingTarget]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCoreTests/ConnectedProviderStoreTests.swift:0: error: -[RightClickCoreTests.ConnectedProviderStoreTests testSymlinkAndHardlinkRegistryRefusedWithoutChangingTarget] : failed: caught error: "Error Domain=NSCocoaErrorDomain Code=4 "“connected-store-A481A916-8789-4F8C-91B6-140B41B4F7C1” couldn’t be removed." UserInfo={NSUserStringVariant=(
+    Remove
+), NSFilePath=/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-A481A916-8789-4F8C-91B6-140B41B4F7C1, NSURL=file:///var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/connected-store-A481A916-8789-4F8C-91B6-140B41B4F7C1, NSUnderlyingError=0xa1f8881e0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}"
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testSymlinkAndHardlinkRegistryRefusedWithoutChangingTarget]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testUnknownCredentialInlineAndExecutableFieldsRejected]' started.
+Test Case '-[RightClickCoreTests.ConnectedProviderStoreTests testUnknownCredentialInlineAndExecutableFieldsRejected]' passed (0.000 seconds).
+Test Suite 'ConnectedProviderStoreTests' failed at 2026-10-07 19:26:26.374.
+	 Executed 8 tests, with 8 failures (8 unexpected) in 0.005 (0.005) seconds
+Test Suite 'FederationTests' started at 2026-10-07 19:26:26.374.
+Test Case '-[RightClickMCPTests.FederationTests testExplicitVerificationRunsAtRemoteBoundary]' started.
+Test Case '-[RightClickMCPTests.FederationTests testExplicitVerificationRunsAtRemoteBoundary]' passed (0.001 seconds).
+Test Case '-[RightClickMCPTests.FederationTests testFederatedCapabilityAppearsAndDisappearsLive]' started.
+Test Case '-[RightClickMCPTests.FederationTests testFederatedCapabilityAppearsAndDisappearsLive]' passed (0.000 seconds).
+Test Case '-[RightClickMCPTests.FederationTests testFederationDoesNotReexportFederatedCapability]' started.
+Test Case '-[RightClickMCPTests.FederationTests testFederationDoesNotReexportFederatedCapability]' passed (0.000 seconds).
+Test Case '-[RightClickMCPTests.FederationTests testIncompleteRemoteVerificationIsDowngraded]' started.
+Test Case '-[RightClickMCPTests.FederationTests testIncompleteRemoteVerificationIsDowngraded]' passed (0.001 seconds).
+Test Case '-[RightClickMCPTests.FederationTests testLoopbackIPPeersCanonicalizeToLocalhostForTransport]' started.
+Test Case '-[RightClickMCPTests.FederationTests testLoopbackIPPeersCanonicalizeToLocalhostForTransport]' passed (0.000 seconds).
+Test Case '-[RightClickMCPTests.FederationTests testModelFacingToolSurfaceRemainsSevenGenericOperations]' started.
+Test Case '-[RightClickMCPTests.FederationTests testModelFacingToolSurfaceRemainsSevenGenericOperations]' passed (0.000 seconds).
+Test Case '-[RightClickMCPTests.FederationTests testNonRightClickPeerContributesNoCapabilities]' started.
+Test Case '-[RightClickMCPTests.FederationTests testNonRightClickPeerContributesNoCapabilities]' passed (0.000 seconds).
+Test Case '-[RightClickMCPTests.FederationTests testPeerConfigurationFailsClosedOutsideLoopback]' started.
+Test Case '-[RightClickMCPTests.FederationTests testPeerConfigurationFailsClosedOutsideLoopback]' passed (0.000 seconds).
+Test Suite 'FederationTests' passed at 2026-10-07 19:26:26.378.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.004 (0.005) seconds
+Test Suite 'LocalOnboardingTests' started at 2026-10-07 19:26:26.379.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testAdditionalRightclickSettingsAreNotSilentlyDropped]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testAdditionalRightclickSettingsAreNotSilentlyDropped]' passed (0.003 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testBridgeIsOnlyExplicitAndCannotMixModes]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testBridgeIsOnlyExplicitAndCannotMixModes]' passed (0.000 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testChangesAfterPreviewAreNotOverwritten]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testChangesAfterPreviewAreNotOverwritten]' passed (0.003 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testConcurrentInstallerLockPreventsWrite]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testConcurrentInstallerLockPreventsWrite]' passed (0.003 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testCreateHasExpectedStdioEntryAndPrivatePermissions]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testCreateHasExpectedStdioEntryAndPrivatePermissions]' passed (0.005 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDanglingSymlinkIsRejected]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDanglingSymlinkIsRejected]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDeclineAndEOFDoNotChangeConfig]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDeclineAndEOFDoNotChangeConfig]' passed (0.003 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDetectsOnlySupportedClientLocations]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDetectsOnlySupportedClientLocations]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDifferentRightclickEntryNeverOverwrittenOrRemoved]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDifferentRightclickEntryNeverOverwrittenOrRemoved]' passed (0.008 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDirectoryAtConfigPathIsRejected]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDirectoryAtConfigPathIsRejected]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDisconnectAbsentConfigIsNoOp]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDisconnectAbsentConfigIsNoOp]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDisconnectRemovesOnlyMatchingEntryAndKeepsLaterEdits]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDisconnectRemovesOnlyMatchingEntryAndKeepsLaterEdits]' passed (0.010 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDryRunDoesNotWritePromptOrProbe]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDryRunDoesNotWritePromptOrProbe]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDuplicateJSONKeysAreRejectedWithoutLosingData]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testDuplicateJSONKeysAreRejectedWithoutLosingData]' passed (0.005 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testEquivalentLegacyEntryIsPreservedByteForByte]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testEquivalentLegacyEntryIsPreservedByteForByte]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testFileAppearingAfterPreviewIsNotOverwritten]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testFileAppearingAfterPreviewIsNotOverwritten]' passed (0.003 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testHardLinkedConfigIsRejected]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testHardLinkedConfigIsRejected]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testHelpNeverProbesOrWrites]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testHelpNeverProbesOrWrites]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testInteractiveYesAppliesOnlyAfterPrompt]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testInteractiveYesAppliesOnlyAfterPrompt]' passed (0.011 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testInvalidRootAndMalformedJSONArePreserved]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testInvalidRootAndMalformedJSONArePreserved]' passed (0.007 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testInvalidServerContainersArePreserved]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testInvalidServerContainersArePreserved]' passed (0.007 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testJSONNeverPromptsEvenWithTerminal]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testJSONNeverPromptsEvenWithTerminal]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testLocalSetupIgnoresSavedBridgeAndOtherClientFiles]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testLocalSetupIgnoresSavedBridgeAndOtherClientFiles]' passed (0.013 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testMergePreservesOtherServersAndRootFieldsWithPrivateExactBackup]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testMergePreservesOtherServersAndRootFieldsWithPrivateExactBackup]' passed (0.006 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testNestedJSONEscapesAndArraysAreAccepted]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testNestedJSONEscapesAndArraysAreAccepted]' passed (0.006 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testNewPlanDoesNotCreateDirectories]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testNewPlanDoesNotCreateDirectories]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testNoClientAndMissingExecutableDoNotWrite]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testNoClientAndMissingExecutableDoNotWrite]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testNonInteractiveNeedsExplicitConsent]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testNonInteractiveNeedsExplicitConsent]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testOptionsAcceptExplicitLocalPlan]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testOptionsAcceptExplicitLocalPlan]' passed (0.000 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testOptionsRejectUnknownOrIncompleteArguments]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testOptionsRejectUnknownOrIncompleteArguments]' passed (0.000 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testOversizedConfigIsRejected]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testOversizedConfigIsRejected]' passed (0.063 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testProbeFailurePreventsConfigWrite]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testProbeFailurePreventsConfigWrite]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testRejectsUnsafeExecutablePaths]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testRejectsUnsafeExecutablePaths]' passed (0.000 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testSecondRunIsByteIdenticalWithoutAnotherBackup]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testSecondRunIsByteIdenticalWithoutAnotherBackup]' passed (0.006 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testSuccessDoesNotClaimClientConnectionOrOutcomeAndDoesNotLeakConfigSecrets]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testSuccessDoesNotClaimClientConnectionOrOutcomeAndDoesNotLeakConfigSecrets]' passed (0.012 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testSymlinkDirectoryIsRejected]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testSymlinkDirectoryIsRejected]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.LocalOnboardingTests testSymlinkFileIsRejected]' started.
+Test Case '-[RightClickCLITests.LocalOnboardingTests testSymlinkFileIsRejected]' passed (0.001 seconds).
+Test Suite 'LocalOnboardingTests' passed at 2026-10-07 19:26:26.575.
+	 Executed 37 tests, with 0 failures (0 unexpected) in 0.194 (0.197) seconds
+Test Suite 'OnboardingEngineTests' started at 2026-10-07 19:26:26.575.
+Test Case '-[RightClickCLITests.OnboardingEngineTests testClientStateVocabularySeparatesConfigurationConnectionAndAttestation]' started.
+Test Case '-[RightClickCLITests.OnboardingEngineTests testClientStateVocabularySeparatesConfigurationConnectionAndAttestation]' passed (0.000 seconds).
+Test Case '-[RightClickCLITests.OnboardingEngineTests testDisconnectRemovesOnlyOwnedEntryAfterIndependentEdits]' started.
+Test Case '-[RightClickCLITests.OnboardingEngineTests testDisconnectRemovesOnlyOwnedEntryAfterIndependentEdits]' passed (0.009 seconds).
+Test Case '-[RightClickCLITests.OnboardingEngineTests testGenericEngineFailsClosedOnConflictingOwnedEntry]' started.
+Test Case '-[RightClickCLITests.OnboardingEngineTests testGenericEngineFailsClosedOnConflictingOwnedEntry]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.OnboardingEngineTests testGenericEngineUsesAdapterAndPreservesUnrelatedConfiguration]' started.
+Test Case '-[RightClickCLITests.OnboardingEngineTests testGenericEngineUsesAdapterAndPreservesUnrelatedConfiguration]' passed (0.005 seconds).
+Test Case '-[RightClickCLITests.OnboardingEngineTests testPostWriteFailureRemovesConfigurationCreatedFromNothing]' started.
+Test Case '-[RightClickCLITests.OnboardingEngineTests testPostWriteFailureRemovesConfigurationCreatedFromNothing]' passed (0.004 seconds).
+Test Case '-[RightClickCLITests.OnboardingEngineTests testPostWriteVerificationFailurePreservesNewerClientContent]' started.
+Test Case '-[RightClickCLITests.OnboardingEngineTests testPostWriteVerificationFailurePreservesNewerClientContent]' passed (0.006 seconds).
+Test Suite 'OnboardingEngineTests' passed at 2026-10-07 19:26:26.601.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.026 (0.026) seconds
+Test Suite 'PortableClientLifecycleTests' started at 2026-10-07 19:26:26.601.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testBoundedPathInspectionStillRejectsAnAncestorSymlink]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testBoundedPathInspectionStillRejectsAnAncestorSymlink]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testConfigurationPathInspectionTerminatesAtRoot]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testConfigurationPathInspectionTerminatesAtRoot]' passed (0.002 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testExecutableUpgradeDuringVerificationRestoresOriginalConfigAndOwnership]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testExecutableUpgradeDuringVerificationRestoresOriginalConfigAndOwnership]' passed (0.028 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testFailedPostRepairProbeRestoresExactOriginalConfigAndOwnership]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testFailedPostRepairProbeRestoresExactOriginalConfigAndOwnership]' passed (0.031 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testGenericCannotAbandonPriorRecordedConfigBySelectingAnotherFile]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testGenericCannotAbandonPriorRecordedConfigBySelectingAnotherFile]' passed (0.014 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testGenericNeedsAnExplicitAbsoluteConfiguration]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testGenericNeedsAnExplicitAbsoluteConfiguration]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testLiveProbeRejectsMissingExecutableWithoutChangingClientConfig]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testLiveProbeRejectsMissingExecutableWithoutChangingClientConfig]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testOwnershipRecordContainsOnlyRecipeAndExecutableEvidence]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testOwnershipRecordContainsOnlyRecipeAndExecutableEvidence]' passed (0.013 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testPostRepairProbeCannotOverwriteNewerClientStateDuringRollback]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testPostRepairProbeCannotOverwriteNewerClientStateDuringRollback]' passed (0.026 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testRepairDoesNotAdoptExistingRegistrationWhenOwnershipMissing]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testRepairDoesNotAdoptExistingRegistrationWhenOwnershipMissing]' passed (0.006 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testRepairDryRunDoesNotChangeOwnershipOrConfigurationOrProbe]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testRepairDryRunDoesNotChangeOwnershipOrConfigurationOrProbe]' passed (0.014 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testRepairPreservesUnownedConflictingRegistration]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testRepairPreservesUnownedConflictingRegistration]' passed (0.013 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testRepairReplacesOnlyRecordedRecipeAndPreservesOtherClientContent]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testRepairReplacesOnlyRecordedRecipeAndPreservesOtherClientContent]' passed (0.026 seconds).
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testSetupRollsBackWhenOwnershipLedgerIsMalformed]' started.
+Test Case '-[RightClickCLITests.PortableClientLifecycleTests testSetupRollsBackWhenOwnershipLedgerIsMalformed]' passed (0.005 seconds).
+Test Suite 'PortableClientLifecycleTests' passed at 2026-10-07 19:26:26.786.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.184 (0.185) seconds
+Test Suite 'ProductSurfaceRuntimeTests' started at 2026-10-07 19:26:26.786.
+Test Case '-[RightClickCoreTests.ProductSurfaceRuntimeTests testRuntimeIdentityReportsExactExecutableBytes]' started.
+Test Case '-[RightClickCoreTests.ProductSurfaceRuntimeTests testRuntimeIdentityReportsExactExecutableBytes]' passed (0.001 seconds).
+Test Suite 'ProductSurfaceRuntimeTests' passed at 2026-10-07 19:26:26.787.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'RCIRHTTPJSONObservationTests' started at 2026-10-07 19:26:26.787.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]' passed (0.475 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation]' passed (0.427 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testDefaultCredentialStorageCannotSupplyObserverAuthority]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testDefaultCredentialStorageCannotSupplyObserverAuthority]' passed (0.449 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]' passed (0.528 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead]' passed (0.510 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange]' passed (0.458 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest]' passed (0.423 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRedirectNeverSendsObserverCredentialToAnotherOrigin]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRedirectNeverSendsObserverCredentialToAnotherOrigin]' passed (0.560 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testWriterCredentialCannotActAsReadonlyObserver]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testWriterCredentialCannotActAsReadonlyObserver]' passed (0.533 seconds).
+Test Suite 'RCIRHTTPJSONObservationTests' passed at 2026-10-07 19:26:31.150.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 4.363 (4.363) seconds
+Test Suite 'RuntimeProvenanceTests' started at 2026-10-07 19:26:31.150.
+Test Case '-[RightClickCoreTests.RuntimeProvenanceTests testCurrentIdentityMeasuresBytesAndNamesVersionedContracts]' started.
+Test Case '-[RightClickCoreTests.RuntimeProvenanceTests testCurrentIdentityMeasuresBytesAndNamesVersionedContracts]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RuntimeProvenanceTests testLegacyRemoteIdentityDoesNotInheritLocalBuildFacts]' started.
+Test Case '-[RightClickCoreTests.RuntimeProvenanceTests testLegacyRemoteIdentityDoesNotInheritLocalBuildFacts]' passed (0.000 seconds).
+Test Suite 'RuntimeProvenanceTests' passed at 2026-10-07 19:26:31.152.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'SetupAllTransactionRedTests' started at 2026-10-07 19:26:31.152.
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllApplyFailureRollsBackEarlierClientsExactly]' started.
+/private/tmp/rightclick-adoption-recovered-01a1175f/Tests/RightClickCLITests/SetupAllTransactionRedTests.swift:1393: error: -[RightClickCLITests.SetupAllTransactionRedTests testSetupAllApplyFailureRollsBackEarlierClientsExactly] : XCTAssertTrue failed
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllApplyFailureRollsBackEarlierClientsExactly]' failed (1.169 seconds).
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllConfiguresEveryDetectedClientAfterOneProbe]' started.
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllConfiguresEveryDetectedClientAfterOneProbe]' passed (0.708 seconds).
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllDryRunPreflightsEveryDetectedClientWithoutMutation]' started.
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllDryRunPreflightsEveryDetectedClientWithoutMutation]' passed (0.494 seconds).
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllOptionIsExplicitAndMutuallyExclusiveWithClient]' started.
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllOptionIsExplicitAndMutuallyExclusiveWithClient]' passed (0.000 seconds).
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllPreflightConflictMutatesNothing]' started.
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllPreflightConflictMutatesNothing]' passed (0.480 seconds).
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllRequiresOneConsentBeforeAnyMutation]' started.
+Test Case '-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllRequiresOneConsentBeforeAnyMutation]' passed (0.516 seconds).
+Test Suite 'SetupAllTransactionRedTests' failed at 2026-10-07 19:26:34.519.
+	 Executed 6 tests, with 1 failure (0 unexpected) in 3.367 (3.368) seconds
+Test Suite 'ToolCatalogueVerificationTests' started at 2026-10-07 19:26:34.519.
+Test Case '-[RightClickMCPTests.ToolCatalogueVerificationTests testKnownCatalogueIsAcceptedWhileUnknownProviderFieldsAreRejected]' started.
+Test Case '-[RightClickMCPTests.ToolCatalogueVerificationTests testKnownCatalogueIsAcceptedWhileUnknownProviderFieldsAreRejected]' passed (0.003 seconds).
+Test Case '-[RightClickMCPTests.ToolCatalogueVerificationTests testKnownSchemaDriftAndMissingOperationsAreRejected]' started.
+Test Case '-[RightClickMCPTests.ToolCatalogueVerificationTests testKnownSchemaDriftAndMissingOperationsAreRejected]' passed (0.001 seconds).
+Test Suite 'ToolCatalogueVerificationTests' passed at 2026-10-07 19:26:34.523.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 19:26:34.523.
+	 Executed 142 tests, with 26 failures (15 unexpected) in 31.048 (31.063) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 19:26:34.523.
+	 Executed 142 tests, with 26 failures (15 unexpected) in 31.048 (31.065) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

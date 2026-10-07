@@ -55,6 +55,33 @@ def isolated_environment(home: Path) -> dict[str, str]:
     return result
 
 
+def wait_for_fixture_port(fixture: subprocess.Popen, port_file: Path, timeout: float = 5) -> int:
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if fixture.poll() is not None:
+            raise RuntimeError("MCP fixture exited before publishing its port.")
+        try:
+            with port_file.open("r", encoding="ascii") as recorded:
+                contents = recorded.read(8)
+        except FileNotFoundError:
+            contents = ""
+        except UnicodeDecodeError as error:
+            raise RuntimeError("MCP fixture published a malformed port.") from error
+        # write_text creates/truncates the file before publishing the digits.
+        # An empty file is incomplete readiness, rather than a usable endpoint.
+        if contents:
+            if len(contents) > 5 or any(character < "0" or character > "9" for character in contents):
+                raise RuntimeError("MCP fixture published a malformed port.")
+            port = int(contents)
+            if not 1 <= port <= 65535:
+                raise RuntimeError("MCP fixture published a port outside its valid range.")
+            if fixture.poll() is not None:
+                raise RuntimeError("MCP fixture exited before port readiness completed.")
+            return port
+        time.sleep(max(0, min(0.02, deadline - time.monotonic())))
+    raise TimeoutError("MCP fixture did not publish a complete valid port before its deadline.")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", type=Path, required=True)
@@ -130,11 +157,7 @@ def main() -> int:
             fixture = subprocess.Popen([sys.executable, str(fixture_script), str(fixture_directory), "owned-fixture-cookie"],
                 env=environment, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             port_file = fixture_directory / "port"
-            readiness = time.monotonic() + 5
-            while not port_file.is_file() and fixture.poll() is None and time.monotonic() < readiness:
-                time.sleep(0.02)
-            port = int(port_file.read_text())
-            assert 1 <= port <= 65535, "Fixture did not publish a valid loopback port"
+            port = wait_for_fixture_port(fixture, port_file)
             endpoint = f"http://127.0.0.1:{port}/mcp"
             phase("loopback declaration fixture ready", began, {"endpoint": endpoint, "fixturePID": fixture.pid})
 

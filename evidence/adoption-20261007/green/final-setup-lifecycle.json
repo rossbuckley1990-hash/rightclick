@@ -1,0 +1,174 @@
+{
+  "acceptance": "generic setup and owned doctor repair",
+  "binarySHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+  "cases": [
+    {
+      "case": "independent stdio before setup",
+      "details": {
+        "executableSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+        "pid": 12687,
+        "realAIClient": "NOT_OBSERVED",
+        "status": "VERIFIED",
+        "tools": [
+          "context_actions",
+          "context_explain",
+          "context_inspect",
+          "context_providers",
+          "context_run",
+          "context_run_status",
+          "context_runtime"
+        ],
+        "transport": "stdio"
+      },
+      "passed": true
+    },
+    {
+      "case": "explicit generic setup preserves unrelated registration",
+      "details": {
+        "arguments": "mcp",
+        "backup": "/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-setup-lifecycle-abc5uing/client/mcp.json.rightclick-backup-0B8E2704-2C0A-4675-B0D3-144136369DAF",
+        "bridge": "NOT_TOUCHED",
+        "client": "generic",
+        "command": "/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-setup-lifecycle-abc5uing/bin/rightclick",
+        "configuration": "/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-setup-lifecycle-abc5uing/client/mcp.json",
+        "configurationChanged": "true",
+        "keychain": "NOT_TOUCHED",
+        "localProbe": "VERIFIED: local stdio initialize, exact Core7, context_runtime PID/path/SHA256; AI client handshake NOT_OBSERVED",
+        "mcpConnection": "NOT_VERIFIED",
+        "next": "Reload the client using this file and verify RIGHTCLICK in that client's MCP settings.",
+        "notice": "The selected JSON file uses the common mcpServers stdio convention. Select a file your MCP client actually reads. Client connection requires that client's own verification.",
+        "operation": "CONFIGURED",
+        "outcomeVerification": "NOT_RUN",
+        "registrationBackend": "json-config",
+        "registrationScope": "client-config",
+        "status": "CONFIGURED",
+        "transport": "stdio"
+      },
+      "passed": true
+    },
+    {
+      "case": "independent stdio after setup",
+      "details": {
+        "executableSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+        "pid": 12722,
+        "realAIClient": "NOT_OBSERVED",
+        "status": "VERIFIED",
+        "tools": [
+          "context_actions",
+          "context_explain",
+          "context_inspect",
+          "context_providers",
+          "context_run",
+          "context_run_status",
+          "context_runtime"
+        ],
+        "transport": "stdio"
+      },
+      "passed": true
+    },
+    {
+      "case": "private ownership ledger binds supplied bytes",
+      "details": {
+        "executableSHA256": "23899624740c094ff343d3587764132266c61166f74841e43bd0eeac158af6b8",
+        "mode": "0600"
+      },
+      "passed": true
+    },
+    {
+      "case": "setup idempotence",
+      "details": {
+        "arguments": "mcp",
+        "bridge": "NOT_TOUCHED",
+        "client": "generic",
+        "command": "/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-setup-lifecycle-abc5uing/bin/rightclick",
+        "configuration": "/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-setup-lifecycle-abc5uing/client/mcp.json",
+        "configurationChanged": "false",
+        "keychain": "NOT_TOUCHED",
+        "localProbe": "VERIFIED: local stdio initialize, exact Core7, context_runtime PID/path/SHA256; AI client handshake NOT_OBSERVED",
+        "mcpConnection": "NOT_VERIFIED",
+        "next": "Reload the client using this file and verify RIGHTCLICK in that client's MCP settings.",
+        "notice": "The selected JSON file uses the common mcpServers stdio convention. Select a file your MCP client actually reads. Client connection requires that client's own verification.",
+        "operation": "ALREADY_CONFIGURED",
+        "outcomeVerification": "NOT_RUN",
+        "registrationBackend": "json-config",
+        "registrationScope": "client-config",
+        "status": "ALREADY_CONFIGURED",
+        "transport": "stdio"
+      },
+      "passed": true
+    },
+    {
+      "case": "doctor no-op with pre/post probes",
+      "details": {
+        "clients": [
+          {
+            "client": "generic",
+            "mcpConnection": "NOT_OBSERVED",
+            "operation": "ALREADY_CONFIGURED",
+            "runtimeChanged": false
+          }
+        ],
+        "configurationChanged": false,
+        "localProbe": "VERIFIED: local stdio initialize, exact Core7, context_runtime PID/path/SHA256; AI client handshake NOT_OBSERVED",
+        "mcpConnection": "NOT_OBSERVED",
+        "preflightProbe": "VERIFIED: local stdio initialize, exact Core7, context_runtime PID/path/SHA256; AI client handshake NOT_OBSERVED",
+        "rollbackStatus": "NOT_REQUIRED",
+        "status": "REPAIRED"
+      },
+      "passed": true
+    },
+    {
+      "case": "dry-run leaves removed registration and ledger bytes untouched",
+      "details": {
+        "clients": [
+          {
+            "client": "generic",
+            "mcpConnection": "NOT_OBSERVED",
+            "operation": "CONFIGURED",
+            "runtimeChanged": false
+          }
+        ],
+        "configurationChanged": false,
+        "localProbe": "NOT_RUN",
+        "status": "DRY_RUN"
+      },
+      "passed": true
+    },
+    {
+      "case": "removed owned registration repaired with pre/post probes",
+      "details": {
+        "clients": [
+          {
+            "client": "generic",
+            "mcpConnection": "NOT_OBSERVED",
+            "operation": "CONFIGURED",
+            "runtimeChanged": false
+          }
+        ],
+        "configurationChanged": true,
+        "localProbe": "VERIFIED: local stdio initialize, exact Core7, context_runtime PID/path/SHA256; AI client handshake NOT_OBSERVED",
+        "mcpConnection": "NOT_OBSERVED",
+        "preflightProbe": "VERIFIED: local stdio initialize, exact Core7, context_runtime PID/path/SHA256; AI client handshake NOT_OBSERVED",
+        "rollbackStatus": "NOT_REQUIRED",
+        "status": "REPAIRED"
+      },
+      "passed": true
+    },
+    {
+      "case": "conflicting newer registration refused and preserved",
+      "details": {
+        "configurationChanged": "false",
+        "error": "A different rightclick entry already exists. It was preserved; review it before switching builds.",
+        "mcpConnection": "NOT_OBSERVED",
+        "next": "Review the preserved registration and private backup, then rerun setup or doctor --fix.",
+        "rollbackStatus": "NOT_REQUIRED",
+        "status": "FAILED"
+      },
+      "passed": true
+    }
+  ],
+  "host": "darwin",
+  "passed": true,
+  "realAIClient": "NOT_OBSERVED",
+  "temporaryHomeCleanup": "COMPLETED"
+}

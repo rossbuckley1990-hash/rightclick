@@ -1,0 +1,30 @@
+{
+  "scope": "Candidate metadata helpers; no provider network, runtime operation, execution or release claim",
+  "validCasesPerLanguage": 6,
+  "rejectionsPerLanguage": 15,
+  "typescriptTypeCheck": "NOT_RUN (tsc unavailable)",
+  "languages": {
+    "python": {
+      "status": "PASSED",
+      "version": "3.14.6"
+    },
+    "typescript": {
+      "status": "PASSED",
+      "validation": "actual Node type-stripped source execution",
+      "node": "v24.16.0"
+    },
+    "go": {
+      "status": "PASSED",
+      "validation": "actual compiled generator with isolated build cache and no module network",
+      "version": "go version go1.26.4 darwin/arm64"
+    }
+  },
+  "sourceSHA256": {
+    "README.md": "c6faaa31a4ed6dc283144489f92a96129b656916330fc6845f291697cadc8c40",
+    "go/main.go": "accd66f8897ca219908fd00dd0288672dd6c7d6e2342381260800d66ed933611",
+    "python/manifest.py": "e5e2db197627603fe4764108181c91d810828a655d2a2404e0803db6d227c3e8",
+    "typescript/manifest.ts": "71c5ce448384a3e35c80ab318df5111875b8c71958a20f62d76c5c537182f3b2"
+  },
+  "elapsedSeconds": 13.755,
+  "status": "PASSED"
+}
