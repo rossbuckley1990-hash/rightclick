@@ -30,6 +30,7 @@ jobs:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
           git switch -c feature/portable-runtime-001
           python3 scripts/repair-portable-candidate.py
