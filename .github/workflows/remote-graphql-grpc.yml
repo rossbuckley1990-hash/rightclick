@@ -1,0 +1,47 @@
+name: RIGHTCLICK isolated cloud GraphQL and gRPC proof
+on:
+  push:
+    branches:
+      - experiment/remote-graphql-grpc-20261007
+    paths:
+      - 'scripts/cloud-graphql-grpc-acceptance.py'
+      - '.github/workflows/remote-graphql-grpc.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: remote-protocol-proof-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  live-remote-substrates:
+    runs-on: macos-26
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Attest cloud environment and build RIGHTCLICK
+        shell: bash
+        run: |
+          set -euo pipefail
+          uname -a
+          swift --version
+          swift build --product rightclick -c release --force-resolved-versions
+          .build/release/rightclick version
+      - name: Install independent gRPC readback verifier
+        shell: bash
+        run: brew install grpcurl
+      - name: Discover, execute, verify and retain RIGHTCLICK receipts
+        shell: bash
+        run: |
+          python3 scripts/cloud-graphql-grpc-acceptance.py \
+            .build/release/rightclick \
+            evidence/cloud-protocol-proof/receipt.json
+      - name: Preserve execution receipt even when a protocol fails
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v4.6.2
+        with:
+          name: rightclick-remote-graphql-grpc-receipt
+          path: evidence/cloud-protocol-proof/receipt.json
+          if-no-files-found: warn
