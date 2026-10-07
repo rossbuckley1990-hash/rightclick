@@ -350,10 +350,14 @@ final class RCIRInvocationJournal: @unchecked Sendable {
     }
 
     private func validateWriterLock(_ fd: Int32) throws {
-        try validateFile(fd, maximum: 0)
+        try validateNamedFile(fd, name: "invocations.lock", maximum: 0)
+    }
+
+    private func validateNamedFile(_ fd: Int32, name: String, maximum: Int) throws {
+        try validateFile(fd, maximum: maximum)
         var pinned = stat(), named = stat()
         guard fstat(fd, &pinned) == 0,
-              fstatat(directoryFD, "invocations.lock", &named, AT_SYMLINK_NOFOLLOW) == 0,
+              fstatat(directoryFD, name, &named, AT_SYMLINK_NOFOLLOW) == 0,
               named.st_mode & S_IFMT == S_IFREG, named.st_dev == pinned.st_dev, named.st_ino == pinned.st_ino,
               named.st_nlink == 1 else { throw RCIRJournalError.unsafeStorage }
     }
@@ -493,9 +497,13 @@ final class RCIRInvocationJournal: @unchecked Sendable {
         try validateCurrentDirectory()
         try validateWriterLock(writerLock)
         try validateInitializedMarker()
+        // The pathname being renamed must still name the private inode we
+        // wrote and synced, rather than a substituted file or symlink.
+        try validateNamedFile(fd, name: name, maximum: maximumBytes)
         guard renameat(directoryFD, name, directoryFD, "invocations.json") == 0, fsync(directoryFD) == 0 else {
             throw RCIRJournalError.storageFailure
         }
+        try validateNamedFile(fd, name: "invocations.json", maximum: maximumBytes)
         try validateWriterLock(writerLock)
     }
 #endif

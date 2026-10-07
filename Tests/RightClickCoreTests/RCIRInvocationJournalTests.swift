@@ -304,6 +304,26 @@ final class RCIRInvocationJournalTests: XCTestCase {
         XCTAssertNotNil(try second.status(a.executionID.uuidString, now: 105))
     }
 
+    func testSubstitutedOrLinkedStagingFileCannotBecomeCommittedHistory() throws {
+        for mode in ["regular", "symlink", "hardlink"] {
+            let path = try directory(), journal = try RCIRInvocationJournal(directory: path), id = try identity(task())
+            let committed = path.appendingPathComponent("invocations.json"), before = try Data(contentsOf: committed)
+            journal.beforeCommit = {
+                let staged = path.appendingPathComponent("invocations.tmp"), foreign = path.appendingPathComponent("foreign")
+                if mode == "hardlink" { XCTAssertEqual(link(staged.path, foreign.path), 0); return }
+                try FileManager.default.moveItem(at: staged, to: path.appendingPathComponent("old-staged"))
+                if mode == "symlink" {
+                    try Data("foreign".utf8).write(to: foreign)
+                    try FileManager.default.createSymbolicLink(at: staged, withDestinationURL: foreign)
+                } else { try Data("foreign".utf8).write(to: staged); XCTAssertEqual(chmod(staged.path, 0o600), 0) }
+            }
+            XCTAssertThrowsError(try journal.reserveDispatch(id, now: 102), mode)
+            journal.beforeCommit = nil
+            XCTAssertEqual(try Data(contentsOf: committed), before, mode)
+            XCTAssertNil(try journal.status(id.executionID.uuidString, now: 103), mode)
+        }
+    }
+
     func testJournalFailureRejectsBeforeActualProviderStartAndFreshContractAfterIntentStillWins() throws {
         let path = try directory(), journal = try RCIRInvocationJournal(directory: path), host = RCIRExecutionHost()
         host.invocationJournal = { journal }
