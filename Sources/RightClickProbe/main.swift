@@ -2,7 +2,11 @@ import AppKit
 import AVFoundation
 import CoreGraphics
 import CoreVideo
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import Foundation
 import RightClickProbePrivate
 import UniformTypeIdentifiers

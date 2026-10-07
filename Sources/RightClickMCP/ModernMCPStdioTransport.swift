@@ -1,6 +1,11 @@
 import Foundation
 import Logging
 import MCP
+#if os(Windows)
+typealias RuntimeStdioTransport = WindowsStdioTransport
+#else
+typealias RuntimeStdioTransport = StdioTransport
+#endif
 
 /// Compatibility layer for the modern MCP discovery flow used by ChatGPT.
 ///
@@ -17,7 +22,7 @@ import MCP
 actor ModernMCPStdioTransport: Transport {
     private static let modernProtocolVersion = "2026-07-28"
 
-    private let base: StdioTransport
+    private let base: RuntimeStdioTransport
 
     public nonisolated let logger: Logger
 
@@ -28,7 +33,7 @@ actor ModernMCPStdioTransport: Transport {
     /// need MCP 2026-07-28 completion metadata.
     private var pendingModernRequests: [String: String] = [:]
 
-    init(base: StdioTransport = StdioTransport()) {
+    init(base: RuntimeStdioTransport = RuntimeStdioTransport()) {
         self.base = base
         self.logger = base.logger
 

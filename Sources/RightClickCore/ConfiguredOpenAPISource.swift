@@ -95,17 +95,7 @@ public enum ConfiguredOpenAPIProviderStore {
             FileManager.default
                 .homeDirectoryForCurrentUser
     ) -> URL {
-        home
-            .appendingPathComponent(
-                "Library/Application Support/RIGHTCLICK",
-                isDirectory:
-                    true
-            )
-            .appendingPathComponent(
-                "providers.json",
-                isDirectory:
-                    false
-            )
+        RuntimePlatform.supportDirectory(home: home).appendingPathComponent("providers.json")
     }
 
     public static func read(

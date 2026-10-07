@@ -1,7 +1,15 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
+#if canImport(Darwin)
 import Darwin
+#endif
 import Foundation
+#if canImport(ImageIO)
 import ImageIO
+#endif
 
 public enum VerificationPredicateType: String, Codable, Sendable {
     case textEquals = "text_equals"
@@ -667,6 +675,7 @@ public enum OutcomeVerifier {
         .joined()
     }
 
+#if os(macOS)
     private static func hasXattr(
         path: String,
         key: String
@@ -706,7 +715,11 @@ public enum OutcomeVerifier {
 
         return nil
     }
+#else
+    private static func hasXattr(path: String, key: String) -> Bool? { nil }
+#endif
 
+#if canImport(ImageIO)
     private static func imageObservation(
         path: String
     ) -> (
@@ -884,4 +897,10 @@ public enum OutcomeVerifier {
             )
         )
     }
+#else
+    private static func imageObservation(path: String) -> (width: Int?, height: Int?, metadataValues: [String]?) {
+        (nil, nil, nil)
+    }
+#endif
+
 }

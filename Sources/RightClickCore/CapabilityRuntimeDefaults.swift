@@ -8,19 +8,11 @@ public enum CapabilityReflectorSourceDefaults {
     public static func all(
         startBrowsing: Bool = true
     ) -> [any CapabilityReflectorSource] {
-        var sources:
-            [any CapabilityReflectorSource] = [
-                ConfiguredOpenAPISource(),
-
-                BonjourOpenAPISource(
-                    startBrowsing:
-                        startBrowsing
-                ),
-                BonjourGraphQLSource(
-                    startBrowsing:
-                        startBrowsing
-                ),
-            ]
+        var sources: [any CapabilityReflectorSource] = [ConfiguredOpenAPISource()]
+#if os(macOS)
+        sources.append(BonjourOpenAPISource(startBrowsing: startBrowsing))
+        sources.append(BonjourGraphQLSource(startBrowsing: startBrowsing))
+#endif
 
         if let configuredArtifacts =
             ConfiguredCapabilityArtifactSource
@@ -42,7 +34,7 @@ public enum CapabilityReflectorSourceDefaults {
         }
 #endif
 
-#if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
+#if os(macOS) && canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
         sources.append(
             BonjourGRPCSource(
                 startBrowsing:

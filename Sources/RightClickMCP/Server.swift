@@ -1,13 +1,28 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
+#if canImport(Darwin)
 import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#elseif os(Windows)
+import ucrt
+#endif
 import Foundation
 import MCP
 import RightClickCore
 
 public enum RightClickMCPRuntime {
     public static func makeEngine(
-        startBrowsing: Bool = true
+        startBrowsing: Bool = true,
+        isolated: Bool = false
     ) -> CapabilityEngine {
+        if isolated {
+            let source = ConfiguredCapabilityArtifactSource.fromEnvironment()
+            return CapabilityEngine(reflectors: [], reflectorSources: source.map { [$0 as any CapabilityReflectorSource] } ?? [], experience: nil)
+        }
         var sources =
             CapabilityReflectorSourceDefaults
                 .all(
@@ -37,22 +52,37 @@ public enum RightClickMCPRuntime {
 public enum RightClickMCPMain {
     public static func run(_ args: [String]) -> Int {
         let http = args.contains("--http")
-        let port = UInt16(flag(args, "--port") ?? "") ?? 8765
+        var index = 0
+        var seen = Set<String>()
+        while index < args.count {
+            let option = args[index]
+            guard seen.insert(option).inserted else { return 2 }
+            if ["--http", "--isolated"].contains(option) { index += 1; continue }
+            guard ["--port", "--token"].contains(option), index + 1 < args.count,
+                  !args[index + 1].isEmpty else { return 2 }
+            index += 2
+        }
+        let rawPort = flag(args, "--port") ?? "8765"
+        guard let port = UInt16(rawPort), port != 0 else { return 2 }
         let token = flag(args, "--token") ?? ProcessInfo.processInfo.environment["RIGHTCLICK_MCP_TOKEN"]
         StartupLog.record(transport: http ? "http" : "stdio")
         let box = EngineBox(
-            RightClickMCPRuntime.makeEngine()
+            RightClickMCPRuntime.makeEngine(isolated: args.contains("--isolated"))
         )
         if http {
             guard let token, !token.isEmpty else {
                 fputs("HTTP MCP requires --token or RIGHTCLICK_MCP_TOKEN.\n", stderr)
                 return 2
             }
-            HTTPMCPServer(engine: box, port: port, token: token).run()
+#if os(macOS) || os(Linux)
+            return HTTPMCPServer(engine: box, port: port, token: token).run()
+#else
+            FileHandle.standardError.write(Data("HTTP listener is unavailable on this host; use stdio.\n".utf8))
+            return 2
+#endif
             return 0
         }
-        StdioMCPServer(engine: box).run()
-        return 0
+        return StdioMCPServer(engine: box).run()
     }
 
     private static func flag(_ args: [String], _ name: String) -> String? {
@@ -70,11 +100,7 @@ enum StartupLog {
         \(stamp) pid=\(runtime.pid) transport=\(runtime.transport) version=\(runtime.version) path=\(runtime.executablePath) realpath=\(runtime.executableRealPath) sha256=\(runtime.executableSHA256)
         """
 
-        let directory = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent(
-                "Library/Logs/RIGHTCLICK",
-                isDirectory: true
-            )
+        let directory = RuntimePlatform.logDirectory()
 
         let file = directory.appendingPathComponent("startup.log")
 
@@ -123,17 +149,24 @@ final class MainResultBox<T>: @unchecked Sendable {
 }
 
 final class StopFlag: @unchecked Sendable {
-    var stop = false
+    private let lock = NSLock()
+    private var value = false
+    var stop: Bool {
+        get { lock.lock(); defer { lock.unlock() }; return value }
+        set { lock.lock(); value = newValue; lock.unlock() }
+    }
 }
 
 final class EngineBox: @unchecked Sendable {
+    private let portableLock = NSLock()
     let engine: CapabilityEngine
     init(_ engine: CapabilityEngine) { self.engine = engine }
 
     func call<T>(_ body: @escaping (CapabilityEngine) throws -> T) throws -> T {
+#if os(macOS)
         // ShareKit creates NSWindows during perform(withItems:). DispatchQueue.main.sync
         // can run that block inline on the MCP worker, which AppKit then aborts.
-        if pthread_main_np() != 0 {
+        if Thread.isMainThread {
             return try body(engine)
         }
         let box = MainResultBox<T>()
@@ -142,6 +175,10 @@ final class EngineBox: @unchecked Sendable {
             box.finish(Result { try body(engine) })
         }
         return try box.wait()
+#else
+        portableLock.lock(); defer { portableLock.unlock() }
+        return try body(engine)
+#endif
     }
 }
 
@@ -149,21 +186,30 @@ final class StdioMCPServer {
     let engine: EngineBox
     init(engine: EngineBox) { self.engine = engine }
 
-    func run() {
+    func run() -> Int {
         let engine = self.engine
+        let completed = DispatchSemaphore(value: 0)
+        let result = MainResultBox<Int>()
         let stop = StopFlag()
         Task.detached {
             do {
                 try await Self.serve(engine)
+                result.finish(.success(0))
             } catch {
-                fputs("MCP server failed: \(error)\n", stderr)
+                FileHandle.standardError.write(Data("MCP server failed: \(error)\n".utf8))
+                result.finish(.success(1))
             }
             stop.stop = true
-            CFRunLoopStop(CFRunLoopGetMain())
+            completed.signal()
         }
+#if os(macOS)
         while !stop.stop {
             RunLoop.main.run(mode: .default, before: Date().addingTimeInterval(0.2))
         }
+#else
+        completed.wait()
+#endif
+        return (try? result.wait()) ?? 1
     }
 
     private static func serve(_ engine: EngineBox) async throws {
@@ -179,10 +225,12 @@ final class StdioMCPServer {
         )
         let transport = ModernMCPStdioTransport()
         try await server.start(transport: transport)
-        try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
+        await server.waitUntilCompleted()
+        await server.stop()
     }
 }
 
+#if os(macOS) || os(Linux)
 final class HTTPMCPServer {
     let engine: EngineBox
     let port: UInt16
@@ -194,20 +242,27 @@ final class HTTPMCPServer {
         self.token = token
     }
 
-    func run() {
-        let engine = self.engine
-        let port = self.port
-        let token = self.token
+    func run() -> Int {
+        let engine = self.engine; let port = self.port; let token = self.token
         let ready = DispatchSemaphore(value: 0)
+        let failure = MainResultBox<Int>()
+        let stopped = StopFlag()
         Task.detached {
             do {
                 try await Self.serve(engine: engine, port: port, token: token, ready: ready)
+                failure.finish(.success(0))
             } catch {
-                fputs("HTTP MCP failed: \(error)\n", stderr)
-                ready.signal()
+                FileHandle.standardError.write(Data("HTTP MCP failed: \(error)\n".utf8))
+                failure.finish(.success(1))
             }
+            stopped.stop = true
         }
-        RunLoop.main.run()
+#if os(macOS)
+        while !stopped.stop {
+            RunLoop.main.run(mode: .default, before: Date().addingTimeInterval(0.2))
+        }
+#endif
+        return (try? failure.wait()) ?? 1
     }
 
     private static func serve(engine: EngineBox, port: UInt16, token: String, ready: DispatchSemaphore) async throws {
@@ -219,6 +274,7 @@ final class HTTPMCPServer {
         fputs("RIGHTCLICK HTTP MCP listening on http://127.0.0.1:\(port)/mcp\n", stderr)
         ready.signal()
         try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
+        withExtendedLifetime(listener) {}
     }
 }
 
@@ -275,6 +331,8 @@ private actor HTTPRequestDispatcher {
         ])
     }
 }
+
+#endif
 
 private func registerTools(
     on server: Server,

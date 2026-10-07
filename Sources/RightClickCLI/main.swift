@@ -26,6 +26,8 @@ struct CLI {
         case "help", "--help", "-h":
             print(usage())
             return 0
+        case "connect", "config", "platform":
+            return PortableCommands.run(command, arguments: rest)
         case "doctor":
             return emit(CapabilityRuntimeDefaults.makeEngine().doctor(), json: json)
         case "inspect":

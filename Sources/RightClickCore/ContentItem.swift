@@ -1,5 +1,7 @@
 import Foundation
+#if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers
+#endif
 
 public struct ContentItem: Codable, Sendable, Equatable {
     public var kind: String
@@ -34,10 +36,12 @@ public struct ContentItem: Codable, Sendable, Equatable {
         self.isDirectory = isDirectory
     }
 
+#if canImport(UniformTypeIdentifiers)
     public var utType: UTType? {
         guard let typeIdentifier else { return nil }
         return UTType(typeIdentifier)
     }
+#endif
 }
 
 public enum ContentParser {
@@ -51,8 +55,8 @@ public enum ContentParser {
                 kind: "web_url",
                 display: web.absoluteString,
                 url: web.absoluteString,
-                typeIdentifier: UTType.url.identifier,
-                typeDescription: UTType.url.localizedDescription
+                typeIdentifier: "public.url",
+                typeDescription: portableURLDescription
             )
         }
         let expanded = (trimmed as NSString).expandingTildeInPath
@@ -68,13 +72,14 @@ public enum ContentParser {
             kind: "text",
             display: trimmed,
             text: trimmed,
-            typeIdentifier: UTType.plainText.identifier,
-            typeDescription: UTType.plainText.localizedDescription,
+            typeIdentifier: "public.plain-text",
+            typeDescription: portableTextDescription,
             byteCount: trimmed.lengthOfBytes(using: .utf8)
         )
     }
 
     public static func fileItem(url: URL, isDirectory: Bool) -> ContentItem {
+#if canImport(UniformTypeIdentifiers)
         let values = try? url.resourceValues(forKeys: [
             .contentTypeKey, .fileSizeKey, .localizedTypeDescriptionKey, .isDirectoryKey,
         ])
@@ -106,13 +111,37 @@ public enum ContentParser {
             byteCount: values?.fileSize,
             isDirectory: isDirectory || resolved.conforms(to: .folder)
         )
+    #else
+        let values = try? url.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey])
+        let directory = isDirectory || values?.isDirectory == true
+        return ContentItem(kind: directory ? "directory" : "file", display: url.path,
+            path: url.path, typeIdentifier: directory ? "public.folder" : "public.data",
+            typeDescription: directory ? "Directory" : "File", byteCount: values?.fileSize,
+            isDirectory: directory)
+#endif
     }
 
+#if canImport(UniformTypeIdentifiers)
     public static func conforms(_ item: ContentItem, to other: UTType) -> Bool {
         guard let type = item.utType else { return false }
         return type.conforms(to: other) || type.identifier == other.identifier
     }
+#endif
 
+    private static var portableURLDescription: String? {
+#if canImport(UniformTypeIdentifiers)
+        UTType.url.localizedDescription
+#else
+        "URL"
+#endif
+    }
+    private static var portableTextDescription: String? {
+#if canImport(UniformTypeIdentifiers)
+        UTType.plainText.localizedDescription
+#else
+        "Plain text"
+#endif
+    }
     private static func webURL(_ raw: String) -> URL? {
         guard let url = URL(string: raw), let scheme = url.scheme?.lowercased(), scheme == "http" || scheme == "https" else {
             return nil

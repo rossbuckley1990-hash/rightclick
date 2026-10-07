@@ -1,0 +1,51 @@
+name: Portable runtime
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: portable-runtime-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Toolchain
+        run: swift --version
+      - name: Build the complete portable executable
+        run: swift build --product rightclick --force-resolved-versions --jobs 2
+      - name: Existing portable and new host-boundary regressions
+        run: swift test --force-resolved-versions --jobs 2
+      - name: Real stdio and authenticated HTTP acceptance
+        run: python3 scripts/acceptance-portable.py .build/debug/rightclick --http
+  macos-portable-acceptance:
+    runs-on: macos-15
+    timeout-minutes: 30
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - run: swift build --product rightclick --force-resolved-versions --jobs 2
+      - run: swift test --force-resolved-versions --jobs 2 --filter RuntimePortabilityTests
+      - name: Same offline protocol and provider proof on macOS
+        run: python3 scripts/acceptance-portable.py .build/debug/rightclick --http
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+        with:
+          swift-version: swift-6.2.1-release
+          swift-build: 6.2.1-RELEASE
+          build_arch: amd64
+      - run: swift build --product rightclick --force-resolved-versions --jobs 2
+      - run: swift test --force-resolved-versions --jobs 2 --filter RuntimePortabilityTests
+      - name: Native Windows stdio and real HTTP provider acceptance
+        run: python scripts/acceptance-portable.py .build/debug/rightclick.exe
+
