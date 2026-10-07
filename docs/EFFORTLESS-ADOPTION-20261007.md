@@ -26,6 +26,8 @@ A later configuration edit belongs to that client and is never overwritten by
 rollback. Native commands that mutate and then fail are re-inspected before
 conditional cleanup; conflicting later registrations are preserved. Rollback
 status distinguishes restoration from residual unknown changes.
+The POSIX client configuration backend still uses guarded pathname operations;
+parent-directory moves between checks need further hardening and acceptance.
 
     rightclick doctor --fix --dry-run --json
     rightclick doctor --fix --json

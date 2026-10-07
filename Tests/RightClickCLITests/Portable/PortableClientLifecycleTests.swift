@@ -175,6 +175,27 @@ final class PortableClientLifecycleTests: XCTestCase {
         XCTAssertEqual(try Data(contentsOf: fixture.newBinary), upgraded)
     }
 
+    func testOwnershipPostconditionConflictPreservesNewerLedgerAndReportsUnknown() throws {
+        let fixture = try Fixture(); defer { fixture.cleanup() }
+        _ = try RightClickLocalLifecycle.apply([fixture.prepared()], home: fixture.home)
+        let before = try Data(contentsOf: fixture.configuration)
+        let ownershipFile = RightClickClientOwnershipStore.file(home: fixture.home)
+        let prior = try XCTUnwrap(RightClickClientOwnershipStore.read(home: fixture.home).clients.first)
+        let prepared = try RightClickLocalLifecycle.repairPlan(record: prior, home: fixture.home,
+            executable: fixture.newBinary.path)
+        let newer = Data(#"{"schemaVersion":1,"clients":[],"editedAfterSetup":true}"#.utf8)
+        XCTAssertThrowsError(try RightClickLocalLifecycle.apply([prepared], home: fixture.home,
+            afterOwnershipReplace: { try newer.write(to: ownershipFile) },
+            verify: { XCTFail("A failed ownership postcondition proceeded to the local probe") })) { error in
+            let failure = error as? RightClickLocalLifecycle.ValidationFailure
+            XCTAssertEqual(failure?.rollbackStatus, "ROLLBACK_FAILED")
+            XCTAssertEqual(failure?.configurationChanged, "UNKNOWN")
+            XCTAssertEqual(failure?.rollbackErrors, ["ownership record"])
+        }
+        XCTAssertEqual(try Data(contentsOf: fixture.configuration), before)
+        XCTAssertEqual(try Data(contentsOf: ownershipFile), newer)
+    }
+
     func testRepairDryRunDoesNotChangeOwnershipOrConfigurationOrProbe() throws {
         let fixture = try Fixture(); defer { fixture.cleanup() }
         _ = try RightClickLocalLifecycle.apply([fixture.prepared()], home: fixture.home)

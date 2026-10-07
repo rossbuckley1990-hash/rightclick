@@ -123,7 +123,8 @@ enum RightClickLocalLifecycle {
     /// Client registrations and their ownership record form one transaction.
     /// A post-write local transport probe is independent of client connection.
     static func apply(_ prepared: [RightClickSetupAllTransaction.PreparedClient], home: URL,
-                      disconnect: Bool = false, verify: () throws -> Void = {}) throws
+                      disconnect: Bool = false, afterOwnershipReplace: (() throws -> Void)? = nil,
+                      verify: () throws -> Void = {}) throws
         -> [RightClickSetupAllTransaction.AppliedClient] {
         let ownership = try RightClickClientOwnershipStore.plan(home: home, prepared: prepared,
                                                               disconnect: disconnect)
@@ -136,7 +137,7 @@ enum RightClickLocalLifecycle {
         let applied = try RightClickSetupAllTransaction.apply(prepared)
         var recorded: RightClickJSONConfigBackend.Applied?
         do {
-            recorded = try RightClickJSONConfigBackend.apply(ownership)
+            recorded = try RightClickJSONConfigBackend.apply(ownership, afterReplace: afterOwnershipReplace)
             try verify()
             for record in expectedExecutables {
                 guard try RightClickClientOwnershipStore.digest(record.command) == record.executableSHA256 else {
@@ -145,7 +146,8 @@ enum RightClickLocalLifecycle {
             }
             return applied
         } catch {
-            var failures: [String] = []
+            let ownershipFailure = recorded == nil ? error as? RightClickJSONConfigBackend.MutationFailure : nil
+            var failures: [String] = ownershipFailure?.rollbackStatus == "ROLLBACK_FAILED" ? ["ownership record"] : []
             if let recorded {
                 do { try RightClickJSONConfigBackend.rollbackTransaction(ownership, applied: recorded) }
                 catch { failures.append("ownership record") }
@@ -154,11 +156,12 @@ enum RightClickLocalLifecycle {
                 do { try RightClickOnboardingEngine.rollback(client.prepared.plan, applied: client.result) }
                 catch { failures.append(client.prepared.plan.clientID) }
             }
-            let rollbackRequired = recorded != nil || applied.contains { $0.prepared.plan.mutation.changed }
+            let rollbackRequired = recorded != nil || ownershipFailure?.rollbackStatus == "RESTORED"
+                || applied.contains { $0.prepared.plan.mutation.changed }
             throw ValidationFailure(underlying: error,
                 rollbackStatus: failures.isEmpty ? (rollbackRequired ? "RESTORED" : "NOT_REQUIRED") : "ROLLBACK_FAILED",
                 rollbackErrors: failures,
-                configurationChanged: failures.contains(where: { $0 != "ownership record" }) ? "UNKNOWN" : "false")
+                configurationChanged: failures.isEmpty ? "false" : "UNKNOWN")
         }
     }
 

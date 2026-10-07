@@ -33,8 +33,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json")
             self.send_header("Content-Length", str(16_777_217))
             self.end_headers()
-            # The bounded delegate must reject declared size at the headers,
-            # before this stalled body can consume its eight-second deadline.
+            # CFNetwork defers a headers-only response callback until its first
+            # body byte or EOF. Flush one byte to deliver headers, then stall the
+            # remaining declared body. The size cap must reject before completion.
+            try:
+                self.wfile.write(b"{")
+                self.wfile.flush()
+            except (BrokenPipeError, ConnectionResetError):
+                return
             time.sleep(2)
             return
         body = json.dumps(schema if request.get("operationName") == "RightClickIntrospection"

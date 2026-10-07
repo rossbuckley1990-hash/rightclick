@@ -8,8 +8,17 @@ import Glibc
 @testable import RightClickCore
 
 final class ConnectedProviderStoreTests: XCTestCase {
-    private func file() -> URL {
-        FileManager.default.temporaryDirectory.resolvingSymlinksInPath()
+    private func file() throws -> URL {
+#if canImport(Darwin) || canImport(Glibc)
+        guard let path = realpath(FileManager.default.temporaryDirectory.path, nil) else {
+            throw RightClickError("The fixture temporary directory could not be canonicalized.")
+        }
+        defer { free(path) }
+        let parent = URL(fileURLWithPath: String(cString: path), isDirectory: true)
+#else
+        let parent = FileManager.default.temporaryDirectory
+#endif
+        return parent
             .appendingPathComponent("connected-store-" + UUID().uuidString, isDirectory: true)
             .appendingPathComponent("providers.json")
     }
@@ -41,8 +50,34 @@ final class ConnectedProviderStoreTests: XCTestCase {
     }
 
 #if canImport(Darwin) || canImport(Glibc)
+    func testDefaultHomeKeepsCanonicalOperatorPathAndExplicitAliasStillFailsClosed() throws {
+        let home = try file().deletingLastPathComponent()
+        try FileManager.default.createDirectory(at: home, withIntermediateDirectories: true,
+            attributes: [.posixPermissions: 0o700])
+        defer { try? FileManager.default.removeItem(at: home) }
+        let environment = ["HOME": home.path]
+        let destination = ConfiguredArtifactProviderStore.defaultFile(environment: environment)
+        XCTAssertTrue(destination.path.hasPrefix(home.path + "/"),
+            "Default registry construction must retain the canonical operator HOME spelling.")
+        try ConfiguredArtifactProviderStore.upsert(provider(), in: destination)
+        XCTAssertEqual(try ConfiguredArtifactProviderStore.read(from: destination), [provider()])
+        let before = try Data(contentsOf: destination)
+
+#if os(macOS)
+        XCTAssertTrue(home.path.hasPrefix("/private/"), "Native temporary fixture must have a real canonical path.")
+        let aliasHome = URL(fileURLWithPath: String(home.path.dropFirst("/private".count)), isDirectory: true)
+        let aliasDestination = ConfiguredArtifactProviderStore.defaultFile(home: aliasHome, environment: environment)
+        XCTAssertTrue(aliasDestination.path.hasPrefix(aliasHome.path + "/"), "An explicit path must never be silently rewritten.")
+        XCTAssertThrowsError(try ConfiguredArtifactProviderStore.read(from: aliasDestination))
+        XCTAssertThrowsError(try ConfiguredArtifactProviderStore.upsert(provider("unexpected"), in: aliasDestination))
+        XCTAssertEqual(try Data(contentsOf: destination), before)
+#else
+        _ = before
+#endif
+    }
+
     func testProtectedRoundTripAndRemoval() throws {
-        let destination = file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
+        let destination = try file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
         XCTAssertEqual(try ConfiguredArtifactProviderStore.upsert(provider(), in: destination), [provider()])
         XCTAssertEqual(try ConfiguredArtifactProviderStore.read(from: destination), [provider()])
         let directoryAttributes = try FileManager.default.attributesOfItem(atPath: destination.deletingLastPathComponent().path)
@@ -54,7 +89,7 @@ final class ConnectedProviderStoreTests: XCTestCase {
     }
 
     func testSymlinkAndHardlinkRegistryRefusedWithoutChangingTarget() throws {
-        let destination = file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
+        let destination = try file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
         try ConfiguredArtifactProviderStore.upsert(provider(), in: destination)
         let original = try Data(contentsOf: destination)
         let target = destination.deletingLastPathComponent().appendingPathComponent("target.json")
@@ -70,7 +105,7 @@ final class ConnectedProviderStoreTests: XCTestCase {
     }
 
     func testLinkedDirectoryAndPublicFileRefused() throws {
-        let destination = file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
+        let destination = try file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
         try ConfiguredArtifactProviderStore.upsert(provider(), in: destination)
         let linked = destination.deletingLastPathComponent().appendingPathComponent("linked")
         try FileManager.default.createSymbolicLink(at: linked, withDestinationURL: destination.deletingLastPathComponent())
@@ -81,7 +116,7 @@ final class ConnectedProviderStoreTests: XCTestCase {
     }
 
     func testExistingMalformedRegistryIsNeverOverwritten() throws {
-        let destination = file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
+        let destination = try file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
         try ConfiguredArtifactProviderStore.upsert(provider(), in: destination)
         let original = Data("invalid-secret".utf8)
         try original.write(to: destination)
@@ -90,7 +125,7 @@ final class ConnectedProviderStoreTests: XCTestCase {
     }
 
     func testConcurrentTransactionFailsWithoutPartialPublication() throws {
-        let destination = file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
+        let destination = try file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
         try ConfiguredArtifactProviderStore.upsert(provider(), in: destination)
         let before = try Data(contentsOf: destination)
         let lockedDirectory = open(destination.deletingLastPathComponent().path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC)
@@ -103,7 +138,7 @@ final class ConnectedProviderStoreTests: XCTestCase {
     }
 
     func testSourceReloadsAdditionsAndWithdrawsRemovalAndMalformedConfiguration() throws {
-        let destination = file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
+        let destination = try file(); defer { try? FileManager.default.removeItem(at: destination.deletingLastPathComponent()) }
         let source = ConfiguredArtifactProviderSource(configurationFile: destination, registry: CapabilityArtifactResolverRegistry(resolvers: [Resolver()]))
         XCTAssertEqual(source.reflectors().map(\.id), [])
         try ConfiguredArtifactProviderStore.upsert(provider(), in: destination)

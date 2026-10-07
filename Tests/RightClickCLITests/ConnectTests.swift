@@ -1,5 +1,10 @@
 import Foundation
 import XCTest
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 import RightClickCore
 @testable import RightClickCLI
 
@@ -31,7 +36,18 @@ final class ConnectTests: XCTestCase {
         """.utf8)
 
     private func file() throws -> URL {
-        FileManager.default.temporaryDirectory.resolvingSymlinksInPath()
+#if canImport(Darwin) || canImport(Glibc)
+        guard let path = realpath(FileManager.default.temporaryDirectory.path, nil) else {
+            throw RightClickError("The fixture temporary directory could not be canonicalized.")
+        }
+        defer { free(path) }
+        // Foundation's symlink and standardization APIs can reintroduce /var
+        // or /tmp aliases on macOS. Retain the native canonical lexical path.
+        let parent = URL(fileURLWithPath: String(cString: path), isDirectory: true)
+#else
+        let parent = FileManager.default.temporaryDirectory
+#endif
+        return parent
             .appendingPathComponent("connect-tests-" + UUID().uuidString, isDirectory: true)
             .appendingPathComponent("providers.json")
     }

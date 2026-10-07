@@ -80,10 +80,10 @@ enum RightClickNativeRegistrationBackend {
         let configurationChanged: String
         var description: String {
             if rollbackStatus == "ROLLBACK_FAILED" {
-                return "Native client command failed; the current registration could not safely be restored. "
+                return "Native registration failed; the current registration could not safely be restored. "
                     + "Any conflicting newer registration was preserved: \(underlying)"
             }
-            return "Native client command failed; the original registration state was verified or restored: \(underlying)"
+            return "Native registration failed; the original registration state was verified or restored: \(underlying)"
         }
     }
 

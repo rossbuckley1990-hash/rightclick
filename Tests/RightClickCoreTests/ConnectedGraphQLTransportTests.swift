@@ -3,6 +3,11 @@ import Foundation
 import FoundationNetworking
 #endif
 import XCTest
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 @testable import RightClickCore
 
 final class ConnectedGraphQLTransportTests: XCTestCase {
@@ -10,8 +15,12 @@ final class ConnectedGraphQLTransportTests: XCTestCase {
 #if os(Windows)
         throw XCTSkip("Native Windows protected connection registry acceptance remains required.")
 #else
-        let directory = FileManager.default.temporaryDirectory.resolvingSymlinksInPath()
-            .appendingPathComponent("connected-graphql-" + UUID().uuidString)
+        guard let path = realpath(FileManager.default.temporaryDirectory.path, nil) else {
+            throw RightClickError("The fixture temporary directory could not be canonicalized.")
+        }
+        defer { free(path) }
+        let directory = URL(fileURLWithPath: String(cString: path), isDirectory: true)
+            .appendingPathComponent("connected-graphql-" + UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directory) }
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()

@@ -15,8 +15,19 @@ public enum ConfiguredArtifactProviderStore {
     public static let maximumBytes = 262_144
     public static let supportedKinds: Set<String> = ["openapi", "graphql", "grpc", "mcp"]
 
-    public static func defaultFile(home: URL = FileManager.default.homeDirectoryForCurrentUser) -> URL {
-        RuntimePlatform.supportDirectory(home: home).appendingPathComponent("Connections", isDirectory: true)
+    public static func defaultFile(home: URL? = nil,
+                                   environment: [String: String] = ProcessInfo.processInfo.environment) -> URL {
+        let selectedHome: URL
+        if let home { selectedHome = home }
+        else if let raw = environment["HOME"], RuntimePlatform.isAbsolutePath(raw) {
+            // FileManager's home URL may replace a canonical /private prefix
+            // with the /tmp or /var symlink alias on macOS. Retain the operator's
+            // lexical HOME instead. The pinned store still refuses every link;
+            // explicit home/file arguments are never resolved or rewritten.
+            selectedHome = URL(fileURLWithPath: raw, isDirectory: true)
+        } else { selectedHome = FileManager.default.homeDirectoryForCurrentUser }
+        return RuntimePlatform.supportDirectory(home: selectedHome, environment: environment)
+            .appendingPathComponent("Connections", isDirectory: true)
             .appendingPathComponent("capability-providers.json")
     }
 
