@@ -37,10 +37,10 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
             let process = Process(); process.executableURL = try NativeHTTPFixture.python()
             process.arguments = [root.appendingPathComponent("scripts/rcir-http-json-fixture.py").path, directory.path, role]
             process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
-            try process.run(); processes.append(process)
+            try NativeHTTPFixture.runFixture(process); processes.append(process)
             let port = directory.appendingPathComponent(role + "-port")
-            for _ in 0..<300 { if FileManager.default.fileExists(atPath: port.path) { break }; Thread.sleep(forTimeInterval: 0.01) }
-            let address = URL(string: "http://127.0.0.1:" + (try String(contentsOf: port, encoding: .utf8)))!
+            let number = try NativeHTTPFixture.waitForPort(port, process: process)
+            let address = try XCTUnwrap(URL(string: "http://127.0.0.1:\(number)"))
             if role == "provider" { provider = address }; if role == "observer" { observer = address }
         }
         let schema: [String: Any] = ["type": "object", "additionalProperties": false, "required": ["id", "value"],
@@ -129,7 +129,7 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
         XCTAssertFalse((HTTPCookieStorage.shared.cookies ?? []).contains { $0.name == "rightclick-injected" })
     }
     func testDefaultCredentialStorageCannotSupplyObserverAuthority() throws {
-        let space = URLProtectionSpace(host: observer.host!, port: observer.port!, protocol: "http",
+        let space = URLProtectionSpace(host: try XCTUnwrap(observer.host), port: try XCTUnwrap(observer.port), protocol: "http",
             realm: "rightclick-observer-fixture", authenticationMethod: NSURLAuthenticationMethodHTTPBasic)
         let credential = URLCredential(user: "ambient-unrelated", password: "not-authorized", persistence: .forSession)
         URLCredentialStorage.shared.setDefaultCredential(credential, for: space)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Actual loopback HTTP boundaries for native bounded transport tests."""
 import http.server
+from fixture_http import LoopbackThreadingHTTPServer
 import pathlib
 import sys
 import time
@@ -30,5 +31,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_response(status); self.send_header("Content-Length", str(len(body))); self.end_headers()
         try: self.wfile.write(body)
         except (BrokenPipeError, ConnectionResetError): pass
-server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
-(root / "port").write_text(str(server.server_address[1])); server.serve_forever()
+server = LoopbackThreadingHTTPServer(("127.0.0.1", 0), Handler)
+pending = root / "port.tmp"
+pending.write_text(str(server.server_address[1]))
+pending.replace(root / "port")
+server.serve_forever()

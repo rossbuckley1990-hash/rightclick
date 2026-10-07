@@ -18,10 +18,10 @@ final class NativeBoundedHTTPTests: XCTestCase {
         process = Process(); process.executableURL = try NativeHTTPFixture.python()
         process.arguments = [root.appendingPathComponent("scripts/native-http-transport-fixture.py").path, directory.path]
         process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
-        try process.run()
+        try NativeHTTPFixture.runFixture(process)
         let port = directory.appendingPathComponent("port")
-        for _ in 0..<300 { if FileManager.default.fileExists(atPath: port.path) { break }; Thread.sleep(forTimeInterval: 0.01) }
-        origin = try XCTUnwrap(URL(string: "http://127.0.0.1:" + String(contentsOf: port, encoding: .utf8)))
+        let number = try NativeHTTPFixture.waitForPort(port, process: process)
+        origin = try XCTUnwrap(URL(string: "http://127.0.0.1:\(number)"))
     }
     override func tearDownWithError() throws {
         if process?.isRunning == true { process.terminate(); process.waitUntilExit() }

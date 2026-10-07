@@ -5,6 +5,7 @@ Fixture tokens stay in protected disposable files, never logs or tool payloads.
 import base64
 import hashlib
 import http.server
+from fixture_http import LoopbackThreadingHTTPServer
 import json
 import pathlib
 import sys
@@ -80,5 +81,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
         response = response_text.encode(); self.send_response(200); self.send_header("Content-Type", "application/json")
         self.send_header("Set-Cookie", "rightclick-injected=must-not-persist; Path=/")
         self.send_header("Content-Length", str(len(response))); self.end_headers(); self.wfile.write(response)
-server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
-(root / (role + "-port")).write_text(str(server.server_address[1])); server.serve_forever()
+server = LoopbackThreadingHTTPServer(("127.0.0.1", 0), Handler)
+marker = root / (role + "-port")
+pending = root / (role + "-port.tmp")
+pending.write_text(str(server.server_address[1]))
+pending.replace(marker)
+server.serve_forever()

@@ -38,10 +38,10 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
             let process = Process(); process.executableURL = try NativeHTTPFixture.python()
             process.arguments = [root.appendingPathComponent("scripts/rcir-http-json-fixture.py").path, directory.path, role]
             process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
-            try process.run(); processes.append(process)
+            try NativeHTTPFixture.runFixture(process); processes.append(process)
             let port = directory.appendingPathComponent(role + "-port")
-            for _ in 0..<300 where !FileManager.default.fileExists(atPath: port.path) { Thread.sleep(forTimeInterval: 0.01) }
-            let address = URL(string: "http://127.0.0.1:" + (try String(contentsOf: port, encoding: .utf8)))!
+            let number = try NativeHTTPFixture.waitForPort(port, process: process)
+            let address = try XCTUnwrap(URL(string: "http://127.0.0.1:\(number)"))
             if role == "provider" { provider = address } else { observer = address }
         }
         let schema: [String: Any] = ["type": "object", "additionalProperties": false, "required": ["id", "value"],

@@ -6,6 +6,108 @@ import RightClickHostFiles
 /// This chooses an installed interpreter and protects fixture references using
 /// the production host-file primitive; it does not fabricate runtime outcomes.
 enum NativeHTTPFixture {
+    private static let captureLock = NSLock()
+    private static var captures: [ObjectIdentifier: StartupStderr] = [:]
+
+    private final class StartupStderr: @unchecked Sendable {
+        let pipe = Pipe()
+        let directory: URL
+        private let lock = NSLock()
+        private var prefix = Data()
+        private var totalBytes = 0
+        private var retain = false
+
+        init() throws {
+            directory = FileManager.default.temporaryDirectory.appendingPathComponent("rightclick-native-fixture-stderr-" + UUID().uuidString)
+            try NativeHTTPFixture.createPrivateDirectory(directory)
+            pipe.fileHandleForReading.readabilityHandler = { [self] handle in
+                let bytes = handle.availableData
+                lock.lock(); defer { lock.unlock() }
+                totalBytes += bytes.count
+                prefix.append(bytes.prefix(max(0, 65_536 - prefix.count)))
+                if retain { persist() }
+                if bytes.isEmpty { handle.readabilityHandler = nil }
+            }
+        }
+        // Called with the lock held. Only owner-protected diagnostic files are
+        // written; neither stderr, fixture arguments nor its path enters errors.
+        private func persist() {
+            let file = directory.appendingPathComponent("stderr.private")
+            if FileManager.default.fileExists(atPath: file.path) {
+                try? NativeHTTPFixture.replacePrivate(prefix, at: file)
+            } else { try? NativeHTTPFixture.writePrivate(prefix, to: file) }
+        }
+        func requestRetention() {
+            lock.lock(); defer { lock.unlock() }
+            if !FileManager.default.fileExists(atPath: directory.path) {
+                try? NativeHTTPFixture.createPrivateDirectory(directory)
+            }
+            retain = true; persist()
+        }
+        func complete() {
+            lock.lock(); defer { lock.unlock() }
+            if retain { persist() }
+            else { try? FileManager.default.removeItem(at: directory) }
+        }
+        func closeParentWriter() { try? pipe.fileHandleForWriting.close() }
+    }
+
+    /// Drain stderr continuously into a bounded prefix so a failing child cannot
+    /// block startup. Keep it privately only if readiness fails; never print it.
+    static func captureStartupStderr(_ process: Process) throws {
+        let capture = try StartupStderr()
+        captureLock.lock(); captures[ObjectIdentifier(process)] = capture; captureLock.unlock()
+        process.standardError = capture.pipe
+        process.terminationHandler = { _ in capture.complete() }
+    }
+
+    static func runFixture(_ process: Process) throws {
+        try captureStartupStderr(process)
+        do {
+            try process.run()
+            captureLock.lock(); let capture = captures[ObjectIdentifier(process)]; captureLock.unlock()
+            capture?.closeParentWriter()
+        }
+        catch {
+            captureLock.lock(); let capture = captures.removeValue(forKey: ObjectIdentifier(process)); captureLock.unlock()
+            capture?.requestRetention()
+            capture?.closeParentWriter()
+            throw error
+        }
+    }
+
+    enum ReadinessError: Error {
+        case exitedBeforeReadiness
+        case invalidPortBeforeDeadline
+    }
+    /// A marker's existence is not readiness: a writer can create an empty
+    /// file before completing its bytes. Bound both time and input size, and
+    /// return only a decimal TCP port; never construct an incomplete URL.
+    static func waitForPort(_ file: URL, process: Process, timeout: TimeInterval = 3) throws -> UInt16 {
+        var ready = false
+        defer {
+            captureLock.lock(); let capture = captures.removeValue(forKey: ObjectIdentifier(process)); captureLock.unlock()
+            if !ready { capture?.requestRetention() }
+        }
+        guard timeout > 0, timeout <= 3 else { throw ReadinessError.invalidPortBeforeDeadline }
+        let deadline = ProcessInfo.processInfo.systemUptime + timeout
+        while ProcessInfo.processInfo.systemUptime < deadline {
+            guard process.isRunning else { throw ReadinessError.exitedBeforeReadiness }
+            if let handle = try? FileHandle(forReadingFrom: file) {
+                defer { try? handle.close() }
+                if let bytes = try? handle.read(upToCount: 7) {
+                    let digits = bytes.last == 10 ? bytes.dropLast() : bytes[...]
+                    if !digits.isEmpty, digits.count <= 5,
+                       digits.allSatisfy({ (48...57).contains($0) }),
+                       let port = UInt16(String(decoding: digits, as: UTF8.self)), port > 0 {
+                        ready = true; return port
+                    }
+                }
+            }
+            Thread.sleep(forTimeInterval: min(0.01, max(0, deadline - ProcessInfo.processInfo.systemUptime)))
+        }
+        throw ReadinessError.invalidPortBeforeDeadline
+    }
     static func createPrivateDirectory(_ directory: URL) throws {
 #if os(Windows)
         guard directory.path.withCString({ rc_host_create_private_directory($0) }) == 0 else {

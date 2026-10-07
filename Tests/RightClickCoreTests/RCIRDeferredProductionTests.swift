@@ -14,11 +14,11 @@ final class RCIRDeferredProductionTests: XCTestCase {
         let process = Process(); process.executableURL = try NativeHTTPFixture.python()
         process.arguments = [root.appendingPathComponent("scripts/a2a-proof-agent.py").path, directory.path, "--hold-until-file"]
         process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
-        try process.run()
+        try NativeHTTPFixture.runFixture(process)
         defer { process.terminate(); process.waitUntilExit(); try? FileManager.default.removeItem(at: directory) }
         let portFile = directory.appendingPathComponent("port")
-        for _ in 0..<300 where !FileManager.default.fileExists(atPath: portFile.path) { Thread.sleep(forTimeInterval: 0.01) }
-        let base = URL(string: "http://127.0.0.1:" + (try String(contentsOf: portFile, encoding: .utf8)))!
+        let number = try NativeHTTPFixture.waitForPort(portFile, process: process)
+        let base = try XCTUnwrap(URL(string: "http://127.0.0.1:\(number)"))
         let capability = Capability(id: "deferred-proof", title: "Remote proof", source: .system,
             reflectorID: "deferred-proof", safety: .localReversible, invocation: .direct,
             supportLevel: .publicSupported, requiresConfirmation: false,

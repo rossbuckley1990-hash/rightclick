@@ -2,6 +2,7 @@
 """Exercise the same seven operations and a real reflected provider on every OS."""
 import hashlib
 import http.server
+from fixture_http import LoopbackThreadingHTTPServer
 import json
 import os
 import pathlib
@@ -38,7 +39,7 @@ class Provider(http.server.BaseHTTPRequestHandler):
         effects.append(value)
         self.reply(value)
 
-provider = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Provider)
+provider = LoopbackThreadingHTTPServer(("127.0.0.1", 0), Provider)
 threading.Thread(target=provider.serve_forever, daemon=True).start()
 base = "http://127.0.0.1:" + str(provider.server_port)
 
