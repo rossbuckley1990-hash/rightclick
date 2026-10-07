@@ -73,7 +73,7 @@ test	Run swift test --force-resolved-versions	2026-10-07T08:37:15.3680300Z 295 |
 test	Run swift test --force-resolved-versions	2026-10-07T08:37:15.3780530Z     |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
 test	Run swift test --force-resolved-versions	2026-10-07T08:37:15.3881050Z 296 |         } catch {
 test	Run swift test --force-resolved-versions	2026-10-07T08:37:15.4086990Z 297 |             return .init(content: [.text(String(describing: error))], isError: true)
-test	Run swift test --force-resolved-versions	2026-10-07T08:37:15.4088020Z 
+test	Run swift test --force-resolved-versions	2026-10-07T08:37:15.4088020Z
 test	Run swift test --force-resolved-versions	2026-10-07T08:37:15.4191150Z /Users/runner/work/rightclick/rightclick/Sources/RightClickMCP/Server.swift:297:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
 test	Run swift test --force-resolved-versions	2026-10-07T08:37:15.4324480Z 295 |             return .init(content: [.text(text)], isError: false)
 test	Run swift test --force-resolved-versions	2026-10-07T08:37:15.4428750Z 296 |         } catch {
@@ -139,10 +139,10 @@ macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2728440
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2728850Z     |               `- error: invalid redeclaration of 'CapabilityContract'
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2729630Z 278 |     public static let version = 1
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2729900Z 279 |     public let capabilityID: String
-macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2730140Z 
+macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2730140Z
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2730660Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/CapabilityABIAdapter.swift:4:18: error: 'CapabilityContract' is ambiguous for type lookup in this context
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2731390Z  2 | import Foundation
-macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2731590Z  3 | 
+macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2731590Z  3 |
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2731780Z  4 | public extension CapabilityContract {
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2732630Z    |                  `- error: 'CapabilityContract' is ambiguous for type lookup in this context
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2733130Z  5 |     /// Content fingerprint only: not a signature, approval token or attestation.
@@ -151,7 +151,7 @@ macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2738350
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2738900Z  5 | /// Passed through the existing actionId field; old runtimes fail unavailable.
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2739390Z  6 | public enum CapabilityContract {
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2739740Z    |             `- note: found this candidate
-macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2740520Z 
+macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2740520Z
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2741050Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/CapabilityABIAdapter.swift:17:65: error: 'CapabilityContract' is ambiguous for type lookup in this context
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2741870Z 15 |     /// Nil schemas mean unknown and cannot authorise an invocation.
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2742880Z 16 |     func abiContract(arguments: CapabilitySchema? = nil,
@@ -171,10 +171,10 @@ macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2762940
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2763880Z     |               `- error: invalid redeclaration of 'CapabilityContract'
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2764660Z 278 |     public static let version = 1
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2782760Z 279 |     public let capabilityID: String
-macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2782980Z 
+macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2782980Z
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2783490Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/CapabilityABIAdapter.swift:4:18: error: 'CapabilityContract' is ambiguous for type lookup in this context
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2784110Z  2 | import Foundation
-macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2784260Z  3 | 
+macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2784260Z  3 |
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2784460Z  4 | public extension CapabilityContract {
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2784830Z    |                  `- error: 'CapabilityContract' is ambiguous for type lookup in this context
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2785650Z  5 |     /// Content fingerprint only: not a signature, approval token or attestation.
@@ -183,7 +183,7 @@ macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2790610
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2791040Z  5 | /// Passed through the existing actionId field; old runtimes fail unavailable.
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2791370Z  6 | public enum CapabilityContract {
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2791600Z    |             `- note: found this candidate
-macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2792200Z 
+macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2792200Z
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2792680Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/CapabilityABIAdapter.swift:17:65: error: 'CapabilityContract' is ambiguous for type lookup in this context
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2793340Z 15 |     /// Nil schemas mean unknown and cannot authorise an invocation.
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2793670Z 16 |     func abiContract(arguments: CapabilitySchema? = nil,
@@ -195,7 +195,7 @@ macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2800840
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2801260Z  5 | /// Passed through the existing actionId field; old runtimes fail unavailable.
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2801730Z  6 | public enum CapabilityContract {
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2801950Z    |             `- note: found this candidate
-macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2802460Z 
+macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2802460Z
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2803130Z /Users/runner/work/rightclick/rightclick/Sources/RightClickCore/CapabilityABIAdapter.swift:19:13: error: the compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2804300Z 17 |                      result: CapabilitySchema? = nil) throws -> CapabilityContract {
 macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2804870Z 18 |         guard reflectorID != "unowned" else { throw CapabilityABIError.invalidIdentity }
@@ -206,4 +206,3 @@ macOS ARD runtime gates	G13 portable parser contract	2026-10-07T08:35:44.2804870
 0.2.2
 rightclick 0.2.2
 ```
-
