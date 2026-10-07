@@ -1,8 +1,8 @@
 import Foundation
 
-/// Common host admission for existing unary compilers whose public ABI accepts
-/// string arguments and returns serialized text. Compilers supply their closed
-/// names and constraints; this boundary never guesses types from descriptions.
+/// One common unary admission path. Each compiler supplies its exact typed
+/// contract and conversion; the compatibility wrapper keeps text-only compilers
+/// explicit without guessing types from descriptions.
 enum RCIRUnaryInvocation {
     static func execute(capability: Capability, owner: Capability, item: ContentItem,
                         executionID: String, arguments: CapabilityArguments?,
@@ -20,23 +20,40 @@ enum RCIRUnaryInvocation {
         }
         let schema = CapabilitySchema.object(properties: Dictionary(uniqueKeysWithValues: names.map { ($0, .string) }), required: required)
         let input = CapabilityValue.fromLegacyArguments(arguments) ?? .object([:])
+        return try execute(capability: capability, owner: owner, item: item, executionID: executionID,
+            arguments: arguments, argumentSchema: schema, input: input, resultSchema: .string,
+            wireRepresentation: "compiler-validated legacy string arguments; serialized returned text",
+            target: target, verification: verification, expectedOutput: expectedOutput,
+            host: host, available: available, revalidate: revalidate, invoke: invoke,
+            resultValue: { .string($0.output ?? "") })
+    }
+
+    static func execute(capability: Capability, owner: Capability, item: ContentItem,
+                        executionID: String, arguments: CapabilityArguments?,
+                        argumentSchema schema: CapabilitySchema, input: CapabilityValue,
+                        resultSchema: CapabilitySchema, wireRepresentation: String, target: URL,
+                        verification: VerificationSpec?, expectedOutput: String?,
+                        host: RCIRExecutionHost, available: @escaping () -> Bool,
+                        revalidate: @escaping () -> Bool,
+                        invoke: (_ admit: (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord,
+                        resultValue: (ExecutionRecord) throws -> CapabilityValue) throws -> ExecutionRecord {
         do { try schema.validate(input) }
         catch { return failure(capability, executionID, "Arguments violated the reflected unary contract: \(error)") }
         let declaration = CapabilityExperience.withoutExperience(owner)
-        let discovery = try declaration.abiContract(arguments: schema, result: .string)
+        let discovery = try declaration.abiContract(arguments: schema, result: resultSchema)
         let contract = CapabilityContract(capabilityID: discovery.capabilityID, reflectorID: discovery.reflectorID,
-            providerID: discovery.providerID, arguments: schema, result: .string,
+            providerID: discovery.providerID, arguments: schema, result: resultSchema,
             declaration: .object(["capability": discovery.declaration,
                 "verification": try verification.map { .bytes(try JSONEncoder().encode($0)) } ?? .null,
                 "expectedOutput": expectedOutput.map { .string($0) } ?? .null,
-                "wireRepresentation": .string("compiler-validated legacy string arguments; serialized returned text")]))
+                "wireRepresentation": .string(wireRepresentation)]))
         let scope = RCIRScope(target.absoluteString + "#" + capability.id, .execute)
         return try host.execute(abi: contract, discovery: discovery, arguments: input, scope: scope,
             capability: owner, executionID: executionID, argumentStrings: arguments, item: item,
             verification: verification, expectedOutput: expectedOutput, target: target,
             authority: { available() ? [scope] : [] }, revalidate: { available() && revalidate() },
             dispatch: { _, admit in try withoutActuallyEscaping(admit) { gate in try invoke(gate) } },
-            resultValue: { .string($0.output ?? "") })
+            resultValue: resultValue)
     }
 
     private static func failure(_ capability: Capability, _ executionID: String, _ message: String) -> ExecutionRecord {
