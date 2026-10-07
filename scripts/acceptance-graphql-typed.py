@@ -35,6 +35,7 @@ def main():
     marker = "GQL_" + uuid.uuid4().hex
     mutate, scalar, custom, recursive = [prefix + uuid.uuid4().hex[:12] for prefix in ("record_", "number_", "opaque_", "recursive_")]
     nullable_echo, required_echo = ["echo_" + uuid.uuid4().hex[:12] for _ in range(2)]
+    string_list_echo, id_list_echo = ["list_" + uuid.uuid4().hex[:12] for _ in range(2)]
     sdl = f"""
       enum Mode {{ FIRST SECOND }}
       input ChildInput {{ flag: Boolean!, count: Int!, note: String }}
@@ -44,7 +45,8 @@ def main():
       type Child {{ flag: Boolean!, count: Int!, note: String }}
       type Record {{ nonce: String!, children: [Child!]!, mode: Mode!, ratio: Float!, absent: Boolean }}
       type Query {{ {scalar}: Float!, {custom}: Unspecified, {recursive}(value: Recursive): String,
-                    {nullable_echo}(value: String): String, {required_echo}(value: String!): String! }}
+                    {nullable_echo}(value: String): String, {required_echo}(value: String!): String!,
+                    {string_list_echo}(value: [String]): [String], {id_list_echo}(value: [ID]): [ID] }}
       type Mutation {{ {mutate}(nonce: String!, payload: Payload!): Record! }}
     """
     schema = build_schema(sdl)
@@ -91,6 +93,8 @@ def main():
             current.get_type("Query").fields[scalar].resolve = lambda *_: 1.0
             current.get_type("Query").fields[nullable_echo].resolve = lambda *_, value=None: value
             current.get_type("Query").fields[required_echo].resolve = lambda *_, value: value
+            current.get_type("Query").fields[string_list_echo].resolve = lambda *_, value=None: value
+            current.get_type("Query").fields[id_list_echo].resolve = lambda *_, value=None: value
             current.get_type("Mutation").fields[mutate].resolve = mutation
             result = graphql_sync(current, data["query"], variable_values=data.get("variables"), operation_name=data.get("operationName"))
             body = result.formatted
@@ -201,6 +205,18 @@ def main():
                 echo_payload = verify(echoed, private, out, public)
                 echo_value = verifier._value(verifier._domain(echo_payload, "RECEIPT")["events"][-1])["value"]
                 check(label, lambda echo_value=echo_value, expected=expected: require(echo_value == {"rightclickResult": expected}, str(echo_value)))
+            # Version-three review controls: scalar escape guidance must not be
+            # applied to nullable lists whose public encoding is JSON text.
+            for label, field in [("nullable_string_list", string_list_echo), ("nullable_id_list", id_list_echo)]:
+                echo = next(value for value in actions if value["title"] == "GraphQL query: " + field)
+                details = client.call("context_explain", {"item": marker, "actionId": echo["id"]})
+                description = json.loads(details["metadata"]["argumentsSchema"])["properties"]["value"]["description"]
+                check(label + "_guidance", lambda description=description: require("JSON-encoded string" in description and "prefix a backslash" not in description, description))
+                expected = ["null", "\\text", None]
+                echoed = client.call("context_run", {"item": marker, "actionId": echo["id"], "confirmed": True, "arguments": {"value": json.dumps(expected)}})
+                echo_payload = verify(echoed, private, out, public)
+                echo_value = verifier._value(verifier._domain(echo_payload, "RECEIPT")["events"][-1])["value"]
+                check(label + "_values", lambda echo_value=echo_value, expected=expected: require(echo_value == {"rightclickResult": expected}, str(echo_value)))
             state["drift"] = True; time.sleep(5.3)
             previous = len(effects)
             stale = run("stale-schema")
