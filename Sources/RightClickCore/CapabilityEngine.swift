@@ -694,12 +694,15 @@ public final class CapabilityEngine {
         // equate distinct Unicode spellings in authority-sensitive metadata.
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys]
-        guard let expected = try? encoder.encode(capability) else { return nil }
+        // Experience is engine-owned advisory output, not provider authority.
+        // Normalize only its reserved namespace on both snapshots. Every
+        // endpoint, schema, origin, policy and other metadata byte still binds.
+        guard let expected = try? encoder.encode(CapabilityExperience.withoutExperience(capability)) else { return nil }
 
         for var candidate in matches {
             // As in discovery, only the engine assigns reflector ownership.
             candidate.reflectorID = reflector.id
-            guard let actual = try? encoder.encode(candidate), actual == expected else {
+            guard let actual = try? encoder.encode(CapabilityExperience.withoutExperience(candidate)), actual == expected else {
                 return nil
             }
         }
