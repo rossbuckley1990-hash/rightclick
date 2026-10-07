@@ -337,7 +337,7 @@ public final class GraphQLReflector:
                     "resultValidation":
                         "closed_typed_graphql_selection",
                     "argumentEncoding":
-                        "graphql_legacy_text: scalar text; list/input-object JSON text; nullable null sentinel",
+                        "graphql_legacy_text: scalar text; list/input-object JSON text; nullable null sentinel; nullable String/ID backslash forces literal text",
                 ]
 
             metadata["argumentSchema"] = try operation.argumentSchema.canonicalData().base64EncodedString()
@@ -1110,6 +1110,10 @@ public final class GraphQLReflector:
         _ raw: String,
         type: TypeRef
     ) throws -> Any {
+        if !type.isNonNull, let named = type.namedType, named.kind == "SCALAR",
+           ["String", "ID"].contains(named.name), raw.hasPrefix("\\") {
+            return String(raw.dropFirst())
+        }
         if raw == "null" && !type.isNonNull {
             guard
                 !type.isNonNull
@@ -2280,6 +2284,10 @@ public final class GraphQLReflector:
                                 ", "
                         )
                     + "."
+            }
+
+            if !argument.type.isNonNull, let named, named.kind == "SCALAR", ["String", "ID"].contains(named.name) {
+                description += " null supplies a null value; prefix a backslash to force literal text (including literal null or a leading backslash)."
             }
 
             properties[
