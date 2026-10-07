@@ -1,0 +1,120 @@
+name: RIGHTCLICK Alien Relay
+
+on:
+  push:
+    branches:
+      - experiment/alien-relay-20261007
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  alien-relay:
+    name: Remote Ubuntu proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out experiment branch
+        uses: actions/checkout@v4
+
+      - name: Capture remote evidence
+        id: evidence
+        shell: bash
+        run: |
+          set +e
+
+          mkdir -p alien-proof
+
+          BUILD_STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          RUNNER_OS_VALUE="${RUNNER_OS:-unknown}"
+          RUNNER_ARCH_VALUE="${RUNNER_ARCH:-unknown}"
+          REPO_SHA="$(git rev-parse HEAD 2>/dev/null)"
+          GIT_STATUS=$?
+
+          SWIFT_VERSION="$(swift --version 2>&1)"
+          SWIFT_VERSION_STATUS=$?
+
+          swift build >alien-proof/swift-build.log 2>&1
+          BUILD_STATUS=$?
+
+          swift test >alien-proof/swift-test.log 2>&1
+          TEST_STATUS=$?
+
+          if [ -x ".build/debug/rightclick" ]; then
+            RC_CANDIDATE=".build/debug/rightclick"
+          elif [ -x ".build/release/rightclick" ]; then
+            RC_CANDIDATE=".build/release/rightclick"
+          else
+            RC_CANDIDATE=""
+          fi
+
+          if [ -n "$RC_CANDIDATE" ]; then
+            RUNTIME_VERSION="$("$RC_CANDIDATE" --version 2>&1)"
+            RUNTIME_VERSION_STATUS=$?
+          else
+            RUNTIME_VERSION="no built rightclick executable found at expected SwiftPM paths"
+            RUNTIME_VERSION_STATUS=127
+          fi
+
+          export BUILD_STARTED_AT RUNNER_OS_VALUE RUNNER_ARCH_VALUE REPO_SHA GIT_STATUS
+          export SWIFT_VERSION SWIFT_VERSION_STATUS BUILD_STATUS TEST_STATUS
+          export RC_CANDIDATE RUNTIME_VERSION RUNTIME_VERSION_STATUS
+
+          python3 - <<'PY'
+          import json, os
+          proof = {
+              "experiment": "RIGHTCLICK Alien Relay",
+              "observed_utc": os.environ.get("BUILD_STARTED_AT"),
+              "repository_commit_sha": os.environ.get("REPO_SHA"),
+              "runner": {
+                  "os": os.environ.get("RUNNER_OS_VALUE"),
+                  "arch": os.environ.get("RUNNER_ARCH_VALUE"),
+              },
+              "commands": [
+                  {
+                      "command": "git rev-parse HEAD",
+                      "exit_status": int(os.environ.get("GIT_STATUS", "999")),
+                  },
+                  {
+                      "command": "swift --version",
+                      "exit_status": int(os.environ.get("SWIFT_VERSION_STATUS", "999")),
+                      "output": os.environ.get("SWIFT_VERSION", ""),
+                  },
+                  {
+                      "command": "swift build",
+                      "exit_status": int(os.environ.get("BUILD_STATUS", "999")),
+                      "log": "swift-build.log",
+                  },
+                  {
+                      "command": "swift test",
+                      "exit_status": int(os.environ.get("TEST_STATUS", "999")),
+                      "log": "swift-test.log",
+                  },
+                  {
+                      "command": (os.environ.get("RC_CANDIDATE") or "<unavailable>") + " --version",
+                      "exit_status": int(os.environ.get("RUNTIME_VERSION_STATUS", "999")),
+                      "output": os.environ.get("RUNTIME_VERSION", ""),
+                  },
+              ],
+              "semantic_success": (
+                  int(os.environ.get("BUILD_STATUS", "999")) == 0
+                  and int(os.environ.get("TEST_STATUS", "999")) == 0
+              ),
+              "note": "Provider acceptance is not treated as proof; this file records observed runner state."
+          }
+          with open("alien-proof/rightclick-alien-proof.json", "w", encoding="utf-8") as f:
+              json.dump(proof, f, indent=2, sort_keys=True)
+          PY
+
+          cat alien-proof/rightclick-alien-proof.json
+
+      - name: Upload proof artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rightclick-alien-proof-${{ github.run_id }}
+          path: alien-proof/
+          if-no-files-found: error
+          retention-days: 7
