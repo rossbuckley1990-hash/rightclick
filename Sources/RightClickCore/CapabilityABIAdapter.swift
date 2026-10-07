@@ -6,6 +6,10 @@ import Crypto
 import Foundation
 
 public extension CapabilityContract {
+    static func isValidSHA256(_ value: String) -> Bool {
+        value.utf8.count == 64 && value.utf8.allSatisfy { (48...57).contains($0) || (97...102).contains($0) }
+    }
+
     /// Content fingerprint only: not a signature, approval token or attestation.
     func sha256() throws -> String {
         SHA256.hash(data: try canonicalData()).map { String(format: "%02x", $0) }.joined()
@@ -13,6 +17,19 @@ public extension CapabilityContract {
 }
 
 public extension Capability {
+    /// Uses the existing exact ABI declaration; unknown schemas stay unknown.
+    /// The fingerprint and engine-owned experience never hash themselves or grant
+    /// authority. This pins content, not a byte-identical provider incarnation.
+    func discoveryContractSHA256() throws -> String {
+        try withoutDiscoveryAdvice().abiContract().sha256()
+    }
+
+    internal func withoutDiscoveryAdvice() -> Capability {
+        var clean = CapabilityExperience.withoutExperience(self)
+        clean.contractSHA256 = nil
+        return clean
+    }
+
     /// Read-only snapshot of the existing, engine-owned capability declaration.
     /// The caller must supply schemas produced by a validated substrate compiler.
     /// We do NOT guess input/output types, effects or authority from descriptions.

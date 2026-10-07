@@ -421,6 +421,7 @@ private func rightClickTools() -> [Tool] {
             "item": schemaString("File path, http(s) URL, or plain text."),
             "actionId": schemaString("Capability id or exact title returned by context_actions."),
             "arguments": capabilityArgumentsSchema,
+            "contractSHA256": schemaString("Optional exact declaration fingerprint returned by context_actions/context_explain. Rejects changed contracts; it grants no authority. Omission retains legacy fresh resolution without a caller-held pin."),
             "expectedOutput": schemaString("Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes."),
             "verification": verificationSchema,
             "confirmed": .object([
@@ -513,6 +514,15 @@ private func handleTool(
         let capability = try engine.call { try $0.describe(id: action, item: item) }
         return RightClickJSON.encode(capability)
     case "context_run":
+        let contractSHA256: String?
+        if let supplied = arguments?["contractSHA256"] {
+            guard let pin = supplied.stringValue, CapabilityContract.isValidSHA256(pin) else {
+                throw RightClickError("Invalid contractSHA256. Supply the exact lowercase SHA-256 returned by discovery.")
+            }
+            contractSHA256 = pin
+        } else {
+            contractSHA256 = nil
+        }
         let action = arguments?["actionId"]?.stringValue ?? ""
         let confirmed =
             arguments?["confirmed"]?
@@ -569,7 +579,8 @@ private func handleTool(
                 confirmed: confirmed,
                 arguments: capabilityArguments,
                 expectedOutput: expectedOutput,
-                verification: verification
+                verification: verification,
+                contractSHA256: contractSHA256
             )
         }
 
