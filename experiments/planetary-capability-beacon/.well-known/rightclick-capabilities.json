@@ -1,0 +1,97 @@
+{
+  "schema": "https://rightclick.dev/schemas/capability-beacon/v0.1",
+  "beaconVersion": "0.1.0",
+  "id": "urn:rightclick:beacon:planetary-public-good:2026-10-07",
+  "name": "Planetary Capability Beacon",
+  "purpose": "A provider-neutral public-good capability advertisement that an agent runtime can discover without a bespoke provider-specific AI integration.",
+  "status": "experimental",
+  "issuedDate": "2026-10-07",
+  "freshness": {
+    "maxAgeSeconds": 300,
+    "withdrawal": "Removal, HTTP 404/410, expiry, or provenance mismatch invalidates cached capability state."
+  },
+  "provenance": {
+    "kind": "git-commit",
+    "repository": "rossbuckley1990-hash/rightclick",
+    "branch": "experiment/planetary-capability-beacon-20261007",
+    "required": true
+  },
+  "policy": {
+    "default": "deny",
+    "leastAuthority": true,
+    "confirmationForConsequentialActions": true,
+    "providerAcceptanceIsNotSuccess": true
+  },
+  "verification": {
+    "requiredForSuccessClaims": true,
+    "acceptableEvidence": [
+      "independent-readback",
+      "content-hash",
+      "external-observation",
+      "signed-receipt"
+    ]
+  },
+  "capabilities": [
+    {
+      "id": "public-good.beacon-readback",
+      "title": "Read back the public-good beacon",
+      "safety": "read_only",
+      "authority": {
+        "kind": "none"
+      },
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "transport": {
+        "kind": "https",
+        "method": "GET",
+        "url": "https://raw.githubusercontent.com/rossbuckley1990-hash/rightclick/experiment/planetary-capability-beacon-20261007/experiments/planetary-capability-beacon/.well-known/rightclick-capabilities.json"
+      },
+      "verificationContract": {
+        "type": "independent-readback",
+        "require": [
+          "http_2xx",
+          "json_parseable",
+          "id_equals:urn:rightclick:beacon:planetary-public-good:2026-10-07"
+        ]
+      }
+    },
+    {
+      "id": "public-good.simulated-mutating-proof",
+      "title": "Simulated remotely verifiable public-good action",
+      "safety": "external_side_effect",
+      "authority": {
+        "kind": "capability_lease",
+        "scope": "public-good.simulated-mutating-proof",
+        "ttlSeconds": 60
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "maxLength": 280
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "transport": {
+        "kind": "simulation",
+        "note": "No external side effect is performed by this experimental beacon."
+      },
+      "verificationContract": {
+        "type": "receipt-plus-readback",
+        "require": [
+          "scope_bound_authority",
+          "provider_acknowledgement",
+          "independent_postcondition"
+        ]
+      }
+    }
+  ],
+  "northStar": "Machines publish interoperable, revocable, verifiable abilities; agents discover them at runtime; no permanent provider-specific top-level tool is required."
+}
