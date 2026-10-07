@@ -25,6 +25,21 @@ and conditional MCP server import, passed 755 tests with 26 existing skips and
 zero failures. Its raw log is retained. This precedes the newly integrated
 signing-authority repair and does not establish that later source's final gate.
 
+After integrating the signing repair and direct Linux D-Bus compiler, source
+`b1e4db936ba2a5adc41ef0aa70d1b2b7fd0bf5c3` passed the combined Mac regression:
+775 executed, 749 passed, 26 existing skips, zero failures. Changed typed/interface,
+unit, acknowledgement and signing controls passed 43 tests without skips using
+the real provisioned WASM component. The separate combined signing/production/
+deferred/authority controls passed 48 tests without skips. These tests precede
+any subsequent streaming work; their exact raw logs are retained.
+
+The direct native Linux acquisition and its final seven-operation proof are
+documented in `LINUX-DBUS-RUNTIME.md` and `evidence/linux-dbus-20261007/`. The
+compiler reuses the existing RCIR host and adds an explicit tagged-value adapter
+at the string-valued Core boundary. Issuer method denials, broker incarnation and
+still-callable released-name controls are genuine native evidence. Linux effects
+not declared by standard introspection remain unknown and require confirmation.
+
 The pinned executable completed actual seven-operation engineering transcripts
 for OpenAPI, A2A, Kafka, Kubernetes, MCP and WASM. Outcomes were independently
 checked, provisioned public keys pinned, policy/confirmation denial exercised,

@@ -30,11 +30,13 @@ jobs:
           RIGHTCLICK_TEST_DBUS_NATIVE: "1"
         run: |
           mkdir -p dbus-evidence
-          git rev-parse HEAD > dbus-evidence/source.txt
+          git -c safe.directory="$GITHUB_WORKSPACE" rev-parse HEAD > dbus-evidence/source.txt
           swift --version > dbus-evidence/toolchain.txt
           swift test --force-resolved-versions --filter 'DBusRuntimeTests|DBusNativeOwnerAcceptanceTests|CapabilityTypedCoreBoundaryTests' > dbus-evidence/native-tests.log 2>&1
       - name: Build the single runtime
-        run: swift build -c release --product rightclick --force-resolved-versions
+        run: |
+          swift build -c release --product rightclick --force-resolved-versions
+          sha256sum .build/release/rightclick > dbus-evidence/binary-sha256.txt
       - name: Seven operations, automatic discovery and independent native effect
         run: python3 scripts/acceptance-linux-dbus.py .build/release/rightclick dbus-evidence/seven-core
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

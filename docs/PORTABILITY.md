@@ -1,6 +1,8 @@
 # Portable runtime
 
-RIGHTCLICK's capability engine and seven-operation MCP contract are shared across macOS, Linux and Windows. Host integrations contribute discovered capabilities; they do not define the runtime or the agent-facing interface.
+This document describes the candidate portable runtime. Native Linux has scoped build/transport evidence; the complete Windows build, protected-file and provider acceptance gates remain RED. Installed Stable 0.2.2 is a separate macOS product with its own attested executable. A shared source boundary does not establish a released cross-platform feature.
+
+RIGHTCLICK's candidate capability engine and seven-operation MCP contract use one source across macOS, Linux and Windows. Host integrations contribute discovered capabilities; they do not define the runtime or the agent-facing interface.
 
 ## Build and connect
 
@@ -29,6 +31,7 @@ The listener binds only to `127.0.0.1`. HTTP bearer authentication, MCP origin/h
 | SHA-256 and Ed25519 receipts | CryptoKit | Swift Crypto | Swift Crypto |
 | Configured gRPC reflection/transport | Available | Available | Unavailable: current gRPC TLS dependency requires POSIX |
 | Native Services, sharing, Finder Action metadata | Available | Unavailable | Unavailable |
+| Automatic native session D-Bus methods | Unavailable | Scoped candidate evidence; see LINUX-DBUS-RUNTIME.md | Unavailable |
 | Bonjour browsing | Available | Unavailable | Unavailable |
 | Keychain authority persistence | Available | Unavailable | Unavailable |
 | ImageIO metadata and macOS extended-attribute observation | Available | Abstains | Abstains |
@@ -56,6 +59,6 @@ Relative environment paths are rejected in favor of the standard per-user locati
 
 `.github/workflows/portable-runtime.yml` builds and tests the integrated product on all three hosts. `scripts/acceptance-portable.py <binary>` then invokes a real disposable OpenAPI provider over stdio and authenticated HTTP, checks all seven operations, tests confirmation and argument gates, validates executable provenance and retained RCIR status, and keeps provider acceptance explicitly unverified. Platform-specific tests remain on their native host; portable policy, contract, reflection, acquisition, cryptographic and verification tests run on other hosts.
 
-Homebrew is a distribution adapter. The currently published formula still pins an immutable macOS release. A source port or a green branch does not change that installed product. Publish a new immutable upstream release only after all three platform gates pass; update the tap to its verified source checksum and build a matching bottle through its reviewed publication workflow. Never remove the stable formula's macOS restriction while it still points to source that cannot build on other hosts.
+Homebrew is a distribution adapter. The currently published formula still pins the macOS source by content checksum; GitHub reports v0.2.2 as non-immutable. A source port or a green branch does not change that installed product or release setting. Publish a new immutable upstream release only after all three platform gates pass; update the tap to its verified source checksum and build a matching bottle through its reviewed publication workflow. Never remove the stable formula's macOS restriction while it still points to source that cannot build on other hosts.
 
 Linux and Windows can build the same accepted source release independently of Homebrew. Binary packages and installers must also be tested on clean hosts with their required Swift runtime libraries before being advertised as self-contained.
