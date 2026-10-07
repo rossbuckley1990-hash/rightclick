@@ -36,7 +36,7 @@ jobs:
           $installation = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
           if (-not $installation) { throw 'Native C++ toolchain unavailable' }
           $setup = Join-Path $installation 'VC\Auxiliary\Build\vcvars64.bat'
-          cmd /c "`"$setup`" && midl /nologo /env x64 /out native-com-red /tlb proof.tlb native-com-red\proof.idl && cl /nologo /EHsc /std:c++17 Tests\Fixtures\windows-com-live.cpp /Fe:windows-com-live.exe /link Ole32.lib OleAut32.lib Uuid.lib"
+          cmd /c "`"$setup`" && midl /nologo /env x64 /out native-com-red /tlb proof.tlb native-com-red\proof.idl && cl /nologo /EHsc /std:c++17 Tests\Fixtures\windows-com-live.cpp /Fe:windows-com-live.exe /link Ole32.lib OleAut32.lib Uuid.lib User32.lib"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Build exact frozen production baseline
         shell: pwsh
