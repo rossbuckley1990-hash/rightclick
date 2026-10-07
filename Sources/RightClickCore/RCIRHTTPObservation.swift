@@ -98,7 +98,7 @@ enum RCIRObserverPath {
         var template = raw
         for (key, value) in arguments ?? [:] where template.contains("{" + key + "}") {
             guard !value.isEmpty, value.utf8.count <= 131_072, value != ".", value != "..",
-                  !value.contains("/"), !value.contains("\\"), !value.contains("%"),
+                  !value.contains("/"), !value.contains("\\"), !value.contains("%"), !value.contains("?"), !value.contains("#"),
                   value.rangeOfCharacter(from: .controlCharacters) == nil,
                   let encoded = value.addingPercentEncoding(withAllowedCharacters: unreserved) else { throw RCIRError.invalidContract }
             template = template.replacingOccurrences(of: "{" + key + "}", with: encoded)

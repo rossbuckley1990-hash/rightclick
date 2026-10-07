@@ -89,7 +89,7 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
         XCTAssertEqual(parts.path, "/observations/" + value)
         XCTAssertNil(parts.query); XCTAssertNil(parts.fragment); XCTAssertNil(parts.user); XCTAssertNil(parts.password)
         XCTAssertEqual(parts.host, observer.host)
-        for denied in [".", "..", "../outside", "a/b", "a\\b", "%2e%2e", "a%252fb", "a\nb", "a\0b"] {
+        for denied in [".", "..", "../outside", "a/b", "a\\b", "%2e%2e", "a%252fb", "a?query", "a#fragment", "a\nb", "a\0b"] {
             XCTAssertThrowsError(try RCIRObserverPath.interpolate(observer.absoluteString + "/observations/{message}", arguments: ["message": denied]))
         }
     }
