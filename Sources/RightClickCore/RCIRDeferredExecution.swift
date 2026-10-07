@@ -39,6 +39,13 @@ final class RCIRDeferredSession {
 
     private var terminal: Bool { [.completed, .failed, .cancelled, .unknown].contains(task.phase) }
 
+    /// Terminal evidence remains in ExecutionStore after its live session is
+    /// reaped. Missing observations retain signed unverified completion.
+    func canRelease() -> Bool {
+        lock.lock(); defer { lock.unlock() }
+        return now() >= task.deadline || (terminal && (task.phase != .completed || task.outcome != .unverified))
+    }
+
     private func advance(_ event: RCIRTaskEvent) throws {
         let duplicate: Bool
         switch event {
@@ -63,6 +70,14 @@ final class RCIRDeferredSession {
                 if let update = try lifecycle?.poll() { try advance(update) }
             }
             if task.phase == .completed, task.outcome == .unverified, now() < task.deadline {
+                // Provider completion does not grant ongoing observer authority.
+                // The graph, policy and credentials must still permit every read.
+                guard revalidate(), task.lease.scopes.isSubset(of: authority()) else {
+                    if !record.events.contains("RCIR independent observation withheld after current authority, policy or graph changed.") {
+                        record.events.append("RCIR independent observation withheld after current authority, policy or graph changed.")
+                    }
+                    return try snapshot()
+                }
                 // Missing observation is abstention, never an acknowledgement of
                 // success. A later bounded status call may observe it independently.
                 try? observe(&task, &record)

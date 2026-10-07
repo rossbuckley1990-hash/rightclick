@@ -90,6 +90,7 @@ public final class RCIRExecutionHost {
     let admission = RCIRAdmission()
     private let sessionLock = NSLock()
     private var sessions: [String: RCIRDeferredSession] = [:]
+    private var reservations: Set<String> = []
     var now: () -> Int64 = { Int64(Date().timeIntervalSince1970 * 1000) }
     var configuration: () throws -> RCIRHostConfiguration = RCIRHostConfiguration.load
     // Internal fault hook for native transport adversarial controls. Not exposed
@@ -107,10 +108,24 @@ public final class RCIRExecutionHost {
         guard let session else { return nil }
         let record = session.status()
         ExecutionStore.shared.put(record)
-        if [.succeeded, .failed, .cancelled, .unknown].contains(record.state) {
+        if session.canRelease() {
             sessionLock.lock(); sessions.removeValue(forKey: executionID); sessionLock.unlock()
         }
         return record
+    }
+
+    private func reserveSession(_ executionID: String) throws {
+        sessionLock.lock(); let snapshot = sessions; sessionLock.unlock()
+        for (id, session) in snapshot where session.canRelease() {
+            ExecutionStore.shared.put(session.status(refresh: false))
+            sessionLock.lock()
+            if sessions[id] === session { sessions.removeValue(forKey: id) }
+            sessionLock.unlock()
+        }
+        sessionLock.lock(); defer { sessionLock.unlock() }
+        guard sessions[executionID] == nil, !reservations.contains(executionID),
+              sessions.count + reservations.count < 256 else { throw RCIRError.invalidLimit }
+        reservations.insert(executionID)
     }
 
     func synchronize(owners: Set<String>) {
@@ -128,14 +143,17 @@ public final class RCIRExecutionHost {
                  dispatch: (String, (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord,
                  resultValue: (ExecutionRecord) throws -> CapabilityValue) throws -> ExecutionRecord {
         var dispatched = false
+        var reserved = false
+        defer {
+            if reserved { sessionLock.lock(); reservations.remove(executionID); sessionLock.unlock() }
+        }
         do {
             let config = try configuration()
             let deferred = lifecycle != nil || capability.metadata["executionMode"] == "deferred"
             let timeout = lifecycle?.timeoutMilliseconds ?? 30_000
             guard timeout > 0, timeout <= 86_400_000 else { throw RCIRError.invalidTime }
             if deferred {
-                sessionLock.lock(); let count = sessions.count; sessionLock.unlock()
-                guard count < 256 else { throw RCIRError.invalidLimit }
+                try reserveSession(executionID); reserved = true
             }
             let observation = try observer(config, capabilityID: capability.id,
                                            arguments: argumentStrings, target: target)
@@ -229,7 +247,9 @@ public final class RCIRExecutionHost {
                         }
                         try task.verify(observerID: observation.url.absoluteString, now: self.now()) { _, _ in observed }
                     })
-                sessionLock.lock(); sessions[executionID] = session; sessionLock.unlock()
+                sessionLock.lock()
+                sessions[executionID] = session; reservations.remove(executionID); reserved = false
+                sessionLock.unlock()
                 return session.status(refresh: false)
             } else if record.state == .accepted || record.state == .succeeded {
                 do {
