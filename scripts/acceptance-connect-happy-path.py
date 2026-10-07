@@ -7,6 +7,9 @@ installation, or the eleven-world universal release objective.
 """
 from __future__ import annotations
 
+if not __debug__:
+    raise SystemExit("Acceptance requires Python assertions enabled; optimized mode is unsupported.")
+
 import argparse
 from contextlib import ExitStack
 from datetime import datetime, timezone

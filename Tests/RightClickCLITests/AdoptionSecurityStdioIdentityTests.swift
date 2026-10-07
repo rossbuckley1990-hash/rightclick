@@ -52,19 +52,28 @@ final class AdoptionSecurityStdioIdentityTests: XCTestCase {
 
     func testRuntimeIdentityTextRejectsDuplicateIdenticalPID() throws {
         try fixture(mode: "same_pid") { executable, _, _ in
-            XCTAssertThrowsError(try RightClickStdioProbe.run(executable: executable.path))
+            XCTAssertThrowsError(try RightClickStdioProbe.run(executable: executable.path)) { error in
+                XCTAssertTrue(String(describing: error).contains("runtime identity"),
+                    "A transport timeout cannot prove duplicate identity rejection.")
+            }
         }
     }
 
     func testRuntimeIdentityTextRejectsConflictingPIDWithExpectedValueFirst() throws {
         try fixture(mode: "conflicting_expected_first") { executable, _, _ in
-            XCTAssertThrowsError(try RightClickStdioProbe.run(executable: executable.path))
+            XCTAssertThrowsError(try RightClickStdioProbe.run(executable: executable.path)) { error in
+                XCTAssertTrue(String(describing: error).contains("runtime identity"),
+                    "A transport timeout cannot prove duplicate identity rejection.")
+            }
         }
     }
 
     func testRuntimeIdentityTextRejectsConflictingPIDWithExpectedValueLast() throws {
         try fixture(mode: "conflicting_expected_last") { executable, _, _ in
-            XCTAssertThrowsError(try RightClickStdioProbe.run(executable: executable.path))
+            XCTAssertThrowsError(try RightClickStdioProbe.run(executable: executable.path)) { error in
+                XCTAssertTrue(String(describing: error).contains("runtime identity"),
+                    "A transport timeout cannot prove duplicate identity rejection.")
+            }
         }
     }
 

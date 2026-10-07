@@ -6,6 +6,9 @@ client connectivity, native capability outcomes, portable release, or a deploy.
 """
 from __future__ import annotations
 
+if not __debug__:
+    raise SystemExit("Acceptance requires Python assertions enabled; optimized mode is unsupported.")
+
 import argparse
 import hashlib
 import http.server

@@ -99,7 +99,10 @@ enum RightClickStdioProbe {
         DispatchQueue.global(qos: .utility).async {
             defer { responses.finish(); reader.leave() }
             while true {
-                let data = process.output.readData(ofLength: 4096)
+                // Interactive MCP replies may be smaller than a full chunk.
+                // readData(ofLength:) can wait for that length or EOF, while
+                // the server is waiting for our next lifecycle request.
+                let data = process.output.availableData
                 if data.isEmpty { break }
                 responses.append(data)
             }

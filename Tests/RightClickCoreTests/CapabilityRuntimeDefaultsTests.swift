@@ -108,7 +108,7 @@ final class CapabilityRuntimeDefaultsTests:
 #if os(macOS)
         XCTAssertEqual(
             sources.count,
-            4
+            5
         )
 
         XCTAssertEqual(
@@ -118,6 +118,7 @@ final class CapabilityRuntimeDefaultsTests:
                 "bonjour.grpc",
                 "bonjour.openapi",
                 "configured.openapi",
+                "connected.capability-artifacts",
             ])
         )
 
@@ -138,11 +139,12 @@ final class CapabilityRuntimeDefaultsTests:
                 $0 is BonjourGRPCSource
             }
         )
+        XCTAssertTrue(sources.contains { $0 is ConfiguredArtifactProviderSource })
 #elseif os(Linux)
-        XCTAssertEqual(sourceIDs, ["configured.openapi", "linux.dbus-session"])
+        XCTAssertEqual(sourceIDs, ["configured.openapi", "connected.capability-artifacts", "linux.dbus-session"])
         XCTAssertTrue(sources.contains { $0 is DBusSessionSource })
 #else
-        XCTAssertEqual(sourceIDs, ["configured.openapi"])
+        XCTAssertEqual(sourceIDs, ["configured.openapi", "connected.capability-artifacts"])
 #endif
     }
 
