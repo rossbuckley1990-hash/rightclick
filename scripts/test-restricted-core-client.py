@@ -43,7 +43,13 @@ def main():
     child=subprocess.run(cmd,env=env,stdout=stdout,stderr=stderr,timeout=120)
    capture=run/'request-catalog.json'; dynamic=run/'dynamic-tools.json'
    if mode=='valid':
-    records=json.loads(capture.read_text());catalog=records[0]['tools'];observed=[tool.get('name') for tool in catalog]
+    records=json.loads(capture.read_text());observed=[]
+    def names(tools):
+     for tool in tools:
+      if tool.get('type')=='namespace':names(tool.get('tools',[]))
+      else:observed.append(tool.get('name'))
+    names(records[0]['tools'])
+    for item in records[0].get('additionalTools',[]):names(item.get('tools',[]))
     passed=child.returncode==0 and len(observed)==7 and set(observed)==set(NAMES)
     reason='Exactly seven outgoing functions captured by actual native client against a local inference fixture.'
    else:
