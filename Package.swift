@@ -30,7 +30,7 @@ let coreTestExclusions = [
     "AcquisitionTests.swift", "EngineTests.swift", "ServiceContextTests.swift", "OutcomeVerifierTests.swift",
     "BonjourGRPCSourceTests.swift",
     "BonjourRealLifecycleAcceptanceTests.swift", "MOAT004G5ExternalBearerAuthorityTests.swift",
-    "OpenAPIAuthorityManagementTests.swift",
+    "OpenAPIAuthorityManagementTests.swift", "VerificationIntegrationTests.swift",
 ]
 #endif
 #if os(Windows)

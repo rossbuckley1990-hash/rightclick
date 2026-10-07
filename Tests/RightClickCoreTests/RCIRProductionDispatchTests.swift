@@ -44,8 +44,8 @@ final class RCIRProductionDispatchTests: XCTestCase {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("rcir-live-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        provider = Process(); provider.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
-        provider.arguments = [root.appendingPathComponent("scripts/rcir-dispatch-test-provider.py").path, directory.path]
+        provider = Process(); provider.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+        provider.arguments = ["python3", root.appendingPathComponent("scripts/rcir-dispatch-test-provider.py").path, directory.path]
         provider.standardOutput = FileHandle.nullDevice; provider.standardError = FileHandle.nullDevice
         try provider.run()
         let portFile = directory.appendingPathComponent("port")
@@ -167,23 +167,15 @@ final class RCIRProductionDispatchTests: XCTestCase {
 
     func testCompetingConsumersStartAtMostOneRealRequest() throws {
         host.beforeStart = { _, admit, enqueue in
-            // Swift's closure lifetime is bounded by the group wait below.
-            withoutActuallyEscaping(admit) { admit in
-                withoutActuallyEscaping(enqueue) { enqueue in
-                    let group = DispatchGroup(); let lock = NSLock()
-                    var permitted = 0; var replayed = 0
-                    for _ in 0..<2 {
-                        group.enter()
-                        DispatchQueue.global().async {
-                            defer { group.leave() }
-                            do { try admit(enqueue); lock.lock(); permitted += 1; lock.unlock() }
-                            catch { lock.lock(); replayed += 1; lock.unlock() }
-                        }
-                    }
-                    XCTAssertEqual(group.wait(timeout: .now() + 3), .success)
-                    XCTAssertEqual(permitted, 1); XCTAssertEqual(replayed, 1)
-                }
+            // concurrentPerform is synchronous; neither hook closure escapes
+            // before the competing admission attempts have both returned.
+            let lock = NSLock()
+            var permitted = 0; var replayed = 0
+            DispatchQueue.concurrentPerform(iterations: 2) { _ in
+                do { try admit(enqueue); lock.lock(); permitted += 1; lock.unlock() }
+                catch { lock.lock(); replayed += 1; lock.unlock() }
             }
+            XCTAssertEqual(permitted, 1); XCTAssertEqual(replayed, 1)
         }
         XCTAssertEqual(try invoke().state, .accepted)
         XCTAssertEqual(effectRows().count, 1)

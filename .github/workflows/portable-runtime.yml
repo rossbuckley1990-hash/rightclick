@@ -15,6 +15,7 @@ jobs:
     container: swift:6.2
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - run: apt-get update && apt-get install -y python3 ca-certificates
       - run: swift test --force-resolved-versions
       - run: swift build -c release --product rightclick --force-resolved-versions
       - run: python3 scripts/acceptance-portable.py .build/release/rightclick
