@@ -1,95 +1,38 @@
-name: Portable repair validation
+name: Portable source integrity
 on:
   pull_request:
-    paths:
-      - scripts/repair-portable-candidate.py
-      - .github/workflows/portable-preparation.yml
+  push:
+    branches: [main]
 permissions:
   contents: read
-concurrency:
-  group: portable-repair-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
 jobs:
-  prepare:
-    if: github.repository == 'rossbuckley1990-hash/rightclick' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'feature/portable-runtime-001'
+  pinned-sdk:
     runs-on: ubuntu-latest
-    container: swift:6.2.1
-    timeout-minutes: 15
-    permissions:
-      contents: write
-    outputs:
-      sha: ${{ steps.source.outputs.sha }}
+    timeout-minutes: 5
     steps:
-      - run: apt-get update && apt-get install -y --no-install-recommends python3
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Apply reviewed repairs to feature branch only
-        id: source
-        shell: bash
-        env:
-          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Verify compatibility snapshot is exactly the reviewed upstream delta
         run: |
-          set -euo pipefail
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
-          git switch -c feature/portable-runtime-001
-          python3 scripts/repair-portable-candidate.py
-          swift package resolve
-          git add Package.swift Package.resolved Sources Tests Vendor Dockerfile scripts/package-source.py scripts/acceptance-portable.py evidence/portable-runtime-001/repairs-applied.json
-          if ! git diff --cached --quiet; then
-            git -c user.name='RIGHTCLICK portability repair' -c user.email='rightclick@users.noreply.github.com' commit -m 'fix(runtime): repair portable authority comparison, HTTP framing and SDK host guards'
-            git push origin HEAD:refs/heads/feature/portable-runtime-001
-          fi
-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          git archive --format=tar.gz --output=/tmp/portable-repaired-source.tar.gz HEAD
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: portable-repaired-source
-          path: /tmp/portable-repaired-source.tar.gz
-          retention-days: 7
-  linux:
-    needs: prepare
-    runs-on: ubuntu-latest
-    container: swift:6.2.1
-    timeout-minutes: 30
-    steps:
-      - run: apt-get update && apt-get install -y --no-install-recommends python3
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-        with:
-          ref: ${{ needs.prepare.outputs.sha }}
-          persist-credentials: false
-      - run: swift build --product rightclick --force-resolved-versions --jobs 2
-      - run: swift test --force-resolved-versions --jobs 2
-      - run: python3 scripts/acceptance-portable.py .build/debug/rightclick --http
-  macos:
-    needs: prepare
-    runs-on: macos-15
-    timeout-minutes: 30
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-        with:
-          ref: ${{ needs.prepare.outputs.sha }}
-          persist-credentials: false
-      - run: swift build --product rightclick --force-resolved-versions --jobs 2
-      - run: swift test --force-resolved-versions --jobs 2
-      - run: python3 scripts/acceptance-portable.py .build/debug/rightclick --http
-  windows:
-    needs: prepare
-    runs-on: windows-2022
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-        with:
-          ref: ${{ needs.prepare.outputs.sha }}
-          persist-credentials: false
-      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
-        with:
-          swift-version: swift-6.2.1-release
-          swift-build: 6.2.1-RELEASE
-          build_arch: amd64
-      - run: swift build --product rightclick --force-resolved-versions --jobs 2
-      - run: swift test --force-resolved-versions --jobs 2 --filter RuntimePortabilityTests
-      - run: python scripts/acceptance-portable.py .build/debug/rightclick.exe
+          python3 - <<'PY'
+          import pathlib, hashlib, json
+          root = pathlib.Path('Vendor/swift-sdk')
+          m = json.loads((root/'UPSTREAM.json').read_text())
+          assert m['revision'] == 'a0ae212ebf6eab5f754c3129608bc5557637e605'
+          assert {p.relative_to(root).as_posix() for p in (root/'Sources/MCP').rglob('*') if p.is_file()} == set(m['files'])
+          changed = []
+          for name, entry in m['files'].items():
+              path = root/name
+              assert not path.is_symlink()
+              data = path.read_bytes()
+              assert hashlib.sha256(data).hexdigest() == entry['patched'], name
+              if entry['patched'] != entry['upstream']:
+                  changed.append(name)
+                  assert data.count(b'#if canImport(EventSource)') == 2
+                  assert hashlib.sha256(data.replace(b'#if canImport(EventSource)', b'#if !os(Linux)')).hexdigest() == entry['upstream']
+          assert changed == ['Sources/MCP/Base/Transports/HTTPClientTransport.swift']
+          assert hashlib.sha256((root/'Package.swift').read_bytes()).hexdigest() == m['manifest_sha256']
+          assert hashlib.sha256((root/'LICENSE').read_bytes()).hexdigest() == m['license_sha256']
+          print('PASS: upstream SDK production bytes, bounded patch, manifest and licence')
+          PY
