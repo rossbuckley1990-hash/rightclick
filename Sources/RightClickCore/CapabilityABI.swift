@@ -205,6 +205,9 @@ public indirect enum CapabilityValue: Sendable, Codable {
 /// Unknown constraints must be rejected by an importing compiler, never discarded.
 public indirect enum CapabilitySchema: Sendable {
     case null, boolean, integer, number, string, bytes
+    /// Compiler-declared absence of a returned value, distinct from JSON null
+    /// and from an unknown result schema. Completion cannot supply typed bytes.
+    case unit
     case stringEnum([String])
     case constrainedString(minimum: Int, maximum: Int?, asciiCharacters: String?, enumeration: [String]?)
     case array(CapabilitySchema)
@@ -226,6 +229,7 @@ public indirect enum CapabilitySchema: Sendable {
         case .number: return .string("number")
         case .string: return .string("string")
         case .bytes: return .string("bytes")
+        case .unit: return .string("unit:no-declared-output")
         case let .stringEnum(values):
             guard !values.isEmpty, values.count == Set(values).count else { throw CapabilityABIError.invalidSchema }
             return .object(["enum": .array(CapabilityValue.ordered(values).map { .string($0) })])

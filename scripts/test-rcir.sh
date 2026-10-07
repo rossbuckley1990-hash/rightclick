@@ -9,7 +9,7 @@ mkdir -p "$WORK/Sources/RightClickCore" "$WORK/Tests/RightClickCoreTests"
 for name in CapabilityABI RCIR RCIRSignedReceipt; do
     cp "$ROOT/Sources/RightClickCore/$name.swift" "$WORK/Sources/RightClickCore/"
 done
-for name in RCIRTests RCIRBoundaryTests RCIRIntegrationTests RCIRInvocationIsolationTests; do
+for name in RCIRTests RCIRBoundaryTests RCIRIntegrationTests RCIRInvocationIsolationTests RCIRUnitCompletionTests; do
     cp "$ROOT/Tests/RightClickCoreTests/$name.swift" "$WORK/Tests/RightClickCoreTests/"
 done
 cat > "$WORK/Package.swift" <<'PACKAGE'

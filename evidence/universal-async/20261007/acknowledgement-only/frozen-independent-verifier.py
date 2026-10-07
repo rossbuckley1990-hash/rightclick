@@ -138,7 +138,6 @@ def _signed_claims(payload: bytes) -> dict:
     if sum(len(event) for event in events if isinstance(event, bytes)) > 262_144:
         raise ValueError("event byte budget exceeded")
     previous_time = receipt["startedAt"]
-    completion_without_output = False
     for index, event in enumerate(events, 1):
         value = _value(event)
         if not isinstance(value, dict) or set(value) != {"sequence", "time", "kind", "value"}:
@@ -148,12 +147,8 @@ def _signed_claims(payload: bytes) -> dict:
         if not previous_time <= value["time"] <= receipt["lastObservationTime"]:
             raise ValueError("invalid event time")
         previous_time = value["time"]
-        if value["kind"] not in ("accepted", "working", "inputRequired", "chunk", "completed", "completedWithoutOutput", "failed", "cancelled"):
+        if value["kind"] not in ("accepted", "working", "inputRequired", "chunk", "completed", "failed", "cancelled"):
             raise ValueError("unknown event kind")
-        if value["kind"] == "completedWithoutOutput":
-            if value["value"] is not None or index != len(events) or phase != "completed":
-                raise ValueError("invalid no-output completion")
-            completion_without_output = True
     request = _domain(receipt["request"], "REQUEST")
     if set(request) != {"binding", "arguments", "scopes", "policy", "issuedAt", "expiresAt"}:
         raise ValueError("unsupported request binding")
@@ -169,15 +164,6 @@ def _signed_claims(payload: bytes) -> dict:
     if type(generation) is not int or generation < 1: raise ValueError("invalid provider generation")
     if not isinstance(binding["principal"], str) or not binding["principal"]:
         raise ValueError("invalid bound principal")
-    if completion_without_output:
-        contract = _domain(binding["contract"], "CONTRACT")
-        abi = contract.get("abi")
-        abi_prefix = b"RIGHTCLICK-CONTRACT-1\0"
-        if not isinstance(abi, bytes) or not abi.startswith(abi_prefix):
-            raise ValueError("invalid no-output ABI binding")
-        declaration = _value(abi[len(abi_prefix):])
-        if not isinstance(declaration, dict) or not isinstance(declaration.get("result"), bytes) or _value(declaration["result"]) != "unit:no-declared-output":
-            raise ValueError("no-output completion requires a unit result contract")
     scopes = request["scopes"]
     if not isinstance(scopes, list) or len(scopes) > 512: raise ValueError("invalid scope binding")
     effects = set()

@@ -15,9 +15,64 @@ verifier = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verifier)
 FIXTURE = ROOT / "evidence/rcir-invocation-isolation-20261007/public-mcp"
 KEY = FIXTURE / "trusted-public-key.raw"
+ACK_FIXTURE = ROOT / "evidence/universal-async/20261007/acknowledgement-only/receipts"
+
+
+def canonical_for_test(value):
+    def encode(item):
+        if item is None: return b"n"
+        if isinstance(item, bool): return b"b1" if item else b"b0"
+        if isinstance(item, int):
+            data = str(item).encode(); return b"i" + str(len(data)).encode() + b":" + data
+        if isinstance(item, (str, bytes)):
+            data = item.encode() if isinstance(item, str) else item
+            return (b"s" if isinstance(item, str) else b"x") + str(len(data)).encode() + b":" + data
+        if isinstance(item, list): return b"a" + str(len(item)).encode() + b":" + b"".join(encode(v) for v in item)
+        if isinstance(item, dict):
+            return b"o" + str(len(item)).encode() + b":" + b"".join(encode(k) + encode(item[k]) for k in sorted(item, key=lambda k: k.encode()))
+        raise ValueError("Unsupported pressure-test value")
+    return b"RIGHTCLICK-VALUE-1\0" + encode(value)
 
 
 class ReceiptVerifierTests(unittest.TestCase):
+    def test_actual_ack_only_receipts_preserve_all_three_semantic_outcomes(self):
+        for label, outcome in (("success", "succeeded"), ("failure", "failed"), ("unverified", "unverified")):
+            with self.subTest(label=label):
+                result = verifier.verify(ACK_FIXTURE / (label + "-receipt.json"), ACK_FIXTURE / (label + "-trusted-key.raw"), expected_outcome=outcome)
+                self.assertEqual(result["signature"], "VALID")
+                self.assertEqual(result["signedClaims"]["semanticOutcome"], outcome)
+                if outcome != "succeeded":
+                    with self.assertRaises(ValueError):
+                        verifier.verify(ACK_FIXTURE / (label + "-receipt.json"), ACK_FIXTURE / (label + "-trusted-key.raw"), expected_outcome="succeeded")
+
+    def test_signature_valid_no_output_event_requires_no_value_and_unit_contract(self):
+        original = json.loads((ACK_FIXTURE / "unverified-receipt.json").read_text())
+        for alter_contract in (False, True):
+            receipt = verifier._domain(base64.b64decode(original["payload"]), "RECEIPT")
+            if alter_contract:
+                request = verifier._domain(receipt["request"], "REQUEST")
+                binding = verifier._domain(request["binding"], "BINDING")
+                contract = verifier._domain(binding["contract"], "CONTRACT")
+                prefix = b"RIGHTCLICK-CONTRACT-1\0"
+                abi = verifier._value(contract["abi"][len(prefix):])
+                abi["result"] = canonical_for_test("null")
+                contract["abi"] = prefix + canonical_for_test(abi)
+                binding["contract"] = b"RIGHTCLICK-RCIR-CONTRACT-1\0" + canonical_for_test(contract)
+                request["binding"] = b"RIGHTCLICK-RCIR-BINDING-1\0" + canonical_for_test(binding)
+                receipt["request"] = b"RIGHTCLICK-RCIR-REQUEST-1\0" + canonical_for_test(request)
+            else:
+                event = verifier._value(receipt["events"][-1]); event["value"] = "invented returned output"
+                receipt["events"][-1] = canonical_for_test(event)
+            payload = verifier.PREFIX + canonical_for_test(receipt)
+            key = Ed25519PrivateKey.generate()
+            public = key.public_key().public_bytes(serialization.Encoding.Raw, serialization.PublicFormat.Raw)
+            with self.subTest(alter_contract=alter_contract), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory); pinned = root / "key.raw"; pinned.write_bytes(public)
+                envelope = root / "receipt.json"
+                envelope.write_text(json.dumps({"version": 1, "algorithm": "Ed25519", "payload": base64.b64encode(payload).decode(),
+                    "signature": base64.b64encode(key.sign(payload)).decode(), "publicKey": base64.b64encode(public).decode()}))
+                with self.assertRaises(verifier.ReceiptStructureError): verifier.verify(envelope, pinned)
+
     def test_signed_success_and_failure_remain_distinct(self):
         for label, expected in (("success", "succeeded"), ("failure", "failed")):
             with self.subTest(label=label):

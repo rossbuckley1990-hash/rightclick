@@ -320,7 +320,14 @@ public final class RCIRExecutionHost {
                 return session.status(refresh: false)
             } else if record.state == .accepted || record.state == .succeeded {
                 do {
-                    try task.record(.completed(resultValue(record)), sequence: 1, now: now())
+                    if case .unit? = abi.result {
+                        // An acknowledgement with no declared output supplies
+                        // no typed result. Only host observation may verify it.
+                        record.output = nil
+                        try task.record(.completedWithoutOutput, sequence: 1, now: now())
+                    } else {
+                        try task.record(.completed(resultValue(record)), sequence: 1, now: now())
+                    }
                 } catch {
                     record.state = .unknown
                     try task.providerDisappeared(now: now())

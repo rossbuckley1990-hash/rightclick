@@ -386,7 +386,7 @@ public final class RCIRAdmission: @unchecked Sendable {
 public enum RCIRTaskPhase: String, Sendable { case started, accepted, working, inputRequired, cancelRequested, completed, failed, cancelled, unknown }
 public enum RCIRSemanticOutcome: String, Sendable { case unverified, succeeded, failed, unknown }
 public enum RCIRTaskEvent: Sendable {
-    case accepted, working, inputRequired, chunk(CapabilityValue), completed(CapabilityValue), failed, cancelled
+    case accepted, working, inputRequired, chunk(CapabilityValue), completed(CapabilityValue), completedWithoutOutput, failed, cancelled
 }
 
 /// An independent observer is selected by trusted runtime configuration, not by
@@ -492,6 +492,11 @@ public struct RCIRTask: Sendable {
             guard let schema = lease.binding.contract.abi.result else { throw CapabilityABIError.unknownSchema }
             try schema.validate(result)
             next = .completed; value = result; kind = "completed"
+        case .completedWithoutOutput:
+            guard phase != .inputRequired, case .unit? = lease.binding.contract.abi.result else {
+                throw RCIRError.invalidContract
+            }
+            next = .completed; kind = "completedWithoutOutput"
         case .failed: next = .failed; kind = "failed"
         case .cancelled: next = .cancelled; kind = "cancelled"
         }
