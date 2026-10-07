@@ -23,11 +23,13 @@ public struct CapabilityInterfaceOperation {
 
 public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
     public typealias Invocation = (String, CapabilityValue, (_ start: () -> Void) throws -> Void) throws -> CapabilityValue
+    public typealias BoundInvocation = (String, CapabilityValue, RCIRInvocationBinding, (_ start: () -> Void) throws -> Void) throws -> CapabilityValue
     public let id: String
     private let target: URL
     private let operations: [String: CapabilityInterfaceOperation]
     private let capabilitiesByID: [String: Capability]
     private let invoke: Invocation
+    private let boundInvoke: BoundInvocation?
     private let available: () -> Bool
     private let standaloneHost = RCIRExecutionHost()
     private let observerFactory: ((String) -> RCIRHostObserverFactory?)?
@@ -36,10 +38,12 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
                 descriptorDigest: String, operations: [CapabilityInterfaceOperation],
                 provenance: [String: String] = [:], observerFactory: ((String) -> RCIRHostObserverFactory?)? = nil,
                 available: @escaping () -> Bool,
+                boundInvoke: BoundInvocation? = nil,
                 invoke: @escaping Invocation) throws {
         guard !id.isEmpty, !operations.isEmpty, operations.count <= 256,
               Set(operations.map(\.name)).count == operations.count else { throw CapabilityABIError.invalidIdentity }
         self.id = id; self.target = target; self.invoke = invoke; self.available = available
+        self.boundInvoke = boundInvoke
         self.observerFactory = observerFactory
         var indexed: [String: CapabilityInterfaceOperation] = [:]
         var capabilities: [String: Capability] = [:]
@@ -108,8 +112,9 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
             verification: verification, expectedOutput: expectedOutput, target: target,
             authority: { self.available() ? [scope] : [] }, revalidate: { self.available() && revalidate() },
             observerFactory: observerFactory?(operation.name),
-            dispatch: { _, admit in
-                let value = try self.invoke(operation.name, input, admit)
+            dispatch: { taskID, admit in
+                let value = try self.boundInvoke.map { try $0(operation.name, input, RCIRInvocationBinding(taskID: taskID), admit) }
+                    ?? self.invoke(operation.name, input, admit)
                 try operation.result.validate(value)
                 returned = value
                 return ExecutionRecord(executionId: executionID, actionId: capability.id, title: capability.title,

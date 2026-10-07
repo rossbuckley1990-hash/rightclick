@@ -90,7 +90,7 @@ public final class KubernetesCapabilityArtifactResolver: CapabilityArtifactResol
                 "observerCredentialReference": observerReference, "issuerAuthorityExpiresAt": String(writer.expiresAt),
                 "runtimeExecutable": executable.path, "runtimeSHA256": client.sha256,
                 "executionArtifactBinding": "host-private read-only client and separate protected credential snapshots",
-                "verificationRequirement": "independent GET-only service account reads exact desired fields plus assigned UID/resourceVersion"],
+                "verificationRequirement": "independent GET-only service account reads exact desired fields, host invocation annotation and assigned UID/resourceVersion"],
             observerFactory: { name in
                 guard name == operation.name else { return nil }
                 return { input in
@@ -100,21 +100,22 @@ public final class KubernetesCapabilityArtifactResolver: CapabilityArtifactResol
                         "challenge": .string(desired.challenge), "value": .string(desired.value)])
                     let contract = RCIRVerificationContract(observerID: observerID,
                         schema: .object(properties: ["name": .string, "namespace": .string, "challenge": .string, "value": .string], required: Array(fields.keys)),
-                        expected: expected, projection: .init(schema: schema, fields: fields))
+                        expected: expected, projection: .init(schema: schema, fields: fields), invocationBindingPath: ["invocationID"])
                     return .init(contract: contract, observer: observer,
-                        boundary: "Independent ConfigMap GET under a distinct GET-only namespace service account; real API server TLS CA, desired fields exact, assigned UID/resourceVersion retained.")
+                        boundary: "Independent ConfigMap GET under a distinct GET-only namespace service account; real API server TLS CA, desired fields and host invocation marker exact, assigned UID/resourceVersion retained.")
                 }
-            }, available: unchanged, invoke: { name, input, admit in
+            }, available: unchanged, boundInvoke: { name, input, binding, admit in
                 guard name == operation.name, unchanged() else { throw RCIRError.unavailable }
                 let desired = try KubernetesConfigMap.arguments(input, namespace: namespace)
-                let manifest: [String: Any] = ["apiVersion": "v1", "kind": "ConfigMap", "metadata": ["name": desired.name, "namespace": namespace],
+                let manifest: [String: Any] = ["apiVersion": "v1", "kind": "ConfigMap", "metadata": ["name": desired.name, "namespace": namespace,
+                    "annotations": ["rightclick.io/invocation": binding.id]],
                     "data": ["challenge": desired.challenge, "value": desired.value]]
                 let bytes = try JSONSerialization.data(withJSONObject: manifest, options: [.sortedKeys])
                 let output = try withoutActuallyEscaping(admit) { gate in
                     try command(writer, ["create", "-f", "-", "-o", "json"], input: bytes, admit: gate)
                 }
                 return try KubernetesConfigMap.normalize(output, expectedName: desired.name, namespace: namespace)
-            })
+            }, invoke: { _, _, _ in throw RCIRError.invalidContract })
     }
     static func validName(_ name: String, maximum: Int = 253) -> Bool {
         name.utf8.count <= maximum && name.range(of: "^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$", options: .regularExpression) != nil
@@ -160,8 +161,9 @@ private final class KubernetesCredential {
 
 private enum KubernetesConfigMap {
     static let schema = CapabilitySchema.object(properties: ["name": .string, "namespace": .string, "uid": .string,
-        "resourceVersion": .string, "data": .object(properties: ["challenge": .string, "value": .string], required: ["challenge", "value"])],
-        required: ["name", "namespace", "uid", "resourceVersion", "data"])
+        "resourceVersion": .string, "invocationID": .string,
+        "data": .object(properties: ["challenge": .string, "value": .string], required: ["challenge", "value"])],
+        required: ["name", "namespace", "uid", "resourceVersion", "invocationID", "data"])
     static func arguments(_ input: CapabilityValue, namespace: String) throws -> (name: String, challenge: String, value: String) {
         guard case let .object(fields) = input, case let .string(name)? = fields["name"], KubernetesCapabilityArtifactResolver.validName(name),
               case let .string(challenge)? = fields["challenge"], challenge.range(of: "^[A-Za-z0-9_-]{1,128}$", options: .regularExpression) != nil,
@@ -174,9 +176,12 @@ private enum KubernetesConfigMap {
               metadata["name"] as? String == expectedName, metadata["namespace"] as? String == namespace,
               let uid = metadata["uid"] as? String, !uid.isEmpty, uid.utf8.count <= 128,
               let version = metadata["resourceVersion"] as? String, !version.isEmpty, version.utf8.count <= 128,
+              let annotations = metadata["annotations"] as? [String: Any],
+              let marker = annotations["rightclick.io/invocation"] as? String, marker.utf8.count == 36,
+              (try? RCIRInvocationBinding(taskID: marker)) != nil,
               let fields = object["data"] as? [String: String], Set(fields.keys) == ["challenge", "value"] else { throw CapabilityABIError.invalidWire }
         let value = CapabilityValue.object(["name": .string(expectedName), "namespace": .string(namespace), "uid": .string(uid),
-            "resourceVersion": .string(version), "data": .object(fields.mapValues { .string($0) })])
+            "resourceVersion": .string(version), "invocationID": .string(marker), "data": .object(fields.mapValues { .string($0) })])
         try schema.validate(value); return value
     }
 }

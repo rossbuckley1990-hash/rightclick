@@ -62,7 +62,7 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                          "observerCredentialReference": observerReference ?? "not_configured",
                          "authorityScheme": "SCRAM-SHA-256", "runtimeExecutable": client.path,
                          "executionArtifactBinding": "host-private lifetime-managed read-only client and protected credential snapshots",
-                         "runtimeSHA256": clientDigest, "verificationRequirement": "independent consumer of exact topic/partition/offset/key/payload"],
+                         "runtimeSHA256": clientDigest, "verificationRequirement": "independent consumer of exact topic/partition/offset/key/payload and host-generated invocation header"],
             observerFactory: { name in
                 guard let reader, name.hasPrefix("publish."),
                       let metadata = acquired.first(where: { "publish." + ($0["name"] as? String ?? "") == name }),
@@ -77,11 +77,12 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                     let expected = CapabilityValue.object(["topic": .string(topic), "key": .string(desired.key), "value": .string(desired.payload)])
                     return .init(contract: .init(observerID: observerID,
                         schema: .object(properties: ["topic": .string, "key": .string, "value": .string], required: Array(fields.keys)),
-                        expected: expected, projection: .init(schema: KafkaRecord.observationSchema, fields: fields)),
+                        expected: expected, projection: .init(schema: KafkaRecord.observationSchema, fields: fields),
+                        invocationBindingPath: ["invocationID"]),
                         observer: observer,
-                        boundary: "Independent exact topic/partition/offset consumer under a distinct host-selected SASL principal; expected topic/key/UTF-8 payload bound before dispatch; full offset/partition/timestamp retained.")
+                        boundary: "Independent exact topic/partition/offset consumer under a distinct host-selected SASL principal; expected topic/key/UTF-8 payload and host invocation marker bound before dispatch; full offset/partition/timestamp/marker retained.")
                 }
-            }, available: unchanged, invoke: { name, input, admit in
+            }, available: unchanged, boundInvoke: { name, input, binding, admit in
                 guard unchanged(), name.hasPrefix("publish."), case let .object(arguments) = input,
                       case let .string(key)? = arguments["key"], case let .string(payload)? = arguments["payload"],
                       !key.isEmpty, key.utf8.count <= 4096, payload.utf8.count <= 131_072 else { throw CapabilityABIError.invalidWire }
@@ -91,6 +92,7 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                 let data = try withoutActuallyEscaping(admit) { gate in
                     try BoundedCapabilityProcess.run(executable: clientSnapshot.file,
                         arguments: ["--config", credentialSnapshot.file.path, "topic", "produce", topic, "--key=" + key,
+                                    "--header=rightclick.invocation:" + binding.id,
                                     "--format", "%V{big32}%v", "--output-format", "{\"topic\":\"%t\",\"partition\":%p,\"offset\":%o}\n",
                                     "--acks=-1", "--delivery-timeout=3s"], input: framed, admitStart: gate)
                 }
@@ -99,7 +101,7 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                       let offset = ack["offset"] as? Int64, partition >= 0, offset >= 0 else { throw CapabilityABIError.invalidWire }
                 return .object(["topic": .string(topic), "partition": .integer(Int64(partition)), "offset": .integer(offset),
                                 "key": .string(key), "value": .string(payload)])
-            })
+            }, invoke: { _, _, _ in throw RCIRError.invalidContract })
     }
 }
 
@@ -121,8 +123,8 @@ private final class KafkaCredential {
 
 private enum KafkaRecord {
     static let observationSchema = CapabilitySchema.object(properties: ["topic": .string, "partition": .integer,
-        "offset": .integer, "key": .string, "value": .string, "timestamp": .integer],
-        required: ["topic", "partition", "offset", "key", "value", "timestamp"])
+        "offset": .integer, "key": .string, "value": .string, "timestamp": .integer, "invocationID": .string],
+        required: ["topic", "partition", "offset", "key", "value", "timestamp", "invocationID"])
     static func arguments(_ input: CapabilityValue) throws -> (key: String, payload: String) {
         guard case let .object(arguments) = input, Set(arguments.keys) == ["key", "payload"],
               case let .string(key)? = arguments["key"], case let .string(payload)? = arguments["payload"],
@@ -147,16 +149,20 @@ private final class KafkaRecordObserver: RCIRObserver {
               case let .integer(offset)? = ack["offset"], offset >= 0 else { throw RCIRError.unverified }
         _ = try KafkaRecord.arguments(request.arguments)
         // ACK coordinates locate a single record only. They cannot widen the
-        // trusted topic or replace the pre-bound expected key/payload.
+        // trusted topic or replace the pre-bound expected key/payload/marker.
         let bytes = try BoundedCapabilityProcess.run(executable: client.file,
             arguments: ["--config", credential.snapshot.file.path, "topic", "consume", topic,
                         "-p", String(partition), "-o", String(offset), "-n", "1", "--format", "json", "--pretty-print=false"], timeout: 5)
         guard let observed = try JSONSerialization.jsonObject(with: bytes) as? [String: Any],
               observed["topic"] as? String == topic, observed["partition"] as? Int64 == partition,
               observed["offset"] as? Int64 == offset, let key = observed["key"] as? String,
-              let value = observed["value"] as? String, let timestamp = observed["timestamp"] as? Int64 else { throw RCIRError.unverified }
+              let value = observed["value"] as? String, let timestamp = observed["timestamp"] as? Int64,
+              let headers = observed["headers"] as? [[String: Any]], headers.count <= 256 else { throw RCIRError.unverified }
+        let markers = headers.filter { $0["key"] as? String == "rightclick.invocation" }
+        guard markers.count == 1, let marker = markers[0]["value"] as? String, marker.utf8.count == 36,
+              (try? RCIRInvocationBinding(taskID: marker)) != nil else { throw RCIRError.unverified }
         let result = CapabilityValue.object(["topic": .string(topic), "key": .string(key), "value": .string(value),
-            "partition": .integer(partition), "offset": .integer(offset), "timestamp": .integer(timestamp)])
+            "partition": .integer(partition), "offset": .integer(offset), "timestamp": .integer(timestamp), "invocationID": .string(marker)])
         try KafkaRecord.observationSchema.validate(result); return result
     }
 }

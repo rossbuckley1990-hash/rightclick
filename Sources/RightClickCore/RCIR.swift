@@ -56,6 +56,22 @@ public struct RCIRTaskModel: Sendable {
     }
 }
 
+/// Host-generated invocation identity handed to a trusted substrate compiler at
+/// dispatch. Provider acknowledgements never choose this marker or expectation.
+public struct RCIRInvocationBinding: Sendable {
+    public let id: String
+    public init(taskID: String) throws {
+        guard let uuid = UUID(uuidString: taskID), uuid.uuidString.utf8.elementsEqual(taskID.utf8) else {
+            throw RCIRError.invalidIdentity
+        }
+        id = taskID
+    }
+    fileprivate func matches(_ value: CapabilityValue) -> Bool {
+        guard case let .string(observed) = value else { return false }
+        return observed.utf8.elementsEqual(id.utf8)
+    }
+}
+
 /// Exact host-declared projections allow unknown effect metadata (such as an
 /// assigned offset or resource UID) to remain in signed observation evidence
 /// while comparing only pre-bound desired fields. No wildcard or coercion.
@@ -99,10 +115,12 @@ public struct RCIRVerificationContract: Sendable {
     public let schema: CapabilitySchema
     public let expected: CapabilityValue
     public let projection: RCIRObservationProjection?
+    public let invocationBindingPath: [String]?
     public init(observerID: String, schema: CapabilitySchema, expected: CapabilityValue,
-                projection: RCIRObservationProjection? = nil) {
+                projection: RCIRObservationProjection? = nil, invocationBindingPath: [String]? = nil) {
         self.observerID = observerID; self.schema = schema; self.expected = expected
         self.projection = projection
+        self.invocationBindingPath = invocationBindingPath
     }
 }
 
@@ -133,6 +151,13 @@ public struct RCIRContract: Sendable {
             ]
             if let projection = verification.projection {
                 fields["projection"] = try projection.canonicalValue(expected: verification.expected)
+            }
+            if let path = verification.invocationBindingPath {
+                guard !path.isEmpty, path.count <= 32,
+                      path.allSatisfy({ !$0.isEmpty && $0.utf8.count <= 4096 && !$0.contains("*") && $0.rangeOfCharacter(from: .controlCharacters) == nil }) else {
+                    throw RCIRError.invalidContract
+                }
+                fields["invocationBinding"] = .array(path.map { .string($0) })
             }
             check = .object(fields)
         }
@@ -522,7 +547,16 @@ public struct RCIRTask: Sendable {
         try contract.schema.validate(matchingValue)
         let data = try value.canonicalData()
         guard data.count <= 131_072 else { throw RCIRError.invalidLimit }
-        let matched = try matchingValue.canonicalData() == contract.expected.canonicalData()
+        var markerMatches = true
+        if let path = contract.invocationBindingPath {
+            var marker = value
+            for component in path {
+                guard case let .object(fields) = marker, let next = fields[component] else { throw RCIRError.unverified }
+                marker = next
+            }
+            markerMatches = try RCIRInvocationBinding(taskID: id.uuidString).matches(marker)
+        }
+        let matched = try markerMatches && matchingValue.canonicalData() == contract.expected.canonicalData()
         observation = data; observedAt = now; lastTime = now
         outcome = matched ? .succeeded : .failed
     }
