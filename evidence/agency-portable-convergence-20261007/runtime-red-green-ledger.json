@@ -178,5 +178,22 @@
       "Real component not provisioned; no source-race GREEN claimed by this skip.",
       "Real component toolchain not provisioned; no WASM GREEN claimed by this skip."
     ]
+  },
+  "nativeProvenanceInfrastructureRed": {
+    "run": 37651407101,
+    "sourceSHA": "82f7ec2232394049c89e6c424c3374ef0758404c",
+    "Windows": {
+      "job": 112895389904,
+      "failure": "Standalone Swift JIT failed missing WinSDK/CRT forced-load symbols before actual product compile.",
+      "repair": "Compile the availability probe with native swiftc and run its exe instead of JIT.",
+      "rawEvidence": "native-ci-windows-red-82f7ec2.log"
+    },
+    "Linux": {
+      "job": 112895390247,
+      "failure": "Explicit provenance git rev-parse hit Actions container checkout ownership protection before tests.",
+      "repair": "Per-command safe.directory binds exactly Actions host-owned GITHUB_WORKSPACE; no persistent/global wildcard trust.",
+      "rawEvidence": "native-ci-linux-red-82f7ec2.log"
+    },
+    "status": "Infrastructure gate repairs pending actual CI; no runtime GREEN claim"
   }
 }

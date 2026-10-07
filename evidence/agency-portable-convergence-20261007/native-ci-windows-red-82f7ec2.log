@@ -1,0 +1,845 @@
+﻿2026-10-07T16:21:44.7818246Z Current runner version: '2.337.0'
+2026-10-07T16:21:44.7843503Z ##[group]Runner Image Provisioner
+2026-10-07T16:21:44.7844363Z Hosted Compute Agent
+2026-10-07T16:21:44.7844914Z Version: 20261002.596
+2026-10-07T16:21:44.7845516Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-07T16:21:44.7846205Z Build Date: 2026-10-02T22:28:27Z
+2026-10-07T16:21:44.7846851Z Worker ID: {5f78daa8-87ee-40f4-9d26-19da36275bd0}
+2026-10-07T16:21:44.7847565Z Region: centralus
+2026-10-07T16:21:44.7848098Z Cloud: Azure
+2026-10-07T16:21:44.7848606Z ##[endgroup]
+2026-10-07T16:21:44.7849887Z ##[group]Operating System
+2026-10-07T16:21:44.7850505Z Microsoft Windows Server 2022
+2026-10-07T16:21:44.7851097Z 10.0.20348
+2026-10-07T16:21:44.7851568Z Datacenter
+2026-10-07T16:21:44.7852069Z ##[endgroup]
+2026-10-07T16:21:44.7852570Z ##[group]Runner Image
+2026-10-07T16:21:44.7853109Z Image: windows-2022
+2026-10-07T16:21:44.7853726Z Version: 20261004.326.1
+2026-10-07T16:21:44.7855982Z Included Software: https://github.com/actions/runner-images/blob/win22/20261004.326/images/windows/Windows2022-Readme.md
+2026-10-07T16:21:44.7857554Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261004.326
+2026-10-07T16:21:44.7858450Z ##[endgroup]
+2026-10-07T16:21:44.7859533Z ##[group]GITHUB_TOKEN Permissions
+2026-10-07T16:21:44.7861574Z Contents: read
+2026-10-07T16:21:44.7862148Z Metadata: read
+2026-10-07T16:21:44.7862654Z ##[endgroup]
+2026-10-07T16:21:44.7864734Z Secret source: Actions
+2026-10-07T16:21:44.7865598Z Cache mode: write
+2026-10-07T16:21:44.7866293Z Prepare workflow directory
+2026-10-07T16:21:44.8220064Z Prepare all required actions
+2026-10-07T16:21:44.8270027Z Getting action download info
+2026-10-07T16:21:45.0846674Z Download action repository 'actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd' (SHA:de0fac2e4500dabe0009e67214ff5f5447ce83dd)
+2026-10-07T16:21:45.2018168Z Download action repository 'compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057' (SHA:bbae8ce86bac5a3449f3992b3d88bc4ca25f2057)
+2026-10-07T16:21:45.4515552Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-07T16:21:45.9075860Z Getting action download info
+2026-10-07T16:21:46.0481060Z Download action repository 'actions/cache@v6' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+2026-10-07T16:21:46.2375581Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-07T16:21:46.3613297Z Download action repository 'compnerd/gha-setup-vsdevenv@f1ba60d553a3216ce1b89abe0201213536bc7557' (SHA:f1ba60d553a3216ce1b89abe0201213536bc7557)
+2026-10-07T16:21:46.7402551Z Complete job name: windows
+2026-10-07T16:21:47.0011986Z ##[group]Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+2026-10-07T16:21:47.0015479Z with:
+2026-10-07T16:21:47.0016375Z   ref: 82f7ec2232394049c89e6c424c3374ef0758404c
+2026-10-07T16:21:47.0017622Z   repository: rossbuckley1990-hash/rightclick
+2026-10-07T16:21:47.0025511Z   token: ***
+2026-10-07T16:21:47.0026380Z   ssh-strict: true
+2026-10-07T16:21:47.0027316Z   ssh-user: git
+2026-10-07T16:21:47.0028217Z   persist-credentials: true
+2026-10-07T16:21:47.0029135Z   clean: true
+2026-10-07T16:21:47.0030052Z   sparse-checkout-cone-mode: true
+2026-10-07T16:21:47.0031111Z   fetch-depth: 1
+2026-10-07T16:21:47.0031972Z   fetch-tags: false
+2026-10-07T16:21:47.0032926Z   show-progress: true
+2026-10-07T16:21:47.0033815Z   lfs: false
+2026-10-07T16:21:47.0034714Z   submodules: false
+2026-10-07T16:21:47.0035656Z   set-safe-directory: true
+2026-10-07T16:21:47.0037005Z ##[endgroup]
+2026-10-07T16:21:47.1674916Z Syncing repository: rossbuckley1990-hash/rightclick
+2026-10-07T16:21:47.1677791Z ##[group]Getting Git version info
+2026-10-07T16:21:47.1678900Z Working directory is 'D:\a\rightclick\rightclick'
+2026-10-07T16:21:47.2633546Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-07T16:21:47.8906031Z git version 2.56.0.windows.1
+2026-10-07T16:21:47.8954078Z ##[endgroup]
+2026-10-07T16:21:47.8976506Z Temporarily overriding HOME='D:\a\_temp\30e3099d-17e0-4bda-aa09-a935a69f588c' before making global git config changes
+2026-10-07T16:21:47.8978689Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-07T16:21:47.8986838Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\rightclick\rightclick
+2026-10-07T16:21:47.9853070Z Deleting the contents of 'D:\a\rightclick\rightclick'
+2026-10-07T16:21:47.9860542Z ##[group]Initializing the repository
+2026-10-07T16:21:47.9869575Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\rightclick\rightclick
+2026-10-07T16:21:48.1203540Z Initialized empty Git repository in D:/a/rightclick/rightclick/.git/
+2026-10-07T16:21:48.1248929Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/rossbuckley1990-hash/rightclick
+2026-10-07T16:21:48.2119614Z ##[endgroup]
+2026-10-07T16:21:48.2121083Z ##[group]Disabling automatic garbage collection
+2026-10-07T16:21:48.2128921Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-07T16:21:48.2451821Z ##[endgroup]
+2026-10-07T16:21:48.2453199Z ##[group]Setting up auth
+2026-10-07T16:21:48.2454243Z Removing SSH command configuration
+2026-10-07T16:21:48.2464860Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-07T16:21:48.2799252Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-07T16:21:50.7330127Z Removing HTTP extra header
+2026-10-07T16:21:50.7341752Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-07T16:21:50.7692747Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-07T16:21:51.3304149Z Removing includeIf entries pointing to credentials config files
+2026-10-07T16:21:51.3316878Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-07T16:21:51.3636435Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-07T16:21:51.9267269Z [command]"C:\Program Files\Git\bin\git.exe" config --file D:\a\_temp\git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-07T16:21:51.9594833Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/rightclick/rightclick/.git.path D:\a\_temp\git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:21:51.9917887Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:D:/a/rightclick/rightclick/.git/worktrees/*.path D:\a\_temp\git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:21:52.0341480Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:21:52.0679114Z [command]"C:\Program Files\Git\bin\git.exe" config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:21:52.1008607Z ##[endgroup]
+2026-10-07T16:21:52.1009131Z ##[group]Fetching the repository
+2026-10-07T16:21:52.1022325Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 82f7ec2232394049c89e6c424c3374ef0758404c
+2026-10-07T16:21:54.2152925Z From https://github.com/rossbuckley1990-hash/rightclick
+2026-10-07T16:21:54.2156819Z  * branch            82f7ec2232394049c89e6c424c3374ef0758404c -> FETCH_HEAD
+2026-10-07T16:21:54.2207740Z [command]"C:\Program Files\Git\bin\git.exe" rev-parse --verify --quiet 82f7ec2232394049c89e6c424c3374ef0758404c^{object}
+2026-10-07T16:21:54.2696889Z 82f7ec2232394049c89e6c424c3374ef0758404c
+2026-10-07T16:21:54.2733171Z ##[endgroup]
+2026-10-07T16:21:54.2733984Z ##[group]Determining the checkout info
+2026-10-07T16:21:54.2736481Z ##[endgroup]
+2026-10-07T16:21:54.2745725Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-07T16:21:54.3300021Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-07T16:21:54.3632025Z ##[group]Checking out the ref
+2026-10-07T16:21:54.3642196Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force 82f7ec2232394049c89e6c424c3374ef0758404c
+2026-10-07T16:21:54.7720199Z Note: switching to '82f7ec2232394049c89e6c424c3374ef0758404c'.
+2026-10-07T16:21:54.7720797Z 
+2026-10-07T16:21:54.7721093Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-07T16:21:54.7721889Z changes and commit them, and you can discard any commits you make in this
+2026-10-07T16:21:54.7722641Z state without impacting any branches by switching back to a branch.
+2026-10-07T16:21:54.7724050Z 
+2026-10-07T16:21:54.7724701Z If you want to create a new branch to retain commits you create, you may
+2026-10-07T16:21:54.7725572Z do so (now or later) by using -c with the switch command. Example:
+2026-10-07T16:21:54.7726019Z 
+2026-10-07T16:21:54.7726206Z   git switch -c <new-branch-name>
+2026-10-07T16:21:54.7726570Z 
+2026-10-07T16:21:54.7726765Z Or undo this operation with:
+2026-10-07T16:21:54.7727117Z 
+2026-10-07T16:21:54.7727291Z   git switch -
+2026-10-07T16:21:54.7727472Z 
+2026-10-07T16:21:54.7727848Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-07T16:21:54.7728346Z 
+2026-10-07T16:21:54.7728783Z HEAD is now at 82f7ec2 Confine Apple run-loop import and retain exact native runtime evidence
+2026-10-07T16:21:54.7803348Z ##[endgroup]
+2026-10-07T16:21:54.8286898Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-07T16:21:54.8601275Z 82f7ec2232394049c89e6c424c3374ef0758404c
+2026-10-07T16:21:54.9267083Z ##[group]Run compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+2026-10-07T16:21:54.9267770Z with:
+2026-10-07T16:21:54.9268069Z   swift-version: swift-6.2-release
+2026-10-07T16:21:54.9268417Z   swift-build: 6.2-RELEASE
+2026-10-07T16:21:54.9268744Z   source: swift.org
+2026-10-07T16:21:54.9269055Z   build_arch: amd64
+2026-10-07T16:21:54.9269370Z   update-sdk-modules: false
+2026-10-07T16:21:54.9269688Z   cache: false
+2026-10-07T16:21:54.9269956Z ##[endgroup]
+2026-10-07T16:21:54.9346941Z ##[start-action display=Handle deprecated parameters and validate inputs;id=__compnerd_gha-setup-swift.__run]
+2026-10-07T16:21:54.9510204Z ##[group]Run # Handle backward compatibility for deprecated parameters
+2026-10-07T16:21:54.9510958Z [36;1m# Handle backward compatibility for deprecated parameters[0m
+2026-10-07T16:21:54.9511449Z [36;1m$SwiftVersion = "swift-6.2-release"[0m
+2026-10-07T16:21:54.9511813Z [36;1m$SwiftBuild = "6.2-RELEASE"[0m
+2026-10-07T16:21:54.9512259Z [36;1m[0m
+2026-10-07T16:21:54.9512668Z [36;1m# Ensure that only the deprecated or the new parameter set is used at one time.[0m
+2026-10-07T16:21:54.9513115Z [36;1m$errors = @([0m
+2026-10-07T16:21:54.9513885Z [36;1m  if (![String]::IsNullOrEmpty("") -and ![String]::IsNullOrEmpty($SwiftVersion)) { "Cannot specify both 'branch' (deprecated) and 'swift-version'. Please use only 'swift-version'." }[0m
+2026-10-07T16:21:54.9515004Z [36;1m  if (![String]::IsNullOrEmpty("") -and ![String]::IsNullOrEmpty($SwiftBuild)) { "Cannot specify both 'tag' (deprecated) and 'swift-build'. Please use only 'swift-build'." }[0m
+2026-10-07T16:21:54.9515747Z [36;1m)[0m
+2026-10-07T16:21:54.9516105Z [36;1mforeach ($error in $errors) { Write-Host "::error::$error" }[0m
+2026-10-07T16:21:54.9516767Z [36;1mif ($errors) { exit 1 }[0m
+2026-10-07T16:21:54.9517107Z [36;1m[0m
+2026-10-07T16:21:54.9517425Z [36;1m# Handle deprecated parameters with warnings.[0m
+2026-10-07T16:21:54.9518136Z [36;1mif (![String]::IsNullOrEmpty("")) {[0m
+2026-10-07T16:21:54.9518806Z [36;1m  Write-Host "::warning::The 'branch' input is deprecated and will be removed in a future version. Please use 'swift-version' instead."[0m
+2026-10-07T16:21:54.9519496Z [36;1m  $SwiftVersion = ""[0m
+2026-10-07T16:21:54.9519827Z [36;1m}[0m
+2026-10-07T16:21:54.9520086Z [36;1m[0m
+2026-10-07T16:21:54.9520388Z [36;1mif (![String]::IsNullOrEmpty("")) {[0m
+2026-10-07T16:21:54.9521002Z [36;1m  Write-Host "::warning::The 'tag' input is deprecated and will be removed in a future version. Please use 'swift-build' instead."[0m
+2026-10-07T16:21:54.9521597Z [36;1m  $SwiftBuild = ""[0m
+2026-10-07T16:21:54.9521928Z [36;1m}[0m
+2026-10-07T16:21:54.9522328Z [36;1m[0m
+2026-10-07T16:21:54.9522642Z [36;1mswitch ("swift.org") {[0m
+2026-10-07T16:21:54.9522977Z [36;1m  "swift.org" {[0m
+2026-10-07T16:21:54.9523284Z [36;1m    if (-not $SwiftVersion) {[0m
+2026-10-07T16:21:54.9523774Z [36;1m      Write-Host "::error::swift-version is required when using swift.org source"[0m
+2026-10-07T16:21:54.9524255Z [36;1m      exit 1[0m
+2026-10-07T16:21:54.9524537Z [36;1m    }[0m
+2026-10-07T16:21:54.9524825Z [36;1m[0m
+2026-10-07T16:21:54.9525117Z [36;1m    if (-not $SwiftBuild) {[0m
+2026-10-07T16:21:54.9525598Z [36;1m      Write-Host "::error::swift-build is required when using swift.org source"[0m
+2026-10-07T16:21:54.9526077Z [36;1m      exit 1[0m
+2026-10-07T16:21:54.9526334Z [36;1m    }[0m
+2026-10-07T16:21:54.9526622Z [36;1m  }[0m
+2026-10-07T16:21:54.9526873Z [36;1m[0m
+2026-10-07T16:21:54.9527188Z [36;1m  "custom" {[0m
+2026-10-07T16:21:54.9527469Z [36;1m    if (-not "") {[0m
+2026-10-07T16:21:54.9527850Z [36;1m      Write-Host "::error::github-repo is required when using custom source"[0m
+2026-10-07T16:21:54.9528398Z [36;1m      exit 1[0m
+2026-10-07T16:21:54.9528672Z [36;1m    }[0m
+2026-10-07T16:21:54.9528946Z [36;1m[0m
+2026-10-07T16:21:54.9529208Z [36;1m    if (-not "") {[0m
+2026-10-07T16:21:54.9532121Z [36;1m      Write-Host "::error::release-tag-name is required when using custom source"[0m
+2026-10-07T16:21:54.9532670Z [36;1m      exit 1[0m
+2026-10-07T16:21:54.9532989Z [36;1m    }[0m
+2026-10-07T16:21:54.9533263Z [36;1m[0m
+2026-10-07T16:21:54.9533556Z [36;1m    if (-not "") {[0m
+2026-10-07T16:21:54.9534028Z [36;1m      Write-Host "::error::release-asset-name is required when using custom source"[0m
+2026-10-07T16:21:54.9534519Z [36;1m      exit 1[0m
+2026-10-07T16:21:54.9534803Z [36;1m    }[0m
+2026-10-07T16:21:54.9535051Z [36;1m  }[0m
+2026-10-07T16:21:54.9535306Z [36;1m}[0m
+2026-10-07T16:21:54.9535578Z [36;1m[0m
+2026-10-07T16:21:54.9535914Z [36;1m# Export resolved values for use in subsequent steps.[0m
+2026-10-07T16:21:54.9536563Z [36;1mWrite-Output "RESOLVED_SWIFT_VERSION=$SwiftVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append[0m
+2026-10-07T16:21:54.9537419Z [36;1mWrite-Output "RESOLVED_SWIFT_BUILD=$SwiftBuild" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append[0m
+2026-10-07T16:21:54.9665944Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-07T16:21:54.9666411Z ##[endgroup]
+2026-10-07T16:21:55.4421388Z ##[end-action id=__compnerd_gha-setup-swift.__run;outcome=success;conclusion=success;duration_ms=507]
+2026-10-07T16:21:55.4424643Z ##[start-action display=Validate Linux distribution;id=__compnerd_gha-setup-swift.__run_2]
+2026-10-07T16:21:55.4441909Z ##[end-action id=__compnerd_gha-setup-swift.__run_2;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:21:55.4444614Z ##[start-action display=Generate cache key (Windows);id=__compnerd_gha-setup-swift.cache-key]
+2026-10-07T16:21:55.4453604Z ##[end-action id=__compnerd_gha-setup-swift.cache-key;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:21:55.4456282Z ##[start-action display=Generate cache key (Linux/macOS);id=__compnerd_gha-setup-swift.cache-key-posix]
+2026-10-07T16:21:55.4463824Z ##[end-action id=__compnerd_gha-setup-swift.cache-key-posix;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:21:55.4466351Z ##[start-action display=Restore cached toolchain;id=__compnerd_gha-setup-swift.cache-restore]
+2026-10-07T16:21:55.4472298Z ##[end-action id=__compnerd_gha-setup-swift.cache-restore;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:21:55.4475745Z ##[start-action display=Fetch installer from GitHub release (Windows);id=__compnerd_gha-setup-swift.__run_3]
+2026-10-07T16:21:55.4482483Z ##[end-action id=__compnerd_gha-setup-swift.__run_3;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:21:55.4485241Z ##[start-action display=Fetch installer from GitHub release (Linux/macOS);id=__compnerd_gha-setup-swift.__run_4]
+2026-10-07T16:21:55.4490580Z ##[end-action id=__compnerd_gha-setup-swift.__run_4;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:21:55.4492723Z ##[start-action display=Fetch installer from swift.org;id=__compnerd_gha-setup-swift.__run_5]
+2026-10-07T16:21:55.4623439Z ##[group]Run # Download the appropriate installer
+2026-10-07T16:21:55.4623978Z [36;1m# Download the appropriate installer[0m
+2026-10-07T16:21:55.4624359Z [36;1m$URL = if ("amd64" -eq "amd64") {[0m
+2026-10-07T16:21:55.4626271Z [36;1m  "https://download.swift.org/${env:RESOLVED_SWIFT_VERSION}/windows10/swift-${env:RESOLVED_SWIFT_BUILD}/swift-${env:RESOLVED_SWIFT_BUILD}-windows10.exe"[0m
+2026-10-07T16:21:55.4627059Z [36;1m} else {[0m
+2026-10-07T16:21:55.4627749Z [36;1m  "https://download.swift.org/${env:RESOLVED_SWIFT_VERSION}/windows10-amd64/swift-${env:RESOLVED_SWIFT_BUILD}/swift-${env:RESOLVED_SWIFT_BUILD}-windows10-amd64.exe"[0m
+2026-10-07T16:21:55.4628502Z [36;1m}[0m
+2026-10-07T16:21:55.4628792Z [36;1m[0m
+2026-10-07T16:21:55.4629176Z [36;1m$Path = [IO.Path]::Combine(${env:Temp}, "installer.exe")[0m
+2026-10-07T16:21:55.4629577Z [36;1m[0m
+2026-10-07T16:21:55.4629918Z [36;1mWrite-Host "Downloading package from $URL to $Path..."[0m
+2026-10-07T16:21:55.4630343Z [36;1mtry {[0m
+2026-10-07T16:21:55.4631543Z [36;1m  (New-Object System.Net.WebClient).DownloadFile($URL, $Path)[0m
+2026-10-07T16:21:55.4631984Z [36;1m} catch {[0m
+2026-10-07T16:21:55.4632411Z [36;1m  Write-Host "::error::Package download failed: $($_.Exception.Message)"[0m
+2026-10-07T16:21:55.4632892Z [36;1m}[0m
+2026-10-07T16:21:55.4670151Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-07T16:21:55.4670608Z env:
+2026-10-07T16:21:55.4670931Z   RESOLVED_SWIFT_VERSION: swift-6.2-release
+2026-10-07T16:21:55.4671295Z   RESOLVED_SWIFT_BUILD: 6.2-RELEASE
+2026-10-07T16:21:55.4671650Z ##[endgroup]
+2026-10-07T16:21:55.7976663Z Downloading package from https://download.swift.org/swift-6.2-release/windows10/swift-6.2-RELEASE/swift-6.2-RELEASE-windows10.exe to C:\Users\RUNNER~1\AppData\Local\Temp\installer.exe...
+2026-10-07T16:21:58.9672500Z ##[end-action id=__compnerd_gha-setup-swift.__run_5;outcome=success;conclusion=success;duration_ms=3517]
+2026-10-07T16:21:58.9676084Z ##[start-action display=Fetch installer from swift.org (Linux);id=__compnerd_gha-setup-swift.__run_6]
+2026-10-07T16:21:58.9682399Z ##[end-action id=__compnerd_gha-setup-swift.__run_6;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:21:58.9684467Z ##[start-action display=Fetch installer from swift.org (macOS);id=__compnerd_gha-setup-swift.__run_7]
+2026-10-07T16:21:58.9689255Z ##[end-action id=__compnerd_gha-setup-swift.__run_7;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:21:58.9691381Z ##[start-action display=Save toolchain to cache;id=__compnerd_gha-setup-swift.__actions_cache]
+2026-10-07T16:21:58.9695692Z ##[end-action id=__compnerd_gha-setup-swift.__actions_cache;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:21:58.9699437Z ##[start-action display=Install Swift;id=__compnerd_gha-setup-swift.install-swift]
+2026-10-07T16:21:58.9826459Z ##[group]Run # Perform installation
+2026-10-07T16:21:58.9826894Z [36;1m# Perform installation[0m
+2026-10-07T16:21:58.9827337Z [36;1m$Installer = [IO.Path]::Combine(${env:Temp}, "installer.exe")[0m
+2026-10-07T16:21:58.9827956Z [36;1m$Arguments = "/quiet /log ${env:Temp}\install.log ".Split(" ", [StringSplitOptions]"RemoveEmptyEntries")[0m
+2026-10-07T16:21:58.9828473Z [36;1m[0m
+2026-10-07T16:21:58.9828889Z [36;1mWrite-Host "::debug::Installer Arguments: $($Arguments -join ' ')"[0m
+2026-10-07T16:21:58.9829309Z [36;1mtry {[0m
+2026-10-07T16:21:58.9829827Z [36;1m  $Process = Start-Process -FilePath $Installer -ArgumentList $Arguments -Wait -PassThru -Verb RunAs[0m
+2026-10-07T16:21:58.9830397Z [36;1m  switch ($Process.ExitCode) {[0m
+2026-10-07T16:21:58.9830838Z [36;1m    0 { Write-Host "::debug::Installation successful" }[0m
+2026-10-07T16:21:58.9831371Z [36;1m    3010 { Write-Host "::notice::Installation successful; reboot required"}[0m
+2026-10-07T16:21:58.9831824Z [36;1m    default {[0m
+2026-10-07T16:21:58.9832299Z [36;1m      Write-Host "::error::Installation process returned unexpected exit code: $_"[0m
+2026-10-07T16:21:58.9832774Z [36;1m      exit $_[0m
+2026-10-07T16:21:58.9833052Z [36;1m    }[0m
+2026-10-07T16:21:58.9833325Z [36;1m  }[0m
+2026-10-07T16:21:58.9833596Z [36;1m} catch {[0m
+2026-10-07T16:21:58.9833998Z [36;1m  Write-Host "::error::Installation failed: $($_.Exception.Message)"[0m
+2026-10-07T16:21:58.9834429Z [36;1m  exit 1[0m
+2026-10-07T16:21:58.9834692Z [36;1m}[0m
+2026-10-07T16:21:58.9835008Z [36;1m[0m
+2026-10-07T16:21:58.9835372Z [36;1mforeach ($level in "Machine", "User") {[0m
+2026-10-07T16:21:58.9835958Z [36;1m  [Environment]::GetEnvironmentVariables($level).GetEnumerator() | ForEach-Object {[0m
+2026-10-07T16:21:58.9836581Z [36;1m    # For Path variables, append the new values, if they're not already in there[0m
+2026-10-07T16:21:58.9837062Z [36;1m    if ($_.Name -eq "Path") {[0m
+2026-10-07T16:21:58.9837518Z [36;1m      $_.Value = ("${env:Path};$($_.Value)" -Split ';' | Select -Unique) -Join ';'[0m
+2026-10-07T16:21:58.9837949Z [36;1m    }[0m
+2026-10-07T16:21:58.9838361Z [36;1m    $_[0m
+2026-10-07T16:21:58.9838739Z [36;1m  } | Set-Content -Path { "Env:$($_.Name)" }[0m
+2026-10-07T16:21:58.9839060Z [36;1m}[0m
+2026-10-07T16:21:58.9839873Z [36;1m[0m
+2026-10-07T16:21:58.9840187Z [36;1m# `GITHUB_PATH` prepends entries, so reverse them.[0m
+2026-10-07T16:21:58.9840666Z [36;1m$Paths = @($env:Path -Split ';' | Select -Unique)[0m
+2026-10-07T16:21:58.9841055Z [36;1m[Array]::Reverse($Paths)[0m
+2026-10-07T16:21:58.9841471Z [36;1m$Paths | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8[0m
+2026-10-07T16:21:58.9842026Z [36;1m# Clear the original path via `GITHUB_ENV` and filter it when copying so it doesn't[0m
+2026-10-07T16:21:58.9842592Z [36;1m# double up with the entries from `GITHUB_PATH`[0m
+2026-10-07T16:21:58.9843125Z [36;1mWrite-Output "Path=" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append[0m
+2026-10-07T16:21:58.9844024Z [36;1mGet-ChildItem Env: | Where-Object { $_.Name -ne "Path" } | ForEach-Object { echo "$($_.Name)=$($_.Value)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append }[0m
+2026-10-07T16:21:58.9882690Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-07T16:21:58.9883132Z env:
+2026-10-07T16:21:58.9883469Z   RESOLVED_SWIFT_VERSION: swift-6.2-release
+2026-10-07T16:21:58.9883843Z   RESOLVED_SWIFT_BUILD: 6.2-RELEASE
+2026-10-07T16:21:58.9884171Z ##[endgroup]
+2026-10-07T16:23:18.0851435Z ##[end-action id=__compnerd_gha-setup-swift.install-swift;outcome=success;conclusion=success;duration_ms=79115]
+2026-10-07T16:23:18.0855687Z ##[start-action display=Upload Error Logs;id=__compnerd_gha-setup-swift.__actions_upload-artifact]
+2026-10-07T16:23:18.0864921Z ##[end-action id=__compnerd_gha-setup-swift.__actions_upload-artifact;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:23:18.0867994Z ##[start-action display=Check Swift version;id=__compnerd_gha-setup-swift.swift-version]
+2026-10-07T16:23:18.0997536Z ##[group]Run $Output = swift --version
+2026-10-07T16:23:18.0998041Z [36;1m$Output = swift --version[0m
+2026-10-07T16:23:18.0998809Z [36;1mif ($LASTEXITCODE -ne 0) {[0m
+2026-10-07T16:23:18.0999251Z [36;1m  Write-Host "::error::Swift exited with code $LASTEXITCODE"[0m
+2026-10-07T16:23:18.0999706Z [36;1m  exit 1[0m
+2026-10-07T16:23:18.1000013Z [36;1m}[0m
+2026-10-07T16:23:18.1000296Z [36;1mif ($Output.Length -eq 0) {[0m
+2026-10-07T16:23:18.1000678Z [36;1m  Write-Host "::error::`swift --version` output is empty"[0m
+2026-10-07T16:23:18.1001100Z [36;1m  exit 1[0m
+2026-10-07T16:23:18.1001404Z [36;1m}[0m
+2026-10-07T16:23:18.1001746Z [36;1m$Match = ([regex]"\d+.\d+(.\d+)?").Match($Output)[0m
+2026-10-07T16:23:18.1002186Z [36;1mif ($Match.Success) {[0m
+2026-10-07T16:23:18.1002577Z [36;1m  $SwiftVersion = [System.Version]($Match.Groups[0].Value)[0m
+2026-10-07T16:23:18.1003308Z [36;1m  Write-Output is_newer_than_5_9=$($SwiftVersion -gt [System.Version]"5.9") | Out-File $env:GITHUB_OUTPUT -Append -Encoding UTF8[0m
+2026-10-07T16:23:18.1003907Z [36;1m}[0m
+2026-10-07T16:23:18.1012320Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-07T16:23:18.1012767Z env:
+2026-10-07T16:23:18.1013066Z   RESOLVED_SWIFT_VERSION: swift-6.2-release
+2026-10-07T16:23:18.1013469Z   RESOLVED_SWIFT_BUILD: 6.2-RELEASE
+2026-10-07T16:23:18.1013795Z   Path: 
+2026-10-07T16:23:18.1014181Z   ACTIONS_ORCHESTRATION_ID: ee23f96e-011a-806b-9595-fa527d7332c4.windows.__default
+2026-10-07T16:23:18.1014742Z   ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE: C:\actionarchivecache\
+2026-10-07T16:23:18.1015168Z   ACTIONS_RUNNER_RETURN_JOB_RESULT_FOR_HOSTED: 1
+2026-10-07T16:23:18.1015619Z   AGENT_TOOLSDIRECTORY: C:\hostedtoolcache\windows
+2026-10-07T16:23:18.1016012Z   ALLUSERSPROFILE: C:\ProgramData
+2026-10-07T16:23:18.1016373Z   ANDROID_HOME: C:\Android\android-sdk
+2026-10-07T16:23:18.1016800Z   ANDROID_NDK: C:\Android\android-sdk\ndk\27.3.13750724
+2026-10-07T16:23:18.1017240Z   ANDROID_NDK_HOME: C:\Android\android-sdk\ndk\27.3.13750724
+2026-10-07T16:23:18.1017864Z   ANDROID_NDK_LATEST_HOME: C:\Android\android-sdk\ndk\30.0.16248370
+2026-10-07T16:23:18.1018335Z   ANDROID_NDK_ROOT: C:\Android\android-sdk\ndk\27.3.13750724
+2026-10-07T16:23:18.1018717Z   ANDROID_SDK_ROOT: C:\Android\android-sdk
+2026-10-07T16:23:18.1019233Z   ANT_HOME: C:\ProgramData\chocolatey\lib\ant\tools\apache-ant-1.10.18
+2026-10-07T16:23:18.1019699Z   APPDATA: C:\Users\runneradmin\AppData\Roaming
+2026-10-07T16:23:18.1020105Z   AZ_DEVOPS_GLOBAL_CONFIG_DIR: C:\azureDevOpsCli
+2026-10-07T16:23:18.1020482Z   AZURE_CONFIG_DIR: C:\azureCli
+2026-10-07T16:23:18.1020837Z   AZURE_DEVOPS_CACHE_DIR: C:\azureDevOpsCli\cache
+2026-10-07T16:23:18.1021351Z   AZURE_EXTENSION_DIR: C:\Program Files\Common Files\AzureCliExtensionDirectory
+2026-10-07T16:23:18.1021828Z   CABAL_DIR: C:\cabal
+2026-10-07T16:23:18.1022147Z   ChocolateyInstall: C:\ProgramData\chocolatey
+2026-10-07T16:23:18.1022614Z   ChromeWebDriver: C:\SeleniumWebDrivers\ChromeDriver
+2026-10-07T16:23:18.1023021Z   CI: true
+2026-10-07T16:23:18.1023341Z   COBERTURA_HOME: C:\cobertura-2.1.1
+2026-10-07T16:23:18.1023708Z   CommonProgramFiles: C:\Program Files\Common Files
+2026-10-07T16:23:18.1024158Z   CommonProgramFiles(x86): C:\Program Files (x86)\Common Files
+2026-10-07T16:23:18.1024610Z   CommonProgramW6432: C:\Program Files\Common Files
+2026-10-07T16:23:18.1024987Z   COMPUTERNAME: runnervmtn0fv
+2026-10-07T16:23:18.1025335Z   ComSpec: C:\Windows\system32\cmd.exe
+2026-10-07T16:23:18.1025715Z   CONDA: C:\Miniconda
+2026-10-07T16:23:18.1026007Z   DOTNET_MULTILEVEL_LOOKUP: 0
+2026-10-07T16:23:18.1026333Z   DOTNET_NOLOGO: 1
+2026-10-07T16:23:18.1026749Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+2026-10-07T16:23:18.1027167Z   DriverData: C:\Windows\System32\Drivers\DriverData
+2026-10-07T16:23:18.1027716Z   EdgeWebDriver: C:\SeleniumWebDrivers\EdgeDriver
+2026-10-07T16:23:18.1028077Z   ENABLE_RUNNER_TRACING: true
+2026-10-07T16:23:18.1028423Z   GCM_INTERACTIVE: Never
+2026-10-07T16:23:18.1028781Z   GeckoWebDriver: C:\SeleniumWebDrivers\GeckoDriver
+2026-10-07T16:23:18.1029225Z   GHCUP_INSTALL_BASE_PREFIX: C:\
+2026-10-07T16:23:18.1029552Z   GHCUP_MSYS2: C:\msys64
+2026-10-07T16:23:18.1029867Z   GITHUB_ACTION: __compnerd_gha-setup-swift
+2026-10-07T16:23:18.1030449Z   GITHUB_ACTION_PATH: D:\a\_actions\compnerd\gha-setup-swift\bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+2026-10-07T16:23:18.1030985Z   GITHUB_ACTION_REF: 
+2026-10-07T16:23:18.1031391Z   GITHUB_ACTION_REPOSITORY: 
+2026-10-07T16:23:18.1031774Z   GITHUB_ACTIONS: true
+2026-10-07T16:23:18.1032054Z   GITHUB_ACTOR: rossbuckley1990-hash
+2026-10-07T16:23:18.1032422Z   GITHUB_ACTOR_ID: 255341254
+2026-10-07T16:23:18.1032791Z   GITHUB_API_URL: https://api.github.com
+2026-10-07T16:23:18.1033289Z   GITHUB_ARTIFACTS: D:\a\_temp\_runner_file_commands\artifacts_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:18.1034136Z   GITHUB_ARTIFACTS_LIST: D:\a\_temp\_runner_file_commands\artifacts_list_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:18.1034691Z   GITHUB_BASE_REF: main
+2026-10-07T16:23:18.1035165Z   GITHUB_ENV: D:\a\_temp\_runner_file_commands\set_env_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:18.1035644Z   GITHUB_EVENT_NAME: pull_request
+2026-10-07T16:23:18.1036005Z   GITHUB_EVENT_PATH: D:\a\_temp\_github_workflow\event.json
+2026-10-07T16:23:18.1036466Z   GITHUB_GRAPHQL_URL: https://api.github.com/graphql
+2026-10-07T16:23:18.1036919Z   GITHUB_HEAD_REF: codex/agency-portable-convergence-20261007
+2026-10-07T16:23:18.1037336Z   GITHUB_JOB: windows
+2026-10-07T16:23:18.1037787Z   GITHUB_OUTPUT: D:\a\_temp\_runner_file_commands\set_output_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:18.1038482Z   GITHUB_PATH: D:\a\_temp\_runner_file_commands\add_path_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:18.1038987Z   GITHUB_REF: refs/pull/52/merge
+2026-10-07T16:23:18.1039314Z   GITHUB_REF_NAME: 52/merge
+2026-10-07T16:23:18.1039656Z   GITHUB_REF_PROTECTED: false
+2026-10-07T16:23:18.1039971Z   GITHUB_REF_TYPE: branch
+2026-10-07T16:23:18.1041224Z   GITHUB_REPOSITORY: rossbuckley1990-hash/rightclick
+2026-10-07T16:23:18.1041650Z   GITHUB_REPOSITORY_ID: 1405448709
+2026-10-07T16:23:18.1042081Z   GITHUB_REPOSITORY_OWNER: rossbuckley1990-hash
+2026-10-07T16:23:18.1042465Z   GITHUB_REPOSITORY_OWNER_ID: 255341254
+2026-10-07T16:23:18.1042878Z   GITHUB_RETENTION_DAYS: 90
+2026-10-07T16:23:18.1043166Z   GITHUB_RUN_ATTEMPT: 1
+2026-10-07T16:23:18.1043502Z   GITHUB_RUN_ID: 37651407101
+2026-10-07T16:23:18.1043842Z   GITHUB_RUN_NUMBER: 23
+2026-10-07T16:23:18.1044152Z   GITHUB_SERVER_URL: https://github.com
+2026-10-07T16:23:18.1044588Z   GITHUB_SHA: 744425da7d32cddc3f51ea60333120e1881f7656
+2026-10-07T16:23:18.1045389Z   GITHUB_STATE: D:\a\_temp\_runner_file_commands\save_state_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:18.1046186Z   GITHUB_STEP_SUMMARY: D:\a\_temp\_runner_file_commands\step_summary_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:18.1046876Z   GITHUB_TRIGGERING_ACTOR: rossbuckley1990-hash
+2026-10-07T16:23:18.1047353Z   GITHUB_WORKFLOW: Portable runtime
+2026-10-07T16:23:18.1048167Z   GITHUB_WORKFLOW_REF: rossbuckley1990-hash/rightclick/.github/workflows/portable-runtime.yml@refs/pull/52/merge
+2026-10-07T16:23:18.1049111Z   GITHUB_WORKFLOW_SHA: 744425da7d32cddc3f51ea60333120e1881f7656
+2026-10-07T16:23:18.1049766Z   GITHUB_WORKSPACE: D:\a\rightclick\rightclick
+2026-10-07T16:23:18.1050377Z   GOROOT_1_24_X64: C:\hostedtoolcache\windows\go\1.24.13\x64
+2026-10-07T16:23:18.1051005Z   GOROOT_1_25_X64: C:\hostedtoolcache\windows\go\1.25.14\x64
+2026-10-07T16:23:18.1051762Z   GOROOT_1_26_X64: C:\hostedtoolcache\windows\go\1.26.8\x64
+2026-10-07T16:23:18.1052446Z   GRADLE_HOME: C:\ProgramData\chocolatey\lib\gradle\tools\gradle-9.8.0
+2026-10-07T16:23:18.1053067Z   HOMEDRIVE: C:
+2026-10-07T16:23:18.1053684Z   HOMEPATH: \Users\runneradmin
+2026-10-07T16:23:18.1054148Z   IEWebDriver: C:\SeleniumWebDrivers\IEDriver
+2026-10-07T16:23:18.1054680Z   ImageOS: win22
+2026-10-07T16:23:18.1055086Z   ImageVersion: 20261004.326.1
+2026-10-07T16:23:18.1055708Z   JAVA_HOME: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64
+2026-10-07T16:23:18.1056624Z   JAVA_HOME_11_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\11.0.32-101\x64
+2026-10-07T16:23:18.1057536Z   JAVA_HOME_17_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\17.0.20-101\x64
+2026-10-07T16:23:18.1058307Z   JAVA_HOME_21_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\21.0.12-101.0\x64
+2026-10-07T16:23:18.1058900Z   JAVA_HOME_25_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\25.0.4-101.0\x64
+2026-10-07T16:23:18.1059471Z   JAVA_HOME_8_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64
+2026-10-07T16:23:18.1059976Z   LOCALAPPDATA: C:\Users\runneradmin\AppData\Local
+2026-10-07T16:23:18.1060387Z   LOGONSERVER: \\runnervmtn0fv
+2026-10-07T16:23:18.1060806Z   M2: C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin
+2026-10-07T16:23:18.1061233Z   M2_REPO: C:\ProgramData\m2
+2026-10-07T16:23:18.1061583Z   MAVEN_OPTS: -Xms256m
+2026-10-07T16:23:18.1061915Z   npm_config_prefix: C:\npm\prefix
+2026-10-07T16:23:18.1062259Z   NUMBER_OF_PROCESSORS: 4
+2026-10-07T16:23:18.1062563Z   OS: Windows_NT
+2026-10-07T16:23:18.1062914Z   PATHEXT: .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+2026-10-07T16:23:18.1063362Z   PGBIN: C:\Program Files\PostgreSQL\14\bin
+2026-10-07T16:23:18.1063734Z   PGDATA: C:\PostgreSQL\14\data
+2026-10-07T16:23:18.1064054Z   PGPASSWORD: root
+2026-10-07T16:23:18.1064367Z   PGROOT: C:\Program Files\PostgreSQL\14
+2026-10-07T16:23:18.1064699Z   PGUSER: postgres
+2026-10-07T16:23:18.1064969Z   PHPROOT: c:\tools\php
+2026-10-07T16:23:18.1065376Z   PIPX_BIN_DIR: C:\Program Files (x86)\pipx_bin
+2026-10-07T16:23:18.1065780Z   PIPX_HOME: C:\Program Files (x86)\pipx
+2026-10-07T16:23:18.1066172Z   POWERSHELL_DISTRIBUTION_CHANNEL: GitHub-Actions-win22
+2026-10-07T16:23:18.1066621Z   POWERSHELL_UPDATECHECK: Off
+2026-10-07T16:23:18.1066936Z   PROCESSOR_ARCHITECTURE: AMD64
+2026-10-07T16:23:18.1067513Z   PROCESSOR_IDENTIFIER: Intel64 Family 6 Model 207 Stepping 2, GenuineIntel
+2026-10-07T16:23:18.1068001Z   PROCESSOR_LEVEL: 6
+2026-10-07T16:23:18.1068277Z   PROCESSOR_REVISION: cf02
+2026-10-07T16:23:18.1068612Z   ProgramData: C:\ProgramData
+2026-10-07T16:23:18.1068942Z   ProgramFiles: C:\Program Files
+2026-10-07T16:23:18.1069295Z   ProgramFiles(x86): C:\Program Files (x86)
+2026-10-07T16:23:18.1069665Z   ProgramW6432: C:\Program Files
+2026-10-07T16:23:18.1070183Z   PSModuleAnalysisCachePath: C:\PSModuleAnalysisCachePath\ModuleAnalysisCache
+2026-10-07T16:23:18.1071287Z   PSModulePath: C:\\Modules\az_15.6.1;C:\Users\packer\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files\Microsoft SQL Server\130\Tools\PowerShell\Modules\
+2026-10-07T16:23:18.1072307Z   PUBLIC: C:\Users\Public
+2026-10-07T16:23:18.1073088Z   RTOOLS45_HOME: C:\rtools45
+2026-10-07T16:23:18.1073517Z   RUNNER_ARCH: X64
+2026-10-07T16:23:18.1073932Z   RUNNER_ENVIRONMENT: github-hosted
+2026-10-07T16:23:18.1074454Z   RUNNER_NAME: GitHub Actions 1000002261
+2026-10-07T16:23:18.1074968Z   RUNNER_OS: Windows
+2026-10-07T16:23:18.1075354Z   RUNNER_TEMP: D:\a\_temp
+2026-10-07T16:23:18.1075813Z   RUNNER_TOOL_CACHE: C:\hostedtoolcache\windows
+2026-10-07T16:23:18.1076415Z   RUNNER_TRACKING_ID: github_70682bf1-5506-45ea-a417-2376ccb26269
+2026-10-07T16:23:18.1077005Z   RUNNER_WORKSPACE: D:\a\rightclick
+2026-10-07T16:23:18.1077497Z   SBT_HOME: C:\Program Files (x86)\sbt\
+2026-10-07T16:23:18.1078352Z   SDKROOT: C:\Users\runneradmin\AppData\Local\Programs\Swift\Platforms\6.2.0\Windows.platform\Developer\SDKs\Windows.sdk\
+2026-10-07T16:23:18.1079346Z   SELENIUM_JAR_PATH: C:\selenium\selenium-server.jar
+2026-10-07T16:23:18.1081047Z   SystemDrive: C:
+2026-10-07T16:23:18.1081422Z   SystemRoot: C:\Windows
+2026-10-07T16:23:18.1081764Z   TEMP: C:\Users\runneradmin\AppData\Local\Temp
+2026-10-07T16:23:18.1082152Z   TMP: C:\Users\runneradmin\AppData\Local\Temp
+2026-10-07T16:23:18.1082532Z   USERDOMAIN: runnervmtn0fv
+2026-10-07T16:23:18.1082885Z   USERDOMAIN_ROAMINGPROFILE: runnervmtn0fv
+2026-10-07T16:23:18.1083362Z   USERNAME: SYSTEM
+2026-10-07T16:23:18.1083657Z   USERPROFILE: C:\Users\runneradmin
+2026-10-07T16:23:18.1084047Z   VCPKG_INSTALLATION_ROOT: C:\vcpkg
+2026-10-07T16:23:18.1084377Z   windir: C:\Windows
+2026-10-07T16:23:18.1084689Z   WIX: C:\Program Files (x86)\WiX Toolset v3.14\
+2026-10-07T16:23:18.1085059Z ##[endgroup]
+2026-10-07T16:23:27.4746349Z ##[end-action id=__compnerd_gha-setup-swift.swift-version;outcome=success;conclusion=success;duration_ms=9387]
+2026-10-07T16:23:27.4750695Z ##[start-action display=VS2022 Compatibility Setup;id=__compnerd_gha-setup-swift.__compnerd_gha-setup-vsdevenv]
+2026-10-07T16:23:27.4759156Z ##[end-action id=__compnerd_gha-setup-swift.__compnerd_gha-setup-vsdevenv;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:23:27.4762155Z ##[start-action display=VS2022 Compatibility Installation;id=__compnerd_gha-setup-swift.__run_8]
+2026-10-07T16:23:27.4769554Z ##[end-action id=__compnerd_gha-setup-swift.__run_8;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:23:27.4772374Z ##[start-action display=Update SDK Module Definitions;id=__compnerd_gha-setup-swift.__run_9]
+2026-10-07T16:23:27.4778272Z ##[end-action id=__compnerd_gha-setup-swift.__run_9;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:23:27.4780844Z ##[start-action display=Install Swift;id=__compnerd_gha-setup-swift.__run_10]
+2026-10-07T16:23:27.4784758Z ##[end-action id=__compnerd_gha-setup-swift.__run_10;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:23:27.4787055Z ##[start-action display=Install Swift;id=__compnerd_gha-setup-swift.__run_11]
+2026-10-07T16:23:27.4791516Z ##[end-action id=__compnerd_gha-setup-swift.__run_11;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-07T16:23:27.5268143Z ##[group]Run git rev-parse HEAD | Out-File -Encoding utf8 portable-source.txt
+2026-10-07T16:23:27.5269770Z [36;1mgit rev-parse HEAD | Out-File -Encoding utf8 portable-source.txt[0m
+2026-10-07T16:23:27.5270421Z [36;1mswift --version | Out-File -Encoding utf8 portable-toolchain.txt[0m
+2026-10-07T16:23:27.5270849Z [36;1m@'[0m
+2026-10-07T16:23:27.5271283Z [36;1m#if canImport(FoundationXML)[0m
+2026-10-07T16:23:27.5271674Z [36;1mimport FoundationXML[0m
+2026-10-07T16:23:27.5272098Z [36;1mprint("FoundationXML=available")[0m
+2026-10-07T16:23:27.5272455Z [36;1m#else[0m
+2026-10-07T16:23:27.5272763Z [36;1mprint("FoundationXML=unavailable")[0m
+2026-10-07T16:23:27.5273588Z [36;1m#endif[0m
+2026-10-07T16:23:27.5274100Z [36;1m'@ | Set-Content -Encoding utf8 portable-module-probe.swift[0m
+2026-10-07T16:23:27.5274797Z [36;1mswift portable-module-probe.swift 2>&1 | Tee-Object -FilePath portable-module-availability.log[0m
+2026-10-07T16:23:27.5275677Z [36;1mif ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }[0m
+2026-10-07T16:23:27.5276376Z [36;1mswift test --force-resolved-versions --filter HostProtectedReferenceTests 2>&1 | Tee-Object -FilePath windows-protected-files.log[0m
+2026-10-07T16:23:27.5277113Z [36;1mif ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }[0m
+2026-10-07T16:23:27.5284630Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-07T16:23:27.5285094Z env:
+2026-10-07T16:23:27.5285489Z   RESOLVED_SWIFT_VERSION: swift-6.2-release
+2026-10-07T16:23:27.5285879Z   RESOLVED_SWIFT_BUILD: 6.2-RELEASE
+2026-10-07T16:23:27.5286212Z   Path: 
+2026-10-07T16:23:27.5286697Z   ACTIONS_ORCHESTRATION_ID: ee23f96e-011a-806b-9595-fa527d7332c4.windows.__default
+2026-10-07T16:23:27.5287247Z   ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE: C:\actionarchivecache\
+2026-10-07T16:23:27.5287733Z   ACTIONS_RUNNER_RETURN_JOB_RESULT_FOR_HOSTED: 1
+2026-10-07T16:23:27.5288723Z   AGENT_TOOLSDIRECTORY: C:\hostedtoolcache\windows
+2026-10-07T16:23:27.5289133Z   ALLUSERSPROFILE: C:\ProgramData
+2026-10-07T16:23:27.5289521Z   ANDROID_HOME: C:\Android\android-sdk
+2026-10-07T16:23:27.5289920Z   ANDROID_NDK: C:\Android\android-sdk\ndk\27.3.13750724
+2026-10-07T16:23:27.5290372Z   ANDROID_NDK_HOME: C:\Android\android-sdk\ndk\27.3.13750724
+2026-10-07T16:23:27.5290837Z   ANDROID_NDK_LATEST_HOME: C:\Android\android-sdk\ndk\30.0.16248370
+2026-10-07T16:23:27.5291321Z   ANDROID_NDK_ROOT: C:\Android\android-sdk\ndk\27.3.13750724
+2026-10-07T16:23:27.5291848Z   ANDROID_SDK_ROOT: C:\Android\android-sdk
+2026-10-07T16:23:27.5292365Z   ANT_HOME: C:\ProgramData\chocolatey\lib\ant\tools\apache-ant-1.10.18
+2026-10-07T16:23:27.5292932Z   APPDATA: C:\Users\runneradmin\AppData\Roaming
+2026-10-07T16:23:27.5293432Z   AZ_DEVOPS_GLOBAL_CONFIG_DIR: C:\azureDevOpsCli
+2026-10-07T16:23:27.5293921Z   AZURE_CONFIG_DIR: C:\azureCli
+2026-10-07T16:23:27.5294523Z   AZURE_DEVOPS_CACHE_DIR: C:\azureDevOpsCli\cache
+2026-10-07T16:23:27.5295165Z   AZURE_EXTENSION_DIR: C:\Program Files\Common Files\AzureCliExtensionDirectory
+2026-10-07T16:23:27.5295635Z   CABAL_DIR: C:\cabal
+2026-10-07T16:23:27.5296045Z   ChocolateyInstall: C:\ProgramData\chocolatey
+2026-10-07T16:23:27.5296473Z   ChromeWebDriver: C:\SeleniumWebDrivers\ChromeDriver
+2026-10-07T16:23:27.5296862Z   CI: true
+2026-10-07T16:23:27.5297157Z   COBERTURA_HOME: C:\cobertura-2.1.1
+2026-10-07T16:23:27.5297511Z   CommonProgramFiles: C:\Program Files\Common Files
+2026-10-07T16:23:27.5297987Z   CommonProgramFiles(x86): C:\Program Files (x86)\Common Files
+2026-10-07T16:23:27.5298416Z   CommonProgramW6432: C:\Program Files\Common Files
+2026-10-07T16:23:27.5298792Z   COMPUTERNAME: runnervmtn0fv
+2026-10-07T16:23:27.5299194Z   ComSpec: C:\Windows\system32\cmd.exe
+2026-10-07T16:23:27.5299482Z   CONDA: C:\Miniconda
+2026-10-07T16:23:27.5299786Z   DOTNET_MULTILEVEL_LOOKUP: 0
+2026-10-07T16:23:27.5300088Z   DOTNET_NOLOGO: 1
+2026-10-07T16:23:27.5300379Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+2026-10-07T16:23:27.5303017Z   DriverData: C:\Windows\System32\Drivers\DriverData
+2026-10-07T16:23:27.5303490Z   EdgeWebDriver: C:\SeleniumWebDrivers\EdgeDriver
+2026-10-07T16:23:27.5303884Z   ENABLE_RUNNER_TRACING: true
+2026-10-07T16:23:27.5304218Z   GCM_INTERACTIVE: Never
+2026-10-07T16:23:27.5304649Z   GeckoWebDriver: C:\SeleniumWebDrivers\GeckoDriver
+2026-10-07T16:23:27.5305044Z   GHCUP_INSTALL_BASE_PREFIX: C:\
+2026-10-07T16:23:27.5305375Z   GHCUP_MSYS2: C:\msys64
+2026-10-07T16:23:27.5305709Z   GITHUB_ACTION: __compnerd_gha-setup-swift
+2026-10-07T16:23:27.5306247Z   GITHUB_ACTION_PATH: D:\a\_actions\compnerd\gha-setup-swift\bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+2026-10-07T16:23:27.5306750Z   GITHUB_ACTION_REF: 
+2026-10-07T16:23:27.5307067Z   GITHUB_ACTION_REPOSITORY: 
+2026-10-07T16:23:27.5307384Z   GITHUB_ACTIONS: true
+2026-10-07T16:23:27.5307727Z   GITHUB_ACTOR: rossbuckley1990-hash
+2026-10-07T16:23:27.5308050Z   GITHUB_ACTOR_ID: 255341254
+2026-10-07T16:23:27.5308406Z   GITHUB_API_URL: https://api.github.com
+2026-10-07T16:23:27.5308991Z   GITHUB_ARTIFACTS: D:\a\_temp\_runner_file_commands\artifacts_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:27.5309681Z   GITHUB_ARTIFACTS_LIST: D:\a\_temp\_runner_file_commands\artifacts_list_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:27.5310194Z   GITHUB_BASE_REF: main
+2026-10-07T16:23:27.5310625Z   GITHUB_ENV: D:\a\_temp\_runner_file_commands\set_env_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:27.5311138Z   GITHUB_EVENT_NAME: pull_request
+2026-10-07T16:23:27.5311548Z   GITHUB_EVENT_PATH: D:\a\_temp\_github_workflow\event.json
+2026-10-07T16:23:27.5311970Z   GITHUB_GRAPHQL_URL: https://api.github.com/graphql
+2026-10-07T16:23:27.5312400Z   GITHUB_HEAD_REF: codex/agency-portable-convergence-20261007
+2026-10-07T16:23:27.5312809Z   GITHUB_JOB: windows
+2026-10-07T16:23:27.5313253Z   GITHUB_OUTPUT: D:\a\_temp\_runner_file_commands\set_output_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:27.5314066Z   GITHUB_PATH: D:\a\_temp\_runner_file_commands\add_path_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:27.5314604Z   GITHUB_REF: refs/pull/52/merge
+2026-10-07T16:23:27.5314927Z   GITHUB_REF_NAME: 52/merge
+2026-10-07T16:23:27.5315283Z   GITHUB_REF_PROTECTED: false
+2026-10-07T16:23:27.5315611Z   GITHUB_REF_TYPE: branch
+2026-10-07T16:23:27.5315976Z   GITHUB_REPOSITORY: rossbuckley1990-hash/rightclick
+2026-10-07T16:23:27.5316339Z   GITHUB_REPOSITORY_ID: 1405448709
+2026-10-07T16:23:27.5316674Z   GITHUB_REPOSITORY_OWNER: rossbuckley1990-hash
+2026-10-07T16:23:27.5317063Z   GITHUB_REPOSITORY_OWNER_ID: 255341254
+2026-10-07T16:23:27.5317416Z   GITHUB_RETENTION_DAYS: 90
+2026-10-07T16:23:27.5317788Z   GITHUB_RUN_ATTEMPT: 1
+2026-10-07T16:23:27.5318083Z   GITHUB_RUN_ID: 37651407101
+2026-10-07T16:23:27.5318354Z   GITHUB_RUN_NUMBER: 23
+2026-10-07T16:23:27.5318677Z   GITHUB_SERVER_URL: https://github.com
+2026-10-07T16:23:27.5319054Z   GITHUB_SHA: 744425da7d32cddc3f51ea60333120e1881f7656
+2026-10-07T16:23:27.5319599Z   GITHUB_STATE: D:\a\_temp\_runner_file_commands\save_state_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:27.5320274Z   GITHUB_STEP_SUMMARY: D:\a\_temp\_runner_file_commands\step_summary_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:23:27.5320817Z   GITHUB_TRIGGERING_ACTOR: rossbuckley1990-hash
+2026-10-07T16:23:27.5321226Z   GITHUB_WORKFLOW: Portable runtime
+2026-10-07T16:23:27.5321796Z   GITHUB_WORKFLOW_REF: rossbuckley1990-hash/rightclick/.github/workflows/portable-runtime.yml@refs/pull/52/merge
+2026-10-07T16:23:27.5322422Z   GITHUB_WORKFLOW_SHA: 744425da7d32cddc3f51ea60333120e1881f7656
+2026-10-07T16:23:27.5322867Z   GITHUB_WORKSPACE: D:\a\rightclick\rightclick
+2026-10-07T16:23:27.5323288Z   GOROOT_1_24_X64: C:\hostedtoolcache\windows\go\1.24.13\x64
+2026-10-07T16:23:27.5323727Z   GOROOT_1_25_X64: C:\hostedtoolcache\windows\go\1.25.14\x64
+2026-10-07T16:23:27.5324168Z   GOROOT_1_26_X64: C:\hostedtoolcache\windows\go\1.26.8\x64
+2026-10-07T16:23:27.5324669Z   GRADLE_HOME: C:\ProgramData\chocolatey\lib\gradle\tools\gradle-9.8.0
+2026-10-07T16:23:27.5325798Z   HOMEDRIVE: C:
+2026-10-07T16:23:27.5326130Z   HOMEPATH: \Users\runneradmin
+2026-10-07T16:23:27.5326649Z   IEWebDriver: C:\SeleniumWebDrivers\IEDriver
+2026-10-07T16:23:27.5327009Z   ImageOS: win22
+2026-10-07T16:23:27.5327307Z   ImageVersion: 20261004.326.1
+2026-10-07T16:23:27.5327822Z   JAVA_HOME: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64
+2026-10-07T16:23:27.5328439Z   JAVA_HOME_11_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\11.0.32-101\x64
+2026-10-07T16:23:27.5329098Z   JAVA_HOME_17_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\17.0.20-101\x64
+2026-10-07T16:23:27.5329715Z   JAVA_HOME_21_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\21.0.12-101.0\x64
+2026-10-07T16:23:27.5330321Z   JAVA_HOME_25_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\25.0.4-101.0\x64
+2026-10-07T16:23:27.5330938Z   JAVA_HOME_8_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64
+2026-10-07T16:23:27.5331449Z   LOCALAPPDATA: C:\Users\runneradmin\AppData\Local
+2026-10-07T16:23:27.5331830Z   LOGONSERVER: \\runnervmtn0fv
+2026-10-07T16:23:27.5332309Z   M2: C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin
+2026-10-07T16:23:27.5332735Z   M2_REPO: C:\ProgramData\m2
+2026-10-07T16:23:27.5333099Z   MAVEN_OPTS: -Xms256m
+2026-10-07T16:23:27.5333420Z   npm_config_prefix: C:\npm\prefix
+2026-10-07T16:23:27.5333779Z   NUMBER_OF_PROCESSORS: 4
+2026-10-07T16:23:27.5334112Z   OS: Windows_NT
+2026-10-07T16:23:27.5334481Z   PATHEXT: .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+2026-10-07T16:23:27.5334947Z   PGBIN: C:\Program Files\PostgreSQL\14\bin
+2026-10-07T16:23:27.5335303Z   PGDATA: C:\PostgreSQL\14\data
+2026-10-07T16:23:27.5335678Z   PGPASSWORD: root
+2026-10-07T16:23:27.5336005Z   PGROOT: C:\Program Files\PostgreSQL\14
+2026-10-07T16:23:27.5336368Z   PGUSER: postgres
+2026-10-07T16:23:27.5336690Z   PHPROOT: c:\tools\php
+2026-10-07T16:23:27.5337179Z   PIPX_BIN_DIR: C:\Program Files (x86)\pipx_bin
+2026-10-07T16:23:27.5337659Z   PIPX_HOME: C:\Program Files (x86)\pipx
+2026-10-07T16:23:27.5338081Z   POWERSHELL_DISTRIBUTION_CHANNEL: GitHub-Actions-win22
+2026-10-07T16:23:27.5338477Z   POWERSHELL_UPDATECHECK: Off
+2026-10-07T16:23:27.5338830Z   PROCESSOR_ARCHITECTURE: AMD64
+2026-10-07T16:23:27.5339276Z   PROCESSOR_IDENTIFIER: Intel64 Family 6 Model 207 Stepping 2, GenuineIntel
+2026-10-07T16:23:27.5339725Z   PROCESSOR_LEVEL: 6
+2026-10-07T16:23:27.5340079Z   PROCESSOR_REVISION: cf02
+2026-10-07T16:23:27.5340468Z   ProgramData: C:\ProgramData
+2026-10-07T16:23:27.5340825Z   ProgramFiles: C:\Program Files
+2026-10-07T16:23:27.5341192Z   ProgramFiles(x86): C:\Program Files (x86)
+2026-10-07T16:23:27.5341542Z   ProgramW6432: C:\Program Files
+2026-10-07T16:23:27.5342059Z   PSModuleAnalysisCachePath: C:\PSModuleAnalysisCachePath\ModuleAnalysisCache
+2026-10-07T16:23:27.5343253Z   PSModulePath: C:\\Modules\az_15.6.1;C:\Users\packer\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files\Microsoft SQL Server\130\Tools\PowerShell\Modules\
+2026-10-07T16:23:27.5344312Z   PUBLIC: C:\Users\Public
+2026-10-07T16:23:27.5344703Z   RTOOLS45_HOME: C:\rtools45
+2026-10-07T16:23:27.5345015Z   RUNNER_ARCH: X64
+2026-10-07T16:23:27.5345347Z   RUNNER_ENVIRONMENT: github-hosted
+2026-10-07T16:23:27.5345717Z   RUNNER_NAME: GitHub Actions 1000002261
+2026-10-07T16:23:27.5346075Z   RUNNER_OS: Windows
+2026-10-07T16:23:27.5346406Z   RUNNER_TEMP: D:\a\_temp
+2026-10-07T16:23:27.5346753Z   RUNNER_TOOL_CACHE: C:\hostedtoolcache\windows
+2026-10-07T16:23:27.5347200Z   RUNNER_TRACKING_ID: github_70682bf1-5506-45ea-a417-2376ccb26269
+2026-10-07T16:23:27.5347647Z   RUNNER_WORKSPACE: D:\a\rightclick
+2026-10-07T16:23:27.5348041Z   SBT_HOME: C:\Program Files (x86)\sbt\
+2026-10-07T16:23:27.5348687Z   SDKROOT: C:\Users\runneradmin\AppData\Local\Programs\Swift\Platforms\6.2.0\Windows.platform\Developer\SDKs\Windows.sdk\
+2026-10-07T16:23:27.5349325Z   SELENIUM_JAR_PATH: C:\selenium\selenium-server.jar
+2026-10-07T16:23:27.5349816Z   SystemDrive: C:
+2026-10-07T16:23:27.5350101Z   SystemRoot: C:\Windows
+2026-10-07T16:23:27.5350449Z   TEMP: C:\Users\runneradmin\AppData\Local\Temp
+2026-10-07T16:23:27.5350876Z   TMP: C:\Users\runneradmin\AppData\Local\Temp
+2026-10-07T16:23:27.5351255Z   USERDOMAIN: runnervmtn0fv
+2026-10-07T16:23:27.5351673Z   USERDOMAIN_ROAMINGPROFILE: runnervmtn0fv
+2026-10-07T16:23:27.5352040Z   USERNAME: SYSTEM
+2026-10-07T16:23:27.5352334Z   USERPROFILE: C:\Users\runneradmin
+2026-10-07T16:23:27.5352729Z   VCPKG_INSTALLATION_ROOT: C:\vcpkg
+2026-10-07T16:23:27.5353067Z   windir: C:\Windows
+2026-10-07T16:23:27.5353386Z   WIX: C:\Program Files (x86)\WiX Toolset v3.14\
+2026-10-07T16:23:27.5353753Z ##[endgroup]
+2026-10-07T16:24:01.6471420Z [31;1mJIT session error: Symbols not found: [ _swift_FORCE_LOAD_$_swiftWinSDK, _swift_FORCE_LOAD_$_swiftCRT ][0m
+2026-10-07T16:24:01.6483870Z [31;1mFailed to materialize symbols: { (main, { main, $sSa12_endMutationyyF, _swift_FORCE_LOAD_$_swiftCRT_$_main, _swift_FORCE_LOAD_$_swiftWinSDK_$_main, $ss5print_9separator10terminatoryypd_S2StFfA1_, $ss5print_9separator10terminatoryypd_S2StFfA0_, $ss27_finalizeUninitializedArrayySayxGABnlF }) }[0m
+2026-10-07T16:24:01.6739988Z ##[error]Process completed with exit code 1.
+2026-10-07T16:24:01.7116493Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-07T16:24:01.7116968Z with:
+2026-10-07T16:24:01.7117292Z   name: native-windows-evidence-82f7ec2232394049c89e6c424c3374ef0758404c
+2026-10-07T16:24:01.7118004Z   path: portable-source.txt
+portable-toolchain.txt
+portable-module-availability.log
+windows-*.log
+windows-binary-sha256.txt
+
+2026-10-07T16:24:01.7118587Z   if-no-files-found: warn
+2026-10-07T16:24:01.7118855Z   compression-level: 6
+2026-10-07T16:24:01.7119106Z   overwrite: false
+2026-10-07T16:24:01.7119323Z   include-hidden-files: false
+2026-10-07T16:24:01.7119581Z env:
+2026-10-07T16:24:01.7120036Z   RESOLVED_SWIFT_VERSION: swift-6.2-release
+2026-10-07T16:24:01.7120351Z   RESOLVED_SWIFT_BUILD: 6.2-RELEASE
+2026-10-07T16:24:01.7120607Z   Path: 
+2026-10-07T16:24:01.7120919Z   ACTIONS_ORCHESTRATION_ID: ee23f96e-011a-806b-9595-fa527d7332c4.windows.__default
+2026-10-07T16:24:01.7121404Z   ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE: C:\actionarchivecache\
+2026-10-07T16:24:01.7121767Z   ACTIONS_RUNNER_RETURN_JOB_RESULT_FOR_HOSTED: 1
+2026-10-07T16:24:01.7122135Z   AGENT_TOOLSDIRECTORY: C:\hostedtoolcache\windows
+2026-10-07T16:24:01.7122500Z   ALLUSERSPROFILE: C:\ProgramData
+2026-10-07T16:24:01.7122814Z   ANDROID_HOME: C:\Android\android-sdk
+2026-10-07T16:24:01.7123179Z   ANDROID_NDK: C:\Android\android-sdk\ndk\27.3.13750724
+2026-10-07T16:24:01.7123565Z   ANDROID_NDK_HOME: C:\Android\android-sdk\ndk\27.3.13750724
+2026-10-07T16:24:01.7123932Z   ANDROID_NDK_LATEST_HOME: C:\Android\android-sdk\ndk\30.0.16248370
+2026-10-07T16:24:01.7124307Z   ANDROID_NDK_ROOT: C:\Android\android-sdk\ndk\27.3.13750724
+2026-10-07T16:24:01.7124610Z   ANDROID_SDK_ROOT: C:\Android\android-sdk
+2026-10-07T16:24:01.7124944Z   ANT_HOME: C:\ProgramData\chocolatey\lib\ant\tools\apache-ant-1.10.18
+2026-10-07T16:24:01.7125302Z   APPDATA: C:\Users\runneradmin\AppData\Roaming
+2026-10-07T16:24:01.7125592Z   AZ_DEVOPS_GLOBAL_CONFIG_DIR: C:\azureDevOpsCli
+2026-10-07T16:24:01.7125865Z   AZURE_CONFIG_DIR: C:\azureCli
+2026-10-07T16:24:01.7126120Z   AZURE_DEVOPS_CACHE_DIR: C:\azureDevOpsCli\cache
+2026-10-07T16:24:01.7126512Z   AZURE_EXTENSION_DIR: C:\Program Files\Common Files\AzureCliExtensionDirectory
+2026-10-07T16:24:01.7126858Z   CABAL_DIR: C:\cabal
+2026-10-07T16:24:01.7127086Z   ChocolateyInstall: C:\ProgramData\chocolatey
+2026-10-07T16:24:01.7127449Z   ChromeWebDriver: C:\SeleniumWebDrivers\ChromeDriver
+2026-10-07T16:24:01.7127768Z   CI: true
+2026-10-07T16:24:01.7127953Z   COBERTURA_HOME: C:\cobertura-2.1.1
+2026-10-07T16:24:01.7128223Z   CommonProgramFiles: C:\Program Files\Common Files
+2026-10-07T16:24:01.7128567Z   CommonProgramFiles(x86): C:\Program Files (x86)\Common Files
+2026-10-07T16:24:01.7128903Z   CommonProgramW6432: C:\Program Files\Common Files
+2026-10-07T16:24:01.7129180Z   COMPUTERNAME: runnervmtn0fv
+2026-10-07T16:24:01.7129423Z   ComSpec: C:\Windows\system32\cmd.exe
+2026-10-07T16:24:01.7129660Z   CONDA: C:\Miniconda
+2026-10-07T16:24:01.7129882Z   DOTNET_MULTILEVEL_LOOKUP: 0
+2026-10-07T16:24:01.7130096Z   DOTNET_NOLOGO: 1
+2026-10-07T16:24:01.7130290Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+2026-10-07T16:24:01.7130601Z   DriverData: C:\Windows\System32\Drivers\DriverData
+2026-10-07T16:24:01.7130907Z   EdgeWebDriver: C:\SeleniumWebDrivers\EdgeDriver
+2026-10-07T16:24:01.7131181Z   ENABLE_RUNNER_TRACING: true
+2026-10-07T16:24:01.7131393Z   GCM_INTERACTIVE: Never
+2026-10-07T16:24:01.7131682Z   GeckoWebDriver: C:\SeleniumWebDrivers\GeckoDriver
+2026-10-07T16:24:01.7131964Z   GHCUP_INSTALL_BASE_PREFIX: C:\
+2026-10-07T16:24:01.7132186Z   GHCUP_MSYS2: C:\msys64
+2026-10-07T16:24:01.7132421Z   GITHUB_ACTION: __compnerd_gha-setup-swift
+2026-10-07T16:24:01.7132863Z   GITHUB_ACTION_PATH: D:\a\_actions\compnerd\gha-setup-swift\bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+2026-10-07T16:24:01.7133284Z   GITHUB_ACTION_REF: 
+2026-10-07T16:24:01.7133506Z   GITHUB_ACTION_REPOSITORY: 
+2026-10-07T16:24:01.7133733Z   GITHUB_ACTIONS: true
+2026-10-07T16:24:01.7135623Z   GITHUB_ACTOR: rossbuckley1990-hash
+2026-10-07T16:24:01.7135934Z   GITHUB_ACTOR_ID: 255341254
+2026-10-07T16:24:01.7136209Z   GITHUB_API_URL: https://api.github.com
+2026-10-07T16:24:01.7136623Z   GITHUB_ARTIFACTS: D:\a\_temp\_runner_file_commands\artifacts_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:24:01.7137221Z   GITHUB_ARTIFACTS_LIST: D:\a\_temp\_runner_file_commands\artifacts_list_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:24:01.7137660Z   GITHUB_BASE_REF: main
+2026-10-07T16:24:01.7138003Z   GITHUB_ENV: D:\a\_temp\_runner_file_commands\set_env_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:24:01.7138386Z   GITHUB_EVENT_NAME: pull_request
+2026-10-07T16:24:01.7138832Z   GITHUB_EVENT_PATH: D:\a\_temp\_github_workflow\event.json
+2026-10-07T16:24:01.7139172Z   GITHUB_GRAPHQL_URL: https://api.github.com/graphql
+2026-10-07T16:24:01.7139544Z   GITHUB_HEAD_REF: codex/agency-portable-convergence-20261007
+2026-10-07T16:24:01.7139892Z   GITHUB_JOB: windows
+2026-10-07T16:24:01.7140257Z   GITHUB_OUTPUT: D:\a\_temp\_runner_file_commands\set_output_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:24:01.7140801Z   GITHUB_PATH: D:\a\_temp\_runner_file_commands\add_path_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:24:01.7141191Z   GITHUB_REF: refs/pull/52/merge
+2026-10-07T16:24:01.7141429Z   GITHUB_REF_NAME: 52/merge
+2026-10-07T16:24:01.7141650Z   GITHUB_REF_PROTECTED: false
+2026-10-07T16:24:01.7141881Z   GITHUB_REF_TYPE: branch
+2026-10-07T16:24:01.7142131Z   GITHUB_REPOSITORY: rossbuckley1990-hash/rightclick
+2026-10-07T16:24:01.7142416Z   GITHUB_REPOSITORY_ID: 1405448709
+2026-10-07T16:24:01.7142690Z   GITHUB_REPOSITORY_OWNER: rossbuckley1990-hash
+2026-10-07T16:24:01.7142965Z   GITHUB_REPOSITORY_OWNER_ID: 255341254
+2026-10-07T16:24:01.7143198Z   GITHUB_RETENTION_DAYS: 90
+2026-10-07T16:24:01.7143414Z   GITHUB_RUN_ATTEMPT: 1
+2026-10-07T16:24:01.7143610Z   GITHUB_RUN_ID: 37651407101
+2026-10-07T16:24:01.7143815Z   GITHUB_RUN_NUMBER: 23
+2026-10-07T16:24:01.7144030Z   GITHUB_SERVER_URL: https://github.com
+2026-10-07T16:24:01.7144367Z   GITHUB_SHA: 744425da7d32cddc3f51ea60333120e1881f7656
+2026-10-07T16:24:01.7144856Z   GITHUB_STATE: D:\a\_temp\_runner_file_commands\save_state_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:24:01.7145455Z   GITHUB_STEP_SUMMARY: D:\a\_temp\_runner_file_commands\step_summary_601cf004-5ed8-4a9b-9b44-a21b6400579b
+2026-10-07T16:24:01.7145900Z   GITHUB_TRIGGERING_ACTOR: rossbuckley1990-hash
+2026-10-07T16:24:01.7146171Z   GITHUB_WORKFLOW: Portable runtime
+2026-10-07T16:24:01.7146634Z   GITHUB_WORKFLOW_REF: rossbuckley1990-hash/rightclick/.github/workflows/portable-runtime.yml@refs/pull/52/merge
+2026-10-07T16:24:01.7147223Z   GITHUB_WORKFLOW_SHA: 744425da7d32cddc3f51ea60333120e1881f7656
+2026-10-07T16:24:01.7147600Z   GITHUB_WORKSPACE: D:\a\rightclick\rightclick
+2026-10-07T16:24:01.7147972Z   GOROOT_1_24_X64: C:\hostedtoolcache\windows\go\1.24.13\x64
+2026-10-07T16:24:01.7148379Z   GOROOT_1_25_X64: C:\hostedtoolcache\windows\go\1.25.14\x64
+2026-10-07T16:24:01.7148722Z   GOROOT_1_26_X64: C:\hostedtoolcache\windows\go\1.26.8\x64
+2026-10-07T16:24:01.7149083Z   GRADLE_HOME: C:\ProgramData\chocolatey\lib\gradle\tools\gradle-9.8.0
+2026-10-07T16:24:01.7149418Z   HOMEDRIVE: C:
+2026-10-07T16:24:01.7149605Z   HOMEPATH: \Users\runneradmin
+2026-10-07T16:24:01.7149847Z   IEWebDriver: C:\SeleniumWebDrivers\IEDriver
+2026-10-07T16:24:01.7150096Z   ImageOS: win22
+2026-10-07T16:24:01.7150294Z   ImageVersion: 20261004.326.1
+2026-10-07T16:24:01.7150612Z   JAVA_HOME: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64
+2026-10-07T16:24:01.7151085Z   JAVA_HOME_11_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\11.0.32-101\x64
+2026-10-07T16:24:01.7151576Z   JAVA_HOME_17_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\17.0.20-101\x64
+2026-10-07T16:24:01.7152069Z   JAVA_HOME_21_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\21.0.12-101.0\x64
+2026-10-07T16:24:01.7153184Z   JAVA_HOME_25_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\25.0.4-101.0\x64
+2026-10-07T16:24:01.7153752Z   JAVA_HOME_8_X64: C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.504-1\x64
+2026-10-07T16:24:01.7154160Z   LOCALAPPDATA: C:\Users\runneradmin\AppData\Local
+2026-10-07T16:24:01.7154475Z   LOGONSERVER: \\runnervmtn0fv
+2026-10-07T16:24:01.7154793Z   M2: C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin
+2026-10-07T16:24:01.7155157Z   M2_REPO: C:\ProgramData\m2
+2026-10-07T16:24:01.7155403Z   MAVEN_OPTS: -Xms256m
+2026-10-07T16:24:01.7155673Z   npm_config_prefix: C:\npm\prefix
+2026-10-07T16:24:01.7155992Z   NUMBER_OF_PROCESSORS: 4
+2026-10-07T16:24:01.7156253Z   OS: Windows_NT
+2026-10-07T16:24:01.7156621Z   PATHEXT: .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+2026-10-07T16:24:01.7156959Z   PGBIN: C:\Program Files\PostgreSQL\14\bin
+2026-10-07T16:24:01.7157268Z   PGDATA: C:\PostgreSQL\14\data
+2026-10-07T16:24:01.7157538Z   PGPASSWORD: root
+2026-10-07T16:24:01.7157760Z   PGROOT: C:\Program Files\PostgreSQL\14
+2026-10-07T16:24:01.7158007Z   PGUSER: postgres
+2026-10-07T16:24:01.7158200Z   PHPROOT: c:\tools\php
+2026-10-07T16:24:01.7158457Z   PIPX_BIN_DIR: C:\Program Files (x86)\pipx_bin
+2026-10-07T16:24:01.7158736Z   PIPX_HOME: C:\Program Files (x86)\pipx
+2026-10-07T16:24:01.7159028Z   POWERSHELL_DISTRIBUTION_CHANNEL: GitHub-Actions-win22
+2026-10-07T16:24:01.7159354Z   POWERSHELL_UPDATECHECK: Off
+2026-10-07T16:24:01.7159593Z   PROCESSOR_ARCHITECTURE: AMD64
+2026-10-07T16:24:01.7159997Z   PROCESSOR_IDENTIFIER: Intel64 Family 6 Model 207 Stepping 2, GenuineIntel
+2026-10-07T16:24:01.7160422Z   PROCESSOR_LEVEL: 6
+2026-10-07T16:24:01.7160701Z   PROCESSOR_REVISION: cf02
+2026-10-07T16:24:01.7161001Z   ProgramData: C:\ProgramData
+2026-10-07T16:24:01.7161305Z   ProgramFiles: C:\Program Files
+2026-10-07T16:24:01.7161626Z   ProgramFiles(x86): C:\Program Files (x86)
+2026-10-07T16:24:01.7161940Z   ProgramW6432: C:\Program Files
+2026-10-07T16:24:01.7162521Z   PSModuleAnalysisCachePath: C:\PSModuleAnalysisCachePath\ModuleAnalysisCache
+2026-10-07T16:24:01.7164272Z   PSModulePath: C:\\Modules\az_15.6.1;C:\Users\packer\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules;C:\Program Files\Microsoft SQL Server\130\Tools\PowerShell\Modules\
+2026-10-07T16:24:01.7165261Z   PUBLIC: C:\Users\Public
+2026-10-07T16:24:01.7165515Z   RTOOLS45_HOME: C:\rtools45
+2026-10-07T16:24:01.7165719Z   RUNNER_ARCH: X64
+2026-10-07T16:24:01.7165927Z   RUNNER_ENVIRONMENT: github-hosted
+2026-10-07T16:24:01.7166178Z   RUNNER_NAME: GitHub Actions 1000002261
+2026-10-07T16:24:01.7166416Z   RUNNER_OS: Windows
+2026-10-07T16:24:01.7166619Z   RUNNER_TEMP: D:\a\_temp
+2026-10-07T16:24:01.7166860Z   RUNNER_TOOL_CACHE: C:\hostedtoolcache\windows
+2026-10-07T16:24:01.7167194Z   RUNNER_TRACKING_ID: github_70682bf1-5506-45ea-a417-2376ccb26269
+2026-10-07T16:24:01.7167515Z   RUNNER_WORKSPACE: D:\a\rightclick
+2026-10-07T16:24:01.7167761Z   SBT_HOME: C:\Program Files (x86)\sbt\
+2026-10-07T16:24:01.7168272Z   SDKROOT: C:\Users\runneradmin\AppData\Local\Programs\Swift\Platforms\6.2.0\Windows.platform\Developer\SDKs\Windows.sdk\
+2026-10-07T16:24:01.7168824Z   SELENIUM_JAR_PATH: C:\selenium\selenium-server.jar
+2026-10-07T16:24:01.7169096Z   SystemDrive: C:
+2026-10-07T16:24:01.7169290Z   SystemRoot: C:\Windows
+2026-10-07T16:24:01.7169537Z   TEMP: C:\Users\runneradmin\AppData\Local\Temp
+2026-10-07T16:24:01.7169841Z   TMP: C:\Users\runneradmin\AppData\Local\Temp
+2026-10-07T16:24:01.7170121Z   USERDOMAIN: runnervmtn0fv
+2026-10-07T16:24:01.7170361Z   USERDOMAIN_ROAMINGPROFILE: runnervmtn0fv
+2026-10-07T16:24:01.7170612Z   USERNAME: SYSTEM
+2026-10-07T16:24:01.7170815Z   USERPROFILE: C:\Users\runneradmin
+2026-10-07T16:24:01.7171052Z   VCPKG_INSTALLATION_ROOT: C:\vcpkg
+2026-10-07T16:24:01.7171275Z   windir: C:\Windows
+2026-10-07T16:24:01.7171495Z   WIX: C:\Program Files (x86)\WiX Toolset v3.14\
+2026-10-07T16:24:01.7171787Z ##[endgroup]
+2026-10-07T16:24:01.9517005Z (node:6204) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-07T16:24:01.9518057Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-07T16:24:01.9635963Z With the provided path, there will be 3 files uploaded
+2026-10-07T16:24:01.9642166Z Artifact name is valid!
+2026-10-07T16:24:01.9643839Z Root directory input is valid!
+2026-10-07T16:24:02.2938789Z Beginning upload of artifact content to blob storage
+2026-10-07T16:24:02.3175671Z (node:6204) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-07T16:24:02.4822798Z Uploaded bytes 809
+2026-10-07T16:24:02.5297958Z Finished uploading artifact content to blob storage!
+2026-10-07T16:24:02.5298911Z SHA256 digest of uploaded artifact zip is bc0a4c948f0c4485a10136eff678e344749cbe213c88977061ecdd399cdde864
+2026-10-07T16:24:02.5302023Z Finalizing artifact upload
+2026-10-07T16:24:02.7972507Z Artifact native-windows-evidence-82f7ec2232394049c89e6c424c3374ef0758404c.zip successfully finalized. Artifact ID 11496672686
+2026-10-07T16:24:02.7973968Z Artifact native-windows-evidence-82f7ec2232394049c89e6c424c3374ef0758404c has been successfully uploaded! Final size is 809 bytes. Artifact ID is 11496672686
+2026-10-07T16:24:02.7983507Z Artifact download URL: https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37651407101/artifacts/11496672686
+2026-10-07T16:24:02.8321216Z Post job cleanup.
+2026-10-07T16:24:03.0178304Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-07T16:24:03.0482445Z git version 2.56.0.windows.1
+2026-10-07T16:24:03.0556181Z Temporarily overriding HOME='D:\a\_temp\65421a9f-90ca-4d1c-af72-b73f59450943' before making global git config changes
+2026-10-07T16:24:03.0557580Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-07T16:24:03.0569685Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\rightclick\rightclick
+2026-10-07T16:24:03.0909887Z Removing SSH command configuration
+2026-10-07T16:24:03.0923041Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-07T16:24:03.1266602Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-07T16:24:03.6734603Z Removing HTTP extra header
+2026-10-07T16:24:03.6746876Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-07T16:24:03.7085656Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-07T16:24:04.2536280Z Removing includeIf entries pointing to credentials config files
+2026-10-07T16:24:04.2550487Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-07T16:24:04.2839212Z includeif.gitdir:D:/a/rightclick/rightclick/.git.path
+2026-10-07T16:24:04.2839855Z includeif.gitdir:D:/a/rightclick/rightclick/.git/worktrees/*.path
+2026-10-07T16:24:04.2840244Z includeif.gitdir:/github/workspace/.git.path
+2026-10-07T16:24:04.2840684Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-07T16:24:04.2882042Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/rightclick/rightclick/.git.path
+2026-10-07T16:24:04.3164625Z D:\a\_temp\git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:24:04.3212717Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/rightclick/rightclick/.git.path D:\a\_temp\git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:24:04.3549062Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:D:/a/rightclick/rightclick/.git/worktrees/*.path
+2026-10-07T16:24:04.3832090Z D:\a\_temp\git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:24:04.3877867Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:D:/a/rightclick/rightclick/.git/worktrees/*.path D:\a\_temp\git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:24:04.4197042Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-07T16:24:04.4478017Z /github/runner_temp/git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:24:04.4518320Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:24:04.4847899Z [command]"C:\Program Files\Git\bin\git.exe" config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-07T16:24:04.5132738Z /github/runner_temp/git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:24:04.5174662Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config
+2026-10-07T16:24:04.5516390Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-07T16:24:05.1127340Z Removing credentials config 'D:\a\_temp\git-credentials-e685d55c-6182-446d-b7c6-8c909bca43b1.config'
+2026-10-07T16:24:05.1347133Z Cleaning up orphan processes
+2026-10-07T16:24:05.1843446Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
