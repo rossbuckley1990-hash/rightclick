@@ -1006,6 +1006,10 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         // POST is conservatively execute (never inferred pure from a title).
         let effect: RCIREffect = operation.method == "GET" ? .read : .execute
         let scope = RCIRScope(targetURL.absoluteString, effect)
+        // Credentials are host-only input to this transport. A provider that
+        // receives them may echo them in its result; reject known material
+        // before retaining output, schema errors, task evidence or receipts.
+        let sensitiveMaterial = try bearerToken.map { try CapabilitySensitiveMaterial([Data($0.utf8)]) }
         return try host.execute(abi: abi, discovery: reflected, arguments: input, scope: scope,
             capability: admissionOwner, executionID: executionID, argumentStrings: arguments,
             item: item, verification: verification, expectedOutput: expectedOutput, target: targetURL, authority: {
@@ -1018,7 +1022,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 var boundRequest = request
                 boundRequest.setValue(correlationID, forHTTPHeaderField: "X-RightClick-Invocation")
                 return try self.send(boundRequest, operation: operation, capability: capability,
-                                     executionID: executionID, admitStart: admitStart)
+                                     executionID: executionID, sensitiveMaterial: sensitiveMaterial, admitStart: admitStart)
             }, resultValue: { record in
                 if operation.acknowledgementStatuses != nil { throw RCIRError.invalidContract }
                 if let object = operation.responseJSONSchema, let output = record.output {
@@ -1058,6 +1062,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
 
     private func send(_ request: URLRequest, operation: Operation,
                       capability: Capability, executionID: String,
+                      sensitiveMaterial: CapabilitySensitiveMaterial?,
                       admitStart: (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord {
         guard let targetURL = request.url else { throw RCIRError.invalidContract }
         let semaphore =
@@ -1123,6 +1128,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
             box.snapshot()
 
         if let error = result.error {
+            try sensitiveMaterial?.requireAbsent(in: .string(error.localizedDescription))
             return ExecutionRecord(
                 executionId:
                     executionID,
@@ -1225,6 +1231,16 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
 
         let responseData =
             result.data ?? Data()
+
+        if let sensitiveMaterial {
+            try sensitiveMaterial.requireAbsent(in: .bytes(responseData))
+            if operation.responseContentType == "application/json",
+               let json = try? JSONSerialization.jsonObject(with: responseData) {
+                // Decode JSON escapes before comparing material, including
+                // strings in fields that later fail the declared schema.
+                try sensitiveMaterial.requireAbsent(in: CapabilityJSON.value(json))
+            }
+        }
 
         if let statuses = operation.acknowledgementStatuses {
             guard statuses.contains(response.statusCode) else {
