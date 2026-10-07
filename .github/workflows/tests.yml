@@ -17,6 +17,19 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      # macos-26's Python 3.14.7 child fixtures missed unchanged startup bounds.
+      # Pin the fixture interpreter without changing XCTest assertions or skips.
+      - name: Pin macOS acceptance fixture Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Attest macOS fixture Python
+        run: |
+          python3 - <<'PY'
+          import sys
+          assert sys.version_info[:2] == (3, 12), sys.version
+          print("Full native macOS acceptance Python:", sys.executable, sys.version)
+          PY
       - run: swift test --force-resolved-versions
       - run: scripts/build-cli.sh
       - run: python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"
