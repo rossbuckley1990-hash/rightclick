@@ -179,10 +179,7 @@ public final class CapabilityEngine {
     public func describe(id: String, item raw: String?) throws -> Capability {
         if let raw {
             let (_, capabilities) = try capabilities(for: raw)
-            if let match = capabilities.first(where: { $0.id == id || $0.title == id }) {
-                return match
-            }
-            throw RightClickError("No capability \(id) applies to this item.")
+            return try CapabilitySelection.resolve(id, from: capabilities)
         }
         var services = ServiceCatalog.capabilities(for: ContentItem(kind: "text", display: "", text: " ", typeIdentifier: "public.plain-text"))
 
@@ -223,16 +220,15 @@ public final class CapabilityEngine {
         let (item, capabilities) =
             try capabilities(for: raw)
 
-        guard let capability =
-            capabilities.first(where: {
-                $0.id == id || $0.title == id
-            })
-        else {
+        let capability: Capability
+        do {
+            capability = try CapabilitySelection.resolve(id, from: capabilities)
+        } catch {
             return RunResult(
                 status: .unavailable,
                 actionID: id,
                 message:
-                    "No discovered capability matches \(id) for this item."
+                    error.localizedDescription
             )
         }
 
@@ -250,6 +246,31 @@ public final class CapabilityEngine {
                 supportLevel:
                     capability.supportLevel
             )
+        }
+
+        if let issue = CapabilityArgumentPreflight.issue(for: capability, arguments: arguments) {
+            return RunResult(
+                status: .failed,
+                actionID: capability.id,
+                title: capability.title,
+                message: issue.message,
+                requiresConfirmation: capability.requiresConfirmation,
+                supportLevel: capability.supportLevel,
+                evidence: OutcomeEvidence(type: issue.code, boundary: "Argument-envelope preflight rejected the request before confirmation and provider invocation.")
+            )
+        }
+
+        if let issue = CapabilityArgumentPreflight.issue(for: capability, arguments: arguments) {
+            let record = ExecutionRecord(
+                executionId: executionId,
+                actionId: capability.id,
+                title: capability.title,
+                state: .failed,
+                message: issue.message,
+                evidence: OutcomeEvidence(type: issue.code, boundary: "Argument-envelope preflight rejected the request before confirmation and provider invocation.")
+            )
+            ExecutionStore.shared.put(record)
+            return record
         }
 
         if capability.requiresConfirmation
@@ -446,17 +467,16 @@ public final class CapabilityEngine {
         let (item, capabilities) =
             try capabilities(for: raw)
 
-        guard let capability =
-            capabilities.first(where: {
-                $0.id == id || $0.title == id
-            })
-        else {
+        let capability: Capability
+        do {
+            capability = try CapabilitySelection.resolve(id, from: capabilities)
+        } catch {
             let record = ExecutionRecord(
                 executionId: executionId,
                 actionId: id,
                 state: .unavailable,
                 message:
-                    "No discovered capability matches \(id) for this item."
+                    error.localizedDescription
             )
 
             ExecutionStore.shared.put(
