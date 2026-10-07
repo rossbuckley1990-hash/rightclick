@@ -17,6 +17,26 @@ static int private_descriptor(SECURITY_DESCRIPTOR *descriptor, TOKEN_USER *user,
         SetSecurityDescriptorDacl(descriptor, TRUE, *acl, FALSE);
 }
 
+/* Classify a path representation mismatch without exporting a host path. This
+   is diagnostic only: production still checks its unchanged selected path. */
+static int long_path_matches(HANDLE file, const WCHAR *path, int *changed, int *short_alias) {
+    WCHAR expected[32768], expanded[32768], actual[32768];
+    DWORD e = GetFullPathNameW(path, 32768, expected, NULL);
+    DWORD a = GetFinalPathNameByHandleW(file, actual, 32768, FILE_NAME_NORMALIZED | VOLUME_NAME_DOS);
+    if (!e || e >= 32768 || !a || a >= 32768) return 0;
+    *short_alias = wcschr(expected, L'~') != NULL;
+    DWORD l = GetLongPathNameW(expected, expanded, 32768);
+    if (!l || l >= 32768) return 0;
+    *changed = _wcsicmp(expected, expanded) != 0;
+    if (wcsncmp(actual, L"\\\\?\\UNC\\", 8) == 0) {
+        WCHAR unc[32768] = L"\\\\";
+        if (wcslen(actual + 8) + 3 >= 32768) return 0;
+        wcscat(unc, actual + 8);
+        return _wcsicmp(expanded, unc) == 0;
+    }
+    return _wcsicmp(expanded, wcsncmp(actual, L"\\\\?\\", 4) == 0 ? actual + 4 : actual) == 0;
+}
+
 static void report(const char *label, const WCHAR *path, int directory) {
     char utf8[32768];
     if (!WideCharToMultiByte(CP_UTF8, 0, path, -1, utf8, sizeof(utf8), NULL, NULL)) return;
@@ -26,9 +46,11 @@ static void report(const char *label, const WCHAR *path, int directory) {
         FILE_FLAG_OPEN_REPARSE_POINT | (directory ? FILE_FLAG_BACKUP_SEMANTICS : 0), NULL);
     DWORD open_error = handle == INVALID_HANDLE_VALUE ? GetLastError() : 0;
     int final_matches = 0, owned = 0, protected = 0, disk = 0, native_directory = 0;
+    int long_matches = 0, long_changed = 0, short_alias = 0;
     if (handle != INVALID_HANDLE_VALUE) {
         BY_HANDLE_FILE_INFORMATION info;
         final_matches = same_final_path(handle, path);
+        long_matches = long_path_matches(handle, path, &long_changed, &short_alias);
         owned = user && current_owner(handle, user);
         protected = protected_authority(handle);
         disk = GetFileType(handle) == FILE_TYPE_DISK;
@@ -41,9 +63,10 @@ static void report(const char *label, const WCHAR *path, int directory) {
     if (!directory) read_result = rc_host_read_file(utf8, 128, 1, &bytes, &count);
     printf("{\"case\":\"%s\",\"openError\":%lu,\"disk\":%d,\"nativeDirectory\":%d,"
            "\"finalPathMatches\":%d,\"ownerMatchesCurrentUser\":%d,\"initialProtectedAuthority\":%d,"
-           "\"hardenResult\":%d,\"protectedReadResult\":%d,\"bytesRead\":%zu}\n",
+           "\"hardenResult\":%d,\"protectedReadResult\":%d,\"bytesRead\":%zu,"
+           "\"longPathMatches\":%d,\"longPathChanged\":%d,\"expectedHasShortAlias\":%d}\n",
            label, (unsigned long)open_error, disk, native_directory, final_matches, owned, protected,
-           hardened, read_result, count);
+           hardened, read_result, count, long_matches, long_changed, short_alias);
     if (bytes) rc_host_free(bytes);
     if (user) free(user);
     if (!directory) rc_host_release_snapshot(utf8);
