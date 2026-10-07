@@ -52,6 +52,32 @@ final class CapabilityInterfaceTests: XCTestCase {
             host: host, revalidate: { true })
         XCTAssertEqual(denied.state, .rejected); XCTAssertEqual(calls.pointee, 2)
     }
+    func testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint() throws {
+        struct IndependentObserver: RCIRObserver {
+            let observerID = "host:separate-observer"
+            func observe(_ request: RCIRObservationRequest) throws -> CapabilityValue { .string("independently-read") }
+        }
+        var calls = 0
+        let reflector = try CapabilityInterfaceReflector(id: "interface:observed", provider: "controlled",
+            target: URL(string: "http://127.0.0.1:19143/mcp")!, substrate: "test", descriptorDigest: "acquired",
+            operations: [.init(name: "challenge", title: "Observed challenge", arguments: .object(properties: [:], required: []),
+                result: .string, declaration: .string("acquired"))],
+            observerFactory: { operation in
+                guard operation == "challenge" else { return nil }
+                return { _ in .init(contract: .init(observerID: "host:separate-observer", schema: .string, expected: .string("independently-read")),
+                    observer: IndependentObserver(), boundary: "Separate read-only identity") }
+            }, available: { true }, invoke: { _, _, admit in try admit { calls += 1 }; return .string("provider-claimed") })
+        let item = try ContentParser.parse("controlled")
+        let capability = try reflector.capabilities(for: item)[0]
+        // Ordinary begin creates its normal host without a special registry.
+        let result = try reflector.begin(capability: capability, item: item, executionID: "compiler-composed")
+        XCTAssertEqual(result.state, .succeeded); XCTAssertEqual(result.rcir?.outcome, "succeeded")
+        XCTAssertEqual(result.evidence.boundary, "Separate read-only identity")
+        let denied = try reflector.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+            executionID: "ambiguous", arguments: nil, verification: nil, expectedOutput: "provider-claimed",
+            host: RCIRExecutionHost(), revalidate: { true })
+        XCTAssertEqual(denied.state, .rejected); XCTAssertEqual(calls, 1)
+    }
     func testBoundedExecutorAbstainsForOfflineTool() throws {
         XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/nonexistent/rightclick-runtime"), arguments: []))
     }
