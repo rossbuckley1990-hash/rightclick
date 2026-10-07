@@ -148,13 +148,13 @@ public final class CapabilityEngine {
         }
 
         var counts:
-            [String: Int] = [:]
+            [Data: Int] = [:]
 
         for reflector in candidates {
-            counts[reflector.id, default: 0] += 1
+            counts[Data(reflector.id.utf8), default: 0] += 1
         }
 
-        let current = candidates.filter { counts[$0.id] == 1 }
+        let current = candidates.filter { counts[Data($0.id.utf8)] == 1 }
         rcirHost.synchronize(owners: Set(current.map { $0.id }))
         return current
     }
@@ -178,6 +178,11 @@ public final class CapabilityEngine {
     }
 
     public func capabilities(for raw: String) throws -> (item: ContentItem, capabilities: [Capability]) {
+        let snapshot = try discoverySnapshot(for: raw)
+        return (snapshot.item, snapshot.capabilities)
+    }
+
+    private func discoverySnapshot(for raw: String) throws -> (item: ContentItem, capabilities: [Capability], quarantinedIDs: Set<Data>) {
         let item = try ContentParser.parse(raw)
         var reflected: [Capability] = []
 
@@ -202,7 +207,8 @@ public final class CapabilityEngine {
             )
         }
 
-        let fresh = dedupeCapabilities(reflected).map { capability in
+        let catalog = CapabilitySelection.catalog(reflected)
+        let fresh = catalog.capabilities.map { capability in
             var owned = capability.withoutDiscoveryAdvice()
             owned.contractSHA256 = try? owned.discoveryContractSHA256()
             return owned
@@ -214,16 +220,13 @@ public final class CapabilityEngine {
             let right = order[rhs.source] ?? 9
             if left == right { return lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending }
             return left < right
-        })
+        }, catalog.quarantinedIDs)
     }
 
     public func describe(id: String, item raw: String?) throws -> Capability {
         if let raw {
-            let (_, capabilities) = try capabilities(for: raw)
-            if let match = capabilities.first(where: { $0.id == id || $0.title == id }) {
-                return match
-            }
-            throw RightClickError("No capability \(id) applies to this item.")
+            let (_, capabilities, quarantinedIDs) = try discoverySnapshot(for: raw)
+            return try CapabilitySelection.resolve(id, from: capabilities, quarantinedIDs: quarantinedIDs)
         }
 #if os(macOS)
         var services = ServiceCatalog.capabilities(for: ContentItem(kind: "text", display: "", text: " ", typeIdentifier: "public.plain-text"))
@@ -268,18 +271,18 @@ public final class CapabilityEngine {
             return RunResult(status: .rejected, actionID: id,
                 message: "Invalid contractSHA256. Supply the exact lowercase SHA-256 returned by discovery.")
         }
-        let (item, capabilities) =
-            try capabilities(for: raw)
+        let (item, capabilities, quarantinedIDs) =
+            try discoverySnapshot(for: raw)
 
-        guard let capability =
-            selectedCapability(id: id, contractSHA256: contractSHA256, from: capabilities)
-        else {
+        let capability: Capability
+        do {
+            capability = try selectedCapability(id: id, contractSHA256: contractSHA256, from: capabilities, quarantinedIDs: quarantinedIDs)
+        } catch {
             return RunResult(
                 status: .unavailable,
                 actionID: id,
                 message:
-                    contractSHA256 == nil ? "No discovered capability matches \(id) for this item." :
-                    "CONTRACT_MISMATCH. The reviewed declaration changed or is unavailable. Discover and review it again; do not retry unpinned automatically."
+                    error.localizedDescription
             )
         }
 
@@ -297,6 +300,12 @@ public final class CapabilityEngine {
                 supportLevel:
                     capability.supportLevel
             )
+        }
+
+        if let issue = CapabilityArgumentPreflight.issue(for: capability, arguments: arguments) {
+            return RunResult(status: .failed, actionID: capability.id, title: capability.title,
+                message: issue.message, requiresConfirmation: capability.requiresConfirmation,
+                supportLevel: capability.supportLevel, evidence: issue.evidence)
         }
 
         if capability.requiresConfirmation
@@ -521,19 +530,19 @@ public final class CapabilityEngine {
             ExecutionStore.shared.put(record)
             return record
         }
-        let (item, capabilities) =
-            try capabilities(for: raw)
+        let (item, capabilities, quarantinedIDs) =
+            try discoverySnapshot(for: raw)
 
-        guard let capability =
-            selectedCapability(id: id, contractSHA256: contractSHA256, from: capabilities)
-        else {
+        let capability: Capability
+        do {
+            capability = try selectedCapability(id: id, contractSHA256: contractSHA256, from: capabilities, quarantinedIDs: quarantinedIDs)
+        } catch {
             let record = ExecutionRecord(
                 executionId: executionId,
                 actionId: id,
                 state: .unavailable,
                 message:
-                    contractSHA256 == nil ? "No discovered capability matches \(id) for this item." :
-                    "CONTRACT_MISMATCH. The reviewed declaration changed or is unavailable. Discover and review it again; do not retry unpinned automatically."
+                    error.localizedDescription
             )
 
             ExecutionStore.shared.put(
@@ -557,6 +566,13 @@ public final class CapabilityEngine {
                 record
             )
 
+            return record
+        }
+
+        if let issue = CapabilityArgumentPreflight.issue(for: capability, arguments: arguments) {
+            let record = ExecutionRecord(executionId: executionId, actionId: capability.id,
+                title: capability.title, state: .failed, message: issue.message, evidence: issue.evidence)
+            ExecutionStore.shared.put(record)
             return record
         }
 
@@ -755,23 +771,25 @@ public final class CapabilityEngine {
         return final
     }
 
-    /// Legacy calls retain fresh ID/title resolution. A supplied pin never falls
-    /// back to an unpinned selection or a conflicting title alias.
-    private func selectedCapability(id: String, contractSHA256: String?, from capabilities: [Capability]) -> Capability? {
-        let matches = capabilities.filter { $0.id == id || $0.title == id }
-        guard let first = matches.first else { return nil }
-        guard let contractSHA256 else { return first }
-        guard matches.allSatisfy({ $0.contractSHA256 == contractSHA256 }) else { return nil }
-        return first
+    /// Identity selection precedes pin comparison. Neither an optional pin nor
+    /// a title collision may silently choose among conflicting declarations.
+    private func selectedCapability(id: String, contractSHA256: String?, from capabilities: [Capability], quarantinedIDs: Set<Data>) throws -> Capability {
+        let capability = try CapabilitySelection.resolve(id, from: capabilities, quarantinedIDs: quarantinedIDs)
+        if let contractSHA256, capability.contractSHA256 != contractSHA256 {
+            throw CapabilitySelectionError.contractMismatch
+        }
+        return capability
     }
 
     private func reflector(
         for capability: Capability,
         item: ContentItem
     ) -> (any CapabilityReflector)? {
-        guard let reflector = currentReflectors(for: item).first(where: {
-            $0.id == capability.reflectorID
-        }), let current = try? reflector.capabilities(for: item) else {
+        let owners = currentReflectors(for: item).filter {
+            $0.id.utf8.elementsEqual(capability.reflectorID.utf8)
+        }
+        guard owners.count == 1, let reflector = owners.first,
+              let current = try? reflector.capabilities(for: item) else {
             return nil
         }
 
@@ -779,7 +797,7 @@ public final class CapabilityEngine {
         // selected during this invocation. A stable reflector ID alone is
         // not authority to dispatch a changed endpoint, schema or safety rule.
         // Check only the selected owner's catalog, not every provider again.
-        let matches = current.filter { $0.id == capability.id }
+        let matches = current.filter { $0.id.utf8.elementsEqual(capability.id.utf8) }
         guard !matches.isEmpty else { return nil }
 
         // These are local, structured snapshots, not signed protocol proofs.

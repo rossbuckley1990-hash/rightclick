@@ -454,12 +454,5 @@ public struct RunResult: Codable, Sendable {
 }
 
 public func dedupeCapabilities(_ capabilities: [Capability]) -> [Capability] {
-    var seen = Set<String>()
-    var result: [Capability] = []
-    for capability in capabilities {
-        if seen.insert(capability.id).inserted {
-            result.append(capability)
-        }
-    }
-    return result
+    CapabilitySelection.unambiguous(capabilities)
 }

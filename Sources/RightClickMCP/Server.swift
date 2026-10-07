@@ -512,7 +512,7 @@ private func handleTool(
     case "context_explain":
         let action = arguments?["actionId"]?.stringValue ?? ""
         let capability = try engine.call { try $0.describe(id: action, item: item) }
-        return RightClickJSON.encode(capability)
+        return RightClickJSON.encode(CapabilityExplanationView(capability))
     case "context_run":
         let contractSHA256: String?
         if let supplied = arguments?["contractSHA256"] {
