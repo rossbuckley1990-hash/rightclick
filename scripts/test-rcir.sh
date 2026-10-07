@@ -9,7 +9,7 @@ mkdir -p "$WORK/Sources/RightClickCore" "$WORK/Tests/RightClickCoreTests"
 for name in CapabilityABI RCIR RCIRSignedReceipt; do
     cp "$ROOT/Sources/RightClickCore/$name.swift" "$WORK/Sources/RightClickCore/"
 done
-for name in RCIRTests RCIRBoundaryTests RCIRIntegrationTests; do
+for name in RCIRTests RCIRBoundaryTests RCIRIntegrationTests RCIRInvocationIsolationTests; do
     cp "$ROOT/Tests/RightClickCoreTests/$name.swift" "$WORK/Tests/RightClickCoreTests/"
 done
 cat > "$WORK/Package.swift" <<'PACKAGE'
@@ -23,5 +23,5 @@ let package = Package(name: "RightClickRCIRValidation", platforms: [.macOS(.v14)
 PACKAGE
 swift --version
 printf '\nScope: exact ABI + RCIR foundation. No live providers or production engine.\n'
-printf 'Linux: 61 tests. CryptoKit platforms: two additional real-backend tests.\n'
+printf 'Original frozen foundation: 61 portable tests + 2 CryptoKit tests. Additional invocation-isolation regressions are included.\n'
 (cd "$WORK" && swift test)

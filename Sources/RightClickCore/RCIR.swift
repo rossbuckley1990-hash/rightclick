@@ -46,6 +46,14 @@ public struct RCIRTaskModel: Sendable {
         self.shape = shape; self.element = element; self.cancellable = cancellable
         self.maxEvents = maxEvents; self.maxBytes = maxBytes
     }
+    fileprivate func canonicalValue() throws -> CapabilityValue {
+        .object([
+            "shape": .string(shape.rawValue),
+            "element": try element.map { .bytes(try $0.canonicalData()) } ?? .null,
+            "cancellable": .boolean(cancellable),
+            "maxEvents": .integer(Int64(maxEvents)), "maxBytes": .integer(Int64(maxBytes))
+        ])
+    }
 }
 
 /// The runtime/operator supplies the observer binding and expected postcondition.
@@ -87,13 +95,7 @@ public struct RCIRContract: Sendable {
         }
         return try rcirEnvelope("CONTRACT", .object([
             "abi": .bytes(try abi.canonicalData()), "effects": effects,
-            "task": .object([
-                "shape": .string(task.shape.rawValue),
-                "element": try task.element.map { .bytes(try $0.canonicalData()) } ?? .null,
-                "cancellable": .boolean(task.cancellable),
-                "maxEvents": .integer(Int64(task.maxEvents)),
-                "maxBytes": .integer(Int64(task.maxBytes))
-            ]), "verification": check
+            "task": try task.canonicalValue(), "verification": check
         ]), limit: 65_536)
     }
 }
@@ -103,8 +105,11 @@ public struct RCIRBinding: Sendable {
     public let principal: String
     public let generation: Int64
     public let bytes: Data
-    fileprivate init(contract: RCIRContract, principal: String, generation: Int64, bytes: Data) {
+    fileprivate let graphDeclaration: Data
+    fileprivate init(contract: RCIRContract, principal: String, generation: Int64, bytes: Data,
+                     graphDeclaration: Data) {
         self.contract = contract; self.principal = principal; self.generation = generation; self.bytes = bytes
+        self.graphDeclaration = graphDeclaration
     }
 }
 
@@ -146,25 +151,62 @@ public final class RCIRAdmission: @unchecked Sendable {
     public init() {}
 
     public func publish(_ contract: RCIRContract, authenticatedPrincipal: String) throws -> RCIRBinding {
+        try publish(contract, authenticatedPrincipal: authenticatedPrincipal,
+                    graphDeclaration: contract.canonicalData())
+    }
+
+    /// A trusted substrate compiler separates the stable discovered ABI from
+    /// its invocation-specific resource, request body and verifier. Those values
+    /// remain in the immutable lease binding; they do not replace the provider.
+    /// This is host-only lowering, never provider metadata or model authority.
+    public func publishInvocation(_ contract: RCIRContract, discovery: CapabilityContract,
+                                  authenticatedPrincipal: String) throws -> RCIRBinding {
+        let invocation = contract.abi
+        guard Data(invocation.capabilityID.utf8) == Data(discovery.capabilityID.utf8),
+              Data(invocation.reflectorID.utf8) == Data(discovery.reflectorID.utf8),
+              Data(invocation.providerID.utf8) == Data(discovery.providerID.utf8),
+              try invocation.arguments?.canonicalData() == discovery.arguments?.canonicalData(),
+              try invocation.result?.canonicalData() == discovery.result?.canonicalData() else {
+            throw RCIRError.invalidContract
+        }
+        // Resource instantiation and expected observations vary per request.
+        // Effect kinds, task shape/budgets and the compiler's full discovered
+        // declaration (including endpoint/schema) define graph freshness.
+        let effects: CapabilityValue = contract.scopes.map {
+            .array(Set($0.map { $0.effect.rawValue }).sorted().map { .string($0) })
+        } ?? .null
+        let declaration = try rcirEnvelope("GRAPH-DECLARATION", .object([
+            "abi": .bytes(try discovery.canonicalData()),
+            "effects": effects, "task": try contract.task.canonicalValue()
+        ]), limit: 65_536)
+        return try publish(contract, authenticatedPrincipal: authenticatedPrincipal, graphDeclaration: declaration)
+    }
+
+    private func publish(_ contract: RCIRContract, authenticatedPrincipal: String,
+                         graphDeclaration: Data) throws -> RCIRBinding {
         try rcirIdentity(authenticatedPrincipal)
         let declaration = try contract.canonicalData()
         let key = Data(contract.abi.capabilityID.utf8)
         lock.lock(); defer { lock.unlock() }
-        if let old = entries[key], old.principal.utf8.elementsEqual(authenticatedPrincipal.utf8),
-           try old.contract.canonicalData() == declaration { return old }
+        let old = entries[key]
+        let sameGeneration = old?.principal.utf8.elementsEqual(authenticatedPrincipal.utf8) == true
+            && old?.graphDeclaration == graphDeclaration
+        if sameGeneration, let old, try old.contract.canonicalData() == declaration { return old }
         guard entries[key] != nil || entries.count < 4096 else { throw RCIRError.invalidLimit }
-        guard generation < Int64.max else { throw RCIRError.invalidLimit }
-        let next = generation + 1
+        guard sameGeneration || generation < Int64.max else { throw RCIRError.invalidLimit }
+        let next = sameGeneration ? old!.generation : generation + 1
         let bytes = try rcirEnvelope("BINDING", .object([
             "contract": .bytes(declaration), "principal": .string(authenticatedPrincipal),
-            "generation": .integer(next)
-        ]), limit: 70_000)
+            "generation": .integer(next), "discovery": .bytes(graphDeclaration)
+        ]), limit: 140_000)
         let binding = RCIRBinding(contract: contract, principal: authenticatedPrincipal,
-                                  generation: next, bytes: bytes)
-        generation = next
+                                  generation: next, bytes: bytes, graphDeclaration: graphDeclaration)
+        if !sameGeneration { generation = next }
         entries[key] = binding
         // Invalidate outstanding approvals to a different incarnation immediately.
-        leases = leases.filter { !Data($0.value.lease.binding.contract.abi.capabilityID.utf8).elementsEqual(key) }
+        if !sameGeneration {
+            leases = leases.filter { !Data($0.value.lease.binding.contract.abi.capabilityID.utf8).elementsEqual(key) }
+        }
         return binding
     }
 
@@ -191,7 +233,9 @@ public final class RCIRAdmission: @unchecked Sendable {
 
     private func current(_ binding: RCIRBinding) throws {
         guard let active = entries[Data(binding.contract.abi.capabilityID.utf8)] else { throw RCIRError.unavailable }
-        guard active.generation == binding.generation, active.bytes == binding.bytes else { throw RCIRError.staleBinding }
+        guard active.generation == binding.generation,
+              active.principal.utf8.elementsEqual(binding.principal.utf8),
+              active.graphDeclaration == binding.graphDeclaration else { throw RCIRError.staleBinding }
     }
 
     private func allowed(_ binding: RCIRBinding, arguments: CapabilityValue,
