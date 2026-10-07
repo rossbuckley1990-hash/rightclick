@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// HTTP transport policy for capability providers whose authority is bound
 /// to one explicitly selected origin.

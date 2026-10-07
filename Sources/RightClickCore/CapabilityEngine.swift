@@ -1,5 +1,6 @@
+#if os(macOS)
 import AppKit
-import Darwin
+#endif
 import Foundation
 
 public struct ProviderSummary: Codable, Sendable {
@@ -22,6 +23,8 @@ public struct ProviderSummary: Codable, Sendable {
 }
 
 public struct DoctorReport: Codable, Sendable {
+    public var platform: String = RuntimePlatform.name
+    public var operatingSystemVersion: String = ProcessInfo.processInfo.operatingSystemVersionString
     public var macosVersion: String
     public var macosBuild: String
     public var sharingDiscovery: String
@@ -93,12 +96,18 @@ public final class CapabilityEngine {
     }
 
     private static func prepareApplication() {
+#if os(macOS)
+
         let app = NSApplication.shared
 
         if app.activationPolicy() == .prohibited {
             app.setActivationPolicy(.accessory)
         }
-    }
+
+#else
+
+#endif
+}
 
     /// Produce the reflector snapshot for this observation.
     ///
@@ -196,6 +205,7 @@ public final class CapabilityEngine {
             }
             throw RightClickError("No capability \(id) applies to this item.")
         }
+#if os(macOS)
         var services = ServiceCatalog.capabilities(for: ContentItem(kind: "text", display: "", text: " ", typeIdentifier: "public.plain-text"))
 
         for index in services.indices {
@@ -220,6 +230,7 @@ public final class CapabilityEngine {
                 metadata: ["bundlePath": record.bundlePath, "note": "Pass an item to evaluate applicability."]
             )
         }
+#endif
         throw RightClickError("Capability \(id) was not found. Sharing capabilities only exist in the context of an item.")
     }
 
@@ -366,7 +377,7 @@ public final class CapabilityEngine {
         ExecutionStore.shared.put(started)
 
         if reflector.completionWaitSeconds > 0,
-           pthread_main_np() != 0,
+           Thread.isMainThread,
            started.state == .started
         {
             let deadline =
@@ -934,8 +945,14 @@ public final class CapabilityEngine {
     }
 
     public func refresh() {
+#if os(macOS)
+
         NSUpdateDynamicServices()
-    }
+
+#else
+
+#endif
+}
 
     public func executionStatus(_ executionId: String) -> ExecutionRecord {
         ExecutionStore.shared.get(executionId) ?? ExecutionRecord(
@@ -971,6 +988,8 @@ public final class CapabilityEngine {
     }
 
     public func doctor() -> DoctorReport {
+#if os(macOS)
+
         let version = macosVersion()
         let services = ServiceCatalog.records()
         let actions = ActionExtensionCatalog.records()
@@ -998,7 +1017,19 @@ public final class CapabilityEngine {
                 "Private NSExtension runtime matching was probed and is not used by this product.",
             ]
         )
-    }
+
+#else
+        return DoctorReport(
+            macosVersion: "", macosBuild: "",
+            sharingDiscovery: "UNAVAILABLE", sharingExecution: "UNAVAILABLE", sharingSupportLevel: "macOS adapter unavailable",
+            servicesDiscovery: "UNAVAILABLE", servicesExecution: "UNAVAILABLE", servicesSupportLevel: "macOS adapter unavailable",
+            quickActionDiscovery: "UNAVAILABLE", quickActionExecution: "UNAVAILABLE", quickActionSupportLevel: "macOS adapter unavailable",
+            serviceRegistrationCount: 0, actionExtensionCount: 0,
+            notes: ["Portable capability runtime: configured OpenAPI, GraphQL, gRPC, ARD and federation discovery.",
+                    "Native macOS discovery, Keychain, ImageIO and launchd integrations require macOS."])
+
+#endif
+}
 }
 
 private func macosVersion() -> (product: String, build: String) {

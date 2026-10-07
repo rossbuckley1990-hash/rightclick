@@ -105,6 +105,7 @@ final class CapabilityRuntimeDefaultsTests:
                 }
             )
 
+#if os(macOS)
         XCTAssertEqual(
             sources.count,
             4
@@ -137,6 +138,9 @@ final class CapabilityRuntimeDefaultsTests:
                 $0 is BonjourGRPCSource
             }
         )
+#else
+        XCTAssertEqual(sourceIDs, ["configured.openapi"])
+#endif
     }
 
     func testRuntimeDefaultsConsumeLiveSuppliedSource()

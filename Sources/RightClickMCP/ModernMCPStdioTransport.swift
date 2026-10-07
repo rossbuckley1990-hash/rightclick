@@ -17,7 +17,7 @@ import MCP
 actor ModernMCPStdioTransport: Transport {
     private static let modernProtocolVersion = "2026-07-28"
 
-    private let base: StdioTransport
+    private let base: PortableStdioTransport
 
     public nonisolated let logger: Logger
 
@@ -28,7 +28,7 @@ actor ModernMCPStdioTransport: Transport {
     /// need MCP 2026-07-28 completion metadata.
     private var pendingModernRequests: [String: String] = [:]
 
-    init(base: StdioTransport = StdioTransport()) {
+    init(base: PortableStdioTransport = PortableStdioTransport()) {
         self.base = base
         self.logger = base.logger
 
@@ -182,7 +182,7 @@ actor ModernMCPStdioTransport: Transport {
                 "ttlMs": 0,
                 "cacheScope": "private",
                 "instructions":
-                    "RIGHTCLICK discovers and safely invokes capabilities exposed by software installed on this Mac.",
+                    "RIGHTCLICK discovers and safely invokes capabilities exposed by software and services available on this host.",
             ],
         ]
 

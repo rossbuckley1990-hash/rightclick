@@ -1,6 +1,17 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
+#if canImport(Darwin)
 import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// Optional generic execution edge. Substrate compilers retain their existing
 /// transports; the engine supplies the common admission owner and live graph.
@@ -60,6 +71,8 @@ struct RCIRHostConfiguration: Codable {
     }
 
     fileprivate static func protectedRead(_ path: String, maximum: Int) throws -> Data {
+#if !os(Windows)
+
         let descriptor = open(path, O_RDONLY | O_NOFOLLOW | O_CLOEXEC)
         guard descriptor >= 0 else { throw RCIRError.authorityDenied }
         defer { close(descriptor) }
@@ -78,7 +91,11 @@ struct RCIRHostConfiguration: Codable {
         }
         guard count <= maximum else { throw RCIRError.invalidLimit }
         return Data(bytes.prefix(count))
-    }
+
+#else
+        throw RCIRError.authorityDenied
+#endif
+}
 }
 
 /// One common in-process admission boundary; no alternate provider dispatcher.

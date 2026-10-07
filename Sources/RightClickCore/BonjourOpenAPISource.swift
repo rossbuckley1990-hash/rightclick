@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 public struct BonjourOpenAPIServiceDescriptor:
@@ -792,3 +793,5 @@ extension BonjourOpenAPISource:
         )
     }
 }
+
+#endif

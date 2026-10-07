@@ -1,5 +1,9 @@
+#if canImport(CryptoKit)
 import CryptoKit
-import Darwin
+#else
+import Crypto
+#endif
+import CoreFoundation
 import Foundation
 import MCP
 import RightClickCore
@@ -70,11 +74,7 @@ enum StartupLog {
         \(stamp) pid=\(runtime.pid) transport=\(runtime.transport) version=\(runtime.version) path=\(runtime.executablePath) realpath=\(runtime.executableRealPath) sha256=\(runtime.executableSHA256)
         """
 
-        let directory = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent(
-                "Library/Logs/RIGHTCLICK",
-                isDirectory: true
-            )
+        let directory = RuntimePlatform.logDirectory()
 
         let file = directory.appendingPathComponent("startup.log")
 
@@ -127,13 +127,15 @@ final class StopFlag: @unchecked Sendable {
 }
 
 final class EngineBox: @unchecked Sendable {
+    private let lock = NSRecursiveLock()
     let engine: CapabilityEngine
     init(_ engine: CapabilityEngine) { self.engine = engine }
 
     func call<T>(_ body: @escaping (CapabilityEngine) throws -> T) throws -> T {
         // ShareKit creates NSWindows during perform(withItems:). DispatchQueue.main.sync
         // can run that block inline on the MCP worker, which AppKit then aborts.
-        if pthread_main_np() != 0 {
+#if os(macOS)
+        if Thread.isMainThread {
             return try body(engine)
         }
         let box = MainResultBox<T>()
@@ -142,6 +144,11 @@ final class EngineBox: @unchecked Sendable {
             box.finish(Result { try body(engine) })
         }
         return try box.wait()
+#else
+        lock.lock()
+        defer { lock.unlock() }
+        return try body(engine)
+#endif
     }
 }
 
