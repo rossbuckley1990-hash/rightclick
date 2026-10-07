@@ -1,3 +1,5 @@
 # Retain exact native CI artifact bytes; manifests pin their original hashes.
 evidence/windows-protected-reference-20261007/fixture-diagnostic-6ea/*.jsonl -text -diff
 evidence/windows-protected-reference-20261007/fixture-diagnostic-6ea/*.txt -text -diff
+# Keep recorded client/schema/transcript artifact hashes stable on every checkout.
+evidence/restricted-core-20261007/** -text
