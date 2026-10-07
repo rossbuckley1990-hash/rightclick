@@ -37,9 +37,16 @@ final class ConnectedProviderStoreTests: XCTestCase {
     }
 
     func testStrictNumericVersionAcceptsOneAndRejectsBoolean() throws {
-        let numeric = Data("{\"schemaVersion\":1,\"providers\":[]}".utf8)
-        XCTAssertEqual(try ConfiguredArtifactProviderStore.decode(numeric), [])
-        XCTAssertThrowsError(try ConfiguredArtifactProviderStore.decode(Data("{\"schemaVersion\":true,\"providers\":[]}".utf8)))
+        // Foundation must distinguish JSON true from 1 on every native host,
+        // including Windows builds without a CoreFoundation module.
+        for numeric in ["1", "1.0", "1e0"] {
+            let bytes = Data(("{\"schemaVersion\":" + numeric + ",\"providers\":[]}").utf8)
+            XCTAssertEqual(try ConfiguredArtifactProviderStore.decode(bytes), [], numeric)
+        }
+        for forbidden in ["true", "false", "\"1\"", "null", "0", "2", "1.5"] {
+            let bytes = Data(("{\"schemaVersion\":" + forbidden + ",\"providers\":[]}").utf8)
+            XCTAssertThrowsError(try ConfiguredArtifactProviderStore.decode(bytes), forbidden)
+        }
     }
 
     func testUnknownCredentialInlineAndExecutableFieldsRejected() {
