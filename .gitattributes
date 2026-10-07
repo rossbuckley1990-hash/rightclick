@@ -1,0 +1,9 @@
+# Keep source/verification bytes stable on every native checkout.
+*.swift text eol=lf
+*.py text eol=lf
+*.sh text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+# Pinned upstream snapshot is byte-preserved, not newline-normalized.
+/Vendor/swift-sdk/** -text !eol
