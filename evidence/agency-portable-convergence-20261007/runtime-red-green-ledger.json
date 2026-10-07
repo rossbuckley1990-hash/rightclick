@@ -57,6 +57,31 @@
       "evidenceTurningGreen": [],
       "transfer": "Native graph mutation and ABI type fidelity pressure the same runtime used by descriptor protocols.",
       "status": "RED: inspected documented boundaries only; not implemented or demonstrated"
+    },
+    {
+      "substrateExposingFailure": "Windows native Swift6.2 toolchain",
+      "genericRuntimeDeficiency": "Unconditional CoreFoundation boolean classification prevented shared ABI compilation on Windows.",
+      "reusablePrimitive": "Foundation JSON scalar classification preserves Bool separately from numeric0/1 without CoreFoundation module dependency.",
+      "thinProviderSpecificLayer": "None: shared typed JSON conversion and string-contract length validation.",
+      "evidenceTurningGreen": [
+        "native-macos-number-types-retry.log",
+        "native-linux-number-types-pipe-retry.log"
+      ],
+      "transfer": "The same typed values and contract constraints compile for every descriptor substrate.",
+      "status": "GREEN on Mac/Linux, RED on Windows until actual next native gate"
+    },
+    {
+      "substrateExposingFailure": "Linux bounded native child execution",
+      "genericRuntimeDeficiency": "Early stdin closure generated SIGPIPE13 and terminated the runtime rather than producing bounded child completion.",
+      "reusablePrimitive": "Thread-local SIGPIPE block/consume/restore around native pipe writes, with no process-wide signal change.",
+      "thinProviderSpecificLayer": "Linux POSIX pipe signal helper only; shared admitted process lifecycle and byte/deadline bounds remain unchanged.",
+      "evidenceTurningGreen": [
+        "native-linux-number-types-retry.log",
+        "native-linux-number-types-pipe-retry.log",
+        "native-macos-pipe-safety-recheck.log"
+      ],
+      "transfer": "Every host-selected child transport, including genuine WASM and native IPC, uses the same bounded process edge.",
+      "status": "GREEN for demonstrated Linux pipe boundary; not a claim that an unprovisioned WASM fixture passed"
     }
   ],
   "nativeLinuxControls": {
@@ -85,5 +110,30 @@
     "Sources/RightClickCore/OriginPinnedHTTP.swift": "dc95771515189e0642fa5f9986a5b7816b5e098872b496968f1eda6341d15e22",
     "Sources/RightClickHostFiles/HostFiles.c": "2ecdb122ab01eadfb82268e670823d13280293c2414b7c2981fa8181b32b644d",
     "Tests/RightClickCoreTests/NativeBoundedHTTPTests.swift": "06238d07214f7da4d39d4e4b53b3c9955319f3a228b882204b7930ab0313a32f"
+  },
+  "nativeTypeProcessChecks": {
+    "Mac": {
+      "tests": 33,
+      "skippedExistingAbsentWASMFixture": 2,
+      "failures": 0
+    },
+    "Linux": {
+      "tests": 33,
+      "skippedExistingAbsentWASMFixture": 2,
+      "failures": 0
+    }
+  },
+  "nativeWindowsBaseline": {
+    "run": 37644529029,
+    "job": 112871729564,
+    "headSHA": "018c96cc812ad402f90df01027396d3780d145e7",
+    "actualPRMergeSHA": "1b5a566b0d32c828bdc36305422281233ce89fee",
+    "artifactID": 11493223724,
+    "status": "FAILED native source compile before ACL tests"
+  },
+  "nextExactHeadNativeRun": {
+    "run": 37648145831,
+    "sourceSHA": "1c1940c08733630837d470e574ff77a964d2a79a",
+    "status": "PENDING"
   }
 }
