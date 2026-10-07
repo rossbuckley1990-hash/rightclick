@@ -71,8 +71,8 @@
       "native_tests": "PASS",
       "live_runtime": "PASS",
       "restricted_agent": "NOT_RUN",
-      "review": "PASS_SCOPED_LOCAL; EXACT_HEAD_CI_PENDING",
-      "merge": "NOT_RUN",
+      "review": "PASS_SCOPED; SIX_EXACT_HEAD_CI_SUCCESS",
+      "merge": "PASS",
       "artifact_build": "PASS",
       "artifact_publish": "NOT_RUN",
       "fresh_install": "NOT_RUN",
@@ -89,7 +89,14 @@
       "artifact_build": "NOT_RUN",
       "artifact_publish": "NOT_RUN",
       "fresh_install": "NOT_RUN",
-      "client_acceptance": "NOT_RUN"
+      "client_acceptance": "NOT_RUN",
+      "prerequisites": {
+        "issuerProviderOption": "Existing real local Kubernetes TokenRequest/API lab inspected read-only; not newly acquired or accepted through RIGHTCLICK",
+        "transport": "Native Foundation HTTPS rejects unknown CA (-1202). Public-route RED/frozen tests and generic origin-scoped CA implementation next",
+        "managedAuthority": "NOT_IMPLEMENTED for TokenRequest; imported bearer remains operator provisioning",
+        "protectedObserver": "NOT_IMPLEMENTED; existing observer credential-free UTF8 only",
+        "receiptTrust": "Minimisation, rotation/revocation and concurrent structural verification findings remain unfinished"
+      }
     },
     "G4": {
       "implementation": "NOT_STARTED",
@@ -545,15 +552,89 @@
       "skips": 0,
       "binarySHA256": "529d7f849f4b4e733b75d8a83614f7fcff9889b78bd51f877f1514d95fa08692",
       "evidence": "evidence/rcir-production-20261007/review-final-freshness-release/results.json"
+    },
+    {
+      "name": "source-package-native-public",
+      "command": "See review-package-green/commands.json,native-command.json,packaged-public-runs.json",
+      "source": "3320d2fbf3fad75e337622da72f8d2dbec6acb65",
+      "exitCode": 0,
+      "testsOrItems": 29,
+      "skips": 0,
+      "publicControls": [
+        7,
+        10
+      ],
+      "evidence": "evidence/rcir-production-20261007/review-package-green/result.json"
     }
   ],
   "remoteCI": {
-    "status": "PENDING_COMBINED_HEAD",
+    "status": "PASS",
     "earlierHead": "fc4eb128a814e799ca545d250dd487729a42185d",
     "earlierChecks": "All six SUCCESS; original 19 native production controls, original seven public controls, Linux 61/macOS 63 foundation and complete native regressions",
     "boundary": "Earlier checks do not validate the subsequent cache, observer URI and body commitment changes.",
     "evidence": "evidence/rcir-production-20261007/pr42-first-checks.json",
-    "pullRequest": "PENDING_CREATION on feature/rcir-live-contracts-20261007"
+    "pullRequest": "https://github.com/rossbuckley1990-hash/rightclick/pull/47",
+    "candidateHead": "57b5d87cc54c26c2b444fb232bb2ffa8e49b34c3",
+    "foundation": {
+      "status": "PASS",
+      "linuxTests": 69,
+      "nativeTests": 71,
+      "run": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37628487561"
+    },
+    "production": {
+      "status": "PASS",
+      "nativeProviderControls": 29,
+      "whollyZeroEffectLogs": 14,
+      "actualEffectRequests": 18,
+      "publicControls": 7,
+      "freshnessControls": 10,
+      "run": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37628487584",
+      "artifactID": 11486060614,
+      "artifactSHA256": "5c0f27d1cd547ad9835b53c127f97278e7897d3007523b87e6b7072ae57961e5",
+      "evidence": "evidence/rcir-production-20261007/pr47-production-ci/",
+      "independentReview": "evidence/rcir-production-20261007/review-package-green/pr47-ci-independent-verification.json"
+    },
+    "regressions": {
+      "status": "PASS",
+      "run": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37628487655",
+      "boundary": "All existing native, release, setup, stdio/authenticated HTTP, two-runtime federation, neutral-core, free Command Line Tools, source packaging and source-kind alignment checks passed. Client setup fixtures are not every real live-client connection.",
+      "nativeTests": 587,
+      "skips": 26,
+      "failures": 0,
+      "evidence": "evidence/rcir-production-20261007/pr47-native-ci.log.gz"
+    },
+    "checks": [
+      {
+        "name": "portable",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37628487561/job/112816320032"
+      },
+      {
+        "name": "production",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37628487584/job/112816319618"
+      },
+      {
+        "name": "test",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37628487655/job/112816320426"
+      },
+      {
+        "name": "apple-cryptography",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37628487561/job/112816320276"
+      },
+      {
+        "name": "macOS ARD runtime gates",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37628487655/job/112816319988"
+      },
+      {
+        "name": "Linux ARD portable acquisition",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37628487655/job/112816320238"
+      }
+    ]
   },
   "release": {
     "sourceTag": "v0.2.2",
@@ -562,20 +643,26 @@
     "candidateFreshInstalled": false,
     "candidateClientReconnected": false
   },
-  "nextAction": "Validate and push combined candidate on dedicated fresh branch, inspect exact-head CI, review and merge eligible follow-up. G3 requires authorised real issuer/provider pair before new acquisition work.",
+  "nextAction": "G2 accepted source merged. Preserve reviewed evidence/continuation; begin G3 with the actual disposable Kubernetes issuer/provider option after generic origin-scoped CA trust, secret-only managed authority backend and independent protected JSON observer prerequisites are met. Reconcile concurrent receipt verifier controls; do not publish or claim G3\u2013G11 completion.",
   "historicalEvidence": "Original foundation zip/raw logs not located; recovered pack patches/reports retained without treating historical PASS claims as reproduced.",
   "companionTap": {
     "source": "79a05ff7c666d6df7d3b1d63113f6bf6aed0d412",
     "merge": "ad42e817f27ab6eb2634b13759e2a2ea3a3ada3f",
     "pullRequest": "https://github.com/rossbuckley1990-hash/homebrew-tap/pull/8",
     "checks": "PASS: 21 probe fixtures and brew test-bot; local 38 total",
-    "formulaChanged": false
+    "formulaChanged": false,
+    "evidencePullRequest": "https://github.com/rossbuckley1990-hash/homebrew-tap/pull/10",
+    "evidenceSource": "cbd8225fa333fb87436f0fc54592bf14f934d8f8",
+    "evidenceMerge": "dc3485807481b2c5c30aa963e19c644cdb05ec5b",
+    "evidenceChecks": "PASS: brew test-bot; no formula mutation"
   },
   "blockers": [
     {
       "gate": "G3",
-      "action": "Prove issuer-enforced credential downscoping and an out-of-scope provider denial",
-      "missingPrerequisite": "Authorised disposable issuer/provider URLs and approved credential provisioning route; user input requested, no answer received. Existing broad GitHub bearer proves availability only."
+      "kind": "IMPLEMENTATION_PREREQUISITE",
+      "action": "Wire genuine issuer acquisition and separately authorised protected observation into the production RCIR host",
+      "missingPrerequisite": "Existing disposable Kubernetes TokenRequest/API option found. Current runtime lacks scoped CA trust, host-only TokenRequest/subject/audience/expiry metadata, and separate credential JSON observer. No issuer/backend RED or complete G3 acceptance performed; ownership requires independent disposable resources rather than mutation of the existing other-owner lab.",
+      "evidence": "evidence/rcir-production-20261007/g3-issuer-prerequisite-review/report.json"
     }
   ],
   "mergedFoundation": {
@@ -592,8 +679,8 @@
     "source": "46bda19cc4b9c62ad4a6d8bbfbebb872c2e11e91",
     "pullRequest": "https://github.com/rossbuckley1990-hash/rightclick/pull/43",
     "mergedInto": "feature/rcir-openapi-production-20261007",
-    "mainContainsSource": false,
-    "boundary": "Preserved with normal merge; combined source needs fresh native/live/CI checks. Original frozen assertions retained."
+    "mainContainsSource": true,
+    "boundary": "Invocation isolation preserved in reviewed combined PR47 and merged to main with unchanged original controls."
   },
   "reviews": [
     {
@@ -610,12 +697,62 @@
     {
       "role": "release subagent",
       "source": "3320d2fbf3fad75e337622da72f8d2dbec6acb65",
-      "disposition": "Two exact-source packages byte-identical; missing provider fixed; extracted native tests IN_PROGRESS",
-      "archiveSHA256": "1a400bdc3421a3e164e398dcacb4d1f7ce4d5ce0c599d3ad61e6ae66acb76f3f"
+      "disposition": "PASS: byte-identical double source build, real provider startup, unchanged 29 native controls and both frozen public proofs from fresh extraction; no source mutation",
+      "archiveSHA256": "1a400bdc3421a3e164e398dcacb4d1f7ce4d5ce0c599d3ad61e6ae66acb76f3f",
+      "evidence": "evidence/rcir-production-20261007/review-package-green/"
     }
   ],
   "freshEngineeringConnection": {
     "evidence": "evidence/rcir-production-20261007/fresh-engineering-mcp-report.json",
     "boundary": "No connector callable after plugin change; pinned existing installed binary used through actual read-only stdio MCP. No new client configuration, effectful invocation or candidate acceptance."
+  },
+  "sourcePackaging": {
+    "source": "3320d2fbf3fad75e337622da72f8d2dbec6acb65",
+    "implementationManifestSHA256": "99f223dc01bae812690959df83592de1761b699d04f5b27533dbb61b143d3be5",
+    "archiveSHA256": "1a400bdc3421a3e164e398dcacb4d1f7ce4d5ce0c599d3ad61e6ae66acb76f3f",
+    "debugCLI_SHA256": "9b6564c49112debe54efc8f6cb53a62a337e4240fa389506386cde086b71d464",
+    "nativeTests": 29,
+    "skips": 0,
+    "failures": 0,
+    "exitCode": 0,
+    "publicProofControls": [
+      7,
+      10
+    ],
+    "publicProofExitCodes": [
+      0,
+      0
+    ],
+    "unchangedPackagedFiles": 177,
+    "evidence": "evidence/rcir-production-20261007/review-package-green/",
+    "boundary": "Development source packaging/native/public proof only; not a precompiled bottle, publication, full587-suite extraction run, installed product or reconnected client."
+  },
+  "concurrentReviews": [
+    {
+      "pullRequest": 44,
+      "source": "640a71f4ca8905a11111666ba959568a2ab9fb52",
+      "disposition": "NEEDS_RECONCILIATION; four independently signed structural negatives accepted, archive support missing",
+      "evidence": "evidence/rcir-production-20261007/concurrent-pr44-review/"
+    },
+    {
+      "pullRequest": 45,
+      "source": "d8d6f585a0b890b749c892641aa43fbd52ad4a6a",
+      "disposition": "Later integration must retain immediate stale-contract refresh alongside monotonic cache freshness; no missing G2 dependency",
+      "evidence": "evidence/rcir-production-20261007/concurrent-pr45-pr46-review/"
+    },
+    {
+      "pullRequest": 46,
+      "source": "cd19b2cc7f28e1424559be9e5088f94b35a73b26",
+      "disposition": "Real infrastructure-only issuer/native readiness evidence, not runtime G3/G6/G8 acceptance",
+      "evidence": "evidence/rcir-production-20261007/concurrent-pr45-pr46-review/"
+    }
+  ],
+  "mergedG2": {
+    "source": "57b5d87cc54c26c2b444fb232bb2ffa8e49b34c3",
+    "merge": "0ed7d3a61ba63a36474085ec2b6f141be1b9ee3d",
+    "mergedAt": "2026-10-07T13:50:23Z",
+    "pullRequest": "https://github.com/rossbuckley1990-hash/rightclick/pull/47",
+    "checks": "All six SUCCESS; normal merge with matched exact head; no platform-security override",
+    "boundary": "Merged runtime source, not a published/installed RCIR product or complete G3\u2013G11 acceptance."
   }
 }
