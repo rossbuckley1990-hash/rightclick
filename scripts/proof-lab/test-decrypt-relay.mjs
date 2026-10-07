@@ -42,7 +42,9 @@ function invoke(change = {}, {tamper = false, source = sourceHead} = {}) {
 test('finite future authenticated expiry allows private references', () => {
   assert.deepEqual(invoke(), {accepted:true, credentialsWritten:true, referencesWritten:true});
 });
-for (const [label, expiresAt] of [['malformed', 'not-a-time'], ['missing', undefined], ['null', null], ['numeric', 12345], ['expired', '2000-01-01T00:00:00.000Z']]) {
+for (const [label, expiresAt] of [['malformed', 'not-a-time'], ['missing', undefined], ['null', null], ['numeric', 12345],
+  ['invalid February calendar', '2028-02-30T00:00:00.000Z'], ['invalid April calendar', '2028-04-31T00:00:00.000Z'],
+  ['expired', '2000-01-01T00:00:00.000Z']]) {
   test(`${label} expiry cannot grant relay authority`, () => {
     assert.deepEqual(invoke({expiresAt}), {accepted:false, credentialsWritten:false, referencesWritten:false});
   });

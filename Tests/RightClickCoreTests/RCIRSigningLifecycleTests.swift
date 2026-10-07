@@ -19,6 +19,7 @@ final class RCIRSigningLifecycleTests: XCTestCase {
     private var capability: Capability!
     private var keyFile: URL!
     private var publicKey: Data!
+    private var freshPublicKey: Data?
     private var records: [ExecutionRecord] = []
 
     private func launch(_ script: String) throws -> Process {
@@ -52,7 +53,9 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         let providers = directory.appendingPathComponent("providers.json")
         try JSONSerialization.data(withJSONObject: ["version": 1, "agentCards": [base + "/.well-known/agent.json"]]).write(to: providers)
         try NativeHTTPFixture.protect(providers)
-        host = RCIRExecutionHost(); host.configuration = { self.config }
+        host = RCIRExecutionHost(); host.configuration = { [weak self] in
+            guard let self else { throw RCIRError.authorityDenied }; return self.config
+        }
         engine = CapabilityEngine(reflectorSources: [ConfiguredA2ASource(configurationFile: providers)], experience: nil, rcirHost: host)
         capability = try XCTUnwrap(engine.capabilities(for: "signing lifecycle proof").capabilities.first)
         var check = RCIRHostConfiguration.Observer(urlTemplate: observe + "/observations/{message}", expectedArgument: "message")
@@ -68,7 +71,8 @@ final class RCIRSigningLifecycleTests: XCTestCase {
             let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
             try encoder.encode(records).write(to: output.appendingPathComponent("runtime-records.json"))
             try publicKey.write(to: output.appendingPathComponent("original-public-key.raw"))
-            for file in ["requests.jsonl", "polls.jsonl", "effects.jsonl", "observations.jsonl"] {
+            try freshPublicKey?.write(to: output.appendingPathComponent("fresh-public-key.raw"))
+            for file in ["requests.jsonl", "polls.jsonl", "effects.jsonl", "observations.jsonl", "unary-effects.jsonl"] {
                 if let data = try? Data(contentsOf: directory.appendingPathComponent(file)) { try data.write(to: output.appendingPathComponent(file)) }
             }
         }
@@ -79,11 +83,11 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         let text = (try? String(contentsOf: directory.appendingPathComponent(filename), encoding: .utf8)) ?? ""
         return text.split(separator: "\n").compactMap { try? JSONSerialization.jsonObject(with: Data($0.utf8)) as? [String: Any] }
     }
-    private func begin() throws -> ExecutionRecord {
+    private func begin(priorEffects: Int = 0) throws -> ExecutionRecord {
         let message = String(data: try JSONSerialization.data(withJSONObject: ["challenge": UUID().uuidString, "value": "signer-lifecycle"], options: [.sortedKeys]), encoding: .utf8)!
         let initial = try engine.begin(id: capability.id, item: "signing lifecycle proof", confirmed: true, arguments: ["message": message])
         records.append(initial); XCTAssertEqual(initial.state, .started)
-        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertEqual(rows("effects.jsonl").count, priorEffects)
         return initial
     }
     private func releaseEffect() throws {
@@ -107,8 +111,9 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         try signed.verify(trustedPublicKey: trustedKey, using: RCIREd25519Verifier())
     }
     private func unsigned(_ final: ExecutionRecord) throws {
-        XCTAssertNil(final.rcir?.signedReceipt, "Withdrawn or replaced provisioned signer must not issue a retained old-key signature")
+        XCTAssertTrue(final.rcir?.signedReceipt == nil, "Withdrawn or replaced provisioned signer must not issue a retained old-key signature")
         XCTAssertNotNil(final.rcir?.receipt, "Unsigned terminal truth remains available")
+        XCTAssertTrue(final.events.contains(RCIRReceiptEmission.withheldEvent))
         XCTAssertEqual(rows("requests.jsonl").count, 1, "Signing failure must never replay a mutation")
         XCTAssertEqual(rows("effects.jsonl").count, 1)
     }
@@ -145,5 +150,76 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         let final = finish(initial)
         XCTAssertEqual(final.state, .unknown); XCTAssertEqual(final.rcir?.outcome, "unknown")
         XCTAssertFalse(final.evidence.outcomeVerified); try unsigned(final)
+    }
+    func testFreshInvocationAfterRotationUsesNewProvisionedKey() throws {
+        let initial = try begin(); freshPublicKey = try key(at: keyFile)
+        try releaseEffect(); let old = finish(initial); try unsigned(old)
+        let fresh = try begin(priorEffects: 1); let final = finish(fresh)
+        XCTAssertEqual(final.state, .succeeded); XCTAssertTrue(final.evidence.outcomeVerified)
+        XCTAssertEqual(rows("requests.jsonl").count, 2); XCTAssertEqual(rows("effects.jsonl").count, 2)
+        XCTAssertNotEqual(final.rcir?.taskID, old.rcir?.taskID)
+        try signature(final, trustedKey: XCTUnwrap(freshPublicKey))
+    }
+    func testKeyWithdrawalAtAdmissionBoundaryHasZeroProviderEffects() throws {
+        host.beforeStart = { _, admit, start in
+            try NativeHTTPFixture.release(self.keyFile); try FileManager.default.removeItem(at: self.keyFile)
+            try withoutActuallyEscaping(admit) { permit in
+                try withoutActuallyEscaping(start) { enqueue in try permit(enqueue) }
+            }
+        }
+        let message = "{\"challenge\":\"" + UUID().uuidString + "\",\"value\":\"admission-control\"}"
+        let denied = try engine.begin(id: capability.id, item: "signing lifecycle proof", confirmed: true, arguments: ["message": message])
+        records.append(denied)
+        XCTAssertEqual(denied.state, .rejected); XCTAssertNil(denied.rcir)
+        XCTAssertTrue(rows("requests.jsonl").isEmpty); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+    }
+    private final class SingleSource: CapabilityReflectorSource {
+        let id = "test.signing-lifecycle-unary"
+        let reflector: OpenAPIReflector
+        init(_ reflector: OpenAPIReflector) { self.reflector = reflector }
+        func reflectors() -> [any CapabilityReflector] { [reflector] }
+    }
+    func testUnaryHTTPAfterKeyWithdrawalRetainsActualEffectAndUnsignedTruth() throws {
+        let rest = directory.appendingPathComponent("rest")
+        try FileManager.default.createDirectory(at: rest, withIntermediateDirectories: false)
+        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+        let provider = Process(); provider.executableURL = try NativeHTTPFixture.python()
+        provider.arguments = [root.appendingPathComponent("scripts/rcir-dispatch-test-provider.py").path, rest.path]
+        provider.standardOutput = FileHandle.nullDevice; provider.standardError = FileHandle.nullDevice
+        try provider.run(); defer { if provider.isRunning { provider.terminate(); provider.waitUntilExit() } }
+        let port = rest.appendingPathComponent("port"); try waitFor(port)
+        let base = URL(string: "http://127.0.0.1:" + (try String(contentsOf: port, encoding: .utf8)))!
+        let schema: [String: Any] = ["type":"object", "additionalProperties":false, "required":["id", "value"],
+            "properties":["id":["type":"string"], "value":["type":"string"]]]
+        let content = ["application/json":["schema":schema]]
+        let spec: [String: Any] = ["openapi":"3.0.3", "info":["title":"Signing lifecycle unary", "version":"1"],
+            "paths":["/records":["post":["operationId":"persist", "requestBody":["required":true, "content":content],
+                "responses":["200":["description":"ACK", "content":content]]]]]]
+        let reflector = try OpenAPIReflector(specificationData: JSONSerialization.data(withJSONObject: spec), baseURL: base)
+        let unary = CapabilityEngine(reflectorSources:[SingleSource(reflector)], experience:nil, rcirHost:host)
+        let cap = try XCTUnwrap(unary.capabilities(for:"unary proof").capabilities.first)
+        host.beforeStart = { _, admit, start in
+            try withoutActuallyEscaping(admit) { permit in
+                try withoutActuallyEscaping(start) { enqueue in
+                    try permit {
+                        enqueue()
+                        try? NativeHTTPFixture.release(self.keyFile)
+                        try? FileManager.default.removeItem(at: self.keyFile)
+                    }
+                }
+            }
+        }
+        let final = try unary.begin(id:cap.id, item:"unary proof", confirmed:true, arguments:["id":"unary-signing", "value":"real-effect"])
+        records.append(final)
+        XCTAssertFalse(FileManager.default.fileExists(atPath:keyFile.path))
+        XCTAssertEqual(final.state, .accepted); XCTAssertEqual(final.rcir?.outcome, "unverified")
+        XCTAssertFalse(final.evidence.outcomeVerified)
+        XCTAssertTrue(final.rcir?.signedReceipt == nil); XCTAssertNotNil(final.rcir?.receipt)
+        XCTAssertTrue(final.events.contains(RCIRReceiptEmission.withheldEvent))
+        let effects = try Data(contentsOf:rest.appendingPathComponent("effects.jsonl"))
+        try effects.write(to:directory.appendingPathComponent("unary-effects.jsonl"))
+        XCTAssertEqual(rows("unary-effects.jsonl").count, 1)
+        XCTAssertEqual(rows("unary-effects.jsonl").first?["taskID"] as? String, final.rcir?.taskID)
+        XCTAssertTrue(rows("effects.jsonl").isEmpty)
     }
 }

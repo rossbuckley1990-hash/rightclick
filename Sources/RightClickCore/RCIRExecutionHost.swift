@@ -232,7 +232,10 @@ public final class RCIRExecutionHost {
             }
             // Key errors are discovered before the provider can have an effect.
             let signer = try config.signingKeyFile.map {
-                try RCIREd25519Signer(rawPrivateKey: RCIRHostConfiguration.protectedRead($0, maximum: 32))
+                try RCIRProvisionedSigner(path: $0, currentReference: { [weak self] in
+                    guard let self else { return nil }
+                    return (try? self.configuration())?.signingKeyFile
+                })
             }
             guard contract.scopes?.isSubset(of: authority()) == true else { throw RCIRError.authorityDenied }
             let lease: RCIRLease
@@ -269,6 +272,7 @@ public final class RCIRExecutionHost {
                             throw RCIRError.staleBinding
                         }
                         guard lease.scopes.isSubset(of: authority()) else { throw RCIRError.authorityDenied }
+                        try signer?.validateCurrentAuthority()
                         let start = { dispatched = true; enqueue() }
                         if let attachment = invocationAuthority {
                             try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments),
@@ -435,13 +439,13 @@ public final class RCIRExecutionHost {
             } else {
                 try task.record(.failed, sequence: 1, now: now())
             }
-            let payload = try task.receiptData()
-            let signed = try signer.map { try RCIRSignedReceipt.sign(task, using: $0) }
-            let envelope = try signed.map { try JSONDecoder().decode(RCIRReceiptEnvelope.self, from: $0.wireData()) }
+            let emission = try RCIRReceiptEmission(task: task, signer: signer)
+            let envelope = try emission.signed.map { try JSONDecoder().decode(RCIRReceiptEnvelope.self, from: $0.wireData()) }
+            if emission.signatureWithheld { record.events.append(RCIRReceiptEmission.withheldEvent) }
             record.rcir = RCIRExecutionEvidence(version: 1, taskID: task.id.uuidString,
                 leaseID: lease.id.uuidString, generation: binding.generation,
                 leaseConsumed: true, phase: task.phase.rawValue, outcome: task.outcome.rawValue,
-                receipt: payload.base64EncodedString(), signedReceipt: envelope,
+                receipt: emission.payload.base64EncodedString(), signedReceipt: envelope,
                 observationBoundary: structured?.boundary ?? (observation == nil
                     ? (returnedPostcondition == nil ? "No host observer configured; provider completion is unverified."
                         : "Caller-declared returned-value postcondition; no independent external effect observation.")

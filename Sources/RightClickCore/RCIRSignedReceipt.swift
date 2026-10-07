@@ -56,6 +56,22 @@ public struct RCIRSignedReceipt: Sendable {
     }
 }
 
+/// Failure to issue a signature must not erase terminal evidence or manufacture
+/// an unknown/cancelled outcome. Shared by unary and retained task completion.
+struct RCIRReceiptEmission {
+    static let withheldEvent = "RCIR signed receipt withheld because current provisioned signing authority is unavailable."
+    let payload: Data
+    let signed: RCIRSignedReceipt?
+    let signatureWithheld: Bool
+    init(task: RCIRTask, signer: (any RCIRReceiptSigning)?) throws {
+        payload = try task.receiptData()
+        if let signer {
+            do { signed = try RCIRSignedReceipt.sign(task, using: signer); signatureWithheld = false }
+            catch { signed = nil; signatureWithheld = true }
+        } else { signed = nil; signatureWithheld = false }
+    }
+}
+
 #if canImport(CryptoKit) || canImport(Crypto)
 /// Product backend on supported Apple platforms. Key provisioning/rotation is a
 /// runtime deployment responsibility; no ephemeral key is installed implicitly.

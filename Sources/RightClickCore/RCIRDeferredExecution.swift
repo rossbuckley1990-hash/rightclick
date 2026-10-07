@@ -105,14 +105,16 @@ final class RCIRDeferredSession {
         }
         record.evidence = OutcomeEvidence(type: "rcir_deferred_task", boundary: boundary,
                                          outcomeVerified: task.outcome == .succeeded)
-        let payload = terminal ? try task.receiptData() : nil
-        let signed = terminal ? try signer.map { try RCIRSignedReceipt.sign(task, using: $0) } : nil
-        let envelope = try signed.map { try JSONDecoder().decode(RCIRReceiptEnvelope.self, from: $0.wireData()) }
+        let emission = terminal ? try RCIRReceiptEmission(task: task, signer: signer) : nil
+        let envelope = try emission?.signed.map { try JSONDecoder().decode(RCIRReceiptEnvelope.self, from: $0.wireData()) }
+        if emission?.signatureWithheld == true, !record.events.contains(RCIRReceiptEmission.withheldEvent) {
+            record.events.append(RCIRReceiptEmission.withheldEvent)
+        }
         let page = try task.eventPage(limit: 256)
         record.rcir = RCIRExecutionEvidence(version: 1, taskID: task.id.uuidString,
             leaseID: task.lease.id.uuidString, generation: task.lease.binding.generation,
             leaseConsumed: true, phase: task.phase.rawValue, outcome: task.outcome.rawValue,
-            receipt: payload?.base64EncodedString(), signedReceipt: envelope,
+            receipt: emission?.payload.base64EncodedString(), signedReceipt: envelope,
             observationBoundary: boundary, taskEvents: page.events.map { $0.base64EncodedString() })
         return record
     }

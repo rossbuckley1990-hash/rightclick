@@ -32,7 +32,7 @@ foreach ($case in @('success', 'process-survives', 'user-survives', 'private-sta
     }
     function Get-LocalUser {
         [CmdletBinding()] param([Parameter(Position=0)][string]$Name)
-        if (Test-Path $global:rightclickCleanupUserMarker) { [PSCustomObject]@{Name=$Name} }
+        if (Test-Path $global:rightclickCleanupUserMarker) { [PSCustomObject]@{Name='rightclick-cleanup-fixture'} }
     }
     function Remove-Item {
         [CmdletBinding()] param([Parameter(Position=0)][string]$Path, [switch]$Recurse, [switch]$Force)
