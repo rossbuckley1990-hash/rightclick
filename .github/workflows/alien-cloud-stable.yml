@@ -1,0 +1,39 @@
+name: RIGHTCLICK Alien Cloud Stable Bottle
+on:
+  push:
+    branches:
+      - experiment/alien-cloud-first-contact-20261007
+    paths:
+      - '.github/workflows/alien-cloud-stable.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  novel-cloud-stable:
+    name: Stable v0.2.2 without any custom cloud connector
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Install immutable production RIGHTCLICK via Homebrew
+        run: |
+          set -euo pipefail
+          brew install rossbuckley1990-hash/tap/rightclick
+          which rightclick
+          rightclick version
+          shasum -a 256 "$(which rightclick)"
+      - name: Seven-op FIRST CONTACT with previously unknown public remote API
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/alien-cloud-evidence"
+          python3 scripts/experiments/alien-cloud-first-contact.py "$(which rightclick)" "$RUNNER_TEMP/alien-cloud-evidence"
+      - name: Preserve original raw MCP proof and remote readback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: alien-cloud-stable-${{ github.sha }}
+          path: ${{ runner.temp }}/alien-cloud-evidence
+          if-no-files-found: warn
+          retention-days: 7
+
