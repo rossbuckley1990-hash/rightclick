@@ -187,7 +187,7 @@ actor ModernMCPStdioTransport: Transport {
                 "ttlMs": 0,
                 "cacheScope": "private",
                 "instructions":
-                    "RIGHTCLICK discovers and safely invokes capabilities exposed by software installed on this Mac.",
+                    "RIGHTCLICK discovers capabilities from this host and configured services. Discovery, authorization and outcome evidence are separate.",
             ],
         ]
 

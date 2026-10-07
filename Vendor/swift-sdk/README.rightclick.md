@@ -1,0 +1,1 @@
+Pinned MCP SDK 0.12.1. Only two EventSource compilation guards differ from upstream. Original tests and licence retained. All hosts share these sources. Original/patched hashes are in UPSTREAM.json. Remove this compatibility snapshot after a verified upstream Windows-capable release; do not develop an independent protocol fork.

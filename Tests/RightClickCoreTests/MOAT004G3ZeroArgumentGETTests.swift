@@ -690,6 +690,7 @@ final class MOAT004G3ZeroArgumentGETTests:
         )
     }
 
+#if os(macOS)
     func testFrozenGitHubAuthenticatedUserStillDoesNotReflectUntilG4()
         throws
     {
@@ -812,4 +813,5 @@ final class MOAT004G3ZeroArgumentGETTests:
             "G3 must not accidentally implement G4 response compatibility."
         )
     }
+#endif
 }

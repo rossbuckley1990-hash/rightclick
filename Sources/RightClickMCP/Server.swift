@@ -80,7 +80,6 @@ public enum RightClickMCPMain {
             FileHandle.standardError.write(Data("HTTP listener is unavailable on this host; use stdio.\n".utf8))
             return 2
 #endif
-            return 0
         }
         return StdioMCPServer(engine: box).run()
     }

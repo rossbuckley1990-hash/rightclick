@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import base64
 import http.client
+import hashlib
 import json
 import os
 import pathlib
@@ -140,7 +141,7 @@ def main() -> None:
         config_output = subprocess.check_output([str(binary), 'connect', '--openapi', origin + '/openapi.json',
             '--base-url', origin], env=env, timeout=15, text=True)
         config = json.loads(config_output)['mcpServers']['rightclick']
-        assert config['args'] == ['mcp']; assert config['command'] == str(binary)
+        assert config['args'] == ['mcp']; assert os.path.samefile(config['command'], binary)
         env.update(config['env'])
         passed('generated client configuration uses existing artifact resolver')
         platform = json.loads(subprocess.check_output([str(binary), 'platform', '--json'], env=env, timeout=15))
@@ -155,7 +156,8 @@ def main() -> None:
             assert sorted(tool['name'] for tool in listing['tools']) == TOOLS
             passed('same seven tools in modern discovery')
             runtime = client.call('context_runtime'); assert runtime['product'] == 'RIGHTCLICK'
-            assert len(runtime['executableSHA256']) == 64
+            assert runtime['executableSHA256'] == hashlib.sha256(binary.read_bytes()).hexdigest()
+            assert os.path.samefile(runtime['executableRealPath'], binary)
             inspected = client.call('context_inspect', {'item': 'portable proof'})
             assert inspected['kind'] == 'text'
             actions = client.call('context_actions', {'item': 'portable proof'})['actions']
@@ -223,7 +225,9 @@ def main() -> None:
                 assert sorted(x['name'] for x in json.loads(body)['result']['tools']) == TOOLS
                 passed('HTTP authentication is enforced by shared dispatcher')
                 for bad in [b'Content-Length: -1\r\n', b'Content-Length: 2000001\r\n',
-                            b'Transfer-Encoding: chunked\r\n', b'Content-Length: 1\r\nContent-Length: 2\r\n']:
+                            b'Transfer-Encoding: chunked\r\n', b'Content-Length: 1\r\nContent-Length: 2\r\n',
+                            b'Content-Length: 1\r\ncontent-length: 2\r\n',
+                            b'Authorization: one\r\nauthorization: two\r\nContent-Length: 0\r\n']:
                     with socket.create_connection(('127.0.0.1', port), timeout=3) as connection:
                         connection.settimeout(3)
                         connection.sendall(b'POST /mcp HTTP/1.1\r\nHost: localhost\r\n' + bad + b'\r\n')

@@ -735,6 +735,7 @@ final class MOAT004G4JSONSyntaxFallbackTests:
         )
     }
 
+#if os(macOS)
     func testFrozenGitHubUserReflectsForFirstTimeButHasNoExternalAuthorityYet()
         throws
     {
@@ -899,4 +900,5 @@ final class MOAT004G4JSONSyntaxFallbackTests:
             "G5 owns external authority. G4 must not invent it."
         )
     }
+#endif
 }

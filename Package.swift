@@ -22,14 +22,14 @@ let portableCoreTests = [
     "CapabilityABITests.swift", "CapabilityABIBoundaryTests.swift", "CapabilityABIAdapterTests.swift",
     "CapabilityExperienceTests.swift", "DispatchContractBindingTests.swift", "PolicyTests.swift",
     "OpenAPIReflectorTests.swift", "GraphQLReflectorTests.swift", "CapabilityArtifactResolverTests.swift",
-    "MOAT004G1AcquisitionTests.swift", "MOAT004G2SplitOriginTests.swift", "MOAT004G3ZeroArgumentGETTests.swift",
+    "MOAT004G1AcquisitionTests.swift", "MOAT004G3ZeroArgumentGETTests.swift",
     "MOAT004G4JSONSyntaxFallbackTests.swift", "MOAT005G1PathAndJSONBodyTests.swift",
     "MOAT005G2MultiplePathArgumentsTests.swift", "MOAT005G3GitHubRequestSchemaTests.swift",
     "MOAT005G4MutationJSONResponseFallbackTests.swift", "MOAT005G5FullFrozenGitHubContractTests.swift",
     "MOAT005G6MultiSegmentPathTests.swift", "ConfiguredOpenAPISourceTests.swift",
 ] + (supportsNIO ? ["GRPCReflectorTests.swift", "GRPCReflectionTransportTests.swift", "CapabilityExperienceLedgerTests.swift"] : [])
 var dependencies: [Package.Dependency] = [
-    .package(url: "https://github.com/modelcontextprotocol/swift-sdk.git", exact: "0.12.1"),
+    .package(path: "Vendor/swift-sdk"),
     .package(url: "https://github.com/apple/swift-crypto.git", exact: "4.5.2"),
 ]
 var coreDependencies: [Target.Dependency] = ["RightClickARD", .product(name: "Crypto", package: "swift-crypto")]

@@ -1,4 +1,7 @@
 import Foundation
+#if os(Windows)
+import ucrt
+#endif
 import RightClickCore
 
 enum RightClickProviderCLI {

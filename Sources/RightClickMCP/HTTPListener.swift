@@ -39,6 +39,9 @@ final class MCPHTTPListener: @unchecked Sendable {
     }
 
     private func handle(_ connection: NWConnection) async {
+        let deadline = DispatchWorkItem { [weak connection] in connection?.cancel() }
+        DispatchQueue.global().asyncAfter(deadline: .now() + 60, execute: deadline)
+        defer { deadline.cancel(); connection.cancel() }
         do {
             let raw = try await readRequest(from: connection)
             guard raw.path == path || raw.path == path + "/" else {
@@ -81,16 +84,32 @@ final class MCPHTTPListener: @unchecked Sendable {
         }
         let headerData = buffer.subdata(in: buffer.startIndex..<headerEnd.lowerBound)
         var body = buffer.subdata(in: headerEnd.upperBound..<buffer.endIndex)
-        let headerText = String(data: headerData, encoding: .utf8) ?? ""
+        guard headerData.count <= 16_384,
+              let headerText = String(data: headerData, encoding: .utf8) else {
+            throw RightClickListenerError("Invalid or excessive headers.")
+        }
         let lines = headerText.components(separatedBy: "\r\n")
         let requestLine = lines.first?.split(separator: " ") ?? []
         guard requestLine.count >= 2 else { throw RightClickListenerError("Bad request line.") }
         let method = String(requestLine[0])
         let path = String(requestLine[1]).split(separator: "?").first.map(String.init) ?? "/"
+        guard lines.count <= 65 else { throw RightClickListenerError("Too many headers.") }
         var headers: [String: String] = [:]
-        for line in lines.dropFirst() where line.contains(":") {
-            let parts = line.split(separator: ":", maxSplits: 1)
-            headers[String(parts[0]).trimmingCharacters(in: .whitespaces)] = String(parts[1]).trimmingCharacters(in: .whitespaces)
+        let singleton = Set(["content-length", "authorization", "content-type", "host", "transfer-encoding"])
+        for line in lines.dropFirst() {
+            guard let colon = line.firstIndex(of: ":") else { throw RightClickListenerError("Malformed header.") }
+            let name = String(line[..<colon])
+            guard !name.isEmpty, name.utf8.allSatisfy({
+                (48...57).contains($0) || (65...90).contains($0) || (97...122).contains($0) ||
+                "!#$%&'*+-.^_`|~".utf8.contains($0)
+            }) else { throw RightClickListenerError("Invalid header name.") }
+            let key = name.lowercased()
+            let value = String(line[line.index(after: colon)...]).trimmingCharacters(in: .whitespaces)
+            guard value.unicodeScalars.allSatisfy({ $0.value == 9 || ($0.value >= 32 && $0.value != 127) }),
+                  !singleton.contains(key) || headers[key] == nil else {
+                throw RightClickListenerError("Ambiguous or invalid header.")
+            }
+            headers[key] = headers[key].map { $0 + ", " + value } ?? value
         }
         // Validate framing before reading the body, including unauthenticated requests.
         guard !headers.keys.contains(where: { $0.lowercased() == "transfer-encoding" }) else {
@@ -106,10 +125,7 @@ final class MCPHTTPListener: @unchecked Sendable {
             if chunk.isEmpty { break }
             body.append(chunk)
         }
-        guard body.count >= length else { throw RightClickListenerError("Incomplete request body.") }
-        if body.count > length {
-            body = body.prefix(length)
-        }
+        guard body.count == length else { throw RightClickListenerError("Incomplete or excessive request body.") }
         return RawHTTPRequest(method: method, path: path, headers: headers, body: body.isEmpty ? nil : body)
     }
 
