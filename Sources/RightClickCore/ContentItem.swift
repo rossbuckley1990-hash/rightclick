@@ -59,7 +59,7 @@ public enum ContentParser {
                 typeDescription: portableURLDescription
             )
         }
-        let expanded = (trimmed as NSString).expandingTildeInPath
+        let expanded = expandHomePath(trimmed)
         let candidate = URL(fileURLWithPath: expanded).standardizedFileURL
         var isDirectory: ObjCBool = false
         if FileManager.default.fileExists(atPath: candidate.path, isDirectory: &isDirectory) {
@@ -149,8 +149,29 @@ public enum ContentParser {
         return url
     }
 
+    static func expandHomePath(_ raw: String,
+        home: URL = FileManager.default.homeDirectoryForCurrentUser) -> String {
+#if os(Windows)
+        if raw == "~" { return home.path }
+        if raw.hasPrefix("~/") || raw.hasPrefix("~\\") {
+            let tail = String(raw.dropFirst(2)).replacingOccurrences(of: "\\", with: "/")
+            return home.appendingPathComponent(tail).path
+        }
+        // Windows has no POSIX ~username expansion. Never guess another user's home.
+        return raw
+#else
+        if raw == "~" { return home.path }
+        if raw.hasPrefix("~/") { return home.appendingPathComponent(String(raw.dropFirst(2))).path }
+        return (raw as NSString).expandingTildeInPath
+#endif
+    }
+
     private static func looksLikePath(_ raw: String) -> Bool {
-        raw.hasPrefix("/") || raw.hasPrefix("~") || raw.hasPrefix("./") || raw.hasPrefix("../")
+#if os(Windows)
+        if raw.hasPrefix("\\\\") || raw.hasPrefix(".\\") || raw.hasPrefix("..\\") ||
+            raw.range(of: #"^[A-Za-z]:[\\/]"#, options: .regularExpression) != nil { return true }
+#endif
+        return raw.hasPrefix("/") || raw.hasPrefix("~") || raw.hasPrefix("./") || raw.hasPrefix("../")
     }
 }
 
