@@ -1,0 +1,8 @@
+{
+  "scope": "infrastructure readiness only",
+  "dockerInitialHealth": "RED: socket ping timed out10s; docker ps timed out45s; pre-existing VM OOM-kill counter climbed7 to14",
+  "dockerRecovered": "GREEN after user removed unrelated workloads; all read-only info/ps/images returned0.6s",
+  "kubernetesInitialBootstrap": "RED: kubelet rejects reserved app.kubernetes.io/part-of startup label",
+  "kubernetesFix": "use proof.rightclick.local/part-of label; recreate owned proof cluster only",
+  "runtimeSevenOperationAcceptance": "RED until separately demonstrated"
+}

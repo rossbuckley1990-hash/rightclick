@@ -857,6 +857,9 @@ public final class ConfiguredOpenAPISource:
     private let reloadLock =
         NSLock()
 
+    private let clock: () -> TimeInterval
+    private var freshness: CapabilitySnapshotFreshness
+
     private let stateLock =
         NSLock()
 
@@ -889,6 +892,8 @@ public final class ConfiguredOpenAPISource:
 
     public init(
         configurationFile: URL,
+        refreshInterval: TimeInterval = 5,
+        clock: @escaping () -> TimeInterval = { ProcessInfo.processInfo.systemUptime },
         specificationLoader:
             @escaping SpecificationLoader
     ) {
@@ -897,6 +902,9 @@ public final class ConfiguredOpenAPISource:
 
         self.specificationLoader =
             specificationLoader
+
+        self.clock = clock
+        self.freshness = CapabilitySnapshotFreshness(lifetime: refreshInterval)
     }
 
     public func reflectors()
@@ -964,6 +972,7 @@ public final class ConfiguredOpenAPISource:
             didLoadConfiguration
             && lastConfigurationData
                 == data
+            && freshness.isFresh(at: clock())
 
         stateLock.unlock()
 
@@ -1120,6 +1129,17 @@ public final class ConfiguredOpenAPISource:
         didLoadConfiguration =
             didLoad
 
+        freshness.recordAcquisition(at: clock())
+
+        stateLock.unlock()
+    }
+
+    public func invalidateSnapshot() {
+        reloadLock.lock()
+        defer { reloadLock.unlock() }
+        stateLock.lock()
+        freshness.invalidate()
+        currentReflectors.removeAll()
         stateLock.unlock()
     }
 }

@@ -934,6 +934,9 @@ public final class CapabilityEngine {
     }
 
     public func refresh() {
+        for source in reflectorSources {
+            source.invalidateSnapshot()
+        }
         NSUpdateDynamicServices()
     }
 

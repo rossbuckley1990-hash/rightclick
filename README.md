@@ -1,15 +1,12 @@
 # RIGHTCLICK
 
-## Your agent shouldn't need a new integration every time it gains a new ability.
+## Stop wiring every new ability into your agent.
 
-**RIGHTCLICK is a safe dynamic capability runtime for AI.**
+**RIGHTCLICK is a dynamic capability runtime for AI.**
 
-It discovers capability contracts exposed by the software and services around an agent, normalizes them into one live capability graph, and lets the agent inspect and use them through **seven generic operations**.
+It discovers supported capability contracts from the software and services around an agent, reflects them into one live capability graph, and exposes them through **seven generic AI-facing operations**.
 
-Install software.  
-Start a service.  
-Expose a compatible API.  
-Connect another RIGHTCLICK runtime.
+Install an app. Start a service. Expose a compatible API. Connect another RIGHTCLICK runtime.
 
 **The capability graph changes. The AI-facing interface does not.**
 
@@ -20,76 +17,90 @@ RIGHTCLICK discovers a supported capability contract
         ↓
 capability enters the live graph
         ↓
-AI can inspect it
+the agent can inspect and explain it
         ↓
-RIGHTCLICK applies authority + safety rules
+RIGHTCLICK applies authority + safety policy
         ↓
-AI can invoke it
+the agent invokes it through the same context_run
         ↓
 RIGHTCLICK distinguishes provider acceptance from verified outcome
 ```
 
-> **Universal by reflection, not by a growing pile of provider-specific AI tools.**
+> **MCP is the transport. Capability acquisition is the product.**
 
-Apple Silicon · macOS 14+ · MCP · Homebrew · Apache-2.0
+**Stable:** v0.2.2 · Apple Silicon · macOS 14+ · Homebrew · MCP · Apache-2.0
 
 ---
 
-# Try it
+# Try it in 30 seconds
 
-## Install
+## 1. Install
 
 ```bash
 brew install rossbuckley1990-hash/tap/rightclick
 ```
 
-Check the runtime:
+Already installed?
+
+```bash
+brew update
+brew upgrade rightclick
+```
+
+Check the exact runtime:
 
 ```bash
 rightclick version
 rightclick doctor
 ```
 
-Ask what applies to some text:
+## 2. Ask what your environment can do
+
+Text:
 
 ```bash
 rightclick actions "RightClick"
 ```
 
-Try a file:
+A file:
 
 ```bash
 rightclick actions ~/Desktop/example.jpg
 ```
 
-Try a URL:
+A URL:
 
 ```bash
 rightclick actions "https://example.com"
 ```
 
-See the providers contributing to the graph:
+See the providers currently contributing capabilities:
 
 ```bash
 rightclick providers
 ```
 
-You are **not** querying a static provider integration list.
+This is not a static catalog of every integration RIGHTCLICK knows about.
 
-RIGHTCLICK evaluates what the current environment can expose for the current object or task.
+It is a query against the **capability graph that exists in your environment now**.
 
 ---
 
-# Give the same capability runtime to your AI
+# Give the same runtime to your AI
 
-For detected supported local clients:
+Preview every detected supported local client without changing anything:
 
 ```bash
 rightclick setup --all --dry-run --json
+```
+
+Then connect all detected clients:
+
+```bash
 rightclick setup --all --yes
 ```
 
-Or configure one client explicitly.
+Or choose one.
 
 ### Cursor
 
@@ -105,7 +116,7 @@ rightclick setup --client claude --dry-run --json
 rightclick setup --client claude --yes
 ```
 
-RIGHTCLICK uses Claude Code's native MCP registration instead of editing Claude configuration behind its back.
+RIGHTCLICK uses Claude Code's native user-scope MCP registration.
 
 ### Codex
 
@@ -114,26 +125,31 @@ rightclick setup --client codex --dry-run --json
 rightclick setup --client codex --yes
 ```
 
-RIGHTCLICK uses Codex's native MCP registration and fails closed on conflicting same-name registrations.
+RIGHTCLICK uses Codex's native MCP registration and refuses conflicting same-name registrations before mutation.
 
 ### ChatGPT
 
+Preview the persistent bridge:
+
 ```bash
 rightclick setup chatgpt --dry-run --json
+```
+
+When its pairing/credential prerequisites are satisfied:
+
+```bash
 rightclick setup chatgpt --yes
 ```
 
-The persistent ChatGPT bridge includes runtime attestation and upgrade reconciliation rather than treating configuration as proof of a live connection.
+The ChatGPT path uses a stable Homebrew entrypoint, persistent tunnel identity, runtime/process attestation and upgrade reconciliation rather than treating a config file as proof of a live connection.
 
-### Any MCP client
-
-Run RIGHTCLICK directly over stdio:
+### Any MCP client over stdio
 
 ```bash
 rightclick mcp
 ```
 
-Equivalent MCP configuration:
+Equivalent configuration:
 
 ```json
 {
@@ -148,118 +164,228 @@ Equivalent MCP configuration:
 
 Use `which rightclick` if Homebrew is installed elsewhere.
 
-RIGHTCLICK also supports authenticated local HTTP for clients that cannot launch a stdio process.
+### Authenticated local HTTP MCP
+
+```bash
+export RIGHTCLICK_MCP_TOKEN='replace-with-a-random-secret'
+rightclick mcp --http --port 8765
+```
+
+The endpoint is:
+
+```text
+http://127.0.0.1:8765/mcp
+```
+
+HTTP MCP requires a bearer token and stays on loopback.
 
 ---
 
-# The seven-operation contract
+# Then ask the agent
 
-RIGHTCLICK keeps the model-facing surface deliberately small.
+Try something deliberately simple:
+
+```text
+What can you do with this text: RightClick?
+```
+
+Or:
+
+```text
+What can you do with ~/Desktop/photo.jpg?
+Explain the useful capabilities before doing anything.
+```
+
+Or:
+
+```text
+Do this, but do not tell me it succeeded unless you can verify the requested result.
+```
+
+Or inspect the graph itself:
+
+```text
+Which capability providers can you see right now?
+```
+
+The interesting part is that the answer is derived from the environment rather than a provider list hard-coded into the prompt.
+
+---
+
+# Why RIGHTCLICK exists
+
+Every time I wanted to give an agent another ability, I seemed to be adding another MCP server, another tool set, another schema, another auth flow and another thing to maintain.
+
+That started to feel backwards.
+
+Models are getting better at reasoning about what to do, but we still tend to tell them almost everything they are capable of doing up front.
+
+RIGHTCLICK asks a different question:
+
+> **Why should an agent need to know every capability in advance?**
+
+Instead of:
+
+```text
+new software
+    ↓
+build AI integration
+    ↓
+define provider-specific tools
+    ↓
+wire schemas + credentials
+    ↓
+attach them to the agent
+    ↓
+maintain them forever
+```
+
+RIGHTCLICK is working toward:
+
+```text
+software or service appears
+        ↓
+it exposes a supported capability contract
+        ↓
+RIGHTCLICK reflects it
+        ↓
+capability enters the graph
+        ↓
+the same agent interface can use it
+```
+
+The integration boundary moves from **every provider × every AI client** toward a reusable capability runtime.
+
+---
+
+# Seven operations, not a tool per provider
+
+RIGHTCLICK exposes exactly these generic MCP operations:
 
 | Operation | Purpose |
 |---|---|
-| `context_runtime` | Identify the exact RIGHTCLICK runtime serving the AI |
-| `context_inspect` | Parse and classify the current object/context |
+| `context_runtime` | Identify the exact RIGHTCLICK process, executable, SHA-256, PID and transport |
+| `context_inspect` | Parse/classify a file, URL or text |
 | `context_actions` | Discover capabilities that apply now |
-| `context_explain` | Inspect one capability before execution |
+| `context_explain` | Inspect one capability, its provider, effects, support and policy |
 | `context_run` | Execute a discovered capability |
-| `context_run_status` | Read execution and verification evidence |
-| `context_providers` | Inspect providers contributing to the live graph |
+| `context_run_status` | Read retained execution and verification evidence |
+| `context_providers` | Inspect providers contributing to the graph |
 
-A provider does **not** require a permanent top-level tool such as:
+The architectural invariant is what is **not** required:
 
 ```text
-github_create_issue
 github_merge_branch
+github_get_user
 slack_send_message
-foo_create_record
-bar_transform_image
+some_vendor_create_record
+another_vendor_transform_file
+...
 ```
 
-Supported provider operations are reflected into the same generic capability model and executed through the same `context_run`.
-
-That is the architectural invariant.
+A supported provider operation can instead become an ordinary RIGHTCLICK capability and still execute through `context_run`.
 
 ---
 
-# What can enter the capability graph?
+# What stable v0.2.2 can reflect
 
-RIGHTCLICK is not built around a list of brands.
+v0.2.2 deliberately expands **capability substrates**, not brand-specific AI tools.
 
-It is built around **capability substrates** and **discovery sources**.
+| Substrate / source | Stable v0.2.2 status |
+|---|---|
+| Native macOS | Services, sharing services and Finder Action metadata |
+| OpenAPI | Bonjour + configured providers, supported structured operations and authority |
+| GraphQL | Generic GraphQL reflection, including Bonjour/artifact acquisition |
+| gRPC | Generic reflection/descriptors for supported message/method shapes |
+| Capability artifacts | Provider-neutral OpenAPI, GraphQL and gRPC artifact resolution |
+| ARD | ARD registry results can feed capability artifacts into the same runtime |
+| RIGHTCLICK federation | One runtime can reflect capabilities from another authenticated RIGHTCLICK runtime |
+| Authority | Origin-bound bearer support plus OAuth/OIDC authority support |
+| AI clients | Cursor, Claude Code, Codex, ChatGPT bridge and generic MCP clients |
 
-## Native macOS software
+These are **supported slices**, not a claim that every OpenAPI document, GraphQL schema, gRPC service or application is automatically executable.
 
-RIGHTCLICK can discover contextual capabilities ordinary applications already expose through supported macOS contracts, including:
+Unsupported or ambiguous contracts fail closed instead of being guessed into existence.
 
-- Services
-- sharing services
-- Finder Action extension metadata
+The v0.2.2 release passed 411 tests, with 26 explicit environment-gated skips and 0 failures, and its published source/bottle path is pinned in the Homebrew tap.
 
-The original BBEdit experiment remains the simplest proof:
+---
+
+# The first proof was just installing BBEdit
+
+The simplest RIGHTCLICK experiment is still one of the best.
+
+Same Mac. Same RIGHTCLICK build. Same text query.
 
 ```text
-before ordinary BBEdit installation
+before BBEdit
 36 capabilities
-0 third-party capabilities
+0 third-party
 
-after installation
+after ordinary BBEdit installation
 41 capabilities
 5 BBEdit capabilities
 
-BBEdit-specific RIGHTCLICK acquisition code added
+BBEdit-specific acquisition code added
 0
 ```
 
-[See the BBEdit proof](docs/BBEDIT-PROOF.md).
+RIGHTCLICK reflected capabilities BBEdit already exposed through its normal macOS Services contract.
 
-## OpenAPI
+The generic executor then transferred the exact requested text into a new BBEdit document.
 
-RIGHTCLICK can reflect supported OpenAPI operations into generic capabilities.
+[BBEdit proof](docs/BBEDIT-PROOF.md) · [launch demo script](docs/DEMO_SCRIPT.md)
 
-The OpenAPI path includes work for:
+Want to replay the idea? Run the same `rightclick actions` query before and after installing a compatible app, then `rightclick refresh` and compare the returned graph. Use your actual counts; the preserved 36 → 41 result is historical evidence, not a promised count for every Mac.
 
-- plain-text operations
-- closed structured JSON object requests
-- generic structured arguments
-- path parameters
-- zero-argument GET operations
-- validated structured JSON responses
-- provider appearance/removal
-- separate specification and execution origins
-- origin-bound bearer authority
-- exact execution-origin credential binding
-- real authenticated GitHub compatibility
+---
 
-Unsupported or ambiguous shapes abstain instead of being guessed into existence.
+# Add your own supported OpenAPI provider
 
-## GraphQL
+You do not need to rebuild RIGHTCLICK to configure a supported HTTPS OpenAPI provider.
 
-RIGHTCLICK contains a generic GraphQL reflector.
+```bash
+rightclick provider add \
+  --id orders-api \
+  --spec-url https://api.example.com/openapi.json \
+  --base-url https://api.example.com
+```
 
-A reflected GraphQL operation becomes an ordinary RIGHTCLICK capability rather than a GraphQL-specific AI tool.
+Inspect configured providers:
 
-The model-facing interface stays the same.
+```bash
+rightclick provider list
+```
 
-## gRPC reflection
+Remove it:
 
-The repository integration line includes generic gRPC capability reflection.
+```bash
+rightclick provider remove --id orders-api
+```
 
-The design uses gRPC reflection/descriptors to derive supported capabilities rather than adding provider-specific gRPC tools.
+If a reflected operation needs a supported bearer scheme, store the credential outside model-facing arguments:
 
-Unsupported method/message shapes remain unavailable rather than silently widening execution.
+```bash
+printf '%s\n' "$API_TOKEN" | \
+  rightclick authority set \
+    --origin https://api.example.com \
+    --scheme bearerAuth
+```
 
-## RIGHTCLICK federation
+Check or delete it:
 
-One RIGHTCLICK runtime can reflect capabilities exposed by another RIGHTCLICK runtime.
+```bash
+rightclick authority status --origin https://api.example.com --scheme bearerAuth
+rightclick authority delete --origin https://api.example.com --scheme bearerAuth
+```
 
-This allows the live graph to extend beyond one process or one machine while preserving the same capability semantics.
+Credentials are resolved at the execution boundary and bound to the canonical provider origin.
 
-Federated provider acceptance is still not automatically semantic success.
+---
 
-## Universal capability artifact input
+# Feed capability artifacts from the environment
 
-On the repository integration line, RIGHTCLICK can accept provider-neutral artifact descriptors through one generic environment contract:
+v0.2.2 includes one provider-neutral artifact envelope for supported OpenAPI, GraphQL and gRPC contracts.
 
 ```bash
 export RIGHTCLICK_CAPABILITY_ARTIFACTS='[
@@ -280,151 +406,68 @@ export RIGHTCLICK_CAPABILITY_ARTIFACTS='[
     "endpointURL": "grpcs://compute.example.com:443"
   }
 ]'
+
+rightclick mcp
 ```
 
-Those three descriptors enter the same resolver registry and become ordinary RIGHTCLICK reflectors.
+All three descriptors enter the same resolver registry and capability graph.
 
-The agent still sees the same seven operations.
-
-Security defaults remain conservative:
-
-- remote HTTP artifacts must use HTTPS
-- plaintext HTTP is loopback-only
-- remote gRPC must use `grpcs://`
-- plaintext `grpc://` is loopback-only
-- OpenAPI and GraphQL may reference a locally configured authority scheme
-- gRPC authority advertisements currently fail closed until generic metadata authority is implemented
-- duplicate descriptor IDs or duplicate resulting reflector identities are rejected
-- resolved artifacts are cached for a short bounded refresh window rather than reacquired for every agent query
-
-This environment contract is an integration surface for the current repository code. The published Homebrew v0.2.1 release predates this universal artifact layer.
-
-## ARD as an optional discovery source
-
-RIGHTCLICK can consume supported ARD search results as another **source of capability artifacts**.
-
-ARD does not define RIGHTCLICK's architecture.
-
-The rule is:
-
-```text
-discovery source
-      ↓
-supported capability contract
-      ↓
-ordinary RIGHTCLICK reflector
-      ↓
-ordinary RIGHTCLICK capability
-```
-
-A discovered ARD OpenAPI artifact therefore enters the same execution, authority and verification runtime as an OpenAPI provider discovered another way.
-
-That is intentional: **ARD is an input, not the product boundary.**
+Security defaults are intentionally conservative: remote HTTP artifacts require HTTPS; plaintext HTTP/gRPC are loopback-only; remote gRPC requires `grpcs://`; duplicate identities fail closed.
 
 ---
 
-# The architecture
+# Federate RIGHTCLICK runtimes
 
-```text
-                         AI / AGENT
-                              │
-                     seven generic operations
-                              │
-                              ▼
-                    ┌───────────────────┐
-                    │    RIGHTCLICK     │
-                    │ capability runtime │
-                    └─────────┬─────────┘
-                              │
-                       live capability graph
-                              │
-              ┌───────────────┼────────────────┐
-              │               │                │
-          fixed/local      dynamic          contextual
-          reflectors       sources          sources
-              │               │                │
-              └───────────────┼────────────────┘
-                              │
-                         reflectors
-                              │
-          ┌──────────┬────────┼────────┬───────────┐
-          ▼          ▼        ▼        ▼           ▼
-       macOS      OpenAPI   GraphQL   gRPC     federation
-          │          │        │        │           │
-          └──────────┴────────┼────────┴───────────┘
-                              ▼
-                    normalized Capability
-                              │
-                  safety / confirmation
-                              │
-                       authority binding
-                              │
-                           execution
-                              │
-                          observation
-                              │
-                         verification
+One authenticated RIGHTCLICK runtime can reflect capabilities from another without exposing the remote provider's credential to the caller.
+
+Runtime B:
+
+```bash
+export RIGHTCLICK_MCP_TOKEN='runtime-b-secret'
+rightclick mcp --http --port 8877
 ```
 
-The important boundaries are explicit.
+Runtime A:
 
-### Sources discover reflectors
+```bash
+export RIGHTCLICK_FEDERATION_PEERS='[
+  {
+    "id": "runtime-b",
+    "name": "Remote RIGHTCLICK",
+    "endpoint": "http://127.0.0.1:8877/mcp",
+    "tokenEnvironment": "RIGHTCLICK_FEDERATION_B_TOKEN"
+  }
+]'
 
-A discovery source may change as the environment changes.
+export RIGHTCLICK_FEDERATION_B_TOKEN='runtime-b-secret'
+rightclick mcp
+```
 
-It does not grant authority, invoke capabilities, or establish semantic success.
+Runtime A can now reflect supported capabilities from B behind the same seven operations.
 
-### Reflectors normalize capability substrates
+The first federation slice is deliberately bounded: peers are explicitly configured, loopback HTTP is required, transitive federation is blocked, and remote provider credentials stay at the execution peer.
 
-OpenAPI, GraphQL, gRPC, native macOS contracts and federated peers all compile into RIGHTCLICK's capability model.
-
-### The engine owns routing and policy
-
-A provider cannot choose another provider's execution route by spoofing metadata.
-
-Duplicate reflector identities fail closed.
-
-### Verification sits above provider acceptance
-
-A successful transport response is not automatically the user's requested outcome.
+[Full federation contract and proof](docs/FEDERATION.md)
 
 ---
 
-# Discover aggressively. Execute safely. Verify relentlessly.
+# Provider acceptance is not user success
 
-Dynamic discovery without a control boundary is not enough.
-
-RIGHTCLICK separates:
+RIGHTCLICK deliberately separates:
 
 ```text
-CAPABILITY EXISTS
-CAPABILITY APPLIES
-CAPABILITY CAN EXECUTE
-AUTHORITY IS AVAILABLE
-USER CONFIRMATION IS REQUIRED
-PROVIDER ACCEPTED THE REQUEST
-REQUESTED OUTCOME WAS VERIFIED
+provider accepted the request
 ```
 
-These are different states.
+from:
 
-## Confirmation
+```text
+the user's requested outcome happened
+```
 
-Consequential or unknown actions can require explicit confirmation before invocation.
+An HTTP 2xx, API acknowledgement or sharing callback is not automatically semantic success.
 
-## Authority below the model
-
-Supported credentials can be resolved locally and injected at the execution boundary.
-
-The bearer secret does not need to become a `context_run` argument.
-
-Authority can be bound to the exact execution origin.
-
-Redirects do not silently inherit that authority.
-
-## Verification
-
-RIGHTCLICK supports provider-independent postconditions such as:
+Where an observable postcondition exists, RIGHTCLICK can evaluate provider-independent verification such as:
 
 - exact returned text
 - file existence/readability
@@ -434,174 +477,108 @@ RIGHTCLICK supports provider-independent postconditions such as:
 - extended-attribute presence/absence
 - metadata presence/absence
 - before/after observable state
+- separate read-back of durable remote state
 
-Durable remote-state tests also demonstrate the principle of **independent read-back**:
+A run can therefore remain accepted/unverified rather than being mislabeled as success.
 
-```text
-POST accepted
-     ↓
-not yet semantic success
-     ↓
-separate discovered GET
-     ↓
-persisted state observed
-     ↓
-VERIFIED
-```
+It can become `VERIFIED_SUCCESS` only when the required observation is actually established, or `VERIFIED_FAILURE` when the observed state contradicts the requested result.
 
 ---
 
-# RIGHTCLICK can use RIGHTCLICK's own architecture
+# Proofs: what has actually been demonstrated
 
-RIGHTCLICK development includes a self-hosting proof where the normal GitHub integration available to the AI could not perform the required repository mutation.
+| Proof | What it establishes |
+|---|---|
+| [RIGHTCLICK-000](docs/EXPERIMENTS.md) | Native macOS sharing/services discovery and supported execution boundaries |
+| [RIGHTCLICK-004](docs/PROOF.md) | A previously unseen installed Service appears, executes, then disappears without rebuilding RIGHTCLICK |
+| [RIGHTCLICK-005](docs/EXPERIMENTS.md) | Capability applicability changes with JPEG/PDF/MOV/TXT context |
+| [BBEdit](docs/BBEDIT-PROOF.md) | Ordinary third-party installation adds usable capabilities with zero BBEdit-specific acquisition code |
+| [Live OpenAPI gain/loss](evidence/openapi-discovery-execution-verification-live-removal-2026-10-06/) | Remote provider appears, executes and disappears live |
+| [MOAT-001](evidence/moat-001-structured-openapi-2026-10-06/README.md) | Previously unsupported structured JSON operation becomes usable generically |
+| [MOAT-002](evidence/moat-002-durable-readback-2026-10-06/README.md) | Durable remote state is independently read back instead of inferred from POST acceptance |
+| [MOAT-003](evidence/moat-003-generic-bearer-authority-2026-10-06/README.md) | Origin-bound bearer authority stays outside MCP arguments |
+| [Real GitHub acquisition / MOAT-004](https://github.com/rossbuckley1990-hash/rightclick/pull/9) | Generic OpenAPI reflection reaches a real authenticated GitHub capability without GitHub-specific production tools |
+| [MOAT-005 / self-hosting](evidence/self-hosting-2026-10-07/README.md) | RIGHTCLICK uses a reflected GitHub capability to modify the RIGHTCLICK repo, then independently verifies the state |
+| [ARD acquisition](evidence/ard-acquisition-g12-g17/) | ARD can act as a discovery source feeding the same artifact/reflection runtime |
+| [Federation](docs/FEDERATION.md) | A RIGHTCLICK runtime can reflect and invoke a capability owned by another runtime |
+| [Capability ABI-001](docs/CAPABILITY-ABI-001.md) | Provider-independent typed value/schema/canonical-contract foundation on current main |
+| [RCIR production](docs/RCIR-PRODUCTION.md) | Current-main OpenAPI admission/lease/receipt boundary with real transport controls |
+| [Invocation isolation](docs/RCIR-INVOCATION-ISOLATION.md) | Separate invocation bindings remain isolated while provider graph identity stays stable |
+| [Universal runtime acceptance](docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md) | Explicit scorecard for the eleven-substrate north star and what is still not proven |
 
-RIGHTCLICK reflected GitHub's API generically and exposed:
+The evidence directories preserve raw receipts/logs where the claim needs more than a prose summary.
+
+---
+
+# RIGHTCLICK can use RIGHTCLICK to improve itself
+
+The self-hosting proof is a useful demonstration of the architecture.
+
+RIGHTCLICK dynamically reflected a GitHub OpenAPI capability:
 
 ```text
 Merge a branch
 ```
 
-through the same `context_run` interface.
+The AI invoked it through the same `context_run` interface.
 
-RIGHTCLICK executed the reflected operation with origin-bound authority, correctly reported GitHub's `201` only as provider acceptance, and a separate repository read verified the resulting branch state.
+Authority was resolved below the model-facing contract and bound to `https://api.github.com`.
 
-[See the self-hosting proof](evidence/self-hosting-2026-10-07/README.md).
+GitHub returned `201`, which RIGHTCLICK correctly treated only as provider acceptance.
 
-No `github_merge_branch` top-level RIGHTCLICK tool was added.
+A separate repository read then verified the resulting branch state.
 
----
+There is no `github_merge_branch` top-level RIGHTCLICK tool.
 
-# Why this is not just MCP
-
-RIGHTCLICK speaks MCP.
-
-MCP answers:
-
-> How does an AI communicate with an external capability?
-
-RIGHTCLICK is working on another layer:
-
-> How does an AI acquire the capabilities that exist in its current environment without loading a bespoke integration for every provider?
-
-These layers complement each other.
-
-```text
-provider-specific integration model
-
-provider
-  ↓
-someone builds an AI integration
-  ↓
-provider-specific tools
-  ↓
-agent
-
-
-RIGHTCLICK model
-
-provider
-  ↓
-compatible capability contract
-  ↓
-RIGHTCLICK reflector
-  ↓
-live capability graph
-  ↓
-same seven AI-facing operations
-```
+[Read the self-hosting proof](evidence/self-hosting-2026-10-07/README.md).
 
 ---
 
-# Why not just use a registry?
+# Stable v0.2.2 vs current main
 
-Registries are useful.
-
-They answer questions such as:
-
-```text
-What packages, servers or agents have been published?
-```
-
-RIGHTCLICK's core question is different:
-
-```text
-What can this environment safely do right now?
-```
-
-A registry can therefore become one discovery source among many.
-
-So can:
-
-- installed software
-- Bonjour
-- configured providers
-- ARD
-- MCP registries
-- A2A Agent Cards
-- enterprise service catalogs
-- federated RIGHTCLICK runtimes
-- future capability substrates
-
-The source can expand without expanding the model-facing tool list.
-
----
-
-# The universal design rule
-
-A new capability family belongs in RIGHTCLICK only if it can preserve these invariants:
-
-1. **It widens the universe of discoverable capabilities.**
-2. **It does not require a provider-specific AI-facing tool.**
-3. **It preserves or strengthens safety.**
-4. **It compiles into the same generic capability runtime.**
-5. **Unsupported or ambiguous contracts fail closed.**
-6. **Provider acceptance is not mislabeled as verified user success.**
-
-The long-term objective is not to manually integrate every product.
-
-It is to make the provider protocol increasingly irrelevant to the agent.
-
----
-
-# CLI
-
-RIGHTCLICK can also be used without an AI client.
-
-```bash
-rightclick doctor
-
-rightclick inspect "some text"
-rightclick inspect ~/Desktop/file.pdf
-
-rightclick actions "some text"
-rightclick actions ~/Desktop/photo.jpg
-
-rightclick providers
-
-rightclick explain <capability-id> <item>
-
-rightclick run <capability-id> <item>
-
-rightclick status <execution-id>
-
-rightclick version
-```
-
-Add `--json` where supported for machine-readable output.
-
----
-
-# Published release vs repository main
-
-The latest published Homebrew release is **v0.2.1**:
+The Homebrew tap installs **v0.2.2**.
 
 ```bash
 brew install rossbuckley1990-hash/tap/rightclick
+rightclick version
 ```
 
-The repository can move ahead of the published formula while new substrate work is being integrated.
+Current `main` has moved beyond that release with post-v0.2.2 runtime work including:
 
-To build the repository version:
+- Capability ABI-001 typed contract foundations
+- RCIR production OpenAPI admission and receipt machinery
+- invocation-bound leases isolated from provider-generation identity
+- live OpenAPI contract revalidation before dispatch
+- bounded discovery snapshot freshness and stale-provider invalidation
+- stronger external-observation and signed-receipt proof routes
+
+Those changes are development bytes until a later immutable release is published. A version string alone must not be used to infer that the installed v0.2.2 bottle contains post-release `main` changes.
+
+Most importantly, the **full eleven-substrate north-star proof is not complete**.
+
+The current acceptance scorecard explicitly does **not** claim that a seven-operation-only agent has already traversed all of:
+
+```text
+Mac application
+Windows machine
+Linux service
+REST API
+GraphQL API
+gRPC service
+MCP server
+A2A agent
+Kafka topic
+Kubernetes cluster
+WASM component
+```
+
+Some substrate support exists today; the single restricted-agent, all-eleven acceptance run remains a work in progress.
+
+[Universal runtime acceptance scorecard](docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md)
+
+---
+
+# Build and test current main
 
 ```bash
 git clone https://github.com/rossbuckley1990-hash/rightclick.git
@@ -615,99 +592,129 @@ swift build -c release
 .build/release/rightclick mcp
 ```
 
-The README distinguishes released behaviour from repository behaviour rather than pretending every merged capability is already in the Homebrew release.
+Useful acceptance/proof commands for contributors:
 
----
-
-# Requirements
-
-Current runtime target:
-
-```text
-Apple Silicon
-macOS 14+
+```bash
+python3 scripts/acceptance-mcp.py .build/debug/rightclick
+python3 scripts/acceptance-setup.py .build/debug/rightclick
+python3 scripts/acceptance-federation.py .build/debug/rightclick
+bash scripts/test-capability-abi.sh
+bash scripts/test-rcir.sh
 ```
 
-RIGHTCLICK does not require disabling macOS security.
-
-Not every application exposes a capability contract RIGHTCLICK can use.
-
-Not every API schema shape is supported.
-
-That is expected.
-
-The engineering goal is to widen the **generic language of capabilities** without turning RIGHTCLICK into a catalog of special cases.
+The RCIR public proof and freshness proof are documented in [RCIR-PRODUCTION.md](docs/RCIR-PRODUCTION.md).
 
 ---
 
-# Evidence
+# Architecture
 
-Important evidence is preserved in the repository because the central claims are easy to overstate.
+```text
+                              AI / AGENT
+                                   │
+                         seven generic operations
+                                   │
+                                   ▼
+                         ┌─────────────────┐
+                         │   RIGHTCLICK    │
+                         │ capability graph│
+                         └────────┬────────┘
+                                  │
+                    discovery sources / artifacts
+                                  │
+       ┌──────────┬──────────┬────┼─────┬──────────┬──────────┐
+       ▼          ▼          ▼          ▼          ▼          ▼
+     macOS     OpenAPI    GraphQL     gRPC       ARD     federation
+       │          │          │          │          │          │
+       └──────────┴──────────┴──────────┴──────────┴──────────┘
+                                  │
+                             Capability
+                                  │
+                       policy / confirmation
+                                  │
+                         authority resolution
+                                  │
+                              execution
+                                  │
+                             observation
+                                  │
+                            verification
+```
 
-- [BBEdit — capability acquisition without provider-specific code](docs/BBEDIT-PROOF.md)
-- [v0.1 scalability and blind-discovery evidence](evidence/v0.1-scalability-blind/README.md)
-- [MOAT-001 — structured OpenAPI capability acquisition](evidence/moat-001-structured-openapi-2026-10-06/README.md)
-- [MOAT-002 — durable state + independent read-back](evidence/moat-002-durable-readback-2026-10-06/README.md)
-- [MOAT-003 — generic bearer authority](evidence/moat-003-generic-bearer-authority-2026-10-06/README.md)
-- [MOAT-004 — real GitHub-compatible acquisition](https://github.com/rossbuckley1990-hash/rightclick/pull/9)
-- [Self-hosting through a reflected GitHub capability](evidence/self-hosting-2026-10-07/README.md)
-- [Security](SECURITY.md)
-- [Release process](docs/RELEASE.md)
+Sources discover.
+
+Reflectors normalize.
+
+The engine owns routing and policy.
+
+Authority is resolved below the model where supported.
+
+Verification sits above provider acknowledgement.
+
+That separation is the point.
+
+---
+
+# What RIGHTCLICK is not claiming
+
+RIGHTCLICK is early infrastructure.
+
+It does **not** claim:
+
+- every installed application exposes a usable contract
+- every right-click menu item is discoverable/invokable
+- arbitrary OpenAPI/GraphQL/gRPC support
+- every auth scheme is implemented
+- provider acceptance proves semantic success
+- current `main` is automatically present in the published Homebrew bottle
+- the complete eleven-substrate universal-runtime experiment has already passed
+
+The product goal is not to hide unsupported boundaries.
+
+It is to make the supported path feel simple while widening the generic capability language underneath it.
+
+> **Discover aggressively. Execute safely. Verify relentlessly.**
 
 ---
 
 # Contributing
 
-The most valuable contributions are generic.
+The most useful contributions make RIGHTCLICK understand a **class of capabilities**, not one provider.
 
-Good:
+Good questions:
 
-```text
-"this capability substrate can be reflected safely"
-"this schema shape can be normalized generically"
-"this authority boundary is too weak"
-"this provider acceptance is being confused with semantic success"
-"this discovery source should enter the existing graph"
-```
+- Can this new substrate compile into the existing capability model?
+- Can a schema shape be supported generically?
+- Does this authority boundary prevent credential leakage or confused-deputy behaviour?
+- Can a result be independently observed rather than inferred from a transport response?
+- Can a new discovery source feed the existing artifact/resolver graph?
+- Does provider withdrawal invalidate stale authority and execution bindings?
 
-Less useful:
+If a change requires a permanent provider-specific top-level AI tool, it is probably working against the core idea.
 
-```text
-"add a permanent top-level tool for provider X"
-```
-
-Before adding a substrate or discovery source, ask:
-
-> Can this teach RIGHTCLICK a new class of capability without teaching every AI client a new provider-specific interface?
-
-If yes, it is probably pointing in the right direction.
+See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) and the [build programme](docs/BUILD-PROGRAMME.md).
 
 ---
 
 # North star
 
-An agent enters an environment.
+An agent enters a new environment.
 
 It does not arrive with every tool it will ever need.
 
-Instead:
-
 ```text
-it observes the environment
+environment appears
         ↓
-software and services expose capability contracts
+software and services expose supported capability contracts
         ↓
-RIGHTCLICK discovers supported contracts
+RIGHTCLICK discovers and normalizes them
         ↓
-reflectors normalize them
+capabilities enter the graph
         ↓
-capabilities become available
+authority and policy are applied
         ↓
-authority and safety policy are applied
+the agent acts through the same small interface
         ↓
-the agent acts
-        ↓
-the result is verified where observable
+the outcome is verified where observable
 ```
 
 A new application appears.

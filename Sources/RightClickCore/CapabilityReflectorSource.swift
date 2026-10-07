@@ -16,6 +16,14 @@ public protocol CapabilityReflectorSource:
     /// The snapshot may change between calls as the environment changes.
     func reflectors()
         -> [any CapabilityReflector]
+
+    /// Withdraw cached acquisition evidence before the next graph observation.
+    /// This is a discovery lifecycle operation, never an authority grant.
+    func invalidateSnapshot()
+}
+
+public extension CapabilityReflectorSource {
+    func invalidateSnapshot() {}
 }
 
 /// Discovery sources such as ARD registries may depend on the current task
