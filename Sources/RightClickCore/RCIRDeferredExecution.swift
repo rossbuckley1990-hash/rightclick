@@ -46,6 +46,20 @@ final class RCIRDeferredSession {
         return now() >= task.deadline || (terminal && (task.phase != .completed || task.outcome != .unverified))
     }
 
+    /// Checkpoint the exact task sequence under the existing session lock. The
+    /// bounded event page is not a sequence counter. Journal errors never erase
+    /// independently known evidence or manufacture a new semantic outcome.
+    func checkpoint(_ journal: RCIRInvocationJournal, ticket: RCIRInvocationJournal.Ticket) -> ExecutionRecord {
+        lock.lock(); defer { lock.unlock() }
+        do { try journal.checkpoint(ticket, task: task, record: record, now: now()) }
+        catch {
+            if !record.events.contains(RCIRJournalConfiguration.checkpointFailure) {
+                record.events.append(RCIRJournalConfiguration.checkpointFailure)
+            }
+        }
+        return record
+    }
+
     private func advance(_ event: RCIRTaskEvent) throws {
         let duplicate: Bool
         switch event {

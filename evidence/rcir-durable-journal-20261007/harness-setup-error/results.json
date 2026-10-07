@@ -1,0 +1,60 @@
+{
+  "binarySHA256": "80f5e7875f84deaeeeb04ced3f5d2d7137ad046a0a8af8a91887532253f1100a",
+  "harnessSHA256": "3263178e3aa17b60f1805ee142810146917dc8e056660b3c8c395b65749b580b",
+  "status": "RED",
+  "scope": "Real A2A process + native MCP crash/restart, synthetic disposable effect",
+  "beforeRuntime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-programme-baseline-2dd7bd2/rightclick",
+    "executableRealPath": "/tmp/rightclick-programme-baseline-2dd7bd2/rightclick",
+    "executableSHA256": "80f5e7875f84deaeeeb04ced3f5d2d7137ad046a0a8af8a91887532253f1100a",
+    "pid": 58720,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "executionID": "7EEF0018-1833-429C-9BB5-1510FC489EF3",
+  "taskID": "A682CA0E-9418-44A8-B42A-D7F3F12435A7",
+  "independentEffectMatched": true,
+  "afterRuntime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-programme-baseline-2dd7bd2/rightclick",
+    "executableRealPath": "/tmp/rightclick-programme-baseline-2dd7bd2/rightclick",
+    "executableSHA256": "80f5e7875f84deaeeeb04ced3f5d2d7137ad046a0a8af8a91887532253f1100a",
+    "pid": 59050,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "failure": "'processId'"
+}
