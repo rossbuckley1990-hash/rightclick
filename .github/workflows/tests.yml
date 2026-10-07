@@ -30,6 +30,8 @@ jobs:
           assert sys.version_info[:2] == (3, 12), sys.version
           print("Full native macOS acceptance Python:", sys.executable, sys.version)
           PY
+          test -x "$(command -v python3)"
+          echo "RIGHTCLICK_TEST_PYTHON=$(command -v python3)" >> "$GITHUB_ENV"
       - run: swift test --force-resolved-versions
       - run: scripts/build-cli.sh
       - run: python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"
