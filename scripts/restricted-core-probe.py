@@ -102,6 +102,27 @@ def save(root, name, value):
     path.chmod(0o600)
 
 
+def terminate_owned_group(process):
+    # The leader may already have exited while descendants retain the group.
+    try:
+        os.killpg(process.pid, signal.SIGTERM)
+    except ProcessLookupError:
+        pass
+    deadline = time.monotonic() + 2
+    while time.monotonic() < deadline:
+        process.poll()
+        try:
+            os.killpg(process.pid, 0)
+        except ProcessLookupError:
+            break
+        time.sleep(0.02)
+    try:
+        os.killpg(process.pid, signal.SIGKILL)
+    except ProcessLookupError:
+        pass
+    process.wait(timeout=5)
+
+
 class RPC:
     def __init__(self, command, root, label, environment, jsonrpc=False):
         self.stderr = (root / (label + '.stderr')).open('w')
@@ -168,14 +189,13 @@ class RPC:
             save(self.root, self.label + '-transcript.json', self.log)
         finally:
             try:
-                if self.process.poll() is None:
-                    os.killpg(self.process.pid, signal.SIGTERM)
-                    try:
-                        self.process.wait(timeout=10)
-                    except subprocess.TimeoutExpired:
-                        os.killpg(self.process.pid, signal.SIGKILL); self.process.wait()
+                terminate_owned_group(self.process)
             finally:
-                self.stderr.close(); self.trace.close()
+                errors = []
+                for stream in [self.process.stdin, self.process.stdout, self.stderr, self.trace]:
+                    try: stream.close()
+                    except Exception as error: errors.append(error)
+                if errors: raise errors[0]
 
 
 def tool_names(tools):
@@ -275,12 +295,7 @@ def host_command(root, number, kind, argv, environment, timeout):
         try:
             child.wait(timeout=timeout)
         except BaseException:
-            if child.poll() is None:
-                os.killpg(child.pid, signal.SIGTERM)
-                try:
-                    child.wait(timeout=10)
-                except subprocess.TimeoutExpired:
-                    os.killpg(child.pid, signal.SIGKILL); child.wait()
+            terminate_owned_group(child)
             raise
     result = {'argv': argv, 'exitCode': child.returncode, 'semanticAcceptance': 'NOT_INFERRED_FROM_EXIT_CODE'}
     save(root, label + '.json', result)
@@ -297,6 +312,7 @@ def main():
     parser.add_argument('--codex', type=pathlib.Path, default=pathlib.Path(shutil.which('codex') or 'codex'))
     parser.add_argument('--prompt-file', type=pathlib.Path); parser.add_argument('--plan', type=pathlib.Path)
     parser.add_argument('--catalog-proof', type=pathlib.Path); parser.add_argument('--deadline-seconds', type=int, default=1800)
+    parser.add_argument('--discovery-only', action='store_true', help='Host denies context_run dispatch during a read-only client check; all seven declarations remain visible')
     args = parser.parse_args()
     if args.run_name and args.output:
         parser.error('Use only one output directory option')
@@ -323,7 +339,8 @@ def main():
         catalog = model_catalog(args.catalog_source); save(out, 'catalog.json', catalog)
         settings = restrictions(out / 'catalog.json')
         settings_pin = dict(settings); settings_pin['model_catalog_json'] = 'OUTPUT_SCOPED_CATALOG'
-        result.update(runtimeBinarySHA256=binary_sha, clientLauncherSHA256=client_sha, clientEntrypointPath=str(client_path), clientExecutablePath=str(client_executable), clientExecutableSHA256=client_executable_sha, clientConfigSHA256=config_sha, modelCatalogSHA256=value_digest(catalog), restrictionsSHA256=value_digest(settings_pin), probeSHA256=digest(__file__))
+        instructions = INSTRUCTIONS + (' This host run permits discovery only; do not call context_run.' if args.discovery_only else '')
+        result.update(runtimeBinarySHA256=binary_sha, clientLauncherSHA256=client_sha, clientEntrypointPath=str(client_path), clientExecutablePath=str(client_executable), clientExecutableSHA256=client_executable_sha, clientConfigSHA256=config_sha, modelCatalogSHA256=value_digest(catalog), restrictionsSHA256=value_digest({'clientSettings': settings_pin, 'capabilityExecutionAllowed': not args.discovery_only}), developerInstructionsSHA256=value_digest(instructions), capabilityExecutionAllowed=not args.discovery_only, probeSHA256=digest(__file__))
         runtime = RPC([str(binary), 'mcp'], out, 'rightclick', environment, jsonrpc=True)
         runtime.call('initialize', {'protocolVersion': '2025-03-26', 'capabilities': {}, 'clientInfo': {'name': 'exact-seven-client-proof', 'version': '2'}})
         def call_runtime(name, arguments):
@@ -344,7 +361,7 @@ def main():
             if args.catalog_proof is None:
                 raise RuntimeError('Actual AI requires a separately captured exact-seven catalogue proof')
             proof = json.loads(args.catalog_proof.read_text())
-            for field in ['runtimeBinarySHA256', 'clientLauncherSHA256', 'clientExecutableSHA256', 'clientConfigSHA256', 'modelCatalogSHA256', 'restrictionsSHA256', 'probeSHA256', 'dynamicToolsSHA256']:
+            for field in ['runtimeBinarySHA256', 'clientLauncherSHA256', 'clientExecutableSHA256', 'clientConfigSHA256', 'modelCatalogSHA256', 'restrictionsSHA256', 'developerInstructionsSHA256', 'probeSHA256', 'dynamicToolsSHA256']:
                 if proof.get(field) != result[field]:
                     raise RuntimeError('Catalogue preflight differs at ' + field)
             capture_path = args.catalog_proof.parent / 'request-catalog.json'
@@ -372,7 +389,7 @@ def main():
         app.call('initialize', {'clientInfo': {'name': 'rightclick_exact_seven_probe', 'version': '2'}, 'capabilities': {'experimentalApi': True}})
         app.send({'method': 'initialized', 'params': {}})
         empty_workspace = out / 'empty-model-workspace'; empty_workspace.mkdir(mode=0o700)
-        started = app.call('thread/start', {'cwd': str(empty_workspace), 'ephemeral': True, 'environments': [], 'runtimeWorkspaceRoots': [], 'sandbox': 'read-only', 'approvalPolicy': 'on-request', 'approvalsReviewer': 'auto_review', 'config': {'tools': {'experimental_request_user_input': {'enabled': False}, 'update_plan': {'enabled': False}}}, 'dynamicTools': dynamic, 'developerInstructions': INSTRUCTIONS})
+        started = app.call('thread/start', {'cwd': str(empty_workspace), 'ephemeral': True, 'environments': [], 'runtimeWorkspaceRoots': [], 'sandbox': 'read-only', 'approvalPolicy': 'on-request', 'approvalsReviewer': 'auto_review', 'config': {'tools': {'experimental_request_user_input': {'enabled': False}, 'update_plan': {'enabled': False}}}, 'dynamicTools': dynamic, 'developerInstructions': instructions})
         save(out, 'thread-start-result.json', started)
         thread_id = started['thread']['id']; result.update(threadID=thread_id, sessionID=started['thread'].get('sessionId'), model=started.get('model'))
         for index, phase in enumerate(phase_plan if args.actual else phase_plan[:1]):
@@ -393,9 +410,13 @@ def main():
                         raise RuntimeError('Native client executable changed; no retry')
                     if args.actual: result['actualAIInference'] = True
                     print(json.dumps({'observedAIToolCall': name, 'phase': phase['name']}), flush=True)
+                    if args.discovery_only and name == 'context_run':
+                        raise RuntimeError('Host discovery-only permission denies capability dispatch')
                     reply = call_runtime(name, params['arguments'])
                     app.send({'id': event['id'], 'result': {'success': not reply.get('isError', False), 'contentItems': [{'type': 'inputText', 'text': item['text']} for item in reply.get('content', []) if item.get('type') == 'text']}})
                 if args.actual and event.get('method') == 'item/agentMessage/delta' and event.get('params', {}).get('delta'):
+                    if event['params'].get('threadId') != thread_id or event['params'].get('turnId') != turn_id:
+                        raise RuntimeError('Foreign agent message cannot establish inference for this session')
                     result['actualAIInference'] = True
                 if event.get('method') == 'turn/completed':
                     if event['params'].get('threadId') != thread_id or event['params'].get('turn', {}).get('id') != turn_id:
