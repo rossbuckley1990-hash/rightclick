@@ -44,6 +44,7 @@ with tempfile.TemporaryDirectory(prefix="rightclick-neutral-core-") as directory
     executable = work / "neutral-core"
     native_arguments, native_provenance = host_file_arguments(root, work, evidence)
     command = ["xcrun", "swiftc", "-swift-version", "5", "-parse-as-library",
+               "-whole-module-optimization", "-Onone",
                "-module-cache-path", str(work / "modules"), "-framework", "AppKit",
                *native_arguments, *map(str, sources), str(entry), "-o", str(executable)]
     compile_result = subprocess.run(command, capture_output=True, text=True, timeout=120)
