@@ -106,7 +106,7 @@ runtime. Native acceptance remains mandatory:
 swift test --force-resolved-versions
 scripts/build-cli.sh
 python3 scripts/acceptance-mcp.py "$PWD/.build/release/rightclick" /tmp/rightclick-preflight-mcp
-pyton3 scripts/acceptance-federation.py "$PWD/.build/release/rightclick" /tmp/rightclick-preflight-federation
+python3 scripts/acceptance-federation.py "$PWD/.build/release/rightclick" /tmp/rightclick-preflight-federation
 python3 scripts/acceptance-core-boundary.py "$PWD/.build/release/rightclick" /tmp/rightclick-preflight-core /tmp/rightclick-preflight-mcp/results.json
 ```
 
