@@ -700,7 +700,7 @@ public final class ARDRegistrySource:
 }
 
 private final class ARDOpenAPIReflector:
-    CapabilityReflector
+    RCIRExecutionReflector
 {
     let id: String
 
@@ -849,6 +849,20 @@ private final class ARDOpenAPIReflector:
             arguments:
                 arguments
         )
+    }
+
+    func admittedBegin(capability: Capability, admissionOwner: Capability, item: ContentItem,
+                       executionID: String, arguments: CapabilityArguments?,
+                       verification: VerificationSpec?, expectedOutput: String?,
+                       host: RCIRExecutionHost, revalidate: @escaping () -> Bool) throws -> ExecutionRecord {
+        guard let admitted = underlying as? any RCIRExecutionReflector else {
+            return ExecutionRecord(executionId: executionID, actionId: capability.id,
+                state: .unavailable, message: "The acquired OpenAPI compiler has no admission boundary.")
+        }
+        return try admitted.admittedBegin(capability: underlyingCapability(capability),
+            admissionOwner: admissionOwner, item: item, executionID: executionID,
+            arguments: arguments, verification: verification, expectedOutput: expectedOutput,
+            host: host, revalidate: revalidate)
     }
 
     private func underlyingCapability(

@@ -39,6 +39,7 @@ public struct DoctorReport: Codable, Sendable {
 }
 
 public final class CapabilityEngine {
+    private let rcirHost: RCIRExecutionHost
     private let experience: CapabilityExperience?
     private let fixedReflectors:
         [any CapabilityReflector]
@@ -53,7 +54,8 @@ public final class CapabilityEngine {
     /// reflector-injection model.
     public init(
         reflectors: [any CapabilityReflector]? = nil,
-        experience: CapabilityExperience? = CapabilityExperience.fromEnvironment()
+        experience: CapabilityExperience? = CapabilityExperience.fromEnvironment(),
+        rcirHost: RCIRExecutionHost = RCIRExecutionHost()
     ) {
         self.fixedReflectors =
             reflectors
@@ -62,6 +64,7 @@ public final class CapabilityEngine {
         self.reflectorSources = []
 
         self.experience = experience
+        self.rcirHost = rcirHost
 
         Self.prepareApplication()
     }
@@ -74,7 +77,8 @@ public final class CapabilityEngine {
         reflectors: [any CapabilityReflector] = [],
         reflectorSources:
             [any CapabilityReflectorSource],
-        experience: CapabilityExperience? = CapabilityExperience.fromEnvironment()
+        experience: CapabilityExperience? = CapabilityExperience.fromEnvironment(),
+        rcirHost: RCIRExecutionHost = RCIRExecutionHost()
     ) {
         self.fixedReflectors =
             reflectors
@@ -83,6 +87,7 @@ public final class CapabilityEngine {
             reflectorSources
 
         self.experience = experience
+        self.rcirHost = rcirHost
 
         Self.prepareApplication()
     }
@@ -140,9 +145,9 @@ public final class CapabilityEngine {
             counts[reflector.id, default: 0] += 1
         }
 
-        return candidates.filter {
-            counts[$0.id] == 1
-        }
+        let current = candidates.filter { counts[$0.id] == 1 }
+        rcirHost.synchronize(owners: Set(current.map { $0.id }))
+        return current
     }
 
     public func inspect(_ raw: String) throws -> ContentItem {
@@ -321,7 +326,12 @@ public final class CapabilityEngine {
 
         let startedRecord: ExecutionRecord
 
-        if let verification,
+        if let admitted = reflector as? any RCIRExecutionReflector {
+            startedRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+                executionID: executionId, arguments: arguments, verification: verification,
+                expectedOutput: expectedOutput, host: rcirHost,
+                revalidate: { self.reflector(for: capability, item: item) != nil })
+        } else if let verification,
            let verificationReflector
         {
             startedRecord =
@@ -409,6 +419,10 @@ public final class CapabilityEngine {
                 capability.title
         }
 
+        if providerResult.rcir != nil {
+            experience?.observe(capability: capability, executionID: executionId, result: providerResult)
+            return providerResult
+        }
         if verification != nil,
            verificationReflector != nil
         {
@@ -566,7 +580,12 @@ public final class CapabilityEngine {
 
         var providerRecord: ExecutionRecord
 
-        if let verification,
+        if let admitted = reflector as? any RCIRExecutionReflector {
+            providerRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+                executionID: executionId, arguments: arguments, verification: verification,
+                expectedOutput: expectedOutput, host: rcirHost,
+                revalidate: { self.reflector(for: capability, item: item) != nil })
+        } else if let verification,
            let verificationReflector
         {
             providerRecord =
@@ -623,7 +642,9 @@ public final class CapabilityEngine {
         result.requiresConfirmation =
             capability.requiresConfirmation
 
-        if verification != nil,
+        if result.rcir != nil {
+            // Host-selected RCIR observation already adjudicated the outcome.
+        } else if verification != nil,
            verificationReflector != nil
         {
             result =
@@ -663,7 +684,8 @@ public final class CapabilityEngine {
             events: providerRecord.events,
             evidence: result.evidence,
             verification:
-                result.verification
+                result.verification,
+            rcir: result.rcir
         )
 
         ExecutionStore.shared.put(final)
@@ -841,7 +863,8 @@ public final class CapabilityEngine {
             message: record.message,
             output: record.output,
             evidence: record.evidence,
-            verification: record.verification
+            verification: record.verification,
+            rcir: record.rcir
         )
     }
 
