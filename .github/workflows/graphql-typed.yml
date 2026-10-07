@@ -1,0 +1,73 @@
+name: Real typed GraphQL contracts
+on:
+  pull_request:
+  push:
+    branches: [main, feature/graphql-common-typed-20261007]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: graphql-typed-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  macos:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.12'
+      - name: Provision reference GraphQL and pinned receipt verifier
+        run: |
+          python -m venv "$RUNNER_TEMP/graphql-venv"
+          "$RUNNER_TEMP/graphql-venv/bin/python" -m pip install graphql-core==3.3.0 cryptography==46.0.5
+          echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
+      - name: Native typed contracts and real seven-operation controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p graphql-evidence
+          git rev-parse HEAD > graphql-evidence/source.txt
+          swift --version > graphql-evidence/toolchain.txt
+          swift test --force-resolved-versions --jobs 3 --filter 'GraphQLReflectorTests|CapabilityIntegerRangeTests' 2>&1 | tee graphql-evidence/tests.log
+          swift build --force-resolved-versions --jobs 3 --product rightclick
+          shasum -a 256 .build/debug/rightclick > graphql-evidence/binary-sha256.txt
+          "$RUNNER_TEMP/graphql-venv/bin/python" scripts/acceptance-graphql-typed.py .build/debug/rightclick graphql-evidence/public 2>&1 | tee graphql-evidence/pressure.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: graphql-macos-${{ github.event.pull_request.head.sha || github.sha }}
+          path: graphql-evidence
+  linux:
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Provision reference GraphQL and pinned receipt verifier
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends python3-venv python3-pip openssl ca-certificates
+          python3 -m venv /tmp/graphql-venv
+          /tmp/graphql-venv/bin/python -m pip install graphql-core==3.3.0 cryptography==46.0.5
+      - name: Native typed contracts and real seven-operation controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p graphql-evidence
+          git -c safe.directory="$GITHUB_WORKSPACE" rev-parse HEAD > graphql-evidence/source.txt
+          swift --version > graphql-evidence/toolchain.txt
+          swift test --force-resolved-versions --jobs 3 --filter 'GraphQLReflectorTests|CapabilityIntegerRangeTests' 2>&1 | tee graphql-evidence/tests.log
+          swift build --force-resolved-versions --jobs 3 --product rightclick
+          sha256sum .build/debug/rightclick > graphql-evidence/binary-sha256.txt
+          /tmp/graphql-venv/bin/python scripts/acceptance-graphql-typed.py .build/debug/rightclick graphql-evidence/public 2>&1 | tee graphql-evidence/pressure.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: graphql-linux-${{ github.event.pull_request.head.sha || github.sha }}
+          path: graphql-evidence
