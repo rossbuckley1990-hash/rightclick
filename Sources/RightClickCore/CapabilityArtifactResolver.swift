@@ -153,7 +153,7 @@ public final class CapabilityArtifactResolverRegistry {
         else {
             throw CapabilityArtifactResolutionError
                 .invalidDescriptor(
-                    "id must be 1...128 characters using A-Z, a-z, 0-9, dot, dash or underscore"
+                    "id must be a non-empty, bounded, control-free identifier"
                 )
         }
 
@@ -211,31 +211,25 @@ public final class CapabilityArtifactResolverRegistry {
     ) -> Bool {
         guard
             !raw.isEmpty,
-            raw.count <= 128,
+            raw.utf8.count <= 1_024,
             raw ==
                 raw.trimmingCharacters(
                     in:
                         .whitespacesAndNewlines
-                )
+                ),
+            raw.rangeOfCharacter(
+                from:
+                    .controlCharacters
+            ) == nil
         else {
             return false
         }
 
-        return raw.unicodeScalars
-            .allSatisfy {
-                scalar in
-
-                let value =
-                    scalar.value
-
-                return
-                    (value >= 48 && value <= 57)
-                    || (value >= 65 && value <= 90)
-                    || (value >= 97 && value <= 122)
-                    || value == 45
-                    || value == 46
-                    || value == 95
-            }
+        // Capability artifact identity is opaque data, not a filesystem
+        // path or command token. Discovery standards legitimately use
+        // URNs/URIs (for example ARD urn:air: identifiers), so punctuation
+        // is preserved rather than destructively slugged.
+        return true
     }
 
     private static func canonicalAuthorityScheme(
