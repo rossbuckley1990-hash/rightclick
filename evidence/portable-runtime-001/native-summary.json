@@ -1,0 +1,57 @@
+{
+  "scope": "Initial refactor on native macOS before Windows transport and cross-host CI",
+  "checks": [
+    {
+      "command": "/usr/bin/xcrun swift --version",
+      "exit": 0,
+      "test_summaries": []
+    },
+    {
+      "command": "/usr/bin/xcrun swift package resolve",
+      "exit": 0,
+      "test_summaries": []
+    },
+    {
+      "command": "/usr/bin/xcrun swift test --force-resolved-versions --jobs 2 --filter RuntimePortabilityTests",
+      "exit": 0,
+      "test_summaries": [
+        "Executed 15 tests, with 0 failures (0 u",
+        "Executed 15 tests, with 0 failures (0 u",
+        "Executed 15 tests, with 0 failures (0 u"
+      ]
+    }
+  ],
+  "dependency_pins": {
+    "eventsource": "1.5.1",
+    "grpc-swift": "1.26.2",
+    "swift-algorithms": "1.2.1",
+    "swift-asn1": "1.7.3",
+    "swift-async-algorithms": "1.1.7",
+    "swift-atomics": "1.3.1",
+    "swift-certificates": "1.21.0",
+    "swift-collections": "1.7.1",
+    "swift-crypto": "4.5.2",
+    "swift-http-structured-headers": "1.7.0",
+    "swift-http-types": "1.8.0",
+    "swift-log": "1.15.1",
+    "swift-nio": "2.103.0",
+    "swift-nio-extras": "1.35.1",
+    "swift-nio-http2": "1.46.0",
+    "swift-nio-ssl": "2.37.5",
+    "swift-nio-transport-services": "1.28.0",
+    "swift-numerics": "1.1.1",
+    "swift-protobuf": "1.38.1",
+    "swift-sdk": "0.12.1",
+    "swift-service-lifecycle": "2.12.1",
+    "swift-system": "1.8.1"
+  },
+  "retained_licenses": [
+    "packaging/ThirdPartyLicenses/swift-crypto/NOTICE.txt",
+    "packaging/ThirdPartyLicenses/swift-crypto/LICENSE.txt",
+    "packaging/ThirdPartyLicenses/swift-asn1/NOTICE.txt",
+    "packaging/ThirdPartyLicenses/swift-asn1/LICENSE.txt",
+    "packaging/ThirdPartyLicenses/swift-certificates/NOTICE.txt",
+    "packaging/ThirdPartyLicenses/swift-certificates/LICENSE.txt",
+    "packaging/ThirdPartyLicenses/swift-certificates/Tests/X509Tests/CSR Vectors/cryptography/LICENSE.APACHE"
+  ]
+}

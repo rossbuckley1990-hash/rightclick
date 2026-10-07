@@ -1,3 +1,7 @@
+## Portable runtime candidate (source builds)
+
+The portable-runtime work shares the existing capability engine and seven MCP tools across hosts. It adds host adapters, explicit headless credentials, `rightclick connect`, feature reporting and real cross-host acceptance. See [architecture, startup and support boundaries](docs/PORTABLE-RUNTIME.md). This source candidate is not automatically present in the released Homebrew binary; Windows and Linux status must be established by their CI jobs, not the macOS result.
+
 # RIGHTCLICK
 
 ## Your agent shouldn't need a new integration every time it gains a new ability.

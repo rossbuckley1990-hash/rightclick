@@ -1,0 +1,126 @@
+#if os(Linux)
+import Foundation
+import MCP
+import NIOCore
+import NIOPosix
+import NIOHTTP1
+
+/// Loopback-only Linux HTTP adapter. Execution and authentication remain in the
+/// same MCP dispatcher as macOS; this is not an internet-facing server.
+final class MCPHTTPListener {
+    private let port: UInt16
+    private let path: String
+    private let handler: @Sendable (HTTPRequest) async -> HTTPResponse
+    private let group = MultiThreadedEventLoopGroup(numberOfThreads: 2)
+    private var channel: Channel?
+    init(port: UInt16, path: String, handler: @escaping @Sendable (HTTPRequest) async -> HTTPResponse) {
+        self.port = port; self.path = path; self.handler = handler
+    }
+    func start() throws {
+        let path = self.path; let handler = self.handler
+        channel = try ServerBootstrap(group: group)
+            .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
+            .childChannelInitializer { channel in
+                channel.pipeline.configureHTTPServerPipeline(withPipeliningAssistance: false).flatMap {
+                    channel.pipeline.addHandler(BoundedHTTPHandler(path: path, handler: handler))
+                }
+            }.bind(host: "127.0.0.1", port: Int(port)).wait()
+    }
+    deinit { channel?.close(promise: nil); group.shutdownGracefully { _ in } }
+}
+
+private final class BoundedHTTPHandler: ChannelInboundHandler {
+    typealias InboundIn = HTTPServerRequestPart
+    typealias OutboundOut = HTTPServerResponsePart
+    private let path: String
+    private let handler: @Sendable (HTTPRequest) async -> HTTPResponse
+    private var head: HTTPRequestHead?
+    private var body = Data()
+    private var expected = 0
+    private var dispatched = false
+    private var deadline: Scheduled<Void>?
+    private let maximumBody = 2_000_000
+    init(path: String, handler: @escaping @Sendable (HTTPRequest) async -> HTTPResponse) {
+        self.path = path; self.handler = handler
+    }
+    func channelActive(context: ChannelHandlerContext) {
+        deadline = context.eventLoop.scheduleTask(in: .seconds(60)) { context.close(promise: nil) }
+        context.fireChannelActive()
+    }
+    func channelInactive(context: ChannelHandlerContext) {
+        deadline?.cancel(); context.fireChannelInactive()
+    }
+    func errorCaught(context: ChannelHandlerContext, error: Error) { context.close(promise: nil) }
+    func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        guard !dispatched else { return }
+        switch unwrapInboundIn(data) {
+        case .head(let received):
+            let lengths = received.headers["content-length"]
+            let size = received.headers.reduce(0) { $0 + $1.name.utf8.count + $1.value.utf8.count }
+            guard head == nil, received.headers.count <= 64, size <= 16_384,
+                  received.headers["transfer-encoding"].isEmpty, lengths.count <= 1,
+                  received.headers["authorization"].count <= 1,
+                  received.headers["content-type"].count <= 1 else {
+                fail(context, status: .badRequest); return
+            }
+            let declared = lengths.first ?? "0"
+            guard !declared.isEmpty, declared.utf8.allSatisfy({ (48...57).contains($0) }),
+                  let length = Int(declared), length <= maximumBody else {
+                fail(context, status: .badRequest); return
+            }
+            head = received; expected = length
+        case .body(var buffer):
+            guard head != nil, buffer.readableBytes <= maximumBody - body.count,
+                  body.count + buffer.readableBytes <= expected else {
+                fail(context, status: .badRequest); return
+            }
+            if let bytes = buffer.readBytes(length: buffer.readableBytes) { body.append(contentsOf: bytes) }
+        case .end:
+            guard let head, body.count == expected else { fail(context, status: .badRequest); return }
+            let requestPath = String(head.uri.split(separator: "?", maxSplits: 1).first ?? "")
+            guard requestPath == path || requestPath == path + "/" else { fail(context, status: .notFound); return }
+            dispatched = true
+            var headers: [String: String] = [:]
+            for entry in head.headers {
+                let key = entry.name.lowercased()
+                headers[key] = headers[key].map { $0 + ", " + entry.value } ?? entry.value
+            }
+            let request = HTTPRequest(method: head.method.rawValue, headers: headers,
+                body: body.isEmpty ? nil : body, path: requestPath)
+            let handler = self.handler
+            Task {
+                let response = await handler(request)
+                if case .stream = response {
+                    context.eventLoop.execute { self.send(context, status: .notImplemented, headers: [:], body: Data()) }
+                    return
+                }
+                let payload = response.bodyData ?? Data()
+                guard payload.count <= 4 * 1024 * 1024 else {
+                    context.eventLoop.execute { self.send(context, status: .internalServerError, headers: [:], body: Data()) }
+                    return
+                }
+                context.eventLoop.execute {
+                    self.send(context, status: HTTPResponseStatus(statusCode: response.statusCode), headers: response.headers, body: payload)
+                }
+            }
+        }
+    }
+    private func fail(_ context: ChannelHandlerContext, status: HTTPResponseStatus) {
+        dispatched = true; send(context, status: status, headers: [:], body: Data())
+    }
+    private func send(_ context: ChannelHandlerContext, status: HTTPResponseStatus, headers: [String: String], body: Data) {
+        var fields = HTTPHeaders()
+        for (key, value) in headers where !["content-length", "transfer-encoding", "connection"].contains(key.lowercased()) {
+            fields.add(name: key, value: value)
+        }
+        fields.add(name: "Content-Length", value: String(body.count)); fields.add(name: "Connection", value: "close")
+        context.write(wrapOutboundOut(.head(HTTPResponseHead(version: .http1_1, status: status, headers: fields))), promise: nil)
+        if !body.isEmpty {
+            var buffer = context.channel.allocator.buffer(capacity: body.count); buffer.writeBytes(body)
+            context.write(wrapOutboundOut(.body(.byteBuffer(buffer))), promise: nil)
+        }
+        context.writeAndFlush(wrapOutboundOut(.end(nil))).whenComplete { _ in context.close(promise: nil) }
+    }
+}
+#endif
+

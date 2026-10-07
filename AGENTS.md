@@ -1,6 +1,6 @@
 # RIGHTCLICK MCP
 
-RIGHTCLICK MCP exists to make macOS contextual capabilities available to AI agents.
+RIGHTCLICK is an environment-derived capability runtime for AI agents. macOS is a native host adapter, not the definition of the runtime.
 
 Its core primitive is asking the operating system what actions are applicable to a specific object.
 
@@ -30,3 +30,7 @@ Before finishing substrate work, run:
 
 If it exits `1`, follow `docs/BOTTLE-ALIGNMENT.md` and `docs/RELEASE.md` to cut the next immutable release. Never force-move an existing release tag.
 
+
+## Portable host boundary
+
+Preserve the shared Core/MCP implementations. Native features must be explicitly unavailable where their public APIs do not exist. Keep all native tests; run portable-runtime acceptance for transport/host changes. Do not count Linux containers as native Windows proof. Configuration isolation is not a sandbox.

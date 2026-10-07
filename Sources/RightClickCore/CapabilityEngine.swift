@@ -1,5 +1,6 @@
+#if os(macOS)
 import AppKit
-import Darwin
+#endif
 import Foundation
 
 public struct ProviderSummary: Codable, Sendable {
@@ -88,11 +89,13 @@ public final class CapabilityEngine {
     }
 
     private static func prepareApplication() {
+#if os(macOS)
         let app = NSApplication.shared
 
         if app.activationPolicy() == .prohibited {
             app.setActivationPolicy(.accessory)
         }
+#endif
     }
 
     /// Produce the reflector snapshot for this observation.
@@ -191,6 +194,7 @@ public final class CapabilityEngine {
             }
             throw RightClickError("No capability \(id) applies to this item.")
         }
+#if os(macOS)
         var services = ServiceCatalog.capabilities(for: ContentItem(kind: "text", display: "", text: " ", typeIdentifier: "public.plain-text"))
 
         for index in services.indices {
@@ -215,6 +219,7 @@ public final class CapabilityEngine {
                 metadata: ["bundlePath": record.bundlePath, "note": "Pass an item to evaluate applicability."]
             )
         }
+#endif
         throw RightClickError("Capability \(id) was not found. Sharing capabilities only exist in the context of an item.")
     }
 
@@ -356,7 +361,7 @@ public final class CapabilityEngine {
         ExecutionStore.shared.put(started)
 
         if reflector.completionWaitSeconds > 0,
-           pthread_main_np() != 0,
+           Thread.isMainThread,
            started.state == .started
         {
             let deadline =
@@ -908,7 +913,9 @@ public final class CapabilityEngine {
     }
 
     public func refresh() {
+#if os(macOS)
         NSUpdateDynamicServices()
+#endif
     }
 
     public func executionStatus(_ executionId: String) -> ExecutionRecord {
@@ -944,6 +951,7 @@ public final class CapabilityEngine {
         }
     }
 
+#if os(macOS)
     public func doctor() -> DoctorReport {
         let version = macosVersion()
         let services = ServiceCatalog.records()
@@ -973,8 +981,10 @@ public final class CapabilityEngine {
             ]
         )
     }
+#endif
 }
 
+#if os(macOS)
 private func macosVersion() -> (product: String, build: String) {
     let url = URL(fileURLWithPath: "/System/Library/CoreServices/SystemVersion.plist")
     guard let data = try? Data(contentsOf: url),
@@ -982,6 +992,7 @@ private func macosVersion() -> (product: String, build: String) {
     else { return ("unknown", "unknown") }
     return (plist["ProductVersion"] as? String ?? "unknown", plist["ProductBuildVersion"] as? String ?? "unknown")
 }
+#endif
 
 public enum RightClickJSON {
     public static func encode<T: Encodable>(_ value: T) -> String {

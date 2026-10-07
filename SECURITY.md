@@ -21,3 +21,7 @@ Homebrew uninstall removes package files, not your Cursor configuration, logs, o
 ## Reporting
 
 Report security findings directly to the maintainer through your existing private contact, or use GitHub private vulnerability reporting when enabled on the public repository. Do not place credentials or sensitive payloads in public issue reports. Only 0.1.x is supported.
+
+## Portable source candidates
+
+Linux HTTP remains authenticated and loopback-only. Headless environment authority is explicit and origin/scheme bound; it is not secure storage against privileged local processes. Missing native observers must return unknown. The --isolated flag excludes implicit provider configuration; it does not sandbox providers or replace authorization. Consult the tagged release for released platform support; source/CI candidates are not installed product claims.

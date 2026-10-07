@@ -1,4 +1,8 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import Foundation
 
 public enum RightClickVersion {
@@ -60,6 +64,11 @@ public enum RightClickRuntime {
 
     public static func executablePath() -> String {
         let raw = CommandLine.arguments[0]
+#if os(Windows)
+        if raw.range(of: #"^[A-Za-z]:[\\/]|^\\\\"#, options: .regularExpression) != nil {
+            return raw
+        }
+#endif
 
         if raw.hasPrefix("/") {
             return URL(fileURLWithPath: raw).standardizedFileURL.path
@@ -72,8 +81,13 @@ public enum RightClickRuntime {
         if !raw.contains("/") {
             let path = ProcessInfo.processInfo.environment["PATH"] ?? ""
 
+#if os(Windows)
+            let separator: Character = ";"
+#else
+            let separator: Character = ":"
+#endif
             for component in path.split(
-                separator: ":",
+                separator: separator,
                 omittingEmptySubsequences: false
             ) {
                 let base = component.isEmpty
@@ -128,8 +142,7 @@ public enum RightClickRuntime {
 
 public enum RightClickPaths {
     public static var supportDirectory: URL {
-        FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Application Support/RIGHTCLICK", isDirectory: true)
+        RuntimePlatform.supportDirectory()
     }
 
     public static var tokenFile: URL {

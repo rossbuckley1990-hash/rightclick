@@ -1,5 +1,8 @@
 #if canImport(RightClickARD)
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import RightClickARD
 
 public struct ARDRegistryDescriptor:
