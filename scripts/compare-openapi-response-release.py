@@ -11,6 +11,22 @@ CORE={'context_runtime','context_providers','context_inspect','context_actions',
 
 def main():
     baseline,candidate,evidence=map(lambda p:Path(p).resolve(),sys.argv[1:4]);evidence.mkdir(parents=True,exist_ok=True)
+    # A retained immutable baseline directory avoids invoking the old binary
+    # again. Check its manifest and session bytes before comparing fresh effects.
+    baseline_provenance=None
+    saved_baseline=None
+    if baseline.is_dir():
+        manifest_path=baseline/'manifest.json';session_path=baseline/'baseline-session.json'
+        manifest=json.loads(manifest_path.read_text());raw=session_path.read_bytes()
+        declared=next(row for row in manifest['artifacts'] if row['path']=='baseline-session.json')
+        assert hashlib.sha256(raw).hexdigest()==declared['SHA256']
+        saved_baseline=json.loads(raw)
+        assert saved_baseline['runtime']['version']=='0.2.2'
+        assert saved_baseline['runtime']['executableSHA256']==manifest['baseline']['SHA256']=='d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d'
+        assert saved_baseline['label']=='baseline' and saved_baseline['CoreTools']==sorted(CORE)
+        assert saved_baseline['wrongAndMissingHTTPBearerDenied'] and len(saved_baseline['cases'])==9
+        (evidence/'baseline-session.json').write_bytes(raw)
+        baseline_provenance={'kind':'reused actual immutable installed 0.2.2 evidence','sessionSHA256':declared['SHA256'],'sourceManifestSHA256':hashlib.sha256(manifest_path.read_bytes()).hexdigest(),'sourceEvidencePath':str(baseline),'newBaselineInvocations':0}
     schema={'type':'object','additionalProperties':False,'required':['value','priority'],'properties':{'value':{'type':'string'},'priority':{'type':'string','enum':['low','high']}}}
     result={'type':'object','additionalProperties':False,'required':['value'],'properties':{'value':{'type':'string'}}}
     def operation(title):return {'operationId':title,'summary':title,'security':[],'requestBody':{'required':True,'content':{'application/json':{'schema':schema}}},'responses':{'200':{'description':'Accepted','content':{'application/json':{'schema':result}}}}}
@@ -19,7 +35,7 @@ def main():
     query=operation('GET query unsupported');query.pop('requestBody');query['parameters']=[{'name':'filter','in':'query','required':False,'schema':{'type':'string'}}]
     paths['/query']={'get':query}
     document={'openapi':'3.0.3','info':{'title':'Private response compatibility','version':'1'},'security':[{'DisposableBearer':[]}],'components':{'securitySchemes':{'DisposableBearer':{'type':'http','scheme':'bearer'}}},'paths':paths}
-    requests=[];sessions=[]
+    requests=[];sessions=[saved_baseline] if saved_baseline else []
     class Provider(http.server.BaseHTTPRequestHandler):
         def log_message(self,*_):pass
         def respond(self,body,status=200,kind='application/json'):
@@ -48,6 +64,7 @@ def main():
             base='http://127.0.0.1:'+str(provider.server_port)
             env={k:v for k,v in os.environ.items() if not k.startswith('RIGHTCLICK_')};env.update(RIGHTCLICK_EXPERIENCE='off',RIGHTCLICK_RCIR_CONFIG=str(config),RIGHTCLICK_CAPABILITY_ARTIFACTS=json.dumps([{'id':'private-response-compat','kind':'openapi','specificationURL':base+'/openapi.json','baseURL':base}]))
             for label,binary in [('baseline',baseline),('candidate',candidate)]:
+                if label=='baseline' and saved_baseline:continue
                 with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
                 token=os.urandom(32).hex();environment=dict(env,RIGHTCLICK_MCP_TOKEN=token)
                 with (evidence/(label+'.stderr.log')).open('w') as error:
@@ -108,10 +125,18 @@ def main():
         comparisons=[]
         for old,new in zip(sessions[0]['cases'],sessions[1]['cases']):
             assert old['title']==new['title'] and len(old['actualRequests'])==len(new['actualRequests'])
+            assert (old['action'] is not None)==(new['action'] is not None)
+            assert (old['record'] is not None)==(new['record'] is not None)
+            if old['record']:
+                assert old['record']['state']==new['record']['state']
+                assert (old['record'].get('output') is not None)==(new['record'].get('output') is not None)
+                assert old['statusMatches'] and new['statusMatches']
+            for prior,current in zip(old['actualRequests'],new['actualRequests']):
+                for field in ['method','path','body','actualWrite','authorizationAbsent']:assert prior[field]==current[field]
             legal=old['title'] in ['Valid JSON','Cleared bearer requirement']
             if legal:assert old['record']['state']==new['record']['state'] and old['record']['output']==new['record']['output'] and old['actualRequests'][0]['body']==new['actualRequests'][0]['body']
             comparisons.append({'title':old['title'],'baselineDiscovered':old['action'] is not None,'candidateDiscovered':new['action'] is not None,'baselineState':old['record']['state'] if old['record'] else None,'candidateState':new['record']['state'] if new['record'] else None,'baselineOutputPresent':old['record'] is not None and old['record'].get('output') is not None,'candidateOutputPresent':new['record'] is not None and new['record'].get('output') is not None,'actualRequestCount':len(new['actualRequests']),'classification':'declared valid behavior preserved' if legal else 'existing safe abstention preserved' if not new['actualRequests'] else 'post-dispatch failure boundary; raw states retained, no verified success claimed'})
-        report={'status':'PASS','introducedLossesOnDeclaredValidCalls':[],'sessions':sessions,'comparisons':comparisons,'actualProviderRequests':requests,'actualWriteCount':sum(r['actualWrite'] for r in requests),'scope':'Actual immutable installed0.2.2 and candidate6642 public authenticated HTTP Core7; private loopback OpenAPI provider. No provider token is provisioned; bearer override/missing-scope behavior only.','notProved':['Actual provider credential-backed TLS authority on product public path','Issuer downscoping or authenticated subject broker','All platforms/substrates release acceptance']}
+        report={'status':'PASS','introducedLossesOnDeclaredValidCalls':[],'baselineProvenance':baseline_provenance,'sessions':sessions,'comparisons':comparisons,'actualProviderRequests':requests,'actualWriteCount':sum(r['actualWrite'] for r in requests),'scope':'Actual immutable installed0.2.2 baseline (retained when baselineProvenance is present) compared with fresh exact candidate public authenticated HTTP Core7; private loopback OpenAPI provider. Counts describe fresh calls only. No provider token is provisioned; bearer override/missing-scope behavior only.','notProved':['Actual provider credential-backed TLS authority on product public path','Issuer downscoping or authenticated subject broker','All platforms/substrates release acceptance']}
         (evidence/'summary.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n');print(json.dumps({'status':'PASS','casesPerVersion':9,'actualRequests':len(requests),'actualWrites':report['actualWriteCount']}));return 0
     finally:provider.shutdown()
 
