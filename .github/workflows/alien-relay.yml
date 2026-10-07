@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   alien-relay:
-    name: Remote Ubuntu learned-protocol invocation proof
+    name: Remote Ubuntu emergent image-capability proof
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -19,7 +19,7 @@ jobs:
       - name: Check out experiment branch
         uses: actions/checkout@v4
 
-      - name: Learn Gradio protocol from discovered skill and invoke unknown remote app
+      - name: Learn Gradio protocol and execute dynamically discovered FLUX contract
         shell: bash
         run: |
           set +e
@@ -37,35 +37,41 @@ jobs:
           if [ -f alien-proof/huggingface-gradio-SKILL.md ]; then
             SKILL_SHA256="$(sha256sum alien-proof/huggingface-gradio-SKILL.md | awk '{print $1}')"
             grep -q 'gradio info' alien-proof/huggingface-gradio-SKILL.md
-            SKILL_INFO_INSTRUCTION_STATUS=$?
+            SKILL_INFO_STATUS=$?
             grep -q 'gradio predict' alien-proof/huggingface-gradio-SKILL.md
-            SKILL_PREDICT_INSTRUCTION_STATUS=$?
+            SKILL_PREDICT_STATUS=$?
           else
             SKILL_SHA256=""
-            SKILL_INFO_INSTRUCTION_STATUS=127
-            SKILL_PREDICT_INSTRUCTION_STATUS=127
+            SKILL_INFO_STATUS=127
+            SKILL_PREDICT_STATUS=127
           fi
 
           python3 -m venv alien-venv
           VENV_STATUS=$?
-          alien-venv/bin/python -m pip install --disable-pip-version-check --no-input gradio >alien-proof/gradio-install.log 2>&1
+          alien-venv/bin/python -m pip install --disable-pip-version-check --no-input gradio pillow >alien-proof/gradio-install.log 2>&1
           INSTALL_STATUS=$?
           GRADIO_VERSION="$(alien-venv/bin/python -c 'import importlib.metadata; print(importlib.metadata.version("gradio"))' 2>/dev/null)"
-
-          alien-venv/bin/gradio info gradio/calculator >alien-proof/calculator-info.json 2>alien-proof/calculator-info.err
-          CALC_INFO_STATUS=$?
-          alien-venv/bin/gradio predict gradio/calculator /predict '{"num1":19,"operation":"multiply","num2":23}' >alien-proof/calculator-result.json 2>alien-proof/calculator-result.err
-          CALC_PREDICT_STATUS=$?
 
           alien-venv/bin/gradio info black-forest-labs/FLUX.2-dev >alien-proof/flux-info.json 2>alien-proof/flux-info.err
           FLUX_INFO_STATUS=$?
 
-          export OBSERVED_AT REPO_SHA GIT_STATUS RUNNER_OS_VALUE RUNNER_ARCH_VALUE
-          export SKILL_COMMIT SKILL_URL SKILL_FETCH_STATUS SKILL_SHA256 SKILL_INFO_INSTRUCTION_STATUS SKILL_PREDICT_INSTRUCTION_STATUS
-          export VENV_STATUS INSTALL_STATUS GRADIO_VERSION CALC_INFO_STATUS CALC_PREDICT_STATUS FLUX_INFO_STATUS
+          alien-venv/bin/python -c 'import json,sys; d=json.load(open("alien-proof/flux-info.json")); e=d.get("/infer"); ok=isinstance(e,dict) and any(p.get("name")=="prompt" and p.get("required") is True and p.get("type",{}).get("type")=="string" for p in e.get("parameters",[])) and any(r.get("name")=="Result" and r.get("type",{}).get("type")=="filepath" for r in e.get("returns",[])); sys.exit(0 if ok else 3)'
+          FLUX_SCHEMA_STATUS=$?
 
-          python3 - <<'PY'
-          import json, os, pathlib
+          FLUX_PROMPT="A luminous relay beacon floating above a vast cloud datacenter at blue hour, surreal science-fiction atmosphere, intricate light trails, no people, no text"
+          export FLUX_PROMPT
+          alien-venv/bin/gradio predict black-forest-labs/FLUX.2-dev /infer "{\"prompt\":\"${FLUX_PROMPT}\",\"input_images\":[],\"seed\":424242,\"randomize_seed\":false,\"width\":512,\"height\":512,\"num_inference_steps\":8,\"guidance_scale\":4,\"prompt_upsampling\":false}" >alien-proof/flux-result.json 2>alien-proof/flux-result.err
+          FLUX_PREDICT_STATUS=$?
+
+          export OBSERVED_AT REPO_SHA GIT_STATUS RUNNER_OS_VALUE RUNNER_ARCH_VALUE
+          export SKILL_COMMIT SKILL_URL SKILL_FETCH_STATUS SKILL_SHA256 SKILL_INFO_STATUS SKILL_PREDICT_STATUS
+          export VENV_STATUS INSTALL_STATUS GRADIO_VERSION FLUX_INFO_STATUS FLUX_SCHEMA_STATUS FLUX_PREDICT_STATUS
+
+          alien-venv/bin/python - <<'PY'
+          import hashlib, json, os, pathlib, shutil
+          from PIL import Image
+
+          root = pathlib.Path("alien-proof")
 
           def load_json(path):
               p = pathlib.Path(path)
@@ -76,48 +82,96 @@ jobs:
               except Exception:
                   return None
 
-          calc_info = load_json("alien-proof/calculator-info.json")
-          calc_result = load_json("alien-proof/calculator-result.json")
-          flux_info = load_json("alien-proof/flux-info.json")
+          result = load_json(root / "flux-result.json")
+          contract = load_json(root / "flux-info.json")
 
-          observed_output = None
-          if isinstance(calc_result, dict):
-              for key in ("output", "result", "value"):
-                  if key in calc_result:
-                      observed_output = calc_result[key]
-                      break
-              if observed_output is None and len(calc_result) == 1:
-                  observed_output = next(iter(calc_result.values()))
+          candidate_paths = []
+          returned_seed = None
 
-          calculator_verified = observed_output == 437 or observed_output == 437.0
+          def walk(value, key=None):
+              nonlocal_seed = None
+              if isinstance(value, dict):
+                  for k, v in value.items():
+                      if str(k).lower() == "seed" and isinstance(v, (int, float)):
+                          globals()["returned_seed"] = v
+                      walk(v, k)
+              elif isinstance(value, list):
+                  for v in value:
+                      walk(v, key)
+              elif isinstance(value, str):
+                  p = pathlib.Path(value)
+                  if p.exists() and p.is_file():
+                      candidate_paths.append(p)
+
+          walk(result)
+
+          image_evidence = {
+              "found": False,
+              "source_path": None,
+              "artifact_path": None,
+              "bytes": None,
+              "sha256": None,
+              "width": None,
+              "height": None,
+              "format": None,
+              "pil_verify": False,
+          }
+
+          for p in candidate_paths:
+              try:
+                  with Image.open(p) as im:
+                      fmt = im.format
+                      width, height = im.size
+                      im.verify()
+                  data = p.read_bytes()
+                  suffix = p.suffix if p.suffix else ".bin"
+                  dest = root / f"generated-flux-image{suffix}"
+                  shutil.copy2(p, dest)
+                  image_evidence = {
+                      "found": True,
+                      "source_path": str(p),
+                      "artifact_path": str(dest),
+                      "bytes": len(data),
+                      "sha256": hashlib.sha256(data).hexdigest(),
+                      "width": width,
+                      "height": height,
+                      "format": fmt,
+                      "pil_verify": True,
+                  }
+                  break
+              except Exception:
+                  continue
+
+          dimensions_ok = image_evidence["width"] == 512 and image_evidence["height"] == 512
+          size_ok = isinstance(image_evidence["bytes"], int) and image_evidence["bytes"] > 1000
+          image_verified = image_evidence["found"] and image_evidence["pil_verify"] and dimensions_ok and size_ok
 
           skill_ok = (
               int(os.environ.get("SKILL_FETCH_STATUS", "999")) == 0
-              and int(os.environ.get("SKILL_INFO_INSTRUCTION_STATUS", "999")) == 0
-              and int(os.environ.get("SKILL_PREDICT_INSTRUCTION_STATUS", "999")) == 0
+              and int(os.environ.get("SKILL_INFO_STATUS", "999")) == 0
+              and int(os.environ.get("SKILL_PREDICT_STATUS", "999")) == 0
           )
 
           semantic_success = (
               int(os.environ.get("GIT_STATUS", "999")) == 0
-              and skill_ok
+              and skil_ok
               and int(os.environ.get("VENV_STATUS", "999")) == 0
               and int(os.environ.get("INSTALL_STATUS", "999")) == 0
-              and int(os.environ.get("CALC_INFO_STATUS", "999")) == 0
-              and int(os.environ.get("CALC_PREDICT_STATUS", "999")) == 0
-              and calculator_verified
+              and int(os.environ.get("FLUX_INFO_STATUS", "999")) == 0
+              and int(os.environ.get("FLUX_SCHEMA_STATUS", "999")) == 0
+              and int(os.environ.get("FLUX_PREDICT_STATUS", "999")) == 0
+              and image_verified
           )
 
           proof = {
-              "experiment": "RIGHTCLICK Alien Relay Generation 4 Retry 1",
+              "experiment": "RIGHTCLICK Alien Relay Generation 5",
               "observed_utc": os.environ.get("OBSERVED_AT"),
               "repository_commit_sha": os.environ.get("REPO_SHA"),
-              "runner": {"os": os.environ.get("RUNNER_OS_VALUE"), "arch": os.environ.get("RUNNER_ARCH_VALUE")},
-              "procedure": "skills/rightclick/procedures/recursive-capability-expansion.v1.json",
-              "generation_4_failure": {
-                  "cause": "workflow YAML invalid because heredoc bodies escaped the run block indentation",
-                  "semantic_execution_reached": False,
-                  "response": "repair orchestration syntax only; preserve learned-protocol experiment and safety boundary",
+              "runner": {
+                  "os": os.environ.get("RUNNER_OS_VALUE"),
+                  "arch": os.environ.get("RUNNER_ARCH_VALUE"),
               },
+              "procedure": "skills/rightclick/procedures/recursive-capability-expansion.v1.json",
               "recursive_path": [
                   "ChatGPT seven generic RIGHTCLICK operations",
                   "RIGHTCLICK reflected GitHub OpenAPI provider",
@@ -126,46 +180,57 @@ jobs:
                   "Hugging Face ARD discovery",
                   "huggingface-gradio application/ai-skill",
                   "Gradio protocol learned from immutable skill artifact",
-                  "public Gradio Space API introspected at runtime",
-                  "new remote application invoked",
+                  "FLUX.2-dev Space API introspected at runtime",
+                  "dynamically discovered /infer endpoint invoked",
+                  "returned image independently verified and hash-attested",
               ],
               "learned_procedure": {
                   "source_commit": os.environ.get("SKILL_COMMIT"),
                   "source_url": os.environ.get("SKILL_URL"),
                   "sha256": os.environ.get("SKILL_SHA256"),
-                  "contains_info_instruction": int(os.environ.get("SKILL_INFO_INSTRUCTION_STATUS", "999")) == 0,
-                  "contains_predict_instruction": int(os.environ.get("SKILL_PREDICT_INSTRUCTION_STATUS", "999")) == 0,
+                  "contains_info_instruction": int(os.environ.get("SKILL_INFO_STATUS", "999")) == 0,
+                  "contains_predict_instruction": int(os.environ.get("SKILL_PREDICT_STATUS", "999")) == 0,
               },
               "acquired_client": {
                   "gradio_version": os.environ.get("GRADIO_VERSION"),
                   "install_exit_status": int(os.environ.get("INSTALL_STATUS", "999")),
               },
-              "new_remote_contract": {
-                  "space": "gradio/calculator",
-                  "info_exit_status": int(os.environ.get("CALC_INFO_STATUS", "999")),
-                  "contract": calc_info,
+              "discovered_contract": {
+                  "space": "black-forest-labs/FLUX.2-dev",
+                  "endpoint": "/infer",
+                  "info_exit_status": int(os.environ.get("FLUX_INFO_STATUS", "999")),
+                  "schema_validation_exit_status": int(os.environ.get("FLUX_SCHEMA_STATUS", "999")),
+                  "contract": contract.get("/infer") if isinstance(contract, dict) else None,
               },
               "invocation": {
-                  "endpoint": "/predict",
-                  "arguments": {"num1": 19, "operation": "multiply", "num2": 23},
-                  "exit_status": int(os.environ.get("CALC_PREDICT_STATUS", "999")),
-                  "returned": calc_result,
-                  "independent_postcondition": "output == 437",
-                  "postcondition_observed": calculator_verified,
+                  "prompt": os.environ.get("FLUX_PROMPT"),
+                  "arguments": {
+                      "input_images": [],
+                      "seed": 424242,
+                      "randomize_seed": False,
+                      "width": 512,
+                      "height": 512,
+                      "num_inference_steps": 8,
+                      "guidance_scale": 4,
+                      "prompt_upsampling": False,
+                  },
+                  "exit_status": int(os.environ.get("FLUX_PREDICT_STATUS", "999")),
+                  "returned": result,
+                  "returned_seed": globals().get("returned_seed"),
               },
-              "next_context_probe": {
-                  "space": "black-forest-labs/FLUX.2-dev",
-                  "info_exit_status": int(os.environ.get("FLUX_INFO_STATUS", "999")),
-                  "contract": flux_info,
+              "independent_postcondition": {
+                  "rule": "returned image exists, is readable as an image, dimensions are 512x512, size > 1000 bytes, and SHA-256 is recorded",
+                  "observed": image_verified,
+                  "image": image_evidence,
               },
               "semantic_success": semantic_success,
-              "verification_rule": "Success requires an immutable discovered skill to teach both Gradio discovery and invocation, runtime acquisition of the client, live schema introspection of a previously unintegrated Space, execution of the discovered endpoint, and independent observation that 19*23 equals 437.",
           }
-          with open("alien-proof/rightclick-alien-proof.json", "w", encoding="utf-8") as f:
-              json.dump(proof, f, indent=2, sort_keys=True)
-          PY
 
-          cat alien-proof/rightclick-alien-proof.json
+          with open(root / "rightclick-alien-proof.json", "w", encoding="utf-8") as f:
+              json.dump(proof, f, indent=2, sort_keys=True)
+
+          print(json.dumps(proof, indent=2, sort_keys=True))
+          PY
 
       - name: Upload proof artifact
         if: always()
