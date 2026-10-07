@@ -379,6 +379,10 @@ public final class OpenAPICapabilityArtifactResolver:
                 )
         }
 
+        let revalidate: (() throws -> Data)? = descriptor.specificationURL.flatMap { raw in
+            guard let url = CapabilityArtifactURLPolicy.httpURL(raw) else { return nil }
+            return { [loader = specificationLoader] in try loader(url) }
+        }
         return try OpenAPIReflector(
             specificationData:
                 specification,
@@ -387,7 +391,8 @@ public final class OpenAPICapabilityArtifactResolver:
             externalBearerSchemeName:
                 descriptor.authorityScheme,
             session:
-                session
+                session,
+            revalidateSpecification: revalidate
         )
     }
 }
@@ -902,11 +907,14 @@ public final class ConfiguredCapabilityArtifactSource:
     public func reflectors()
         -> [any CapabilityReflector]
     {
-        // Serialize acquisition and publication. An older concurrent load may
-        // never overwrite a newer graph, including a withdrawal or invalidate.
+        // Serialize acquisition/publication and preserve the shared monotonic
+        // lifetime. Compilers needing live contract refresh cannot reuse it.
         reloadLock.lock()
         defer { reloadLock.unlock() }
-        if freshness.isFresh(at: clock()) {
+        if freshness.isFresh(at: clock()),
+           !cachedReflectors.contains(where: {
+               ($0 as? any CapabilityContractRefreshingReflector)?.requiresContractRefresh == true
+           }) {
             return cachedReflectors
         }
 

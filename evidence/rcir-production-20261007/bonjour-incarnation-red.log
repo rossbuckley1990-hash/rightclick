@@ -1,0 +1,33 @@
+warning: 'rightclick': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/13] Write sources
+[3/13] Write swift-version--58304C5D6DBC2206.txt
+[5/7] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[6/7] Emitting module RightClickCoreTests
+[6/8] Write Objects.LinkFileList
+[7/8] Linking rightclick-mcpPackageTests
+Build complete! (12.50s)
+Test Suite 'Selected tests' started at 2026-10-07 14:13:37.907.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 14:13:37.908.
+Test Suite 'RCIRProductionDispatchTests' started at 2026-10-07 14:13:37.908.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:427: error: -[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery] : XCTAssertEqual failed: ("accepted") is not equal to ("rejected")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:428: error: -[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery] : XCTAssertTrue failed
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:432: error: -[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery] : XCTAssertEqual failed: ("2") is not equal to ("1")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:433: error: -[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery] : XCTAssertEqual failed: ("Optional("old-incarnation")") is not equal to ("Optional("new-incarnation")")
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery]' failed (0.436 seconds).
+Test Suite 'RCIRProductionDispatchTests' failed at 2026-10-07 14:13:38.344.
+	 Executed 1 test, with 4 failures (0 unexpected) in 0.436 (0.436) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 14:13:38.344.
+	 Executed 1 test, with 4 failures (0 unexpected) in 0.436 (0.436) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 14:13:38.344.
+	 Executed 1 test, with 4 failures (0 unexpected) in 0.436 (0.437) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
