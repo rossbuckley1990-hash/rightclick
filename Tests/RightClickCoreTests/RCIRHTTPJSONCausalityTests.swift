@@ -7,9 +7,6 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-#if os(Windows)
-import RightClickHostFiles
-#endif
 import XCTest
 @testable import RightClickCore
 
@@ -32,17 +29,15 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("http-causality-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-#if os(Windows)
-        XCTAssertEqual(directory.path.withCString { rc_host_harden_private($0, 1) }, 0)
-#endif
+        try NativeHTTPFixture.protect(directory, directory: true)
         for flag in ["ack-response", "include-invocation"] { try Data().write(to: directory.appendingPathComponent(flag)) }
         let token = directory.appendingPathComponent("observer.token")
         try Data(UUID().uuidString.utf8).write(to: token)
-        try protect(token)
+        try NativeHTTPFixture.protect(token)
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         var provider: URL!
         for role in ["provider", "observer"] {
-            let process = Process(); process.executableURL = try python()
+            let process = Process(); process.executableURL = try NativeHTTPFixture.python()
             process.arguments = [root.appendingPathComponent("scripts/rcir-http-json-fixture.py").path, directory.path, role]
             process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
             try process.run(); processes.append(process)
@@ -61,36 +56,16 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
         key = Curve25519.Signing.PrivateKey()
         config.signingKeyFile = directory.appendingPathComponent("signer.raw").path
         try key.rawRepresentation.write(to: URL(fileURLWithPath: config.signingKeyFile!))
-        try protect(URL(fileURLWithPath: config.signingKeyFile!))
+        try NativeHTTPFixture.protect(URL(fileURLWithPath: config.signingKeyFile!))
         engine = CapabilityEngine(reflectors: [reflector], experience: nil, rcirHost: host)
         capability = try XCTUnwrap(engine.capabilities(for: item).capabilities.first)
     }
     override func tearDownWithError() throws {
         for process in processes where process.isRunning { process.terminate(); process.waitUntilExit() }
         if let directory {
-#if os(Windows)
-            for name in ["observer.token", "signer.raw"] { _ = directory.appendingPathComponent(name).path.withCString { rc_host_release_snapshot($0) } }
-#endif
-            try? FileManager.default.removeItem(at: directory)
+            try NativeHTTPFixture.remove(directory)
         }
         processes.removeAll(); engine = nil; host = nil
-    }
-    private func protect(_ file: URL) throws {
-#if os(Windows)
-        XCTAssertEqual(file.path.withCString { rc_host_harden_private($0, 0) }, 0)
-#else
-        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: file.path)
-#endif
-    }
-    private func python() throws -> URL {
-#if os(Windows)
-        let separator = ";", names = ["python.exe", "python3.exe"]
-#else
-        let separator = ":", names = ["python3"]
-#endif
-        let paths = (ProcessInfo.processInfo.environment["PATH"] ?? "").components(separatedBy: separator)
-        return try XCTUnwrap(paths.flatMap { path in names.map { URL(fileURLWithPath: path).appendingPathComponent($0) } }
-            .first { FileManager.default.isExecutableFile(atPath: $0.path) }, "A genuine Python fixture process is required; this test does not skip the boundary.")
     }
     private func configure(causal: Bool = true) throws {
         let names = ["challenge", "result", "machine", "observation", "observerPrincipal", "platform", "principal", "invocationID"]

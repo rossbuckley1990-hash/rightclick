@@ -1,18 +1,5 @@
 #!/usr/bin/env bash
-# Exact production sources, without another full dependency/build checkout.
+# Test execution retention in the actual package with its native host backend.
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-WORK="$(mktemp -d "${TMPDIR:-/tmp}/rightclick-retention.XXXXXXXX")"
-trap 'rm -rf -- "$WORK"' EXIT
-mkdir -p "$WORK/Sources/RightClickCore" "$WORK/Tests/RightClickCoreTests"
-cp "$ROOT"/Sources/RightClickCore/*.swift "$WORK/Sources/RightClickCore/"
-cp "$ROOT/Tests/RightClickCoreTests/ExecutionRetentionTests.swift" "$WORK/Tests/RightClickCoreTests/"
-cat > "$WORK/Package.swift" <<'PACKAGE'
-// swift-tools-version: 6.0
-import PackageDescription
-let package = Package(name: "RightClickExecutionRetentionValidation", platforms: [.macOS(.v14)], targets: [
-    .target(name: "RightClickCore", swiftSettings: [.swiftLanguageMode(.v5)], linkerSettings: [.linkedFramework("AppKit")]),
-    .testTarget(name: "RightClickCoreTests", dependencies: ["RightClickCore"], swiftSettings: [.swiftLanguageMode(.v5)])
-])
-PACKAGE
-(cd "$WORK" && swift test --jobs 2)
+(cd "$ROOT" && swift test --force-resolved-versions --jobs 2 --filter ExecutionRetentionTests)
