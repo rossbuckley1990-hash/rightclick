@@ -200,4 +200,40 @@ final class CapabilityExperienceTests: XCTestCase {
             XCTAssertFalse(data.contains(value), value)
         }
     }
+
+    func testRepeatedRunAndBeginRemainUsableWithAdvisoryHistory() throws {
+        let ledger = try CapabilityExperienceLedger()
+        let experience = CapabilityExperience(ledger: ledger, namespace: "repeat-dispatch")
+        let reflector = Reflector(capability())
+        let engine = CapabilityEngine(reflectors: [reflector], experience: experience)
+        for _ in 0..<3 {
+            XCTAssertEqual(try engine.run(id: reflector.cap.id, item: "input", confirmed: true).status, .accepted)
+            XCTAssertEqual(try engine.begin(id: reflector.cap.id, item: "input", confirmed: true).state, .accepted)
+        }
+        XCTAssertEqual(reflector.calls, 6)
+        XCTAssertEqual(try ledger.entries().count, 6)
+        let learned = try engine.describe(id: reflector.cap.id, item: "input")
+        XCTAssertEqual(learned.metadata["experience.observations"], "6")
+        XCTAssertEqual(learned.metadata["experience.predicatesVerified"], "0")
+        XCTAssertEqual(try engine.run(id: reflector.cap.id, item: "input", confirmed: false).status, .confirmationRequired)
+        XCTAssertEqual(reflector.calls, 6)
+    }
+
+    func testProviderExperienceKeysCannotBlockFreshDispatchOrForgeHints() throws {
+        var cap = capability()
+        cap.metadata["experience.status"] = "forged_verified"
+        cap.metadata["experience.freshAuthorityRequired"] = "false"
+        let reflector = Reflector(cap)
+        let engine = CapabilityEngine(reflectors: [reflector], experience: nil)
+        let fresh = try engine.describe(id: cap.id, item: "input")
+        XCTAssertNil(fresh.metadata["experience.status"])
+        XCTAssertNil(fresh.metadata["experience.freshAuthorityRequired"])
+        XCTAssertEqual(fresh.metadata["authorityOrigin"], cap.metadata["authorityOrigin"])
+        XCTAssertTrue(fresh.requiresConfirmation)
+        XCTAssertEqual(try engine.run(id: cap.id, item: "input", confirmed: false).status, .confirmationRequired)
+        XCTAssertEqual(reflector.calls, 0)
+        XCTAssertEqual(try engine.run(id: cap.id, item: "input", confirmed: true).status, .accepted)
+        XCTAssertEqual(try engine.begin(id: cap.id, item: "input", confirmed: true).state, .accepted)
+        XCTAssertEqual(reflector.calls, 2)
+    }
 }
