@@ -202,6 +202,38 @@ KIND_RULES: list[dict[str, object]] = [
         "composition_patterns": [r"KafkaCapabilityArtifactResolver\s*\("],
         "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
     },
+    {
+        "id": "source.a2a.configured",
+        "title": "Configured A2A agent-card source",
+        "any_files": ["Sources/RightClickCore/A2AReflector.swift"],
+        "any_patterns": [r"ConfiguredA2ASource"],
+        "composition_patterns": [r"ConfiguredA2ASource\.fromEnvironment\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityRuntimeDefaults.swift"],
+    },
+    {
+        "id": "artifact.resolver.kubernetes",
+        "title": "Kubernetes discovered-resource capability resolver",
+        "any_files": ["Sources/RightClickCore/KubernetesCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"KubernetesCapabilityArtifactResolver"],
+        "composition_patterns": [r"KubernetesCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "artifact.resolver.dbus",
+        "title": "Linux D-Bus introspection capability resolver",
+        "any_files": ["Sources/RightClickCore/DBusCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"DBusCapabilityArtifactResolver"],
+        "composition_patterns": [r"DBusCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "source.dbus.session",
+        "title": "Linux D-Bus session discovery source",
+        "any_files": ["Sources/RightClickCore/DBusSessionSource.swift"],
+        "any_patterns": [r"DBusSessionSource"],
+        "composition_patterns": [r"DBusSessionSource\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityRuntimeDefaults.swift"],
+    },
 ]
 
 
