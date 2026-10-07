@@ -1,5 +1,4 @@
 import Foundation
-import CoreFoundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -90,12 +89,22 @@ public enum ConfiguredArtifactProviderStore {
         }
     }
 
+    /// JSON booleans must not impersonate numeric schema version 1. Round-tripping
+    /// a scalar through Foundation keeps true distinct from 1 without importing
+    /// CoreFoundation, which the native Windows Swift host does not expose.
+    private static func numericSchemaVersionIsOne(_ value: Any?) -> Bool {
+        guard let number = value as? NSNumber,
+              let encoded = try? JSONSerialization.data(withJSONObject: number, options: [.fragmentsAllowed]) else {
+            return false
+        }
+        return encoded == Data("1".utf8)
+    }
+
     public static func decode(_ data: Data) throws -> [CapabilityArtifactDescriptor] {
         guard data.count <= maximumBytes else { throw RightClickError("Connected provider registry exceeds its bound.") }
         try rejectDuplicateObjectKeys(data)
         guard let root = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-              Set(root.keys) == ["schemaVersion", "providers"], let version = root["schemaVersion"] as? NSNumber,
-              CFGetTypeID(version) != CFBooleanGetTypeID(), version == 1,
+              Set(root.keys) == ["schemaVersion", "providers"], numericSchemaVersionIsOne(root["schemaVersion"]),
               let rows = root["providers"] as? [[String: Any]], rows.count <= 64 else {
             throw RightClickError("Connected provider registry has an invalid schema or exceeds its bound.")
         }
