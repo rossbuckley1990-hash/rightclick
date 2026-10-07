@@ -41,6 +41,15 @@ enum NativeHTTPFixture {
         }
         return result
 #else
+        // The CI-selected fixture Python is explicitly attested before running
+        // XCTest. Only this test helper uses the override; production discovery,
+        // authority and process execution never consult this variable.
+        if let selected = ProcessInfo.processInfo.environment["RIGHTCLICK_TEST_PYTHON"] {
+            guard selected.hasPrefix("/"), FileManager.default.isExecutableFile(atPath: selected) else {
+                throw CocoaError(.fileNoSuchFile)
+            }
+            return URL(fileURLWithPath: selected)
+        }
         return URL(fileURLWithPath: "/usr/bin/python3")
 #endif
     }
