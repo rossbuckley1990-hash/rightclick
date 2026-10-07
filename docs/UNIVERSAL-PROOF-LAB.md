@@ -62,6 +62,53 @@ not connect Windows into the simultaneous eleven-substrate provider graph, build
 RIGHTCLICK for Windows, or demonstrate seven-operation live withdrawal. Those
 requirements remain RED until separately evidenced.
 
+## Ephemeral live Windows TLS provider
+
+`windows-proof-relay.yml` keeps an actual native Windows writer and a separately
+authenticated, get-only observer alive for one hour. Both run under distinct
+non-administrator local accounts; only the writer can mutate the isolated effect
+directory. The observer reads the actual files from a separate process, and its
+NTFS write denial and administrator-resource read denial are exercised. Writer,
+observer and operator-withdrawal tokens are independent random 256-bit values.
+Cross-token calls must return 401, and observer mutation must return 403.
+
+The fixture downloads the pinned official cloudflared 2026.10.0 Windows binary
+and checks its release SHA-256 before creating two development-only HTTPS quick
+tunnels. It waits for public TLS health and verifies a real writer effect through
+the independent observer before publishing the connection artifact. The public
+OpenAPI descriptors advertise their actual TLS origins. Requests with expired
+authority fail closed even if the supervisor has not yet stopped the process.
+
+Only public readiness metadata and RSA-OAEP-SHA256/AES-256-GCM encrypted connection
+credentials are uploaded. The reviewed public-key fixture is public; the operator
+private key never leaves the operator. Verify the exact workflow source commit,
+then decrypt into a private local directory using the operator helper:
+
+```sh
+node scripts/proof-lab/decrypt-relay.mjs connection.encrypted.json /private/operator/private-key.pem /private/operator/connection EXPECTED_SOURCE_COMMIT
+```
+
+The helper prints only public origins, expiry and private credential references.
+It requires a private-key file with owner-only permissions, verifies the operator
+key fingerprint, rejects altered authenticated ciphertext, and binds the decrypted
+connection to the reviewed source commit. Tokens remain in owner-only files.
+
+The workflow uploads `live-windows-proof-connection` while its provider is live,
+before the supervisor hold step. Before the workflow exists on the default branch,
+launch it through a reviewed same-repository PR update on `codex/universal-proof-lab`
+that changes the explicit relay workflow/script/key paths. Once on the default
+branch, `workflow_dispatch` is available. Operator POST `/control/disconnect`
+requires its separate credential and requests teardown of both services, tunnels
+and local accounts. Cancellation and the one-hour TTL also bound resource life.
+
+The relay is infrastructure for the simultaneous eleven-substrate acceptance. It
+does not itself demonstrate RIGHTCLICK invocation, runtime independent verification,
+receipts, or live provider-graph withdrawal; those stay RED until the Mac runtime's
+restricted agent produces the evidence. No provider-specific AI operation is added.
+
+[Cloudflare quick tunnels](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/)
+document their temporary URL lifetime and development-only status.
+
 ## Architectural REDs exposed by these substrates
 
 | Substrate | Generic runtime deficiency under test | Reusable primitive | Thin provider layer | Evidence that turns RED GREEN | Reuse |
