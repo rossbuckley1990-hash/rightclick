@@ -10,6 +10,20 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
+      # The unpinned macos-26 image used Python 3.14.7 in failed run 37677885979;
+      # both genuine fixture children remained alive without publishing readiness.
+      # Keep the existing 10s readiness deadline and all A2A assertions unchanged.
+      - name: Pin bounded A2A fixture Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Attest fixture interpreter
+        run: |
+          python3 - <<'PY'
+          import sys
+          assert sys.version_info[:2] == (3, 12), sys.version
+          print("A2A fixture interpreter:", sys.executable, sys.version)
+          PY
       - name: Select receipt verification backend
         run: echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
       - name: Real task and adversarial pressure controls
