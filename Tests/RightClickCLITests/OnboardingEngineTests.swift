@@ -71,7 +71,7 @@ final class OnboardingEngineTests: XCTestCase {
         }
     }
 
-    func testPostWriteVerificationFailureRestoresExactOriginal() throws {
+    func testPostWriteVerificationFailurePreservesNewerClientContent() throws {
         try isolated { _, file, binary in
             let original = #"{"keep":"original"}"#
             try seed(file, original)
@@ -82,7 +82,7 @@ final class OnboardingEngineTests: XCTestCase {
             XCTAssertThrowsError(try RightClickJSONConfigBackend.apply(plan, afterReplace: {
                 try Data("tampered".utf8).write(to: file)
             }))
-            XCTAssertEqual(try Data(contentsOf: file), Data(original.utf8))
+            XCTAssertEqual(try Data(contentsOf: file), Data("tampered".utf8))
         }
     }
 

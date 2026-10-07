@@ -69,6 +69,12 @@ struct RightClickClaudeClientAdapter:
     ) throws
         -> RightClickOnboardingMutation
     {
+        .native(try RightClickNativeRegistrationBackend.plan(
+            contract: registrationContract(home: home, recipe: recipe), disconnect: disconnect))
+    }
+
+    func registrationContract(home: URL, recipe: RightClickConnectionRecipe) throws -> RightClickNativeRegistrationBackend.Contract {
+
         guard let claude =
             claudeExecutable(
                 home: home
@@ -144,6 +150,9 @@ struct RightClickClaudeClientAdapter:
                         "Command: \(recipe.command)",
                         "Args: \(joinedArguments)",
                     ],
+                    exactInspection: { output in
+                        registrationMatches(output: output, recipe: recipe)
+                    },
                     absenceMarkers: [
                         "No MCP server named \"rightclick\""
                     ],
@@ -152,70 +161,38 @@ struct RightClickClaudeClientAdapter:
                         recipe.command,
                         joinedArguments,
                         "Connected",
-                    ]
+                    ],
+                    exactConnection: { output in
+                        let lines = output.split(separator: "\n")
+                            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                            .filter { $0.hasPrefix("rightclick:") }
+                        let prefix = "rightclick: \(recipe.command) \(joinedArguments) - "
+                        return lines.count == 1 && ["✓ Connected", "✔ Connected", "Connected"].contains {
+                            lines[0] == prefix + $0
+                        }
+                    }
                 )
 
-        return .native(
-            try RightClickNativeRegistrationBackend
-                .plan(
-                    contract: contract,
-                    disconnect: disconnect
-                )
-        )
+        return contract
     }
 
-    private func claudeExecutable(
-        home: URL
-    ) -> String? {
-        var candidates: [String] = [
-            home
-                .appendingPathComponent(
-                    ".local/bin/claude"
-                )
-                .path,
-            "/opt/homebrew/bin/claude",
-            "/usr/local/bin/claude",
-        ]
+    private func claudeExecutable(home: URL) -> String? {
+        RightClickClientHost.executable(named: "claude", home: home)
+    }
 
-        if let path =
-            ProcessInfo
-                .processInfo
-                .environment["PATH"]
-        {
-            candidates.append(
-                contentsOf:
-                    path
-                    .split(separator: ":")
-                    .map {
-                        String($0)
-                        + "/claude"
-                    }
-            )
+    private func registrationMatches(output: String, recipe: RightClickConnectionRecipe) -> Bool {
+        var fields: [String: String] = [:]
+        for line in output.split(separator: "\n") {
+            let text = line.trimmingCharacters(in: .whitespacesAndNewlines)
+            if text == "rightclick:" { continue }
+            guard let separator = text.firstIndex(of: ":") else { return false }
+            let key = String(text[..<separator])
+            let value = text[text.index(after: separator)...].trimmingCharacters(in: .whitespaces)
+            guard ["Scope", "Status", "Type", "Command", "Args"].contains(key), fields[key] == nil else { return false }
+            fields[key] = value
         }
-
-        var seen =
-            Set<String>()
-
-        for candidate in candidates {
-            guard seen.insert(candidate).inserted
-            else {
-                continue
-            }
-
-            if FileManager.default
-                .isExecutableFile(
-                    atPath: candidate
-                )
-            {
-                return URL(
-                    fileURLWithPath:
-                        candidate
-                )
-                .standardizedFileURL
-                .path
-            }
-        }
-
-        return nil
+        return ["User config", "User config (available in all your projects)"].contains(fields["Scope"] ?? "")
+            && fields["Type"] == "stdio" && fields["Command"] == recipe.command
+            && fields["Args"] == recipe.arguments.joined(separator: " ")
     }
 }

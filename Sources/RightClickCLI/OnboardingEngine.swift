@@ -1,7 +1,9 @@
 import Foundation
+import RightClickCore
+import RightClickHostFiles
 #if canImport(Darwin)
 import Darwin
-#else
+#elseif canImport(Glibc)
 import Glibc
 #endif
 
@@ -26,7 +28,7 @@ struct RightClickConnectionRecipe {
     let arguments: [String]
 
     static func stdio(command: String, arguments: [String]) throws -> Self {
-        guard command.hasPrefix("/"),
+        guard RuntimePlatform.isAbsolutePath(command),
               !command.unicodeScalars.contains(where: { CharacterSet.controlCharacters.contains($0) }),
               !command.contains("$" + "{") else {
             throw RightClickOnboardingError("The executable must be an absolute path without control characters or client interpolation syntax.")
@@ -153,6 +155,7 @@ struct RightClickCursorClientAdapter: RightClickClientAdapter {
 enum RightClickOnboardingMutation {
     case json(RightClickJSONConfigBackend.Plan)
     case native(RightClickNativeRegistrationBackend.Plan)
+    case replacingNative(previous: RightClickNativeRegistrationBackend.Plan, replacement: RightClickNativeRegistrationBackend.Plan)
 
     var operation: String {
         switch self {
@@ -160,6 +163,8 @@ enum RightClickOnboardingMutation {
             return plan.operation
         case .native(let plan):
             return plan.operation
+        case .replacingNative:
+            return "REPAIRED"
         }
     }
 
@@ -169,6 +174,8 @@ enum RightClickOnboardingMutation {
             return plan.changed
         case .native(let plan):
             return plan.changed
+        case .replacingNative:
+            return true
         }
     }
 
@@ -178,6 +185,8 @@ enum RightClickOnboardingMutation {
             return "json-config"
         case .native(let plan):
             return plan.contract.backendID
+        case .replacingNative(_, let replacement):
+            return replacement.contract.backendID
         }
     }
 
@@ -187,6 +196,8 @@ enum RightClickOnboardingMutation {
             return nil
         case .native(let plan):
             return plan.contract.scope
+        case .replacingNative(_, let replacement):
+            return replacement.contract.scope
         }
     }
 }
@@ -236,6 +247,21 @@ enum RightClickOnboardingEngine {
                 backup: nil,
                 connectionState: result.connectionState
             )
+        case .replacingNative(let previous, let replacement):
+            _ = try RightClickNativeRegistrationBackend.apply(previous)
+            do {
+                let result = try RightClickNativeRegistrationBackend.apply(replacement)
+                return RightClickOnboardingApplied(operation: "REPAIRED", backup: nil,
+                    connectionState: result.connectionState)
+            } catch {
+                do { try RightClickNativeRegistrationBackend.rollback(previous) }
+                catch let rollbackError {
+                    throw RightClickNativeRegistrationBackend.MutationFailure(underlying: rollbackError,
+                        rollbackStatus: "ROLLBACK_FAILED", configurationChanged: "UNKNOWN")
+                }
+                throw RightClickNativeRegistrationBackend.MutationFailure(underlying: error,
+                    rollbackStatus: "RESTORED", configurationChanged: "false")
+            }
         }
     }
 
@@ -266,11 +292,27 @@ enum RightClickOnboardingEngine {
                 .rollback(
                     mutation
                 )
+        case .replacingNative(let previous, let replacement):
+            try RightClickNativeRegistrationBackend.rollback(replacement)
+            try RightClickNativeRegistrationBackend.rollback(previous)
         }
     }
 }
 
 enum RightClickJSONConfigBackend {
+    struct MutationFailure: Error, CustomStringConvertible {
+        let underlying: Error
+        let rollbackStatus: String
+        let configurationChanged: String
+        var description: String {
+            if rollbackStatus == "RESTORED" {
+                return "Configuration postcondition failed; the original state was restored: \(underlying)"
+            }
+            return "Configuration postcondition failed; rollback could not safely restore the original state. "
+                + "Newer client content was preserved; review retained private backups: \(underlying)"
+        }
+    }
+
     struct Plan {
         let file: URL
         let original: Data?
@@ -284,11 +326,30 @@ enum RightClickJSONConfigBackend {
         let backup: URL?
     }
 
+    /// Keep every lexical ancestor for the symlink checks below. Foundation's
+    /// standardizedFileURL can rewrite a parent alias such as /private/tmp,
+    /// so normalize its directory representation without resolving that alias.
+    static func configurationAncestors(_ file: URL, maximumDepth: Int = 512) throws -> [URL] {
+        var path = file.standardizedFileURL
+        var visited = Set<String>()
+        var ancestors: [URL] = []
+        while true {
+            guard ancestors.count < maximumDepth, visited.insert(path.path).inserted else {
+                throw RightClickOnboardingError("Configuration path exceeds the bounded ancestor inspection limit.")
+            }
+            ancestors.append(path)
+            if path.path == "/" { break }
+            let parent = URL(fileURLWithPath: path.path, isDirectory: true).deletingLastPathComponent()
+            if parent.path == path.path { break }
+            path = parent
+        }
+        return ancestors
+    }
+
     static func inspectPath(_ file: URL) throws {
         let fm = FileManager.default
-        var path = file.standardizedFileURL
-        var isTarget = true
-        while path.path != "/" {
+        for (index, path) in try configurationAncestors(file).enumerated() {
+            let isTarget = index == 0
             if let attrs = try? fm.attributesOfItem(atPath: path.path) {
                 let type = attrs[.type] as? FileAttributeType
                 if type == .typeSymbolicLink {
@@ -309,8 +370,6 @@ enum RightClickJSONConfigBackend {
             } else if fm.fileExists(atPath: path.path) {
                 throw RightClickOnboardingError("Cannot inspect configuration path: \(path.path)")
             }
-            isTarget = false
-            path.deleteLastPathComponent()
         }
     }
 
@@ -321,7 +380,38 @@ enum RightClickJSONConfigBackend {
         guard (attrs[.size] as? NSNumber)?.intValue ?? 0 <= 4 * 1024 * 1024 else {
             throw RightClickOnboardingError("Configuration exceeds the 4 MiB safety limit.")
         }
-        return try Data(contentsOf: file)
+#if os(Windows)
+        var bytes: UnsafeMutablePointer<UInt8>?
+        var count = 0
+        let status = file.path.withCString { rc_host_read_file($0, 4 * 1024 * 1024, 0, &bytes, &count) }
+        defer { if let bytes { rc_host_free(bytes) } }
+        guard status == 0, let bytes else {
+            throw RightClickOnboardingError("Could not safely read the selected configuration file.")
+        }
+        return Data(bytes: bytes, count: count)
+#else
+        let descriptor = open(file.path, O_RDONLY | O_NOFOLLOW | O_CLOEXEC | O_NONBLOCK)
+        guard descriptor >= 0 else { throw RightClickOnboardingError("Could not safely open the selected configuration file.") }
+        let handle = FileHandle(fileDescriptor: descriptor, closeOnDealloc: true)
+        defer { try? handle.close() }
+        var information = stat()
+        guard fstat(descriptor, &information) == 0,
+              information.st_mode & S_IFMT == S_IFREG,
+              information.st_nlink == 1, information.st_uid == geteuid(),
+              information.st_size >= 0, information.st_size <= 4 * 1024 * 1024 else {
+            throw RightClickOnboardingError("The configuration file is not a bounded, owner-controlled regular file.")
+        }
+        var result = Data()
+        while true {
+            let chunk = try handle.read(upToCount: min(65_536, 4 * 1024 * 1024 + 1 - result.count)) ?? Data()
+            if chunk.isEmpty { break }
+            result.append(chunk)
+            guard result.count <= 4 * 1024 * 1024 else {
+                throw RightClickOnboardingError("Configuration exceeds the 4 MiB safety limit.")
+            }
+        }
+        return result
+#endif
     }
 
     static func plan(
@@ -330,7 +420,8 @@ enum RightClickJSONConfigBackend {
         entryKey: String,
         desiredEntry: [String: Any],
         acceptedExistingEntries: [[String: Any]] = [],
-        disconnect: Bool = false
+        disconnect: Bool = false,
+        replaceAcceptedExisting: Bool = false
     ) throws -> Plan {
         let original = try snapshot(file)
         var root: [String: Any] = [:]
@@ -359,9 +450,13 @@ enum RightClickJSONConfigBackend {
                 throw conflictingEntry(entryKey)
             }
             if !disconnect {
-                return Plan(file: file, original: original, replacement: original, operation: "ALREADY_CONFIGURED", changed: false)
+                if !replaceAcceptedExisting || object.isEqual(to: desiredEntry) {
+                    return Plan(file: file, original: original, replacement: original, operation: "ALREADY_CONFIGURED", changed: false)
+                }
+                entries[entryKey] = desiredEntry
+            } else {
+                entries.removeValue(forKey: entryKey)
             }
-            entries.removeValue(forKey: entryKey)
         } else {
             if disconnect {
                 return Plan(file: file, original: original, replacement: original, operation: "ALREADY_DISCONNECTED", changed: false)
@@ -388,11 +483,11 @@ enum RightClickJSONConfigBackend {
         guard try snapshot(plan.file) == plan.original else {
             throw RightClickOnboardingError("Configuration changed after the preview. Nothing was written; run setup again.")
         }
-        try fm.createDirectory(at: directory, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
+        try fm.createDirectory(at: directory, withIntermediateDirectories: true, attributes: privateDirectoryAttributes)
 
         let lock = directory.appendingPathComponent(".rightclick-setup.lock")
         do {
-            try fm.createDirectory(at: lock, withIntermediateDirectories: false, attributes: [.posixPermissions: 0o700])
+            try fm.createDirectory(at: lock, withIntermediateDirectories: false, attributes: privateDirectoryAttributes)
         } catch {
             throw RightClickOnboardingError("Another setup lock exists or cannot be created. No configuration was written. Check \(lock.path).")
         }
@@ -420,27 +515,24 @@ enum RightClickJSONConfigBackend {
             throw RightClickOnboardingError("Configuration changed during setup. No replacement was made. A private backup may have been retained.")
         }
 
-        let rc = temporary.path.withCString { source in
-            plan.file.path.withCString { destination in rename(source, destination) }
-        }
-        guard rc == 0 else {
-            throw RightClickOnboardingError("Atomic configuration replacement failed (errno \(errno)).")
-        }
+        try replacePrivate(temporary, with: plan.file)
 
         do {
             try afterReplace?()
-            guard try Data(contentsOf: plan.file) == replacement else {
+            guard try snapshot(plan.file) == replacement else {
                 throw RightClickOnboardingError("Configuration changed or could not be verified after writing.")
             }
         } catch {
             do {
+                guard try snapshot(plan.file) == plan.replacement else {
+                    throw RightClickOnboardingError("Configuration changed after setup; the newer state was preserved. Restore the retained private backup only after reviewing it.")
+                }
                 try rollback(plan)
             } catch let rollbackError {
-                throw RightClickOnboardingError(
-                    "Configuration postcondition failed and rollback failed. Verification error: \(error). Rollback error: \(rollbackError)"
-                )
+                throw MutationFailure(underlying: rollbackError, rollbackStatus: "ROLLBACK_FAILED",
+                    configurationChanged: "UNKNOWN")
             }
-            throw RightClickOnboardingError("Configuration postcondition failed; the original state was restored: \(error)")
+            throw MutationFailure(underlying: error, rollbackStatus: "RESTORED", configurationChanged: "false")
         }
 
         return Applied(operation: plan.operation, backup: backup)
@@ -495,11 +587,8 @@ enum RightClickJSONConfigBackend {
             let rollbackFile = directory.appendingPathComponent(".rightclick-rollback-\(UUID().uuidString).tmp")
             defer { try? fm.removeItem(at: rollbackFile) }
             try writePrivate(original, to: rollbackFile)
-            let rc = rollbackFile.path.withCString { source in
-                plan.file.path.withCString { destination in rename(source, destination) }
-            }
-            guard rc == 0 else { throw RightClickOnboardingError("Atomic rollback failed (errno \(errno)).") }
-            guard try Data(contentsOf: plan.file) == original else {
+            try replacePrivate(rollbackFile, with: plan.file)
+            guard try snapshot(plan.file) == original else {
                 throw RightClickOnboardingError("Rollback could not be verified.")
             }
             return
@@ -511,7 +600,7 @@ enum RightClickJSONConfigBackend {
         }
     }
 
-    private static func rejectDuplicateJSONKeys(_ data: Data) throws {
+    static func rejectDuplicateJSONKeys(_ data: Data) throws {
         let bytes = Array(data)
         var index = 0
 
@@ -591,7 +680,36 @@ enum RightClickJSONConfigBackend {
         }
     }
 
+    private static var privateDirectoryAttributes: [FileAttributeKey: Any] {
+#if os(Windows)
+        return [:]
+#else
+        return [.posixPermissions: 0o700]
+#endif
+    }
+
+    private static func replacePrivate(_ source: URL, with destination: URL) throws {
+#if os(Windows)
+        let status = source.path.withCString { from in
+            destination.path.withCString { to in rc_host_replace_config(from, to) }
+        }
+#else
+        let status = source.path.withCString { from in
+            destination.path.withCString { to in rename(from, to) }
+        }
+#endif
+        guard status == 0 else { throw RightClickOnboardingError("Atomic configuration replacement failed.") }
+    }
+
     private static func writePrivate(_ data: Data, to file: URL) throws {
+#if os(Windows)
+        let status = data.withUnsafeBytes { bytes in
+            file.path.withCString { path in
+                rc_host_write_private_config(path, bytes.bindMemory(to: UInt8.self).baseAddress, bytes.count)
+            }
+        }
+        guard status == 0 else { throw RightClickOnboardingError("Could not create an owner-only configuration file.") }
+#else
         let fd = file.path.withCString { open($0, O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW, mode_t(0o600)) }
         guard fd >= 0 else {
             throw RightClickOnboardingError("Could not create a private configuration file (errno \(errno)).")
@@ -606,5 +724,6 @@ enum RightClickJSONConfigBackend {
             try? FileManager.default.removeItem(at: file)
             throw error
         }
+#endif
     }
 }

@@ -310,10 +310,12 @@ enum OriginPinnedHTTP {
     static func exchange(_ request: URLRequest, maximumBytes: Int = maximumAcquisitionBytes,
                          template: URLSession = .shared, deadline: TimeInterval = acquisitionDeadline,
                          successfulStatusRequired: Bool = true,
+                         credentialFree: Bool = false,
                          admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> (Data, HTTPURLResponse) {
         guard let url = request.url else { throw RightClickError("Missing exchange target.") }
         return try boundedExchange(url, maximumBytes: maximumBytes, template: template, initialRequest: request,
-            admitStart: admitStart, deadline: deadline, successfulStatusRequired: successfulStatusRequired)
+            admitStart: admitStart, deadline: deadline, successfulStatusRequired: successfulStatusRequired,
+            credentialFree: credentialFree)
     }
 
     /// Bounded shared invocation edge. Admission consumes authority atomically

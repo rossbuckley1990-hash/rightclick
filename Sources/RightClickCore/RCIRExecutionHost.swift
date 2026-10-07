@@ -50,6 +50,11 @@ public struct RCIRReceiptEnvelope: Codable, Sendable {
     public let payload: String
     public let signature: String
     public let publicKey: String
+
+    public init(version: Int, algorithm: String, payload: String, signature: String, publicKey: String) {
+        self.version = version; self.algorithm = algorithm; self.payload = payload
+        self.signature = signature; self.publicKey = publicKey
+    }
 }
 
 /// Host/operator configuration. Never read from provider metadata or tool inputs.

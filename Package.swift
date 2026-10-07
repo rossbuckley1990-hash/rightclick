@@ -19,12 +19,14 @@ let cliExclusions: [String] = []
 let coreTestExclusions: [String] = []
 #else
 let nativeProducts: [Product] = []
-let nativeTargets: [Target] = []
+let nativeTargets: [Target] = [
+    .testTarget(name: "RightClickCLITests", dependencies: ["RightClickCLI"],
+        path: "Tests/RightClickCLITests/Portable", swiftSettings: [.swiftLanguageMode(.v5)])
+]
 let cliExclusions = [
     "ChatGPTOnboardingTransaction.swift", "ChatGPTBridge.swift", "Setup.swift", "ChatGPTLiveAttestation.swift",
-    "OpenAIPluginSetup.swift", "CodexClientAdapter.swift", "ChatGPTOnboarding.swift", "ChatGPTBridgeInstaller.swift",
-    "OnboardingEngine.swift", "LocalOnboarding.swift", "ClaudeClientAdapter.swift", "SetupState.swift",
-    "NativeRegistrationBackend.swift", "SetupAllTransaction.swift", "StableEntrypoint.swift", "BridgeRuntime.swift", "ClientRegistry.swift",
+    "OpenAIPluginSetup.swift", "ChatGPTOnboarding.swift", "ChatGPTBridgeInstaller.swift", "SetupState.swift",
+    "StableEntrypoint.swift", "BridgeRuntime.swift",
 ]
 let coreTestExclusions = [
     "AcquisitionTests.swift", "EngineTests.swift", "ServiceContextTests.swift", "OutcomeVerifierTests.swift",
@@ -101,7 +103,7 @@ let package = Package(
         ),
         .executableTarget(
             name: "RightClickCLI",
-            dependencies: ["RightClickCore", "RightClickMCP"],
+            dependencies: ["RightClickCore", "RightClickMCP", "RightClickHostFiles"],
             exclude: cliExclusions,
             swiftSettings: [
                 .swiftLanguageMode(.v5),

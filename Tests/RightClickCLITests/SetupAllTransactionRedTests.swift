@@ -979,8 +979,8 @@ final class SetupAllTransactionRedTests:
 
         XCTAssertEqual(
             probeCount,
-            1,
-            "the shared RIGHTCLICK binary should be probed once"
+            2,
+            "the shared RIGHTCLICK binary must pass preflight and post-transaction probes"
         )
 
         let root =

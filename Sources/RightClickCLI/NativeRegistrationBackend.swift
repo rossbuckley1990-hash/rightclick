@@ -30,6 +30,7 @@ enum RightClickNativeRegistrationBackend {
 
         let absenceMarkers: [String]
         let connectedFragments: [String]
+        let exactConnection: ((String) -> Bool)?
 
         init(
             backendID: String,
@@ -42,7 +43,8 @@ enum RightClickNativeRegistrationBackend {
             exactInspection:
                 ((String) -> Bool)? = nil,
             absenceMarkers: [String],
-            connectedFragments: [String] = []
+            connectedFragments: [String] = [],
+            exactConnection: ((String) -> Bool)? = nil
         ) {
             self.backendID = backendID
             self.scope = scope
@@ -56,6 +58,7 @@ enum RightClickNativeRegistrationBackend {
             self.absenceMarkers = absenceMarkers
             self.connectedFragments =
                 connectedFragments
+            self.exactConnection = exactConnection
         }
     }
 
@@ -69,6 +72,19 @@ enum RightClickNativeRegistrationBackend {
         let operation: String
         let connectionState:
             RightClickClientState?
+    }
+
+    struct MutationFailure: Error, CustomStringConvertible {
+        let underlying: Error
+        let rollbackStatus: String
+        let configurationChanged: String
+        var description: String {
+            if rollbackStatus == "ROLLBACK_FAILED" {
+                return "Native client command failed; the current registration could not safely be restored. "
+                    + "Any conflicting newer registration was preserved: \(underlying)"
+            }
+            return "Native client command failed; the original registration state was verified or restored: \(underlying)"
+        }
     }
 
     private struct Result {
@@ -137,6 +153,7 @@ enum RightClickNativeRegistrationBackend {
             if plan.operation ==
                 "ALREADY_CONFIGURED"
             {
+                try requireExactRegistration(plan.contract)
                 let connection =
                     try connectionState(
                         plan.contract
@@ -183,6 +200,7 @@ enum RightClickNativeRegistrationBackend {
 
         switch plan.operation {
         case "CONFIGURED":
+            try requireExactRegistration(plan.contract)
             let result =
                 try run(
                     plan.contract.remove
@@ -193,8 +211,7 @@ enum RightClickNativeRegistrationBackend {
                 throw RightClickOnboardingError(
                     "Native transaction rollback remove "
                     + "failed with exit "
-                    + "\(result.status): "
-                    + result.output
+                    + "\(result.status)."
                 )
             }
 
@@ -216,6 +233,10 @@ enum RightClickNativeRegistrationBackend {
             }
 
         case "DISCONNECTED":
+            let current = try run(plan.contract.inspect)
+            guard isAbsent(current, contract: plan.contract) else {
+                throw RightClickOnboardingError("Native registration changed after disconnect; the newer state was preserved.")
+            }
             let result =
                 try run(
                     plan.contract.add
@@ -226,8 +247,7 @@ enum RightClickNativeRegistrationBackend {
                 throw RightClickOnboardingError(
                     "Native transaction rollback add "
                     + "failed with exit "
-                    + "\(result.status): "
-                    + result.output
+                    + "\(result.status)."
                 )
             }
 
@@ -299,19 +319,7 @@ enum RightClickNativeRegistrationBackend {
             plan
         )
 
-        let result =
-            try run(
-                plan.contract.add
-            )
-
-        guard result.status == 0
-        else {
-            throw RightClickOnboardingError(
-                "Native registration failed with exit "
-                + "\(result.status): "
-                + result.output
-            )
-        }
+        try performMutation(plan, command: plan.contract.add)
 
         let connection:
             RightClickClientState?
@@ -326,17 +334,7 @@ enum RightClickNativeRegistrationBackend {
                     plan.contract
                 )
         } catch {
-            _ =
-                try? run(
-                    plan.contract.remove
-                )
-
-            throw RightClickOnboardingError(
-                "Native registration postcondition "
-                + "failed; RIGHTCLICK attempted to "
-                + "restore the previous unconfigured "
-                + "state: \(error)"
-            )
+            throw recoverFailedMutation(plan, underlying: error)
         }
 
         return Applied(
@@ -354,19 +352,7 @@ enum RightClickNativeRegistrationBackend {
             plan
         )
 
-        let result =
-            try run(
-                plan.contract.remove
-            )
-
-        guard result.status == 0
-        else {
-            throw RightClickOnboardingError(
-                "Native deregistration failed with exit "
-                + "\(result.status): "
-                + result.output
-            )
-        }
+        try performMutation(plan, command: plan.contract.remove)
 
         do {
             let inspection =
@@ -386,17 +372,7 @@ enum RightClickNativeRegistrationBackend {
                 )
             }
         } catch {
-            _ =
-                try? run(
-                    plan.contract.add
-                )
-
-            throw RightClickOnboardingError(
-                "Native deregistration postcondition "
-                + "failed; RIGHTCLICK attempted to "
-                + "restore the previous registration: "
-                + "\(error)"
-            )
+            throw recoverFailedMutation(plan, underlying: error)
         }
 
         return Applied(
@@ -405,6 +381,37 @@ enum RightClickNativeRegistrationBackend {
             connectionState:
                 nil
         )
+    }
+
+    private static func performMutation(_ plan: Plan, command: Command) throws {
+        do {
+            let result = try run(command)
+            guard result.status == 0 else {
+                throw RightClickOnboardingError("Native mutation exited with status \(result.status).")
+            }
+        } catch {
+            throw recoverFailedMutation(plan, underlying: error)
+        }
+    }
+
+    /// An exit status is not evidence that no write occurred. Inspect again,
+    /// restore only an exact owned partial result, and preserve newer entries.
+    private static func recoverFailedMutation(_ plan: Plan, underlying: Error) -> MutationFailure {
+        do {
+            let current = try run(plan.contract.inspect)
+            let absent = isAbsent(current, contract: plan.contract)
+            let exact = current.status == 0 && desiredRegistrationMatches(current.output, contract: plan.contract)
+            if (plan.operation == "CONFIGURED" && absent) || (plan.operation == "DISCONNECTED" && exact) {
+                return MutationFailure(underlying: underlying, rollbackStatus: "NOT_REQUIRED", configurationChanged: "false")
+            }
+            guard (plan.operation == "CONFIGURED" && exact) || (plan.operation == "DISCONNECTED" && absent) else {
+                return MutationFailure(underlying: underlying, rollbackStatus: "ROLLBACK_FAILED", configurationChanged: "UNKNOWN")
+            }
+            try rollback(plan)
+            return MutationFailure(underlying: underlying, rollbackStatus: "RESTORED", configurationChanged: "false")
+        } catch {
+            return MutationFailure(underlying: underlying, rollbackStatus: "ROLLBACK_FAILED", configurationChanged: "UNKNOWN")
+        }
     }
 
     private static func requireExactRegistration(
@@ -475,11 +482,11 @@ enum RightClickNativeRegistrationBackend {
             )
         }
 
-        guard contract
-            .connectedFragments
-            .allSatisfy({
-                result.output.contains($0)
+        let connected = contract.exactConnection?(result.output) ?? (
+            !contract.connectedFragments.isEmpty && result.output.split(separator: "\n").contains { line in
+                contract.connectedFragments.allSatisfy { line.contains($0) }
             })
+        guard connected
         else {
             throw RightClickOnboardingError(
                 "RIGHTCLICK is configured but the "
@@ -510,81 +517,8 @@ enum RightClickNativeRegistrationBackend {
     private static func run(
         _ command: Command
     ) throws -> Result {
-        guard
-            command.executable
-                .hasPrefix("/"),
-            !command.executable
-                .unicodeScalars
-                .contains(
-                    where: {
-                        CharacterSet
-                            .controlCharacters
-                            .contains($0)
-                    }
-                )
-        else {
-            throw RightClickOnboardingError(
-                "Native client executable must be "
-                + "an absolute safe path."
-            )
-        }
-
-        guard FileManager.default
-            .isExecutableFile(
-                atPath:
-                    command.executable
-            )
-        else {
-            throw RightClickOnboardingError(
-                "Native client executable is missing "
-                + "or not executable: "
-                + command.executable
-            )
-        }
-
-        let process = Process()
-        let pipe = Pipe()
-
-        process.executableURL =
-            URL(
-                fileURLWithPath:
-                    command.executable
-            )
-
-        process.arguments =
-            command.arguments
-
-        process.standardOutput = pipe
-        process.standardError = pipe
-
-        do {
-            try process.run()
-        } catch {
-            throw RightClickOnboardingError(
-                "Could not launch native client "
-                + "command: "
-                + String(describing: error)
-            )
-        }
-
-        process.waitUntilExit()
-
-        let data =
-            pipe.fileHandleForReading
-                .readDataToEndOfFile()
-
-        let output =
-            String(
-                data: data,
-                encoding: .utf8
-            )
-            ?? ""
-
-        return Result(
-            status:
-                process.terminationStatus,
-            output:
-                output
-        )
+        let result = try RightClickClientProcess.run(executable: command.executable,
+            arguments: command.arguments)
+        return Result(status: result.status, output: result.output)
     }
 }

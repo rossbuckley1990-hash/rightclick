@@ -80,6 +80,12 @@ struct RightClickCodexClientAdapter:
     ) throws
         -> RightClickOnboardingMutation
     {
+        .native(try RightClickNativeRegistrationBackend.plan(
+            contract: registrationContract(home: home, recipe: recipe), disconnect: disconnect))
+    }
+
+    func registrationContract(home: URL, recipe: RightClickConnectionRecipe) throws -> RightClickNativeRegistrationBackend.Contract {
+
         guard let codex =
             codexExecutable(
                 home: home
@@ -157,77 +163,11 @@ struct RightClickCodexClientAdapter:
                     ]
                 )
 
-        return .native(
-            try RightClickNativeRegistrationBackend
-                .plan(
-                    contract:
-                        contract,
-                    disconnect:
-                        disconnect
-                )
-        )
+        return contract
     }
 
-    private func codexExecutable(
-        home: URL
-    ) -> String? {
-        var candidates:
-            [String] = [
-                home
-                    .appendingPathComponent(
-                        ".local/bin/codex"
-                    )
-                    .path,
-                "/opt/homebrew/bin/codex",
-                "/usr/local/bin/codex",
-            ]
-
-        if let path =
-            ProcessInfo
-                .processInfo
-                .environment["PATH"]
-        {
-            candidates.append(
-                contentsOf:
-                    path
-                    .split(
-                        separator: ":"
-                    )
-                    .map {
-                        String($0)
-                        + "/codex"
-                    }
-            )
-        }
-
-        var seen =
-            Set<String>()
-
-        for candidate in candidates {
-            guard
-                seen.insert(
-                    candidate
-                ).inserted
-            else {
-                continue
-            }
-
-            if FileManager.default
-                .isExecutableFile(
-                    atPath:
-                        candidate
-                )
-            {
-                return URL(
-                    fileURLWithPath:
-                        candidate
-                )
-                .standardizedFileURL
-                .path
-            }
-        }
-
-        return nil
+    private func codexExecutable(home: URL) -> String? {
+        RightClickClientHost.executable(named: "codex", home: home)
     }
 
     private func registrationMatches(
