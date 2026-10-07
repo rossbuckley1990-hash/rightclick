@@ -298,14 +298,20 @@ public final class OpenAPICapabilityArtifactResolver:
     private let specificationLoader:
         SpecificationLoader
 
-    public init(
-        specificationLoader:
-            @escaping SpecificationLoader = {
+    public convenience init() {
+        self.init(
+            specificationLoader: {
                 try OriginPinnedHTTP
                     .loadOpenAPISpecification(
                         $0
                     )
             }
+        )
+    }
+
+    public init(
+        specificationLoader:
+            @escaping SpecificationLoader
     ) {
         self.specificationLoader =
             specificationLoader
@@ -375,16 +381,15 @@ public final class GraphQLCapabilityArtifactResolver:
     private let introspectionLoader:
         IntrospectionLoader
 
-    public init(
-        schemaLoader:
-            @escaping SchemaLoader = {
+    public convenience init() {
+        self.init(
+            schemaLoader: {
                 try OriginPinnedHTTP
                     .loadOpenAPISpecification(
                         $0
                     )
             },
-        introspectionLoader:
-            @escaping IntrospectionLoader = {
+            introspectionLoader: {
                 endpoint,
                 token in
 
@@ -396,6 +401,14 @@ public final class GraphQLCapabilityArtifactResolver:
                             token
                     )
             }
+        )
+    }
+
+    public init(
+        schemaLoader:
+            @escaping SchemaLoader,
+        introspectionLoader:
+            @escaping IntrospectionLoader
     ) {
         self.schemaLoader =
             schemaLoader
@@ -516,15 +529,21 @@ public final class GRPCCapabilityArtifactResolver:
     private let descriptorLoader:
         DescriptorLoader
 
-    public init(
-        descriptorLoader:
-            @escaping DescriptorLoader = {
+    public convenience init() {
+        self.init(
+            descriptorLoader: {
                 try GRPCReflectionTransport
                     .discover(
                         endpoint:
                             $0
                     )
             }
+        )
+    }
+
+    public init(
+        descriptorLoader:
+            @escaping DescriptorLoader
     ) {
         self.descriptorLoader =
             descriptorLoader
@@ -821,17 +840,25 @@ public final class ConfiguredCapabilityArtifactSource:
         var next:
             [any CapabilityReflector] = []
 
-        var descriptorIDs =
-            Set<String>()
+        var descriptorIDCounts:
+            [String: Int] = [:]
+
+        for descriptor
+            in descriptors
+        {
+            descriptorIDCounts[
+                descriptor.id,
+                default: 0
+            ] += 1
+        }
 
         for descriptor
             in descriptors
         {
             guard
-                descriptorIDs.insert(
+                descriptorIDCounts[
                     descriptor.id
-                )
-                .inserted,
+                ] == 1,
                 let reflector =
                     try? registry.resolve(
                         descriptor
