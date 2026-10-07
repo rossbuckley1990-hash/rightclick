@@ -276,6 +276,7 @@ public enum CapabilityArtifactResolverDefaults {
                 MCPCapabilityArtifactResolver(),
                 WASMCapabilityArtifactResolver(),
                 KafkaCapabilityArtifactResolver(),
+                KubernetesCapabilityArtifactResolver(),
             ]
 
 #if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
