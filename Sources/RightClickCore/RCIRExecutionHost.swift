@@ -231,6 +231,26 @@ public final class RCIRExecutionHost {
                 record = ExecutionRecord(executionId: executionID, actionId: capability.id,
                     state: .unknown, message: "Dispatch failed after admission; the external outcome is unknown.")
             }
+            if !dispatched {
+                // A compiler/transport may return a preflight error without ever
+                // using its admitted start gate. Never manufacture consumption,
+                // completion or successful verification from that return value.
+                let claimedEffect = [.accepted, .succeeded, .started, .awaitingUser].contains(record.state)
+                if claimedEffect {
+                    record.state = .unknown
+                    record.message = "Provider callback claimed progress without using the admitted start gate; the external outcome is unknown."
+                }
+                record.verification = nil
+                record.evidence = OutcomeEvidence(type: "rcir_transport_not_started",
+                    boundary: claimedEffect ? "No admitted provider start was witnessed; callback claims cannot prove whether an external effect occurred."
+                        : "Preflight returned before an admitted provider start; no provider effect was authorised by this invocation.", outcomeVerified: false)
+                record.rcir = RCIRExecutionEvidence(version: 1, taskID: task.id.uuidString,
+                    leaseID: lease.id.uuidString, generation: binding.generation, leaseConsumed: false,
+                    phase: task.phase.rawValue, outcome: task.outcome.rawValue, receipt: nil, signedReceipt: nil,
+                    observationBoundary: "Independent observation withheld because no admitted start was witnessed.", taskEvents: nil)
+                record.events.append("RCIR admitted generation=\(binding.generation); provider start gate was not used.")
+                return record
+            }
             if !revalidate() {
                 record.state = .unknown
                 record.message = "Provider disappeared or changed after dispatch; the external outcome is unknown. Do not retry blindly."
@@ -289,7 +309,9 @@ public final class RCIRExecutionHost {
                 } else if task.phase == .completed, let observation {
                     // Observe through a separate bounded GET. It is independent
                     // of invocation output, but the same server remains a trust source.
-                    if let text = try? readBack(observation.url, taskID: task.id.uuidString) {
+                    let mayObserve = revalidate() && lease.scopes.isSubset(of: authority()) &&
+                        (try? policy(self.configuration()).revision) == (try? policy(config).revision)
+                    if mayObserve, let text = try? readBack(observation.url, taskID: task.id.uuidString) {
                         var observed: CapabilityValue = .string(text)
                         var complete = true
                         if let returnedPostcondition {
