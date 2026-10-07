@@ -301,9 +301,12 @@ enum OriginPinnedHTTP {
     /// headers (for example negotiated session identifiers). The same no-redirect,
     /// origin, response size and deadline rules apply to acquisition and calls.
     static func exchange(_ request: URLRequest, maximumBytes: Int = maximumAcquisitionBytes,
+                         template: URLSession = .shared, deadline: TimeInterval = acquisitionDeadline,
+                         successfulStatusRequired: Bool = true,
                          admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> (Data, HTTPURLResponse) {
         guard let url = request.url else { throw RightClickError("Missing exchange target.") }
-        return try boundedExchange(url, maximumBytes: maximumBytes, template: .shared, initialRequest: request, admitStart: admitStart)
+        return try boundedExchange(url, maximumBytes: maximumBytes, template: template, initialRequest: request,
+            admitStart: admitStart, deadline: deadline, successfulStatusRequired: successfulStatusRequired)
     }
 
     /// Bounded shared invocation edge. Admission consumes authority atomically
@@ -330,21 +333,22 @@ enum OriginPinnedHTTP {
 
     private static func boundedExchange(_ url: URL, maximumBytes: Int, template: URLSession,
                                         initialRequest: URLRequest?,
-                                        admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> (Data, HTTPURLResponse) {
-        precondition(
-            maximumBytes > 0
-        )
+                                        admitStart: ((_ start: () -> Void) throws -> Void)? = nil,
+                                        deadline: TimeInterval = acquisitionDeadline,
+                                        successfulStatusRequired: Bool = true) throws -> (Data, HTTPURLResponse) {
+        guard maximumBytes > 0, maximumBytes <= maximumOpenAPISpecificationBytes,
+              deadline.isFinite, deadline > 0, deadline <= 10 else { throw RCIRError.invalidLimit }
 
         let configuration =
             template.configuration
 
         configuration
             .timeoutIntervalForRequest =
-                acquisitionDeadline
+                deadline
 
         configuration
             .timeoutIntervalForResource =
-                acquisitionDeadline
+                deadline
 
         let delegate =
             BoundedLoadDelegate(
@@ -369,7 +373,7 @@ enum OriginPinnedHTTP {
         var request = initialRequest ?? URLRequest(url: url)
 
         request.timeoutInterval =
-            acquisitionDeadline
+            deadline
 
         let task =
             session.dataTask(
@@ -381,7 +385,7 @@ enum OriginPinnedHTTP {
 
         let deadlineMilliseconds =
             Int(
-                acquisitionDeadline
+                deadline
                 * 1_000
             )
 
@@ -432,7 +436,7 @@ enum OriginPinnedHTTP {
         }
 
         guard
-            (200...299)
+            !successfulStatusRequired || (200...299)
                 .contains(
                     response.statusCode
                 )

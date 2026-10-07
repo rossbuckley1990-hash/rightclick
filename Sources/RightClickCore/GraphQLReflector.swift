@@ -2,7 +2,7 @@ import CryptoKit
 import Foundation
 
 public final class GraphQLReflector:
-    CapabilityReflector
+    RCIRExecutionReflector
 {
     private enum OperationKind:
         String
@@ -464,6 +464,33 @@ public final class GraphQLReflector:
     ) throws
         -> ExecutionRecord
     {
+        try performBegin(capability: capability, item: item, executionID: executionID,
+                         arguments: arguments, admitStart: nil)
+    }
+
+    public func admittedBegin(capability: Capability, admissionOwner: Capability, item: ContentItem,
+                              executionID: String, arguments: CapabilityArguments?, verification: VerificationSpec?,
+                              expectedOutput: String?, host: RCIRExecutionHost, revalidate: @escaping () -> Bool) throws -> ExecutionRecord {
+        guard let operation = operationByCapabilityID[capability.id] else { throw RCIRError.unavailable }
+        return try RCIRUnaryInvocation.execute(capability: capability, owner: admissionOwner, item: item,
+            executionID: executionID, arguments: arguments, names: operation.arguments.map(\.name),
+            required: operation.arguments.filter { $0.type.isNonNull && $0.defaultValue == nil }.map(\.name),
+            target: endpointURL, verification: verification, expectedOutput: expectedOutput,
+            host: host, available: {
+                guard let scheme = self.authoritySchemeName else { return true }
+                return GraphQLHTTP.bearerToken(origin: self.authorityOrigin, schemeName: scheme) != nil
+            }, revalidate: revalidate, invoke: { admit in
+                try withoutActuallyEscaping(admit) { gate in
+                    try self.performBegin(capability: capability, item: item, executionID: executionID,
+                                          arguments: arguments, admitStart: gate)
+                }
+            })
+    }
+
+    private func performBegin(capability: Capability, item: ContentItem, executionID: String,
+                              arguments: CapabilityArguments?,
+                              admitStart: ((_ start: () -> Void) throws -> Void)?) throws -> ExecutionRecord
+    {
         guard
             let operation =
                 operationByCapabilityID[
@@ -802,9 +829,11 @@ public final class GraphQLReflector:
                                 .invocationDeadline,
                         maximumBytes:
                             GraphQLHTTP
-                                .maximumResponseBytes
+                                .maximumResponseBytes,
+                        admitStart: admitStart
                     )
         } catch {
+            if admitStart != nil { throw error }
             return ExecutionRecord(
                 executionId:
                     executionID,

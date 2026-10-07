@@ -239,7 +239,8 @@ enum GraphQLHTTP {
         template:
             URLSession = .shared,
         deadline: TimeInterval,
-        maximumBytes: Int
+        maximumBytes: Int,
+        admitStart: ((_ start: () -> Void) throws -> Void)? = nil
     ) throws
         -> (
             response:
@@ -248,6 +249,11 @@ enum GraphQLHTTP {
                 Data
         )
     {
+        if let admitStart {
+            let (data, response) = try OriginPinnedHTTP.exchange(request, maximumBytes: maximumBytes,
+                template: template, deadline: deadline, successfulStatusRequired: false, admitStart: admitStart)
+            return (response, data)
+        }
         precondition(
             maximumBytes > 0
         )
