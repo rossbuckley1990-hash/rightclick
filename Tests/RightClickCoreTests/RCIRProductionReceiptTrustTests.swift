@@ -335,4 +335,47 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         XCTAssertTrue(rows("requests.jsonl").isEmpty)
         XCTAssertTrue(rows("effects.jsonl").isEmpty)
     }
+
+    func testActualLeaseExpiryDuringProtectedSigningValidationHasZeroEffects() throws {
+        var expiry: Int64?
+        var reads = 0
+        var waited = false
+        host.configuration = { [weak self] in
+            guard let self else { throw RCIRError.authorityDenied }
+            if let expiry {
+                reads += 1
+                if reads == 2 {
+                    // Actual elapsed time in a legitimate host callback, with
+                    // the same unexpired key and policy, can outlive the lease.
+                    while Int64(Date().timeIntervalSince1970 * 1000) <= expiry {
+                        Thread.sleep(forTimeInterval:0.01)
+                    }
+                    waited = true
+                }
+            }
+            return self.configuration
+        }
+        host.beforeStart = { lease,admit,enqueue in
+            expiry = lease.expiresAt
+            try withoutActuallyEscaping(admit) { permit in
+                try withoutActuallyEscaping(enqueue) { start in try permit(start) }
+            }
+        }
+        let initial = try begin()
+        // A dispatch after the deadline may already be UNKNOWN to the runtime.
+        // Release any genuinely admitted provider work and retain its effect.
+        try release()
+        if initial.state == .started { _ = finish(initial) }
+        for _ in 0..<100 where !rows("requests.jsonl").isEmpty && rows("effects.jsonl").isEmpty {
+            Thread.sleep(forTimeInterval:0.01)
+        }
+        summary["actualHostClockReachedLeaseExpiry"] = waited
+        summary["leaseExpiresAt"] = try XCTUnwrap(expiry)
+        summary["requests"] = rows("requests.jsonl").count
+        summary["effects"] = rows("effects.jsonl").count
+        XCTAssertTrue(waited)
+        XCTAssertEqual(initial.state,.rejected)
+        XCTAssertTrue(rows("requests.jsonl").isEmpty)
+        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+    }
 }
