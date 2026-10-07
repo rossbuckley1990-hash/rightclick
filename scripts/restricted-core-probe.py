@@ -109,14 +109,18 @@ class RPC:
             return response['result']
 
     def close(self):
-        save(self.root, self.label + '-transcript.json', self.log)
-        if self.process.poll() is None:
-            os.killpg(self.process.pid, signal.SIGTERM)
+        try:
+            save(self.root, self.label + '-transcript.json', self.log)
+        finally:
             try:
-                self.process.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                os.killpg(self.process.pid, signal.SIGKILL); self.process.wait()
-        self.stderr.close(); self.trace.close()
+                if self.process.poll() is None:
+                    os.killpg(self.process.pid, signal.SIGTERM)
+                    try:
+                        self.process.wait(timeout=10)
+                    except subprocess.TimeoutExpired:
+                        os.killpg(self.process.pid, signal.SIGKILL); self.process.wait()
+            finally:
+                self.stderr.close(); self.trace.close()
 
 
 def tool_names(tools):
@@ -131,15 +135,36 @@ def tool_names(tools):
     return names
 
 
-def validate_capture(records):
+def validate_capture(records, expected):
     if not records:
         raise RuntimeError('No outgoing model catalogue captured')
     for record in records:
         names = tool_names(record['tools'])
+        functions = []
+        def collect(tools):
+            for tool in tools:
+                if tool.get('type') == 'namespace':
+                    if tool.get('name') != 'functions':
+                        raise RuntimeError('Unexpected dynamic tool namespace')
+                    collect(tool.get('tools', []))
+                elif tool.get('type') == 'function':
+                    functions.append(tool)
+                else:
+                    raise RuntimeError('Only supplied dynamic function tools are accepted')
+        collect(record['tools'])
         for item in record.get('additionalTools', []):
             names.extend(tool_names(item.get('tools', [])))
+            collect(item.get('tools', []))
         if len(names) != 7 or set(names) != CANONICAL:
             raise RuntimeError('Model-visible catalogue is not exactly seven unique operations')
+        declared = {tool['name']: tool for tool in expected}
+        for tool in functions:
+            supplied = declared[tool['name']]
+            if tool.get('parameters') != supplied['inputSchema'] or tool.get('description') != supplied['description']:
+                raise RuntimeError('Outgoing function schema/description differs from supplied RIGHTCLICK declaration')
+        other = record.get('otherToolFields', {})
+        if not set(other).issubset({'tool_choice', 'parallel_tool_calls'}) or other.get('tool_choice', 'auto') != 'auto' or not isinstance(other.get('parallel_tool_calls', False), bool):
+            raise RuntimeError('Unknown or altered tool-bearing model request fields')
     return sorted(CANONICAL)
 
 
@@ -191,7 +216,17 @@ def host_command(root, number, kind, argv, environment, timeout):
     # never become commands. No shell interpolation or model-visible new tool.
     label = 'phase-' + str(number) + '-' + kind
     with (root / (label + '.stdout')).open('w') as stdout, (root / (label + '.stderr')).open('w') as stderr:
-        child = subprocess.run(argv, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr, env=environment, timeout=timeout)
+        child = subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr, env=environment, start_new_session=True)
+        try:
+            child.wait(timeout=timeout)
+        except BaseException:
+            if child.poll() is None:
+                os.killpg(child.pid, signal.SIGTERM)
+                try:
+                    child.wait(timeout=10)
+                except subprocess.TimeoutExpired:
+                    os.killpg(child.pid, signal.SIGKILL); child.wait()
+            raise
     result = {'argv': argv, 'exitCode': child.returncode, 'semanticAcceptance': 'NOT_INFERRED_FROM_EXIT_CODE'}
     save(root, label + '.json', result)
     if child.returncode != 0:
@@ -220,7 +255,7 @@ def main():
     environment = {k: v for k, v in os.environ.items() if k not in REMOVED}
     save(out, 'environment-policy.json', {'removedPresentKeys': sorted(REMOVED & os.environ.keys()), 'preservedRestrictionKeys': [k for k in ['CODEX_PERMISSION_PROFILE', 'CODEX_SANDBOX', 'CODEX_SANDBOX_NETWORK_DISABLED'] if k in environment], 'permissionsChanged': False})
     shutil.copyfile(__file__, out / 'probe-at-run.py')
-    result = {'actualAIInference': args.actual, 'clientBoundary': 'INCOMPLETE', 'universalAcceptance': 'NOT_EVALUATED', 'result': 'FAIL', 'phases': [], 'actualAIToolCalls': []}
+    result = {'requestedActualMode': args.actual, 'actualAIInference': False, 'clientBoundary': 'INCOMPLETE', 'universalAcceptance': 'NOT_EVALUATED', 'result': 'FAIL', 'phases': [], 'actualAIToolCalls': []}
     runtime = app = server = None
     deadline = time.monotonic() + args.deadline_seconds
     try:
@@ -259,7 +294,7 @@ def main():
             capture_path = args.catalog_proof.parent / 'request-catalog.json'
             if proof.get('clientBoundary') != 'PASS' or proof.get('actualAIInference') is not False or proof.get('captureCatalogSHA256') != digest(capture_path):
                 raise RuntimeError('Invalid separately captured catalogue proof')
-            validate_capture(json.loads(capture_path.read_text())); result['clientBoundary'] = 'PREFLIGHT_MATCHED_ACTUAL_REQUEST_NOT_INTERCEPTED'
+            validate_capture(json.loads(capture_path.read_text()), dynamic); result['clientBoundary'] = 'PREFLIGHT_MATCHED_ACTUAL_REQUEST_NOT_INTERCEPTED'
         else:
             class Handler(http.server.BaseHTTPRequestHandler):
                 def log_message(self, *_): pass
@@ -298,9 +333,12 @@ def main():
                     if event['method'] != 'item/tool/call' or params.get('tool') not in CANONICAL or params.get('namespace') not in (None, '') or params.get('threadId') != thread_id or params.get('turnId') != turn_id or not isinstance(params.get('arguments'), dict):
                         raise RuntimeError('Unexpected model request; no extra tool or permission granted')
                     name = params['tool']; result['actualAIToolCalls'].append({'tool': name, 'arguments': params['arguments'], 'turnID': turn_id})
+                    if args.actual: result['actualAIInference'] = True
                     print(json.dumps({'observedAIToolCall': name, 'phase': phase['name']}), flush=True)
                     reply = call_runtime(name, params['arguments'])
                     app.send({'id': event['id'], 'result': {'success': not reply.get('isError', False), 'contentItems': [{'type': 'inputText', 'text': item['text']} for item in reply.get('content', []) if item.get('type') == 'text']}})
+                if args.actual and event.get('method') == 'item/agentMessage/delta' and event.get('params', {}).get('delta'):
+                    result['actualAIInference'] = True
                 if event.get('method') == 'turn/completed':
                     if event['params'].get('threadId') != thread_id or event['params'].get('turn', {}).get('id') != turn_id:
                         raise RuntimeError('Foreign turn completion')
@@ -314,10 +352,12 @@ def main():
                 if 'oracle' in phase:
                     state['hostOracle'] = host_command(out, index, 'oracle', phase['oracle'], environment, max(0, deadline - time.monotonic()))
             else:
-                result['capturedModelToolNames'] = validate_capture(captures)
+                result['capturedModelToolNames'] = validate_capture(captures, dynamic)
                 result['clientBoundary'] = 'PASS'; result['captureCatalogSHA256'] = digest(out / 'request-catalog.json')
         if digest(binary) != binary_sha or digest(client_path) != client_sha or (digest(config_path) if config_path.is_file() else 'ABSENT') != config_sha:
             raise RuntimeError('Runtime/client launcher/configuration bytes changed during run')
+        if args.actual and not result['actualAIInference']:
+            raise RuntimeError('No actual model-generated call or answer observed')
         result['result'] = 'PASS'; result['proofKind'] = 'ACTUAL_AI_CLIENT_SESSION_NOT_UNIVERSAL_ACCEPTANCE' if args.actual else 'EXACT_SEVEN_OUTGOING_CATALOGUE_CAPTURE_NO_INFERENCE'
     except Exception as error:
         result['failure'] = str(error)
