@@ -76,9 +76,8 @@ final class A2ARealLifecycleTests: XCTestCase {
         engine = nil; host = nil
     }
 
-    private func rows(_ filename: String) -> [[String: Any]] {
-        let data = (try? String(contentsOf: directory.appendingPathComponent(filename), encoding: .utf8)) ?? ""
-        return data.split(separator: "\n").map { try! JSONSerialization.jsonObject(with: Data($0.utf8)) as! [String: Any] }
+    private func rows(_ filename: String) throws -> [[String: Any]] {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent(filename))
     }
 
     private func invoke(_ value: String = "requested", confirmed: Bool = true) throws -> ExecutionRecord {
@@ -110,14 +109,14 @@ final class A2ARealLifecycleTests: XCTestCase {
         let initial = try invoke()
         XCTAssertEqual(initial.state, .started); XCTAssertEqual(initial.rcir?.phase, "accepted")
         XCTAssertEqual(initial.rcir?.outcome, "unverified"); XCTAssertNil(initial.rcir?.receipt)
-        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertTrue(try rows("effects.jsonl").isEmpty)
         let final = try finish(initial)
         XCTAssertEqual(final.state, .succeeded, final.message)
         XCTAssertTrue(final.evidence.outcomeVerified); XCTAssertEqual(final.rcir?.outcome, "succeeded")
-        XCTAssertEqual(rows("requests.jsonl").count, 1)
-        XCTAssertEqual(rows("effects.jsonl").count, 1)
-        XCTAssertEqual(rows("observations.jsonl").count, 1)
-        XCTAssertEqual(rows("observations.jsonl").first?["invocation"] as? String, initial.rcir?.taskID)
+        XCTAssertEqual(try rows("requests.jsonl").count, 1)
+        XCTAssertEqual(try rows("effects.jsonl").count, 1)
+        XCTAssertEqual(try rows("observations.jsonl").count, 1)
+        XCTAssertEqual(try rows("observations.jsonl").first?["invocation"] as? String, initial.rcir?.taskID)
         XCTAssertGreaterThanOrEqual(final.rcir?.taskEvents?.count ?? 0, 2)
         try checkSignature(final)
     }
@@ -131,14 +130,14 @@ final class A2ARealLifecycleTests: XCTestCase {
     func testCompletedWithoutIndependentEffectRemainsUnverified() throws {
         let final = try finish(invoke("missing-effect"))
         XCTAssertEqual(final.state, .accepted); XCTAssertEqual(final.rcir?.outcome, "unverified")
-        XCTAssertFalse(final.evidence.outcomeVerified); XCTAssertTrue(rows("observations.jsonl").isEmpty)
+        XCTAssertFalse(final.evidence.outcomeVerified); XCTAssertTrue(try rows("observations.jsonl").isEmpty)
         try checkSignature(final)
     }
 
     func testRemoteTaskFailureCannotBecomeSemanticSuccess() throws {
         let final = try finish(invoke("fail-task"))
         XCTAssertEqual(final.state, .failed); XCTAssertFalse(final.evidence.outcomeVerified)
-        XCTAssertTrue(rows("effects.jsonl").isEmpty); try checkSignature(final)
+        XCTAssertTrue(try rows("effects.jsonl").isEmpty); try checkSignature(final)
     }
 
     func testProviderDisappearingMidTaskIsSignedUnknownWithoutReplay() throws {
@@ -147,7 +146,7 @@ final class A2ARealLifecycleTests: XCTestCase {
         let final = engine.executionStatus(initial.executionId); results.append(final)
         XCTAssertEqual(final.state, .unknown); XCTAssertEqual(final.rcir?.outcome, "unknown")
         XCTAssertTrue(try engine.capabilities(for: "delegated proof").capabilities.isEmpty)
-        XCTAssertEqual(rows("requests.jsonl").count, 1)
+        XCTAssertEqual(try rows("requests.jsonl").count, 1)
         XCTAssertEqual(engine.executionStatus(initial.executionId).state, .unknown)
         try checkSignature(final)
     }
@@ -156,20 +155,20 @@ final class A2ARealLifecycleTests: XCTestCase {
         XCTAssertEqual(try invoke(confirmed: false).state, .awaitingUser)
         config.deniedCapabilities = [capability.id]
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(rows("requests.jsonl").isEmpty)
+        XCTAssertTrue(try rows("requests.jsonl").isEmpty)
     }
 
     func testUnpinnedIndependentObserverFailsBeforeDispatch() throws {
         config.observers![capability.id]!.trustedOrigin = nil
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(rows("requests.jsonl").isEmpty)
+        XCTAssertTrue(try rows("requests.jsonl").isEmpty)
     }
 
     func testPolicyRevocationDuringTaskCannotBeSilentlyIgnored() throws {
         let initial = try invoke()
         config.deniedCapabilities = [capability.id]
         let final = engine.executionStatus(initial.executionId); results.append(final)
-        XCTAssertEqual(final.state, .unknown); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertEqual(final.state, .unknown); XCTAssertTrue(try rows("effects.jsonl").isEmpty)
         try checkSignature(final)
     }
 
@@ -177,17 +176,17 @@ final class A2ARealLifecycleTests: XCTestCase {
         var time: Int64 = 1000; host.now = { time }
         let initial = try invoke(); time += 30_001
         let final = engine.executionStatus(initial.executionId); results.append(final)
-        XCTAssertEqual(final.state, .unknown); XCTAssertEqual(rows("requests.jsonl").count, 1)
-        XCTAssertTrue(rows("effects.jsonl").isEmpty); try checkSignature(final)
+        XCTAssertEqual(final.state, .unknown); XCTAssertEqual(try rows("requests.jsonl").count, 1)
+        XCTAssertTrue(try rows("effects.jsonl").isEmpty); try checkSignature(final)
     }
 
     func testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation() throws {
         let completed = try finish(invoke("missing-effect"))
         XCTAssertEqual(completed.state, .accepted); XCTAssertEqual(completed.rcir?.phase, "completed")
-        let attempts = rows("observation-attempts.jsonl").count
+        let attempts = try rows("observation-attempts.jsonl").count
         XCTAssertGreaterThan(attempts, 0)
         config.deniedCapabilities = [capability.id]
-        let request = try XCTUnwrap(rows("requests.jsonl").first)
+        let request = try XCTUnwrap(try rows("requests.jsonl").first)
         let challenge = try XCTUnwrap(request["challenge"] as? String)
         // Make the real postcondition appear only after revocation. The retained
         // verifier could prove it, but current policy no longer permits its read.
@@ -197,7 +196,7 @@ final class A2ARealLifecycleTests: XCTestCase {
         let final = engine.executionStatus(completed.executionId); results.append(final)
         XCTAssertEqual(final.state, .accepted); XCTAssertEqual(final.rcir?.outcome, "unverified")
         XCTAssertFalse(final.evidence.outcomeVerified)
-        XCTAssertEqual(rows("observation-attempts.jsonl").count, attempts)
+        XCTAssertEqual(try rows("observation-attempts.jsonl").count, attempts)
         try checkSignature(final)
     }
 }

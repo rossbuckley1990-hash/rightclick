@@ -89,16 +89,15 @@ final class RCIRProductionDispatchTests: XCTestCase {
             try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
             let label = name.replacingOccurrences(of: "/", with: "_")
             let observations = (try? String(contentsOf: directory.appendingPathComponent("spec-observations.jsonl"), encoding: .utf8)) ?? ""
-            let data = try JSONSerialization.data(withJSONObject: ["test": name, "effects": effectRows(), "specObservations": observations], options: [.prettyPrinted, .sortedKeys])
+            let data = try JSONSerialization.data(withJSONObject: ["test": name, "effects": try effectRows(), "specObservations": observations], options: [.prettyPrinted, .sortedKeys])
             try data.write(to: out.appendingPathComponent(label + ".json"))
         }
         if let directory { try? FileManager.default.removeItem(at: directory) }
         engine = nil; host = nil
     }
 
-    private func effectRows() -> [[String: Any]] {
-        let data = (try? String(contentsOf: directory.appendingPathComponent("effects.jsonl"), encoding: .utf8)) ?? ""
-        return data.split(separator: "\n").map { try! JSONSerialization.jsonObject(with: Data($0.utf8)) as! [String: Any] }
+    private func effectRows() throws -> [[String: Any]] {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent("effects.jsonl"))
     }
 
     @discardableResult private func invoke(_ name: String = "unique", confirmed: Bool = true) throws -> ExecutionRecord {
@@ -112,8 +111,8 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual(result.state, .accepted)
         XCTAssertEqual(result.rcir?.outcome, "unverified")
         XCTAssertEqual(result.rcir?.leaseConsumed, true)
-        XCTAssertEqual(effectRows().count, 1)
-        XCTAssertEqual(effectRows().first?["taskID"] as? String, result.rcir?.taskID)
+        XCTAssertEqual(try effectRows().count, 1)
+        XCTAssertEqual(try effectRows().first?["taskID"] as? String, result.rcir?.taskID)
         XCTAssertEqual(engine.executionStatus(result.executionId).rcir?.receipt, result.rcir?.receipt)
     }
 
@@ -160,7 +159,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
             let committed = try String(contentsOf: journalDirectory.appendingPathComponent("invocations.json"), encoding: .utf8)
             XCTAssertTrue(staged.contains(lease)); XCTAssertFalse(committed.contains(lease))
             stagedIntentSeen = staged.contains(lease)
-            XCTAssertTrue(self.effectRows().isEmpty, "The staged intent must precede the actual provider request")
+            XCTAssertTrue(try self.effectRows().isEmpty, "The staged intent must precede the actual provider request")
             // Keep the human revision identical: the complete protected-file
             // fingerprint, rather than only its revision string, must change.
             configuration.deniedCapabilities = [action.id]
@@ -172,7 +171,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertGreaterThan(postRevocationLoads, 0, "The host must read protected policy again after durable intent I/O")
         XCTAssertEqual(denied.state, .rejected, denied.message)
         XCTAssertNil(denied.rcir, "No consumed lease or receipt may be manufactured for denied dispatch")
-        XCTAssertTrue(effectRows().isEmpty, "Revocation at the journal boundary must cause zero actual HTTP effects")
+        XCTAssertTrue(try effectRows().isEmpty, "Revocation at the journal boundary must cause zero actual HTTP effects")
         XCTAssertEqual(try journal.status(denied.executionId, now: clock)?.state, .rejected)
         if let path = ProcessInfo.processInfo.environment["RCIR_DISPATCH_EVIDENCE"] {
             let output = URL(fileURLWithPath: path); try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
@@ -180,7 +179,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
                 "stagedIntentSeen": stagedIntentSeen, "boundaryCalls": boundaryCalls,
                 "postRevocationProtectedFileLoads": postRevocationLoads, "unchangedHumanPolicyRevision": true,
                 "deniedExecutionID": denied.executionId, "deniedState": denied.state.rawValue,
-                "actualHTTPMutationsAtDenial": effectRows(), "retainedJournalState": "rejected"]
+                "actualHTTPMutationsAtDenial": try effectRows(), "retainedJournalState": "rejected"]
             try JSONSerialization.data(withJSONObject: proof, options: [.prettyPrinted, .sortedKeys])
                 .write(to: output.appendingPathComponent("journal-policy-revocation-zero-effect.json"))
         }
@@ -190,8 +189,8 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let allowed = try invoke("live-positive-control")
         XCTAssertEqual(allowed.state, .accepted, allowed.message)
         XCTAssertEqual(allowed.rcir?.leaseConsumed, true); XCTAssertNotNil(allowed.rcir?.signedReceipt)
-        XCTAssertEqual(effectRows().count, 1)
-        XCTAssertEqual(effectRows().first?["taskID"] as? String, allowed.rcir?.taskID)
+        XCTAssertEqual(try effectRows().count, 1)
+        XCTAssertEqual(try effectRows().first?["taskID"] as? String, allowed.rcir?.taskID)
     }
 #endif
 
@@ -203,7 +202,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
                                     arguments: ["id": "second", "value": "requested"])
         XCTAssertEqual(second.status, .accepted, second.message)
         XCTAssertNotEqual(first.rcir?.leaseID, second.rcir?.leaseID)
-        XCTAssertEqual(effectRows().count, 2)
+        XCTAssertEqual(try effectRows().count, 2)
     }
 
     func testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration() throws {
@@ -221,32 +220,32 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual(first.state, .accepted, first.message)
         XCTAssertEqual(first.rcir?.generation, second.rcir?.generation)
         XCTAssertNotEqual(first.rcir?.leaseID, second.rcir?.leaseID)
-        XCTAssertEqual(effectRows().count, 2)
-        XCTAssertEqual(Set(effectRows().compactMap { ($0["body"] as? [String: String])?["id"] }),
+        XCTAssertEqual(try effectRows().count, 2)
+        XCTAssertEqual(Set(try effectRows().compactMap { ($0["body"] as? [String: String])?["id"] }),
                        ["independent-first", "independent-second"])
     }
 
     func testConfirmationDenialProducesZeroProviderEffects() throws {
         XCTAssertEqual(try invoke(confirmed: false).state, .awaitingUser)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testCurrentPolicyRevocationProducesZeroProviderEffects() throws {
         host.beforeConsume = { lease in self.config.deniedCapabilities = [lease.binding.contract.abi.capabilityID] }
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testExpiredLeaseProducesZeroProviderEffects() throws {
         host.beforeConsume = { lease in self.clock = lease.expiresAt }
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testNotYetValidLeaseProducesZeroProviderEffects() throws {
         host.beforeConsume = { lease in self.clock = lease.issuedAt - 1 }
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testSpentLeaseCannotDispatchAgain() throws {
@@ -260,7 +259,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
             }
         }
         XCTAssertEqual(try invoke().state, .accepted)
-        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(try effectRows().count, 1)
     }
 
     func testCompetingConsumersStartAtMostOneRealRequest() throws {
@@ -288,14 +287,14 @@ final class RCIRProductionDispatchTests: XCTestCase {
             }
         }
         XCTAssertEqual(try invoke().state, .accepted)
-        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(try effectRows().count, 1)
     }
 
     func testChangedArgumentsCannotUseOriginalLease() throws {
         host.consumptionArguments = { _ in .object(["item": .string("disposable"),
             "arguments": .object(["id": .string("changed"), "value": .string("changed")])]) }
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testChangedEndpointBeforeDispatchProducesZeroProviderEffects() throws {
@@ -304,13 +303,13 @@ final class RCIRProductionDispatchTests: XCTestCase {
                                                        baseURL: self.base.appendingPathComponent("different"))]
         }
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testRemovalBeforeDispatchProducesZeroProviderEffects() throws {
         host.beforeConsume = { _ in self.source.current = [] }
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testRemovalAtTransportAdmissionProducesZeroProviderEffects() throws {
@@ -321,7 +320,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
             }
         }
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testSameProviderReappearingCannotReviveOldGeneration() throws {
@@ -330,10 +329,10 @@ final class RCIRProductionDispatchTests: XCTestCase {
             self.source.current = [self.reflector]
         }
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
         host.beforeConsume = nil
         XCTAssertEqual(try invoke("new-incarnation").state, .accepted)
-        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(try effectRows().count, 1)
     }
 
     func testRemovalAfterDispatchPreservesUnknownWithoutRetry() throws {
@@ -346,7 +345,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let result = try invoke()
         XCTAssertEqual(result.state, .unknown)
         XCTAssertEqual(result.rcir?.outcome, "unknown")
-        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(try effectRows().count, 1)
     }
 
     func testLostResponseRetainsSignedUnknownAndDoesNotRetry() throws {
@@ -357,7 +356,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let result = try invoke("drop-response")
         XCTAssertEqual(result.state, .unknown)
         XCTAssertEqual(result.rcir?.outcome, "unknown")
-        XCTAssertEqual(effectRows().count, 1, "Lost replies must not cause another mutation")
+        XCTAssertEqual(try effectRows().count, 1, "Lost replies must not cause another mutation")
         let envelope = try XCTUnwrap(result.rcir?.signedReceipt)
         let signed = try RCIRSignedReceipt(payload: XCTUnwrap(Data(base64Encoded: envelope.payload)),
             signature: XCTUnwrap(Data(base64Encoded: envelope.signature)),
@@ -380,20 +379,20 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual(result.state, .failed)
         XCTAssertEqual(result.rcir?.outcome, "failed")
         XCTAssertEqual(result.verification?.status, .verifiedFailure)
-        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(try effectRows().count, 1)
     }
 
     func testInvalidSignerBlocksBeforeAnyEffect() throws {
         config.signingKeyFile = directory.appendingPathComponent("not-provisioned").path
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testCrossOriginObserverBlocksBeforeAnyEffect() throws {
         let capability = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
         config.observers = [capability.id: .init(urlTemplate: "http://other.invalid/records/{id}", expectedArgument: "value")]
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testObserverTraversalAndDoubleEncodingCannotDispatch() throws {
@@ -403,7 +402,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
             let record = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
                 arguments: ["id": id, "value": "requested"])
             XCTAssertEqual(record.state, .rejected)
-            XCTAssertTrue(effectRows().isEmpty)
+            XCTAssertTrue(try effectRows().isEmpty)
         }
     }
 
@@ -412,14 +411,14 @@ final class RCIRProductionDispatchTests: XCTestCase {
             self.source.current = [try OpenAPIReflector(specificationData: self.specification("2"), baseURL: self.base)]
         }
         XCTAssertEqual(try invoke().state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testMissingExactOriginAuthorityProducesZeroProviderEffects() throws {
         let secureBase = URL(string: base.absoluteString.replacingOccurrences(of: "http:", with: "https:"))!
         source.current = [try OpenAPIReflector(specificationData: specification(secure: true), baseURL: secureBase)]
         XCTAssertEqual(try invoke().state, .unavailable)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     private func acquireLiveArtifact() throws -> Capability {
@@ -438,14 +437,14 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let denied = try engine.begin(id: old.id, item: "disposable", confirmed: true,
                                       arguments: ["id": "stale", "value": "requested"])
         XCTAssertEqual(denied.state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
         let current = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
         XCTAssertNotEqual(current.id, old.id)
         let accepted = try engine.begin(id: current.id, item: "disposable", confirmed: true,
                                         arguments: ["id": "fresh", "value": "requested"])
         XCTAssertEqual(accepted.state, .accepted, accepted.message)
-        XCTAssertEqual(effectRows().count, 1)
-        XCTAssertEqual(effectRows().first?["taskID"] as? String, accepted.rcir?.taskID)
+        XCTAssertEqual(try effectRows().count, 1)
+        XCTAssertEqual(try effectRows().first?["taskID"] as? String, accepted.rcir?.taskID)
     }
 
     func testActualContractDisappearanceDeniesEffectsAndRecoversNewLease() throws {
@@ -456,13 +455,13 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let denied = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
                                       arguments: ["id": "missing-contract", "value": "requested"])
         XCTAssertEqual(denied.state, .rejected)
-        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(try effectRows().count, 1)
         try specification().write(to: directory.appendingPathComponent("spec.json"))
         let recovered = try invoke("recovered")
         XCTAssertEqual(recovered.state, .accepted, recovered.message)
         XCTAssertNotEqual(recovered.rcir?.leaseID, first.rcir?.leaseID)
         XCTAssertGreaterThan(recovered.rcir?.generation ?? 0, first.rcir?.generation ?? 0)
-        XCTAssertEqual(effectRows().count, 2)
+        XCTAssertEqual(try effectRows().count, 2)
     }
 
     func testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry() throws {
@@ -471,7 +470,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let record = try invoke()
         XCTAssertEqual(record.state, .unknown)
         XCTAssertEqual(record.rcir?.outcome, "unknown")
-        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(try effectRows().count, 1)
     }
 
     func testBoundedLargeArgumentIsNotDuplicatedIntoContract() throws {
@@ -479,8 +478,8 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let result = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
             arguments: ["id": "bounded-large", "value": String(repeating: "x", count: 80_000)])
         XCTAssertEqual(result.state, .accepted, result.message)
-        XCTAssertEqual(effectRows().count, 1)
-        XCTAssertEqual((effectRows().first?["body"] as? [String: String])?["value"]?.utf8.count, 80_000)
+        XCTAssertEqual(try effectRows().count, 1)
+        XCTAssertEqual((try effectRows().first?["body"] as? [String: String])?["value"]?.utf8.count, 80_000)
     }
 
     func testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation() throws {
@@ -515,7 +514,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let result = try engine.begin(id: capability.id, item: "disposable", confirmed: true,
             arguments: ["id": "removed-acquisition", "value": "requested"])
         XCTAssertEqual(result.state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
     }
 
     func testCredentialFreeObserverCannotInheritInvocationCookie() throws {
@@ -530,10 +529,8 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let result = try invoke("cookie-gated")
         XCTAssertEqual(result.state, .accepted, "A credential-free observer cannot verify this protected endpoint")
         XCTAssertEqual(result.rcir?.outcome, "unverified")
-        XCTAssertEqual(effectRows().count, 1)
-        let observations = try String(contentsOf: directory.appendingPathComponent("observations.jsonl"), encoding: .utf8)
-        let first = try XCTUnwrap(observations.split(separator: "\n").first)
-        let row = try JSONSerialization.jsonObject(with: Data(first.utf8)) as! [String: Any]
+        XCTAssertEqual(try effectRows().count, 1)
+        let row = try XCTUnwrap(FixtureLineFraming.objects(at: directory.appendingPathComponent("observations.jsonl")).first)
         XCTAssertEqual(row["disposableAuthCookieReceived"] as? Bool, false)
     }
 
@@ -552,12 +549,12 @@ final class RCIRProductionDispatchTests: XCTestCase {
         }
         let stale = try invoke("old-incarnation")
         XCTAssertEqual(stale.state, .rejected)
-        XCTAssertTrue(effectRows().isEmpty)
+        XCTAssertTrue(try effectRows().isEmpty)
         host.beforeConsume = nil
         let fresh = try invoke("new-incarnation")
         XCTAssertEqual(fresh.state, .accepted)
-        XCTAssertEqual(effectRows().count, 1)
-        XCTAssertEqual((effectRows().first?["body"] as? [String: String])?["id"], "new-incarnation")
+        XCTAssertEqual(try effectRows().count, 1)
+        XCTAssertEqual((try effectRows().first?["body"] as? [String: String])?["id"], "new-incarnation")
     }
 
     func testBonjourReappearanceAfterDispatchPreservesUnknown() throws {
@@ -578,6 +575,6 @@ final class RCIRProductionDispatchTests: XCTestCase {
         let result = try invoke("post-dispatch-incarnation")
         XCTAssertEqual(result.state, .unknown)
         XCTAssertEqual(result.rcir?.outcome, "unknown")
-        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(try effectRows().count, 1)
     }
 }

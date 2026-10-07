@@ -88,9 +88,8 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
         return try engine.begin(id: capability.id, item: item, confirmed: true,
             arguments: ["id": challenge, "value": value], expectedOutput: digest)
     }
-    private func effects() -> [[String: Any]] {
-        let text = (try? String(contentsOf: directory.appendingPathComponent("effects.jsonl"), encoding: .utf8)) ?? ""
-        return text.split(separator: "\n").map { try! JSONSerialization.jsonObject(with: Data($0.utf8)) as! [String: Any] }
+    private func effects() throws -> [[String: Any]] {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent("effects.jsonl"))
     }
     private func preserve(_ record: ExecutionRecord) throws {
         let envelope = try XCTUnwrap(record.rcir?.signedReceipt)
@@ -104,12 +103,12 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
         try encoder.encode(record).write(to: output.appendingPathComponent(label + "-record.json"))
         try signed.wireData().write(to: output.appendingPathComponent(label + "-receipt.json"))
         try key.publicKey.rawRepresentation.write(to: output.appendingPathComponent(label + "-trusted-key.raw"))
-        try JSONSerialization.data(withJSONObject: effects(), options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent(label + "-effects.json"))
+        try JSONSerialization.data(withJSONObject: try effects(), options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent(label + "-effects.json"))
     }
     func testNoOpAcknowledgementAndOldMatchingArtifactCannotVerifyCurrentMutation() throws {
         try configure(); try seedNoOp(marker: oldMarker)
         let record = try invoke(); try preserve(record)
-        XCTAssertEqual(effects().count, 1); XCTAssertEqual(effects().first?["mutationApplied"] as? Bool, false)
+        XCTAssertEqual(try effects().count, 1); XCTAssertEqual(try effects().first?["mutationApplied"] as? Bool, false)
         XCTAssertEqual(try String(contentsOf: directory.appendingPathComponent("records/" + challenge + ".invocation"), encoding: .utf8), oldMarker)
         XCTAssertEqual(record.state, .failed, record.message); XCTAssertEqual(record.rcir?.outcome, "failed")
         XCTAssertFalse(record.evidence.outcomeVerified)
@@ -117,22 +116,22 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
     func testFreshIndependentMarkerMatchesHostTaskAndProducesSignedSuccess() throws {
         try configure(); let record = try invoke(); try preserve(record)
         XCTAssertEqual(record.state, .succeeded, record.message); XCTAssertEqual(record.rcir?.outcome, "succeeded")
-        XCTAssertEqual(effects().first?["mutationApplied"] as? Bool, true)
-        XCTAssertEqual(effects().first?["invocationID"] as? String, record.rcir?.taskID)
+        XCTAssertEqual(try effects().first?["mutationApplied"] as? Bool, true)
+        XCTAssertEqual(try effects().first?["invocationID"] as? String, record.rcir?.taskID)
         XCTAssertEqual(try String(contentsOf: directory.appendingPathComponent("records/" + challenge + ".invocation"), encoding: .utf8), record.rcir?.taskID)
     }
     func testMissingIndependentMarkerRemainsSignedUnverified() throws {
         try configure(); try seedNoOp(marker: nil)
         let record = try invoke(); try preserve(record)
         XCTAssertEqual(record.state, .accepted); XCTAssertEqual(record.rcir?.outcome, "unverified")
-        XCTAssertEqual(effects().first?["mutationApplied"] as? Bool, false)
+        XCTAssertEqual(try effects().first?["mutationApplied"] as? Bool, false)
     }
     func testStateOnlyPredicateDoesNotClaimCurrentMutationCausality() throws {
         try configure(causal: false); try seedNoOp(marker: oldMarker)
         let record = try invoke(); try preserve(record)
         XCTAssertEqual(record.state, .succeeded); XCTAssertEqual(record.rcir?.outcome, "succeeded")
         XCTAssertTrue(record.rcir?.observationBoundary.contains("state predicate") == true)
-        XCTAssertEqual(effects().first?["mutationApplied"] as? Bool, false)
+        XCTAssertEqual(try effects().first?["mutationApplied"] as? Bool, false)
     }
     func testObserverCannotReflectProtectedCredentialIntoMetadataOrReceipt() throws {
         try configure()
@@ -144,7 +143,7 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
             let wire = try JSONEncoder().encode(record)
             let payload = Data(base64Encoded: try XCTUnwrap(record.rcir?.receipt))!
             let leaked = payload.range(of: Data(token.utf8)) != nil || wire.range(of: Data(token.utf8)) != nil
-            diagnostics.append(["encoding": mode, "secretLeaked": leaked, "outcome": record.rcir?.outcome ?? "missing", "actualRequests": effects().count])
+            diagnostics.append(["encoding": mode, "secretLeaked": leaked, "outcome": record.rcir?.outcome ?? "missing", "actualRequests": try effects().count])
             XCTAssertEqual(record.state, .accepted); XCTAssertEqual(record.rcir?.outcome, "unverified")
             XCTAssertFalse(leaked); XCTAssertNotNil(record.rcir?.signedReceipt)
         }
@@ -155,7 +154,7 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
             try JSONSerialization.data(withJSONObject: ["test": name, "encodings": diagnostics], options: [.prettyPrinted, .sortedKeys])
                 .write(to: output.appendingPathComponent("credential-reflection-diagnostic.json"))
         }
-        XCTAssertEqual(effects().count, 6)
+        XCTAssertEqual(try effects().count, 6)
     }
     func testInvalidCausalBindingPathsRejectBeforeActualMutation() throws {
         try configure()
@@ -165,7 +164,7 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
             modified.jsonObservation?.invocationBindingPath = invalid
             config.observers = [capability.id: modified]
             let record = try invoke()
-            XCTAssertEqual(record.state, .rejected); XCTAssertTrue(effects().isEmpty)
+            XCTAssertEqual(record.state, .rejected); XCTAssertTrue(try effects().isEmpty)
         }
     }
 }
