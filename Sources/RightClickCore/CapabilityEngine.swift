@@ -1035,7 +1035,7 @@ public final class CapabilityEngine {
 }
 
     public func executionStatus(_ executionId: String) -> ExecutionRecord {
-        rcirHost.status(executionId) ?? ExecutionStore.shared.get(executionId) ?? ExecutionRecord(
+        rcirHost.status(executionId) ?? ExecutionStore.shared.get(executionId) ?? rcirHost.recoveredStatus(executionId) ?? ExecutionRecord(
             executionId: executionId,
             actionId: "",
             state: .unknown,

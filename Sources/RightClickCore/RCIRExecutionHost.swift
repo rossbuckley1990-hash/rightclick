@@ -126,6 +126,7 @@ public final class RCIRExecutionHost {
     let admission = RCIRAdmission()
     private let sessionLock = NSLock()
     private var sessions: [String: RCIRDeferredSession] = [:]
+    private var journalSessions: [String: (RCIRInvocationJournal, RCIRInvocationJournal.Ticket)] = [:]
     private var reservations: Set<String> = []
     private let receiptTrustLock = NSLock()
     private var receiptTrustReference: String?
@@ -135,6 +136,7 @@ public final class RCIRExecutionHost {
     // protected/configuration callback that may take time.
     var now: () -> Int64 = { Int64(Date().timeIntervalSince1970 * 1000) }
     var configuration: () throws -> RCIRHostConfiguration = RCIRHostConfiguration.load
+    var invocationJournal: () throws -> RCIRInvocationJournal? = RCIRJournalConfiguration.load
     // Internal fault hook for native transport adversarial controls. Not exposed
     // in environment configuration, MCP schemas or release command line.
     var consumptionArguments: (CapabilityValue) -> CapabilityValue = { $0 }
@@ -181,22 +183,37 @@ public final class RCIRExecutionHost {
     /// Refresh a retained task through the existing context_run_status path.
     /// A status read never replays the original provider mutation.
     func status(_ executionID: String) -> ExecutionRecord? {
-        sessionLock.lock(); let session = sessions[executionID]; sessionLock.unlock()
+        sessionLock.lock(); let session = sessions[executionID]; let journal = journalSessions[executionID]; sessionLock.unlock()
         guard let session else { return nil }
-        let record = session.status()
+        var record = session.status()
+        if let (journal, ticket) = journal { record = session.checkpoint(journal, ticket: ticket) }
         ExecutionStore.shared.put(record)
         if session.canRelease() {
-            sessionLock.lock(); sessions.removeValue(forKey: executionID); sessionLock.unlock()
+            sessionLock.lock(); sessions.removeValue(forKey: executionID); journalSessions.removeValue(forKey: executionID); sessionLock.unlock()
         }
         return record
     }
 
+    /// Status falls back to durable identity only after live session and volatile
+    /// evidence lookup. This path never rehydrates authority or executes a task.
+    func recoveredStatus(_ executionID: String) -> ExecutionRecord? {
+        do { return try invocationJournal()?.status(executionID, now: now()) }
+        catch {
+            return ExecutionRecord(executionId: executionID, actionId: "", state: .unknown,
+                message: "Durable execution history is unavailable. The external outcome is unknown. Do not retry blindly.",
+                evidence: OutcomeEvidence(type: "rcir_journal_unavailable",
+                    boundary: "History could not be read safely; no identity, receipt or zero-effect claim is established. No work was resumed."))
+        }
+    }
+
     private func reserveSession(_ executionID: String) throws {
-        sessionLock.lock(); let snapshot = sessions; sessionLock.unlock()
+        sessionLock.lock(); let snapshot = sessions; let journals = journalSessions; sessionLock.unlock()
         for (id, session) in snapshot where session.canRelease() {
-            ExecutionStore.shared.put(session.status(refresh: false))
+            var record = session.status(refresh: false)
+            if let (journal, ticket) = journals[id] { record = session.checkpoint(journal, ticket: ticket) }
+            ExecutionStore.shared.put(record)
             sessionLock.lock()
-            if sessions[id] === session { sessions.removeValue(forKey: id) }
+            if sessions[id] === session { sessions.removeValue(forKey: id); journalSessions.removeValue(forKey: id) }
             sessionLock.unlock()
         }
         sessionLock.lock(); defer { sessionLock.unlock() }
@@ -223,11 +240,15 @@ public final class RCIRExecutionHost {
                  resultValue: (ExecutionRecord) throws -> CapabilityValue) throws -> ExecutionRecord {
         var dispatched = false
         var reserved = false
+        var journalReference: RCIRInvocationJournal?
+        var journalTicket: RCIRInvocationJournal.Ticket?
         defer {
             if reserved { sessionLock.lock(); reservations.remove(executionID); sessionLock.unlock() }
         }
         do {
             let config = try configuration()
+            let journal = try invocationJournal()
+            journalReference = journal
             let deferred = lifecycle != nil || capability.metadata["executionMode"] == "deferred"
             let timeout = lifecycle?.timeoutMilliseconds ?? 30_000
             guard timeout > 0, timeout <= 86_400_000 else { throw RCIRError.invalidTime }
@@ -320,6 +341,14 @@ public final class RCIRExecutionHost {
                             self.admission.withdraw(reflectorID: abi.reflectorID)
                             throw RCIRError.staleBinding
                         }
+                        // Disk I/O and journal callbacks finish before freezing
+                        // consumption inputs. A crash after intent is UNKNOWN.
+                        if let journal {
+                            journalTicket = try journal.reserveDispatch(
+                                RCIRInvocationJournal.Identity(executionID: executionID, task: task), now: self.now())
+                        }
+                        guard revalidate(), currentContract(), revalidate(), currentInvocationAuthority(),
+                              lease.scopes.isSubset(of: authority()) else { throw RCIRError.staleBinding }
                         // Input, authority and configuration refreshes are host
                         // callbacks that may revoke issuer policy. Finish every
                         // consumption input before the final signing check.
@@ -350,6 +379,8 @@ public final class RCIRExecutionHost {
                 record = ExecutionRecord(executionId: executionID, actionId: capability.id,
                     state: .unknown, message: "Dispatch failed after admission; the external outcome is unknown.")
             }
+            record.executionId = executionID
+            record.actionId = capability.id
             if !dispatched {
                 // A compiler/transport may return a preflight error without ever
                 // using its admitted start gate. Never manufacture consumption,
@@ -373,6 +404,7 @@ public final class RCIRExecutionHost {
                     phase: task.phase.rawValue, outcome: task.outcome.rawValue, receipt: nil, signedReceipt: nil,
                     observationBoundary: "Independent observation withheld because no admitted start was witnessed.", taskEvents: nil)
                 record.events.append("RCIR admitted generation=\(binding.generation); provider start gate was not used.")
+                if journal == nil { record.events.append(RCIRJournalConfiguration.volatileBoundary) }
                 return record
             }
             if !revalidate() || !currentContract() || !currentInvocationAuthority() {
@@ -383,6 +415,7 @@ public final class RCIRExecutionHost {
                     boundary: "Dispatch occurred, but the current provider binding is no longer available.")
                 try task.providerDisappeared(now: now())
             } else if deferred, record.state == .started || record.state == .accepted || record.state == .succeeded {
+                if journal == nil { record.events.append(RCIRJournalConfiguration.volatileBoundary) }
                 let boundary = structured?.boundary ?? observation?.boundary ?? "No host-selected independent observer; remote completion remains unverified."
                 let initialPolicy = try policy(config).revision
                 let session = try RCIRDeferredSession(task: task, record: record, lifecycle: lifecycle,
@@ -410,8 +443,11 @@ public final class RCIRExecutionHost {
                     })
                 sessionLock.lock()
                 sessions[executionID] = session; reservations.remove(executionID); reserved = false
+                if let journal, let ticket = journalTicket { journalSessions[executionID] = (journal, ticket) }
                 sessionLock.unlock()
-                return session.status(refresh: false)
+                var snapshot = session.status(refresh: false)
+                if let journal, let ticket = journalTicket { snapshot = session.checkpoint(journal, ticket: ticket) }
+                return snapshot
             } else if record.state == .accepted || record.state == .succeeded {
                 do {
                     if case .unit? = abi.result {
@@ -510,8 +546,15 @@ public final class RCIRExecutionHost {
                     : observation!.boundary), taskEvents: nil)
             record.events.append(contentsOf: ["RCIR admitted generation=\(binding.generation)",
                 "RCIR consumed lease=\(lease.id.uuidString)", "RCIR task=\(task.id.uuidString) outcome=\(task.outcome.rawValue)"])
+            if let journal, let ticket = journalTicket {
+                do { try journal.checkpoint(ticket, task: task, record: record, now: now()) }
+                catch { record.events.append(RCIRJournalConfiguration.checkpointFailure) }
+            } else { record.events.append(RCIRJournalConfiguration.volatileBoundary) }
             return record
         } catch {
+            if !dispatched, let journal = journalReference, let ticket = journalTicket {
+                try? journal.notDispatched(ticket, now: now())
+            }
             return ExecutionRecord(executionId: executionID, actionId: capability.id, title: capability.title,
                 state: dispatched ? .unknown : .rejected,
                 message: dispatched ? "RCIR bookkeeping failed after dispatch; the external outcome is unknown. Do not retry blindly." : "RCIR admission failed: \(error)",

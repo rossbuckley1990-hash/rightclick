@@ -9,6 +9,11 @@ import Crypto
 #endif
 import XCTest
 @testable import RightClickCore
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 
 /// These controls invoke CapabilityEngine run/begin and the actual HTTP transport.
 /// A separate Python process records the requests that really reached the provider.
@@ -111,6 +116,84 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual(effectRows().first?["taskID"] as? String, result.rcir?.taskID)
         XCTAssertEqual(engine.executionStatus(result.executionId).rcir?.receipt, result.rcir?.receipt)
     }
+
+#if os(macOS) || os(Linux)
+    /// Freeze the actual protected-file policy race introduced by durable I/O.
+    /// The provider is a separate HTTP process, and the positive control must
+    /// reach it. No fabricated dispatch callback or in-memory policy revocation.
+    func testJournalIntentPolicyRevocationDeniesActualHTTPBeforeEffect() throws {
+        let temporaryPath = directory.path
+        let physicalPath = try XCTUnwrap(realpath(temporaryPath, nil))
+        defer { free(physicalPath) }
+        let journalDirectory = URL(fileURLWithPath: String(cString: physicalPath))
+            .appendingPathComponent("journal", isDirectory: true)
+        try FileManager.default.createDirectory(at: journalDirectory, withIntermediateDirectories: false,
+            attributes: [.posixPermissions: 0o700])
+        let journal = try RCIRInvocationJournal(directory: journalDirectory)
+        host.invocationJournal = { journal }
+        let configurationFile = directory.appendingPathComponent("host-policy.json")
+        let signingKey = directory.appendingPathComponent("synthetic-signing-key.raw")
+        try Curve25519.Signing.PrivateKey().rawRepresentation.write(to: signingKey)
+        try NativeHTTPFixture.protect(signingKey)
+        let action = try XCTUnwrap(engine.capabilities(for: "disposable").capabilities.first)
+        var configuration = RCIRHostConfiguration()
+        configuration.revision = "journal-policy-race-1"
+        configuration.signingKeyFile = signingKey.path
+        func writeConfiguration() throws {
+            try JSONEncoder().encode(configuration).write(to: configurationFile, options: .atomic)
+            try NativeHTTPFixture.protect(configurationFile)
+        }
+        try writeConfiguration()
+        var revoked = false, postRevocationLoads = 0, boundaryCalls = 0
+        var stagedIntentSeen = false, issuedLease: String?
+        host.configuration = {
+            if revoked { postRevocationLoads += 1 }
+            return try JSONDecoder().decode(RCIRHostConfiguration.self,
+                from: RCIRHostConfiguration.protectedRead(configurationFile.path, maximum: 65_536))
+        }
+        host.beforeConsume = { issuedLease = $0.id.uuidString }
+        journal.beforeCommit = {
+            guard !revoked else { return } // The later not-dispatched checkpoint is separate.
+            boundaryCalls += 1
+            let lease = try XCTUnwrap(issuedLease)
+            let staged = try String(contentsOf: journalDirectory.appendingPathComponent("invocations.tmp"), encoding: .utf8)
+            let committed = try String(contentsOf: journalDirectory.appendingPathComponent("invocations.json"), encoding: .utf8)
+            XCTAssertTrue(staged.contains(lease)); XCTAssertFalse(committed.contains(lease))
+            stagedIntentSeen = staged.contains(lease)
+            XCTAssertTrue(self.effectRows().isEmpty, "The staged intent must precede the actual provider request")
+            // Keep the human revision identical: the complete protected-file
+            // fingerprint, rather than only its revision string, must change.
+            configuration.deniedCapabilities = [action.id]
+            try writeConfiguration()
+            revoked = true
+        }
+        let denied = try invoke("must-never-reach-http")
+        XCTAssertEqual(boundaryCalls, 1); XCTAssertTrue(stagedIntentSeen)
+        XCTAssertGreaterThan(postRevocationLoads, 0, "The host must read protected policy again after durable intent I/O")
+        XCTAssertEqual(denied.state, .rejected, denied.message)
+        XCTAssertNil(denied.rcir, "No consumed lease or receipt may be manufactured for denied dispatch")
+        XCTAssertTrue(effectRows().isEmpty, "Revocation at the journal boundary must cause zero actual HTTP effects")
+        XCTAssertEqual(try journal.status(denied.executionId, now: clock)?.state, .rejected)
+        if let path = ProcessInfo.processInfo.environment["RCIR_DISPATCH_EVIDENCE"] {
+            let output = URL(fileURLWithPath: path); try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+            let proof: [String: Any] = ["productionBaseline": "baee56aae3c24f1a55d47522fcaa5641fa3f3b00",
+                "stagedIntentSeen": stagedIntentSeen, "boundaryCalls": boundaryCalls,
+                "postRevocationProtectedFileLoads": postRevocationLoads, "unchangedHumanPolicyRevision": true,
+                "deniedExecutionID": denied.executionId, "deniedState": denied.state.rawValue,
+                "actualHTTPMutationsAtDenial": effectRows(), "retainedJournalState": "rejected"]
+            try JSONSerialization.data(withJSONObject: proof, options: [.prettyPrinted, .sortedKeys])
+                .write(to: output.appendingPathComponent("journal-policy-revocation-zero-effect.json"))
+        }
+        // The same native route really works when a fresh invocation is allowed.
+        journal.beforeCommit = nil; configuration.deniedCapabilities = []
+        try writeConfiguration()
+        let allowed = try invoke("live-positive-control")
+        XCTAssertEqual(allowed.state, .accepted, allowed.message)
+        XCTAssertEqual(allowed.rcir?.leaseConsumed, true); XCTAssertNotNil(allowed.rcir?.signedReceipt)
+        XCTAssertEqual(effectRows().count, 1)
+        XCTAssertEqual(effectRows().first?["taskID"] as? String, allowed.rcir?.taskID)
+    }
+#endif
 
     func testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints() throws {
         let first = try invoke("first")
