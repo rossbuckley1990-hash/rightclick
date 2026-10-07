@@ -1,0 +1,644 @@
+{
+  "rawPrivateArtifactSHA256": "8c510772c0397aac7a0be68313b0f116978878afa6a3b5dc70894f5dab6803d5",
+  "projection": "All runtime/init/tools/inspection/confirmation/result/status rows unchanged. Only unrelated action rows and the imprecise OUTCOME_VERIFIED prose label omitted. This proves the returned-text postcondition, not an independently observed mutable external effect.",
+  "records": [
+    {
+      "transport": "stdio",
+      "initialize": {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": {
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          },
+          "protocolVersion": "2025-03-26",
+          "serverInfo": {
+            "name": "rightclick",
+            "version": "0.2.3"
+          }
+        }
+      },
+      "tools": {
+        "id": 2,
+        "jsonrpc": "2.0",
+        "result": {
+          "tools": [
+            {
+              "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+              "inputSchema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "context_runtime"
+            },
+            {
+              "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+              "inputSchema": {
+                "properties": {
+                  "item": {
+                    "description": "File path, http(s) URL, or plain text.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "item"
+                ],
+                "type": "object"
+              },
+              "name": "context_inspect"
+            },
+            {
+              "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+              "inputSchema": {
+                "properties": {
+                  "item": {
+                    "description": "File path, http(s) URL, or plain text.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "item"
+                ],
+                "type": "object"
+              },
+              "name": "context_actions"
+            },
+            {
+              "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+              "inputSchema": {
+                "properties": {
+                  "actionId": {
+                    "description": "Capability id or exact title returned by context_actions.",
+                    "type": "string"
+                  },
+                  "item": {
+                    "description": "File path, http(s) URL, or plain text.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "item",
+                  "actionId"
+                ],
+                "type": "object"
+              },
+              "name": "context_explain"
+            },
+            {
+              "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+              "inputSchema": {
+                "properties": {
+                  "actionId": {
+                    "description": "Capability id or exact title returned by context_actions.",
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                    "type": "object"
+                  },
+                  "confirmed": {
+                    "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                    "type": "boolean"
+                  },
+                  "contractSHA256": {
+                    "description": "Optional exact declaration fingerprint returned by context_actions/context_explain. Rejects changed contracts; it grants no authority. Omission retains legacy fresh resolution without a caller-held pin.",
+                    "type": "string"
+                  },
+                  "expectedOutput": {
+                    "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                    "type": "string"
+                  },
+                  "item": {
+                    "description": "File path, http(s) URL, or plain text.",
+                    "type": "string"
+                  },
+                  "verification": {
+                    "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                    "properties": {
+                      "predicates": {
+                        "description": "Required provider-independent postconditions.",
+                        "items": {
+                          "properties": {
+                            "bytes": {
+                              "description": "Optional byte threshold.",
+                              "type": "integer"
+                            },
+                            "height": {
+                              "description": "Optional expected image height.",
+                              "type": "integer"
+                            },
+                            "key": {
+                              "description": "Optional key, for example an extended-attribute name.",
+                              "type": "string"
+                            },
+                            "reference": {
+                              "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                              "type": "string"
+                            },
+                            "type": {
+                              "description": "Provider-independent observable predicate type.",
+                              "enum": [
+                                "text_equals",
+                                "file_exists",
+                                "file_readable",
+                                "file_sha256_equals",
+                                "file_sha256_differs",
+                                "file_size_less_than",
+                                "dimensions_equal",
+                                "xattr_present",
+                                "xattr_absent",
+                                "metadata_value_present",
+                                "metadata_value_absent"
+                              ],
+                              "type": "string"
+                            },
+                            "value": {
+                              "description": "Optional expected or forbidden exact value.",
+                              "type": "string"
+                            },
+                            "width": {
+                              "description": "Optional expected image width.",
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "timeoutMilliseconds": {
+                        "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "predicates"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "item",
+                  "actionId"
+                ],
+                "type": "object"
+              },
+              "name": "context_run"
+            },
+            {
+              "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+              "inputSchema": {
+                "properties": {
+                  "executionId": {
+                    "description": "executionId returned by context_run.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "executionId"
+                ],
+                "type": "object"
+              },
+              "name": "context_run_status"
+            },
+            {
+              "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+              "inputSchema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "context_providers"
+            }
+          ]
+        }
+      },
+      "runtime": {
+        "agentABIProfiles": [
+          {
+            "id": "core",
+            "operations": [
+              "context_runtime",
+              "context_providers",
+              "context_inspect",
+              "context_actions",
+              "context_explain",
+              "context_run",
+              "context_run_status"
+            ],
+            "version": 1
+          }
+        ],
+        "executablePath": "/tmp/rightclick-final-d2-source-built-product-20261007",
+        "executableRealPath": "/tmp/rightclick-final-d2-source-built-product-20261007",
+        "executableSHA256": "4f6cfc934be6fbca548d2a6ced7c7a2b8f7e27fdc39868eeec6e0a6eef67aa39",
+        "pid": 12706,
+        "platform": "macOS",
+        "product": "RIGHTCLICK",
+        "transport": "stdio",
+        "version": "0.2.3"
+      },
+      "inspect": {
+        "byteCount": 10,
+        "display": "RightClick",
+        "isDirectory": false,
+        "kind": "text",
+        "text": "RightClick",
+        "typeDescription": "Plain text",
+        "typeIdentifier": "public.plain-text"
+      },
+      "confirmation": {
+        "actionId": "sharing:com.apple.share.AirDrop.send",
+        "events": [],
+        "evidence": {
+          "boundary": "No outcome observation.",
+          "outcomeVerified": false,
+          "type": "none"
+        },
+        "executionId": "84B64769-3055-4518-BAAD-D89018B5AF60",
+        "message": "CONFIRMATION_REQUIRED. AirDrop is external_share.",
+        "state": "awaiting_user",
+        "title": "AirDrop"
+      },
+      "fullWidth": {
+        "actionId": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+        "events": [],
+        "evidence": {
+          "boundary": "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
+          "outcomeVerified": true,
+          "type": "returned_text_postcondition"
+        },
+        "executionId": "62EC3F53-0B85-4480-81A1-BC0C6D36A721",
+        "message": "Returned text matches the explicit postcondition.",
+        "output": "ＲｉｇｈｔＣｌｉｃｋ",
+        "state": "succeeded",
+        "title": "Convert Text to Full Width"
+      },
+      "status": {
+        "actionId": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+        "events": [],
+        "evidence": {
+          "boundary": "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
+          "outcomeVerified": true,
+          "type": "returned_text_postcondition"
+        },
+        "executionId": "62EC3F53-0B85-4480-81A1-BC0C6D36A721",
+        "message": "Returned text matches the explicit postcondition.",
+        "output": "ＲｉｇｈｔＣｌｉｃｋ",
+        "state": "succeeded",
+        "title": "Convert Text to Full Width"
+      },
+      "actions": {
+        "projection": true,
+        "omittedUnrelatedActionRows": 280,
+        "actions": [
+          {
+            "contractSHA256": "bbcd8acbb008401e72f884d2f1423bf27e88c0db48a395b1a907a5da34a2c91d",
+            "explanation": "macOS Service “Convert Text to Full Width”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+            "id": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+            "inputTypes": [
+              "public.rtf",
+              "public.utf8-plain-text"
+            ],
+            "invocation": "direct",
+            "provider": {
+              "bundleIdentifier": "com.apple.ChineseTextConverterService",
+              "name": "ChineseTextConverterService"
+            },
+            "requiresConfirmation": true,
+            "safety": "unknown",
+            "source": "service",
+            "supportLevel": "public_supported",
+            "title": "Convert Text to Full Width"
+          }
+        ]
+      }
+    },
+    {
+      "transport": "authenticated HTTP",
+      "initialize": {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": {
+          "capabilities": {
+            "tools": {
+              "listChanged": false
+            }
+          },
+          "protocolVersion": "2025-03-26",
+          "serverInfo": {
+            "name": "rightclick",
+            "version": "0.2.3"
+          }
+        }
+      },
+      "tools": {
+        "id": 2,
+        "jsonrpc": "2.0",
+        "result": {
+          "tools": [
+            {
+              "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+              "inputSchema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "context_runtime"
+            },
+            {
+              "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+              "inputSchema": {
+                "properties": {
+                  "item": {
+                    "description": "File path, http(s) URL, or plain text.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "item"
+                ],
+                "type": "object"
+              },
+              "name": "context_inspect"
+            },
+            {
+              "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+              "inputSchema": {
+                "properties": {
+                  "item": {
+                    "description": "File path, http(s) URL, or plain text.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "item"
+                ],
+                "type": "object"
+              },
+              "name": "context_actions"
+            },
+            {
+              "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+              "inputSchema": {
+                "properties": {
+                  "actionId": {
+                    "description": "Capability id or exact title returned by context_actions.",
+                    "type": "string"
+                  },
+                  "item": {
+                    "description": "File path, http(s) URL, or plain text.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "item",
+                  "actionId"
+                ],
+                "type": "object"
+              },
+              "name": "context_explain"
+            },
+            {
+              "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+              "inputSchema": {
+                "properties": {
+                  "actionId": {
+                    "description": "Capability id or exact title returned by context_actions.",
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "additionalProperties": {
+                      "type": "string"
+                    },
+                    "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                    "type": "object"
+                  },
+                  "confirmed": {
+                    "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                    "type": "boolean"
+                  },
+                  "contractSHA256": {
+                    "description": "Optional exact declaration fingerprint returned by context_actions/context_explain. Rejects changed contracts; it grants no authority. Omission retains legacy fresh resolution without a caller-held pin.",
+                    "type": "string"
+                  },
+                  "expectedOutput": {
+                    "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                    "type": "string"
+                  },
+                  "item": {
+                    "description": "File path, http(s) URL, or plain text.",
+                    "type": "string"
+                  },
+                  "verification": {
+                    "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                    "properties": {
+                      "predicates": {
+                        "description": "Required provider-independent postconditions.",
+                        "items": {
+                          "properties": {
+                            "bytes": {
+                              "description": "Optional byte threshold.",
+                              "type": "integer"
+                            },
+                            "height": {
+                              "description": "Optional expected image height.",
+                              "type": "integer"
+                            },
+                            "key": {
+                              "description": "Optional key, for example an extended-attribute name.",
+                              "type": "string"
+                            },
+                            "reference": {
+                              "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                              "type": "string"
+                            },
+                            "type": {
+                              "description": "Provider-independent observable predicate type.",
+                              "enum": [
+                                "text_equals",
+                                "file_exists",
+                                "file_readable",
+                                "file_sha256_equals",
+                                "file_sha256_differs",
+                                "file_size_less_than",
+                                "dimensions_equal",
+                                "xattr_present",
+                                "xattr_absent",
+                                "metadata_value_present",
+                                "metadata_value_absent"
+                              ],
+                              "type": "string"
+                            },
+                            "value": {
+                              "description": "Optional expected or forbidden exact value.",
+                              "type": "string"
+                            },
+                            "width": {
+                              "description": "Optional expected image width.",
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "timeoutMilliseconds": {
+                        "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "predicates"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "item",
+                  "actionId"
+                ],
+                "type": "object"
+              },
+              "name": "context_run"
+            },
+            {
+              "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+              "inputSchema": {
+                "properties": {
+                  "executionId": {
+                    "description": "executionId returned by context_run.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "executionId"
+                ],
+                "type": "object"
+              },
+              "name": "context_run_status"
+            },
+            {
+              "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+              "inputSchema": {
+                "properties": {},
+                "type": "object"
+              },
+              "name": "context_providers"
+            }
+          ]
+        }
+      },
+      "runtime": {
+        "agentABIProfiles": [
+          {
+            "id": "core",
+            "operations": [
+              "context_runtime",
+              "context_providers",
+              "context_inspect",
+              "context_actions",
+              "context_explain",
+              "context_run",
+              "context_run_status"
+            ],
+            "version": 1
+          }
+        ],
+        "executablePath": "/tmp/rightclick-final-d2-source-built-product-20261007",
+        "executableRealPath": "/tmp/rightclick-final-d2-source-built-product-20261007",
+        "executableSHA256": "4f6cfc934be6fbca548d2a6ced7c7a2b8f7e27fdc39868eeec6e0a6eef67aa39",
+        "pid": 12711,
+        "platform": "macOS",
+        "product": "RIGHTCLICK",
+        "transport": "http",
+        "version": "0.2.3"
+      },
+      "inspect": {
+        "byteCount": 10,
+        "display": "RightClick",
+        "isDirectory": false,
+        "kind": "text",
+        "text": "RightClick",
+        "typeDescription": "Plain text",
+        "typeIdentifier": "public.plain-text"
+      },
+      "confirmation": {
+        "actionId": "sharing:com.apple.share.AirDrop.send",
+        "events": [],
+        "evidence": {
+          "boundary": "No outcome observation.",
+          "outcomeVerified": false,
+          "type": "none"
+        },
+        "executionId": "E9407788-9B0A-4D4C-B4BD-F04E5A668DCF",
+        "message": "CONFIRMATION_REQUIRED. AirDrop is external_share.",
+        "state": "awaiting_user",
+        "title": "AirDrop"
+      },
+      "fullWidth": {
+        "actionId": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+        "events": [],
+        "evidence": {
+          "boundary": "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
+          "outcomeVerified": true,
+          "type": "returned_text_postcondition"
+        },
+        "executionId": "77A45236-6497-40AE-98E6-E2A7427F595F",
+        "message": "Returned text matches the explicit postcondition.",
+        "output": "ＲｉｇｈｔＣｌｉｃｋ",
+        "state": "succeeded",
+        "title": "Convert Text to Full Width"
+      },
+      "status": {
+        "actionId": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+        "events": [],
+        "evidence": {
+          "boundary": "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
+          "outcomeVerified": true,
+          "type": "returned_text_postcondition"
+        },
+        "executionId": "77A45236-6497-40AE-98E6-E2A7427F595F",
+        "message": "Returned text matches the explicit postcondition.",
+        "output": "ＲｉｇｈｔＣｌｉｃｋ",
+        "state": "succeeded",
+        "title": "Convert Text to Full Width"
+      },
+      "actions": {
+        "projection": true,
+        "omittedUnrelatedActionRows": 280,
+        "actions": [
+          {
+            "contractSHA256": "bbcd8acbb008401e72f884d2f1423bf27e88c0db48a395b1a907a5da34a2c91d",
+            "explanation": "macOS Service “Convert Text to Full Width”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+            "id": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+            "inputTypes": [
+              "public.rtf",
+              "public.utf8-plain-text"
+            ],
+            "invocation": "direct",
+            "provider": {
+              "bundleIdentifier": "com.apple.ChineseTextConverterService",
+              "name": "ChineseTextConverterService"
+            },
+            "requiresConfirmation": true,
+            "safety": "unknown",
+            "source": "service",
+            "supportLevel": "public_supported",
+            "title": "Convert Text to Full Width"
+          }
+        ]
+      }
+    }
+  ],
+  "authentication": "missing and invalid token: 401",
+  "exposure": "127.0.0.1 only; no tunnel"
+}
