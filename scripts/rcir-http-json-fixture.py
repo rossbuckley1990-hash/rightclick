@@ -20,12 +20,26 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if not challenge or not all(c.isascii() and (c.isalnum() or c == "-") for c in challenge): self.send_error(400); return
         with (root / "effects.jsonl").open("a") as handle: handle.write(json.dumps({"challenge": challenge, "value": value}) + "\n")
         if value != "missing": (root / "records" / challenge).write_bytes(("different" if value == "mismatch" else value).encode())
-        response = json.dumps(body).encode(); self.send_response(200); self.send_header("Content-Type", "application/json")
+        acknowledgement = (root / "ack-response").exists()
+        response = json.dumps({"providerClaim": "effect verified", "undeclared": body} if acknowledgement else body).encode()
+        status = int((root / "ack-status").read_text()) if acknowledgement and (root / "ack-status").exists() else (202 if acknowledgement else 200)
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(response))); self.end_headers(); self.wfile.write(response)
     def do_GET(self):
         if role == "trap":
             with (root / "trap.jsonl").open("a") as handle: handle.write(json.dumps({"authorizationPresent": "Authorization" in self.headers, "cookiePresent": "Cookie" in self.headers}) + "\n")
             self.send_response(200); self.end_headers(); return
+        if role == "provider" and self.path == "/openapi.json":
+            schema = {"type": "object", "additionalProperties": False, "required": ["id", "value"], "properties": {"id": {"type": "string"}, "value": {"type": "string"}}}
+            content = {"application/json": {"schema": schema}}
+            spec = {"openapi": "3.0.3", "info": {"title": "Actual HTTP JSON fixture", "version": "1"}, "paths": {"/records": {"post": {
+                "operationId": "write", "summary": "Store dedicated HTTP observation challenge", "requestBody": {"required": True, "content": content},
+                "responses": {"200": {"description": "Stored", "content": content}}}}}}
+            if (root / "ack-response").exists():
+                spec["paths"]["/records"]["post"]["responses"] = {"202": {"description": "Effect accepted; verify file independently"}}
+            response = json.dumps(spec).encode(); self.send_response(200); self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(response))); self.end_headers(); self.wfile.write(response); return
         if role != "observer": self.send_error(403); return
         authorization = self.headers.get("Authorization", "")
         readonly = (root / "observer.token").read_text().strip()

@@ -1,0 +1,58 @@
+{
+  "components": {
+    "securitySchemes": {
+      "proofBearer": {
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "title": "RIGHTCLICK isolated Windows service",
+    "version": "1"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/proof": {
+      "post": {
+        "operationId": "hostWriteProof",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "challenge": {
+                    "pattern": "^[A-Za-z0-9_-]{8,128}$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "challenge"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Effect accepted; verify file independently"
+          }
+        },
+        "summary": "Write a harmless isolated host proof effect"
+      }
+    }
+  },
+  "security": [
+    {
+      "proofBearer": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://parks-ccd-its-josh.trycloudflare.com"
+    }
+  ]
+}
