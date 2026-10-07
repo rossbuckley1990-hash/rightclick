@@ -771,3 +771,5 @@ No assumption that transport success means the job is done.
 ---
 
 Apache-2.0
+
+[Reviewer source/candidate/runtime inventory](docs/CANDIDATE-INVENTORY.md) distinguishes implemented draft reflectors from main, installed bytes and live acceptance.
