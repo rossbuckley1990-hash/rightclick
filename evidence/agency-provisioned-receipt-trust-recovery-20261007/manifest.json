@@ -22,6 +22,9 @@
   },
   "evidenceSHA256": {
     "foundation-linux.log.gz": "1cdbbf6a2b49685722ec91bec7b67f8dea72d08ba5e730cc2b9ac81a84ca5c0c",
-    "foundation-mac.log.gz": "7c67e4597839ecc55f756ed1ea6fbafea81382755239aaaa67b59590df00173e"
-  }
+    "foundation-mac.log.gz": "7c67e4597839ecc55f756ed1ea6fbafea81382755239aaaa67b59590df00173e",
+    "native-mac48.log.gz": "d38016307fa29b5b152554e9011a68d1c30a602fafc2820b5be58f921a1366e3"
+  },
+  "nativeMacTargetedTests": 48,
+  "nativeMacScope": "Actual protected loader/parser/lifecycle plus existing Ed25519/trust/signing and bounded real A2A fixtures; production policy wiring excluded"
 }
