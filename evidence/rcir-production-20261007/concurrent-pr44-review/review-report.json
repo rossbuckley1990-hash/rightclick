@@ -1,0 +1,90 @@
+{
+  "source": "640a71f4ca8905a11111666ba959568a2ab9fb52",
+  "pr": "https://github.com/rossbuckley1990-hash/rightclick/pull/44",
+  "base": "feature/rcir-invocation-isolation-20261007@46bda19cc4b9c62ad4a6d8bbfbebb872c2e11e91",
+  "scope": "READ_ONLY_REVIEW_NOT_MERGE_NOT_ISSUER_DOWNSCOPING",
+  "unchanged_tests": {
+    "count": 11,
+    "exit": 0,
+    "log": "original-tests-exact-blobs.log"
+  },
+  "additional_signed_structure_controls": {
+    "count": 4,
+    "incorrectly_accepted": 4,
+    "report": "adversarial/results.json",
+    "kind": "NEW_RUN_DISPOSABLE_SIGNER_NO_EXTERNAL_EFFECT_CLAIM"
+  },
+  "findings": [
+    {
+      "priority": "P2",
+      "file": "scripts/verify-rcir-receipt.py",
+      "line": 159,
+      "issue": "Bound contract/discovery bytes and POLICY field structure are not validated. A freshly pinned signed malformed contract and empty policy satisfy expected success."
+    },
+    {
+      "priority": "P2",
+      "file": "scripts/verify-rcir-receipt.py",
+      "line": 135,
+      "issue": "Terminal phase/outcome is not cross-checked against event transitions. Signed cancelled-event or eventless receipt satisfies expected success."
+    }
+  ],
+  "integration_collisions": [
+    ".github/workflows/rcir-production.yml",
+    "Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift",
+    "scripts/rcir-dispatch-test-provider.py"
+  ],
+  "release_prerequisites": [
+    "Reconcile concurrent owner/base with current accepted main and preserve all current production controls",
+    "Resolve structural controls through a frozen meaningful receipt-verifier RED and exact-head CI",
+    "Package independent verifier plus minimal public fixtures deliberately; current Tests references excluded evidence directories"
+  ],
+  "gate_boundaries": [
+    "No G2 admission code changed by PR44",
+    "No production trust identity/key rotation/revocation proof",
+    "No issuer-enforced downscoping proof",
+    "No receipt-data minimisation before signing; only summary minimised",
+    "Historical signed receipt does not establish current resource state"
+  ],
+  "files": {
+    "scripts/verify-rcir-receipt.py": "5ba8ad9dadef3553a362918e84e43f04d1d4d3e3cc0fe02f8f4007caff2b750f",
+    "Tests/test_rcir_receipt_verifier.py": "9f265860576abcea95cad97bab988ce49f1d96d0325ba0a26b46bba909636cc2",
+    "adversarial_claims.py": "5a44914fb822657684bc00b803a3d9a873b931a2cac4c3011e0374baf7289a6a",
+    "adversarial/results.json": "4ca7780aa31a23578d41c09ef46a244efdfe44385e993064902af4c90d59e355",
+    "pr44.json": "59f7c990a830331f737e923a6006b0fd1dea3b607ae5eaafc27fbfc4e312fffa",
+    "pr44.diff": "ede6fa7a89ada6e27bc76121282a5b14c2e42269b71fe786a45dbd6e7c98ec90",
+    "fixture-identities.json": "edf7b117bb9c445439c44e188a29bbf1a7a68b743f27fc6dd4bae2d6149a248b",
+    "original-tests-exact-blobs.log": "6b01da60d3a2c17dd18ed9460c4a46fe90d4bd6a77d3ec1bd9a2a4b89eb997c4",
+    "original-tests-exact-blobs.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "adversarial.log": "b4d3e1eb7cb64a4d8f91235c5d781051ea36c14827c7727a15f83fd6d69b09b5",
+    "adversarial/disposable-trust-pin.raw": "315f6ee4d7895218acd2525deae76a86b6f280dbe3e316ae4468061c04d035ce"
+  },
+  "disposition": "NEEDS_RECONCILIATION",
+  "blocks_scoped_G2_PR47": false,
+  "reviewed_at_utc": "2026-10-07T13:39:39.709976+00:00",
+  "engineering_route": "Read-only GitHub CLI/API and local Git blob reads; isolated Python verifier execution; no RIGHTCLICK invocation or restricted-agent claim",
+  "workspace_unchanged": "No checkout ref, tracked source, PR, client configuration or connected service changed by review",
+  "commands": [
+    "gh pr view 44 --repo rossbuckley1990-hash/rightclick --json headRefOid,baseRefOid,statusCheckRollup,title,url,baseRefName",
+    "gh pr diff 44 --repo rossbuckley1990-hash/rightclick [raw bytes preserved in pr44.diff]",
+    "gh api repos/rossbuckley1990-hash/rightclick/contents/<path>?ref=640a71f4ca8905a11111666ba959568a2ab9fb52 [verified Git blobs and SHA256s in fixture-identities.json]",
+    "git cat-file blob e66af65d8dba8e725799e3ed871269a4d75ec40a [exact 32-byte public-key Git blob; recovered after contents API binary transport corruption]",
+    "python3 -m venv /private/tmp/rcir-pr44-review-xxi4m_el/venv",
+    "/private/tmp/rcir-pr44-review-xxi4m_el/venv/bin/python -m pip install cryptography==50.0.1",
+    "/private/tmp/rcir-pr44-review-xxi4m_el/venv/bin/python -m unittest discover -s /private/tmp/rcir-pr44-review-xxi4m_el/Tests -p test_rcir_receipt_verifier.py -v",
+    "/private/tmp/rcir-pr44-review-xxi4m_el/venv/bin/python /private/tmp/rcir-pr44-review-xxi4m_el/adversarial_claims.py [four actual calls, each wrongly accepted; script exit0 records measurements and is not an acceptance PASS]"
+  ],
+  "environment": {
+    "python": "3.14.6",
+    "cryptography": "50.0.1",
+    "platform": "arm64 macOS; dependency environment isolated under temporary review directory"
+  },
+  "setup_invalid_attempts": [
+    {
+      "path": "original-tests.log",
+      "exit": 1,
+      "classification": "SETUP_INVALID",
+      "reason": "Contents API returned 50 binary-key bytes that did not match the Git blob identity; recovered exact local 32-byte Git blob, verified every fixture blob, reran unchanged eleven tests successfully. Not a source regression."
+    }
+  ],
+  "continuation": "After scoped G2 PR47 is eligible and merged, reconcile PR44 with its owner/base; freeze four structure/transition negative controls before repair, preserve existing tests and G2 controls, refresh exact-head CI and source-archive support inputs. Real issuer/provider restricted-credential pair and production trust lifecycle remain separate missing G3 prerequisites."
+}

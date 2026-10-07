@@ -1,0 +1,103 @@
+{
+  "record": "read-only reconciliation of concurrent owner work",
+  "recordedAtUTC": "2026-10-07T13:41:00.070483+00:00",
+  "repository": "rossbuckley1990-hash/rightclick",
+  "baseSHA": "c2f3bac98ade0d5f87aeb079d4c2274c55ece561",
+  "heads": {
+    "PR45": "d8d6f585a0b890b749c892641aa43fbd52ad4a6a",
+    "PR46": "cd19b2cc7f28e1424559be9e5088f94b35a73b26",
+    "PR47": "57b5d87cc54c26c2b444fb232bb2ffa8e49b34c3"
+  },
+  "PR47ImplementationManifestSHA256": "99f223dc01bae812690959df83592de1761b699d04f5b27533dbb61b143d3be5",
+  "reviewMethod": [
+    "Read actual PR metadata and net/commit diffs",
+    "Read pinned PR47 git objects",
+    "Read exact-head CI metadata",
+    "Downloaded and inspected existing non-secret PR46 CI artifacts"
+  ],
+  "PR45": {
+    "title": "Bound discovery evidence and invalidate withdrawn provider snapshots",
+    "overlapFiles": [
+      "Sources/RightClickCore/CapabilityArtifactResolver.swift",
+      "Sources/RightClickCore/ConfiguredOpenAPISource.swift"
+    ],
+    "semanticCollision": {
+      "path": "Sources/RightClickCore/CapabilityArtifactResolver.swift",
+      "component": "ConfiguredCapabilityArtifactSource.reflectors()",
+      "PR45Change": "Replaces Date/state-lock cache check with serialized monotonic freshness.isFresh(at:clock())",
+      "PR47Change": "Bypasses artifact TTL when a compiled reflector reports requiresContractRefresh",
+      "risk": "Blindly retaining only the PR45 replacement drops the stale-contract trait bypass. After mandatory dispatch detects drift, discovery can advertise the known-stale compiler until TTL expires.",
+      "preserveRule": "Return cachedReflectors only if no reflector has requiresContractRefresh AND monotonic freshness.isFresh(at:clock()). Preserve reloadLock around acquisition/publication, and record new freshness after acquisition.",
+      "runtimeBoundary": "Mandatory currentContract checks must continue to reject stale dispatch regardless of discovery TTL. Freshness is discovery evidence, not renewed execution authority."
+    },
+    "configuredSourcePreservation": [
+      "Keep PR47 revalidateSpecification closure bound to the actual specificationLoader and configured URL.",
+      "Keep immediate stale compiler reacquisition/object-identity replacement semantics alongside PR45 bounded reload and invalidateSnapshot.",
+      "Keep malformed/unavailable acquisition fail-closed and duplicate reflector identities fail-closed."
+    ],
+    "value": "Bounded remote discovery evidence, monotonic clocks, generic source invalidation, and serialized artifact acquisition support G5 and graph lifecycle acceptance without adding substrates or AI tools.",
+    "G2Dependency": "Not identified as a missing prerequisite for PR47 current production admission/public proof. It complements source lifecycle; it does not replace or establish mandatory RCIR dispatch.",
+    "CI": {
+      "regressionsRun": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37625549727",
+      "headSHA": "d8d6f585a0b890b749c892641aa43fbd52ad4a6a",
+      "conclusion": "success",
+      "observedChecks": [
+        "production SUCCESS",
+        "test SUCCESS",
+        "macOS ARD runtime gates SUCCESS",
+        "Linux ARD portable acquisition SUCCESS"
+      ]
+    },
+    "integrationValidation": "After an isolated reviewed integration, rerun frozen existing production effect controls and public schema-freshness proof unchanged, all native regressions, PR45 lifecycle/boundary tests, and exact combined-head CI. Add a cache test with a still-fresh monotonic TTL and a marked-stale OpenAPI compiler so the old cached contract is never returned merely due to freshness."
+  },
+  "PR46": {
+    "title": "test(runtime): provision scoped real universal proof substrates",
+    "overlapFiles": [],
+    "productionSourcesChanged": false,
+    "scope": "Infrastructure readiness; no new production substrate compiler/transport/acquisition and no seven-operation proof agent.",
+    "CI": {
+      "run": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37626548671",
+      "headSHA": "cd19b2cc7f28e1424559be9e5088f94b35a73b26",
+      "conclusion": "success",
+      "jobs": [
+        "linux-kafka-kubernetes",
+        "native-windows"
+      ],
+      "artifactIDs": [
+        11484158206,
+        11484073301
+      ]
+    },
+    "observedEvidence": {
+      "Linux": "Actual uid1000 Linux service, HTTP202 and independent target effect file; bad credential401.",
+      "Kafka": "Real Redpanda Kafka-compatible broker; distinct topic-scoped SCRAM publisher and observer; matching challenge/key/payload/topic/partition0/offset0; forbidden topic rejected.",
+      "Kubernetes": "Actual TokenRequest writer and separate get-only observer. Matching UID and data plus resourceVersion522. Cluster nodes/default-namespace Forbidden, invalid authority Unauthorized, observer mutation denied.",
+      "Windows": "Actual Windows-2022Server-10.0.20348-SP0 restricted local principal rightclick-proof. HTTP202 and independent Windows effect file; administrator guard read denied; invalid authority401; provider disconnected.",
+      "teardown": "Existing Linux/Kafka/Kubernetes CI artifact reports GREEN; Windows fixture cleanup is in finally."
+    },
+    "laterGateValue": [
+      "Kubernetes TokenRequest plus its API is a genuine disposable issuer/provider option for later G3; current artifacts establish provider-side restricted permissions, not RIGHTCLICK broker wiring.",
+      "Real Linux/Windows environments and independent observer controls support later G6 host products and G8 substrate rows.",
+      "Topic and namespace scoped identities plus independent consumption/readback support later Kafka/Kubernetes transports and verification."
+    ],
+    "notEstablished": [
+      "Mandatory RCIR runtime invocation for these four substrates",
+      "RIGHTCLICK broker/authority acquisition and authenticated host-selected observer integration",
+      "Production receipt trust/key lifecycle",
+      "Linux/Windows product builds or installation",
+      "Restricted seven-operation agent and simultaneous eleven-substrate graph",
+      "Full G3, G6, G7 or G8 GREEN"
+    ],
+    "ownerBoundary": "Preserve PR46 separately. No new provisioning/verification/teardown was run in this read-only reconciliation."
+  },
+  "G0-G2Disposition": "Record both exact PR heads/checks/evidence in census and continuation. Carry PR47 G2 with its own actual source and frozen public/effect proofs; do not count PR46 infrastructure as agent acceptance. Do not merge PR45 without semantic reconciliation and refreshed combined candidate evidence.",
+  "mutations": {
+    "rootCheckoutEdits": 0,
+    "merges": 0,
+    "publishes": 0,
+    "infrastructureProvisioning": 0,
+    "capabilityInvocations": 0,
+    "credentialReads": 0,
+    "temporaryReviewFilesOnly": true
+  }
+}

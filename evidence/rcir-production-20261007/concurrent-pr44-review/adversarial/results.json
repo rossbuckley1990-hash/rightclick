@@ -1,0 +1,102 @@
+{
+  "reviewed_source": "640a71f4ca8905a11111666ba959568a2ab9fb52",
+  "proof_kind": "DISPOSABLE_SIGNED_STRUCTURE_NEGATIVES_NOT_EXTERNAL_EFFECT_PROOF",
+  "results": [
+    {
+      "case": "malformed-bound-contract",
+      "expected": "REJECT_MALFORMED_OR_INCONSISTENT",
+      "observed": "ACCEPTED",
+      "result": {
+        "signature": "VALID",
+        "algorithm": "Ed25519",
+        "trustedKeyMatched": true,
+        "payloadBytes": 1601,
+        "signedClaims": {
+          "taskID": "570537D2-00F8-4DA0-A49B-800836B87B6B",
+          "leaseID": "793B5CC1-AA47-4192-9834-79A5996FD737",
+          "providerGeneration": 1,
+          "phase": "completed",
+          "semanticOutcome": "succeeded",
+          "scopeCount": 1,
+          "effects": [
+            "execute"
+          ]
+        },
+        "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+        "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+      }
+    },
+    {
+      "case": "malformed-empty-policy",
+      "expected": "REJECT_MALFORMED_OR_INCONSISTENT",
+      "observed": "ACCEPTED",
+      "result": {
+        "signature": "VALID",
+        "algorithm": "Ed25519",
+        "trustedKeyMatched": true,
+        "payloadBytes": 5589,
+        "signedClaims": {
+          "taskID": "570537D2-00F8-4DA0-A49B-800836B87B6B",
+          "leaseID": "793B5CC1-AA47-4192-9834-79A5996FD737",
+          "providerGeneration": 1,
+          "phase": "completed",
+          "semanticOutcome": "succeeded",
+          "scopeCount": 1,
+          "effects": [
+            "execute"
+          ]
+        },
+        "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+        "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+      }
+    },
+    {
+      "case": "cancelled-event-succeeded-claim",
+      "expected": "REJECT_MALFORMED_OR_INCONSISTENT",
+      "observed": "ACCEPTED",
+      "result": {
+        "signature": "VALID",
+        "algorithm": "Ed25519",
+        "trustedKeyMatched": true,
+        "payloadBytes": 5841,
+        "signedClaims": {
+          "taskID": "570537D2-00F8-4DA0-A49B-800836B87B6B",
+          "leaseID": "793B5CC1-AA47-4192-9834-79A5996FD737",
+          "providerGeneration": 1,
+          "phase": "completed",
+          "semanticOutcome": "succeeded",
+          "scopeCount": 1,
+          "effects": [
+            "execute"
+          ]
+        },
+        "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+        "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+      }
+    },
+    {
+      "case": "succeeded-without-completion-event",
+      "expected": "REJECT_MALFORMED_OR_INCONSISTENT",
+      "observed": "ACCEPTED",
+      "result": {
+        "signature": "VALID",
+        "algorithm": "Ed25519",
+        "trustedKeyMatched": true,
+        "payloadBytes": 5748,
+        "signedClaims": {
+          "taskID": "570537D2-00F8-4DA0-A49B-800836B87B6B",
+          "leaseID": "793B5CC1-AA47-4192-9834-79A5996FD737",
+          "providerGeneration": 1,
+          "phase": "completed",
+          "semanticOutcome": "succeeded",
+          "scopeCount": 1,
+          "effects": [
+            "execute"
+          ]
+        },
+        "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+        "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+      }
+    }
+  ]
+}
