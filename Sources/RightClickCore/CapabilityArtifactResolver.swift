@@ -834,12 +834,26 @@ public final class ConfiguredCapabilityArtifactSource:
     private let registry:
         CapabilityArtifactResolverRegistry
 
+    private let refreshInterval:
+        TimeInterval
+
+    private let stateLock =
+        NSLock()
+
+    private var lastRefresh:
+        Date?
+
+    private var cachedReflectors:
+        [any CapabilityReflector] = []
+
     public init(
         descriptors:
             [CapabilityArtifactDescriptor],
         registry:
             CapabilityArtifactResolverRegistry =
-                CapabilityArtifactResolverRegistry()
+                CapabilityArtifactResolverRegistry(),
+        refreshInterval:
+            TimeInterval = 5
     ) {
         self.descriptors =
             Array(
@@ -850,6 +864,15 @@ public final class ConfiguredCapabilityArtifactSource:
 
         self.registry =
             registry
+
+        self.refreshInterval =
+            max(
+                0,
+                min(
+                    refreshInterval,
+                    300
+                )
+            )
     }
 
     public static func fromEnvironment(
@@ -891,6 +914,48 @@ public final class ConfiguredCapabilityArtifactSource:
     }
 
     public func reflectors()
+        -> [any CapabilityReflector]
+    {
+        stateLock.lock()
+
+        if
+            let lastRefresh,
+            refreshInterval > 0,
+            Date()
+                .timeIntervalSince(
+                    lastRefresh
+                ) < refreshInterval
+        {
+            let snapshot =
+                cachedReflectors
+
+            stateLock.unlock()
+
+            return snapshot
+        }
+
+        stateLock.unlock()
+
+        let next =
+            resolvedSnapshot()
+
+        stateLock.lock()
+
+        cachedReflectors =
+            next
+
+        lastRefresh =
+            Date()
+
+        let snapshot =
+            cachedReflectors
+
+        stateLock.unlock()
+
+        return snapshot
+    }
+
+    private func resolvedSnapshot()
         -> [any CapabilityReflector]
     {
         var next:
