@@ -19,6 +19,16 @@ qualified export identity, actual WIT digest, and component/tools/runtime hashes
 remain committed by the existing capability and invocation contracts. There is
 no additional admission ledger, policy engine, task engine, observer, or signer.
 
+`context_explain` includes the existing acquired declaration as bounded
+`CapabilityValue` tagged JSON, an encoding label, and guidance for the selected
+Core argument encoding. Included WIT definitions preserve nested field names
+and native width names such as s32, u32 and u8. This uses the acquired contract;
+it exposes no host authority, credentials, or invocation request body. A
+declaration exceeding the existing wire budget rejects acquisition rather than
+silently omitting its disclosure. The separate frozen explanation control reads
+the acquired graph and uses it to construct typed arguments; its baseline at
+`7f82de2a78570c3de510552df5eb89b2688d524d` fails at the missing disclosure label.
+
 Wasmtime components exchange WAVE values, which differ from JSON. The finite
 schema-directed conversion preserves exact UTF-8 strings, including NUL and
 Unicode escapes; checks integer bounds, bool identity, closed record fields and

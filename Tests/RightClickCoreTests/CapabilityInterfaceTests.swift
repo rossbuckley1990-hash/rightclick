@@ -185,6 +185,42 @@ final class CapabilityInterfaceTests: XCTestCase {
             target: URL(string: "http://127.0.0.1:19143/mcp")!, substrate: "test", descriptorDigest: "proof",
             operations: [operation, operation], available: { true }, invoke: { _, _, _ in .null }))
     }
+    func testAcquiredDeclarationAndSelectedArgumentEncodingAreReadableWithoutCanonicalByteDecoding() throws {
+        let declaration = CapabilityValue.object(["fields": .array([
+            .object(["name": .string("enabled"), "type": .string("bool")]),
+            .object(["name": .string("offset"), "type": .string("s32")])])])
+        let operation = CapabilityInterfaceOperation(name: "typed", title: "Typed",
+            arguments: .object(properties: ["request": .object(properties: ["enabled": .boolean,
+                "offset": .integerRange(minimum: -2147483648, maximum: 2147483647)], required: ["enabled", "offset"])], required: ["request"]),
+            result: .unit, declaration: declaration)
+        for encoding: CapabilityCoreArgumentEncoding in [.literalStrings, .taggedNonStrings] {
+            let reflector = try CapabilityInterfaceReflector(id: "readable", provider: "controlled",
+                target: URL(string: "http://127.0.0.1:19143/interface")!, substrate: "test", descriptorDigest: "acquired",
+                operations: [operation], argumentEncoding: encoding, available: { true }, invoke: { _, _, _ in .null })
+            let metadata = try reflector.capabilities(for: ContentParser.parse("typed"))[0].metadata
+            XCTAssertEqual(metadata["interfaceDeclarationEncoding"], "CapabilityValue tagged JSON")
+            let wire = Data(try XCTUnwrap(metadata["interfaceDeclaration"]).utf8)
+            XCTAssertEqual(try CapabilityValue.decodeWire(wire).canonicalData(), try declaration.canonicalData())
+            XCTAssertEqual(metadata["coreArgumentEncoding"], encoding.rawValue)
+            let guidance = try XCTUnwrap(metadata["coreArgumentEncodingGuidance"])
+            if encoding == .taggedNonStrings {
+                XCTAssertTrue(guidance.contains(#"["integer","-7"]"#))
+                XCTAssertTrue(guidance.contains(#"["object",[["field",value],...]]"#))
+                XCTAssertTrue(guidance.contains("JSON string"))
+            } else { XCTAssertTrue(guidance.contains("literal string")) }
+        }
+    }
+    func testOversizedWireDeclarationRejectsAcquisitionInsteadOfOmittingDisclosure() throws {
+        // Canonical bytes fit, but JSON escaping exceeds the existing wire limit.
+        let declaration = CapabilityValue.string(String(repeating: "\u{0}", count: 200_000))
+        XCTAssertNoThrow(try declaration.canonicalData())
+        XCTAssertThrowsError(try declaration.wireData())
+        let operation = CapabilityInterfaceOperation(name: "oversized", title: "Oversized",
+            arguments: .object(properties: [:], required: []), result: .unit, declaration: declaration)
+        XCTAssertThrowsError(try CapabilityInterfaceReflector(id: "oversized", provider: "controlled",
+            target: URL(string: "http://127.0.0.1:19143/interface")!, substrate: "test", descriptorDigest: "acquired",
+            operations: [operation], available: { true }, invoke: { _, _, _ in .null }))
+    }
     func testRealWASMComponentWhenProvisioned() throws {
         let environment = ProcessInfo.processInfo.environment
         guard let path = environment["RIGHTCLICK_TEST_WASM_COMPONENT"],

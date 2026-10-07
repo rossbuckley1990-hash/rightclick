@@ -52,6 +52,8 @@ jobs:
             --component "$RUNNER_TEMP/fingerprint.component.wasm" --runtime "$RIGHTCLICK_WASM_RUNTIME" --tools "$RIGHTCLICK_WASM_TOOLS"
           "$RUNNER_TEMP/mcp-venv/bin/python" scripts/acceptance-wit-typed.py .build/debug/rightclick "$RUNNER_TEMP/typed-record.component.wasm" evidence/interface-ci/typed-wit \
             --runtime "$RIGHTCLICK_WASM_RUNTIME" --tools "$RIGHTCLICK_WASM_TOOLS" --source-sha "$(git rev-parse HEAD)" --receipt-verifier scripts/verify-rcir-receipt.py
+          "$RUNNER_TEMP/mcp-venv/bin/python" scripts/acceptance-wit-explain.py .build/debug/rightclick "$RUNNER_TEMP/typed-record.component.wasm" evidence/interface-ci/wit-explain \
+            --runtime "$RIGHTCLICK_WASM_RUNTIME" --tools "$RIGHTCLICK_WASM_TOOLS" --source-sha "$(git rev-parse HEAD)"
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: always()
         with:
