@@ -297,11 +297,23 @@ enum OriginPinnedHTTP {
         try boundedLoad(request.url!, maximumBytes: maximumBytes, template: .shared, initialRequest: request)
     }
 
+    /// Bounded shared invocation edge. Admission consumes authority atomically
+    /// with enqueue; response collection and waiting happen after its lock.
+    static func loadInvocation(_ request: URLRequest, maximumBytes: Int,
+                               admitStart: (_ enqueue: () -> Void) throws -> Void) throws -> Data {
+        guard let url = request.url else { throw RCIRError.invalidContract }
+        return try withoutActuallyEscaping(admitStart) { start in
+            try boundedLoad(url, maximumBytes: maximumBytes, template: .shared,
+                            initialRequest: request, admitStart: start)
+        }
+    }
+
     private static func boundedLoad(
         _ url: URL,
         maximumBytes: Int,
         template: URLSession,
-        initialRequest: URLRequest? = nil
+        initialRequest: URLRequest? = nil,
+        admitStart: ((_ enqueue: () -> Void) throws -> Void)? = nil
     ) throws -> Data {
         precondition(
             maximumBytes > 0
@@ -348,7 +360,8 @@ enum OriginPinnedHTTP {
                 with: request
             )
 
-        task.resume()
+        if let admitStart { try admitStart { task.resume() } }
+        else { task.resume() }
 
         let deadlineMilliseconds =
             Int(
