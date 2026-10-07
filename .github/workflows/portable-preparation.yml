@@ -1,0 +1,100 @@
+name: Portable candidate preparation
+on:
+  push:
+    branches: [feature/portable-runtime-001]
+    paths: [.github/workflows/portable-preparation.yml]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    if: github.repository == 'rossbuckley1990-hash/rightclick' && github.ref == 'refs/heads/feature/portable-runtime-001'
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+      - name: Apply pinned candidate repairs only
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          git switch -c feature/portable-runtime-001
+          python3 - <<'PYCODE'
+          import pathlib, subprocess, tempfile, shutil, hashlib, json, re
+          R=pathlib.Path.cwd()
+          assert subprocess.check_output(['git','branch','--show-current'],text=True).strip()=='feature/portable-runtime-001'
+          def edit(name, old, new):
+           p=R/name;s=p.read_text();assert s.count(old)==1,(name,old[:60],s.count(old));p.write_text(s.replace(old,new))
+          sha='a0ae212ebf6eab5f754c3129608bc5557637e605'
+          u=pathlib.Path(tempfile.mkdtemp())/'sdk'
+          subprocess.run(['git','clone','-q','--depth=1','--branch','0.12.1','https://github.com/modelcontextprotocol/swift-sdk.git',str(u)],check=True)
+          assert subprocess.check_output(['git','-C',str(u),'rev-parse','HEAD'],text=True).strip()==sha
+          v=R/'Vendor/swift-sdk';assert not v.exists();v.mkdir(parents=True)
+          for name in ['Sources','Tests']:shutil.copytree(u/name,v/name)
+          shutil.copyfile(u/'LICENSE',v/'LICENSE')
+          (v/'Package.swift').write_bytes((u/'Package@swift-6.0.swift').read_bytes())
+          f=v/'Sources/MCP/Base/Transports/HTTPClientTransport.swift';s=f.read_text();assert s.count('#if !os(Linux)')==2
+          f.write_text(s.replace('#if !os(Linux)','#if canImport(EventSource)'))
+          rows={str(p.relative_to(v)):{'upstream':hashlib.sha256((u/p.relative_to(v)).read_bytes()).hexdigest(),'patched':hashlib.sha256(p.read_bytes()).hexdigest()} for p in (v/'Sources').rglob('*') if p.is_file()}
+          (v/'UPSTREAM.json').write_text(json.dumps({'revision':sha,'tag':'0.12.1','manifest_sha256':hashlib.sha256((v/'Package.swift').read_bytes()).hexdigest(),'changes':'Two EventSource availability guards only; all other production source unchanged.','files':rows},indent=2)+'\n')
+          (v/'README.rightclick.md').write_text('Pinned upstream MCP Swift SDK 0.12.1. Original tests and LICENSE retained. The only production change is two EventSource availability guards in HTTPClientTransport.swift, replacing !os(Linux) with canImport(EventSource). Original/patched hashes are in UPSTREAM.json. Same sources on all hosts. Remove this snapshot when a validated upstream release supports Windows. Do not evolve a separate protocol implementation.\n')
+          edit('Package.swift','.package(url: "https://github.com/modelcontextprotocol/swift-sdk.git", exact: "0.12.1")','.package(path: "Vendor/swift-sdk")')
+          edit('Package.swift','"MOAT004G1AcquisitionTests.swift", "MOAT004G2SplitOriginTests.swift",','"MOAT004G1AcquisitionTests.swift",')
+          for name,method in [('MOAT004G3ZeroArgumentGETTests','testFrozenGitHubAuthenticatedUserStillDoesNotReflectUntilG4'),('MOAT004G4JSONSyntaxFallbackTests','testFrozenGitHubUserReflectsForFirstTimeButHasNoExternalAuthorityYet')]:
+           p=R/'Tests/RightClickCoreTests'/(name+'.swift');s=p.read_text();a=s.index('    func '+method+'(');b=s.index('\n    }',a)+6;p.write_text(s[:a]+'#if os(macOS)\n'+s[a:b]+'\n#endif'+s[b:])
+          edit('Sources/RightClickMCP/Server.swift','RightClickMCPRuntime.makeEngine(isolated: args.contains("--isolated"))','args.contains("--isolated") ? RightClickMCPRuntime.makeEngine(isolated: true) : RightClickMCPRuntime.makeEngine()')
+          edit('Sources/RightClickCLI/ProviderConfigurationCLI.swift','import Foundation\n','import Foundation\n#if os(Windows)\nimport ucrt\n#endif\n')
+          edit('scripts/package-source.py','KEEP_DIRS = {','KEEP_DIRS = {"Vendor", ')
+          p=R/'scripts/acceptance-portable.py';s=p.read_text();s=s.replace('import http.client','import http.client\nimport hashlib')
+          s=s.replace("assert config['command'] == str(binary)","assert os.path.samefile(config['command'], binary)")
+          s=s.replace("assert len(runtime['executableSHA256']) == 64","assert runtime['executableSHA256'] == hashlib.sha256(binary.read_bytes()).hexdigest()\n            assert os.path.samefile(runtime['executableRealPath'], binary)");p.write_text(s)
+          p=R/'Sources/RightClickMCP/HTTPListener.swift';s=p.read_text()
+          s=s.replace('    private func handle(_ connection: NWConnection) async {\n        do {','    private func handle(_ connection: NWConnection) async {\n        let deadline = DispatchWorkItem { [weak connection] in connection?.cancel() }\n        DispatchQueue.global().asyncAfter(deadline: .now() + 60, execute: deadline)\n        defer { deadline.cancel() }\n        do {',1)
+          s=s.replace('        let headerText = String(data: headerData, encoding: .utf8) ?? ""','        guard headerData.count <= 16_384, let headerText = String(data: headerData, encoding: .utf8) else { throw RightClickListenerError("Invalid or excessive headers.") }',1)
+          a=s.index('        var headers: [String: String] = [:]');b=s.index('        // Validate framing',a)
+          s=s[:a]+'''        guard lines.count <= 65 else { throw RightClickListenerError("Too many HTTP headers.") }
+                  var headers: [String: String] = [:]
+                  let singleton = Set(["content-length", "authorization", "content-type", "host", "transfer-encoding"])
+                  for line in lines.dropFirst() {
+                      guard let colon = line.firstIndex(of: ":") else { throw RightClickListenerError("Malformed HTTP header.") }
+                      let name = String(line[..<colon])
+                      guard !name.isEmpty, name.utf8.allSatisfy({
+                          (48...57).contains($0) || (65...90).contains($0) || (97...122).contains($0) ||
+                          "!#$%&'*+-.^_`|~".utf8.contains($0)
+                      }) else { throw RightClickListenerError("Invalid HTTP header name.") }
+                      let key = name.lowercased()
+                      let value = String(line[line.index(after: colon)...]).trimmingCharacters(in: .whitespaces)
+                      guard !singleton.contains(key) || headers[key] == nil else { throw RightClickListenerError("Ambiguous duplicate HTTP header.") }
+                      headers[key] = headers[key].map { $0 + ", " + value } ?? value
+                  }
+          '''+s[b:]
+          s=s.replace('        guard body.count >= length else { throw RightClickListenerError("Incomplete request body.") }\n        if body.count > length {\n            body = body.prefix(length)\n        }','        guard body.count == length else { throw RightClickListenerError("Incomplete or excessive request body.") }',1);p.write_text(s)
+          found=[]
+          for p in (R/'Tests').rglob('*.swift'):
+           s=p.read_text()
+           if all(x in s for x in ['ServiceCatalog.perform','SharingCatalog.begin','MacOSActionExtensionReflector']):found.append({'file':str(p.relative_to(R)),'source':s[:14000]})
+          (R/'evidence/portable-runtime-001/ci-preparation.json').write_text(json.dumps({'scope':'Preparation only; subsequent runtime tests authoritative.','sdk':sha,'architecture_assertion_sources':found},indent=2)+'\n')
+          (R/'scripts/verify-mcp-snapshot.py').write_text('''import pathlib,json,hashlib
+          v=pathlib.Path(__file__).resolve().parents[1]/'Vendor/swift-sdk'
+          m=json.loads((v/'UPSTREAM.json').read_text());changed=[]
+          assert m['revision']=='a0ae212ebf6eab5f754c3129608bc5557637e605'
+          assert {str(p.relative_to(v)) for p in (v/'Sources').rglob('*') if p.is_file()}==set(m['files'])
+          for name,r in m['files'].items():
+           b=(v/name).read_bytes();assert hashlib.sha256(b).hexdigest()==r['patched'],name
+           if r['upstream']!=r['patched']:
+            changed.append(name);assert b.count(b'#if canImport(EventSource)')==2
+            assert hashlib.sha256(b.replace(b'#if canImport(EventSource)',b'#if !os(Linux)')).hexdigest()==r['upstream']
+          assert changed==['Sources/MCP/Base/Transports/HTTPClientTransport.swift']
+          assert hashlib.sha256((v/'Package.swift').read_bytes()).hexdigest()==m['manifest_sha256']
+          print('PASS: pinned SDK source; only two availability guards differ')
+          ''')
+          subprocess.run(['python3','scripts/verify-mcp-snapshot.py'],check=True)
+          subprocess.run(['swift','package','resolve'],check=True,timeout=180)
+          PYCODE
+          git add Vendor Package.swift Package.resolved Sources Tests scripts evidence/portable-runtime-001/ci-preparation.json
+          git -c user.name='RIGHTCLICK CI preparation' -c user.email='rightclick@users.noreply.github.com' commit -m 'fix(portable): pin SDK compatibility and preserve strict host boundaries'
+          git push origin HEAD:refs/heads/feature/portable-runtime-001
