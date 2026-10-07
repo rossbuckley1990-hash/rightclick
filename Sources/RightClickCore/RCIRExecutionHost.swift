@@ -102,11 +102,12 @@ public final class RCIRExecutionHost {
         }
     }
 
-    func execute(abi: CapabilityContract, arguments: CapabilityValue,
+    func execute(abi: CapabilityContract, discovery: CapabilityContract, arguments: CapabilityValue,
                  scope: RCIRScope, capability: Capability, executionID: String,
                  argumentStrings: CapabilityArguments?, item: ContentItem,
                  verification: VerificationSpec?, expectedOutput: String?, target: URL,
                  authority: @escaping () -> Set<RCIRScope>, revalidate: @escaping () -> Bool,
+                 currentContract: @escaping () -> Bool,
                  dispatch: (String, (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord,
                  resultValue: (ExecutionRecord) throws -> CapabilityValue) throws -> ExecutionRecord {
         var dispatched = false
@@ -132,7 +133,7 @@ public final class RCIRExecutionHost {
             } else { combinedObserverContract = observerContract }
             let contract = RCIRContract(abi: abi, scopes: [scope], verification: combinedObserverContract)
             let principal = "local-owner:" + abi.reflectorID
-            let binding = try admission.publish(contract, authenticatedPrincipal: principal)
+            let binding = try admission.publishInvocation(contract, discovery: discovery, authenticatedPrincipal: principal)
             func policy(_ config: RCIRHostConfiguration) throws -> RCIRPolicy {
                 let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
                 let encoded = try encoder.encode(config)
@@ -160,7 +161,10 @@ public final class RCIRExecutionHost {
                         // Refresh at the transport boundary too: transport setup
                         // may outlive the earlier graph check. Refresh outside
                         // the admission lock because it can withdraw bindings.
-                        guard revalidate() else { throw RCIRError.staleBinding }
+                        guard revalidate(), currentContract(), revalidate() else {
+                            self.admission.withdraw(reflectorID: abi.reflectorID)
+                            throw RCIRError.staleBinding
+                        }
                         try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments), authority: authority(),
                             policy: policy(self.configuration()), now: self.now()) {
                             dispatched = true
@@ -176,7 +180,8 @@ public final class RCIRExecutionHost {
                 record = ExecutionRecord(executionId: executionID, actionId: capability.id,
                     state: .unknown, message: "Dispatch failed after admission; the external outcome is unknown.")
             }
-            if !revalidate() {
+            if !revalidate() || !currentContract() {
+                admission.withdraw(reflectorID: abi.reflectorID)
                 record.state = .unknown
                 record.message = "Provider disappeared or changed after dispatch; the external outcome is unknown. Do not retry blindly."
                 record.evidence = OutcomeEvidence(type: "rcir_provider_disappeared",
@@ -266,9 +271,12 @@ public final class RCIRExecutionHost {
         var template = observer.urlTemplate
         // Only path segments can be substituted. Disallow path/query/origin
         // injection, traversal, and unresolved placeholders.
+        let segmentCharacters = CharacterSet(charactersIn:
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
         for (key, value) in arguments ?? [:] where template.contains("{" + key + "}") {
             guard !value.isEmpty, value != ".", value != "..",
-                  let encoded = value.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else { throw RCIRError.invalidContract }
+                  value.unicodeScalars.allSatisfy({ segmentCharacters.contains($0) }),
+                  let encoded = value.addingPercentEncoding(withAllowedCharacters: segmentCharacters) else { throw RCIRError.invalidContract }
             template = template.replacingOccurrences(of: "{" + key + "}", with: encoded)
         }
         guard !template.contains("{"), !template.contains("}"),
