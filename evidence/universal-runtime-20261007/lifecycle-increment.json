@@ -1,0 +1,43 @@
+{
+  "id": "DISCOVERY-LIFECYCLE-001",
+  "substrate": "REST/OpenAPI configured discovery",
+  "genericDeficiency": "Configuration equality retained acquisition evidence indefinitely; artifact cache used wall clock and could publish concurrent loads out of order.",
+  "reusablePrimitive": "CapabilitySnapshotFreshness + source.invalidateSnapshot + serialized acquisition/publication",
+  "providerSpecificLayer": "No new provider or protocol-specific engine branch",
+  "red": {
+    "baseCommit": "1f2219eafb4514b08c6364cb0ec3bb8bf105cf80",
+    "tests": 2,
+    "failingAssertions": 7,
+    "log": "real-acquisition-lifecycle-red.log",
+    "requestLog": "real-provider-red.jsonl"
+  },
+  "green": {
+    "tests": 2,
+    "failingAssertions": 0,
+    "unchangedTestsSHA256": "78818f8df5bec2365599c9702dd65b4821ef3b5bbba13bad6f60c40159a4a752",
+    "log": "real-acquisition-lifecycle-green.log",
+    "requestLog": "real-provider-green.jsonl"
+  },
+  "regressions": {
+    "tests": 496,
+    "skipped": 26,
+    "failures": 0,
+    "log": "lifecycle-full-native.log"
+  },
+  "publicABI": {
+    "toolCountBefore": 7,
+    "toolCountAfter": 7,
+    "providerSpecificToolsAdded": 0,
+    "evidence": "mcp-debug/results.json"
+  },
+  "otherSubstratesBenefit": [
+    "GraphQL and gRPC use the shared artifact source",
+    "Future resolver kinds inherit the same cache/invalidation contract"
+  ],
+  "limits": [
+    "Core liveness test injects loopback acquisition loader; not final restricted-agent experiment",
+    "A reachable descriptor is not proof of a separate execution target being live",
+    "No signed universal acceptance or eleven-substrate completion claimed"
+  ],
+  "timestamp": "2026-10-07T12:47:30.219389+00:00"
+}

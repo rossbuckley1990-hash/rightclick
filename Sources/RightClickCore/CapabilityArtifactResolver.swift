@@ -828,14 +828,11 @@ public final class ConfiguredCapabilityArtifactSource:
     private let registry:
         CapabilityArtifactResolverRegistry
 
-    private let refreshInterval:
-        TimeInterval
-
-    private let stateLock =
+    private let reloadLock =
         NSLock()
 
-    private var lastRefresh:
-        Date?
+    private let clock: () -> TimeInterval
+    private var freshness: CapabilitySnapshotFreshness
 
     private var cachedReflectors:
         [any CapabilityReflector] = []
@@ -847,7 +844,8 @@ public final class ConfiguredCapabilityArtifactSource:
             CapabilityArtifactResolverRegistry =
                 CapabilityArtifactResolverRegistry(),
         refreshInterval:
-            TimeInterval = 5
+            TimeInterval = 5,
+        clock: @escaping () -> TimeInterval = { ProcessInfo.processInfo.systemUptime }
     ) {
         self.descriptors =
             Array(
@@ -859,14 +857,8 @@ public final class ConfiguredCapabilityArtifactSource:
         self.registry =
             registry
 
-        self.refreshInterval =
-            max(
-                0,
-                min(
-                    refreshInterval,
-                    300
-                )
-            )
+        self.clock = clock
+        self.freshness = CapabilitySnapshotFreshness(lifetime: refreshInterval)
     }
 
     public static func fromEnvironment(
@@ -910,43 +902,29 @@ public final class ConfiguredCapabilityArtifactSource:
     public func reflectors()
         -> [any CapabilityReflector]
     {
-        stateLock.lock()
-
-        if
-            let lastRefresh,
-            refreshInterval > 0,
-            Date()
-                .timeIntervalSince(
-                    lastRefresh
-                ) < refreshInterval
-        {
-            let snapshot =
-                cachedReflectors
-
-            stateLock.unlock()
-
-            return snapshot
+        // Serialize acquisition and publication. An older concurrent load may
+        // never overwrite a newer graph, including a withdrawal or invalidate.
+        reloadLock.lock()
+        defer { reloadLock.unlock() }
+        if freshness.isFresh(at: clock()) {
+            return cachedReflectors
         }
-
-        stateLock.unlock()
 
         let next =
             resolvedSnapshot()
 
-        stateLock.lock()
-
         cachedReflectors =
             next
 
-        lastRefresh =
-            Date()
+        freshness.recordAcquisition(at: clock())
+        return cachedReflectors
+    }
 
-        let snapshot =
-            cachedReflectors
-
-        stateLock.unlock()
-
-        return snapshot
+    public func invalidateSnapshot() {
+        reloadLock.lock()
+        defer { reloadLock.unlock() }
+        freshness.invalidate()
+        cachedReflectors.removeAll()
     }
 
     private func resolvedSnapshot()
