@@ -13,7 +13,7 @@ jobs:
   alien-relay:
     name: Remote Ubuntu adaptive multimodal round-trip proof
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Check out experiment branch
@@ -26,53 +26,48 @@ jobs:
           python3 -m venv alien-venv
           alien-venv/bin/python -m pip install --disable-pip-version-check --no-input gradio pillow huggingface_hub >gradio-install.log 2>&1
 
-      - name: Reproduce verified Generation 6 from immutable workflow
+      - name: Observer regressions and compilation (fail closed)
         shell: bash
         run: |
-          set -e
-          python3 - <<'PY'
-          import base64, re, urllib.request
-          url = "https://raw.githubusercontent.com/rossbuckley1990-hash/rightclick/5c8916745e04aa9e0e5a1ee9361a3ed7ac5b3a9c/.github/workflows/alien-relay.yml"
-          text = urllib.request.urlopen(url, timeout=30).read().decode("utf-8")
-          match = re.search(r"echo '([^']+)' \| base64 -d > generation6\.py", text)
-          if not match:
-              raise SystemExit("immutable Generation 6 payload not found")
-          open("generation6.py", "wb").write(base64.b64decode(match.group(1)))
-          PY
-          alien-venv/bin/python generation6.py
+          set -euo pipefail
+          mkdir -p alien-proof
+          python3 -m py_compile experiments/alien-relay/observer.py experiments/alien-relay/generation6.py experiments/alien-relay/generation7_extension.py
+          python3 -m unittest discover -v -s experiments/alien-relay/tests -p 'test_*.py' 2>&1 | tee alien-proof/observer-tests.log
 
-      - name: Adapt failed Generation 7 observer and retry
+      - name: Run checked-in immutable Generation 6
         shell: bash
         run: |
-          set -e
-          cp experiments/alien-relay/generation7_extension.py generation7_retry.py
+          set -euo pipefail
+          alien-venv/bin/python -m pip freeze >alien-proof/pip-freeze.txt
+          alien-venv/bin/python experiments/alien-relay/generation6.py
+
+      - name: Execute clean bounded Generation 7 (no source rewrite)
+        shell: bash
+        run: |
+          set -euo pipefail
+          alien-venv/bin/python experiments/alien-relay/generation7_extension.py
+
+      - name: Hash remote evidence for independent readback
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p alien-proof
           python3 - <<'PY'
           from pathlib import Path
-          p = Path("generation7_retry.py")
-          s = p.read_text()
-
-          old1 = 'asr_spaces,asr_err=discover(api,["automatic speech recognition","speech to text","audio transcription"],20)'
-          new1 = 'asr_spaces,asr_err=discover(api,["speech to text","audio transcription","automatic speech recognition","whisper"],30)'
-          old2 = 'asr_matches,asr_inspect=contracts(asr_spaces,"asr",20,6)'
-          new2 = 'asr_matches,asr_inspect=contracts(asr_spaces,"asr",90,8)'
-          old3 = '        if code==0 and ss: asr_selected=c; transcript=clean(ss[0]); break'
-          new3 = '''        if code==0 and ss:
-            caption_words=set(re.findall(r"[a-z0-9]+", caption.lower()))
-            def semantic_score(candidate_text):
-                cleaned=clean(candidate_text)
-                candidate_words=set(re.findall(r"[a-z0-9]+", cleaned.lower()))
-                return (len(candidate_words & caption_words), -abs(len(cleaned)-len(caption)))
-            asr_selected=c
-            transcript=clean(max(ss,key=semantic_score))
-            break'''
-
-          for old in (old1, old2, old3):
-              if old not in s:
-                  raise SystemExit("expected Generation 7 adaptation anchor not found")
-          s = s.replace(old1, new1).replace(old2, new2).replace(old3, new3)
-          p.write_text(s)
+          import hashlib, json, os, time
+          root = Path("alien-proof")
+          files = sorted(p for p in root.rglob("*") if p.is_file() and p.name != "sha256-manifest.json")
+          digest = {str(p.relative_to(root)): {"sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"bytes":p.stat().st_size} for p in files}
+          (root/"sha256-manifest.json").write_text(json.dumps({
+              "schema":"rightclick.alien-evidence/v1",
+              "observed_utc":time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime()),
+              "run_id":os.getenv("GITHUB_RUN_ID"),
+              "commit_sha":os.getenv("GITHUB_SHA"),
+              "runner_os":os.getenv("RUNNER_OS"),
+              "files":digest
+          },indent=2,sort_keys=True))
           PY
-          alien-venv/bin/python generation7_retry.py
 
       - name: Upload proof artifact
         if: always()
