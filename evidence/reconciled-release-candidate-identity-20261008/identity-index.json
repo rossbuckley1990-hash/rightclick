@@ -14,7 +14,7 @@
     "deterministicRepeat": "PASS",
     "closedBytesAndModes": "PASS",
     "localKindAlignment": "PASS:21 kinds; inventory comparison only",
-    "freshBuildAndRuntimeAcceptance": "PENDING: do not reuse old binary identity as this physical-head proof"
+    "freshBuildAndRuntimeAcceptance": "GREEN_SCOPED_FRESH_MAC_AND_PROVIDER: exact F984 extraction/build and measured stdio/authenticated HTTP controls; final-head CI/install still pending"
   },
   "packageChangesFromFrozenD2": [
     "Sources/RightClickARDProbe/main.swift",
@@ -88,12 +88,26 @@
     "scope": "Prior source/binary/CI claims remain valid only for their recorded identities. Prior ledger description of D2 as current final archive is superseded by this index. The historical 64-minute Windows observation is superseded by the exact39b deadline and active diagnostic identity above."
   },
   "remainingGates": [
-    "Fresh reconciled extracted-source build and actual runtime/catalogue acceptance",
     "Final exact physical-head native macOS/Linux/Windows CI and real provider transport acceptance",
     "Accepted immutable source/runtime publication",
     "Attested tested new bottle and public tap alignment",
     "Fresh installed and connected runtime requires new PID plus version0.2.3 plus known executable SHA together",
     "Inherited runtime symlink provenance RED remains original-goal follow-up",
     "Complete eleven-substrate restricted-agent/authority/task/stream/delegation acceptance remains RED"
-  ]
+  ],
+  "freshSourceMacProvider": {
+    "evidence": "fresh-source-mac-provider-20261008",
+    "manifestSHA256": "77b844e7c140ca4ea8b4e93adf73a4029694a6b61bc08175cf0b02574ca0352d",
+    "archiveSHA256": "f98408da81bd45ebcd526fcf9eb4995d4bd2bc471b1c58254792970e1befd054",
+    "sourcesTree": "3f122015907d3b30d8442d5380e9803eb617876e",
+    "releaseBuildSeconds": 121.74,
+    "runtimeSHA256": "997ec8741c69d6ddd60486251edf040362af5711573553704e09cf4cd050ec5c",
+    "helperSHA256": "4fe16d2284dc426123c207004d78bcddb10d30b49e0b846d086f5d9295473ba8",
+    "runtimeVersion": "0.2.3",
+    "compiledProductsAndModuleCache": "New; only dependency source checkouts/repositories/workspace pins reused",
+    "nativeMacControls": "PASS: exact7 catalogue;5 actual operation types; native full-width returned text, confirmation/status/framing/401 through stdio and authenticated loopback HTTP",
+    "portableProviderControls": "PASS: all7 actual operation types on both transports; owned HTTP dispatch, zero-effect confirmation/argument denials, accepted/unverified result and retained RCIR status",
+    "independentReview": "Stream verifier checked8 payload hashes/sizes, selected values against private original, script identities, archive/source/binary/helper/build linkage and privacy; no blocker",
+    "scope": "Fresh local packaged-source Mac/provider controls only. No final-head CI, released/installed bytes, Windows, all11, issuer or independent external-truth advancement. Historical build-audit acceptance-pending sentence is superseded by selected-controls and README."
+  }
 }
