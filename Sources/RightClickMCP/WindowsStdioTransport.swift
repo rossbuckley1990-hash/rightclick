@@ -1,5 +1,6 @@
 #if os(Windows)
 import Foundation
+import Dispatch
 import Logging
 import MCP
 
@@ -11,6 +12,7 @@ actor WindowsStdioTransport: Transport {
     private let output = FileHandle.standardOutput
     private let stream: AsyncThrowingStream<Data, Error>
     private let continuation: AsyncThrowingStream<Data, Error>.Continuation
+    private let readerQueue = DispatchQueue(label: "rightclick.stdio.windows.reader")
     private var connected = false
     init() {
         let pair = AsyncThrowingStream<Data, Error>.makeStream()
@@ -20,7 +22,7 @@ actor WindowsStdioTransport: Transport {
         guard !connected else { return }
         connected = true
         let input = self.input; let continuation = self.continuation
-        Thread.detachNewThread {
+        readerQueue.async {
             var pending = Data()
             do {
                 while let data = try input.read(upToCount: 65_536), !data.isEmpty {
