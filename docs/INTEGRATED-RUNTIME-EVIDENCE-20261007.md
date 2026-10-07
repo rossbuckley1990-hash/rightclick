@@ -19,6 +19,12 @@ actual-package interface and retention gates passed 14 and 10 tests respectively
 Python receipt decoder passed 18 tests using cryptography 50.0.1. No skipped test
 establishes substrate acceptance.
 
+A subsequent combined Mac regression at source
+`b744be12a097471c1f2c3cfff27e3177b3dcb15e`, including the numeric/process changes
+and conditional MCP server import, passed 755 tests with 26 existing skips and
+zero failures. Its raw log is retained. This precedes the newly integrated
+signing-authority repair and does not establish that later source's final gate.
+
 The pinned executable completed actual seven-operation engineering transcripts
 for OpenAPI, A2A, Kafka, Kubernetes, MCP and WASM. Outcomes were independently
 checked, provisioned public keys pinned, policy/confirmation denial exercised,
@@ -38,6 +44,17 @@ Native CI for exact portable source `1c1940c08733630837d470e574ff77a964d2a79a`
 has a Linux success. Windows progressed past the shared JSON type failure, then
 failed at another unconditional CoreFoundation import in the MCP server. Native
 Windows protected-reference controls and real native discovery remain RED.
+The next Windows evidence probe failed in Swift JIT before runtime tests, and
+Linux source attestation hit checkout ownership validation. Both raw failures are
+retained; the probe now uses a normally compiled executable and source attestation
+trust is scoped to one exact-workspace Git invocation. Neither repair establishes
+a native runtime GREEN before the next CI run finishes.
+
+The combined candidate now also includes the reviewed signing-withdrawal and
+proof-lab expiry/cleanup repairs documented in
+`AGENCY-SIGNING-SECURITY-20261007.md`. Their meaningful original REDs and scoped
+agent GREENs are preserved separately. Current-key revalidation and honest
+unsigned terminal outcomes do not establish managed production issuer trust.
 
 Internal delegated HTTP fixtures prove represented child-subset, atomic budgets,
 revocation and independently decoded receipt ancestry. They do not prove an

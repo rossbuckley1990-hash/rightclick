@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/scripts/acceptance-kafka.py", line 76, in <module>
+    assert result['state']=='succeeded' and result['evidence']['outcomeVerified'] and result['rcir']['outcome']=='succeeded',result
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'actionId': 'kafka:controlled-kafka:publish.rightclick.proof', 'events': [], 'evidence': {'boundary': 'No outcome observation.', 'outcomeVerified': False, 'type': 'none'}, 'executionId': 'EAE71FBF-5FC4-4F38-A798-29F730D562D9', 'message': 'No discovered capability matches kafka:controlled-kafka:publish.rightclick.proof for this item.', 'state': 'unavailable'}
