@@ -10,7 +10,8 @@ final class WITComponentContractTests: XCTestCase {
             "exports": ["typed": ["function": function]]]], "interfaces": [], "types": types, "packages": []])
     }
     private func operation(parameters: [[String: Any]] = [], result: Any? = "u32", types: [[String: Any]] = []) throws -> WITComponentOperation {
-        try XCTUnwrap(WITComponentContract.operations(document(parameters: parameters, result: result, types: types)).first)
+        let compiled = try WITComponentContract.operations(document(parameters: parameters, result: result, types: types))
+        return try XCTUnwrap(compiled.first)
     }
 
     func testExactWITIntegerWidthsRejectUnrepresentableDeclarationsAndWrongValues() throws {
