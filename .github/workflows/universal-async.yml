@@ -7,6 +7,7 @@ on:
 
 jobs:
   a2a-real-lifecycle:
+    if: github.ref != 'refs/heads/feature/fixture-startup-diagnostic-20261007'
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4

@@ -5,6 +5,8 @@ slow-start stack stays in a separate owner-only temporary directory on POSIX;
 Windows retains bounded bytes in memory without claiming private-file ACL proof.
 """
 import faulthandler
+import ast
+import functools
 import hashlib
 import json
 import os
@@ -14,6 +16,7 @@ import runpy
 import stat
 import subprocess
 import sys
+import sysconfig
 import tempfile
 import threading
 import time
@@ -21,6 +24,44 @@ import time
 MAX_STDERR = 65_536
 MAX_CHILDREN = 16
 MAX_STARTUP_SECONDS = 10
+MAX_PUBLIC_FRAMES = 32
+PUBLIC_EXCEPTION_TYPES = {"ImportError", "ModuleNotFoundError", "OSError", "PermissionError",
+    "FileNotFoundError", "ValueError", "RuntimeError", "SyntaxError", "TimeoutError",
+    "TypeError", "NameError", "AttributeError", "SystemExit"}
+
+@functools.lru_cache(maxsize=64)
+def _standard_library_functions(source):
+    try:
+        if source.stat().st_size > 2_097_152:
+            return set()
+        return {node.name for node in ast.walk(ast.parse(source.read_text(encoding="utf-8")))
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))}
+    except (OSError, UnicodeError, SyntaxError):
+        return set()
+
+def sanitized_stack(prefix):
+    """Only known stdlib stack locations and exception classes, never messages."""
+    standard_library = pathlib.Path(sysconfig.get_path("stdlib")).resolve()
+    frames, exception_types = [], []
+    for line in bytes(prefix).decode("utf-8", errors="replace").splitlines():
+        match = re.fullmatch(r'\s*File "([^"\r\n]{1,1024})", line ([0-9]{1,7})(?:,)? in ([A-Za-z_][A-Za-z0-9_]{0,63})', line)
+        if match and len(frames) < MAX_PUBLIC_FRAMES:
+            source = pathlib.Path(match[1])
+            try:
+                relative = source.resolve().relative_to(standard_library)
+            except (OSError, ValueError):
+                continue
+            # Site packages and arbitrary provider/fixture filenames never
+            # enter public diagnostics. Python module basenames are bounded.
+            if "site-packages" in relative.parts or "dist-packages" in relative.parts:
+                continue
+            if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]{0,63}\.py", source.name) and match[3] in _standard_library_functions(source.resolve()):
+                frames.append({"moduleFile": source.name, "line": int(match[2]), "function": match[3]})
+        exception = re.fullmatch(r"([A-Za-z_][A-Za-z0-9_]{0,63})(?::.*)?", line)
+        if exception and exception[1] in PUBLIC_EXCEPTION_TYPES and exception[1] not in exception_types:
+            exception_types.append(exception[1])
+    return {"standardLibraryFrames": frames, "exceptionTypes": exception_types,
+        "frameLimit": MAX_PUBLIC_FRAMES, "scope": "Observed child stderr metadata; no messages, arguments, source lines or full paths."}
 
 class FixtureStartupError(RuntimeError):
     def __init__(self, label, reason):
@@ -63,6 +104,7 @@ class _Child:
                 "stderrSHA256": self.stderr_digest.hexdigest(),
                 "stderrRetainedBytes": len(self.stderr_prefix),
                 "stderrTruncated": self.stderr_bytes > MAX_STDERR,
+                "sanitizedStack": sanitized_stack(self.stderr_prefix),
                 "privateRawStderrPersisted": self.private_file is not None and self.private_file.exists()}
 
     def close(self):

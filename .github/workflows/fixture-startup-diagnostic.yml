@@ -1,0 +1,38 @@
+name: Isolated A2A startup diagnostic
+on:
+  push:
+    branches: [feature/fixture-startup-diagnostic-20261007]
+permissions:
+  contents: read
+jobs:
+  actual-macos-startup:
+    runs-on: macos-26
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Observe default interpreter with original fixture sources
+        continue-on-error: true
+        run: |
+          git rev-parse HEAD > diagnostic-source.txt
+          python3 scripts/diagnose-a2a-fixture-startup.py evidence/startup-diagnostic/default-python
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Observe explicit interpreter with original fixture sources
+        continue-on-error: true
+        run: python scripts/diagnose-a2a-fixture-startup.py evidence/startup-diagnostic/python-312
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: bounded-a2a-startup-diagnostic
+          path: |
+            diagnostic-source.txt
+            evidence/startup-diagnostic
+      - name: Require actual startup readiness for both interpreters
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          reports = [json.loads(p.read_text()) for p in pathlib.Path('evidence/startup-diagnostic').glob('*/report.json')]
+          assert len(reports) == 2
+          assert all(r['status'] == 'FIXTURE_STARTUP_GREEN' for r in reports), 'Original fixture startup remains RED; retained sanitized diagnostics identify the observed boundary.'
+          PY
