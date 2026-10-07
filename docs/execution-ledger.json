@@ -45,7 +45,7 @@
       "native_tests": "NOT_RUN",
       "live_runtime": "NOT_RUN",
       "restricted_agent": "NOT_RUN",
-      "review": "IN_PROGRESS",
+      "review": "PASS",
       "merge": "NOT_RUN",
       "artifact_build": "NOT_RUN",
       "artifact_publish": "NOT_RUN",
@@ -58,8 +58,8 @@
       "native_tests": "PASS",
       "live_runtime": "NOT_RUN",
       "restricted_agent": "NOT_RUN",
-      "review": "IN_PROGRESS",
-      "merge": "NOT_RUN",
+      "review": "PASS",
+      "merge": "PASS",
       "artifact_build": "NOT_RUN",
       "artifact_publish": "NOT_RUN",
       "fresh_install": "NOT_RUN",
@@ -71,7 +71,7 @@
       "native_tests": "PASS",
       "live_runtime": "PASS",
       "restricted_agent": "NOT_RUN",
-      "review": "IN_PROGRESS",
+      "review": "PASS_SCOPED_LOCAL; EXACT_HEAD_CI_PENDING",
       "merge": "NOT_RUN",
       "artifact_build": "PASS",
       "artifact_publish": "NOT_RUN",
@@ -488,13 +488,13 @@
       "exitCode": 0,
       "testsOrItems": 587,
       "skips": 26,
-      "evidenceOrBoundary": "review-final-native.log and review-final-native-effects/:29 real HTTP controls; all frozen controls preserved"
+      "evidenceOrBoundary": "review-final-native.log.gz and review-final-native-effects/:29 real HTTP controls; all frozen controls preserved"
     },
     {
       "name": "review-final-release-build",
       "command": "scripts/build-cli.sh",
       "exitCode": 0,
-      "evidenceOrBoundary": "review-final-release-build.log; source/build scripts frozen in manifest"
+      "evidenceOrBoundary": "review-final-release-build.log.gz; source/build scripts frozen in manifest"
     },
     {
       "name": "review-native-red",
@@ -509,6 +509,42 @@
       "testsOrItems": 2,
       "failures": 6,
       "evidenceOrBoundary": "bonjour-incarnation-final-red.log: reappearance without discovery, before/after dispatch"
+    },
+    {
+      "name": "review-final-public-debug",
+      "command": "python3 scripts/acceptance-rcir-openapi.py /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/debug/rightclick ...",
+      "exitCode": 0,
+      "testsOrItems": 7,
+      "skips": 0,
+      "binarySHA256": "3b78480c4699756701ab126828eff684f73dddf356752feda1b882c0d67b5fce",
+      "evidence": "evidence/rcir-production-20261007/review-final-public-debug/results.json"
+    },
+    {
+      "name": "review-final-public-release",
+      "command": "python3 scripts/acceptance-rcir-openapi.py /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/release/rightclick ...",
+      "exitCode": 0,
+      "testsOrItems": 7,
+      "skips": 0,
+      "binarySHA256": "529d7f849f4b4e733b75d8a83614f7fcff9889b78bd51f877f1514d95fa08692",
+      "evidence": "evidence/rcir-production-20261007/review-final-public-release/results.json"
+    },
+    {
+      "name": "review-final-freshness-debug",
+      "command": "python3 scripts/acceptance-rcir-openapi-freshness.py /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/debug/rightclick ...",
+      "exitCode": 0,
+      "testsOrItems": 10,
+      "skips": 0,
+      "binarySHA256": "3b78480c4699756701ab126828eff684f73dddf356752feda1b882c0d67b5fce",
+      "evidence": "evidence/rcir-production-20261007/review-final-freshness-debug/results.json"
+    },
+    {
+      "name": "review-final-freshness-release",
+      "command": "python3 scripts/acceptance-rcir-openapi-freshness.py /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/release/rightclick ...",
+      "exitCode": 0,
+      "testsOrItems": 10,
+      "skips": 0,
+      "binarySHA256": "529d7f849f4b4e733b75d8a83614f7fcff9889b78bd51f877f1514d95fa08692",
+      "evidence": "evidence/rcir-production-20261007/review-final-freshness-release/results.json"
     }
   ],
   "remoteCI": {
@@ -558,5 +594,28 @@
     "mergedInto": "feature/rcir-openapi-production-20261007",
     "mainContainsSource": false,
     "boundary": "Preserved with normal merge; combined source needs fresh native/live/CI checks. Original frozen assertions retained."
+  },
+  "reviews": [
+    {
+      "role": "security subagent",
+      "source": "3320d2fbf3fad75e337622da72f8d2dbec6acb65",
+      "disposition": "No remaining blocking narrow G2 finding after reproduced acquisition/cookie/reincarnation fixes; exact-head CI still required",
+      "evidence": "review-bonjour-green/,review-observer-cookie-green/,review-final-native.log.gz"
+    },
+    {
+      "role": "evidence subagent",
+      "source": "30e83ca0adee753cfbb54ea9b26336c66ef8e9c9",
+      "disposition": "Earlier combined effects/transcripts/eight signatures/frozen scripts independently checked; final new-head CI and review-source distinctions retained"
+    },
+    {
+      "role": "release subagent",
+      "source": "3320d2fbf3fad75e337622da72f8d2dbec6acb65",
+      "disposition": "Two exact-source packages byte-identical; missing provider fixed; extracted native tests IN_PROGRESS",
+      "archiveSHA256": "1a400bdc3421a3e164e398dcacb4d1f7ce4d5ce0c599d3ad61e6ae66acb76f3f"
+    }
+  ],
+  "freshEngineeringConnection": {
+    "evidence": "evidence/rcir-production-20261007/fresh-engineering-mcp-report.json",
+    "boundary": "No connector callable after plugin change; pinned existing installed binary used through actual read-only stdio MCP. No new client configuration, effectful invocation or candidate acceptance."
   }
 }
