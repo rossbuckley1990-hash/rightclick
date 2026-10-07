@@ -116,6 +116,22 @@ final class WITComponentContractTests: XCTestCase {
         XCTAssertThrowsError(try WITComponentContract.operations(JSONSerialization.data(withJSONObject: object)))
     }
 
+    func testQualifiedInterfaceVersionAndResolvedTypeCommitmentsAreExact() throws {
+        let function: [String: Any] = ["name": "typed", "kind": "freestanding",
+            "params": [["name": "value", "type": 0]], "result": "u32"]
+        let type: [String: Any] = ["name": "small", "kind": ["type": "s16"], "owner": ["interface": 0]]
+        let document: [String: Any] = ["worlds": [["name": "root", "imports": [:],
+            "exports": ["interface-0": ["interface": ["id": 0]]]]],
+            "interfaces": [["name": "api", "package": 0, "types": ["small": 0], "functions": ["typed": function]]],
+            "types": [type], "packages": [["name": "proof:typed@0.1.0"]]]
+        let op = try XCTUnwrap(WITComponentContract.operations(JSONSerialization.data(withJSONObject: document)).first)
+        XCTAssertEqual(op.name, "proof:typed/api.typed@0.1.0")
+        XCTAssertEqual(try op.invocation(.object(["value": .integer(-32768)])), "proof:typed/api.typed@0.1.0(-32768)")
+        XCTAssertThrowsError(try op.invocation(.object(["value": .integer(-32769)])))
+        let declaration = String(decoding: try op.declaration.wireData(), as: UTF8.self)
+        XCTAssertTrue(declaration.contains("s16")); XCTAssertTrue(declaration.contains("proof:typed/api.typed@0.1.0"))
+    }
+
     func testActualTypedComponentWhenProvisioned() throws {
         let environment = ProcessInfo.processInfo.environment
         guard let path = environment["RIGHTCLICK_TEST_WIT_TYPED_COMPONENT"], environment["RIGHTCLICK_WASM_TOOLS"] != nil,
