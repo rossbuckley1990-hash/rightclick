@@ -49,6 +49,37 @@ authority, policy, execution, applicable async/stream lifecycle, independent
 verification and receipt evidence. Historical proofs and these incremental tests
 are supporting evidence, not replacement acceptance runs.
 
+## Current main and candidate are separate evidence boundaries
+
+The audit of `main` is accurate: Mac application capabilities, REST/OpenAPI,
+GraphQL, gRPC and RIGHTCLICK federation have generic paths. Windows, a full Linux
+runtime, A2A, Kafka, Kubernetes and WASM are not direct substrate reflectors in
+audited main `0ed7d3a61ba63a36474085ec2b6f141be1b9ee3d`.
+
+The implementation candidate adds A2A task delegation, acquired MCP/component
+interfaces, Kafka records and Kubernetes ConfigMaps through common contract,
+admission, process, lifecycle and observation boundaries. Provider layers supply
+actual cards, interfaces, topic/resource declarations and wire transport. They do
+not add provider-specific AI operations or engine dispatch branches. Individual
+candidate evidence is documented in `UNIVERSAL-DESCRIPTOR-EVIDENCE.md`,
+`KAFKA-OBSERVATION-EVIDENCE.md` and `UNIVERSAL-ASYNC-PRESSURE.md`. These documents
+state the actual boundary and remaining REDs.
+
+Windows and Linux host effects pressure-test the existing OpenAPI path and a new
+shared authenticated JSON observation contract. An actual TLS Windows declaration
+exposed another RED: the required challenge declares a bounded ASCII pattern that
+the closed string importer rejects, so discovery omits the operation. The
+unchanged live declaration, native readiness and missing capability are retained
+in `evidence/universal-execution-20261007/windows-declared-pattern-red/`.
+The provider declaration must remain unchanged while reusable bounded constraint
+support is implemented and tested.
+
+The strict fresh-agent catalogue is also an explicit gate. A successful MCP
+`tools/list` with seven entries does not establish that the AI has only those
+tools: engineering probes found additional client built-ins. No final restricted
+AI success is claimed until its actual model-visible catalogue contains precisely
+the canonical seven and the same live session completes all eleven substrates.
+
 ## DISCOVERY-LIFECYCLE-001: RED → GREEN
 
 - **Exposing substrate:** configured REST/OpenAPI discovery. A real disposable
