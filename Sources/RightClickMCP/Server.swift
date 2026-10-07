@@ -159,6 +159,7 @@ final class StdioMCPServer {
     func run() {
         let engine = self.engine
         let stop = StopFlag()
+        let completion = DispatchSemaphore(value: 0)
         Task.detached {
             do {
                 try await Self.serve(engine)
@@ -166,11 +167,18 @@ final class StdioMCPServer {
                 fputs("MCP server failed: \(error)\n", stderr)
             }
             stop.stop = true
+            completion.signal()
+#if os(macOS)
             CFRunLoopStop(CFRunLoopGetMain())
+#endif
         }
+#if os(macOS)
         while !stop.stop {
             RunLoop.main.run(mode: .default, before: Date().addingTimeInterval(0.2))
         }
+#else
+        completion.wait()
+#endif
     }
 
     private static func serve(_ engine: EngineBox) async throws {
@@ -186,7 +194,7 @@ final class StdioMCPServer {
         )
         let transport = ModernMCPStdioTransport()
         try await server.start(transport: transport)
-        try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
+        await server.waitUntilCompleted()
     }
 }
 
@@ -206,7 +214,9 @@ final class HTTPMCPServer {
         let port = self.port
         let token = self.token
         let ready = DispatchSemaphore(value: 0)
+        let completion = DispatchSemaphore(value: 0)
         Task.detached {
+            defer { completion.signal() }
             do {
                 try await Self.serve(engine: engine, port: port, token: token, ready: ready)
             } catch {
@@ -214,7 +224,11 @@ final class HTTPMCPServer {
                 ready.signal()
             }
         }
+#if os(macOS)
         RunLoop.main.run()
+#else
+        completion.wait()
+#endif
     }
 
     private static func serve(engine: EngineBox, port: UInt16, token: String, ready: DispatchSemaphore) async throws {

@@ -97,8 +97,9 @@ struct CLI {
             return RightClickServe.run(rest)
 #else
         case "setup":
-            print(RightClickJSON.encode(["mcpServers": ["rightclick": [
-                "command": RightClickRuntime.executablePath(), "args": ["mcp"] as Any]]]))
+            struct Registration: Encodable { let command: String; let args: [String] }
+            print(RightClickJSON.encode(["mcpServers": ["rightclick": Registration(
+                command: RightClickRuntime.executablePath(), args: ["mcp"])]]))
             return 0
         case "bridge", "auth", "serve":
             fputs("This command requires the macOS bridge adapter. Use rightclick mcp or rightclick mcp --http --token <token>.\n", stderr)

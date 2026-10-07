@@ -31,7 +31,9 @@ RIGHTCLICK distinguishes provider acceptance from verified outcome
 
 > **Universal by reflection, not by a growing pile of provider-specific AI tools.**
 
-Apple Silicon · macOS 14+ · MCP · Homebrew · Apache-2.0
+Shared runtime · macOS / Linux / Windows targets · MCP · Apache-2.0
+
+The published Homebrew release is currently macOS-only. See [portable runtime build instructions and adapter limits](docs/PORTABILITY.md) for the shared implementation and its release gates.
 
 ---
 

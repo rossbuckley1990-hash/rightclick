@@ -2,6 +2,10 @@ import Foundation
 import Logging
 import MCP
 
+#if !os(Windows)
+// The SDK's POSIX adapter already handles partial reads and nonblocking writes.
+typealias PortableStdioTransport = StdioTransport
+#else
 /// Newline-framed MCP on native file handles, including Windows anonymous pipes.
 /// A dedicated reader avoids blocking Swift's cooperative executor.
 actor PortableStdioTransport: Transport {
@@ -28,7 +32,7 @@ actor PortableStdioTransport: Transport {
         DispatchQueue(label: "rightclick.stdio.read").async {
             do {
                 var pending = Data()
-                while let chunk = try input.read(upToCount: 4096), !chunk.isEmpty {
+                while let chunk = try input.read(upToCount: 1), !chunk.isEmpty {
                     pending.append(chunk)
                     while let newline = pending.firstIndex(of: 10) {
                         guard newline - pending.startIndex <= 2_000_000 else {
@@ -64,3 +68,5 @@ actor PortableStdioTransport: Transport {
         try output.write(contentsOf: frame)
     }
 }
+
+#endif

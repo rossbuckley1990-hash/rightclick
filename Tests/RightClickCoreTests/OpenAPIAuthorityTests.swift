@@ -2,7 +2,9 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+#if canImport(Security)
 import Security
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -209,6 +211,8 @@ final class OpenAPIAuthorityTests:
     private func deleteBearerToken(
         account: String
     ) {
+#if canImport(Security)
+
         let query:
             [String: Any] = [
                 kSecClass as String:
@@ -224,7 +228,11 @@ final class OpenAPIAuthorityTests:
         SecItemDelete(
             query as CFDictionary
         )
-    }
+
+#else
+
+#endif
+}
 
     private func deleteBearerToken(
         origin: String,
@@ -246,6 +254,8 @@ final class OpenAPIAuthorityTests:
         origin: String,
         schemeName: String
     ) throws {
+#if canImport(Security)
+
         let account =
             authorityAccount(
                 origin:
@@ -301,7 +311,11 @@ final class OpenAPIAuthorityTests:
         keychainAccounts.append(
             account
         )
-    }
+
+#else
+        throw XCTSkip("Native Keychain credential tests require macOS")
+#endif
+}
 
     private func specification(
         securitySchemes:
