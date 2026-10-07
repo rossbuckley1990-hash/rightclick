@@ -1,0 +1,95 @@
+{
+  "started_at_utc": "2026-10-07T10:15:23.410278+00:00",
+  "binary_sha256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+  "version": "0.2.2",
+  "mode": "real_mcp_stdio",
+  "scope": "local returned-text outcome; no external side effect is claimed",
+  "tools": [
+    "context_actions",
+    "context_explain",
+    "context_inspect",
+    "context_providers",
+    "context_run",
+    "context_run_status",
+    "context_runtime"
+  ],
+  "runtime": {
+    "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "pid": 92083,
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "inspection": {
+    "byteCount": 10,
+    "display": "RightClick",
+    "isDirectory": false,
+    "kind": "text",
+    "text": "RightClick",
+    "typeDescription": "text",
+    "typeIdentifier": "public.plain-text"
+  },
+  "selected_capability": {
+    "id": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+    "inputs": [
+      "public.rtf",
+      "public.utf8-plain-text"
+    ],
+    "invocation": "direct",
+    "metadata": {
+      "bundlePath": "/System/Library/Services/ChineseTextConverterService.app",
+      "discoverySource": "NSServices Info.plist",
+      "message": "convertTextToFullWidth"
+    },
+    "output": [
+      "public.rtf",
+      "public.utf8-plain-text"
+    ],
+    "provider": {
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "name": "ChineseTextConverterService"
+    },
+    "reflectorID": "macos.service",
+    "requiresConfirmation": true,
+    "safety": "unknown",
+    "source": "service",
+    "supportLevel": "public_supported",
+    "title": "Convert Text to Full Width"
+  },
+  "confirmation_control": {
+    "state": "awaiting_user",
+    "message": "CONFIRMATION_REQUIRED. AirDrop is external_share."
+  },
+  "conversion": {
+    "actionId": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+    "events": [],
+    "evidence": {
+      "boundary": "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
+      "outcomeVerified": true,
+      "type": "returned_text_postcondition"
+    },
+    "executionId": "F2C38CAF-1FCE-4947-BD08-220BB7173C5A",
+    "message": "Returned text matches the explicit postcondition.",
+    "output": "ＲｉｇｈｔＣｌｉｃｋ",
+    "state": "succeeded",
+    "title": "Convert Text to Full Width"
+  },
+  "retained_status": {
+    "actionId": "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+    "events": [],
+    "evidence": {
+      "boundary": "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
+      "outcomeVerified": true,
+      "type": "returned_text_postcondition"
+    },
+    "executionId": "F2C38CAF-1FCE-4947-BD08-220BB7173C5A",
+    "message": "Returned text matches the explicit postcondition.",
+    "output": "ＲｉｇｈｔＣｌｉｃｋ",
+    "state": "succeeded",
+    "title": "Convert Text to Full Width"
+  },
+  "verified": true,
+  "finished_at_utc": "2026-10-07T10:15:33.462993+00:00"
+}

@@ -74,6 +74,18 @@ After an approved action, distinguish acceptance from a verified result.
 
 The available actions depend on the item and your environment, not on a fixed provider count in a screenshot.
 
+## Run the proof yourself
+
+A fresh check of the installed **0.2.2** binary exercised the real MCP process: seven operations, executable-hash attestation, contextual discovery, capability explanation, the external-action confirmation gate, an approved local text conversion and its retained verified outcome.
+
+```bash
+python3 scripts/demo-verified-mcp.py --receipt /tmp/rightclick-demo-receipt.json
+```
+
+The conversion returned `ＲｉｇｈｔＣｌｉｃｋ` with `outcomeVerified: true`; the unapproved external-action control remained `awaiting_user`. This establishes the stated **local returned-text outcome**, not universal provider or remote-side-effect coverage. The script exits nonzero when a required assertion fails.
+
+[Actual machine-readable receipt](evidence/readme-maintenance-2026-10-07/verified-mcp-proof.json) · [Reproduction script](scripts/demo-verified-mcp.py)
+
 ## What it can do
 
 The following capability families are present in the **0.2.2 stable release**. Support is deliberately bounded; a family name is not a claim that every application, schema or operation works.
@@ -208,7 +220,6 @@ The terminal remains useful independently of an AI client:
 rightclick providers
 rightclick inspect "RightClick" --json
 rightclick actions "RightClick" --json
-rightclick explain <capability-id> <item>
 rightclick run <capability-id> <item>
 rightclick status <execution-id>
 ```
