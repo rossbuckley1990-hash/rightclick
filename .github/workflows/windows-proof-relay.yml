@@ -1,0 +1,34 @@
+name: Ephemeral native Windows TLS proof relay
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/windows-proof-relay.yml'
+      - '.github/actions/windows-proof-relay/**'
+      - 'scripts/proof-lab/windows-relay-*.ps1'
+      - 'scripts/proof-lab/relay-envelope.ps1'
+      - 'fixtures/proof-relay/operator-public-key.pem'
+permissions:
+  contents: read
+concurrency:
+  group: windows-proof-relay-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+jobs:
+  relay:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'codex/universal-proof-lab')
+    runs-on: windows-2022
+    timeout-minutes: 70
+    env:
+      RIGHTCLICK_RELAY_SOURCE_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Keep the native hosting session alive while publishing encrypted connection then wait for operator withdrawal
+        uses: ./.github/actions/windows-proof-relay
+      - name: Preserve public withdrawal evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: windows-proof-withdrawal
+          path: evidence/windows-relay/withdrawal.json
+          retention-days: 1
+          if-no-files-found: warn

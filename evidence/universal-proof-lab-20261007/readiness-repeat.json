@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "acceptanceScope": "infrastructure readiness only",
+  "credentials": {
+    "linux": {
+      "source": "private-env-file",
+      "reference": "/tmp/rightclick-proof-lab-20261007/linux.env",
+      "authority": "isolated proof effect endpoint",
+      "principal": "container uid1000"
+    },
+    "kafka": {
+      "publisher": {
+        "source": "private-file",
+        "reference": "/tmp/rightclick-proof-lab-20261007/kafka-publisher.json",
+        "principal": "rightclick-proof-publisher",
+        "authority": "topic:rightclick.proof:write,describe"
+      },
+      "observer": {
+        "source": "private-file",
+        "reference": "/tmp/rightclick-proof-lab-20261007/kafka-observer.json",
+        "principal": "rightclick-proof-observer",
+        "authority": "topic:rightclick.proof:read,describe"
+      }
+    },
+    "kubernetes": {
+      "source": "Kubernetes TokenRequest",
+      "reference": "/tmp/rightclick-proof-lab-20261007/kubernetes-token",
+      "kubeconfigReference": "/tmp/rightclick-proof-lab-20261007/scoped.kubeconfig",
+      "principal": "system:serviceaccount:rightclick-proof:rightclick-proof",
+      "authority": "namespace:rightclick-proof:configmaps:get,create,update,patch,delete",
+      "expiry": "2026-10-07T14:02:00+00:00",
+      "server": "https://127.0.0.1:16443"
+    }
+  },
+  "resources": {
+    "linux": "rightclick-proof-linux",
+    "kafka": "rightclick-proof-kafka",
+    "cluster": "rightclick-proof",
+    "namespace": "rightclick-proof"
+  },
+  "endpoints": {
+    "linux": "http://127.0.0.1:19141",
+    "kafka": "127.0.0.1:19092",
+    "kubernetes": "https://127.0.0.1:16443"
+  },
+  "timestamp": "2026-10-07T13:04:55.282762+00:00",
+  "challenge": "rcproof_7bebe27b63a34f0798692bb05ad8a070",
+  "linux": {
+    "state": "GREEN",
+    "acceptedHTTP": 202,
+    "independentFileReadback": {
+      "challenge": "rcproof_7bebe27b63a34f0798692bb05ad8a070",
+      "machine": "aarch64",
+      "platform": "Linux",
+      "principal": "1000",
+      "result": "e8124b82100bd7f5aa8d03d7389677944df8cd34ccec2aa0de7d612f15324107",
+      "uid": 1000
+    },
+    "invalidCredentialHTTP": 401
+  },
+  "kafka": {
+    "state": "GREEN",
+    "producerACK": "Produced to partition 0 at offset 1 with timestamp 1791378294887.\n",
+    "independentConsumerRecord": {
+      "topic": "rightclick.proof",
+      "key": "rcproof_7bebe27b63a34f0798692bb05ad8a070",
+      "value": "{\"challenge\": \"rcproof_7bebe27b63a34f0798692bb05ad8a070\", \"message\": \"hello from RIGHTCLICK\"}",
+      "timestamp": 1791378294887,
+      "partition": 0,
+      "offset": 1
+    },
+    "differentProducerObserverPrincipals": true,
+    "outOfScopeTopicDenied": true
+  },
+  "kubernetes": {
+    "state": "GREEN",
+    "acceptedUID": "f9b18111-e8a2-4860-845f-633acce48762",
+    "observedUID": "f9b18111-e8a2-4860-845f-633acce48762",
+    "observedResourceVersion": "683",
+    "observedData": {
+      "challenge": "rcproof_7bebe27b63a34f0798692bb05ad8a070",
+      "message": "hello from RIGHTCLICK"
+    },
+    "clusterWideDenied": true,
+    "otherNamespaceDenied": true,
+    "denialEvidence": "Error from server (Forbidden): nodes is forbidden: User \"system:serviceaccount:rightclick-proof:rightclick-proof\" cannot list resource \"nodes\" in API group \"\" at the cluster scope",
+    "unavailableAuthorityDenied": true
+  },
+  "sevenOperationRuntimeAcceptance": "RED: infrastructure controls do not exercise the runtime"
+}
