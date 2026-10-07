@@ -100,6 +100,34 @@ Prefer independently observed state such as exact returned text, file existence/
 
 Report `VERIFIED_SUCCESS` only when the required postcondition was actually observed.
 
+## Procedural memory: recursive capability expansion
+
+When the user asks RIGHTCLICK to go beyond a known integration, reuse this bounded procedure instead of improvising a provider-specific tool chain.
+
+The machine-readable form is `skills/rightclick/procedures/recursive-capability-expansion.v1.json`.
+
+1. **Attest** — call `context_runtime`; record runtime version, executable SHA-256, PID, transport and the current provider graph.
+2. **Discover** — use `context_inspect`, `context_actions`, and `context_explain` on the exact current object/task. Never invent a missing capability.
+3. **Constrain** — choose the smallest safe action that can create or reach a genuinely remote environment. Preserve least authority, confirmation requirements, origin binding and fail-closed behavior.
+4. **Execute** — invoke only the reflected contract. Record execution IDs, provider identity, specification/artifact digest, immutable refs and remote host identity when available.
+5. **Verify** — independently observe the intended postcondition. Provider acceptance, a green orchestration wrapper or HTTP 2xx is not semantic success by itself.
+6. **Diagnose** — if the semantic verdict is false, unknown or unverified, preserve the evidence and identify the narrowest falsifiable cause. Never hide a failure, broaden authority, disable a guardrail or rewrite evidence to manufacture success.
+7. **Adapt** — rediscover applicable capabilities and select an alternative substrate, portable component or safer route that addresses the observed cause while keeping the original safety constraints.
+8. **Retry** — run a new generation with a new immutable execution identity. Do not mutate the previous evidence.
+9. **Recurse** — after verified success, treat any newly materialised remote environment or newly discovered capability artifact as the next context and repeat discovery. The AI-facing interface remains the same seven operations.
+10. **Receipt** — preserve an end-to-end provenance chain containing every hop, verdict, adaptation reason and evidence digest. Stop when no safe novel route exists, the user boundary is reached, or the configured recursion/depth budget is exhausted.
+
+### Recursive invariants
+
+- No provider-specific top-level AI tool may be added merely to continue the chain.
+- Every consequential hop requires the same confirmation discipline as a first-hop action.
+- Authority may stay equal or attenuate across hops; it must never silently broaden.
+- A failed generation remains part of the final proof.
+- Recursive success requires at least one independently verified cross-host or cross-substrate transition.
+- A new environment is an opportunity for fresh discovery, not permission to execute arbitrary code or arbitrary network actions.
+- Prefer read-only or isolated experiment branches/ephemeral compute until a stronger mutation is explicitly authorised.
+- Keep a deterministic depth/step budget so recursive discovery cannot become an unbounded loop.
+
 ## Core principle
 
 ```
@@ -116,6 +144,10 @@ authority is resolved
 the agent acts
       ↓
 the result is verified where observable
+      ↓
+failure becomes evidence
+      ↓
+RIGHTCLICK rediscovers, adapts, and may recurse
 ```
 
 MCP is the transport. Capability acquisition is the product.
