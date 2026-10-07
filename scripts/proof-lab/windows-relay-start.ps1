@@ -180,6 +180,11 @@ try {
       crossTokenDenials = @{localWriterAtObserver = $localCrossObserver; localObserverAtWriter = $localCrossWriter; observerMutation = $localReadOnlyMutation
           writerWithdrawal = $localUnauthorizedWithdrawal; tlsWriterAtObserver = $remoteCrossObserver; tlsObserverAtWriter = $remoteCrossWriter; tlsWriterWithdrawal = $remoteUnauthorizedWithdrawal}
       sevenOperationRuntimeAcceptance = 'RED until the Mac runtime agent operates and withdraws this live provider'} | ConvertTo-Json -Depth 8 | Set-Content "$out/public.json"
+    $published = (Get-Content "$out/*.json" -Raw) -join "`n"
+    foreach ($secret in @($configs.writer.RIGHTCLICK_PROOF_HOST_TOKEN, $configs.observer.RIGHTCLICK_PROOF_HOST_TOKEN, $controlToken)) {
+        if ($published.Contains($secret)) { throw 'Refusing to publish an artifact containing an issued credential' }
+    }
+    $published = $null
     @{schemaVersion = 1; expiresAt = $expires.ToString('o'); base = $base; processes = $processes; users = $created; disconnectFile = $disconnect} | ConvertTo-Json | Set-Content (Join-Path $base 'supervisor.json')
     "RIGHTCLICK_WINDOWS_RELAY_STATE=$base" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
     Write-Host 'Authenticated native Windows writer and get-only observer TLS relays are ready; connection credentials are encrypted for the operator.'
