@@ -1,0 +1,130 @@
+name: RIGHTCLICK Distributed Alien Network (experimental)
+
+on:
+  push:
+    branches:
+      - experiment/distributed-alien-network-v2-20261007
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: distributed-alien-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  parent:
+    name: Ubuntu parent — signed least-authority delegation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      public_key: ${{ steps.anchor.outputs.public_key }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install protocol verifier dependency
+        run: python -m pip install --disable-pip-version-check 'cryptography>=42,<50'
+      - name: Independent RED/GREEN regression tests
+        run: python -m unittest discover -s experiments/alien-relay -p 'test_*.py' -v
+      - name: Issue ephemeral Ed25519 capability delegation
+        run: python experiments/alien-relay/distributed_relay.py parent --out delegation
+      - name: Send parent public key through separate GitHub job-output channel
+        id: anchor
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          print("public_key=" + json.load(open("delegation/delegation.json"))["public_key_b64"])
+          PY
+      - name: Upload immutable parent delegation evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: parent-delegation
+          path: delegation/
+          if-no-files-found: error
+          retention-days: 7
+
+  child:
+    name: Windows child — delegated discovery and signed receipt
+    needs: parent
+    runs-on: windows-latest
+    timeout-minutes: 9
+    outputs:
+      public_key: ${{ steps.anchor.outputs.public_key }}
+    env:
+      RIGHTCLICK_TRUSTED_PARENT_PUBLIC_KEY: ${{ needs.parent.outputs.public_key }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install verification dependency
+        run: python -m pip install --disable-pip-version-check "cryptography>=42,<50"
+      - name: Test portable protocol boundaries on Windows
+        run: python -m unittest discover -s experiments/alien-relay -p 'test_*.py' -v
+      - uses: actions/download-artifact@v4
+        with:
+          name: parent-delegation
+          path: delegation
+      - name: Execute exactly one delegated external capability search
+        shell: pwsh
+        run: python experiments/alien-relay/distributed_relay.py child --input delegation --out child
+      - name: Send child public key through separate GitHub job-output channel
+        if: always()
+        id: anchor
+        shell: pwsh
+        run: |
+          if (Test-Path "child/child-receipt.json") {
+            $pub = python -c "import json; print(json.load(open('child/child-receipt.json'))['public_key_b64'])"
+            "public_key=$pub" >> $env:GITHUB_OUTPUT
+          }
+      - name: Upload signed result and exact external response
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: child-receipt
+          path: child/
+          if-no-files-found: warn
+          retention-days: 7
+
+  verify:
+    name: Independent Ubuntu verification — fail closed
+    needs: [parent, child]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      RIGHTCLICK_TRUSTED_PARENT_PUBLIC_KEY: ${{ needs.parent.outputs.public_key }}
+      RIGHTCLICK_TRUSTED_CHILD_PUBLIC_KEY: ${{ needs.child.outputs.public_key }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install verifier
+        run: python -m pip install --disable-pip-version-check 'cryptography>=42,<50'
+      - name: Download parent evidence
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: parent-delegation
+          path: delegation
+      - name: Download child evidence
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: child-receipt
+          path: child
+      - name: Independently recompute semantic verdict and signed chain
+        run: python experiments/alien-relay/distributed_relay.py verify --input delegation --child-dir child --out proof
+      - name: Preserve final verdict even when a gate rejects
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: distributed-proof-verdict
+          path: proof/
+          if-no-files-found: warn
+          retention-days: 7

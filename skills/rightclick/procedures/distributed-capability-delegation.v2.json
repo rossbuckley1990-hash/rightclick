@@ -1,0 +1,84 @@
+{
+  "schema": "rightclick.procedure/v2",
+  "id": "distributed-capability-delegation",
+  "title": "Distributed Alien Network — bounded remote delegation",
+  "upstream": "skills/rightclick/procedures/recursive-capability-expansion.v1.json",
+  "maxDepth": 4,
+  "maxGenerationsPerHop": 3,
+  "experimentLimits": {
+    "remoteChildren": 1,
+    "childDepth": 1,
+    "childGenerations": 1,
+    "networkRequests": 1,
+    "delegationSeconds": 1200,
+    "responseBytes": 500000,
+    "requestTimeoutSeconds": 25
+  },
+  "invariants": {
+    "aiFacingOperations": 7,
+    "authorityMayBroaden": false,
+    "denyUnknownProvider": true,
+    "confirmConsequentialHops": true,
+    "providerAcceptanceIsSemanticSuccess": false,
+    "zeroProductionAccess": true,
+    "reuseParentPrivateKeyAcrossHosts": false,
+    "revocationAndExpiryMustDeny": true,
+    "childReceiptMustBeVerified": true,
+    "providerResponseMustBeReadBack": true
+  },
+  "route": [
+    {
+      "hop": 0,
+      "substrate": "GitHub Actions / Ubuntu Linux",
+      "action": "issue signed origin/method/path/query-scoped delegation",
+      "evidence": "parent delegation and public key"
+    },
+    {
+      "hop": 1,
+      "substrate": "GitHub Actions / Windows",
+      "action": "verify parent, deny forbidden routes, independently search external AI capability registry",
+      "evidence": "signed child receipt and provider response bytes"
+    },
+    {
+      "hop": 2,
+      "substrate": "GitHub Actions / Ubuntu Linux",
+      "action": "independently verify signatures, time window, hashes, negative controls and provider response content",
+      "evidence": "machine-readable verdict"
+    }
+  ],
+  "states": [
+    "attest",
+    "discover",
+    "constrain",
+    "sign",
+    "delegate",
+    "verify-authority",
+    "execute",
+    "observe",
+    "sign-receipt",
+    "verify-chain",
+    "stop"
+  ],
+  "requiredNegativeControls": [
+    "scope_denial",
+    "revoked_nonce_denial",
+    "expired_delegation_denial",
+    "replay_denial",
+    "missing_provider_denial",
+    "tampered_receipt_denial"
+  ],
+  "authenticityLimitations": [
+    "Ed25519 keys are ephemeral and artefact-transported; signatures alone are not hardware or cloud-runner identity attestations.",
+    "Python experimental harness is not a native Windows RIGHTCLICK runtime.",
+    "An empty in-process nonce cache is not global revocation across independent executions.",
+    "Single seeded ARD registry endpoint is known beforehand; child discovers individual AI capabilities, not the bootstrap registry."
+  ],
+  "promotionGates": [
+    "independent live child Windows binary RIGHTCLICK runtime identity",
+    "origin-bound trusted key acquisition across hosts",
+    "cross-host revocation authority",
+    "real provider disappearance recovery",
+    "multi-substrate receipt replay reproducibility"
+  ],
+  "version": 2
+}
