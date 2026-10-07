@@ -1,0 +1,85 @@
+{
+  "schema": "rightclick.procedure/v2",
+  "id": "distributed-capability-delegation",
+  "version": 2,
+  "status": "experiment-not-production",
+  "aiFacingOperations": [
+    "context_runtime",
+    "context_inspect",
+    "context_actions",
+    "context_explain",
+    "context_run",
+    "context_run_status",
+    "context_providers"
+  ],
+  "bounds": {
+    "maxDepth": 2,
+    "maxFanout": 1,
+    "maxGenerationsPerHop": 3,
+    "maxExecutionsPerDelegation": 1,
+    "ttlSeconds": 2700,
+    "maxHosts": 3
+  },
+  "states": [
+    "attest",
+    "discover",
+    "constrain",
+    "issue_lease",
+    "delegate",
+    "verify_authority",
+    "discover_child",
+    "execute_child",
+    "observe",
+    "sign_receipt",
+    "verify_parent",
+    "stop"
+  ],
+  "invariants": [
+    "no_provider_specific_AI_operations",
+    "no_secret_material_in_receipts",
+    "delegations_may_only_attenuate",
+    "provider_2xx_is_not_semantic_success",
+    "reject_expired_replayed_revoked_or_broadened_leases",
+    "fail_closed_when_provider_missing",
+    "preserve_failed_attempts",
+    "no_unbounded_recursion"
+  ],
+  "acceptanceEvidence": [
+    "issuer_host_and_git_sha",
+    "signed_parent_attestation",
+    "signed_attenuated_lease",
+    "child_windows_provider_discovery",
+    "independent_windows_postcondition",
+    "signed_child_receipt",
+    "negative_admission_controls",
+    "independent_linux_receipt_verification",
+    "artifact_hashes_and_run_id"
+  ],
+  "scope": {
+    "operations": [
+      "platform.inspect"
+    ],
+    "sideEffects": "read_only",
+    "audience": "windows-child"
+  },
+  "cryptography": {
+    "algorithm": "Ed25519",
+    "canonicalEncoding": "sorted_compact_JSON_ASCII",
+    "privateKeyLifecycle": "ephemeral_never_export",
+    "trustRoot": "github_actions_parent_artifact_ephemeral_key"
+  },
+  "limitations": [
+    "portable_experimental_child_not_native_RIGHTCLICK_Core7",
+    "revocation_is_admission_time_simulation_not_live_issuer_revocation",
+    "provider_disappearance_test_is_simulated",
+    "ephemeral_issuer_trust_not_externally_pinned",
+    "platform_discovery_bounded_to_safe_windows_cmdlets"
+  ],
+  "safeBoundaries": {
+    "merge": false,
+    "publish": false,
+    "release": false,
+    "secretsChanged": false,
+    "organizationSettingsChanged": false
+  }
+}
