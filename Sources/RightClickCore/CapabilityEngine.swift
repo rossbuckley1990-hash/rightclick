@@ -39,6 +39,7 @@ public struct DoctorReport: Codable, Sendable {
 }
 
 public final class CapabilityEngine {
+    private let experience: CapabilityExperience?
     private let fixedReflectors:
         [any CapabilityReflector]
 
@@ -51,13 +52,16 @@ public final class CapabilityEngine {
     /// Passing reflectors explicitly preserves the existing explicit
     /// reflector-injection model.
     public init(
-        reflectors: [any CapabilityReflector]? = nil
+        reflectors: [any CapabilityReflector]? = nil,
+        experience: CapabilityExperience? = CapabilityExperience.fromEnvironment()
     ) {
         self.fixedReflectors =
             reflectors
             ?? CapabilityReflectorDefaults.all()
 
         self.reflectorSources = []
+
+        self.experience = experience
 
         Self.prepareApplication()
     }
@@ -69,13 +73,16 @@ public final class CapabilityEngine {
     public init(
         reflectors: [any CapabilityReflector] = [],
         reflectorSources:
-            [any CapabilityReflectorSource]
+            [any CapabilityReflectorSource],
+        experience: CapabilityExperience? = CapabilityExperience.fromEnvironment()
     ) {
         self.fixedReflectors =
             reflectors
 
         self.reflectorSources =
             reflectorSources
+
+        self.experience = experience
 
         Self.prepareApplication()
     }
@@ -165,8 +172,8 @@ public final class CapabilityEngine {
             )
         }
 
-        let combined =
-            dedupeCapabilities(reflected)
+        let fresh = dedupeCapabilities(reflected).map(CapabilityExperience.withoutExperience)
+        let combined = experience?.annotate(fresh) ?? fresh
         let order: [CapabilitySource: Int] = [.service: 0, .sharingService: 1, .actionExtension: 2, .system: 3]
         return (item, combined.sorted { lhs, rhs in
             let left = order[lhs.source] ?? 9
@@ -405,30 +412,35 @@ public final class CapabilityEngine {
         if verification != nil,
            verificationReflector != nil
         {
-            return validatedDelegatedVerification(
-                providerResult
-            )
+            let result = validatedDelegatedVerification(providerResult)
+            experience?.observe(capability: capability, executionID: executionId, result: result)
+            return result
         }
 
         if let verification,
            let before
         {
-            return try applyingVerification(
+            let result = try applyingVerification(
                 verification,
                 before: before,
                 item: item,
                 to: providerResult
             )
+            experience?.observe(capability: capability, executionID: executionId, result: result)
+            return result
         }
 
         if let expectedOutput {
-            return applyingReturnedTextPostcondition(
+            let result = applyingReturnedTextPostcondition(
                 expectedOutput,
                 item: item,
                 to: providerResult
             )
+            experience?.observe(capability: capability, executionID: executionId, result: result)
+            return result
         }
 
+        experience?.observe(capability: capability, executionID: executionId, result: providerResult)
         return providerResult
     }
 
@@ -655,6 +667,7 @@ public final class CapabilityEngine {
         )
 
         ExecutionStore.shared.put(final)
+        experience?.observe(capability: capability, executionID: executionId, result: result)
 
         return final
     }
