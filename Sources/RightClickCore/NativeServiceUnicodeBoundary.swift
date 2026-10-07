@@ -26,7 +26,8 @@ enum NativeServiceUnicodeBoundary {
 
         for scalar in output.unicodeScalars {
             let value = scalar.value
-            if value < 0x80 || (value >= 0xA0 && value <= 0xFF) {
+            if value < 0x80 || (value >= 0xA0 && value <= 0xFF)
+                || [0x81, 0x8D, 0x8F, 0x90, 0x9D].contains(value) {
                 bytes.append(UInt8(value))
             } else if let mapped = specialWindows1252Byte(value) {
                 bytes.append(mapped)
