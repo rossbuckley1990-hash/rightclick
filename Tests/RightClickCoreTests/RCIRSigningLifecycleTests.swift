@@ -1,0 +1,149 @@
+#if canImport(CryptoKit)
+import CryptoKit
+#else
+import Crypto
+#endif
+import Foundation
+import XCTest
+@testable import RightClickCore
+
+/// Real A2A effects and a separate read-only observer pressure-test retained
+/// signing authority. Only disposable fixture keys are withdrawn or rotated.
+final class RCIRSigningLifecycleTests: XCTestCase {
+    private var directory: URL!
+    private var agent: Process!
+    private var observer: Process!
+    private var engine: CapabilityEngine!
+    private var host: RCIRExecutionHost!
+    private var config = RCIRHostConfiguration()
+    private var capability: Capability!
+    private var keyFile: URL!
+    private var publicKey: Data!
+    private var records: [ExecutionRecord] = []
+
+    private func launch(_ script: String) throws -> Process {
+        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+        let process = Process(); process.executableURL = try NativeHTTPFixture.python()
+        process.arguments = [root.appendingPathComponent("scripts/" + script).path, directory.path]
+        if script == "a2a-proof-agent.py" { process.arguments!.append("--hold-until-file") }
+        process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
+        try process.run(); return process
+    }
+    private func waitFor(_ file: URL) throws {
+        for _ in 0..<400 where !FileManager.default.fileExists(atPath: file.path) { Thread.sleep(forTimeInterval: 0.01) }
+        XCTAssertTrue(FileManager.default.fileExists(atPath: file.path), "Real fixture did not produce its artifact")
+    }
+    private func key(at file: URL) throws -> Data {
+        let key = Curve25519.Signing.PrivateKey()
+        if FileManager.default.fileExists(atPath: file.path) { try NativeHTTPFixture.release(file) }
+        try key.rawRepresentation.write(to: file)
+        try NativeHTTPFixture.protect(file)
+        return key.publicKey.rawRepresentation
+    }
+    override func setUpWithError() throws {
+        directory = FileManager.default.temporaryDirectory.appendingPathComponent("rcir-signing-" + UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
+        try NativeHTTPFixture.protect(directory, directory: true)
+        agent = try launch("a2a-proof-agent.py"); observer = try launch("a2a-proof-observer.py")
+        let port = directory.appendingPathComponent("port"), observerPort = directory.appendingPathComponent("observer-port")
+        try waitFor(port); try waitFor(observerPort)
+        let base = "http://127.0.0.1:" + (try String(contentsOf: port, encoding: .utf8))
+        let observe = "http://127.0.0.1:" + (try String(contentsOf: observerPort, encoding: .utf8))
+        let providers = directory.appendingPathComponent("providers.json")
+        try JSONSerialization.data(withJSONObject: ["version": 1, "agentCards": [base + "/.well-known/agent.json"]]).write(to: providers)
+        try NativeHTTPFixture.protect(providers)
+        host = RCIRExecutionHost(); host.configuration = { self.config }
+        engine = CapabilityEngine(reflectorSources: [ConfiguredA2ASource(configurationFile: providers)], experience: nil, rcirHost: host)
+        capability = try XCTUnwrap(engine.capabilities(for: "signing lifecycle proof").capabilities.first)
+        var check = RCIRHostConfiguration.Observer(urlTemplate: observe + "/observations/{message}", expectedArgument: "message")
+        check.trustedOrigin = observe; config.observers = [capability.id: check]
+        keyFile = directory.appendingPathComponent("signer.raw")
+        publicKey = try key(at: keyFile); config.signingKeyFile = keyFile.path
+    }
+    override func tearDownWithError() throws {
+        for process in [agent, observer] where process?.isRunning == true { process?.terminate(); process?.waitUntilExit() }
+        if let path = ProcessInfo.processInfo.environment["RCIR_SIGNING_EVIDENCE"] {
+            let output = URL(fileURLWithPath: path).appendingPathComponent(name.replacingOccurrences(of: "/", with: "_"))
+            try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+            let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+            try encoder.encode(records).write(to: output.appendingPathComponent("runtime-records.json"))
+            try publicKey.write(to: output.appendingPathComponent("original-public-key.raw"))
+            for file in ["requests.jsonl", "polls.jsonl", "effects.jsonl", "observations.jsonl"] {
+                if let data = try? Data(contentsOf: directory.appendingPathComponent(file)) { try data.write(to: output.appendingPathComponent(file)) }
+            }
+        }
+        if let directory { try? NativeHTTPFixture.remove(directory) }
+        engine = nil; host = nil
+    }
+    private func rows(_ filename: String) -> [[String: Any]] {
+        let text = (try? String(contentsOf: directory.appendingPathComponent(filename), encoding: .utf8)) ?? ""
+        return text.split(separator: "\n").compactMap { try? JSONSerialization.jsonObject(with: Data($0.utf8)) as? [String: Any] }
+    }
+    private func begin() throws -> ExecutionRecord {
+        let message = String(data: try JSONSerialization.data(withJSONObject: ["challenge": UUID().uuidString, "value": "signer-lifecycle"], options: [.sortedKeys]), encoding: .utf8)!
+        let initial = try engine.begin(id: capability.id, item: "signing lifecycle proof", confirmed: true, arguments: ["message": message])
+        records.append(initial); XCTAssertEqual(initial.state, .started)
+        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        return initial
+    }
+    private func releaseEffect() throws {
+        try Data().write(to: directory.appendingPathComponent("release"))
+        try waitFor(directory.appendingPathComponent("effects.jsonl"))
+        XCTAssertEqual(rows("effects.jsonl").count, 1, "A real external effect is required before evaluating evidence")
+    }
+    private func finish(_ initial: ExecutionRecord) -> ExecutionRecord {
+        var final = initial
+        for _ in 0..<100 {
+            final = engine.executionStatus(initial.executionId); records.append(final)
+            if final.state != .started && final.state != .awaitingUser { break }
+            Thread.sleep(forTimeInterval: 0.02)
+        }
+        return final
+    }
+    private func signature(_ record: ExecutionRecord, trustedKey: Data) throws {
+        let envelope = try XCTUnwrap(record.rcir?.signedReceipt)
+        let signed = try RCIRSignedReceipt(payload: XCTUnwrap(Data(base64Encoded: envelope.payload)),
+            signature: XCTUnwrap(Data(base64Encoded: envelope.signature)), publicKey: XCTUnwrap(Data(base64Encoded: envelope.publicKey)))
+        try signed.verify(trustedPublicKey: trustedKey, using: RCIREd25519Verifier())
+    }
+    private func unsigned(_ final: ExecutionRecord) throws {
+        XCTAssertNil(final.rcir?.signedReceipt, "Withdrawn or replaced provisioned signer must not issue a retained old-key signature")
+        XCTAssertNotNil(final.rcir?.receipt, "Unsigned terminal truth remains available")
+        XCTAssertEqual(rows("requests.jsonl").count, 1, "Signing failure must never replay a mutation")
+        XCTAssertEqual(rows("effects.jsonl").count, 1)
+    }
+    func testUnchangedProvisionedSignerSignsGenuineEffect() throws {
+        let initial = try begin(); try releaseEffect(); let final = finish(initial)
+        XCTAssertEqual(final.state, .succeeded); XCTAssertTrue(final.evidence.outcomeVerified)
+        XCTAssertEqual(rows("observations.jsonl").count, 1); try signature(final, trustedKey: publicKey)
+    }
+    func testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect() throws {
+        let initial = try begin(); try NativeHTTPFixture.release(keyFile); try FileManager.default.removeItem(at: keyFile)
+        try releaseEffect(); let final = finish(initial)
+        XCTAssertEqual(final.state, .succeeded); XCTAssertEqual(final.rcir?.outcome, "succeeded")
+        XCTAssertTrue(final.evidence.outcomeVerified); try unsigned(final)
+    }
+    func testSamePathKeyRotationDoesNotSignWithRetainedOldKey() throws {
+        let initial = try begin(); _ = try key(at: keyFile)
+        try releaseEffect(); let final = finish(initial)
+        XCTAssertEqual(final.state, .succeeded); XCTAssertTrue(final.evidence.outcomeVerified); try unsigned(final)
+    }
+    func testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature() throws {
+        let initial = try begin()
+        let replacement = directory.appendingPathComponent("replacement.raw"); _ = try key(at: replacement)
+        config.signingKeyFile = replacement.path
+        try releaseEffect(); let final = finish(initial)
+        XCTAssertEqual(final.state, .unknown); XCTAssertEqual(final.rcir?.outcome, "unknown")
+        XCTAssertFalse(final.evidence.outcomeVerified); XCTAssertTrue(rows("observations.jsonl").isEmpty)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: keyFile.path), "Old bytes still exist; current host reference is the boundary")
+        try unsigned(final)
+    }
+    func testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown() throws {
+        let initial = try begin(); try releaseEffect()
+        agent.terminate(); agent.waitUntilExit()
+        try NativeHTTPFixture.release(keyFile); try FileManager.default.removeItem(at: keyFile)
+        let final = finish(initial)
+        XCTAssertEqual(final.state, .unknown); XCTAssertEqual(final.rcir?.outcome, "unknown")
+        XCTAssertFalse(final.evidence.outcomeVerified); try unsigned(final)
+    }
+}
