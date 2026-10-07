@@ -30,7 +30,7 @@ public final class CapabilityExperience: @unchecked Sendable {
     /// The fresh contract is authoritative. Raw payloads and credentials never
     /// enter this key. A fingerprint is not proof of unchanged provider code.
     public func contractKey(for capability: Capability) -> String? {
-        let clean = Self.withoutExperience(capability)
+        let clean = capability.withoutDiscoveryAdvice()
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys]
         guard let data = try? encoder.encode(clean), data.count <= 262_144 else { return nil }

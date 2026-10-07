@@ -193,6 +193,8 @@ public final class CapabilityEngine {
             for index in capabilities.indices {
                 capabilities[index].reflectorID =
                     reflector.id
+                // A provider cannot advertise its own accepted fingerprint.
+                capabilities[index].contractSHA256 = nil
             }
 
             reflected.append(
@@ -200,7 +202,11 @@ public final class CapabilityEngine {
             )
         }
 
-        let fresh = dedupeCapabilities(reflected).map(CapabilityExperience.withoutExperience)
+        let fresh = dedupeCapabilities(reflected).map { capability in
+            var owned = capability.withoutDiscoveryAdvice()
+            owned.contractSHA256 = try? owned.discoveryContractSHA256()
+            return owned
+        }
         let combined = experience?.annotate(fresh) ?? fresh
         let order: [CapabilitySource: Int] = [.service: 0, .sharingService: 1, .actionExtension: 2, .system: 3]
         return (item, combined.sorted { lhs, rhs in
@@ -254,22 +260,26 @@ public final class CapabilityEngine {
         confirmed: Bool,
         arguments: CapabilityArguments? = nil,
         expectedOutput: String? = nil,
-        verification: VerificationSpec? = nil
+        verification: VerificationSpec? = nil,
+        contractSHA256: String? = nil
     ) throws -> RunResult {
         let executionId = UUID().uuidString
+        if let contractSHA256, !CapabilityContract.isValidSHA256(contractSHA256) {
+            return RunResult(status: .rejected, actionID: id,
+                message: "Invalid contractSHA256. Supply the exact lowercase SHA-256 returned by discovery.")
+        }
         let (item, capabilities) =
             try capabilities(for: raw)
 
         guard let capability =
-            capabilities.first(where: {
-                $0.id == id || $0.title == id
-            })
+            selectedCapability(id: id, contractSHA256: contractSHA256, from: capabilities)
         else {
             return RunResult(
                 status: .unavailable,
                 actionID: id,
                 message:
-                    "No discovered capability matches \(id) for this item."
+                    contractSHA256 == nil ? "No discovered capability matches \(id) for this item." :
+                    "CONTRACT_MISMATCH. The reviewed declaration changed or is unavailable. Discover and review it again; do not retry unpinned automatically."
             )
         }
 
@@ -501,23 +511,29 @@ public final class CapabilityEngine {
         confirmed: Bool,
         arguments: CapabilityArguments? = nil,
         expectedOutput: String? = nil,
-        verification: VerificationSpec? = nil
+        verification: VerificationSpec? = nil,
+        contractSHA256: String? = nil
     ) throws -> ExecutionRecord {
         let executionId = UUID().uuidString
+        if let contractSHA256, !CapabilityContract.isValidSHA256(contractSHA256) {
+            let record = ExecutionRecord(executionId: executionId, actionId: id, state: .rejected,
+                message: "Invalid contractSHA256. Supply the exact lowercase SHA-256 returned by discovery.")
+            ExecutionStore.shared.put(record)
+            return record
+        }
         let (item, capabilities) =
             try capabilities(for: raw)
 
         guard let capability =
-            capabilities.first(where: {
-                $0.id == id || $0.title == id
-            })
+            selectedCapability(id: id, contractSHA256: contractSHA256, from: capabilities)
         else {
             let record = ExecutionRecord(
                 executionId: executionId,
                 actionId: id,
                 state: .unavailable,
                 message:
-                    "No discovered capability matches \(id) for this item."
+                    contractSHA256 == nil ? "No discovered capability matches \(id) for this item." :
+                    "CONTRACT_MISMATCH. The reviewed declaration changed or is unavailable. Discover and review it again; do not retry unpinned automatically."
             )
 
             ExecutionStore.shared.put(
@@ -739,6 +755,16 @@ public final class CapabilityEngine {
         return final
     }
 
+    /// Legacy calls retain fresh ID/title resolution. A supplied pin never falls
+    /// back to an unpinned selection or a conflicting title alias.
+    private func selectedCapability(id: String, contractSHA256: String?, from capabilities: [Capability]) -> Capability? {
+        let matches = capabilities.filter { $0.id == id || $0.title == id }
+        guard let first = matches.first else { return nil }
+        guard let contractSHA256 else { return first }
+        guard matches.allSatisfy({ $0.contractSHA256 == contractSHA256 }) else { return nil }
+        return first
+    }
+
     private func reflector(
         for capability: Capability,
         item: ContentItem
@@ -764,12 +790,12 @@ public final class CapabilityEngine {
         // Experience is engine-owned advisory output, not provider authority.
         // Normalize only its reserved namespace on both snapshots. Every
         // endpoint, schema, origin, policy and other metadata byte still binds.
-        guard let expected = try? encoder.encode(CapabilityExperience.withoutExperience(capability)) else { return nil }
+        guard let expected = try? encoder.encode(capability.withoutDiscoveryAdvice()) else { return nil }
 
         for var candidate in matches {
             // As in discovery, only the engine assigns reflector ownership.
             candidate.reflectorID = reflector.id
-            guard let actual = try? encoder.encode(CapabilityExperience.withoutExperience(candidate)), actual == expected else {
+            guard let actual = try? encoder.encode(candidate.withoutDiscoveryAdvice()), actual == expected else {
                 return nil
             }
         }

@@ -192,6 +192,7 @@ public struct CapabilityView: Codable, Sendable {
     public var requiresConfirmation: Bool
     public var supportLevel: String
     public var explanation: String
+    public var contractSHA256: String?
 
     public init(_ capability: Capability) {
         id = capability.id
@@ -204,6 +205,7 @@ public struct CapabilityView: Codable, Sendable {
         requiresConfirmation = capability.requiresConfirmation
         supportLevel = capability.supportLevel.rawValue
         explanation = CapabilityExplanation.text(for: capability)
+        contractSHA256 = capability.contractSHA256
     }
 }
 

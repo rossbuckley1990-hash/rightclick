@@ -60,6 +60,8 @@ public struct Capability: Codable, Sendable, Equatable, Identifiable {
     public var supportLevel: SupportLevel
     public var requiresConfirmation: Bool
     public var metadata: [String: String]
+    /// Optional engine-produced declaration fingerprint, never execution authority.
+    public var contractSHA256: String? = nil
 
     public init(
         id: String,
