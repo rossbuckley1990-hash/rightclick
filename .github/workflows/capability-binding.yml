@@ -1,0 +1,26 @@
+name: Capability binding portable tests
+on:
+  pull_request:
+    paths:
+      - 'Sources/RightClickCore/CapabilityABI.swift'
+      - 'Sources/RightClickCore/CapabilityInvocationBinding.swift'
+      - 'Tests/RightClickCoreTests/CapabilityABI*Tests.swift'
+      - 'Tests/RightClickCoreTests/CapabilityInvocationBindingTests.swift'
+      - 'scripts/test-capability-binding.sh'
+      - '.github/workflows/capability-binding.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: capability-binding-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  portable:
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Validate exact portable ABI and binding source
+        run: bash scripts/test-capability-binding.sh
