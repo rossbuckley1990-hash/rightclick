@@ -1,0 +1,16 @@
+{
+  "experiment": "ARD-ACQUISITION",
+  "gate": "G12",
+  "status": "RED_CONFIRMED",
+  "frozenHead": "bcf9c151f6a100b5f94ae848950f3b6cd5bf7368",
+  "workflowRun": 37543554505,
+  "job": 112542025350,
+  "conclusion": "failure",
+  "failedStep": "swift test --force-resolved-versions",
+  "test": "ARDAcquisitionGateTests.testG12ARDOpenAPIArtifactAcquisitionIsCurrentlyRed",
+  "failure": "G12 RED: RIGHTCLICK has no ARD SearchResponse acquisition path yet.",
+  "executed": 1,
+  "failures": 1,
+  "unexpectedFailures": 0,
+  "laterAcceptanceStepsSkipped": true
+}
