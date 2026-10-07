@@ -6,7 +6,7 @@ from portable_common import ROOT, SHA, sha256, host, clean_environment, stop_tre
 
 def sample(binary, http, script, cleaned=False):
     started = time.perf_counter(); lines = []; milestones = {}; messages = queue.Queue()
-    command = [sys.executable, str(script), str(binary)] + (['--http'] if http else [])
+    command = [sys.executable, "-u", str(script), str(binary)] + (['--http'] if http else [])
     kwargs = {'creationflags': subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == 'nt' else {'start_new_session': True}
     p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          text=True, encoding='utf-8', errors='replace', env=clean_environment() if cleaned else None, **kwargs)
