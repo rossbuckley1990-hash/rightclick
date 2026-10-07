@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   alien-relay:
-    name: Remote Ubuntu proof
+    name: Remote Ubuntu recursive discovery proof
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -19,59 +19,71 @@ jobs:
       - name: Check out experiment branch
         uses: actions/checkout@v4
 
-      - name: Capture remote evidence
-        id: evidence
+      - name: Build portable RIGHTCLICK probe and recurse into remote discovery
         shell: bash
         run: |
           set +e
 
           mkdir -p alien-proof
-
-          BUILD_STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          RUNNER_OS_VALUE="${RUNNER_OS:-unknown}"
-          RUNNER_ARCH_VALUE="${RUNNER_ARCH:-unknown}"
+          OBSERVED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           REPO_SHA="$(git rev-parse HEAD 2>/dev/null)"
           GIT_STATUS=$?
+          RUNNER_OS_VALUE="${RUNNER_OS:-unknown}"
+          RUNNER_ARCH_VALUE="${RUNNER_ARCH:-unknown}"
 
           SWIFT_VERSION="$(swift --version 2>&1)"
-          SWIFT_VERSION_STATUS=$?
+          SWIFT_STATUS=$?
 
-          swift build >alien-proof/swift-build.log 2>&1
-          BUILD_STATUS=$?
+          swift build --product rightclick-ard-probe >alien-proof/portable-build.log 2>&1
+          PORTABLE_BUILD_STATUS=$?
 
-          swift test >alien-proof/swift-test.log 2>&1
-          TEST_STATUS=$?
+          BIN_DIR="$(swift build --show-bin-path 2>/dev/null)"
+          BIN_PATH="${BIN_DIR}/rightclick-ard-probe"
 
-          if [ -x ".build/debug/rightclick" ]; then
-            RC_CANDIDATE=".build/debug/rightclick"
-          elif [ -x ".build/release/rightclick" ]; then
-            RC_CANDIDATE=".build/release/rightclick"
+          if [ -x "$BIN_PATH" ]; then
+            "$BIN_PATH" >alien-proof/portable-gate.log 2>&1
+            PORTABLE_GATE_STATUS=$?
+
+            "$BIN_PATH" live-hf >alien-proof/live-hf.log 2>&1
+            LIVE_HF_STATUS=$?
           else
-            RC_CANDIDATE=""
+            echo "portable probe binary not found at $BIN_PATH" >alien-proof/portable-gate.log
+            echo "live Hugging Face gate not attempted because portable probe binary was unavailable" >alien-proof/live-hf.log
+            PORTABLE_GATE_STATUS=127
+            LIVE_HF_STATUS=127
           fi
 
-          if [ -n "$RC_CANDIDATE" ]; then
-            RUNTIME_VERSION="$("$RC_CANDIDATE" --version 2>&1)"
-            RUNTIME_VERSION_STATUS=$?
-          else
-            RUNTIME_VERSION="no built rightclick executable found at expected SwiftPM paths"
-            RUNTIME_VERSION_STATUS=127
-          fi
+          PORTABLE_GATE_OUTPUT="$(cat alien-proof/portable-gate.log 2>/dev/null)"
+          LIVE_HF_OUTPUT="$(cat alien-proof/live-hf.log 2>/dev/null)"
 
-          export BUILD_STARTED_AT RUNNER_OS_VALUE RUNNER_ARCH_VALUE REPO_SHA GIT_STATUS
-          export SWIFT_VERSION SWIFT_VERSION_STATUS BUILD_STATUS TEST_STATUS
-          export RC_CANDIDATE RUNTIME_VERSION RUNTIME_VERSION_STATUS
+          export OBSERVED_AT REPO_SHA GIT_STATUS RUNNER_OS_VALUE RUNNER_ARCH_VALUE
+          export SWIFT_VERSION SWIFT_STATUS PORTABLE_BUILD_STATUS BIN_PATH
+          export PORTABLE_GATE_STATUS LIVE_HF_STATUS PORTABLE_GATE_OUTPUT LIVE_HF_OUTPUT
 
           python3 - <<'PY'
           import json, os
+          success = (
+              int(os.environ.get("GIT_STATUS", "999")) == 0
+              and int(os.environ.get("SWIFT_STATUS", "999")) == 0
+              and int(os.environ.get("PORTABLE_BUILD_STATUS", "999")) == 0
+              and int(os.environ.get("PORTABLE_GATE_STATUS", "999")) == 0
+              and int(os.environ.get("LIVE_HF_STATUS", "999")) == 0
+          )
           proof = {
-              "experiment": "RIGHTCLICK Alien Relay",
-              "observed_utc": os.environ.get("BUILD_STARTED_AT"),
+              "experiment": "RIGHTCLICK Alien Relay Generation 2",
+              "observed_utc": os.environ.get("OBSERVED_AT"),
               "repository_commit_sha": os.environ.get("REPO_SHA"),
               "runner": {
                   "os": os.environ.get("RUNNER_OS_VALUE"),
                   "arch": os.environ.get("RUNNER_ARCH_VALUE"),
               },
+              "recursive_path": [
+                  "ChatGPT seven generic RIGHTCLICK operations",
+                  "RIGHTCLICK reflected GitHub OpenAPI provider",
+                  "GitHub-hosted Ubuntu runner",
+                  "compiled rightclick-ard-probe",
+                  "live Hugging Face discovery endpoint",
+              ],
               "commands": [
                   {
                       "command": "git rev-parse HEAD",
@@ -79,30 +91,31 @@ jobs:
                   },
                   {
                       "command": "swift --version",
-                      "exit_status": int(os.environ.get("SWIFT_VERSION_STATUS", "999")),
+                      "exit_status": int(os.environ.get("SWIFT_STATUS", "999")),
                       "output": os.environ.get("SWIFT_VERSION", ""),
                   },
                   {
-                      "command": "swift build",
-                      "exit_status": int(os.environ.get("BUILD_STATUS", "999")),
-                      "log": "swift-build.log",
+                      "command": "swift build --product rightclick-ard-probe",
+                      "exit_status": int(os.environ.get("PORTABLE_BUILD_STATUS", "999")),
+                      "log": "portable-build.log",
                   },
                   {
-                      "command": "swift test",
-                      "exit_status": int(os.environ.get("TEST_STATUS", "999")),
-                      "log": "swift-test.log",
+                      "command": f'{os.environ.get("BIN_PATH", "<unknown>")}',
+                      "exit_status": int(os.environ.get("PORTABLE_GATE_STATUS", "999")),
+                      "output": os.environ.get("PORTABLE_GATE_OUTPUT", ""),
                   },
                   {
-                      "command": (os.environ.get("RC_CANDIDATE") or "<unavailable>") + " --version",
-                      "exit_status": int(os.environ.get("RUNTIME_VERSION_STATUS", "999")),
-                      "output": os.environ.get("RUNTIME_VERSION", ""),
+                      "command": f'{os.environ.get("BIN_PATH", "<unknown>")} live-hf',
+                      "exit_status": int(os.environ.get("LIVE_HF_STATUS", "999")),
+                      "output": os.environ.get("LIVE_HF_OUTPUT", ""),
                   },
               ],
-              "semantic_success": (
-                  int(os.environ.get("BUILD_STATUS", "999")) == 0
-                  and int(os.environ.get("TEST_STATUS", "999")) == 0
-              ),
-              "note": "Provider acceptance is not treated as proof; this file records observed runner state."
+              "generation_1_diagnosis": {
+                  "full_runtime_linux_build": "blocked by macOS AppKit imports",
+                  "response": "adapt to the manifest's portable RightClickARD/rightclick-ard-probe product rather than masking the incompatibility",
+              },
+              "semantic_success": success,
+              "verification_rule": "Success requires the portable product to build, its local invariant gate to pass, and its live remote Hugging Face discovery gate to pass.",
           }
           with open("alien-proof/rightclick-alien-proof.json", "w", encoding="utf-8") as f:
               json.dump(proof, f, indent=2, sort_keys=True)
