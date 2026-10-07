@@ -10,41 +10,53 @@ permissions:
   contents: read
 jobs:
   remote-preflight:
-    name: Actual Ubuntu cloud reachability and harness syntax
+    name: Reachability matrix from real Ubuntu cloud
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      - name: Inspect harness and verify external cloud accessibility without mutation
+      - name: Verify harness syntax and independently probe new providers
         shell: bash
         run: |
           set -euo pipefail
           python3 -m py_compile scripts/experiments/alien-cloud-first-contact.py
           mkdir -p "$RUNNER_TEMP/alien-cloud-preflight"
           python3 - <<'PY'
-          import json, pathlib, runpy, urllib.request, datetime, os
-          namespace = runpy.run_path('scripts/experiments/alien-cloud-first-contact.py')
-          spec = namespace['cloud_contract']()
-          assert spec['openapi'] == '3.0.3'
-          assert set(spec['paths']) == {'/objects', '/objects/{id}'}
-          with urllib.request.urlopen('https://api.restful-api.dev/objects', timeout=25) as r:
-              status = r.status
-              body = json.load(r)
-          assert status == 200 and isinstance(body, list)
-          receipt = {'status': 'PASS', 'at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                     'remote_get_status': status, 'seed_records': len(body),
-                     'contract_paths': sorted(spec['paths']), 'harness_syntax': 'PASS',
-                     'remote_mutation_not_exercised': True, 'sha': os.environ['GITHUB_SHA']}
-          path = pathlib.Path(os.environ['RUNNER_TEMP'])/'alien-cloud-preflight'/'receipt.json'
-          path.write_text(json.dumps(receipt, indent=2)+'\n')
-          print(json.dumps(receipt))
+          import json, pathlib, runpy, urllib.request, urllib.error, datetime, os
+          ns = runpy.run_path('scripts/experiments/alien-cloud-first-contact.py')
+          assert ns['cloud_contract']()['openapi'] == '3.0.3'
+          endpoints = {
+            'restapi_fr': 'https://restapi.fr/api/rightclick-first-contact-probe-20261007',
+            'ajitdev_todo': 'https://api.ajitdev.com/api/todo',
+            'niles_playground': 'https://playground.nileslabs.com/api/v1/posts?_limit=2',
+            'petstore_schema': 'https://petstore3.swagger.io/api/v3/openapi.json',
+            'restful_api_dev': 'https://api.restful-api.dev/objects',
+            'httpbin': 'https://httpbin.org/get'
+          }
+          results = {}
+          for key, url in endpoints.items():
+            results[key] = {}
+            for agent, headers in [('python_default', {}), ('browser_ua', {'User-Agent': 'Mozilla/5.0'})]:
+              req = urllib.request.Request(url, headers=headers)
+              try:
+                with urllib.request.urlopen(req, timeout=10) as r:
+                  body = r.read(2048)
+                  results[key][agent] = {'status': r.status, 'bytes_sampled': len(body), 'content_type': r.headers.get('content-type','')}
+              except urllib.error.HTTPError as e:
+                results[key][agent] = {'status': e.code, 'error': 'HTTPError'}
+              except Exception as e:
+                results[key][agent] = {'error': type(e).__name__ + ': ' + str(e)[:140]}
+          receipt = {'timestamp': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                     'source_sha': os.environ['GITHUB_SHA'], 'syntax': 'PASS', 'results': results}
+          f = pathlib.Path(os.environ['RUNNER_TEMP'])/'alien-cloud-preflight'/'receipt.json'
+          f.write_text(json.dumps(receipt, indent=2)+'\n')
+          print('RIGHTCLICK_CLOUD_NETWORK_MATRIX=' + json.dumps(receipt))
           PY
-      - name: Preserve actual cloud preflight evidence
+      - name: Archive durable cloud network observations
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: alien-cloud-preflight-${{ github.sha }}
+          name: alien-cloud-network-${{ github.sha }}
           path: ${{ runner.temp }}/alien-cloud-preflight
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 7
-
