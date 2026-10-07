@@ -11,6 +11,7 @@ import http.server
 import json
 import os
 import pathlib
+import platform
 import select
 import shutil
 import signal
@@ -37,6 +38,60 @@ def digest(path):
 
 def value_digest(value):
     return hashlib.sha256(encoded(value)).hexdigest()
+
+
+def is_native_executable(path):
+    with path.open('rb') as stream:
+        magic = stream.read(4)
+    return magic == b'\x7fELF' or magic[:2] == b'MZ' or magic in (b'\xcf\xfa\xed\xfe', b'\xfe\xed\xfa\xcf', b'\xca\xfe\xba\xbe', b'\xbe\xba\xfe\xca')
+
+
+def native_client(entrypoint):
+    if is_native_executable(entrypoint):
+        return entrypoint
+    # Resolve the installed official npm layout without executing launcher code.
+    # Other launchers require an explicit native --codex path.
+    package = entrypoint.parent.parent
+    if entrypoint.name != 'codex.js' or json.loads((package / 'package.json').read_text()).get('name') != '@openai/codex':
+        raise RuntimeError('Unknown client launcher; provide the native Codex executable with --codex')
+    machine = platform.machine().lower()
+    architecture = 'arm64' if machine in ('arm64', 'aarch64') else 'x64' if machine in ('x86_64', 'amd64') else None
+    system = platform.system()
+    targets = {'Darwin': ('darwin', 'apple-darwin'), 'Linux': ('linux', 'unknown-linux-musl'), 'Windows': ('win32', 'pc-windows-msvc')}
+    if architecture is None or system not in targets:
+        raise RuntimeError('Unsupported native client platform; provide --codex explicitly')
+    os_name, suffix = targets[system]
+    triple = ('aarch64' if architecture == 'arm64' else 'x86_64') + '-' + suffix
+    platform_package = 'codex-' + os_name + '-' + architecture
+    executable = 'codex.exe' if system == 'Windows' else 'codex'
+    vendors = [package / 'node_modules' / '@openai' / platform_package / 'vendor', package.parent / platform_package / 'vendor', package / 'vendor']
+    for vendor in vendors:
+        candidate = vendor / triple / 'bin' / executable
+        if candidate.is_file() and is_native_executable(candidate):
+            return candidate.resolve(strict=True)
+    raise RuntimeError('Native client executable not found; provide --codex explicitly')
+
+
+def equivalent_schema_form(schema, depth=0):
+    if depth > 64:
+        raise RuntimeError('Outgoing schema comparison exceeds depth bound')
+    if not isinstance(schema, dict):
+        return schema
+    result = dict(schema)
+    if schema.get('type') == 'object' and 'properties' not in schema:
+        result['properties'] = {}
+    # Only recurse schema-bearing positions. Defaults/examples are opaque
+    # instance data and must still compare exactly, including all their keys.
+    for key in ['properties', 'patternProperties', '$defs', 'definitions', 'dependentSchemas']:
+        if isinstance(schema.get(key), dict):
+            result[key] = {name: equivalent_schema_form(value, depth + 1) for name, value in schema[key].items()}
+    for key in ['additionalProperties', 'unevaluatedProperties', 'items', 'contains', 'propertyNames', 'not', 'if', 'then', 'else', 'additionalItems', 'unevaluatedItems']:
+        if isinstance(schema.get(key), dict):
+            result[key] = equivalent_schema_form(schema[key], depth + 1)
+    for key in ['allOf', 'anyOf', 'oneOf', 'prefixItems']:
+        if isinstance(schema.get(key), list):
+            result[key] = [equivalent_schema_form(value, depth + 1) for value in schema[key]]
+    return result
 
 
 def save(root, name, value):
@@ -160,7 +215,7 @@ def validate_capture(records, expected):
         declared = {tool['name']: tool for tool in expected}
         for tool in functions:
             supplied = declared[tool['name']]
-            if tool.get('parameters') != supplied['inputSchema'] or tool.get('description') != supplied['description']:
+            if equivalent_schema_form(tool.get('parameters')) != equivalent_schema_form(supplied['inputSchema']) or tool.get('description') != supplied['description']:
                 raise RuntimeError('Outgoing function schema/description differs from supplied RIGHTCLICK declaration')
         other = record.get('otherToolFields', {})
         if not set(other).issubset({'tool_choice', 'parallel_tool_calls'}) or other.get('tool_choice', 'auto') != 'auto' or not isinstance(other.get('parallel_tool_calls', False), bool):
@@ -261,13 +316,14 @@ def main():
     try:
         binary = args.runtime.resolve(strict=True); binary_sha = digest(binary)
         client_path = args.codex.resolve(strict=True); client_sha = digest(client_path)
+        client_executable = native_client(client_path); client_executable_sha = digest(client_executable)
         config_path = pathlib.Path(os.environ.get('CODEX_HOME', pathlib.Path.home() / '.codex')) / 'config.toml'
         config_sha = digest(config_path) if config_path.is_file() else 'ABSENT'
         phase_plan = phases(args); save(out, 'host-phase-plan.json', phase_plan)
         catalog = model_catalog(args.catalog_source); save(out, 'catalog.json', catalog)
         settings = restrictions(out / 'catalog.json')
         settings_pin = dict(settings); settings_pin['model_catalog_json'] = 'OUTPUT_SCOPED_CATALOG'
-        result.update(runtimeBinarySHA256=binary_sha, clientLauncherSHA256=client_sha, clientConfigSHA256=config_sha, modelCatalogSHA256=value_digest(catalog), restrictionsSHA256=value_digest(settings_pin), probeSHA256=digest(__file__))
+        result.update(runtimeBinarySHA256=binary_sha, clientLauncherSHA256=client_sha, clientEntrypointPath=str(client_path), clientExecutablePath=str(client_executable), clientExecutableSHA256=client_executable_sha, clientConfigSHA256=config_sha, modelCatalogSHA256=value_digest(catalog), restrictionsSHA256=value_digest(settings_pin), probeSHA256=digest(__file__))
         runtime = RPC([str(binary), 'mcp'], out, 'rightclick', environment, jsonrpc=True)
         runtime.call('initialize', {'protocolVersion': '2025-03-26', 'capabilities': {}, 'clientInfo': {'name': 'exact-seven-client-proof', 'version': '2'}})
         def call_runtime(name, arguments):
@@ -288,7 +344,7 @@ def main():
             if args.catalog_proof is None:
                 raise RuntimeError('Actual AI requires a separately captured exact-seven catalogue proof')
             proof = json.loads(args.catalog_proof.read_text())
-            for field in ['runtimeBinarySHA256', 'clientLauncherSHA256', 'clientConfigSHA256', 'modelCatalogSHA256', 'restrictionsSHA256', 'probeSHA256', 'dynamicToolsSHA256']:
+            for field in ['runtimeBinarySHA256', 'clientLauncherSHA256', 'clientExecutableSHA256', 'clientConfigSHA256', 'modelCatalogSHA256', 'restrictionsSHA256', 'probeSHA256', 'dynamicToolsSHA256']:
                 if proof.get(field) != result[field]:
                     raise RuntimeError('Catalogue preflight differs at ' + field)
             capture_path = args.catalog_proof.parent / 'request-catalog.json'
@@ -310,7 +366,7 @@ def main():
             server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), Handler)
             threading.Thread(target=server.serve_forever, daemon=True).start()
             settings.update({'model_provider': 'fixture', 'model_providers.fixture.name': 'Local exact-seven catalogue capture', 'model_providers.fixture.base_url': 'http://127.0.0.1:' + str(server.server_port), 'model_providers.fixture.wire_api': 'responses', 'model_providers.fixture.requires_openai_auth': False, 'model_providers.fixture.supports_websockets': False})
-        command = [str(client_path), '--no-daemon', 'app-server', '--stdio']
+        command = [str(client_executable), '--no-daemon', 'app-server', '--stdio']
         for key, value in settings.items(): command += ['-c', key + '=' + json.dumps(value)]
         app = RPC(command, out, 'app-server', environment)
         app.call('initialize', {'clientInfo': {'name': 'rightclick_exact_seven_probe', 'version': '2'}, 'capabilities': {'experimentalApi': True}})
@@ -333,6 +389,8 @@ def main():
                     if event['method'] != 'item/tool/call' or params.get('tool') not in CANONICAL or params.get('namespace') not in (None, '') or params.get('threadId') != thread_id or params.get('turnId') != turn_id or not isinstance(params.get('arguments'), dict):
                         raise RuntimeError('Unexpected model request; no extra tool or permission granted')
                     name = params['tool']; result['actualAIToolCalls'].append({'tool': name, 'arguments': params['arguments'], 'turnID': turn_id})
+                    if digest(client_executable) != client_executable_sha:
+                        raise RuntimeError('Native client executable changed; no retry')
                     if args.actual: result['actualAIInference'] = True
                     print(json.dumps({'observedAIToolCall': name, 'phase': phase['name']}), flush=True)
                     reply = call_runtime(name, params['arguments'])
@@ -354,7 +412,7 @@ def main():
             else:
                 result['capturedModelToolNames'] = validate_capture(captures, dynamic)
                 result['clientBoundary'] = 'PASS'; result['captureCatalogSHA256'] = digest(out / 'request-catalog.json')
-        if digest(binary) != binary_sha or digest(client_path) != client_sha or (digest(config_path) if config_path.is_file() else 'ABSENT') != config_sha:
+        if digest(binary) != binary_sha or digest(client_path) != client_sha or digest(client_executable) != client_executable_sha or (digest(config_path) if config_path.is_file() else 'ABSENT') != config_sha:
             raise RuntimeError('Runtime/client launcher/configuration bytes changed during run')
         if args.actual and not result['actualAIInference']:
             raise RuntimeError('No actual model-generated call or answer observed')
@@ -368,7 +426,7 @@ def main():
                 except Exception as error: result.setdefault('cleanupFailures', []).append(str(error)); result['result'] = 'FAIL'
         if server: server.shutdown(); server.server_close()
         save(out, 'summary.json', result)
-        print(json.dumps({'output': str(out), 'result': result['result'], 'clientBoundary': result['clientBoundary'], 'actualAIInference': args.actual, 'universalAcceptance': result['universalAcceptance'], 'failure': result.get('failure')}), flush=True)
+        print(json.dumps({'output': str(out), 'result': result['result'], 'clientBoundary': result['clientBoundary'], 'actualAIInference': result['actualAIInference'], 'universalAcceptance': result['universalAcceptance'], 'failure': result.get('failure')}), flush=True)
     return 0 if result['result'] == 'PASS' else 1
 
 
