@@ -295,21 +295,27 @@ enum OriginPinnedHTTP {
 
     static func loadObservation(_ request: URLRequest, maximumBytes: Int) throws -> Data {
         guard let url = request.url else { throw RightClickError("Observation request has no URL.") }
-        return try boundedLoad(url, maximumBytes: maximumBytes, template: .shared, initialRequest: request)
+        return try boundedLoad(url, maximumBytes: maximumBytes, template: .shared, initialRequest: request, credentialFree: true)
     }
 
     private static func boundedLoad(
         _ url: URL,
         maximumBytes: Int,
         template: URLSession,
-        initialRequest: URLRequest? = nil
+        initialRequest: URLRequest? = nil,
+        credentialFree: Bool = false
     ) throws -> Data {
         precondition(
             maximumBytes > 0
         )
 
-        let configuration =
-            template.configuration
+        let configuration = credentialFree ? URLSessionConfiguration.ephemeral : template.configuration
+        if credentialFree {
+            configuration.httpCookieStorage = nil
+            configuration.httpShouldSetCookies = false
+            configuration.urlCredentialStorage = nil
+            configuration.urlCache = nil
+        }
 
         configuration
             .timeoutIntervalForRequest =
@@ -341,6 +347,7 @@ enum OriginPinnedHTTP {
 
         var request = initialRequest ?? URLRequest(url: url)
         request.cachePolicy = .reloadIgnoringLocalCacheData
+        if credentialFree { request.httpShouldHandleCookies = false }
 
         request.timeoutInterval =
             acquisitionDeadline

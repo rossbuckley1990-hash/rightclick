@@ -56,6 +56,9 @@ public final class BonjourOpenAPISource:
     private var currentReflectors:
         [ServiceKey: OpenAPIReflector] = [:]
 
+    // Acquisition tokens are revoked by removal/replacement, including queued reads.
+    private var acquisitionTokens: [ServiceKey: UUID] = [:]
+
     private var discoveredServices:
         [ServiceKey: NetService] = [:]
 
@@ -147,91 +150,55 @@ public final class BonjourOpenAPISource:
         }
     }
 
-    public func update(
-        resolved descriptor:
-            BonjourOpenAPIServiceDescriptor
-    ) {
-        let key =
-            serviceKey(
-                descriptor
-            )
-
-        guard
-            let material =
-                validatedMaterial(
-                    descriptor
-                )
-        else {
-            removeReflector(
-                for: key
-            )
-
-            return
-        }
-
-        do {
-            let specification =
-                try specificationLoader(
-                    material.specificationURL
-                )
-
-            let reflector =
-                try OpenAPIReflector(
-                    specificationData:
-                        specification,
-                    baseURL:
-                        material.baseURL,
-                    externalBearerSchemeName:
-                        material.externalBearerSchemeName,
-                    revalidateSpecification: { [loader = specificationLoader] in
-                        try loader(material.specificationURL)
-                    }
-                )
-
-            lock.lock()
-
-            currentReflectors[key] =
-                reflector
-
-            lock.unlock()
-        } catch {
-            // Discovery metadata and provider documents are untrusted.
-            // A provider that cannot be reflected simply contributes no
-            // capability.
-            removeReflector(
-                for: key
-            )
-        }
+    public func update(resolved descriptor: BonjourOpenAPIServiceDescriptor) {
+        let key = serviceKey(descriptor)
+        guard let token = beginAcquisition(for: key) else { return }
+        update(descriptor, key: key, token: token)
     }
 
-    public func remove(
-        instanceName: String,
-        serviceType: String,
-        domain: String
-    ) {
-        let key =
-            ServiceKey(
-                instanceName:
-                    instanceName,
-                serviceType:
-                    serviceType,
-                domain:
-                    domain
-            )
+    private func beginAcquisition(for key: ServiceKey, requiring service: NetService? = nil) -> UUID? {
+        lock.lock(); defer { lock.unlock() }
+        if let service, discoveredServices[key] !== service { return nil }
+        let token = UUID()
+        acquisitionTokens[key] = token
+        // New metadata cannot leave the old executable contract active while loading.
+        currentReflectors.removeValue(forKey: key)
+        return token
+    }
 
+    private func update(_ descriptor: BonjourOpenAPIServiceDescriptor, key: ServiceKey, token: UUID) {
+        lock.lock(); let current = acquisitionTokens[key] == token; lock.unlock()
+        guard current else { return }
+        var reflected: OpenAPIReflector?
+        if let material = validatedMaterial(descriptor) {
+            do {
+                let specification = try specificationLoader(material.specificationURL)
+                reflected = try OpenAPIReflector(specificationData: specification,
+                    baseURL: material.baseURL, externalBearerSchemeName: material.externalBearerSchemeName,
+                    revalidateSpecification: { [loader = specificationLoader] in
+                        try loader(material.specificationURL)
+                    }, acquisitionIncarnation: token)
+            } catch {
+                // Untrusted/unavailable input contributes no capability. An old
+                // failed read must not remove a newer successful acquisition.
+            }
+        }
+        lock.lock(); defer { lock.unlock() }
+        guard acquisitionTokens[key] == token else { return }
+        currentReflectors[key] = reflected
+    }
+
+    public func remove(instanceName: String, serviceType: String, domain: String) {
+        remove(for: ServiceKey(instanceName: instanceName, serviceType: serviceType, domain: domain))
+    }
+
+    private func remove(for key: ServiceKey, requiring expected: NetService? = nil) {
         lock.lock()
-
-        currentReflectors.removeValue(
-            forKey: key
-        )
-
-        let service =
-            discoveredServices.removeValue(
-                forKey: key
-            )
-
+        if let expected, discoveredServices[key] !== expected { lock.unlock(); return }
+        acquisitionTokens.removeValue(forKey: key)
+        currentReflectors.removeValue(forKey: key)
+        let service = discoveredServices.removeValue(forKey: key)
         lock.unlock()
-
         service?.stop()
     }
 
@@ -288,16 +255,11 @@ public final class BonjourOpenAPISource:
         )
     }
 
-    private func removeReflector(
-        for key: ServiceKey
-    ) {
-        lock.lock()
-
-        currentReflectors.removeValue(
-            forKey: key
-        )
-
-        lock.unlock()
+    private func removeReflector(for key: ServiceKey, requiring service: NetService? = nil) {
+        lock.lock(); defer { lock.unlock() }
+        if let service, discoveredServices[key] !== service { return }
+        acquisitionTokens.removeValue(forKey: key)
+        currentReflectors.removeValue(forKey: key)
     }
 
     private func validatedMaterial(
@@ -721,17 +683,12 @@ public final class BonjourOpenAPISource:
         return result
     }
 
-    private func acquire(
-        _ descriptor:
-            BonjourOpenAPIServiceDescriptor
-    ) {
-        acquisitionQueue.async {
-            [weak self] in
-
-            self?.update(
-                resolved:
-                    descriptor
-            )
+    private func acquire(_ descriptor: BonjourOpenAPIServiceDescriptor, from service: NetService) {
+        let key = serviceKey(descriptor)
+        // Capture the token before queueing, under the same lock as removal.
+        guard let token = beginAcquisition(for: key, requiring: service) else { return }
+        acquisitionQueue.async { [weak self] in
+            self?.update(descriptor, key: key, token: token)
         }
     }
 }
@@ -758,8 +715,11 @@ extension BonjourOpenAPISource:
 
         lock.lock()
 
-        discoveredServices[key] =
-            service
+        if discoveredServices[key] !== service {
+            acquisitionTokens.removeValue(forKey: key)
+            currentReflectors.removeValue(forKey: key)
+        }
+        discoveredServices[key] = service
 
         lock.unlock()
 
@@ -776,14 +736,7 @@ extension BonjourOpenAPISource:
         didRemove service: NetService,
         moreComing: Bool
     ) {
-        remove(
-            instanceName:
-                service.name,
-            serviceType:
-                service.type,
-            domain:
-                service.domain
-        )
+        remove(for: serviceKey(service), requiring: service)
     }
 }
 
@@ -801,17 +754,13 @@ extension BonjourOpenAPISource:
         else {
             removeReflector(
                 for:
-                    serviceKey(
-                        sender
-                    )
+                    serviceKey(sender), requiring: sender
             )
 
             return
         }
 
-        acquire(
-            descriptor
-        )
+        acquire(descriptor, from: sender)
     }
 
     public func netService(
@@ -829,9 +778,7 @@ extension BonjourOpenAPISource:
             return
         }
 
-        acquire(
-            descriptor
-        )
+        acquire(descriptor, from: sender)
     }
 
     public func netService(
@@ -841,9 +788,7 @@ extension BonjourOpenAPISource:
     ) {
         removeReflector(
             for:
-                serviceKey(
-                    sender
-                )
+                serviceKey(sender), requiring: sender
         )
     }
 }

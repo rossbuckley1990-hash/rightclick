@@ -124,6 +124,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
     private let specificationSHA256: String
     private let revalidateSpecification: (() throws -> Data)?
     private let externalBearerSchemeName: String?
+    private let acquisitionIncarnation: UUID?
     private let freshnessLock = NSLock()
     private var staleContract = false
     private let session: URLSession
@@ -138,7 +139,8 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         externalBearerSchemeName:
             String? = nil,
         session: URLSession = .shared,
-        revalidateSpecification: (() throws -> Data)? = nil
+        revalidateSpecification: (() throws -> Data)? = nil,
+        acquisitionIncarnation: UUID? = nil
     ) throws {
         let canonicalBaseURL =
             try Self.canonicalBaseURL(
@@ -213,6 +215,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
 
         self.revalidateSpecification = revalidateSpecification
         self.externalBearerSchemeName = resolvedExternalBearerSchemeName
+        self.acquisitionIncarnation = acquisitionIncarnation
 
         self.session =
             OriginPinnedHTTP.makeSession(
@@ -289,6 +292,12 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                         operation
                             .responseContentType,
                 ]
+
+            if let acquisitionIncarnation {
+                // Minted by the acquisition owner, never read from provider
+                // metadata. The existing ABI and engine snapshot bind it.
+                metadata["acquisitionIncarnation"] = acquisitionIncarnation.uuidString
+            }
 
             if let requestContentType =
                 operation.requestContentType
@@ -1020,7 +1029,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         guard let revalidateSpecification else { throw RCIRError.unavailable }
         return try OpenAPIReflector(specificationData: revalidateSpecification(), baseURL: baseURL,
             externalBearerSchemeName: externalBearerSchemeName, session: session,
-            revalidateSpecification: revalidateSpecification)
+            revalidateSpecification: revalidateSpecification, acquisitionIncarnation: acquisitionIncarnation)
     }
 
     private func contractIsCurrent() -> Bool {
