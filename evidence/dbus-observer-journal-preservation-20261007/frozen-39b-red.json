@@ -1,0 +1,123 @@
+{
+  "actualNativeRun": {
+    "failures": 0,
+    "jobID": 113039443899,
+    "runID": 37693558231,
+    "skips": 0,
+    "sourceFile": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+    "tests": 13
+  },
+  "assertion": "journal.invocation equals the stored invocation actually returned by the observer",
+  "assertionPassed": false,
+  "candidateNativeGreen": "PENDING_ACTUAL_NATIVE_LINUX_RUN",
+  "canonicalSignatureCheck": {
+    "algorithm": "Ed25519",
+    "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE",
+    "payloadBytes": 9384,
+    "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+    "signature": "VALID",
+    "signedClaims": {
+      "deadline": 1791411254378,
+      "effects": [
+        "execute"
+      ],
+      "finishedAt": 1791411225129,
+      "lastObservationTime": 1791411225269,
+      "leaseID": "5F1ADA57-EB7E-4DC5-BF3D-D84A02962644",
+      "phase": "completed",
+      "providerGeneration": 2,
+      "scopeCount": 1,
+      "semanticOutcome": "failed",
+      "startedAt": 1791411224378,
+      "taskID": "C7294725-7E35-4285-B7AC-593D86E2122E"
+    },
+    "trustedKeyMatched": true
+  },
+  "classification": "Existing evidence-collector precision defect. No claim it was introduced by the candidate. Runtime correctly preserves old signed marker and rejects replay success.",
+  "externalTruthBoundary": "Actual separate UID1101 observer read provider file and bus method during CI. Offline audit validates the preserved journal and signed observation against exact supplied owned value; original temporary record files no longer exist. A valid signature alone does not establish external truth.",
+  "fixture": {
+    "existingExpression": "dict(result, invocation=self.headers.get(\"X-RightClick-Invocation\"))",
+    "line": 82,
+    "path": "scripts/dbus-private-fixture.py"
+  },
+  "legacyReplayAssertion": {
+    "lines": [
+      159,
+      160
+    ],
+    "path": "scripts/acceptance-linux-dbus.py",
+    "scope": "Rejects succeeded state/outcome; does not assert exact observed marker preservation in the observer journal."
+  },
+  "pin": {
+    "bytes": 32,
+    "sha256": "2d4c639b8ac205a597f45376a3e8165c9074127224d674cd153ee19fd65a7306"
+  },
+  "privateOriginalPins": {
+    "checked-receipt-C7294725-7E35-4285-B7AC-593D86E2122E.json": {
+      "bytes": 12744,
+      "sha256": "e1b1c8a21ded4722dcfdd891c15122d985748cb6a8d77e9354a3b5290bf609c8"
+    },
+    "linux-dbus/seven-core/effects.jsonl": {
+      "bytes": 497,
+      "sha256": "0c83a472bbbae5718917aebdc8ff9cf8d67260f70bc10eca1f4927350338a5e9"
+    },
+    "linux-dbus/seven-core/observations.jsonl": {
+      "bytes": 924,
+      "sha256": "eb3cfc8b302450bc9fe9814f76bbbb0521d0a3998bd0352ff95026f8f8c3270c"
+    },
+    "linux-dbus/seven-core/transcript.json": {
+      "bytes": 200662,
+      "sha256": "a9694d6ba1b50989564dcc919c141686034f12d9f68324e7efbe332ae6eee191"
+    },
+    "linux-dbus/seven-core/trusted-public-key.raw": {
+      "bytes": 32,
+      "sha256": "2d4c639b8ac205a597f45376a3e8165c9074127224d674cd153ee19fd65a7306"
+    }
+  },
+  "projection": {
+    "losslessOwnedJournal": true,
+    "omitted": "Unrelated provider inventories and raw CI environment logs; no credential fields included.",
+    "privateOriginalsUnchanged": true,
+    "signedReceipt": "byte-for-byte unchanged extracted envelope; signed payload unchanged"
+  },
+  "publicReplay": {
+    "leaseID": "5F1ADA57-EB7E-4DC5-BF3D-D84A02962644",
+    "outcome": "failed",
+    "ownedArguments": {
+      "challenge": "64cc1cad3323452e9606848164f95f58",
+      "enabled": "[\"boolean\",true]",
+      "value": "native typed D-Bus effect 387c2e794086451a8f0fdd0cd0fd9709"
+    },
+    "state": "failed",
+    "taskID": "C7294725-7E35-4285-B7AC-593D86E2122E"
+  },
+  "rawReplayJournalRow": {
+    "challenge": "64cc1cad3323452e9606848164f95f58",
+    "digest": "a957c8c37a3fb17b757c584eaf3bb9f5a9d2c755c01288febd0479f85fcd9fbe",
+    "enabled": "true",
+    "invocation": "C7294725-7E35-4285-B7AC-593D86E2122E",
+    "observation": "independent-file-sha256",
+    "observerUID": "1101",
+    "platform": "Linux",
+    "writerUID": "1100"
+  },
+  "repair": "Keep invocation from the observed record and journal requestInvocation separately; live positive and replay assertions bind each request to its task.",
+  "runtimeSHA256": "6f290e8b9b08a6b5b6b742fe7541433b52ee5aa2d1ddcefab320435a53f2257c",
+  "source": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+  "sourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+  "status": "RED_OBSERVER_JOURNAL_MARKER_PRESERVATION",
+  "storedObservationDecodedUsingExistingVerifier": {
+    "challenge": "64cc1cad3323452e9606848164f95f58",
+    "digest": "a957c8c37a3fb17b757c584eaf3bb9f5a9d2c755c01288febd0479f85fcd9fbe",
+    "enabled": "true",
+    "invocation": "574EDE03-E25D-4D73-A6FE-1A3641730BAF",
+    "observation": "independent-file-sha256",
+    "observerUID": "1101",
+    "platform": "Linux",
+    "writerUID": "1100"
+  },
+  "unchangedVerifier": {
+    "bytes": 28953,
+    "sha256": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966"
+  }
+}

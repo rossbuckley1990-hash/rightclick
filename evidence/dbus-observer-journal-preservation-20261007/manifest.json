@@ -1,0 +1,89 @@
+{
+  "base": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+  "candidateFiles": {
+    ".github/workflows/dbus-observer-journal-evidence.yml": {
+      "bytes": 2281,
+      "sha256": "501e2f658c7be8c34f8ebee335134cabc68ea4af8edddee14689655e8ccd84fc"
+    },
+    "scripts/acceptance-linux-dbus.py": {
+      "bytes": 17474,
+      "sha256": "14111d166de07d698b77ffac362ca2e8b2eacb745638fee621172c24587e418e"
+    },
+    "scripts/dbus-private-fixture.py": {
+      "bytes": 4947,
+      "sha256": "b24cbda9d8b0eb952ad866a573ce46a5879266b13fe03b1caee4fc47342e6f21"
+    }
+  },
+  "collectorCommit": "ccc3666b2be33624950b26c62a2ade81470b6e7b",
+  "files": {
+    "README.md": {
+      "bytes": 1643,
+      "sha256": "3b3499ab834e3f0766f13ae538c8bf4d98c23300f54e4ab7aa0cd4203f4ee054"
+    },
+    "candidate-validation.json": {
+      "bytes": 804,
+      "sha256": "1ebd7523a5d386d5e39f4c43c272f9ed2c95445e3e9e9820651cab29c2ee9796"
+    },
+    "frozen-39b-owned-observations.jsonl": {
+      "bytes": 924,
+      "sha256": "eb3cfc8b302450bc9fe9814f76bbbb0521d0a3998bd0352ff95026f8f8c3270c"
+    },
+    "frozen-39b-red.json": {
+      "bytes": 4993,
+      "sha256": "0e9d5869242a2acdb8205808d466b185b00c4d48621ad798666160429054ddea"
+    },
+    "frozen-39b-replay-receipt.json": {
+      "bytes": 12744,
+      "sha256": "e1b1c8a21ded4722dcfdd891c15122d985748cb6a8d77e9354a3b5290bf609c8"
+    },
+    "frozen-39b-trusted-public-key.raw": {
+      "bytes": 32,
+      "sha256": "2d4c639b8ac205a597f45376a3e8165c9074127224d674cd153ee19fd65a7306"
+    },
+    "six-field-ledger.json": {
+      "bytes": 6685,
+      "sha256": "7d1450c2387375d6b53d848ff2622fae6e90459d3cc33f89754da47e4a3e3ce5"
+    }
+  },
+  "privateAuditPins": {
+    "baseline-test-method-preservation.json": {
+      "bytes": 476,
+      "sha256": "accf5f4af69f794f123beffb2f8ea32d94ce68f2fa5fdde33675f70aed7e5272"
+    },
+    "current-pr49-ci-20261008.json": {
+      "bytes": 5836,
+      "sha256": "6b8494fae692abcbf76dd54d6f2dcecec4c69d8cec009771d974fc5024261bed"
+    },
+    "linux-dbus-independent-receipt-audit.json": {
+      "bytes": 3745,
+      "sha256": "abc22c04e9ebfc7fc1134222e75babc5557121e4b71d1448d5742679416d4a8a"
+    },
+    "linux-dbus/native-tests.log": {
+      "bytes": 185611,
+      "sha256": "2f99b1030203cffe2acf6cee504a65c799f1a14ba83166c09101e0c46a7bb550"
+    },
+    "linux/linux-tests.log": {
+      "bytes": 387575,
+      "sha256": "5258748544da704b47b3537116ae404d5c8f29cbf8999c3dccec6212496a1717"
+    },
+    "macos/macos-tests.log": {
+      "bytes": 446073,
+      "sha256": "5773cb23b0aeb4f2a93756c73dfd6d18916492593227a3602dd7596b0e37e04d"
+    },
+    "main-daf-vs-28b.json": {
+      "bytes": 58362,
+      "sha256": "5f3ce97f1b85621ad647b79e1be97d0a8ba01d40d4fcc3baaa1bf4f0037b2414"
+    },
+    "windows/windows-integrated-phase.json": {
+      "bytes": 166,
+      "sha256": "b538acc356a7ac25d7a5b000511d335eb4b8c5f460ef51682489f6cc9808aed5"
+    },
+    "windows/windows-tests.log": {
+      "bytes": 6282,
+      "sha256": "8b6cf4bc8f049cd7c89a220c84cdbd0e38f4b20216147b37ccececfda3d72ac2"
+    }
+  },
+  "projection": "Owned three-row observation journal copied losslessly; complete signed replay receipt copied without byte changes; separate public key copied. No raw environment dumps, unrelated inventory, bearer or private key included.",
+  "sourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+  "status": "NATIVE_GREEN_PENDING"
+}

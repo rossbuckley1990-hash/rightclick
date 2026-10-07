@@ -1,0 +1,48 @@
+name: Native D-Bus observer journal evidence
+on:
+  push:
+    branches: [diagnostic/dbus-observer-journal-preservation-20261007]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: dbus-observer-journal-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-linux-dbus:
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+      - name: Provision private native bus principals
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends dbus systemd python3 python3-dbus python3-gi passwd openssl ca-certificates
+          useradd -u 1100 -m rcwriter
+          useradd -u 1101 -m rcobserver
+          useradd -u 1102 -m rcservice
+      - name: Typed compiler and real final-gate owner controls
+        env:
+          RIGHTCLICK_TEST_DBUS_NATIVE: "1"
+        run: |
+          mkdir -p dbus-evidence
+          git -c safe.directory="$GITHUB_WORKSPACE" rev-parse HEAD > dbus-evidence/source.txt
+          git -c safe.directory="$GITHUB_WORKSPACE" rev-parse HEAD:Sources > dbus-evidence/sources-tree.txt
+          test "$(cat dbus-evidence/sources-tree.txt)" = c7414e1dc9cf28c98262aa933e40166113f66ba8
+          sha256sum scripts/dbus-private-fixture.py scripts/acceptance-linux-dbus.py > dbus-evidence/collector-source-sha256.txt
+          swift --version > dbus-evidence/toolchain.txt
+          swift test --force-resolved-versions --filter 'DBusRuntimeTests|DBusNativeOwnerAcceptanceTests|CapabilityTypedCoreBoundaryTests' > dbus-evidence/native-tests.log 2>&1
+      - name: Build the single runtime
+        run: |
+          swift build -c release --product rightclick --force-resolved-versions
+          sha256sum .build/release/rightclick > dbus-evidence/binary-sha256.txt
+      - name: Seven operations, automatic discovery and independent native effect
+        run: python3 scripts/acceptance-linux-dbus.py .build/release/rightclick dbus-evidence/seven-core
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-dbus-observer-journal-${{ github.sha }}
+          path: dbus-evidence/

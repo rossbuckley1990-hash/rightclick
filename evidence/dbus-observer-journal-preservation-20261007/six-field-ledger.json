@@ -1,0 +1,117 @@
+{
+  "fieldOrder": [
+    "substrateAndPressure",
+    "genericDeficiency",
+    "reusableBoundary",
+    "thinProviderLayer",
+    "evidence",
+    "transferAndRemainingScope"
+  ],
+  "rows": [
+    {
+      "evidence": {
+        "RED": "actual39b replay preserved in frozen-39b-red.json",
+        "candidateGREEN": "PENDING",
+        "nativeRuntimeSHA256": "6f290e8b9b08a6b5b6b742fe7541433b52ee5aa2d1ddcefab320435a53f2257c"
+      },
+      "genericDeficiency": "Collector conflates request task marker and independently observed stored marker.",
+      "reusableBoundary": "Evidence preserves observation separately from request identity; existing generic verifier remains unchanged.",
+      "substrateAndPressure": "Native Linux D-Bus replay journal",
+      "thinProviderLayer": "Fixture adds only requestInvocation journal field; acceptance checks positive/current and replay/old markers.",
+      "transferAndRemainingScope": "Collector repair only; no runtime, schema, authority or semantic-outcome change. Native CI is required."
+    },
+    {
+      "evidence": {
+        "dedicatedMacJob": 113039640538,
+        "dedicatedMacStatus": "IN_PROGRESS at snapshot",
+        "failures": 0,
+        "portableJob": 113039948337,
+        "portableRun": 37693558244,
+        "runtimeSHA256": "d2ea71b3b61b6a3aa0ce428b07b1b977f82793dc88a9abf347441414678fe99e",
+        "sevenOperations": "stdio and authenticated HTTP acceptance PASS",
+        "skips": 35,
+        "tests": 967
+      },
+      "genericDeficiency": "Full dedicated macOS acceptance is not yet terminal in the current snapshot; optional integrations remain explicit skips.",
+      "reusableBoundary": "Existing native defaults and seven public operations retained. Existing native macOS methods were not removed.",
+      "substrateAndPressure": "Frozen39b macOS release regression",
+      "thinProviderLayer": "Default Service/Sharing/ActionExtension and Bonjour sources remain present on macOS.",
+      "transferAndRemainingScope": "Portable suite GREEN does not turn skipped provisions, fresh install, all native RCIR routes or dedicated distribution gates GREEN."
+    },
+    {
+      "evidence": {
+        "canonicalPinnedReceiptsIndependentlyChecked": 5,
+        "nativeFailures": 0,
+        "nativeRuntimeSHA256": "6f290e8b9b08a6b5b6b742fe7541433b52ee5aa2d1ddcefab320435a53f2257c",
+        "nativeSkips": 0,
+        "nativeTests": 13,
+        "portableFailures": 0,
+        "portableRuntimeSHA256": "5e3e317100e7b00c29b99fe394117d10d5fe12dbf7f1b06e6012eda750af4a30",
+        "portableSkips": 28,
+        "portableTests": 753
+      },
+      "genericDeficiency": "Portable suite and scoped native bus evidence do not cover every Linux capability or issuer delegation.",
+      "reusableBoundary": "Common seven-operation surface; pinned canonical receipts and independently read native effects.",
+      "substrateAndPressure": "Frozen39b Linux runtime and native D-Bus",
+      "thinProviderLayer": "Private EXTERNAL UID native bus daemon enforces writer/observer method separation.",
+      "transferAndRemainingScope": "Scoped daemon-level UID authority, exact local lease/policy, live withdrawal/restoration; no brokered issuer credential/delegation, streams or fresh AI proof."
+    },
+    {
+      "evidence": {
+        "base": "daf07d04ee11be59e3f499f370f0bba5df9998ad",
+        "isolatedSwiftTypecheck": "PASS",
+        "main": "28b2ab4b4cff713d6bbe5bbe3c7dfc5def40d961",
+        "runtimeDependency": "standalone helper target is not a RightClickCore/CLI dependency"
+      },
+      "genericDeficiency": "Source archive identity changes if main helper is reconciled even though runtime target closure does not depend on helper.",
+      "reusableBoundary": "Keep actual main helper while explicitly repackaging and pinning source instead of treating product Sources as unchanged.",
+      "substrateAndPressure": "Current main28b source-package drift",
+      "thinProviderLayer": "Only Sources/RightClickARDProbe/main.swift differs from daf in observed main compare; adds live-hf-resolve metadata serialization and loosens resource/wait bounds.",
+      "transferAndRemainingScope": "Preserve existing helper; no broad experiments/skills adoption. HF_SKILL_RESOLUTION=PASS proves metadata serialization only, not artifact retrieval or skill execution."
+    },
+    {
+      "evidence": {
+        "buildCompletedUTC": "2026-10-07T22:14:23.9496Z",
+        "deadlineUTC": "2026-10-07T22:37:51.8959Z",
+        "integratedStartedUTC": "2026-10-07T22:12:44.5492044Z",
+        "job": 113039948241,
+        "protectedReferenceFailures": 0,
+        "protectedReferenceTests": 9,
+        "publicCore7": "SKIPPED",
+        "releaseBuild": "SKIPPED",
+        "run": 37693558244,
+        "testStartTrace": "ABSENT"
+      },
+      "genericDeficiency": "25-minute deadline after build produced no test-start trace or integrated test summary; cause UNKNOWN.",
+      "reusableBoundary": "Preserve actual deadline and add diagnostic progress before assigning a regression cause.",
+      "substrateAndPressure": "Frozen39b native Windows integrated deadline",
+      "thinProviderLayer": "No production change justified by an unlocated deadline.",
+      "transferAndRemainingScope": "No claim of an execution hang or introduced regression. Do not drop or skip A2A tests to manufacture completion."
+    },
+    {
+      "evidence": {
+        "extraInBottle": [],
+        "installedStableRuntimeSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+        "job": 113039640456,
+        "missingFromBottle": [
+          "artifact.resolver.dbus",
+          "artifact.resolver.kafka",
+          "artifact.resolver.kubernetes",
+          "artifact.resolver.mcp",
+          "artifact.resolver.wasm",
+          "source.a2a.configured",
+          "source.dbus.session"
+        ],
+        "status": "FAILURE"
+      },
+      "genericDeficiency": "Installed distribution lacks seven newly advertised candidate kinds; broad inventory equality gate is RED.",
+      "reusableBoundary": "Keep runtime identity, source identity and release distribution acceptance distinct.",
+      "substrateAndPressure": "Published Stable0.2.2 bottle alignment against39b0.2.3",
+      "thinProviderLayer": "No extra distributed kinds or demonstrated removed existing kind.",
+      "transferAndRemainingScope": "Inventory difference does not itself prove a regression of existing unary/discovery behavior. Existing controlled parity proof remains separately scoped."
+    }
+  ],
+  "snapshot": "2026-10-08; see private current-pr49-ci-20261008.json pins",
+  "source": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+  "sourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8"
+}
