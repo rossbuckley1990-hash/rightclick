@@ -55,6 +55,27 @@ final class CapabilityInterfaceTests: XCTestCase {
     func testBoundedExecutorAbstainsForOfflineTool() throws {
         XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/nonexistent/rightclick-runtime"), arguments: []))
     }
+    func testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline() throws {
+        let executable = URL(fileURLWithPath: "/bin/sleep")
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: ["1"], maximumBytes: -1))
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: ["1"], timeout: .nan))
+        let before = DispatchTime.now().uptimeNanoseconds
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: ["2"], timeout: 0.05))
+        XCTAssertLessThan(DispatchTime.now().uptimeNanoseconds - before, 1_000_000_000)
+    }
+    func testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues() throws {
+        XCTAssertThrowsError(try CapabilityJSON.value(NSNumber(value: UInt64.max)))
+        var raw: Any = "leaf"
+        for _ in 0..<34 { raw = [raw] }
+        XCTAssertThrowsError(try CapabilityJSON.value(raw))
+    }
+    func testDuplicateInterfaceNamesFailClosed() throws {
+        let operation = CapabilityInterfaceOperation(name: "duplicate", title: "duplicate",
+            arguments: .object(properties: [:], required: []), result: .string, declaration: .null)
+        XCTAssertThrowsError(try CapabilityInterfaceReflector(id: "duplicate", provider: "controlled",
+            target: URL(string: "http://127.0.0.1:19143/mcp")!, substrate: "test", descriptorDigest: "proof",
+            operations: [operation, operation], available: { true }, invoke: { _, _, _ in .null }))
+    }
     func testRealWASMComponentWhenProvisioned() throws {
         let environment = ProcessInfo.processInfo.environment
         guard let path = environment["RIGHTCLICK_TEST_WASM_COMPONENT"],

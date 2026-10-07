@@ -21,7 +21,8 @@ enum BoundedCapabilityProcess {
                     admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> Data {
         guard executable.isFileURL, executable.path.hasPrefix("/"),
               FileManager.default.isExecutableFile(atPath: executable.path),
-              (0...10).contains(timeout), maximumBytes <= 1_048_576 else { throw RCIRError.unavailable }
+              timeout.isFinite, timeout > 0, timeout <= 10,
+              (1...1_048_576).contains(maximumBytes) else { throw RCIRError.invalidLimit }
         let process = Process(); process.executableURL = executable; process.arguments = arguments
         process.environment = ["PATH": "/usr/bin:/bin", "HOME": "/private/tmp"]
         let pipe = Pipe(); process.standardOutput = pipe; process.standardError = FileHandle.nullDevice
@@ -44,9 +45,9 @@ enum BoundedCapabilityProcess {
         } catch {
             try? pipe.fileHandleForWriting.close(); throw error
         }
-        let deadline = Date().addingTimeInterval(timeout)
+        let deadline = DispatchTime.now().uptimeNanoseconds + UInt64(timeout * 1_000_000_000)
         while process.isRunning {
-            if Date() >= deadline || buffer.snapshot().1 {
+            if DispatchTime.now().uptimeNanoseconds >= deadline || buffer.snapshot().1 {
                 process.terminate()
                 usleep(20_000)
                 if process.isRunning { kill(process.processIdentifier, SIGKILL) }

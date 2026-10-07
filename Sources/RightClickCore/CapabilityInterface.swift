@@ -148,16 +148,24 @@ public enum CapabilityJSON {
         default: throw CapabilityABIError.invalidSchema
         }
     }
-    public static func value(_ raw: Any) throws -> CapabilityValue {
+    public static func value(_ raw: Any, depth: Int = 0) throws -> CapabilityValue {
+        guard depth <= 32 else { throw CapabilityABIError.limitExceeded }
         if raw is NSNull { return .null }
         if let string = raw as? String { return .string(string) }
         if let number = raw as? NSNumber {
             if CFGetTypeID(number) == CFBooleanGetTypeID() { return .boolean(number.boolValue) }
             if ["f", "d"].contains(String(cString: number.objCType)) { return .number(number.doubleValue) }
-            return .integer(number.int64Value)
+            guard let integer = Int64(number.stringValue) else { throw CapabilityABIError.invalidWire }
+            return .integer(integer)
         }
-        if let array = raw as? [Any] { return .array(try array.map(value)) }
-        if let object = raw as? [String: Any] { return .object(try object.mapValues(value)) }
+        if let array = raw as? [Any] {
+            guard array.count <= 4096 else { throw CapabilityABIError.limitExceeded }
+            return .array(try array.map { try value($0, depth: depth + 1) })
+        }
+        if let object = raw as? [String: Any] {
+            guard object.count <= 4096 else { throw CapabilityABIError.limitExceeded }
+            return .object(try object.mapValues { try value($0, depth: depth + 1) })
+        }
         throw CapabilityABIError.invalidWire
     }
     public static func object(_ value: CapabilityValue) throws -> Any {

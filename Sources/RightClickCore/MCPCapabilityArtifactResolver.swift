@@ -44,7 +44,7 @@ public final class MCPCapabilityArtifactResolver: CapabilityArtifactResolver {
 private final class MCPDescriptorSession {
     let endpoint: URL
     let authorityScheme: String?
-    let protocolVersion = "2025-11-25"
+    private(set) var protocolVersion = "2025-11-25"
     private var sessionID: String?
     private var sequence = 0
     private let origin: String
@@ -59,6 +59,7 @@ private final class MCPDescriptorSession {
               let capabilities = initialized["capabilities"] as? [String: Any], capabilities["tools"] != nil else {
             throw CapabilityArtifactResolutionError.invalidDescriptor("MCP server did not negotiate a supported tools interface.")
         }
+        protocolVersion = negotiated
         try notify("notifications/initialized")
     }
     func authorityAvailable() -> Bool { authorityScheme == nil || token() != nil }
@@ -111,6 +112,8 @@ private final class MCPDescriptorSession {
             cursor = page["nextCursor"] as? String
             if let cursor { guard cursor.utf8.count <= 1024, seen.insert(cursor).inserted else { throw CapabilityABIError.invalidWire } }
         } while cursor != nil
+        let names = tools.compactMap { $0["name"] as? String }
+        guard names.count == tools.count, Set(names).count == names.count else { throw CapabilityABIError.invalidIdentity }
         return tools.sorted { ($0["name"] as? String ?? "") < ($1["name"] as? String ?? "") }
     }
     func call(name: String, input: CapabilityValue, admit: (_ start: () -> Void) throws -> Void) throws -> CapabilityValue {
