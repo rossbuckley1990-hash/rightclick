@@ -1,0 +1,18 @@
+{
+  "started_at": "2026-10-07T09:33:11.706119+00:00",
+  "kind": "Native macOS reproduction, not GitHub-hosted CI",
+  "tests_weakened": false,
+  "base": "05ace2fec149c62c7cfb24f41fafde863b377ff5",
+  "head": "150a3ffeac43433c9190376985210271d203bdb5",
+  "pr": 41,
+  "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/41",
+  "repair-red": {
+    "exit_code": 1,
+    "log_sha256": "4cd4817ee369d7bf9b620552e9d3b913291e83c1a2bc081c4012e7411b6be0d8",
+    "summaries": []
+  },
+  "baseline_expected_red": false,
+  "native_result": "BLOCKED_OR_FAILED",
+  "error": "Traceback (most recent call last):\n  File \"/tmp/rightclick-readme-maintenance-20261007/native-tests.py\", line 32, in <module>\n    assert report['baseline_expected_red'], 'Baseline did not establish the expected regression failure'\nAssertionError: Baseline did not establish the expected regression failure\n",
+  "finished_at": "2026-10-07T09:33:53.049203+00:00"
+}

@@ -9,12 +9,7 @@ final class HostProtectedReferenceTests: XCTestCase {
     private var files: [URL] = []
     override func setUpWithError() throws {
         root = FileManager.default.temporaryDirectory.appendingPathComponent("host-reference-" + UUID().uuidString)
-        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: false)
-#if os(Windows)
-        XCTAssertEqual(root.path.withCString { rc_host_harden_private($0, 1) }, 0)
-#else
-        try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: root.path)
-#endif
+        try NativeHTTPFixture.createPrivateDirectory(root)
     }
     override func tearDownWithError() throws {
 #if os(Windows)
@@ -24,12 +19,7 @@ final class HostProtectedReferenceTests: XCTestCase {
     }
     private func file(_ name: String, _ bytes: Data) throws -> URL {
         let file = root.appendingPathComponent(name)
-        try bytes.write(to: file, options: .withoutOverwriting); files.append(file)
-#if os(Windows)
-        XCTAssertEqual(file.path.withCString { rc_host_harden_private($0, 0) }, 0)
-#else
-        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: file.path)
-#endif
+        try NativeHTTPFixture.writePrivate(bytes, to: file); files.append(file)
         return file
     }
     func testConfiguredPolicySigningAndObserverReferencesUseOneProtectedBackend() throws {
@@ -65,15 +55,80 @@ final class HostProtectedReferenceTests: XCTestCase {
 #endif
     }
 #if os(Windows)
+    func testPrivateCreationNeverOverwritesOrAdoptsExistingObjects() throws {
+        let original = Data("dummy-private-reference".utf8)
+        let selected = try file("existing-reference", original)
+        let replacement = Data("replacement-must-not-be-written".utf8)
+        let result = replacement.withUnsafeBytes { bytes in
+            selected.path.withCString { rc_host_create_private_file($0, bytes.bindMemory(to: UInt8.self).baseAddress, replacement.count) }
+        }
+        XCTAssertNotEqual(result, 0)
+        XCTAssertEqual(try CapabilityProtectedReference.read(selected.path, maximum: 1024), original)
+        XCTAssertNotEqual(root.path.withCString { rc_host_create_private_directory($0) }, 0)
+    }
+    func testPrivateCreationThroughParentJunctionCreatesNoTargetObjects() throws {
+        let actual = root.appendingPathComponent("creation-target", isDirectory: true)
+        try NativeHTTPFixture.createPrivateDirectory(actual)
+        let alias = root.appendingPathComponent("creation-alias", isDirectory: true)
+        try nativeJunction(alias, target: actual)
+        defer { try? FileManager.default.removeItem(at: alias) }
+        let file = alias.appendingPathComponent("new-reference")
+        let bytes = Data("must-not-reach-redirected-target".utf8)
+        let result = bytes.withUnsafeBytes { buffer in
+            file.path.withCString { rc_host_create_private_file($0, buffer.bindMemory(to: UInt8.self).baseAddress, bytes.count) }
+        }
+        XCTAssertNotEqual(result, 0)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: actual.appendingPathComponent("new-reference").path))
+        XCTAssertNotEqual(alias.appendingPathComponent("new-directory").path.withCString { rc_host_create_private_directory($0) }, 0)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: actual.appendingPathComponent("new-directory").path))
+    }
+    func testReleaseClearsReadOnlyOnlyAttributeAndAllowsActualRemoval() throws {
+        let selected = try file("readonly-only", Data("dummy-private-reference".utf8))
+        let path = selected.path.replacingOccurrences(of: "'", with: "''")
+        try nativeCommand("WindowsPowerShell\\v1.0\\powershell.exe", ["-NoProfile", "-NonInteractive", "-Command",
+            "[System.IO.File]::SetAttributes('\(path)', [System.IO.FileAttributes]::ReadOnly)"])
+        XCTAssertEqual(selected.path.withCString { rc_host_release_snapshot($0) }, 0)
+        try nativeCommand("WindowsPowerShell\\v1.0\\powershell.exe", ["-NoProfile", "-NonInteractive", "-Command",
+            "if (([System.IO.File]::GetAttributes('\(path)') -band [System.IO.FileAttributes]::ReadOnly) -ne 0) { exit 1 }"])
+        try FileManager.default.removeItem(at: selected)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: selected.path))
+    }
     private func nativeCommand(_ executable: String, _ arguments: [String]) throws {
         let command = Process()
         let system = ProcessInfo.processInfo.environment["SystemRoot"] ?? "C:\\Windows"
         command.executableURL = URL(fileURLWithPath: system + "\\System32\\" + executable)
         command.arguments = arguments
-        command.standardOutput = FileHandle.nullDevice; command.standardError = FileHandle.nullDevice
+        if executable.hasPrefix("WindowsPowerShell\\") {
+            // The parent runner uses PowerShell 7. Its inherited module path
+            // cannot supply Windows PowerShell 5's native security module.
+            var environment = ProcessInfo.processInfo.environment.filter {
+                $0.key.caseInsensitiveCompare("PSModulePath") != .orderedSame
+            }
+            environment["PSModulePath"] = system + "\\System32\\WindowsPowerShell\\v1.0\\Modules"
+            command.environment = environment
+        }
+        // Retain bounded fixture diagnostics without blocking a child on a pipe.
+        // These commands operate only on this test's synthetic owned paths.
+        let output = root.appendingPathComponent("command-" + UUID().uuidString + ".log")
+        try Data().write(to: output, options: .withoutOverwriting)
+        let handle = try FileHandle(forWritingTo: output)
+        defer { try? handle.close(); try? FileManager.default.removeItem(at: output) }
+        command.standardOutput = handle; command.standardError = handle
         try command.run(); command.waitUntilExit()
-        XCTAssertEqual(command.terminationStatus, 0)
+        try handle.synchronize()
+        let reader = try FileHandle(forReadingFrom: output)
+        defer { try? reader.close() }
+        let bytes = try reader.read(upToCount: 16_384) ?? Data()
+        let diagnostic = String(decoding: bytes, as: UTF8.self)
+            .replacingOccurrences(of: root.path, with: "<owned-fixture>")
+            .replacingOccurrences(of: root.path.replacingOccurrences(of: "/", with: "\\"), with: "<owned-fixture>")
+        XCTAssertEqual(command.terminationStatus, 0, "Native fixture command \(executable): \(diagnostic)")
         guard command.terminationStatus == 0 else { throw RCIRError.authorityDenied }
+    }
+    private func nativeJunction(_ alias: URL, target: URL) throws {
+        try nativeCommand("cmd.exe", ["/d", "/c", "mklink", "/J",
+            alias.path.replacingOccurrences(of: "/", with: "\\"),
+            target.path.replacingOccurrences(of: "/", with: "\\")])
     }
     func testNullDACLNeverBecomesProtectedAuthority() throws {
         let selected = try file("null-dacl", Data("dummy-private-reference".utf8))
@@ -86,14 +141,12 @@ final class HostProtectedReferenceTests: XCTestCase {
     }
     func testParentDirectoryJunctionCannotRedirectProtectedReference() throws {
         let actual = root.appendingPathComponent("actual", isDirectory: true)
-        try FileManager.default.createDirectory(at: actual, withIntermediateDirectories: false)
-        XCTAssertEqual(actual.path.withCString { rc_host_harden_private($0, 1) }, 0)
+        try NativeHTTPFixture.createPrivateDirectory(actual)
         let selected = actual.appendingPathComponent("reference")
-        try Data("dummy-private-reference".utf8).write(to: selected, options: .withoutOverwriting)
+        try NativeHTTPFixture.writePrivate(Data("dummy-private-reference".utf8), to: selected)
         files.append(selected)
-        XCTAssertEqual(selected.path.withCString { rc_host_harden_private($0, 0) }, 0)
         let alias = root.appendingPathComponent("alias", isDirectory: true)
-        try nativeCommand("cmd.exe", ["/c", "mklink", "/J", alias.path, actual.path])
+        try nativeJunction(alias, target: actual)
         defer { try? FileManager.default.removeItem(at: alias) }
         XCTAssertThrowsError(try CapabilityProtectedReference.read(alias.appendingPathComponent("reference").path, maximum: 1024))
         XCTAssertEqual(try CapabilityProtectedReference.read(selected.path, maximum: 1024), Data("dummy-private-reference".utf8))

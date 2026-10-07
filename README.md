@@ -4,7 +4,7 @@
 
 **RIGHTCLICK is a dynamic capability runtime for AI.**
 
-It discovers supported capability contracts from the software and services around an agent, reflects them into one live capability graph, and exposes them through **seven generic AI-facing operations**.
+It discovers supported capability contracts from the environment, software and services around an agent, reflects them into one live capability graph, and exposes them through **seven generic AI-facing operations**.
 
 Install an app. Start a service. Expose a compatible API. Connect another RIGHTCLICK runtime.
 
@@ -31,6 +31,10 @@ RIGHTCLICK distinguishes provider acceptance from verified outcome
 **Stable:** v0.2.2 · Apple Silicon · macOS 14+ · Homebrew · MCP · Apache-2.0
 
 The shared macOS, Linux and Windows runtime is an unreleased candidate. See [portable runtime build instructions and adapter limits](docs/PORTABILITY.md) for its validation and release gates.
+
+<img src="docs/media/rightclick-hero-architecture.gif" alt="Supplied RIGHTCLICK 0.2.2 architecture illustration showing OpenAPI, GraphQL and gRPC behind one generic interface" width="960">
+
+Architecture illustration, not an execution transcript. [Media provenance](docs/media/README.md).
 
 ---
 
@@ -487,6 +491,29 @@ It can become `VERIFIED_SUCCESS` only when the required observation is actually 
 
 ---
 
+# Run the installed-runtime proof
+
+The [retained 2026-10-07 check](evidence/readme-maintenance-2026-10-07/verified-mcp-proof.json) exercised the installed 0.2.2 binary through actual MCP: exactly seven operations, executable-hash attestation, discovery, explanation, an external-action confirmation denial and a local text conversion with retained verified output.
+
+```bash
+python3 scripts/demo-verified-mcp.py --receipt /tmp/rightclick-demo-receipt.json
+```
+
+The conversion returned `ＲｉｇｈｔＣｌｉｃｋ` with `outcomeVerified: true`; the unapproved external-action control remained `awaiting_user`. This proves the stated local returned-text outcome. It does not establish remote effects, current main, a fresh installation or all substrates. The script exits nonzero when a required assertion fails.
+
+[Agent-oriented index](llms.txt) · [Repository maintenance gates](docs/MAINTENANCE.md)
+
+<details>
+<summary>Supplied terminal-format introduction — promotional material</summary>
+
+<img src="docs/media/rightclick-punch.gif" alt="Supplied promotional terminal introduction to RIGHTCLICK 0.2.2; mostly echo output, not an installation or end-to-end execution recording" width="900">
+
+[Media provenance](docs/media/README.md) distinguishes these originals from raw execution proof. Two supplied recordings ending in script errors are not presented as successful demos.
+
+</details>
+
+---
+
 # Proofs: what has actually been demonstrated
 
 | Proof | What it establishes |
@@ -746,3 +773,5 @@ No assumption that transport success means the job is done.
 ---
 
 Apache-2.0
+
+[Reviewer source/candidate/runtime inventory](docs/CANDIDATE-INVENTORY.md) distinguishes implemented draft reflectors from main, installed bytes and live acceptance.

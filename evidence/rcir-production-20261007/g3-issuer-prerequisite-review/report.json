@@ -1,0 +1,190 @@
+{
+  "recordType": "new read-only G3 prerequisite inspection and proposed acceptance contract",
+  "recordedAtUTC": "2026-10-07T13:52:16.697033+00:00",
+  "reviewedSourceFileSHA256": {
+    "Sources/RightClickCLI/AuthorityConfigurationCLI.swift": "db90861ef0bc510ea7737e0803ad8af632b07b9a09f394bfc786904755a0547f",
+    "Sources/RightClickCore/OpenAPIAuthority.swift": "d33fdf9b5556a77a951c9ed3c33f2b8f0642394e2788bfa51dc9d5bb0f384a35",
+    "Sources/RightClickCore/OAuthOIDCAuthority.swift": "13358c3ca52c2034052fa49923d861c34e72b5985dcbf7fd544f5210f95049b9",
+    "Sources/RightClickCore/OpenAPIReflector.swift": "d234cfa1ebcfb9c6d9ca7e98d4ee37aef29716de064f545fb404d5d930a85d78",
+    "Sources/RightClickCore/RCIRExecutionHost.swift": "6a879d8e5b203b262987e67aad4950e09c2ff2fa32ddbf5696f01441a9f924c0",
+    "Sources/RightClickCore/OriginPinnedHTTP.swift": "c8a0e7847bc5715812049f0e1fe287a95550dcf65fdd7b4d0716e9a5458aade2",
+    "Sources/RightClickCore/RCIR.swift": "cdefce47180952ff8993a29758a236ae21942127b3842e5c69971635d5a3d9a4"
+  },
+  "route": "Authorised engineering workbench readers, Docker metadata and unauthenticated local health/public certificate checks; no proof-agent accomplishment claimed.",
+  "actualObserved": {
+    "executables": {
+      "docker": "/usr/local/bin/docker",
+      "kind": "/opt/homebrew/bin/kind",
+      "kubectl": "/usr/local/bin/kubectl"
+    },
+    "docker": {
+      "reachable": true,
+      "serverVersion": "29.8.2",
+      "commandExit": 0
+    },
+    "existingOtherOwnerResources": [
+      {
+        "name": "rightclick-proof-control-plane",
+        "ownershipLabel": {
+          "io.x-k8s.kind.cluster": "rightclick-proof"
+        },
+        "imageReference": "kindest/node@sha256:f226345927d7e348497136874b6d207e0b32cc52154ad8323129352923a3142f",
+        "listener": "127.0.0.1:16443->6443/tcp"
+      },
+      {
+        "name": "rightclick-proof-kafka",
+        "ownershipLabel": {
+          "io.rightclick.proof-lab": "rightclick-proof"
+        },
+        "imageReference": "docker.redpanda.com/redpandadata/redpanda:v26.2.3",
+        "listener": "127.0.0.1:19092->19092/tcp"
+      },
+      {
+        "name": "rightclick-proof-linux",
+        "ownershipLabel": {
+          "io.rightclick.proof-lab": "rightclick-proof"
+        },
+        "imageReference": "python:3.12-alpine",
+        "listener": "127.0.0.1:19141->8080/tcp"
+      }
+    ],
+    "linuxHealth": {
+      "URL": "http://127.0.0.1:19141/health",
+      "status": 200,
+      "data": {
+        "machine": "aarch64",
+        "platform": "Linux"
+      }
+    },
+    "kubernetesDefaultHTTPS": {
+      "URL": "https://127.0.0.1:16443/version",
+      "result": "REJECTED before HTTP response",
+      "error": "CERTIFICATE_VERIFY_FAILED: unable to get local issuer certificate",
+      "credentialSent": false,
+      "client": "Python3 urllib default verified SSL context; separate native Foundation check also rejects certificate."
+    },
+    "publicPeerCertificate": {
+      "inspectionTrust": "Unverified public peer certificate inspection only. No authenticated API request, runtime trust setting or credential.",
+      "DER_SHA256": "0f05e0d5f154e7051c19daabeb3024212ca43e027cf1016ae14059ff0632354e",
+      "subject": "CN=kube-apiserver",
+      "issuer": "CN=kubernetes",
+      "notBefore": "Oct 7 12:56:35 2026 GMT",
+      "notAfter": "Oct 7 13:01:35 2027 GMT",
+      "DNS_SAN": [
+        "kubernetes",
+        "kubernetes.default",
+        "kubernetes.default.svc",
+        "kubernetes.default.svc.cluster.local",
+        "localhost",
+        "rightclick-proof-control-plane"
+      ],
+      "IP_SAN": [
+        "10.96.0.1",
+        "172.21.0.2",
+        "127.0.0.1"
+      ],
+      "parser": "/opt/homebrew/opt/openssl@3/bin/openssl",
+      "initialParserFailure": "/usr/bin/openssl does not support -ext; failure retained in tool result. Parsing was retried with the available OpenSSL3 parser, without changing provider or TLS trust."
+    },
+    "kubernetesNativeFoundationHTTPS": {
+      "errorCode": -1202,
+      "errorDescription": "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “127.0.0.1” which could put your confidential information at risk.",
+      "errorDomain": "NSURLErrorDomain",
+      "route": "read-only native Foundation TLS prerequisite check; no credentials",
+      "URL": "https://127.0.0.1:16443/version",
+      "processExitCode": 0,
+      "HTTPResponseObserved": false,
+      "sessionIsolation": "ephemeral; cookie storage, credential storage and cache nil; httpShouldHandleCookies false",
+      "toolOutputReference": {
+        "sessionID": 1115,
+        "chunkID": "5972fa"
+      }
+    }
+  },
+  "existingRuntimeTruth": {
+    "authorityImport": "authority set reads opaque bearer from stdin and stores it in exact HTTPS origin + scheme Keychain slot; this is imported/operator-provisioned authority, not issuer acquisition.",
+    "metadataStatus": "authority status returns only presence/origin/scheme metadata; no such command or secret read was run during this inspection.",
+    "currentAdmission": "OpenAPI obtains the bearer before dispatch and RCIR rechecks the current exact-origin token bytes. The granted local scope is the compiled URI/effect; it is not provider RBAC or issuer credential downscoping.",
+    "OAuthTypes": "Existing OAuthAuthorityBinding/OAuthTokenBundle carry issuer/resource/scopes/expiry and Keychain storage, but OpenAPI httpBearer path does not wire them to TokenRequest acquisition. TokenRequest is not an OAuth scope exchange.",
+    "observer": "Host config currently selects same-origin credential-free bounded GET with exact UTF8 text equality. Isolated session intentionally removes ambient cookies/credential storage. Protected Kubernetes JSON readback is unsupported/unverified.",
+    "TLS": "OriginPinnedHTTP and OpenAPI redirect-rejecting delegates use normal trust. Passing a custom URLSession template preserves configuration, not its custom trust delegate. No operator CA-reference hook is present.",
+    "shape": "Current public arguments are string maps; genuine ConfigMap creation has nested metadata/data, and TokenRequest has arrays/integers. Do not stringify them or invent a flat Kubernetes API. Start with supported GET path parameters and opaque JSON response if the actual acquired OpenAPI contract supports it.",
+    "signer": "Existing protected signingKeyFile is provisioned below model; rotation/revocation/public receipt minimisation remain unfinished G3 components."
+  },
+  "smallestGenericIncrementProposal": {
+    "status": "DESIGN ONLY; no implementation or frozen live RED yet",
+    "gateOrdering": "Begin live provisioning/integration only after the G2 exact candidate is GREEN/eligible as required by the parent owner.",
+    "1_transportTrust": "Operator pins a public cluster CA through a trusted provisioning channel in owner-only closed host config. Use an exact-origin TLS trust policy with normal hostname/validity evaluation across acquisition, execution, authority issuance and observation; never install global trust or disable TLS validation. The inspected unverified leaf cannot automatically establish trust.",
+    "2_realContract": "Acquire the actual Kubernetes OpenAPI contract through the existing source/resolver path. Determine the real supported namespaced ConfigMap GET and a harmless forbidden GET from discovered actions; record real operation IDs/schema hashes. Do not claim an operator-invented catalog as live schema acquisition.",
+    "3_managedAuthority": "Extend the existing authority store with opaque managed-reference metadata and a host-only acquisition interface. Keep imported legacy credentials working and label them imported. A thin TokenRequest issuer backend uses an operator-provisioned, restricted issuance identity held below the model; request only a selected service-account identity/audience/duration. No arbitrary shell or HTTP tool is exposed.",
+    "4_issuerRestriction": "Provision a separate uniquely owned G3 namespace/account/Role for the required supported read, plus a separately issued get-only observer identity. Provider permissions are enforced by Kubernetes RBAC associated with the subject, not by an OAuth scope field in a TokenRequest JWT. Preserve existing other-owner lab identities and resources.",
+    "5_admission": "Compute requested authority from the compiled contract and host policy after applicable user confirmation. Bind secret-free issuer, subject/service-account UID, intended audience, exact origin, granted permission evidence, returned expirationTimestamp and credential revision to the existing invocation/lease. Revalidate current reference and validity before lease consumption; issuer re-acquisition cannot turn a spent invocation into an automatic effect retry.",
+    "6_identityTrust": "Do not treat decoded JWT fields as authenticated identity. Use trusted issuer TLS response plus independently verified provider identity/TokenReview or a standard JWT implementation with operator-pinned issuer keys. Account for actual returned lifetime and supported revocation semantics. Preserve caller/task ownership separately from remote credential subject.",
+    "7_observer": "Extend host-selected observers deliberately and compatibly with an explicit separate credential reference and bounded JSON projection/predicates. Lower selected actual values to existing CapabilityValue/RCIRVerificationContract; fail closed for unsupported shapes. Bind observation to invocation, resource, generation and time. Maintain isolated no-ambient-secret sessions, redirect rejection and credential-free behavior as default.",
+    "8_honestOutcome": "Missing/401/403 observation remains unverified/unknown, wrong selected JSON value is failed, and an independently verified resource result can succeed. Sign secret-minimised evidence with an operator-provisioned key, verified externally against a separately trusted public key. No full G3 claim until its signer/trust/revocation controls also pass."
+  },
+  "proposedFrozenREDContracts": [
+    {
+      "id": "G3-AUTH-ACQUISITION-001",
+      "status": "NOT_RUN",
+      "prerequisites": "Trusted exact-origin test TLS and actual acquired supported OpenAPI GET; new host-only acquisition config with initially empty dedicated execution-credential slot; genuine restricted issuer route; metadata-only audit logs; existing confirmation obtained correctly.",
+      "prechangeProductionExpectation": "Real public context_run follows the existing OpenAPI path and returns authority unavailable because no import exists. Provider/issuer logs show zero token acquisition and zero target invocation. This is a behavior RED, not a compilation/config-parser failure.",
+      "candidateCriteria": "Same seven operations discover/explain/confirm; host obtains a real TokenRequest token without model access, records secret-free subject/audience/actual expiry, performs the supported bounded GET through RCIR, and retains honest evidence. Capture provider/audit traces. Freeze assertions before implementation; preserve legacy regressions.",
+      "negativeControls": [
+        "No issuance or target request before required confirmation",
+        "Wrong origin/issuer/audience/account UID or unavailable issuance authority: no target dispatch",
+        "Expired imported/acquired metadata denies before dispatch; remotely revoked grant yields honest provider denial",
+        "Direct independent provider-side forbidden GET with the exact restricted credential must return actual 403; local deny policy alone does not establish RBAC",
+        "No token/private key in tools, output, receipts, errors, transcripts or public artifacts"
+      ]
+    },
+    {
+      "id": "G3-AUTHENTICATED-JSON-OBSERVATION-001",
+      "status": "NOT_RUN",
+      "prechangeProductionDiagnostic": "Using the current supported observer configuration and a safely imported restricted credential, a real public authenticated OpenAPI read can be accepted; its separate credential-free protected readback returns 401 and the current runtime remains unverified. This missing behavior must be observed through the real production path, not inferred only from new unknown config fields.",
+      "candidateCriteria": "Explicit host observer contract uses a distinct get-only credential and typed JSON projection, matches exact selected resource/nonce (and UID/resourceVersion where promised), and never accepts provider-selected weaker checks. Wrong value fails; missing/forbidden readback remains unverified; caller text verification cannot override it.",
+      "freezeRule": "New observer-config parser rejection alone is not a meaningful production RED. Preserve the genuine prechange diagnostic and preregister stable candidate criteria with inputs/version negotiation clearly recorded."
+    },
+    {
+      "id": "G3-TLS-LOCAL-PRECONDITION",
+      "status": "SETUP_BLOCKED",
+      "actualFailure": "Normal local HTTPS request fails unknown issuer. This is a trust prerequisite, not a manufactured runtime RED.",
+      "candidateCriteria": "Trusted operator CA scoped to this origin succeeds only for correct CA/hostname/current peer; wrong CA, hostname, redirect/origin and unexpected peer fail before secrets or target effects."
+    }
+  ],
+  "remainingPrerequisites": [
+    "G2 candidate integration owner gate",
+    "Approved owner/provisioner handoff for a separate G3 namespace/lab and issuance credential reference; no existing secret files read",
+    "Public CA supplied through trusted operator channel; no automatic trust of inspected peer",
+    "Actual Kubernetes OpenAPI discovery/support slice verified with current compiler",
+    "Independent metadata-level API audit/effect evidence without tokens/request/response secret bodies",
+    "Operator-provisioned signing trust and remaining G3 trust controls"
+  ],
+  "officialPrimarySources": [
+    {
+      "URL": "https://raw.githubusercontent.com/kubernetes/api/v0.36.1/authentication/v1/types.go",
+      "supports": "TokenRequest audience/duration/binding and actual status.token/expirationTimestamp fields; TokenReview identity/audience validation. API source lines129-190."
+    },
+    {
+      "URL": "https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/",
+      "supports": "TokenRequest issuance and limited revocation semantics; deletion/recreation of service account invalidates its tokens. No individual short-lived token revocation record."
+    }
+  ],
+  "noSuccessClaims": [
+    "No live TokenRequest invocation",
+    "No credential import",
+    "No runtime authority broker integration",
+    "No protected provider action or RBAC denial was executed locally in this inspection",
+    "No authenticated Kubernetes runtime acceptance",
+    "No G3 GREEN or universal-ready claim"
+  ],
+  "mutations": {
+    "sourceEdits": 0,
+    "infrastructureMutations": 0,
+    "credentialReads": 0,
+    "credentialImports": 0,
+    "trustChanges": 0,
+    "capabilityInvocations": 0,
+    "temporaryReportFilesOnly": true
+  }
+}

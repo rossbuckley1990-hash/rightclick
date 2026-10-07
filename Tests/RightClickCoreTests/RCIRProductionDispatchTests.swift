@@ -269,8 +269,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
     func testLostResponseRetainsSignedUnknownAndDoesNotRetry() throws {
         let key = Curve25519.Signing.PrivateKey()
         let path = directory.appendingPathComponent("disposable-receipt-key.raw")
-        try key.rawRepresentation.write(to: path)
-        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: path.path)
+        try NativeHTTPFixture.writePrivate(key.rawRepresentation, to: path)
         config.signingKeyFile = path.path
         let result = try invoke("drop-response")
         XCTAssertEqual(result.state, .unknown)
