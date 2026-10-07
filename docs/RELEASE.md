@@ -68,7 +68,7 @@ Agents: see [BOTTLE-ALIGNMENT.md](BOTTLE-ALIGNMENT.md).
 
 ## Commit and tag
 
-Do not commit or tag until the final release-candidate and source-package gates pass.
+Candidate commits are needed for exact-head CI. Do not create the release tag until the final release-candidate and source-package gates pass.
 
 Before tagging, verify that `v0.2.3` does not already exist.
 
@@ -81,15 +81,23 @@ Never force-move an existing release tag.
 
 ## GitHub Release
 
-After the tag exists, publish the exact prepared source bytes:
+Before creating the new release, require GitHub's future-release immutability setting to be enabled for the upstream repository. This setting must not alter or replace historical releases. After the reviewed tag exists, stage the exact prepared source bytes in a draft:
 
     gh release create v0.2.3 \
       dist/rightclick-0.2.3-source.tar.gz \
       dist/SHA256SUMS-source \
+      --repo rossbuckley1990-hash/rightclick \
+      --verify-tag --draft \
       --title "RIGHTCLICK 0.2.3" \
       --notes-file docs/RELEASE_NOTES_v0.2.3.md
 
-Download the published source asset again and require its bytes and SHA256 to match the local accepted asset before changing the public Homebrew tap.
+While the release is still a draft, independently download every asset through its GitHub asset ID and require the closed asset inventory, file sizes and SHA256 values to match the accepted local bytes. Require the release tag to point to the exact reviewed and tested candidate commit. Recheck the complete inventory and tag immediately before publication. Do not overwrite assets or move tags on a retry.
+
+Only after these checks pass, publish the already verified draft:
+
+    gh release edit v0.2.3 --repo rossbuckley1990-hash/rightclick --draft=false --latest
+
+Require the published release to report `immutable: true`. Download every public asset again and require its bytes, SHA256, complete inventory and tag target to match the accepted draft before changing the public Homebrew tap. A matching version number or a successful upload does not satisfy this gate.
 
 ## Public Homebrew tap
 
