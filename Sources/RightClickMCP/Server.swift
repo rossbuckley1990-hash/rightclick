@@ -4,13 +4,45 @@ import Foundation
 import MCP
 import RightClickCore
 
+public enum RightClickMCPRuntime {
+    public static func makeEngine(
+        startBrowsing: Bool = true
+    ) -> CapabilityEngine {
+        var sources =
+            CapabilityReflectorSourceDefaults
+                .all(
+                    startBrowsing:
+                        startBrowsing
+                )
+
+        if let federation =
+            FederationPeerSource
+                .fromEnvironment()
+        {
+            sources.append(
+                federation
+            )
+        }
+
+        return CapabilityRuntimeDefaults
+            .makeEngine(
+                reflectorSources:
+                    sources,
+                startBrowsing:
+                    startBrowsing
+            )
+    }
+}
+
 public enum RightClickMCPMain {
     public static func run(_ args: [String]) -> Int {
         let http = args.contains("--http")
         let port = UInt16(flag(args, "--port") ?? "") ?? 8765
         let token = flag(args, "--token") ?? ProcessInfo.processInfo.environment["RIGHTCLICK_MCP_TOKEN"]
         StartupLog.record(transport: http ? "http" : "stdio")
-        let box = EngineBox(CapabilityEngine())
+        let box = EngineBox(
+            RightClickMCPRuntime.makeEngine()
+        )
         if http {
             guard let token, !token.isEmpty else {
                 fputs("HTTP MCP requires --token or RIGHTCLICK_MCP_TOKEN.\n", stderr)
@@ -31,34 +63,38 @@ public enum RightClickMCPMain {
 
 enum StartupLog {
     static func record(transport: String) {
-        let path = executablePath()
+        let runtime = RightClickRuntime.identity(transport: transport)
         let stamp = ISO8601DateFormatter().string(from: Date())
-        let line = "\(stamp) pid=\(getpid()) transport=\(transport) path=\(path) sha256=\(sha256File(path))\n"
+
+        let line = """
+        \(stamp) pid=\(runtime.pid) transport=\(runtime.transport) version=\(runtime.version) path=\(runtime.executablePath) realpath=\(runtime.executableRealPath) sha256=\(runtime.executableSHA256)
+        """
+
         let directory = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Logs/RIGHTCLICK", isDirectory: true)
+            .appendingPathComponent(
+                "Library/Logs/RIGHTCLICK",
+                isDirectory: true
+            )
+
         let file = directory.appendingPathComponent("startup.log")
-        try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        if let data = line.data(using: .utf8) {
-            if FileManager.default.fileExists(atPath: file.path), let handle = try? FileHandle(forWritingTo: file) {
-                _ = try? handle.seekToEnd()
-                try? handle.write(contentsOf: data)
-                try? handle.close()
-            } else {
-                try? data.write(to: file)
-            }
+
+        try? FileManager.default.createDirectory(
+            at: directory,
+            withIntermediateDirectories: true
+        )
+
+        guard let data = (line + "\n").data(using: .utf8) else {
+            return
         }
-    }
 
-    private static func executablePath() -> String {
-        let raw = CommandLine.arguments[0]
-        if raw.hasPrefix("/") { return raw }
-        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent(raw).standardizedFileURL.path
-    }
-
-    private static func sha256File(_ path: String) -> String {
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else { return "unreadable" }
-        let digest = SHA256.hash(data: data)
-        return digest.map { String(format: "%02x", $0) }.joined()
+        if FileManager.default.fileExists(atPath: file.path),
+           let handle = try? FileHandle(forWritingTo: file) {
+            _ = try? handle.seekToEnd()
+            try? handle.write(contentsOf: data)
+            try? handle.close()
+        } else {
+            try? data.write(to: file)
+        }
     }
 }
 
@@ -133,11 +169,15 @@ final class StdioMCPServer {
     private static func serve(_ engine: EngineBox) async throws {
         let server = Server(
             name: "rightclick",
-            version: "0.1.0",
+            version: RightClickVersion.current,
             capabilities: .init(tools: .init(listChanged: false))
         )
-        await registerTools(on: server, engine: engine)
-        let transport = StdioTransport()
+        await registerTools(
+            on: server,
+            engine: engine,
+            transport: "stdio"
+        )
+        let transport = ModernMCPStdioTransport()
         try await server.start(transport: transport)
         try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
     }
@@ -199,10 +239,10 @@ private actor HTTPRequestDispatcher {
         let transport = StatelessHTTPServerTransport(validationPipeline: makePipeline())
         let server = Server(
             name: "rightclick",
-            version: "0.1.0",
+            version: RightClickVersion.current,
             capabilities: .init(tools: .init(listChanged: false))
         )
-        await registerTools(on: server, engine: engine)
+        await registerTools(on: server, engine: engine, transport: "http")
         do {
             try await server.start(transport: transport)
         } catch {
@@ -236,13 +276,22 @@ private actor HTTPRequestDispatcher {
     }
 }
 
-private func registerTools(on server: Server, engine: EngineBox) async {
+private func registerTools(
+    on server: Server,
+    engine: EngineBox,
+    transport: String
+) async {
     await server.withMethodHandler(ListTools.self) { _ in
         .init(tools: rightClickTools())
     }
     await server.withMethodHandler(CallTool.self) { params in
         do {
-            let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+            let text = try handleTool(
+                params.name,
+                arguments: params.arguments,
+                engine: engine,
+                transport: transport
+            )
             return .init(content: [.text(text)], isError: false)
         } catch {
             return .init(content: [.text(String(describing: error))], isError: true)
@@ -273,11 +322,84 @@ private func rightClickTools() -> [Tool] {
         ]),
         "required": .array([.string("item"), .string("actionId")]),
     ]
+    let verificationPredicateSchema: Value = .object([
+        "type": .string("object"),
+        "properties": .object([
+            "type": .object([
+                "type": .string("string"),
+                "description": .string("Provider-independent observable predicate type."),
+                "enum": .array([
+                    .string("text_equals"),
+                    .string("file_exists"),
+                    .string("file_readable"),
+                    .string("file_sha256_equals"),
+                    .string("file_sha256_differs"),
+                    .string("file_size_less_than"),
+                    .string("dimensions_equal"),
+                    .string("xattr_present"),
+                    .string("xattr_absent"),
+                    .string("metadata_value_present"),
+                    .string("metadata_value_absent"),
+                ]),
+            ]),
+            "key": schemaString("Optional key, for example an extended-attribute name."),
+            "value": schemaString("Optional expected or forbidden exact value."),
+            "reference": schemaString("Optional observation reference. Currently 'before' for before/after predicates."),
+            "width": .object([
+                "type": .string("integer"),
+                "description": .string("Optional expected image width."),
+            ]),
+            "height": .object([
+                "type": .string("integer"),
+                "description": .string("Optional expected image height."),
+            ]),
+            "bytes": .object([
+                "type": .string("integer"),
+                "description": .string("Optional byte threshold."),
+            ]),
+        ]),
+        "required": .array([.string("type")]),
+    ])
+
+    let verificationSchema: Value = .object([
+        "type": .string("object"),
+        "description": .string("Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success."),
+        "properties": .object([
+            "predicates": .object([
+                "type": .string("array"),
+                "description": .string("Required provider-independent postconditions."),
+                "items": verificationPredicateSchema,
+            ]),
+            "timeoutMilliseconds": .object([
+                "type": .string("integer"),
+                "description": .string("Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms."),
+            ]),
+        ]),
+        "required": .array([.string("predicates")]),
+    ])
+
+    let capabilityArgumentsSchema:
+        Value = .object([
+            "type": .string("object"),
+            "description":
+                .string(
+                    "Optional provider-independent structured capability arguments. Values are strings in the current schema slice."
+                ),
+            "additionalProperties":
+                .object([
+                    "type":
+                        .string("string")
+                ]),
+        ])
+
     let runSchema: [String: Value] = [
         "type": .string("object"),
         "properties": .object([
             "item": schemaString("File path, http(s) URL, or plain text."),
             "actionId": schemaString("Capability id or exact title returned by context_actions."),
+            "arguments": capabilityArgumentsSchema,
+            "expectedOutput": schemaString("Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes."),
+            "verification": verificationSchema,
             "confirmed": .object([
                 "type": .string("boolean"),
                 "description": .string("Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED."),
@@ -287,13 +409,21 @@ private func rightClickTools() -> [Tool] {
     ]
     return [
         Tool(
+            name: "context_runtime",
+            description: "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            inputSchema: .object([
+                "type": .string("object"),
+                "properties": .object([:]),
+            ])
+        ),
+        Tool(
             name: "context_inspect",
             description: "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
             inputSchema: .object(itemSchema)
         ),
         Tool(
             name: "context_actions",
-            description: "Ask macOS which contextual capabilities apply to this object right now. Returns only applicable sharing services, Services, and Finder Action extensions.",
+            description: "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
             inputSchema: .object(itemSchema)
         ),
         Tool(
@@ -303,12 +433,12 @@ private func rightClickTools() -> [Tool] {
         ),
         Tool(
             name: "context_run",
-            description: "Invoke one capability discovered for this object. Sharing actions return immediately with executionId and state started. Services return the NSPerformService result in that same response. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            description: "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
             inputSchema: .object(runSchema)
         ),
         Tool(
             name: "context_run_status",
-            description: "Read a context_run execution. States: started, awaiting_user, succeeded, failed, cancelled, unknown.",
+            description: "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
             inputSchema: .object([
                 "type": .string("object"),
                 "properties": .object([
@@ -319,7 +449,7 @@ private func rightClickTools() -> [Tool] {
         ),
         Tool(
             name: "context_providers",
-            description: "List the capability providers currently installed on this Mac.",
+            description: "List capability providers currently reflected by RIGHTCLICK from this environment.",
             inputSchema: .object([
                 "type": .string("object"),
                 "properties": .object([:]),
@@ -328,9 +458,18 @@ private func rightClickTools() -> [Tool] {
     ]
 }
 
-private func handleTool(_ name: String, arguments: [String: Value]?, engine: EngineBox) throws -> String {
+private func handleTool(
+    _ name: String,
+    arguments: [String: Value]?,
+    engine: EngineBox,
+    transport: String
+) throws -> String {
     let item = arguments?["item"]?.stringValue ?? ""
     switch name {
+    case "context_runtime":
+        return RightClickJSON.encode(
+            RightClickRuntime.identity(transport: transport)
+        )
     case "context_inspect":
         let inspected = try engine.call { try $0.inspect(item) }
         return RightClickJSON.encode(inspected)
@@ -352,8 +491,65 @@ private func handleTool(_ name: String, arguments: [String: Value]?, engine: Eng
         return RightClickJSON.encode(capability)
     case "context_run":
         let action = arguments?["actionId"]?.stringValue ?? ""
-        let confirmed = arguments?["confirmed"]?.boolValue ?? false
-        let record = try engine.call { try $0.begin(id: action, item: item, confirmed: confirmed) }
+        let confirmed =
+            arguments?["confirmed"]?
+                .boolValue ?? false
+
+        let expectedOutput =
+            arguments?["expectedOutput"]?
+                .stringValue
+
+        let capabilityArguments:
+            CapabilityArguments?
+
+        if let value =
+            arguments?["arguments"]
+        {
+            guard
+                let decoded =
+                    value.stringMapValue
+            else {
+                throw RightClickError(
+                    "context_run arguments must be an object whose values are strings."
+                )
+            }
+
+            capabilityArguments =
+                decoded
+        } else {
+            capabilityArguments =
+                nil
+        }
+
+        let verification: VerificationSpec?
+
+        if let value = arguments?["verification"] {
+            do {
+                let data = try JSONEncoder().encode(value)
+                verification = try JSONDecoder().decode(
+                    VerificationSpec.self,
+                    from: data
+                )
+            } catch {
+                throw RightClickError(
+                    "Invalid verification VerificationSpec: \(error)"
+                )
+            }
+        } else {
+            verification = nil
+        }
+
+        let record = try engine.call {
+            try $0.begin(
+                id: action,
+                item: item,
+                confirmed: confirmed,
+                arguments: capabilityArguments,
+                expectedOutput: expectedOutput,
+                verification: verification
+            )
+        }
+
         return RightClickJSON.encode(record)
     case "context_run_status":
         let executionId = arguments?["executionId"]?.stringValue ?? ""
@@ -378,7 +574,65 @@ private extension Value {
     }
 
     var boolValue: Bool? {
-        if case .bool(let value) = self { return value }
+        if case .bool(let value) = self {
+            return value
+        }
+
         return nil
+    }
+
+    var stringMapValue:
+        [String: String]?
+    {
+        guard
+            case .object(let object) =
+                self
+        else {
+            return nil
+        }
+
+        var result:
+            [String: String] = [:]
+
+        for (key, value)
+            in object
+        {
+            guard
+                case .string(let string) =
+                    value
+            else {
+                return nil
+            }
+
+            result[key] =
+                string
+        }
+
+        return result
+    }
+}
+
+public enum RightClickMCPContract {
+    public static let schemaVersion = 1
+
+    public static func toolSchemaSHA256() -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+
+        guard let data = try? encoder.encode(rightClickTools()) else {
+            return ""
+        }
+
+        let digest = SHA256.hash(data: data)
+
+        return digest
+            .map { String(format: "%02x", $0) }
+            .joined()
+    }
+
+    public static func toolNames() -> [String] {
+        rightClickTools()
+            .map(\.name)
+            .sorted()
     }
 }

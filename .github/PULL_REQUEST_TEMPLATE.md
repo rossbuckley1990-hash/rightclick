@@ -1,9 +1,8 @@
-## Why
-What developer or user outcome changes?
+## Change
+What concrete user or runtime behavior changes?
 
-## Evidence
-Commands run, JSON snippets, or screenshots. No bearer tokens.
+## Verification
+Record meaningful controls, exact source/binary identities and independent evidence. State remaining REDs and skipped checks explicitly. Do not paste credentials.
 
-## Engine freeze
-- [ ] Does **not** change v0.1 capability discovery/execution semantics, **or**
-- [ ] Intentionally does (call it out; needs explicit product decision)
+## Shared runtime boundary
+Preserve the seven canonical operations, current authority/policy and dispatch binding. New substrates must compile into the existing generic engine; provider acceptance must remain distinct from verified outcomes.

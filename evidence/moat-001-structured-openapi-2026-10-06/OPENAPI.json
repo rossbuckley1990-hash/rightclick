@@ -1,0 +1,105 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "RIGHTCLICK MOAT-001 Structured JSON Service",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/control": {
+      "post": {
+        "operationId": "moat001ControlEcho",
+        "summary": "MOAT001 Control Echo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Control response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records": {
+      "post": {
+        "operationId": "createStructuredRecord",
+        "summary": "Create Structured Record",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "title",
+                  "priority"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Record created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "id",
+                    "title",
+                    "priority"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "priority": {
+                      "type": "string",
+                      "enum": [
+                        "low",
+                        "medium",
+                        "high"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

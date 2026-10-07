@@ -1,0 +1,30 @@
+{
+  "authorityMetadata": {
+    "kind": "http_bearer",
+    "required": true,
+    "scheme": "BearerAuth"
+  },
+  "experiment": "MOAT-003 live authority gain/loss gate",
+  "mcpToolCount": 7,
+  "protectedCapabilityReflected": true,
+  "providerDiscovered": true,
+  "providerSpecificToolAdded": false,
+  "runtimePID": 22927,
+  "runtimeSHA256": "631ae7919bb1eb924137924b1306bc4a05641e2ed8e3890cbd5497d1039a94cc",
+  "sameRuntimeProcess": true,
+  "secretPresentInMCPArguments": false,
+  "secretProvidedThroughMCP": false,
+  "withAuthority": {
+    "evidence": "returned_text_postcondition",
+    "state": "succeeded",
+    "verified": true
+  },
+  "withoutAuthorityAfterRemoval": {
+    "evidence": "authority_unavailable",
+    "state": "unavailable"
+  },
+  "withoutAuthorityBefore": {
+    "evidence": "authority_unavailable",
+    "state": "unavailable"
+  }
+}

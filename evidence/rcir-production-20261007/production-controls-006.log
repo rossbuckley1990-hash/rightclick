@@ -1,0 +1,25 @@
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/14] Write sources
+[3/14] Write swift-version--58304C5D6DBC2206.txt
+[4/9] Write Objects.LinkFileList
+[6/11] Emitting module RightClickCoreTests
+[7/11] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:130:17: error: passing a non-escaping function parameter 'enqueue' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+128 |     func testSpentLeaseCannotDispatchAgain() throws {
+129 |         host.beforeStart = { _, admit, enqueue in
+130 |             try admit(enqueue)
+    |                 `- error: passing a non-escaping function parameter 'enqueue' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+131 |             do { try admit(enqueue); XCTFail("A spent lease dispatched again") }
+132 |             catch { XCTAssertEqual(error as? RCIRError, .leaseUsed) }
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:131:22: error: passing a non-escaping function parameter 'enqueue' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+129 |         host.beforeStart = { _, admit, enqueue in
+130 |             try admit(enqueue)
+131 |             do { try admit(enqueue); XCTFail("A spent lease dispatched again") }
+    |                      `- error: passing a non-escaping function parameter 'enqueue' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+132 |             catch { XCTAssertEqual(error as? RCIRError, .leaseUsed) }
+133 |         }
+[7/11] Linking rightclick
+error: fatalError

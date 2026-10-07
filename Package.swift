@@ -7,17 +7,35 @@ let package = Package(
         .macOS(.v14),
     ],
     products: [
+        .library(name: "RightClickARD", targets: ["RightClickARD"]),
         .library(name: "RightClickCore", targets: ["RightClickCore"]),
         .executable(name: "rightclick", targets: ["RightClickCLI"]),
+        .executable(name: "rightclick-ard-probe", targets: ["RightClickARDProbe"]),
         .executable(name: "rightclick-probe", targets: ["RightClickProbe"]),
         .executable(name: "rightclick-marker", targets: ["RightClickMarker"]),
     ],
     dependencies: [
         .package(url: "https://github.com/modelcontextprotocol/swift-sdk.git", from: "0.11.0"),
+        .package(url: "https://github.com/grpc/grpc-swift.git", exact: "1.26.2"),
+        .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.28.1"),
+        .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
     ],
     targets: [
         .target(
+            name: "RightClickARD",
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+            ]
+        ),
+        .target(
             name: "RightClickCore",
+            dependencies: [
+                "RightClickARD",
+                .product(name: "GRPC", package: "grpc-swift"),
+                .product(name: "SwiftProtobuf", package: "swift-protobuf"),
+                .product(name: "NIOCore", package: "swift-nio"),
+                .product(name: "NIOPosix", package: "swift-nio"),
+            ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
             ],
@@ -44,6 +62,13 @@ let package = Package(
             swiftSettings: [
                 .swiftLanguageMode(.v5),
                 .unsafeFlags(["-parse-as-library"]),
+            ]
+        ),
+        .executableTarget(
+            name: "RightClickARDProbe",
+            dependencies: ["RightClickARD"],
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
             ]
         ),
         .target(
@@ -73,8 +98,30 @@ let package = Package(
             ]
         ),
         .testTarget(
+            name: "RightClickARDTests",
+            dependencies: ["RightClickARD"],
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+            ]
+        ),
+        .testTarget(
             name: "RightClickCoreTests",
-            dependencies: ["RightClickCore"],
+            dependencies: ["RightClickARD", "RightClickCore"],
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+            ]
+        ),
+        .testTarget(
+            name: "RightClickCLITests",
+            dependencies: ["RightClickCLI"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .testTarget(
+            name: "RightClickMCPTests",
+            dependencies: [
+                "RightClickCore",
+                "RightClickMCP",
+            ],
             swiftSettings: [
                 .swiftLanguageMode(.v5),
             ]

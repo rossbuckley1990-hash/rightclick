@@ -1,0 +1,31 @@
+{
+  "experiment": "MOAT-002-RED",
+  "runtime": {
+    "product": "RIGHTCLICK",
+    "version": "0.2.0",
+    "pid": 58860,
+    "sha256": "741540be89d4dc1f1f751cd5d568e55403910d516381c2bc762b11b72a144abd"
+  },
+  "provider": {
+    "name": "RIGHTCLICK MOAT-002 Durable State Service",
+    "providerIdentity": "e49c9181eae0183944e2ac3e6d9821cd610df58d3cad9820615d38b58330a381",
+    "specificationSHA256": "e58eea412ca836a2c3c6aef0cfdc7f142296abf7d84d931d9b16d71efea9277d"
+  },
+  "createCapability": {
+    "title": "Create Durable Record",
+    "operationId": "createDurableRecord",
+    "method": "POST",
+    "path": "/records",
+    "present": true
+  },
+  "readCapability": {
+    "title": "Read Durable Record",
+    "operationId": "readDurableRecord",
+    "method": "GET",
+    "path": "/records/{id}",
+    "present": false
+  },
+  "exactReadIntent": "Read durable record 84803ef4-87fc-4fae-baa6-d14345a8eb1e",
+  "result": "RED_CONFIRMED",
+  "claim": "The provider is discovered and its supported POST capability is reflected, while its GET operation with a path parameter is absent."
+}

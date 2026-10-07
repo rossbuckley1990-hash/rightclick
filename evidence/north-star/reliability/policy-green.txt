@@ -1,0 +1,96 @@
+Building for debugging...
+[0/10] Write sources
+[2/10] Write swift-version--58304C5D6DBC2206.txt
+[4/9] Compiling RightClickCore SafetyPolicy.swift
+[5/9] Emitting module RightClickCore
+[6/9] Compiling RightClickCore Capability.swift
+[7/14] Compiling RightClickCore ProductSurface.swift
+[8/14] Compiling RightClickCore ActionExtensionCatalog.swift
+[9/14] Compiling RightClickCore ServiceCatalog.swift
+[10/14] Compiling RightClickCore SharingCatalog.swift
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 23 |         let items = pasteboardItems(for: item)
+ 24 |         guard !items.isEmpty else { return [] }
+ 25 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 26 |         return services.compactMap { service in
+ 27 |             guard service.canPerform(withItems: items) else { return nil }
+
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 35 |         let items = pasteboardItems(for: item)
+ 36 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 38 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[11/14] Compiling RightClickCore CapabilityEngine.swift
+[12/20] Emitting module RightClickMCP
+[13/20] Compiling RightClickCoreTests PolicyTests.swift
+[14/20] Compiling RightClickCoreTests EngineTests.swift
+[15/20] Emitting module RightClickCoreTests
+[16/20] Compiling RightClickCoreTests AcquisitionTests.swift
+[17/20] Compiling RightClickMCP Server.swift
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickMCP/Server.swift:246:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+244 |         do {
+245 |             let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+246 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickMCP/Server.swift:248:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+246 |             return .init(content: [.text(text)], isError: false)
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+249 |         }
+250 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[18/22] Emitting module RightClickCLI
+[19/22] Compiling RightClickCLI main.swift
+[19/23] Write Objects.LinkFileList
+[20/23] Linking rightclick
+[21/23] Applying rightclick
+[22/24] Write Objects.LinkFileList
+[23/24] Linking rightclick-mcpPackageTests
+Build complete! (13.26s)
+Test Suite 'Selected tests' started at 2026-10-05 12:07:57.391.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-05 12:07:57.394.
+Test Suite 'PolicyTests' started at 2026-10-05 12:07:57.394.
+Test Case '-[RightClickCoreTests.PolicyTests testActionExtensionIsNotInvokable]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testActionExtensionIsNotInvokable]' passed (0.004 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testCodeExecutionRequiresConfirmationEvenWithTextOutput]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testCodeExecutionRequiresConfirmationEvenWithTextOutput]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testContentClassification]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testContentClassification]' passed (0.016 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testDedupeKeepsFirstIdentifier]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testDedupeKeepsFirstIdentifier]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testDestructiveRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testDestructiveRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testExternalShareRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testExternalShareRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testSecurityChangeRequiresConfirmationEvenWithTextOutput]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testSecurityChangeRequiresConfirmationEvenWithTextOutput]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testServiceIdentifierPrefersMessage]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testServiceIdentifierPrefersMessage]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierFallsBackToTitleSlug]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierFallsBackToTitleSlug]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierUsesPublicName]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierUsesPublicName]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testTextTransformContractStillRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testTextTransformContractStillRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testUntrustedTextReturnContractCannotGrantReadOnlyPermission]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testUntrustedTextReturnContractCannotGrantReadOnlyPermission]' passed (0.000 seconds).
+Test Suite 'PolicyTests' passed at 2026-10-05 12:07:57.422.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.027 (0.028) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-05 12:07:57.422.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.027 (0.028) seconds
+Test Suite 'Selected tests' passed at 2026-10-05 12:07:57.422.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.027 (0.031) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

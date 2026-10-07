@@ -1,0 +1,95 @@
+Another instance of SwiftPM (PID: 66496) is already running using '/Users/ross/spawn/rightclick-mcp/.build', waiting until that process has finished execution...[0/1] Planning build
+Building for production...
+[0/3] Write sources
+[1/3] Write swift-version--58304C5D6DBC2206.txt
+[3/4] Compiling RightClickCore ActionExtensionCatalog.swift
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 23 |         let items = pasteboardItems(for: item)
+ 24 |         guard !items.isEmpty else { return [] }
+ 25 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 26 |         return services.compactMap { service in
+ 27 |             guard service.canPerform(withItems: items) else { return nil }
+
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 35 |         let items = pasteboardItems(for: item)
+ 36 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 38 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[3/6] Write sources
+[5/7] Compiling RightClickMCP HTTPListener.swift
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickMCP/Server.swift:246:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+244 |         do {
+245 |             let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+246 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickMCP/Server.swift:248:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+246 |             return .init(content: [.text(text)], isError: false)
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+249 |         }
+250 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[6/8] Compiling RightClickCLI Setup.swift
+[6/8] Write Objects.LinkFileList
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/29OW4ZZNA4S85/_SwiftConcurrencyShims-2IMTS4WWRU7VJ.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/29OW4ZZNA4S85/_SwiftConcurrencyShims-2IMTS4WWRU7VJ.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/29OW4ZZNA4S85/Foundation-24LYWIP48SHNP.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/29OW4ZZNA4S85/Foundation-24LYWIP48SHNP.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/29OW4ZZNA4S85/SwiftShims-2IMTS4WWRU7VJ.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/29OW4ZZNA4S85/SwiftShims-2IMTS4WWRU7VJ.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/_DarwinFoundation2-3J4ZFA06I5V1P.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/_DarwinFoundation2-3J4ZFA06I5V1P.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/Darwin-1FXX23EKWOBA9.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/Darwin-1FXX23EKWOBA9.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/_SwiftConcurrencyShims-2IMTS4WWRU7VJ.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/_SwiftConcurrencyShims-2IMTS4WWRU7VJ.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/SwiftShims-2IMTS4WWRU7VJ.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/SwiftShims-2IMTS4WWRU7VJ.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/Foundation-24LYWIP48SHNP.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/Foundation-24LYWIP48SHNP.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/_SwiftConcurrencyShims-2IMTS4WWRU7VJ.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/_SwiftConcurrencyShims-2IMTS4WWRU7VJ.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/Network-25YL5WDWFD9R4.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/Network-25YL5WDWFD9R4.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/Darwin-1FXX23EKWOBA9.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/Darwin-1FXX23EKWOBA9.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/SwiftShims-2IMTS4WWRU7VJ.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/SwiftShims-2IMTS4WWRU7VJ.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/Dispatch-R76HXUP80TVL.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/MIAIIM67PLCO/Dispatch-R76HXUP80TVL.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Foundation-24LYWIP48SHNP.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Foundation-24LYWIP48SHNP.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Security-3QCVXOV25KK54.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Security-3QCVXOV25KK54.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/_SwiftConcurrencyShims-2IMTS4WWRU7VJ.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/_SwiftConcurrencyShims-2IMTS4WWRU7VJ.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/SwiftShims-2IMTS4WWRU7VJ.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/SwiftShims-2IMTS4WWRU7VJ.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/UniformTypeIdentifiers-1OLJP4K3PLM48.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/UniformTypeIdentifiers-1OLJP4K3PLM48.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/AppKit-2VI8NB39I5AT6.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/AppKit-2VI8NB39I5AT6.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Darwin-1FXX23EKWOBA9.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Darwin-1FXX23EKWOBA9.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/CoreFoundation-16SA8WK3L6MQN.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/CoreFoundation-16SA8WK3L6MQN.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Dispatch-R76HXUP80TVL.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Dispatch-R76HXUP80TVL.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Network-25YL5WDWFD9R4.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/3K0V3W0E35K8D/Network-25YL5WDWFD9R4.pcm
+warning: /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/CSystem-NGXT1Q3Z0DQC.pcm: No such file or directory
+note: while processing /rightclick/.build/arm64-apple-macosx/release/ModuleCache/32VITFMAW666F/CSystem-NGXT1Q3Z0DQC.pcm
+[7/8] Linking rightclick
+Build of product 'rightclick' complete! (18.07s)
+0.1.1
+Built .build/release/rightclick

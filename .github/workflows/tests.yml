@@ -1,9 +1,17 @@
 name: macOS tests
 on:
   push:
+    branches:
+      - main
   pull_request:
+
+concurrency:
+  group: macos-tests-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
+
 jobs:
   test:
     runs-on: macos-26
@@ -12,6 +20,11 @@ jobs:
       - run: swift test --force-resolved-versions
       - run: scripts/build-cli.sh
       - run: python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"
+      - run: python3 scripts/acceptance-mcp.py "$PWD/.build/release/rightclick" /tmp/rightclick-mcp-acceptance
+      - run: python3 scripts/acceptance-federation.py "$PWD/.build/release/rightclick" /tmp/rightclick-federation-acceptance
+        env:
+          RIGHTCLICK_ACCEPTANCE_REF: ${{ github.event.pull_request.head.sha || github.sha }}
+      - run: python3 scripts/acceptance-core-boundary.py "$PWD/.build/release/rightclick" /tmp/rightclick-core-acceptance /tmp/rightclick-mcp-acceptance/results.json
       - name: Require Apple Silicon and free Command Line Tools for CLI build
         run: |
           test "$(uname -m)" = arm64
@@ -19,3 +32,32 @@ jobs:
           echo "DEVELOPER_DIR=/Library/Developer/CommandLineTools" >> "$GITHUB_ENV"
       - run: scripts/build-cli.sh
       - run: python3 scripts/package-source.py
+      - name: Fail closed when checkout substrates drift from published bottle
+        run: python3 scripts/detect-bottle-alignment.py --compare --json
+
+  ard-runtime:
+    name: macOS ARD runtime gates
+    runs-on: macos-15
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Toolchain
+        run: swift --version
+      - name: G13 portable parser contract
+        run: swift test --force-resolved-versions --filter ARDPortableTests
+      - name: G14-G16 runtime gates
+        run: swift test --force-resolved-versions --filter ARDAcquisitionGateTests
+
+  ard-portable:
+    name: Linux ARD portable acquisition
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Build portable ARD product only
+        run: swift build --product rightclick-ard-probe --force-resolved-versions
+      - name: G17 portable ARD acquisition
+        run: .build/debug/rightclick-ard-probe
+      - name: G13 live hf-discover SearchResponse
+        run: .build/debug/rightclick-ard-probe live-hf

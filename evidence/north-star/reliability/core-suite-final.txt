@@ -1,0 +1,182 @@
+Building for debugging...
+[0/11] Write sources
+[3/11] Write swift-version--58304C5D6DBC2206.txt
+[5/11] Compiling RightClickCore ServiceOutcome.swift
+[6/11] Emitting module RightClickCore
+[7/11] Compiling RightClickCore ServiceCatalog.swift
+[8/11] Compiling RightClickCore ProductSurface.swift
+[9/15] Emitting module RightClickCoreTests
+[10/15] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[11/15] Compiling RightClickMCP Server.swift
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickMCP/Server.swift:246:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+244 |         do {
+245 |             let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+246 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickMCP/Server.swift:248:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+246 |             return .init(content: [.text(text)], isError: false)
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+249 |         }
+250 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[12/15] Emitting module RightClickMCP
+[13/18] Compiling RightClickCLI Setup.swift
+[14/18] Emitting module RightClickCLI
+[15/18] Compiling RightClickCLI main.swift
+[15/20] Write Objects.LinkFileList
+[16/20] Linking rightclick
+[17/20] Applying rightclick
+[18/20] Write Objects.LinkFileList
+[19/20] Linking rightclick-mcpPackageTests
+Build complete! (7.84s)
+Test Suite 'All tests' started at 2026-10-05 12:22:53.868.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-05 12:22:53.873.
+Test Suite 'AcquisitionTests' started at 2026-10-05 12:22:53.873.
+Test Case '-[RightClickCoreTests.AcquisitionTests testDeclaredTextRepresentationsRoundTripOnThePasteboard]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testDeclaredTextRepresentationsRoundTripOnThePasteboard]' passed (0.051 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testDirectoryAndURLClassification]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testDirectoryAndURLClassification]' passed (0.012 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testDuplicateIDsCollapse]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testDuplicateIDsCollapse]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testFinancialRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testFinancialRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testImageServiceDoesNotApplyToPlainText]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testImageServiceDoesNotApplyToPlainText]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testMalformedPathIsAnError]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testMalformedPathIsAnError]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testProofURLPayloadRoundTrip]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testProofURLPayloadRoundTrip]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testServiceAppearsAndDisappearsWithTheBundle]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testServiceAppearsAndDisappearsWithTheBundle]' passed (0.006 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testStaleServiceIDFails]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testStaleServiceIDFails]' passed (0.643 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testTextPasteboardTypesFollowDeclaredSendTypes]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testTextPasteboardTypesFollowDeclaredSendTypes]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testUnknownRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testUnknownRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadAbstainsForFileURLOnly]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadAbstainsForFileURLOnly]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredPlainTextType]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredPlainTextType]' passed (0.004 seconds).
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredURLType]' started.
+Test Case '-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredURLType]' passed (0.001 seconds).
+Test Suite 'AcquisitionTests' passed at 2026-10-05 12:22:54.600.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.724 (0.727) seconds
+Test Suite 'EngineTests' started at 2026-10-05 12:22:54.600.
+Test Case '-[RightClickCoreTests.EngineTests testAcceptedServiceInvocationDoesNotEstablishSemanticSuccess]' started.
+Test Case '-[RightClickCoreTests.EngineTests testAcceptedServiceInvocationDoesNotEstablishSemanticSuccess]' passed (7.593 seconds).
+Test Case '-[RightClickCoreTests.EngineTests testExplicitReturnedTextPostconditionVerifiesOnlyReturnedText]' started.
+Test Case '-[RightClickCoreTests.EngineTests testExplicitReturnedTextPostconditionVerifiesOnlyReturnedText]' passed (4.168 seconds).
+Test Case '-[RightClickCoreTests.EngineTests testExternalShareIsGated]' started.
+Test Case '-[RightClickCoreTests.EngineTests testExternalShareIsGated]' passed (3.322 seconds).
+Test Case '-[RightClickCoreTests.EngineTests testFixturesDifferentiateSharingAndQuickActions]' started.
+Test Case '-[RightClickCoreTests.EngineTests testFixturesDifferentiateSharingAndQuickActions]' passed (12.533 seconds).
+Test Case '-[RightClickCoreTests.EngineTests testFullWidthServiceRoundTrip]' started.
+Test Case '-[RightClickCoreTests.EngineTests testFullWidthServiceRoundTrip]' passed (3.246 seconds).
+Test Case '-[RightClickCoreTests.EngineTests testMarkupIsDiscoveredButNotInvokable]' started.
+Test Case '-[RightClickCoreTests.EngineTests testMarkupIsDiscoveredButNotInvokable]' passed (2.908 seconds).
+Test Suite 'EngineTests' passed at 2026-10-05 12:23:28.371.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 33.770 (33.771) seconds
+Test Suite 'PolicyTests' started at 2026-10-05 12:23:28.371.
+Test Case '-[RightClickCoreTests.PolicyTests testActionExtensionIsNotInvokable]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testActionExtensionIsNotInvokable]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testCodeExecutionRequiresConfirmationEvenWithTextOutput]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testCodeExecutionRequiresConfirmationEvenWithTextOutput]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testContentClassification]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testContentClassification]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testDedupeKeepsFirstIdentifier]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testDedupeKeepsFirstIdentifier]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testDestructiveRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testDestructiveRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testExternalShareRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testExternalShareRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testSecurityChangeRequiresConfirmationEvenWithTextOutput]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testSecurityChangeRequiresConfirmationEvenWithTextOutput]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testServiceIdentifierPrefersMessage]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testServiceIdentifierPrefersMessage]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierFallsBackToTitleSlug]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierFallsBackToTitleSlug]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierUsesPublicName]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testSharingIdentifierUsesPublicName]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testTextTransformContractStillRequiresConfirmation]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testTextTransformContractStillRequiresConfirmation]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testUntrustedTextReturnContractCannotGrantReadOnlyPermission]' started.
+Test Case '-[RightClickCoreTests.PolicyTests testUntrustedTextReturnContractCannotGrantReadOnlyPermission]' passed (0.000 seconds).
+Test Suite 'PolicyTests' passed at 2026-10-05 12:23:28.375.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+Test Suite 'ServiceContextTests' started at 2026-10-05 12:23:28.375.
+Test Case '-[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testContextDictionariesAreANDAndArrayIsOR]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testContextDictionariesAreANDAndArrayIsOR]' passed (0.011 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testDuplicateMenuNamesCannotChooseTheWrongProvider]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testDuplicateMenuNamesCannotChooseTheWrongProvider]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathContextEncodesPathRatherThanReadingFileContents]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathContextEncodesPathRatherThanReadingFileContents]' passed (0.004 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathRequirementDoesNotApplyToOrdinaryTextOrWebURL]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathRequirementDoesNotApplyToOrdinaryTextOrWebURL]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain]' passed (0.000 seconds).
+Test Suite 'ServiceContextTests' passed at 2026-10-05 12:23:28.391.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.016 (0.017) seconds
+Test Suite 'ServiceOutcomeTests' started at 2026-10-05 12:23:28.391.
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testChangedCounterWithoutDeclaredOutputIsNotVerification]' started.
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testChangedCounterWithoutDeclaredOutputIsNotVerification]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testEchoedInputWithChangedCounterIsNotSemanticProof]' started.
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testEchoedInputWithChangedCounterIsNotSemanticProof]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testExactPostconditionChecksEmptyUnicodeAndWhitespaceWithoutNormalization]' started.
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testExactPostconditionChecksEmptyUnicodeAndWhitespaceWithoutNormalization]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testRejectionAndDeadlineCannotSucceedOrLeakEchoedInput]' started.
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testRejectionAndDeadlineCannotSucceedOrLeakEchoedInput]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testReturnedOutputWithoutPostconditionIsNotSemanticSuccess]' started.
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testReturnedOutputWithoutPostconditionIsNotSemanticSuccess]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testUnchangedInputIsNotReturnedOrVerified]' started.
+Test Case '-[RightClickCoreTests.ServiceOutcomeTests testUnchangedInputIsNotReturnedOrVerified]' passed (0.000 seconds).
+Test Suite 'ServiceOutcomeTests' passed at 2026-10-05 12:23:28.393.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'SetupTests' started at 2026-10-05 12:23:28.393.
+Test Case '-[RightClickCLITests.SetupTests testAbsentConfigurationIsCreated]' started.
+Test Case '-[RightClickCLITests.SetupTests testAbsentConfigurationIsCreated]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.SetupTests testEveryFailedStagePreventsSuccessfulExit]' started.
+Test Case '-[RightClickCLITests.SetupTests testEveryFailedStagePreventsSuccessfulExit]' passed (0.000 seconds).
+Test Case '-[RightClickCLITests.SetupTests testInvalidRootAndMalformedJSONRemainByteIdentical]' started.
+Test Case '-[RightClickCLITests.SetupTests testInvalidRootAndMalformedJSONRemainByteIdentical]' passed (0.009 seconds).
+Test Case '-[RightClickCLITests.SetupTests testInvalidServerContainersRemainByteIdentical]' started.
+Test Case '-[RightClickCLITests.SetupTests testInvalidServerContainersRemainByteIdentical]' passed (0.004 seconds).
+Test Case '-[RightClickCLITests.SetupTests testUnrelatedValuesAndOnlyOwnedEntryArePreserved]' started.
+Test Case '-[RightClickCLITests.SetupTests testUnrelatedValuesAndOnlyOwnedEntryArePreserved]' passed (0.001 seconds).
+Test Case '-[RightClickCLITests.SetupTests testWriteFailureIsReported]' started.
+Test Case '-[RightClickCLITests.SetupTests testWriteFailureIsReported]' passed (0.002 seconds).
+Test Suite 'SetupTests' passed at 2026-10-05 12:23:28.410.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.017 (0.017) seconds
+Test Suite 'SharingExecutionTests' started at 2026-10-05 12:23:28.410.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineDoesNotOverrideATerminalCallback]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineDoesNotOverrideATerminalCallback]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineWithoutCallbackIsUnknown]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDeadlineWithoutCallbackIsUnknown]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDidFailToShareItemsFails]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDidFailToShareItemsFails]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDidShareItemsReportsAcceptanceWithoutIndependentOutcome]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testDidShareItemsReportsAcceptanceWithoutIndependentOutcome]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testPerformReturnWithoutCallbackStaysStarted]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testPerformReturnWithoutCallbackStaysStarted]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.SharingExecutionTests testWillShareItemsDoesNotFailTheExecution]' started.
+Test Case '-[RightClickCoreTests.SharingExecutionTests testWillShareItemsDoesNotFailTheExecution]' passed (0.000 seconds).
+Test Suite 'SharingExecutionTests' passed at 2026-10-05 12:23:28.411.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-05 12:23:28.411.
+	 Executed 57 tests, with 0 failures (0 unexpected) in 34.532 (34.538) seconds
+Test Suite 'All tests' passed at 2026-10-05 12:23:28.411.
+	 Executed 57 tests, with 0 failures (0 unexpected) in 34.532 (34.543) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

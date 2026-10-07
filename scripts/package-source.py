@@ -5,16 +5,29 @@ Only build inputs and their licences are packaged. No checkout, build cache,
 personal configuration, credentials, or private evidence enters this asset.
 """
 import gzip
+import subprocess
+import sys
 import hashlib
 import json
 import pathlib
+import re
 import tarfile
 
 root = pathlib.Path(__file__).resolve().parent.parent
-version = "0.1.0"
+version = re.search(r'current = "([0-9]+\.[0-9]+\.[0-9]+)"', (root / "Sources/RightClickCore/ProductSurface.swift").read_text())[1]
 output = root / "dist" / f"rightclick-{version}-source.tar.gz"
+# Durably record substrate kinds inside the immutable source asset so
+# detect-bottle-alignment.py can inventory a published bottle without guessing.
+manifest = root / "packaging" / "substrate-kinds.json"
+subprocess.check_call(
+    [sys.executable, str(root / "scripts" / "detect-bottle-alignment.py"),
+     "--write-manifest", str(manifest)],
+    cwd=str(root),
+)
+
 inputs = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests",
-          "fixtures", "packaging/ThirdPartyLicenses", "scripts/build-cli.sh"]
+          "fixtures", "packaging/ThirdPartyLicenses", "packaging/substrate-kinds.json",
+          "scripts/build-cli.sh", "scripts/rcir-dispatch-test-provider.py"]
 paths = []
 for name in inputs:
     path = root / name
@@ -46,10 +59,13 @@ bottle = root / "packaging/homebrew/bottle.json"
 block = ""
 if bottle.exists():
     metadata = json.loads(bottle.read_text())
-    if metadata["source_sha256"] != digest:
-        raise RuntimeError("The published bottle pins different source. Prepare a new version; do not replace v0.1.0.")
-    block = metadata["dsl"] + "\n"
-formula = template.replace("@SOURCE_SHA256@", digest).replace("@BOTTLE_BLOCK@\n", block)
+    # Legacy metadata belongs to the immutable 0.1.0 release. Never attach it
+    # to a different version or relax its source hash check.
+    if metadata.get("version", "0.1.0") == version:
+        if metadata["source_sha256"] != digest:
+            raise RuntimeError("The published bottle pins different source. Prepare a new version; do not replace the published artifact.")
+        block = metadata["dsl"] + "\n"
+formula = template.replace("@VERSION@", version).replace("@SOURCE_SHA256@", digest).replace("@BOTTLE_BLOCK@\n", block)
 for name in ["packaging/homebrew/rightclick.rb", "packaging/tap/Formula/rightclick.rb"]:
     (root / name).write_text(formula)
 (output.parent / "SHA256SUMS-source").write_text(f"{digest}  {output.name}\n")

@@ -14,7 +14,7 @@ public struct SharingExecutionModel: Equatable, Sendable {
 
     public var isTerminal: Bool {
         switch state {
-        case .succeeded, .failed, .cancelled, .unknown:
+        case .accepted, .unsupported, .unavailable, .rejected, .succeeded, .failed, .cancelled, .unknown:
             return true
         case .started, .awaitingUser:
             return false
@@ -27,8 +27,13 @@ public struct SharingExecutionModel: Equatable, Sendable {
             return "Sharing is in progress."
         case .awaitingUser:
             return "Sharing is waiting for the user."
+        case .accepted:
+            return "Provider reported sharing completion; external outcome is unverified."
         case .succeeded:
-            return "didShareItems"
+            return "An independent outcome postcondition was verified."
+        case .unsupported: return "Unsupported invocation."
+        case .unavailable: return "Provider unavailable."
+        case .rejected: return "Provider rejected the request."
         case .failed:
             return "didFailToShareItems"
         case .cancelled:
@@ -70,7 +75,7 @@ public struct SharingExecutionModel: Equatable, Sendable {
     public mutating func didShareItems(count: Int, main: Bool) {
         guard !isTerminal else { return }
         events.append("didShareItems count=\(count) main=\(main)")
-        state = .succeeded
+        state = .accepted
         events.append("session released")
     }
 

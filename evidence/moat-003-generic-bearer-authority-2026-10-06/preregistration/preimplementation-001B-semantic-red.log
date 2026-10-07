@@ -1,0 +1,57 @@
+[0/1] Planning build
+Building for debugging...
+[0/10] Write sources
+[1/10] Write swift-version--58304C5D6DBC2206.txt
+[3/7] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+[4/7] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+[5/7] Emitting module RightClickCoreTests
+[6/9] Emitting module rightclick_mcpPackageTests
+[7/9] Compiling rightclick_mcpPackageTests runner.swift
+[7/9] Write Objects.LinkFileList
+[8/9] Linking rightclick-mcpPackageTests
+Build complete! (2.11s)
+Test Suite 'Selected tests' started at 2026-10-06 07:13:02.005.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-06 07:13:02.006.
+Test Suite 'OpenAPIAuthorityTests' started at 2026-10-06 07:13:02.006.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityDoesNotCrossOrigin]' started.
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:921: error: -[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityDoesNotCrossOrigin] : XCTAssertEqual failed: ("failed") is not equal to ("unavailable")
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:926: error: -[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityDoesNotCrossOrigin] : XCTAssertEqual failed: ("provider_transport_failure") is not equal to ("authority_unavailable")
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:931: error: -[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityDoesNotCrossOrigin] : XCTAssertFalse failed
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityDoesNotCrossOrigin]' failed (0.113 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityIsInjectedFromOriginBoundKeychainWithoutSecretDisclosure]' started.
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:729: error: -[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityIsInjectedFromOriginBoundKeychainWithoutSecretDisclosure] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("Bearer moat003-unit-secret-not-for-ai")")
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityIsInjectedFromOriginBoundKeychainWithoutSecretDisclosure]' failed (0.008 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret]' started.
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:563: error: -[RightClickCoreTests.OpenAPIAuthorityTests testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("true")")
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:571: error: -[RightClickCoreTests.OpenAPIAuthorityTests testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("http_bearer")")
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:579: error: -[RightClickCoreTests.OpenAPIAuthorityTests testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("BearerAuth")")
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:587: error: -[RightClickCoreTests.OpenAPIAuthorityTests testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("https://provider.example")")
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testExplicitEmptyOperationSecurityOverridesRootSecurityAsPublic]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testExplicitEmptyOperationSecurityOverridesRootSecurityAsPublic]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testMissingBearerAuthorityFailsBeforeTransport]' started.
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:683: error: -[RightClickCoreTests.OpenAPIAuthorityTests testMissingBearerAuthorityFailsBeforeTransport] : XCTAssertEqual failed: ("rejected") is not equal to ("unavailable")
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:688: error: -[RightClickCoreTests.OpenAPIAuthorityTests testMissingBearerAuthorityFailsBeforeTransport] : XCTAssertEqual failed: ("provider_rejection") is not equal to ("authority_unavailable")
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:693: error: -[RightClickCoreTests.OpenAPIAuthorityTests testMissingBearerAuthorityFailsBeforeTransport] : XCTAssertFalse failed
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testMissingBearerAuthorityFailsBeforeTransport]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testRootLevelSecurityIsNotSilentlyIgnored]' started.
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:1152: error: -[RightClickCoreTests.OpenAPIAuthorityTests testRootLevelSecurityIsNotSilentlyIgnored] : XCTAssertTrue failed
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testRootLevelSecurityIsNotSilentlyIgnored]' failed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing]' started.
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:1103: error: -[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing] : XCTAssertTrue failed
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:1103: error: -[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing] : XCTAssertTrue failed
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:1103: error: -[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing] : XCTAssertTrue failed
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:1103: error: -[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing] : XCTAssertTrue failed
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:1103: error: -[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing] : XCTAssertTrue failed
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:1103: error: -[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing] : XCTAssertTrue failed
+Test Case '-[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing]' failed (0.002 seconds).
+Test Suite 'OpenAPIAuthorityTests' failed at 2026-10-06 07:13:02.134.
+	 Executed 7 tests, with 18 failures (0 unexpected) in 0.128 (0.129) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-06 07:13:02.134.
+	 Executed 7 tests, with 18 failures (0 unexpected) in 0.128 (0.129) seconds
+Test Suite 'Selected tests' failed at 2026-10-06 07:13:02.134.
+	 Executed 7 tests, with 18 failures (0 unexpected) in 0.128 (0.129) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

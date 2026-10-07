@@ -23,6 +23,7 @@ enum ServiceCatalog {
         var found: [InstalledServiceRecord] = []
         var seen = Set<String>()
         for infoURL in BundleScan.infoPlists(roots: roots, bundleExtensions: ["app", "service", "workflow"]) {
+            guard seen.insert(infoURL.resolvingSymlinksInPath().path).inserted else { continue }
             guard let plist = loadPropertyList(at: infoURL),
                   let entries = plist["NSServices"] as? [[String: Any]]
             else { continue }
@@ -33,8 +34,6 @@ enum ServiceCatalog {
                 let menuTitle = ((entry["NSMenuItem"] as? [String: Any])?["default"] as? String) ?? ""
                 if menuTitle.isEmpty { continue }
                 let message = entry["NSMessage"] as? String
-                let key = [bundleID ?? bundleURL.path, menuTitle, message ?? ""].joined(separator: "|")
-                if !seen.insert(key).inserted { continue }
                 found.append(InstalledServiceRecord(
                     menuTitle: menuTitle,
                     message: message,
@@ -52,16 +51,35 @@ enum ServiceCatalog {
     }
 
     static func capabilities(for item: ContentItem, records: [InstalledServiceRecord]? = nil) -> [Capability] {
-        (records ?? self.records()).compactMap { record in
+        let installed = records ?? self.records()
+        return installed.compactMap { record in
             guard accepts(record, item: item) else { return nil }
-            return capability(for: record)
+            var result = capability(for: record)
+            if isAmbiguous(record, installed: installed) {
+                result.invocation = .unsupported
+                result.metadata["invocationLimitation"] = "Ambiguous Service name or identifier; the public title-based API cannot safely select this provider."
+            }
+            return result
         }
     }
 
-    static func perform(capabilityID: String, item: ContentItem) -> RunResult {
+    private static func isAmbiguous(_ record: InstalledServiceRecord, installed: [InstalledServiceRecord]) -> Bool {
+        let title = record.menuTitle.split(separator: "/").last.map(String.init) ?? record.menuTitle
+        let id = capability(for: record).id
+        return installed.filter {
+            ($0.menuTitle.split(separator: "/").last.map(String.init) ?? $0.menuTitle) == title || capability(for: $0).id == id
+        }.count > 1
+    }
+
+    static func perform(capabilityID: String, item: ContentItem, expectedOutput: String? = nil) -> RunResult {
         NSUpdateDynamicServices()
-        guard let record = records().first(where: { capability(for: $0).id == capabilityID }) else {
-            return RunResult(status: .failed, actionID: capabilityID, message: "No installed service has id \(capabilityID).")
+        let installed = records()
+        guard let record = installed.first(where: { capability(for: $0).id == capabilityID }) else {
+            return RunResult(status: .unavailable, actionID: capabilityID, message: "No installed service has id \(capabilityID).")
+        }
+        guard !isAmbiguous(record, installed: installed) else {
+            return RunResult(status: .unsupported, actionID: capabilityID, title: record.menuTitle,
+                             message: "Ambiguous Service name or identifier. Invocation withheld.")
         }
         guard accepts(record, item: item) else {
             return RunResult(status: .failed, actionID: capabilityID, title: record.menuTitle, message: "\(record.menuTitle) does not accept this item.")
@@ -73,86 +91,55 @@ enum ServiceCatalog {
         declare(payload, on: pasteboard, record: record)
         let before = pasteboard.changeCount
         let written = (pasteboard.types ?? []).map(\.rawValue)
-        let readback = bestString(on: pasteboard) ?? ""
-        let utf8Bytes = readback.data(using: .utf8)?.count ?? 0
-        let utf16Bytes = readback.data(using: .utf16)?.count ?? 0
-        ExecutionLog.write("service payload declared=\(record.sendTypes.joined(separator: "|")) written=\(written.joined(separator: "|")) stringBytes=\(utf16Bytes) utf8Bytes=\(utf8Bytes) readback=\(readback)")
         ExecutionLog.write("NSPerformService name=\(record.menuTitle) provider=\(record.bundleIdentifier ?? "") sendFileTypes=\(record.sendFileTypes) pasteboardTypes=\(written.joined(separator: ",")) main=\(Thread.isMainThread)")
         let box = ServiceCallBox()
         if Thread.isMainThread {
             box.finish(NSPerformService(record.menuTitle, pasteboard))
         } else {
             DispatchQueue.main.async {
-                box.finish(NSPerformService(record.menuTitle, pasteboard))
+                let accepted = NSPerformService(record.menuTitle, pasteboard)
+                if box.finish(accepted) {
+                    if accepted { retain(pasteboard, seconds: 10) }
+                    pasteboard.releaseGlobally()
+                }
             }
             let deadline = Date().addingTimeInterval(20)
             while !box.done && Date() < deadline {
                 RunLoop.current.run(mode: .default, before: Date().addingTimeInterval(0.05))
             }
         }
-        let output = bestString(on: pasteboard)
-        let after = pasteboard.changeCount
-        if box.ok && after == before {
-            // NSPerformService can return before the provider reads the pasteboard.
-            ExecutionLog.write("service pasteboard retained after NSPerformService returned without a pasteboard result")
+        if box.ok && pasteboard.changeCount == before {
+            // Some providers consume input after the invocation API returns.
             retain(pasteboard, seconds: 10)
         }
-        pasteboard.releaseGlobally()
-        _ = before
-        if !box.done {
-            ExecutionLog.write("NSPerformService timed out")
-            return RunResult(
-                status: .failed,
-                actionID: capabilityID,
-                title: record.menuTitle,
-                message: "NSPerformService(\"\(record.menuTitle)\") did not return within 20 seconds.",
-                supportLevel: .publicSupported
-            )
+        let changed = pasteboard.changeCount != before
+        let output = changed ? declaredReturnedText(on: pasteboard, types: record.returnTypes) : nil
+        // A timed-out asynchronous invocation can still own and consume its board.
+        // Retain it in that invocation closure until the public call returns.
+        if box.expire() { pasteboard.releaseGlobally() }
+        return ServiceOutcome.result(actionID: capabilityID, title: record.menuTitle,
+                                     returned: box.done ? box.ok : nil,
+                                     pasteboardChanged: changed, returnedText: output,
+                                     expectedOutput: expectedOutput, inputText: payload.text ?? payload.webURL ?? payload.filePath)
+    }
+
+    private static func declaredReturnedText(on pasteboard: NSPasteboard, types: [String]) -> String? {
+        for raw in types where isTextType(raw) {
+            let type = pasteboardType(for: raw)
+            if isRichTextType(type) {
+                if let data = pasteboard.data(forType: type),
+                   let attributed = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.rtf], documentAttributes: nil) {
+                    return attributed.string
+                }
+            } else if let text = pasteboard.string(forType: type) {
+                return text
+            }
         }
-        ExecutionLog.write("NSPerformService returned \(box.ok) changeCount \(before)->\(after)")
-        if !box.ok {
-            return RunResult(
-                status: .failed,
-                actionID: capabilityID,
-                title: record.menuTitle,
-                message: "NSPerformService(\"\(record.menuTitle)\") returned false.",
-                output: output,
-                supportLevel: .publicSupported
-            )
-        }
-        return RunResult(
-            status: .executed,
-            actionID: capabilityID,
-            title: record.menuTitle,
-            message: "NSPerformService(\"\(record.menuTitle)\") returned true.",
-            output: output,
-            supportLevel: .publicSupported
-        )
+        return nil
     }
 
     static func accepts(_ record: InstalledServiceRecord, item: ContentItem) -> Bool {
-        if item.path != nil {
-            if record.sendFileTypes.contains(where: { typeIdentifier($0).map { ContentParser.conforms(item, to: $0) } ?? false }) {
-                return true
-            }
-            if item.kind == "text_file" || item.kind == "text" {
-                return record.sendTypes.contains(where: isTextType)
-            }
-            if let type = item.utType, record.sendTypes.contains(where: { declared in
-                guard let declaredType = typeIdentifier(declared) else { return false }
-                return type.conforms(to: declaredType)
-            }) {
-                return true
-            }
-            return false
-        }
-        if item.url != nil {
-            return canEncodeWebURL(declaredSendTypes: record.sendTypes)
-        }
-        if item.text != nil {
-            return record.sendTypes.contains(where: isTextType)
-        }
-        return false
+        ServiceContext.accepts(record.requiredContext, item: item) && servicePayload(for: item, record: record) != nil
     }
 
     private static func capability(for record: InstalledServiceRecord) -> Capability {
@@ -169,7 +156,12 @@ enum ServiceCatalog {
         if let message = record.message { metadata["message"] = message }
         if let required = record.requiredContext { metadata["requiredContext"] = required }
         return Capability(
-            id: CapabilityID.service(bundleIdentifier: record.bundleIdentifier, message: record.message, menuTitle: record.menuTitle),
+            id: CapabilityID.service(
+                bundleIdentifier: record.bundleIdentifier,
+                bundlePath: record.bundlePath,
+                message: record.message,
+                menuTitle: record.menuTitle
+            ),
             title: record.menuTitle,
             source: .service,
             provider: CapabilityProvider(name: record.bundleName, bundleIdentifier: record.bundleIdentifier),
@@ -184,26 +176,37 @@ enum ServiceCatalog {
     }
 
     private static func servicePayload(for item: ContentItem, record: InstalledServiceRecord) -> ServicePayload? {
-        if item.path != nil, record.sendFileTypes.contains(where: { typeIdentifier($0).map { ContentParser.conforms(item, to: $0) } ?? false }) {
-            return ServicePayload(text: nil, filePath: item.path, webURL: nil)
+        if let path = item.path {
+            if record.sendFileTypes.contains(where: { typeIdentifier($0).map { ContentParser.conforms(item, to: $0) } ?? false }) {
+                return ServicePayload(text: nil, filePath: path, webURL: nil)
+            }
+            if record.sendTypes.contains(where: isFileURLSendType) ||
+                (ServiceContext.requiresFilePath(record.requiredContext, item: item) && record.sendTypes.contains(where: isTextType)) {
+                return ServicePayload(text: nil, filePath: path, webURL: nil)
+            }
+            if record.sendTypes.contains(where: isTextType), item.utType?.conforms(to: .text) == true,
+               let size = try? URL(fileURLWithPath: path).resourceValues(forKeys: [.fileSizeKey]).fileSize,
+               size <= 1_000_000,
+               let data = try? Data(contentsOf: URL(fileURLWithPath: path)), data.count <= 1_000_000,
+               let text = String(data: data, encoding: .utf8) {
+                return ServicePayload(text: text, filePath: nil, webURL: nil)
+            }
+            return nil
         }
         if let web = item.url {
             guard canEncodeWebURL(declaredSendTypes: record.sendTypes) else { return nil }
             return ServicePayload(text: nil, filePath: nil, webURL: web)
         }
-        if let text = item.text {
+        if let text = item.text, record.sendTypes.contains(where: isTextType) {
             return ServicePayload(text: text, filePath: nil, webURL: nil)
         }
-        if let path = item.path, item.kind == "text_file" || (item.utType?.conforms(to: .text) ?? false) {
-            if let data = try? Data(contentsOf: URL(fileURLWithPath: path)), data.count <= 1_000_000,
-               let text = String(data: data, encoding: .utf8) {
-                return ServicePayload(text: text, filePath: nil, webURL: nil)
-            }
-        }
-        if let path = item.path {
-            return ServicePayload(text: nil, filePath: path, webURL: nil)
-        }
         return nil
+    }
+
+    static func preparePasteboard(_ pasteboard: NSPasteboard, item: ContentItem, record: InstalledServiceRecord) -> Bool {
+        guard accepts(record, item: item), let payload = servicePayload(for: item, record: record) else { return false }
+        declare(payload, on: pasteboard, record: record)
+        return true
     }
 
     static func canEncodeWebURL(declaredSendTypes: [String]) -> Bool {
@@ -237,9 +240,6 @@ enum ServiceCatalog {
             if !types.contains(type) {
                 types.append(type)
             }
-        }
-        if types.isEmpty {
-            types = [.string, NSPasteboard.PasteboardType("public.utf8-plain-text")]
         }
         return types
     }
@@ -297,15 +297,22 @@ enum ServiceCatalog {
         }
         if let path = payload.filePath {
             let url = URL(fileURLWithPath: path)
-            let filenames = NSPasteboard.PasteboardType("NSFilenamesPboardType")
-            pasteboard.clearContents()
-            pasteboard.writeObjects([url as NSURL])
-            pasteboard.addTypes([filenames], owner: nil)
-            pasteboard.setPropertyList([path], forType: filenames)
-            for raw in record.sendTypes where raw.lowercased().contains("url") || raw == "NSURLPboardType" {
+            if !record.sendFileTypes.isEmpty {
+                // NSSendFileTypes explicitly declares a file-URL contract.
+                pasteboard.clearContents()
+                pasteboard.writeObjects([url as NSURL])
+                return
+            }
+            let types = record.sendTypes.filter { isFileURLSendType($0) || isTextType($0) }.map(pasteboardType)
+            pasteboard.declareTypes(types, owner: nil)
+            for raw in record.sendTypes {
                 let type = pasteboardType(for: raw)
-                pasteboard.addTypes([type], owner: nil)
-                pasteboard.setString(url.absoluteString, forType: type)
+                if isFileURLSendType(raw) {
+                    pasteboard.setString(url.absoluteString, forType: type)
+                } else if isTextType(raw) {
+                    if isRichTextType(type) { pasteboard.setData(plainTextRTF(path), forType: type) }
+                    else { pasteboard.setString(path, forType: type) }
+                }
             }
         }
     }
@@ -390,9 +397,15 @@ enum ServiceCatalog {
         }
     }
 
+    private static func isFileURLSendType(_ type: String) -> Bool {
+        isWebURLSendType(type) || type.lowercased() == "public.file-url"
+    }
+
     private static func isTextType(_ type: String) -> Bool {
-        let lowered = type.lowercased()
-        return lowered.contains("string") || lowered.contains("text") || lowered.contains("rtf")
+        switch type.lowercased() {
+        case "nsstringpboardtype", "nspasteboardtypestring", "public.utf8-plain-text", "public.plain-text", "public.text", "public.rtf", "nsrtfpboardtype": return true
+        default: return false
+        }
     }
 
     private static func typeIdentifier(_ raw: String) -> UTType? {
@@ -409,9 +422,10 @@ enum ServiceCatalog {
     }
 
     private static func jsonString(_ value: Any?) -> String? {
-        guard let value, JSONSerialization.isValidJSONObject(value),
+        guard let value else { return nil }
+        guard JSONSerialization.isValidJSONObject(value),
               let data = try? JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])
-        else { return nil }
+        else { return "invalid-required-context" }
         return String(data: data, encoding: .utf8)
     }
 }
@@ -426,6 +440,15 @@ private final class ServiceCallBox {
     private let lock = NSLock()
     private var storedDone = false
     private var storedOK = false
+    private var storedExpired = false
+
+    func expire() -> Bool {
+        lock.lock()
+        let completed = storedDone
+        storedExpired = !completed
+        lock.unlock()
+        return completed
+    }
 
     var done: Bool {
         lock.lock()
@@ -439,10 +462,12 @@ private final class ServiceCallBox {
         return storedOK
     }
 
-    func finish(_ value: Bool) {
+    @discardableResult func finish(_ value: Bool) -> Bool {
         lock.lock()
         storedOK = value
         storedDone = true
+        let expired = storedExpired
         lock.unlock()
+        return expired
     }
 }

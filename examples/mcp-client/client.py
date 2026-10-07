@@ -1,116 +1,90 @@
 #!/usr/bin/env python3
-"""Minimal stdio MCP client for RIGHTCLICK. Stdlib only."""
-
-from __future__ import annotations
-
+"""Read-only, bounded RIGHTCLICK stdio example; Python standard library only."""
+import hashlib
 import json
 import os
+from pathlib import Path
+import selectors
+import shutil
 import subprocess
-import sys
-from typing import Any
+import tempfile
+import time
+
+TOOLS = {"context_runtime", "context_inspect", "context_providers", "context_actions",
+         "context_explain", "context_run", "context_run_status"}
 
 
-def main() -> int:
-    binary = os.environ.get("RIGHTCLICK_BIN", "rightclick")
-    proc = subprocess.Popen(
-        [binary, "mcp"],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        bufsize=1,
-    )
-    assert proc.stdin and proc.stdout
+def main():
+    selected = os.environ.get("RIGHTCLICK_BIN", "rightclick")
+    executable = Path(shutil.which(selected) or selected).resolve(strict=True)
+    digest = hashlib.sha256(executable.read_bytes()).hexdigest()
+    with tempfile.TemporaryFile(mode="w+t") as errors:
+        process = subprocess.Popen([str(executable), "mcp"], stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE, stderr=errors,
+                                   text=True, bufsize=1)
+        sequence = 0
 
-    next_id = 1
+        def rpc(method, params=None):
+            nonlocal sequence
+            sequence += 1
+            message = {"jsonrpc": "2.0", "id": sequence, "method": method}
+            if params is not None:
+                message["params"] = params
+            process.stdin.write(json.dumps(message) + "\n")
+            process.stdin.flush()
+            deadline = time.monotonic() + 30
+            with selectors.DefaultSelector() as selector:
+                selector.register(process.stdout, selectors.EVENT_READ)
+                while time.monotonic() < deadline:
+                    if not selector.select(max(0, deadline - time.monotonic())):
+                        break
+                    line = process.stdout.readline()
+                    if not line:
+                        raise RuntimeError("RIGHTCLICK exited before replying")
+                    result = json.loads(line)
+                    if result.get("id") != sequence:
+                        continue
+                    if "error" in result:
+                        raise RuntimeError("MCP request rejected: " + method)
+                    return result["result"]
+            raise TimeoutError("Bounded MCP deadline: " + method)
 
-    def rpc(method: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
-        nonlocal next_id
-        msg: dict[str, Any] = {"jsonrpc": "2.0", "id": next_id, "method": method}
-        next_id += 1
-        if params is not None:
-            msg["params"] = params
-        line = json.dumps(msg)
-        proc.stdin.write(line + "\n")
-        proc.stdin.flush()
-        while True:
-            raw = proc.stdout.readline()
-            if not raw:
-                err = proc.stderr.read() if proc.stderr else ""
-                raise RuntimeError(f"server closed; stderr={err!r}")
-            raw = raw.strip()
-            if not raw:
-                continue
-            data = json.loads(raw)
-            if data.get("id") == msg["id"]:
-                if "error" in data:
-                    raise RuntimeError(data["error"])
-                return data["result"]
+        def call(name, arguments):
+            result = rpc("tools/call", {"name": name, "arguments": arguments})
+            if result.get("isError"):
+                raise RuntimeError("Tool rejected: " + name)
+            return json.loads(result["content"][0]["text"])
 
-    def notify(method: str, params: dict[str, Any] | None = None) -> None:
-        msg: dict[str, Any] = {"jsonrpc": "2.0", "method": method}
-        if params is not None:
-            msg["params"] = params
-        proc.stdin.write(json.dumps(msg) + "\n")
-        proc.stdin.flush()
-
-    try:
-        init = rpc(
-            "initialize",
-            {
-                "protocolVersion": "2024-11-05",
-                "capabilities": {},
-                "clientInfo": {"name": "rightclick-example", "version": "0.1.0"},
-            },
-        )
-        print("server:", init.get("serverInfo"))
-        notify("notifications/initialized")
-
-        tools = rpc("tools/list")
-        names = [t["name"] for t in tools.get("tools", [])]
-        print("tools:", ", ".join(names))
-
-        item = "RightClick third party capability test"
-        actions = rpc("tools/call", {"name": "context_actions", "arguments": {"item": item}})
-        print("context_actions result keys:", sorted(actions.keys()) if isinstance(actions, dict) else type(actions))
-
-        # Content is often MCP content blocks; print truncated JSON
-        print(json.dumps(actions, indent=2)[:1200], "...\n")
-
-        # Optional explain of a known BBEdit id when present in the environment
-        explain_id = "service:com.barebones.bbedit:openSelectionService"
         try:
-            explained = rpc(
-                "tools/call",
-                {"name": "context_explain", "arguments": {"item": item, "actionId": explain_id}},
-            )
-            print("explain:", json.dumps(explained, indent=2)[:800], "...\n")
-        except Exception as exc:  # noqa: BLE001
-            print("explain skipped:", exc)
-
-        # Confirmed run is intentionally NOT executed here.
-        print(
-            "example confirmed run payload (NOT sent):\n",
-            json.dumps(
-                {
-                    "name": "context_run",
-                    "arguments": {
-                        "item": item,
-                        "actionId": explain_id,
-                        "confirmed": True,
-                    },
-                },
-                indent=2,
-            ),
-        )
-        return 0
-    finally:
-        proc.terminate()
-        try:
-            proc.wait(timeout=2)
-        except subprocess.TimeoutExpired:
-            proc.kill()
+            rpc("initialize", {"protocolVersion": "2025-03-26", "capabilities": {},
+                               "clientInfo": {"name": "rightclick-example", "version": "1"}})
+            process.stdin.write(json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"}) + "\n")
+            process.stdin.flush()
+            declarations = rpc("tools/list")["tools"]
+            assert len(declarations) == 7 and {x["name"] for x in declarations} == TOOLS
+            runtime = call("context_runtime", {})
+            assert runtime["executableSHA256"] == digest
+            assert Path(runtime["executableRealPath"]).resolve() == executable
+            assert runtime["transport"] == "stdio"
+            item = "RightClick capability discovery example"
+            inspected = call("context_inspect", {"item": item})
+            actions = call("context_actions", {"item": item})["actions"]
+            selected_id = actions[0]["id"] if actions else None
+            if selected_id:
+                explained = call("context_explain", {"item": item, "actionId": selected_id})
+                assert explained["id"] == selected_id
+            print(json.dumps({"toolCount": len(declarations), "version": runtime["version"],
+                              "executableSHA256": digest, "itemKind": inspected["kind"],
+                              "discoveredCount": len(actions), "explainedDiscoveredID": selected_id,
+                              "invokedCapabilities": 0}, indent=2))
+        finally:
+            process.terminate()
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=5)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

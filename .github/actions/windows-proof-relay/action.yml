@@ -1,0 +1,5 @@
+name: Persistent native Windows proof relay
+description: Keep one Windows PowerShell session alive while publishing only the encrypted proof connection with the pinned official uploader.
+runs:
+  using: node24
+  main: index.mjs

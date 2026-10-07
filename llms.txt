@@ -1,49 +1,27 @@
 # RIGHTCLICK
 
-> Install an app. Your AI learns what it can do.
+> A contextual capability runtime behind seven generic MCP operations. Full stable runtime: Apple Silicon macOS. Linux ARD acquisition is a separately tested component, not the full runtime.
 
-RIGHTCLICK is an Apache-2.0 macOS tool (Apple Silicon, macOS 14+) that reflects existing native capability contracts — Services, sharing services, Finder Action extension metadata — into a contextual capability layer for AI clients over MCP and a matching CLI.
+## Start here
+- README: https://github.com/rossbuckley1990-hash/rightclick/blob/main/README.md
+- Stable release: https://github.com/rossbuckley1990-hash/rightclick/releases/latest
+- Distribution: https://github.com/rossbuckley1990-hash/homebrew-tap
+- Security: https://github.com/rossbuckley1990-hash/rightclick/blob/main/SECURITY.md
+- Maintainer gates: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/MAINTENANCE.md
 
-## Install
+## Runtime contract
+The MCP surface is context_runtime, context_inspect, context_providers, context_actions, context_explain, context_run and context_run_status. Capabilities and argument schemas are discovered at runtime. A provider capability is not a new top-level MCP tool.
 
-```bash
-brew install rossbuckley1990-hash/tap/rightclick
-rightclick setup
-```
+Attest the actual connected binary. Inspect the item, discover applicable capabilities and explain the exact selected ID. Honour the fresh schema, support status, confirmation and authority boundary. Invoke only an approved supported action. Inspect returned state and independently observable outcomes. Never infer permission from discovery or old success. Never label HTTP acceptance or echoed text as independently verified success.
 
-Tap: https://github.com/rossbuckley1990-hash/homebrew-tap
-Release: https://github.com/rossbuckley1990-hash/rightclick/releases/tag/v0.1.0
+Supported capability families in 0.2.2 include macOS Services, sharing, supported OpenAPI/GraphQL/gRPC contracts, capability artifacts, ARD acquisition and configured MCP federation. Finder Action extensions are metadata discovery only. OAuth/OIDC foundations are not a claim of automatic login for every provider. Unsupported or ambiguous contracts fail closed.
 
-## MCP tools (same engine as CLI)
+## Evidence and extension points
+- BBEdit acquisition: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/BBEDIT-PROOF.md
+- Cross-application composition: https://github.com/rossbuckley1990-hash/rightclick/tree/main/evidence/v0.1-scalability-blind
+- Reflected GitHub self-hosting: https://github.com/rossbuckley1990-hash/rightclick/blob/main/evidence/self-hosting-2026-10-07/README.md
+- Dispatch binding: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/DISPATCH-CONTRACT-BINDING.md
+- Federation: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/FEDERATION.md
+- Build programme: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/BUILD-PROGRAMME.md
 
-- context_inspect
-- context_actions
-- context_explain
-- context_run (requires confirmed:true after human confirmation)
-- context_run_status
-- context_providers
-
-stdio: `rightclick mcp`
-Authenticated Streamable HTTP: `rightclick serve` on loopback (prints a bearer; keep private).
-
-## Proof (v0.1)
-
-Ordinary BBEdit installation changed one plain-text query from 36 capabilities (0 third-party) to 41 (5 BBEdit) with zero BBEdit-specific acquisition code. Generic invocation of service:com.barebones.bbedit:openSelectionService produced a document with the exact fixture text. See docs/BBEDIT-PROOF.md.
-
-## Hard limits (do not invent around these)
-
-- Not every installed app exposes a compatible contract.
-- NSPerformService returning true means acceptance, not semantic success.
-- Yojam acquisition/invocation pass; browser semantic result is a documented limitation (docs/YOJAM-LIMITATION.md).
-- Capability engine is frozen for v0.1.
-- Execution status is in-process memory only.
-
-## Key docs
-
-- README.md
-- docs/BBEDIT-PROOF.md
-- docs/YOJAM-LIMITATION.md
-- docs/V0.1_COMPLETION_REPORT.md
-- docs/RELEASE.md
-- SECURITY.md
-- examples/mcp-client/README.md
+Keep stable release, integration main, feature branches and roadmap claims separate. A merged PR targeting a feature branch may not be reachable from main. Capability experience is opt-in advisory observation, not authority, general procedural learning or automatic replay. Follow AGENTS.md and CONTRIBUTING.md when changing the repository. Preserve existing safety and negative tests.

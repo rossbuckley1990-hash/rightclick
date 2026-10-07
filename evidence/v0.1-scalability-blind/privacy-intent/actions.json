@@ -1,0 +1,503 @@
+{
+  "actions" : [
+    {
+      "explanation" : "macOS Service “Convert to JPEG (Quality 75%) using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceConvertJPEG75",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Convert to JPEG (Quality 75%) using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Convert to JPEG (Quality 85%) using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceConvertJPEG85",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Convert to JPEG (Quality 85%) using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Create Icon and Preview using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceCreateIconPreview",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Create Icon and Preview using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Cyberduck/Upload with Cyberduck”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:ch.sudo.cyberduck:serviceUploadFileUrl",
+      "inputTypes" : [
+        "public.file-url",
+        "public.item"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "ch.sudo.cyberduck",
+        "name" : "Cyberduck"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Cyberduck/Upload with Cyberduck"
+    },
+    {
+      "explanation" : "macOS Service “ImageOptimize”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:net.pornel.ImageOptim:handleServices",
+      "inputTypes" : [
+        "public.png",
+        "public.jpeg",
+        "com.compuserve.gif",
+        "public.svg-image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "net.pornel.ImageOptim",
+        "name" : "ImageOptim"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "ImageOptimize"
+    },
+    {
+      "explanation" : "macOS Service “Open Image in Acorn”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.flyingmeat.Acorn8:openImageFromService",
+      "inputTypes" : [
+        "public.image",
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.flyingmeat.Acorn8",
+        "name" : "Acorn"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Open Image in Acorn"
+    },
+    {
+      "explanation" : "macOS Service “Open using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceOpenInGraphicConverter",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.item"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Open using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Remove Extended Attributes (Xattr) using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceRemoveXATTR",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.item"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Remove Extended Attributes (Xattr) using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Remove Metadata using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceRemoveMetadata",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Remove Metadata using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Remove Resourcefork using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceRemoveResourcefork",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.data"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Remove Resourcefork using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Rename using GraphicConverter…”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceRename",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.item"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Rename using GraphicConverter…"
+    },
+    {
+      "explanation" : "macOS Service “Rotate JPEG lossless depending on Exif using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceRotateFileToExif",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Rotate JPEG lossless depending on Exif using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Set default XMP using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceSetXMPIPTC",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Set default XMP using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Set Desktop Picture”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.apple.services.setDesktopPicture:runWorkflowAsService",
+      "inputTypes" : [
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.services.setDesktopPicture",
+        "name" : "Set Desktop Picture"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Set Desktop Picture"
+    },
+    {
+      "explanation" : "macOS Service “Set File Date to Exif Date using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceSetFileDateToExifDate",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.image"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Set File Date to Exif Date using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Show in Browser using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceShowInGraphicConverterBrowser",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.item"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Show in Browser using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Show random in Slide Show using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceShowRandomInGraphicConverterSlideshow",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.item"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Show random in Slide Show using GraphicConverter"
+    },
+    {
+      "explanation" : "macOS Service “Show sorted in Slide Show using GraphicConverter”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id" : "service:com.lemkesoft.graphicconverter12:serviceShowSortedInGraphicConverterSlideshow",
+      "inputTypes" : [
+        "NSPasteboardTypeFileURL",
+        "public.item"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.lemkesoft.graphicconverter12",
+        "name" : "GraphicConverter 12"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "service",
+      "supportLevel" : "public_supported",
+      "title" : "Show sorted in Slide Show using GraphicConverter"
+    },
+    {
+      "explanation" : "Sharing service “Add to Photos”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:com.apple.share.System.add-to-iphoto",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.share.System.add-to-iphoto",
+        "name" : "Add to Photos"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Add to Photos"
+    },
+    {
+      "explanation" : "Sharing service “AirDrop”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:com.apple.share.AirDrop.send",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.share.AirDrop.send",
+        "name" : "AirDrop"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "AirDrop"
+    },
+    {
+      "explanation" : "Sharing service “Freeform”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:freeform",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Freeform"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Freeform"
+    },
+    {
+      "explanation" : "Sharing service “Journal”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:journal",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Journal"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Journal"
+    },
+    {
+      "explanation" : "Sharing service “Messages”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:com.apple.messages.ShareExtension",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.messages.ShareExtension",
+        "name" : "Messages"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Messages"
+    },
+    {
+      "explanation" : "Sharing service “Notes”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:notes",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Notes"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Notes"
+    },
+    {
+      "explanation" : "Sharing service “Reminders”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:reminders",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Reminders"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Reminders"
+    },
+    {
+      "explanation" : "Sharing service “Simulator”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown.",
+      "id" : "sharing:title:simulator",
+      "inputTypes" : [
+        "NSPasteboardWriting"
+      ],
+      "invocation" : "interactive",
+      "provider" : {
+        "name" : "Simulator"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "external_share",
+      "source" : "sharing_service",
+      "supportLevel" : "public_deprecated",
+      "title" : "Simulator"
+    },
+    {
+      "explanation" : "Action extension “ImageOptimize” was discovered from installed extension metadata. This Mac does not expose a public call to run it.",
+      "id" : "action:net.pornel.ImageOptimizeExtension",
+      "inputTypes" : [
+        "public.jpeg"
+      ],
+      "invocation" : "unsupported",
+      "provider" : {
+        "bundleIdentifier" : "net.pornel.ImageOptimizeExtension",
+        "name" : "ImageOptimize"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "action_extension",
+      "supportLevel" : "public_supported",
+      "title" : "ImageOptimize"
+    },
+    {
+      "explanation" : "Action extension “Markup” was discovered from installed extension metadata. This Mac does not expose a public call to run it.",
+      "id" : "action:com.apple.MarkupUI.Markup",
+      "inputTypes" : [
+        "public.jpeg"
+      ],
+      "invocation" : "unsupported",
+      "provider" : {
+        "bundleIdentifier" : "com.apple.MarkupUI.Markup",
+        "name" : "Markup"
+      },
+      "requiresConfirmation" : true,
+      "safety" : "unknown",
+      "source" : "action_extension",
+      "supportLevel" : "public_supported",
+      "title" : "Markup"
+    }
+  ],
+  "item" : {
+    "byteCount" : 468,
+    "display" : "/tmp/rightclick-privacy-intent-82406/RIGHTCLICK-PRIVACY-PROOF.jpg",
+    "isDirectory" : false,
+    "kind" : "image",
+    "path" : "/tmp/rightclick-privacy-intent-82406/RIGHTCLICK-PRIVACY-PROOF.jpg",
+    "typeDescription" : "JPEG image",
+    "typeIdentifier" : "public.jpeg"
+  }
+}

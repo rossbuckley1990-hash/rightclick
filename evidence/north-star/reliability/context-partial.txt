@@ -1,0 +1,71 @@
+[0/1] Planning build
+Building for debugging...
+[0/12] Write sources
+[2/12] Write swift-version--58304C5D6DBC2206.txt
+[4/11] Emitting module RightClickCore
+[5/11] Compiling RightClickCore ServiceContext.swift
+[6/11] Compiling RightClickCore ServiceCatalog.swift
+[7/12] Compiling RightClickCore CapabilityEngine.swift
+[8/21] Compiling RightClickCoreTests SharingExecutionTests.swift
+[9/21] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[10/21] Compiling RightClickCoreTests PolicyTests.swift
+[11/21] Compiling RightClickCoreTests EngineTests.swift
+[12/21] Compiling RightClickCoreTests ServiceContextTests.swift
+[13/21] Emitting module RightClickCoreTests
+[14/21] Compiling RightClickCoreTests AcquisitionTests.swift
+[15/21] Emitting module RightClickMCP
+[16/21] Compiling RightClickMCP Server.swift
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickMCP/Server.swift:246:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+244 |         do {
+245 |             let text = try handleTool(params.name, arguments: params.arguments, engine: engine)
+246 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/Users/ross/spawn/rightclick-mcp/Sources/RightClickMCP/Server.swift:248:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+246 |             return .init(content: [.text(text)], isError: false)
+247 |         } catch {
+248 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+249 |         }
+250 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[17/24] Compiling RightClickCLI main.swift
+[18/24] Emitting module RightClickCLI
+[19/24] Compiling RightClickCLI Setup.swift
+[19/24] Write Objects.LinkFileList
+[20/24] Linking rightclick
+[21/24] Applying rightclick
+[22/24] Write Objects.LinkFileList
+[23/24] Linking rightclick-mcpPackageTests
+Build complete! (9.55s)
+Test Suite 'Selected tests' started at 2026-10-05 12:16:11.092.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-05 12:16:11.098.
+Test Suite 'ServiceContextTests' started at 2026-10-05 12:16:11.098.
+Test Case '-[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage]' passed (0.004 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testContextDictionariesAreANDAndArrayIsOR]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testContextDictionariesAreANDAndArrayIsOR]' passed (0.009 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testDuplicateMenuNamesCannotChooseTheWrongProvider]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/ServiceContextTests.swift:68: error: -[RightClickCoreTests.ServiceContextTests testDuplicateMenuNamesCannotChooseTheWrongProvider] : XCTAssertTrue failed
+Test Case '-[RightClickCoreTests.ServiceContextTests testDuplicateMenuNamesCannotChooseTheWrongProvider]' failed (1.634 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathContextEncodesPathRatherThanReadingFileContents]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathContextEncodesPathRatherThanReadingFileContents]' passed (0.087 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathRequirementDoesNotApplyToOrdinaryTextOrWebURL]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testFilePathRequirementDoesNotApplyToOrdinaryTextOrWebURL]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain]' started.
+Test Case '-[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain]' passed (0.001 seconds).
+Test Suite 'ServiceContextTests' failed at 2026-10-05 12:16:12.836.
+	 Executed 7 tests, with 1 failure (0 unexpected) in 1.736 (1.738) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-05 12:16:12.836.
+	 Executed 7 tests, with 1 failure (0 unexpected) in 1.736 (1.738) seconds
+Test Suite 'Selected tests' failed at 2026-10-05 12:16:12.836.
+	 Executed 7 tests, with 1 failure (0 unexpected) in 1.736 (1.744) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

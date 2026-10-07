@@ -1,0 +1,145 @@
+{
+  "recordType": "new-run-report",
+  "reportWrittenAtUTC": "2026-10-07T13:21:29.432249+00:00",
+  "observedAtUTC": null,
+  "timeBoundary": "The source tool result does not contain an observation timestamp. reportWrittenAtUTC is the time of saving, not an asserted execution time.",
+  "route": "new read-only engineering stdio MCP connection using the pinned installed binary; not a plugin connector reconnection",
+  "runtime": {
+    "product": "RIGHTCLICK",
+    "version": "0.2.2",
+    "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "independentFileSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "reportedExecutableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "pid": 87393,
+    "pidMatchedSubprocess": true,
+    "transport": "stdio",
+    "terminatedAfterDiscovery": true,
+    "protocolVersion": "2025-03-26"
+  },
+  "initialize": {
+    "id": 1,
+    "jsonrpc": "2.0",
+    "result": {
+      "capabilities": {
+        "tools": {
+          "listChanged": false
+        }
+      },
+      "protocolVersion": "2025-03-26",
+      "serverInfo": {
+        "name": "rightclick",
+        "version": "0.2.2"
+      }
+    }
+  },
+  "tools": {
+    "count": 7,
+    "operations": [
+      "context_runtime",
+      "context_inspect",
+      "context_actions",
+      "context_explain",
+      "context_run",
+      "context_run_status",
+      "context_providers"
+    ],
+    "canonicalSHA256": "e0d4e1acdd4620c308b329be2105c64892f9d0aa118420dbc58bef3e7913944a",
+    "canonicalAlgorithm": "Sort full tool declaration array by name, then JSON serialize with recursively sorted object keys, compact separators, ensure_ascii=False, and UTF-8 encoding; SHA-256 those bytes.",
+    "declarationsPath": "/private/tmp/rightclick-engineering-mcp-fresh-tools.json",
+    "declarationsFileSHA256": "8f5177d6d33f7c4824b14e95f654415b6be6fd0362b8c8cd139afbda7a9b9e7b",
+    "declarationsRecovery": "Exact parsed declarations recovered from the actual returned tool result in context. Pretty-print whitespace differs; their canonical SHA matches the original observed fingerprint.",
+    "rawSchemasDurable": true
+  },
+  "connectorAvailability": {
+    "currentToolInventoryCount": 466,
+    "rightclickCallableCount": 0,
+    "toolSearchCallableCount": 0,
+    "freshPluginConnectorCall": false
+  },
+  "discovery": {
+    "method": "context_providers",
+    "observedSourceKinds": [
+      "service",
+      "action_extension",
+      "openapi"
+    ],
+    "providerSelection": "Selected actual returned providers and relevant capability titles; this is not an exhaustive provider transcript.",
+    "providers": [
+      {
+        "name": "GitHub v3 REST API",
+        "source": "openapi",
+        "capabilityTitles": [
+          "Get a repository",
+          "Get a branch",
+          "Get a blob",
+          "Get a release by tag name",
+          "Create a pull request"
+        ]
+      },
+      {
+        "name": "FileMerge",
+        "bundleIdentifier": "com.apple.FileMerge",
+        "source": "service",
+        "capabilityTitles": [
+          "FileMerge/Compare Files",
+          "FileMerge/Compare To Main"
+        ]
+      },
+      {
+        "name": "BBEdit",
+        "bundleIdentifier": "com.barebones.bbedit",
+        "source": "service",
+        "capabilityTitles": [
+          "BBEdit/Append Selection to BBEdit Scratchpad",
+          "BBEdit/Compare Using BBEdit",
+          "BBEdit/New BBEdit Document with Selection",
+          "BBEdit/New Note in BBEdit",
+          "BBEdit/Open File in BBEdit",
+          "BBEdit/Search Here in BBEdit"
+        ]
+      },
+      {
+        "name": "Xcode",
+        "bundleIdentifier": "com.apple.dt.Xcode",
+        "source": "service",
+        "capabilityTitles": [
+          "Find in Xcode",
+          "Open Quickly in Xcode"
+        ]
+      },
+      {
+        "name": "ImageOptimize",
+        "bundleIdentifier": "net.pornel.ImageOptimizeExtension",
+        "source": "action_extension",
+        "capabilityTitles": [
+          "ImageOptimize"
+        ]
+      }
+    ],
+    "scope": "Discovery establishes reported availability only; no invocation or authority sufficiency was tested."
+  },
+  "callsPerformed": [
+    "initialize",
+    "tools/call context_runtime",
+    "tools/list",
+    "tools/call context_providers"
+  ],
+  "capabilityInvocations": 0,
+  "contextActionsCalls": 0,
+  "confirmedTrue": false,
+  "credentialRetrieval": false,
+  "clientChanges": false,
+  "softwareUpdates": false,
+  "operatorServicesStarted": false,
+  "rawToolOutputReference": {
+    "sessionID": 91723,
+    "chunkID": "474191",
+    "tool": "functions.write_stdin final result"
+  },
+  "rawFullTranscriptDurable": false,
+  "candidateAcceptance": false,
+  "trustBoundary": "Independent on-disk hashing validates agreement with local runtime bytes, not publisher supply-chain trust or candidate feature acceptance.",
+  "skillApplied": "/Users/ross/.codex/plugins/cache/created-by-me-remote/rightclick/0.2.2/skills/rightclick/SKILL.md",
+  "skillPathChange": "Requested historical 0.1.3 path was missing; current 0.2.2 stable skill was read. The stable auto-upgrading launcher was not run."
+}

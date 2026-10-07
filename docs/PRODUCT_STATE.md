@@ -1,13 +1,33 @@
-# Product state — v0.1.0
+# Product state — v0.2.1
 
-The capability engine is frozen at the generic behaviour of `980c05e895ef6108be76b32e17289ea85a9bdb17`. No provider-specific production code was added during reconstruction.
+RIGHTCLICK reflects capabilities from software and services already present in the environment instead of requiring a bespoke MCP server for every provider.
 
-Services scan documented `NSServices` entries in installed bundles on each query. `refresh` requests `NSUpdateDynamicServices`. Applicability and supported payload construction share encoding rules. Generic invocation retains the pasteboard and an AppKit run loop for 10 seconds when no synchronous result is written.
+The runtime currently combines generic macOS capability reflection with dynamically discovered OpenAPI providers.
 
-Sharing uses deprecated context-filtered discovery and public invocation. The in-memory registry retains the service/delegate. `willShareItems` does not finish execution; `didShareItems` records success, `didFailToShareItems` records failure, and a 30-second deadline records unknown. Finder Action extensions are metadata-only and cannot be invoked.
+The same capability engine backs the CLI and seven MCP tools:
 
-The CLI and both MCP transports call the same engine. Six contextual tools expose discovery and policy without a tool per app. Streamable HTTP is stateless at the protocol transport layer but shares an in-memory execution store across requests. It binds to `127.0.0.1`, requires a bearer secret, rejects malformed/oversized request framing, and does not itself provide TLS. `serve --tunnel` is an explicit optional development exposure; no tunnel was created for final acceptance.
+    context_inspect
+    context_actions
+    context_explain
+    context_run
+    context_run_status
+    context_providers
+    context_runtime
 
-`setup` checks discovery and writes only the `rightclick` Cursor entry using the invoked executable's path. Status and interactive callbacks require the serving process to remain alive. A separate `rightclick status` process cannot retrieve a previous process's record.
+Dynamic OpenAPI support includes plain-text operations, supported structured JSON object operations and supported GET path-parameter operations. Unsupported or ambiguous schemas abstain rather than guessing.
 
-BBEdit's historical acquisition is 36 → 41 with five new capabilities; final public-bottle exact semantic regression passes. Yojam acquisition passes, semantic execution remains a documented limitation. See the [completion report](V0.1_COMPLETION_REPORT.md) for test scope and distribution gates. v0.1 is published through Homebrew with an Apple Silicon Tahoe bottle and a verified free Command Line Tools source fallback. Actual public clean installation, installed setup, CLI, Cursor and both MCP transports passed. Paid signing is deferred.
+OpenAPI authority is generic and origin-bound. Supported bearer requirements are resolved without exposing the secret through capability metadata, and authority is not forwarded across origin boundaries.
+
+Invocation acceptance is not treated as semantic success. Where an explicit verification specification exists, RIGHTCLICK can distinguish verified success, verified failure, accepted-but-unverified execution and unavailable capabilities.
+
+Bonjour-discovered OpenAPI providers can appear, disappear and reappear with a new capability identity. Stale capability IDs become unavailable.
+
+Local onboarding preserves unrelated MCP configuration and requires explicit consent for mutation.
+
+ChatGPT onboarding uses the stable Homebrew executable, transactional owned-file migration, live process attestation, persistent tunnel identity and fail-closed tunnel-profile integrity checks.
+
+Homebrew upgrade continuity is tied to /opt/homebrew/bin/rightclick, not a versioned Cellar or development path. A changed stable binary causes bridge restart and setup-state SHA reconciliation without changing the persistent tunnel identity.
+
+The final v0.2.1 code acceptance ran 219 tests with 0 skipped and 0 failures under live fixtures.
+
+The release remains bounded to the environments and provider contracts actually tested; it does not claim universal software compatibility.

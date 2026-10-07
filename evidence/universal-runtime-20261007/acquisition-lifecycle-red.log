@@ -1,0 +1,33 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: 'rightclick-universal': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/14] Write sources
+[3/14] Write swift-version--58304C5D6DBC2206.txt
+[5/8] Compiling RightClickCoreTests CapabilityAcquisitionLifecycleTests.swift
+[6/8] Emitting module RightClickCoreTests
+[6/8] Write Objects.LinkFileList
+[7/8] Linking rightclick-mcpPackageTests
+Build complete! (6.49s)
+Test Suite 'Selected tests' started at 2026-10-07 13:30:59.718.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 13:30:59.718.
+Test Suite 'CapabilityAcquisitionLifecycleTests' started at 2026-10-07 13:30:59.718.
+Test Case '-[RightClickCoreTests.CapabilityAcquisitionLifecycleTests testUnchangedConfigurationDoesNotRetainWithdrawnProviderForever]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/CapabilityAcquisitionLifecycleTests.swift:45: error: -[RightClickCoreTests.CapabilityAcquisitionLifecycleTests testUnchangedConfigurationDoesNotRetainWithdrawnProviderForever] : XCTAssertTrue failed
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/CapabilityAcquisitionLifecycleTests.swift:46: error: -[RightClickCoreTests.CapabilityAcquisitionLifecycleTests testUnchangedConfigurationDoesNotRetainWithdrawnProviderForever] : XCTAssertTrue failed
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/CapabilityAcquisitionLifecycleTests.swift:47: error: -[RightClickCoreTests.CapabilityAcquisitionLifecycleTests testUnchangedConfigurationDoesNotRetainWithdrawnProviderForever] : XCTAssertGreaterThanOrEqual failed: ("1") is less than ("2")
+Test Case '-[RightClickCoreTests.CapabilityAcquisitionLifecycleTests testUnchangedConfigurationDoesNotRetainWithdrawnProviderForever]' failed (5.401 seconds).
+Test Suite 'CapabilityAcquisitionLifecycleTests' failed at 2026-10-07 13:31:05.119.
+	 Executed 1 test, with 3 failures (0 unexpected) in 5.401 (5.401) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 13:31:05.119.
+	 Executed 1 test, with 3 failures (0 unexpected) in 5.401 (5.401) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 13:31:05.119.
+	 Executed 1 test, with 3 failures (0 unexpected) in 5.401 (5.402) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

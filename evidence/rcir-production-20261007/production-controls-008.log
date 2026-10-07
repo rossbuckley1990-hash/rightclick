@@ -1,0 +1,53 @@
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/13] Write sources
+[3/13] Write swift-version--58304C5D6DBC2206.txt
+[5/7] Emitting module RightClickCoreTests
+[6/7] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[6/8] Write Objects.LinkFileList
+[7/8] Linking rightclick-mcpPackageTests
+Build complete! (2.37s)
+Test Suite 'Selected tests' started at 2026-10-07 11:56:39.935.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 11:56:39.935.
+Test Suite 'RCIRProductionDispatchTests' started at 2026-10-07 11:56:39.935.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' passed (0.166 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' passed (0.111 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' passed (0.121 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' passed (0.109 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' passed (0.111 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' passed (0.121 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:81: error: -[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects] : XCTUnwrap failed: expected non-nil value of type "Capability"
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:213: error: -[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects] : XCTAssertEqual failed: threw error "UnwrappingOptional(errorCode: 105, errorUserInfo: ["XCTestErrorUserInfoKeyShouldIgnore": true])"
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' failed (0.320 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' passed (0.124 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' passed (0.113 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' passed (0.114 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' passed (0.112 seconds).
+Test Suite 'RCIRProductionDispatchTests' failed at 2026-10-07 11:56:41.788.
+	 Executed 14 tests, with 2 failures (1 unexpected) in 1.852 (1.853) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 11:56:41.788.
+	 Executed 14 tests, with 2 failures (1 unexpected) in 1.852 (1.853) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 11:56:41.788.
+	 Executed 14 tests, with 2 failures (1 unexpected) in 1.852 (1.854) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

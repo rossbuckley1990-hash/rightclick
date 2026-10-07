@@ -1,0 +1,47 @@
+{
+  "experiment": "MOAT-001-RED",
+  "result": "PASS",
+  "claim": "RIGHTCLICK discovers and reflects the plain-text operation from the same remote OpenAPI document while abstaining from the structured application/json operation.",
+  "runtime": {
+    "product": "RIGHTCLICK",
+    "version": "0.2.0",
+    "pid": 43135,
+    "transport": "stdio",
+    "sha256": "60aba8cc28e40fb2e16637e380381fe2a98b844c2c435a136515a3f1382feb17"
+  },
+  "provider": {
+    "name": "RIGHTCLICK MOAT-001 Structured JSON Service",
+    "present": true,
+    "baseURL": "https://rightclick-moat-001-json-014709.spiny-justice.workers.dev",
+    "providerIdentity": "874c85ea13e451ed6efa67a20e78f0c0fde16b025329fa779a870bc137db54fb",
+    "specificationSHA256": "20bff38cdf5eb285e91029bf5186b28727f0c1206245081b7bec8ea37da8988e"
+  },
+  "control": {
+    "title": "MOAT001 Control Echo",
+    "operationId": "moat001ControlEcho",
+    "path": "/control",
+    "method": "POST",
+    "requestContentType": "text/plain",
+    "responseContentType": "text/plain",
+    "present": true
+  },
+  "structured": {
+    "title": "Create Structured Record",
+    "operationId": "createStructuredRecord",
+    "path": "/records",
+    "method": "POST",
+    "requestContentType": "application/json",
+    "responseContentType": "application/json",
+    "requiredFields": [
+      "title",
+      "priority"
+    ],
+    "priorityEnum": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "manualHTTPStatus": 201,
+    "presentInRightClick": false
+  }
+}

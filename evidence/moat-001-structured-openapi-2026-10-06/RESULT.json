@@ -1,0 +1,52 @@
+{
+  "experiment": "MOAT-001 Structured OpenAPI Capability Acquisition",
+  "date": "2026-10-06",
+  "result": "PASS",
+  "implementationCommit": "51eceef09f501ecd4b43afcaa7d6862915d8c6fb",
+  "frozenBaseCommit": "79df68190e75fb235db83878ce8a63a9f7c848d8",
+  "openapiSHA256": "20bff38cdf5eb285e91029bf5186b28727f0c1206245081b7bec8ea37da8988e",
+  "implementationPatchSHA256": "2b3b2c134c7322609a1060f8181afb9890ff6d8eb6f90d118d791593e5f12108",
+  "directMCPToolsListSHA256": "96a18767fecc601ea149ff036d5a1944a8fc81c17e446c9d1f685d74f6772fb1",
+  "greenRuntimeSHA256": "741540be89d4dc1f1f751cd5d568e55403910d516381c2bc762b11b72a144abd",
+  "oldRuntimeSHA256": "60aba8cc28e40fb2e16637e380381fe2a98b844c2c435a136515a3f1382feb17",
+  "oldRuntimePID": 43135,
+  "greenRuntimePID": 58860,
+  "tests": {
+    "executed": 137,
+    "skipped": 8,
+    "failed": 0
+  },
+  "discovery": {
+    "plainTextControlPresentBefore": true,
+    "structuredCapabilityPresentBefore": false,
+    "plainTextControlPresentAfter": true,
+    "structuredCapabilityPresentAfter": true
+  },
+  "structuredContract": {
+    "requestContentType": "application/json",
+    "responseContentType": "application/json",
+    "requiredArguments": [
+      "title",
+      "priority"
+    ],
+    "priorityEnum": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "additionalProperties": false
+  },
+  "mcp": {
+    "toolCount": 7,
+    "providerSpecificToolAdded": false,
+    "genericContextRunArgumentsAdded": true
+  },
+  "execution": {
+    "executionId": "CE8729EA-6B78-4EBE-B85D-FF808B6BD836",
+    "providerHTTPStatus": 201,
+    "state": "succeeded",
+    "verificationStatus": "VERIFIED_SUCCESS",
+    "outcomeVerified": true
+  },
+  "claimBoundary": "MOAT-001 proves generic typed remote JSON capability discovery, schema reflection, structured argument validation and serialization, structured response validation, and exact returned-result verification. The fixture does not persist records and has no independent read-back endpoint, so durable remote state is not claimed."
+}

@@ -1,0 +1,43 @@
+{
+  "experiment": "openapi-discovery-execution-verification-live-removal",
+  "date": "2026-10-06",
+  "result": "PASS",
+  "runtime": {
+    "product": "RIGHTCLICK",
+    "version": "0.2.0",
+    "executableRealPath": "/opt/homebrew/Cellar/rightclick-rc1/0.2.0/bin/rightclick",
+    "executableSHA256": "32fda24a7d46aa0193230582872026e8d75058fc37f2165b35a8730f9151c66e",
+    "transport": "stdio"
+  },
+  "provider": {
+    "name": "RIGHTCLICK — Software ChatGPT Has Never Seen",
+    "substrate": "openapi",
+    "capabilities": [
+      "Overwrite This File Using A Capability Learned Live",
+      "Prove This AI Learned A New Ability Live",
+      "Transform This Through Newly Discovered Software"
+    ]
+  },
+  "execution": {
+    "action": "Transform This Through Newly Discovered Software",
+    "executionId": "B0209C9B-C9E9-4730-BDAC-2C361BF87156",
+    "state": "succeeded",
+    "providerHTTPStatus": 200,
+    "verificationStatus": "VERIFIED_SUCCESS",
+    "outcomeVerified": true
+  },
+  "liveRemoval": {
+    "sameServingRC1Session": true,
+    "chatGPTRestarted": false,
+    "providerPresentAfterTermination": false,
+    "overwritePresentAfterTermination": false,
+    "provePresentAfterTermination": false,
+    "transformPresentAfterTermination": false
+  },
+  "providerIntegrationChanges": {
+    "newProviderSpecificMCPServer": false,
+    "newChatGPTToolDefinition": false,
+    "newPlugin": false
+  },
+  "claimBoundary": "The bridge was corrected to the sealed RC1 executable before successful OpenAPI capability evaluation, so this run does not claim that one unchanged RIGHTCLICK process observed initial provider arrival."
+}

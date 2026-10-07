@@ -134,9 +134,10 @@ enum SharingCatalog {
 
 enum ExecutionLog {
     static func write(_ line: String) {
+        guard let destination = ProcessInfo.processInfo.environment["RIGHTCLICK_DIAGNOSTIC_LOG"], !destination.isEmpty else { return }
         let stamped = "\(ISO8601DateFormatter().string(from: Date())) \(line)"
         fputs(stamped + "\n", stderr)
-        let url = URL(fileURLWithPath: "evidence/execution/share.log")
+        let url = URL(fileURLWithPath: destination)
         try? FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
         if let data = (stamped + "\n").data(using: .utf8) {
             if FileManager.default.fileExists(atPath: url.path), let handle = try? FileHandle(forWritingTo: url) {
@@ -196,7 +197,10 @@ private final class ShareSession: NSObject, NSSharingServiceDelegate {
             record.state = model.state
             record.events = model.events
             record.message = model.message
-            record.output = model.events.joined(separator: "\n")
+            record.output = nil
+            if model.state == .accepted {
+                record.evidence = OutcomeEvidence(type: "provider_reported_completion", boundary: "NSSharingService didShareItems callback. Delivery or the intended external outcome has not been independently verified.")
+            }
             if model.isTerminal && !wasTerminal {
                 deadlineTimer?.invalidate()
                 deadlineTimer = nil

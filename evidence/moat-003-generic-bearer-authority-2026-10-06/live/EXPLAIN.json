@@ -1,0 +1,36 @@
+{
+  "id": "openapi:654dcd0720c8c3e79e4c629d4cd48e62a33fcaa4ed466d9c7ba23261945613fc:b320cf124cf8e3d7:createSecureRecord",
+  "inputs": [
+    "public.plain-text"
+  ],
+  "invocation": "interactive",
+  "metadata": {
+    "argumentsSchema": "{\"additionalProperties\":false,\"properties\":{\"priority\":{\"enum\":[\"low\",\"medium\",\"high\"],\"type\":\"string\"},\"title\":{\"type\":\"string\"}},\"required\":[\"title\",\"priority\"],\"type\":\"object\"}",
+    "authorityKind": "http_bearer",
+    "authorityOrigin": "[REDACTED_TEMP_PROVIDER_URL]",
+    "authorityRequired": "true",
+    "authorityScheme": "BearerAuth",
+    "baseURL": "[REDACTED_TEMP_PROVIDER_URL]",
+    "method": "POST",
+    "operationId": "createSecureRecord",
+    "path": "/records",
+    "providerIdentity": "654dcd0720c8c3e79e4c629d4cd48e62a33fcaa4ed466d9c7ba23261945613fc",
+    "requestContentType": "application/json",
+    "responseContentType": "application/json",
+    "resultSchema": "{\"additionalProperties\":false,\"properties\":{\"id\":{\"type\":\"string\"},\"priority\":{\"enum\":[\"low\",\"medium\",\"high\"],\"type\":\"string\"},\"title\":{\"type\":\"string\"}},\"required\":[\"id\",\"title\",\"priority\"],\"type\":\"object\"}",
+    "specificationSHA256": "e6e1ae67f30a52085384a40155dd2bcb063be735a99ea554019d0141b75974db",
+    "substrate": "openapi"
+  },
+  "output": [
+    "public.json"
+  ],
+  "provider": {
+    "name": "RIGHTCLICK MOAT-003 Bearer Authority Service"
+  },
+  "reflectorID": "openapi-reflector:654dcd0720c8c3e79e4c629d4cd48e62a33fcaa4ed466d9c7ba23261945613fc",
+  "requiresConfirmation": true,
+  "safety": "unknown",
+  "source": "system",
+  "supportLevel": "experimental",
+  "title": "Create Secure Record"
+}

@@ -42,10 +42,24 @@ final class EngineTests: XCTestCase {
         let result = try engine.run(
             id: "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
             item: "RightClick",
-            confirmed: false
+            confirmed: true
         )
-        XCTAssertEqual(result.status, .executed)
+        XCTAssertEqual(result.status, .accepted)
+        XCTAssertFalse(result.evidence.outcomeVerified)
         XCTAssertEqual(result.output, "ＲｉｇｈｔＣｌｉｃｋ")
+    }
+
+    func testExplicitReturnedTextPostconditionVerifiesOnlyReturnedText() throws {
+        let engine = CapabilityEngine()
+        let record = try engine.begin(
+            id: "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+            item: "RightClick", confirmed: true, expectedOutput: "ＲｉｇｈｔＣｌｉｃｋ"
+        )
+        XCTAssertEqual(record.output, "ＲｉｇｈｔＣｌｉｃｋ")
+        XCTAssertEqual(record.state, .succeeded)
+        XCTAssertTrue(record.evidence.outcomeVerified)
+        XCTAssertEqual(record.evidence.type, "returned_text_postcondition")
+        XCTAssertTrue(record.evidence.boundary.contains("not external side effects"))
     }
 
     func testExternalShareIsGated() throws {
@@ -54,6 +68,17 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(result.status, .confirmationRequired)
         XCTAssertTrue(result.requiresConfirmation)
         XCTAssertTrue(result.message.contains("CONFIRMATION_REQUIRED"))
+    }
+
+    func testAcceptedServiceInvocationDoesNotEstablishSemanticSuccess() throws {
+        let engine = CapabilityEngine()
+        let record = try engine.begin(
+            id: "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
+            item: "RightClick", confirmed: true
+        )
+        XCTAssertEqual(record.output, "ＲｉｇｈｔＣｌｉｃｋ")
+        XCTAssertEqual(record.state.rawValue, "accepted")
+        XCTAssertNotEqual(record.state, .succeeded)
     }
 
     func testMarkupIsDiscoveredButNotInvokable() throws {

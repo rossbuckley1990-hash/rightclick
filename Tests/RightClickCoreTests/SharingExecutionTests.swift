@@ -21,12 +21,13 @@ final class SharingExecutionTests: XCTestCase {
         XCTAssertTrue(model.events.contains("willShareItems count=1 main=true"))
     }
 
-    func testDidShareItemsSucceeds() {
+    func testDidShareItemsReportsAcceptanceWithoutIndependentOutcome() {
         var model = SharingExecutionModel()
         model.performEntered()
         model.performReturned()
         model.didShareItems(count: 1, main: true)
-        XCTAssertEqual(model.state, .succeeded)
+        XCTAssertEqual(model.state, .accepted)
+        XCTAssertTrue(model.message.contains("unverified"))
     }
 
     func testDidFailToShareItemsFails() {
@@ -51,6 +52,7 @@ final class SharingExecutionTests: XCTestCase {
         var model = SharingExecutionModel()
         model.didShareItems(count: 1, main: true)
         model.deadlineExpired()
-        XCTAssertEqual(model.state, .succeeded)
+        XCTAssertEqual(model.state, .accepted)
+        XCTAssertTrue(model.message.contains("unverified"))
     }
 }

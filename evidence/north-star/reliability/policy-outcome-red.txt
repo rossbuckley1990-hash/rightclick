@@ -1,0 +1,45 @@
+[0/1] Planning build
+Building for debugging...
+[0/9] Write sources
+[1/9] Write swift-version--58304C5D6DBC2206.txt
+[3/6] Compiling RightClickCoreTests PolicyTests.swift
+[4/6] Emitting module RightClickCoreTests
+[5/6] Compiling RightClickCoreTests EngineTests.swift
+[5/7] Write Objects.LinkFileList
+[6/7] Linking rightclick-mcpPackageTests
+Build complete! (10.74s)
+Test Suite 'Selected tests' started at 2026-10-05 11:56:02.184.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-05 11:56:02.194.
+Test Suite 'EngineTests' started at 2026-10-05 11:56:02.194.
+Test Case '-[RightClickCoreTests.EngineTests testAcceptedServiceInvocationDoesNotEstablishSemanticSuccess]' started.
+2026-10-05T10:56:21Z service payload declared=public.rtf|public.utf8-plain-text written=public.rtf|NeXT Rich Text Format v1.0 pasteboard type|public.utf8-plain-text|NSStringPboardType|public.utf16-external-plain-text|CorePasteboardFlavorType 0x75743136 stringBytes=22 utf8Bytes=10 readback=RightClick
+2026-10-05T10:56:21Z NSPerformService name=Convert Text to Full Width provider=com.apple.ChineseTextConverterService sendFileTypes=[] pasteboardTypes=public.rtf,NeXT Rich Text Format v1.0 pasteboard type,public.utf8-plain-text,NSStringPboardType,public.utf16-external-plain-text,CorePasteboardFlavorType 0x75743136 main=true
+2026-10-05T10:56:21Z NSPerformService returned true changeCount 1->2
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/EngineTests.swift:66: error: -[RightClickCoreTests.EngineTests testAcceptedServiceInvocationDoesNotEstablishSemanticSuccess] : XCTAssertEqual failed: ("succeeded") is not equal to ("accepted")
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/EngineTests.swift:67: error: -[RightClickCoreTests.EngineTests testAcceptedServiceInvocationDoesNotEstablishSemanticSuccess] : XCTAssertNotEqual failed: ("succeeded") is equal to ("succeeded")
+Test Case '-[RightClickCoreTests.EngineTests testAcceptedServiceInvocationDoesNotEstablishSemanticSuccess]' failed (22.712 seconds).
+Test Suite 'EngineTests' failed at 2026-10-05 11:56:24.907.
+	 Executed 1 test, with 2 failures (0 unexpected) in 22.712 (22.712) seconds
+Test Suite 'PolicyTests' started at 2026-10-05 11:56:24.907.
+Test Case '-[RightClickCoreTests.PolicyTests testCodeExecutionRequiresConfirmationEvenWithTextOutput]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/PolicyTests.swift:56: error: -[RightClickCoreTests.PolicyTests testCodeExecutionRequiresConfirmationEvenWithTextOutput] : XCTAssertEqual failed: ("read") is not equal to ("code_execution")
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/PolicyTests.swift:57: error: -[RightClickCoreTests.PolicyTests testCodeExecutionRequiresConfirmationEvenWithTextOutput] : XCTAssertTrue failed
+Test Case '-[RightClickCoreTests.PolicyTests testCodeExecutionRequiresConfirmationEvenWithTextOutput]' failed (0.002 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testSecurityChangeRequiresConfirmationEvenWithTextOutput]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/PolicyTests.swift:65: error: -[RightClickCoreTests.PolicyTests testSecurityChangeRequiresConfirmationEvenWithTextOutput] : XCTAssertEqual failed: ("read") is not equal to ("security_change")
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/PolicyTests.swift:66: error: -[RightClickCoreTests.PolicyTests testSecurityChangeRequiresConfirmationEvenWithTextOutput] : XCTAssertTrue failed
+Test Case '-[RightClickCoreTests.PolicyTests testSecurityChangeRequiresConfirmationEvenWithTextOutput]' failed (0.004 seconds).
+Test Case '-[RightClickCoreTests.PolicyTests testUntrustedTextReturnContractCannotGrantReadOnlyPermission]' started.
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/PolicyTests.swift:47: error: -[RightClickCoreTests.PolicyTests testUntrustedTextReturnContractCannotGrantReadOnlyPermission] : XCTAssertEqual failed: ("read") is not equal to ("unknown")
+/Users/ross/spawn/rightclick-mcp/Tests/RightClickCoreTests/PolicyTests.swift:48: error: -[RightClickCoreTests.PolicyTests testUntrustedTextReturnContractCannotGrantReadOnlyPermission] : XCTAssertTrue failed
+Test Case '-[RightClickCoreTests.PolicyTests testUntrustedTextReturnContractCannotGrantReadOnlyPermission]' failed (0.004 seconds).
+Test Suite 'PolicyTests' failed at 2026-10-05 11:56:24.918.
+	 Executed 3 tests, with 6 failures (0 unexpected) in 0.010 (0.011) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-05 11:56:24.918.
+	 Executed 4 tests, with 8 failures (0 unexpected) in 22.722 (22.724) seconds
+Test Suite 'Selected tests' failed at 2026-10-05 11:56:24.918.
+	 Executed 4 tests, with 8 failures (0 unexpected) in 22.722 (22.734) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

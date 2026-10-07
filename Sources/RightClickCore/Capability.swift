@@ -1,4 +1,5 @@
 import Foundation
+import CryptoKit
 
 public enum CapabilitySource: String, Codable, Sendable {
     case sharingService = "sharing_service"
@@ -14,6 +15,8 @@ public enum CapabilitySafety: String, Codable, Sendable {
     case externalShare = "external_share"
     case destructive
     case financial
+    case securityChange = "security_change"
+    case codeExecution = "code_execution"
     case unknown
 }
 
@@ -44,6 +47,7 @@ public struct Capability: Codable, Sendable, Equatable, Identifiable {
     public var id: String
     public var title: String
     public var source: CapabilitySource
+    public var reflectorID: String
     public var provider: CapabilityProvider?
     public var inputs: [String]
     public var output: [String]
@@ -57,6 +61,7 @@ public struct Capability: Codable, Sendable, Equatable, Identifiable {
         id: String,
         title: String,
         source: CapabilitySource,
+        reflectorID: String = "unowned",
         provider: CapabilityProvider? = nil,
         inputs: [String] = [],
         output: [String] = [],
@@ -69,6 +74,7 @@ public struct Capability: Codable, Sendable, Equatable, Identifiable {
         self.id = id
         self.title = title
         self.source = source
+        self.reflectorID = reflectorID
         self.provider = provider
         self.inputs = inputs
         self.output = output
@@ -88,8 +94,43 @@ public enum CapabilityID {
         return "sharing:title:\(slug(title))"
     }
 
-    public static func service(bundleIdentifier: String?, message: String?, menuTitle: String) -> String {
-        let provider = bundleIdentifier?.isEmpty == false ? bundleIdentifier! : "unknown"
+    public static func service(
+        bundleIdentifier: String?,
+        bundlePath: String? = nil,
+        message: String?,
+        menuTitle: String
+    ) -> String {
+        let provider: String
+
+        if let bundleIdentifier, !bundleIdentifier.isEmpty {
+            // Preserve the existing stable identity for normal bundled providers.
+            provider = bundleIdentifier
+        } else if let bundlePath, !bundlePath.isEmpty {
+            // Some Automator workflows / Services have no CFBundleIdentifier.
+            // Their discovered bundle path is therefore the strongest provider
+            // locator available to RIGHTCLICK.
+            //
+            // Hash the canonical path so:
+            // - distinct providers cannot collapse to "unknown";
+            // - local filesystem paths are not exposed in the capability ID;
+            // - identity remains deterministic across discovery and execution.
+            let canonicalPath = URL(fileURLWithPath: bundlePath)
+                .standardizedFileURL
+                .resolvingSymlinksInPath()
+                .path
+
+            let digest = SHA256.hash(data: Data(canonicalPath.utf8))
+            let fingerprint = digest
+                .map { String(format: "%02x", $0) }
+                .joined()
+
+            provider = "path-sha256-\(fingerprint)"
+        } else {
+            // Fail to a deterministic descriptive identity rather than collapsing
+            // every provider without metadata into one shared "unknown" bucket.
+            provider = "title-\(slug(menuTitle))"
+        }
+
         let action = (message?.isEmpty == false ? message! : slug(menuTitle))
         return "service:\(provider):\(action)"
     }
@@ -111,7 +152,10 @@ public enum CapabilityID {
 }
 
 public enum RunStatus: String, Codable, Sendable {
-    case executed = "EXECUTED"
+    case accepted = "ACCEPTED"
+    case verified = "VERIFIED"
+    case unavailable = "UNAVAILABLE"
+    case rejected = "REJECTED"
     case confirmationRequired = "CONFIRMATION_REQUIRED"
     case unsupported = "UNSUPPORTED"
     case failed = "FAILED"
@@ -122,9 +166,26 @@ public enum ExecutionState: String, Codable, Sendable {
     case started
     case awaitingUser = "awaiting_user"
     case succeeded
+    case accepted
+    case unsupported
+    case unavailable
+    case rejected
     case failed
     case cancelled
     case unknown
+}
+
+/// Describes what was observed, separately from the intended outcome.
+public struct OutcomeEvidence: Codable, Sendable, Equatable {
+    public var type: String
+    public var boundary: String
+    public var outcomeVerified: Bool
+
+    public init(type: String = "none", boundary: String = "No outcome observation.", outcomeVerified: Bool = false) {
+        self.type = type
+        self.boundary = boundary
+        self.outcomeVerified = outcomeVerified
+    }
 }
 
 public struct ExecutionRecord: Codable, Sendable {
@@ -135,6 +196,9 @@ public struct ExecutionRecord: Codable, Sendable {
     public var message: String
     public var output: String?
     public var events: [String]
+    public var evidence: OutcomeEvidence
+    public var verification: OutcomeVerification?
+    public var rcir: RCIRExecutionEvidence?
 
     public init(
         executionId: String,
@@ -143,7 +207,10 @@ public struct ExecutionRecord: Codable, Sendable {
         state: ExecutionState,
         message: String,
         output: String? = nil,
-        events: [String] = []
+        events: [String] = [],
+        evidence: OutcomeEvidence = OutcomeEvidence(),
+        verification: OutcomeVerification? = nil,
+        rcir: RCIRExecutionEvidence? = nil
     ) {
         self.executionId = executionId
         self.actionId = actionId
@@ -152,6 +219,9 @@ public struct ExecutionRecord: Codable, Sendable {
         self.message = message
         self.output = output
         self.events = events
+        self.evidence = evidence
+        self.verification = verification
+        self.rcir = rcir
     }
 }
 
@@ -191,6 +261,9 @@ public struct RunResult: Codable, Sendable {
     public var output: String?
     public var requiresConfirmation: Bool
     public var supportLevel: SupportLevel?
+    public var evidence: OutcomeEvidence
+    public var verification: OutcomeVerification?
+    public var rcir: RCIRExecutionEvidence?
 
     public init(
         status: RunStatus,
@@ -199,7 +272,10 @@ public struct RunResult: Codable, Sendable {
         message: String,
         output: String? = nil,
         requiresConfirmation: Bool = false,
-        supportLevel: SupportLevel? = nil
+        supportLevel: SupportLevel? = nil,
+        evidence: OutcomeEvidence = OutcomeEvidence(),
+        verification: OutcomeVerification? = nil,
+        rcir: RCIRExecutionEvidence? = nil
     ) {
         self.status = status
         self.actionID = actionID
@@ -208,6 +284,9 @@ public struct RunResult: Codable, Sendable {
         self.output = output
         self.requiresConfirmation = requiresConfirmation
         self.supportLevel = supportLevel
+        self.evidence = evidence
+        self.verification = verification
+        self.rcir = rcir
     }
 }
 

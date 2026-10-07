@@ -1,7 +1,129 @@
+import CryptoKit
 import Foundation
 
 public enum RightClickVersion {
-    public static let current = "0.1.0"
+    public static let current = "0.2.2"
+}
+
+
+public struct RightClickRuntimeIdentity: Codable, Sendable {
+    public var product: String
+    public var version: String
+    public var executablePath: String
+    public var executableRealPath: String
+    public var executableSHA256: String
+    public var pid: Int
+    public var transport: String
+
+    public init(
+        product: String,
+        version: String,
+        executablePath: String,
+        executableRealPath: String,
+        executableSHA256: String,
+        pid: Int,
+        transport: String
+    ) {
+        self.product = product
+        self.version = version
+        self.executablePath = executablePath
+        self.executableRealPath = executableRealPath
+        self.executableSHA256 = executableSHA256
+        self.pid = pid
+        self.transport = transport
+    }
+}
+
+public enum RightClickRuntime {
+    public static func identity(
+        transport: String,
+        executablePath: String? = nil,
+        pid: Int? = nil
+    ) -> RightClickRuntimeIdentity {
+        let invokedPath = executablePath ?? self.executablePath()
+        let standardPath = URL(fileURLWithPath: invokedPath).standardizedFileURL.path
+        let realPath = URL(fileURLWithPath: standardPath)
+            .resolvingSymlinksInPath()
+            .standardizedFileURL
+            .path
+
+        return RightClickRuntimeIdentity(
+            product: "RIGHTCLICK",
+            version: RightClickVersion.current,
+            executablePath: standardPath,
+            executableRealPath: realPath,
+            executableSHA256: sha256File(realPath),
+            pid: pid ?? Int(ProcessInfo.processInfo.processIdentifier),
+            transport: transport
+        )
+    }
+
+    public static func executablePath() -> String {
+        let raw = CommandLine.arguments[0]
+
+        if raw.hasPrefix("/") {
+            return URL(fileURLWithPath: raw).standardizedFileURL.path
+        }
+
+        let directory = URL(
+            fileURLWithPath: FileManager.default.currentDirectoryPath
+        )
+
+        if !raw.contains("/") {
+            let path = ProcessInfo.processInfo.environment["PATH"] ?? ""
+
+            for component in path.split(
+                separator: ":",
+                omittingEmptySubsequences: false
+            ) {
+                let base = component.isEmpty
+                    ? directory
+                    : URL(
+                        fileURLWithPath: String(component),
+                        relativeTo: directory
+                    )
+
+                let candidate = base
+                    .appendingPathComponent(raw)
+                    .standardizedFileURL
+                    .path
+
+                var isDirectory: ObjCBool = false
+
+                if FileManager.default.fileExists(
+                    atPath: candidate,
+                    isDirectory: &isDirectory
+                ),
+                   !isDirectory.boolValue,
+                   FileManager.default.isExecutableFile(atPath: candidate) {
+                    return candidate
+                }
+            }
+
+            if let executable = Bundle.main.executableURL {
+                return executable.standardizedFileURL.path
+            }
+        }
+
+        return directory
+            .appendingPathComponent(raw)
+            .standardizedFileURL
+            .path
+    }
+
+    private static func sha256File(_ path: String) -> String {
+        guard let data = try? Data(
+            contentsOf: URL(fileURLWithPath: path)
+        ) else {
+            return "unreadable"
+        }
+
+        let digest = SHA256.hash(data: data)
+
+        return digest
+            .map { String(format: "%02x", $0) }
+            .joined()
+    }
 }
 
 public enum RightClickPaths {
@@ -51,7 +173,7 @@ public enum CapabilityExplanation {
         case .service:
             return "macOS Service “\(capability.title)”. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check."
         case .sharingService:
-            return "Sharing service “\(capability.title)”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems means succeeded, didFailToShareItems means failed, and no callback before the deadline means unknown."
+            return "Sharing service “\(capability.title)”. perform(withItems:) is asynchronous. willShareItems is not completion. didShareItems reports provider completion as accepted, with external outcome unverified. didFailToShareItems means failed; no callback before the deadline means unknown."
         case .actionExtension:
             return "Action extension “\(capability.title)” was discovered from installed extension metadata. This Mac does not expose a public call to run it."
         case .system:

@@ -1,14 +1,15 @@
 class Rightclick < Formula
   desc "Install an app. Your AI learns what it can do"
   homepage "https://github.com/rossbuckley1990-hash/rightclick"
-  url "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.1.0/rightclick-0.1.0-source.tar.gz"
-  sha256 "f45ba8bac307ed13110edb4914cf094eccd44e01dca484af957a94b34f3eca16"
+  url "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.2.2/rightclick-0.2.2-source.tar.gz"
+  sha256 "a3953eb8f1be2f9123d694b90202244c94ee21971171972f8ce1d3bacf807ca5"
   license "Apache-2.0"
 
-  bottle do
-    root_url "https://github.com/rossbuckley1990-hash/homebrew-tap/releases/download/rightclick-0.1.0"
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_tahoe: "81f54908ece4bf0b64ebedac1e9bb77624f1e0af7a367e2307c0c92577da2a95"
+  # RIGHTCLICK owns this compatibility pin.
+  # ChatGPT's modern tunnel path requires OpenAI tunnel-client >= 0.0.15.
+  resource "openai-tunnel-client" do
+    url "https://github.com/openai/tunnel-client/releases/download/v0.0.15/tunnel-client-v0.0.15-darwin-arm64.zip"
+    sha256 "b2cae3aa9df45b4c2fe9b1d700ebacce39f9feb6a6b46b86e6499f9a51bf72ff"
   end
 
   depends_on arch: :arm64
@@ -49,6 +50,23 @@ class Rightclick < Formula
            "-Xlinker", "-oso_prefix", "-Xlinker", "#{buildpath}/"
     bin.install ".build/release/rightclick"
     (pkgshare/"ThirdPartyLicenses").install Dir["packaging/ThirdPartyLicenses/*"]
+
+    resource("openai-tunnel-client").stage do
+      libexec.install(
+        "tunnel-client",
+        "cloudflared",
+        "cloudflared-manifest.json"
+      )
+
+      tunnel_share = pkgshare/"OpenAITunnelClient"
+
+      tunnel_share.install(
+        "LICENSE",
+        "NOTICE",
+        "tunnel-client-v0.0.15-darwin-arm64-licenses.txt",
+        "tunnel-client-v0.0.15-darwin-arm64.spdx.json"
+      )
+    end
   end
 
   test do
@@ -58,5 +76,12 @@ class Rightclick < Formula
     assert_equal "RightClick", text.fetch("text")
     assert_equal "public.plain-text", text.fetch("typeIdentifier")
     assert_equal 10, text.fetch("byteCount")
+
+    assert_predicate libexec/"tunnel-client", :executable?
+
+    assert_match(
+      "0.0.15",
+      shell_output("#{libexec}/tunnel-client --version")
+    )
   end
 end

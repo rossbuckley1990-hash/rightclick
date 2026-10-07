@@ -1,0 +1,434 @@
+Fetching https://github.com/apple/swift-log.git from cache
+Fetching https://github.com/mattt/eventsource.git from cache
+Fetching https://github.com/apple/swift-atomics.git from cache
+Fetching https://github.com/apple/swift-system.git from cache
+Fetching https://github.com/apple/swift-nio.git from cache
+Fetching https://github.com/apple/swift-collections.git from cache
+Fetching https://github.com/modelcontextprotocol/swift-sdk.git from cache
+Fetched https://github.com/apple/swift-system.git from cache (0.62s)
+Fetched https://github.com/mattt/eventsource.git from cache (1.03s)
+Fetched https://github.com/apple/swift-log.git from cache (1.04s)
+Fetched https://github.com/apple/swift-atomics.git from cache (1.04s)
+Fetched https://github.com/modelcontextprotocol/swift-sdk.git from cache (1.05s)
+Computing version for https://github.com/modelcontextprotocol/swift-sdk.git
+Fetched https://github.com/apple/swift-collections.git from cache (1.05s)
+Fetched https://github.com/apple/swift-nio.git from cache (1.07s)
+Computed https://github.com/modelcontextprotocol/swift-sdk.git at 0.12.1 (1.51s)
+Computing version for https://github.com/apple/swift-nio.git
+Computed https://github.com/apple/swift-nio.git at 2.103.0 (0.51s)
+Computing version for https://github.com/mattt/eventsource.git
+Computed https://github.com/mattt/eventsource.git at 1.5.1 (0.46s)
+Computing version for https://github.com/apple/swift-log.git
+Computed https://github.com/apple/swift-log.git at 1.15.1 (0.43s)
+Computing version for https://github.com/apple/swift-system.git
+Computed https://github.com/apple/swift-system.git at 1.8.1 (0.43s)
+Computing version for https://github.com/apple/swift-collections.git
+Computed https://github.com/apple/swift-collections.git at 1.7.1 (0.49s)
+Computing version for https://github.com/apple/swift-atomics.git
+Computed https://github.com/apple/swift-atomics.git at 1.3.1 (0.48s)
+Creating working copy for https://github.com/apple/swift-collections.git
+Working copy of https://github.com/apple/swift-collections.git resolved at 1.7.1
+Creating working copy for https://github.com/apple/swift-nio.git
+Working copy of https://github.com/apple/swift-nio.git resolved at 2.103.0
+Creating working copy for https://github.com/mattt/eventsource.git
+Working copy of https://github.com/mattt/eventsource.git resolved at 1.5.1
+Creating working copy for https://github.com/apple/swift-log.git
+Working copy of https://github.com/apple/swift-log.git resolved at 1.15.1
+Creating working copy for https://github.com/modelcontextprotocol/swift-sdk.git
+Working copy of https://github.com/modelcontextprotocol/swift-sdk.git resolved at 0.12.1
+Creating working copy for https://github.com/apple/swift-system.git
+Working copy of https://github.com/apple/swift-system.git resolved at 1.8.1
+Creating working copy for https://github.com/apple/swift-atomics.git
+Working copy of https://github.com/apple/swift-atomics.git resolved at 1.3.1
+Building for debugging...
+[0/30] /private/tmp/rightclick-moat-003-green/.build/arm64-apple-macosx/debug/rightclick-mcpPackageTests.derived/runner.swift
+[1/30] Write sources
+[1/30] Write rightclick-probe-entitlement.plist
+[1/30] Write rightclick-entitlement.plist
+[1/30] Write sources
+[1/30] Write rightclick-marker-entitlement.plist
+[2/30] Write sources
+[16/30] Compiling CSystem shims.c
+[17/30] Write swift-version--58304C5D6DBC2206.txt
+[18/101] Compiling RightClickProbePrivate RCPrivateExtensionProbe.m
+[20/103] Compiling SystemPackage PlatformString.swift
+[21/103] Compiling SystemPackage SystemString.swift
+[22/103] Compiling SystemPackage Util+StringArray.swift
+[23/106] Compiling Logging SwiftLogNoOpLogHandler.swift
+[24/107] Compiling Logging LogEvent.swift
+[25/107] Compiling Logging LogHandler.swift
+[26/107] Compiling Logging LoggingSystem.swift
+[27/107] Compiling RightClickCore ProductSurface.swift
+[28/107] Compiling RightClickCore SafetyPolicy.swift
+[29/107] Compiling RightClickCore ServiceCatalog.swift
+[30/107] Compiling RightClickCore ServiceContext.swift
+[31/107] Compiling SystemPackage Errno.swift
+[32/107] Compiling SystemPackage ErrnoWindows.swift
+[33/107] Compiling RightClickCore BundleScan.swift
+[34/107] Compiling RightClickCore Capability.swift
+[37/107] Emitting module Logging
+[38/107] Compiling SystemPackage FilePathParsing.swift
+[39/107] Compiling SystemPackage FilePathString.swift
+[40/107] Compiling RightClickCore OriginPinnedHTTP.swift
+[41/107] Compiling RightClickCore OutcomeVerifier.swift
+[42/107] Compiling SystemPackage Exports.swift
+[43/107] Compiling SystemPackage Mocking.swift
+[44/107] Compiling SystemPackage RawBuffer.swift
+[45/107] Compiling SystemPackage Syscalls.swift
+[46/107] Compiling SystemPackage WindowsSyscallAdapters.swift
+[47/107] Compiling SystemPackage MachPort.swift
+[48/107] Compiling Logging Logger.swift
+[49/107] Compiling Logging Logger+With.swift
+[50/107] Compiling Logging Locks.swift
+[51/107] Compiling Logging Logger+Attributes.swift
+[52/107] Compiling SystemPackage Stat.swift
+[53/107] Compiling SystemPackage Backcompat.swift
+[54/107] Compiling SystemPackage CInterop.swift
+[55/107] Compiling SystemPackage Constants.swift
+[56/107] Compiling Logging MetadataProvider.swift
+[57/107] Emitting module SystemPackage
+[58/107] Compiling SystemPackage Util.swift
+[59/107] Compiling SystemPackage UtilConsumers.swift
+[60/107] Compiling SystemPackage WinSDK+Overlay.swift
+[61/107] Compiling SystemPackage FileOperations.swift
+[62/107] Compiling SystemPackage FilePath.swift
+[63/107] Compiling SystemPackage FilePathComponentView.swift
+[64/107] Compiling SystemPackage FilePathComponents.swift
+[65/107] Compiling EventSource AsyncSequence+Events.swift
+[66/107] Compiling EventSource AsyncEventsSequence.swift
+[67/107] Compiling EventSource EventSource+AsyncHTTPClient.swift
+[68/107] Emitting module EventSource
+[69/107] Compiling RightClickCore ServiceOutcome.swift
+[70/107] Compiling RightClickCore SharingCatalog.swift
+[71/107] Compiling SystemPackage FilePathWindows.swift
+[72/107] Compiling SystemPackage FilePermissions.swift
+[73/107] Compiling EventSource EventSource.swift
+[74/151] Compiling MCP Ping.swift
+[75/151] Compiling MCP Progress.swift
+[76/152] Emitting module RightClickCore
+[77/152] Compiling RightClickCore SharingExecutionModel.swift
+[78/152] Compiling MCP Lifecycle.swift
+[79/152] Compiling MCP Messages.swift
+[80/152] Compiling MCP ID.swift
+[81/152] Compiling MCP Icon.swift
+[82/152] Compiling MCP RequestContext.swift
+[83/152] Compiling MCP Value.swift
+[84/152] Compiling MCP OAuthDiscovery.swift
+[85/152] Compiling MCP OAuthDiscoveryClient.swift
+[90/152] Compiling MCP PendingRequest.swift
+[91/156] Emitting module MCP
+[92/156] Compiling MCP Cancellation.swift
+[99/156] Compiling MCP OAuthErrors.swift
+[100/156] Compiling MCP OAuthModels.swift
+[101/156] Compiling MCP OAuthTokenEndpointClient.swift
+[102/156] Compiling RightClickMarker main.swift
+[103/156] Emitting module RightClickMarker
+[103/156] Write Objects.LinkFileList
+[108/156] Compiling MCP StatelessHTTPServerTransport.swift
+[109/156] Compiling MCP InMemoryTransport.swift
+/private/tmp/rightclick-moat-003-green/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 23 |         let items = pasteboardItems(for: item)
+ 24 |         guard !items.isEmpty else { return [] }
+ 25 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 26 |         return services.compactMap { service in
+ 27 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 35 |         let items = pasteboardItems(for: item)
+ 36 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 38 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[110/156] Compiling MCP NetworkTransport.swift
+/private/tmp/rightclick-moat-003-green/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 23 |         let items = pasteboardItems(for: item)
+ 24 |         guard !items.isEmpty else { return [] }
+ 25 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 26 |         return services.compactMap { service in
+ 27 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 35 |         let items = pasteboardItems(for: item)
+ 36 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 38 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[113/175] Compiling MCP OAuthURLValidator.swift
+[114/175] Compiling MCP OAuthWWWAuthenticateParser.swift
+[115/175] Compiling MCP PKCE.swift
+[116/175] Compiling MCP TokenStorage.swift
+[117/175] Compiling MCP Error.swift
+[118/175] Compiling MCP Transport.swift
+[119/175] Compiling MCP HTTPClientTransport.swift
+[120/175] Compiling MCP HTTPRequestValidation.swift
+[121/175] Compiling MCP HTTPServerTypes.swift
+[122/175] Compiling MCP StatefulHTTPServerTransport.swift
+[123/175] Compiling RightClickCoreTests OutcomeVerifierTests.swift
+[124/175] Compiling RightClickCoreTests ServiceContextTests.swift
+[125/175] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[126/175] Compiling MCP StdioTransport.swift
+[127/175] Compiling MCP UnitInterval.swift
+[128/175] Compiling MCP Versioning.swift
+[129/175] Compiling MCP Client.swift
+[130/175] Compiling MCP Elicitation.swift
+[131/175] Compiling MCP Roots.swift
+[131/175] Linking rightclick-marker
+[132/175] Applying rightclick-marker
+[134/175] Compiling MCP OAuthAuthorizationCodeFlow.swift
+[135/175] Compiling MCP OAuthAuthorizer.swift
+[136/175] Compiling MCP OAuthClientRegistrar.swift
+[137/175] Compiling MCP OAuthConfiguration.swift
+[138/175] Compiling MCP OAuthConstants.swift
+[139/175] Compiling MCP Sampling.swift
+[140/175] Compiling MCP Data+Extensions.swift
+[141/175] Compiling MCP Completion.swift
+[142/175] Compiling MCP Logging.swift
+[143/175] Emitting module RightClickProbe
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:231:27: warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 229 |     KnownShareName(name: .useAsDesktopPicture, status: "PUBLIC_SUPPORTED"),
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:232:27: warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:233:27: warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:234:27: warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:235:27: warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:236:27: warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:237:27: warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:238:27: warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+ 240 | ]
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:239:27: warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 240 | ]
+ 241 | 
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[144/175] Compiling RightClickProbe main.swift
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:231:27: warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 229 |     KnownShareName(name: .useAsDesktopPicture, status: "PUBLIC_SUPPORTED"),
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:232:27: warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:233:27: warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:234:27: warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:235:27: warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:236:27: warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:237:27: warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:238:27: warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+ 240 | ]
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:239:27: warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 240 | ]
+ 241 | 
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:582:30: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 580 |         var errors: [String] = []
+ 581 |         let deprecated = safeShares {
+ 582 |             NSSharingService.sharingServices(forItems: items).map {
+     |                              `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 583 |                 record(for: $0, items: items, sourceAPI: "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED")
+ 584 |             }
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickProbe/main.swift:748:39: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 746 | func executeHarmlessShare(fixtures: FixtureSet) -> SharingExecution {
+ 747 |     let items: [Any] = [fixtures.webURL as NSURL]
+ 748 |     let discovered = NSSharingService.sharingServices(forItems: items)
+     |                                       `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 749 |     let titles = discovered.map(\.title)
+ 750 |     let readingListName = NSSharingService.Name.addToSafariReadingList
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[144/175] Write Objects.LinkFileList
+[145/175] Linking rightclick-probe
+[146/175] Applying rightclick-probe
+[148/175] Compiling MCP Prompts.swift
+[149/175] Compiling MCP Resources.swift
+[150/175] Compiling MCP Server.swift
+[151/175] Compiling MCP Tools.swift
+[152/179] Compiling RightClickMCP ModernMCPStdioTransport.swift
+[153/179] Compiling RightClickMCP HTTPListener.swift
+[154/179] Emitting module RightClickMCP
+[155/179] Compiling RightClickMCP Server.swift
+/private/tmp/rightclick-moat-003-green/Sources/RightClickMCP/Server.swift:265:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+263 |                 transport: transport
+264 |             )
+265 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+266 |         } catch {
+267 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/private/tmp/rightclick-moat-003-green/Sources/RightClickMCP/Server.swift:267:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+265 |             return .init(content: [.text(text)], isError: false)
+266 |         } catch {
+267 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+268 |         }
+269 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[156/187] Compiling RightClickCLI main.swift
+[157/187] Compiling RightClickCLI SetupState.swift
+[158/187] Compiling RightClickCLI OpenAIPluginSetup.swift
+[159/187] Compiling RightClickCLI ChatGPTBridgeInstaller.swift
+[160/187] Emitting module RightClickCLI
+[161/187] Compiling RightClickCLI Setup.swift
+[162/187] Compiling RightClickCLI ChatGPTBridge.swift
+[163/187] Compiling RightClickCLI BridgeRuntime.swift
+[163/187] Write Objects.LinkFileList
+[164/187] Linking rightclick
+[165/187] Applying rightclick
+[167/193] Compiling RightClickCoreTests SharingExecutionTests.swift
+[168/193] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+[169/194] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+[170/194] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+[171/194] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:836:26: error: value of type 'RunResult' has no member 'events'
+ 834 |                     result.output ?? "",
+ 835 |                 ]
+ 836 |                 + result.events
+     |                          `- error: value of type 'RunResult' has no member 'events'
+ 837 |             )
+ 838 |             .joined(
+[172/194] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+/private/tmp/rightclick-moat-003-green/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:836:26: error: value of type 'RunResult' has no member 'events'
+ 834 |                     result.output ?? "",
+ 835 |                 ]
+ 836 |                 + result.events
+     |                          `- error: value of type 'RunResult' has no member 'events'
+ 837 |             )
+ 838 |             .joined(
+[173/194] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+[174/194] Compiling RightClickCoreTests EngineTests.swift
+[177/194] Compiling RightClickCLITests SetupTests.swift
+[178/194] Compiling RightClickCoreTests BonjourRealLifecycleAcceptanceTests.swift
+[179/194] Compiling RightClickCoreTests CapabilityReflectorSourceTests.swift
+[180/194] Emitting module RightClickCoreTests
+[181/194] Compiling RightClickCoreTests AcquisitionTests.swift
+[182/194] Compiling RightClickCoreTests BonjourOpenAPISourceTests.swift
+[183/194] Compiling RightClickCoreTests PolicyTests.swift
+[184/194] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+[185/194] Compiling RightClickCLITests SetupStateTests.swift
+[186/194] Compiling RightClickCLITests ChatGPTBridgeTests.swift
+[187/194] Compiling RightClickCLITests ChatGPTBridgeInstallerTests.swift
+[188/194] Emitting module RightClickCLITests
+[189/194] Compiling RightClickCLITests BridgeRuntimeTests.swift
+[190/194] Compiling RightClickCoreTests VerificationIntegrationTests.swift
+[191/194] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+error: fatalError

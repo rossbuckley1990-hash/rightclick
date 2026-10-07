@@ -1,0 +1,70 @@
+{
+  "baseCommit": "b9361d3f19abab7bc7916a08f81687a52cb3f2b9",
+  "expectedPreImplementationResult": {
+    "compile": "PASS",
+    "expectedAlreadyPassingBoundary": [
+      "Explicit operation security: [] remains public and overrides root-level security."
+    ],
+    "expectedSemanticFailures": [
+      "Bearer security authority metadata is absent.",
+      "Missing bearer authority does not fail before transport.",
+      "Bearer authority is not injected from origin-bound Keychain storage.",
+      "Bearer authority origin isolation is absent.",
+      "Unsupported security requirements are silently ignored instead of abstained.",
+      "Inherited root-level security is silently ignored instead of abstained."
+    ],
+    "result": "FAIL",
+    "suite": "OpenAPIAuthorityTests",
+    "testCount": 7
+  },
+  "experiment": "MOAT-003 GREEN \u2014 Generic HTTP Bearer Authority",
+  "openapiSHA256": "e6e1ae67f30a52085384a40155dd2bcb063be735a99ea554019d0141b75974db",
+  "preregisteredTestsPatchSHA256": "01a8971c7144c7605c47c58121113f5cb1e1f828fe379a13ca4b44bc03446919",
+  "preregistrationRevision": "GREEN-001B",
+  "redEvidenceManifestSHA256": "a2f2f247f9baec3908c683016f88579d6cda7d4316365dab5c0896f2e251e7b5",
+  "reflectedMetadata": {
+    "authorityKind": "http_bearer",
+    "authorityOrigin": "<canonical scheme://host[:non-default-port]>",
+    "authorityRequired": "true",
+    "authorityScheme": "<OpenAPI security scheme name>"
+  },
+  "requirements": [
+    "A supported operation-level OpenAPI HTTP bearer requirement remains discoverable as a capability.",
+    "RIGHTCLICK reflects only generic authority metadata and never the bearer secret.",
+    "The credential is looked up outside context_run through a macOS Keychain generic-password item.",
+    "The Keychain service is ai.rightclick.openapi-authority.",
+    "The Keychain account format is http-bearer|<canonical-origin>|<security-scheme-name>.",
+    "Canonical authority origin lowercases scheme and host, removes default HTTP/HTTPS ports, and excludes path, query, and fragment.",
+    "Missing bearer authority returns unavailable with authority_unavailable evidence before any provider transport.",
+    "A credential bound to another origin must never be reused.",
+    "When exact authority is present, RIGHTCLICK injects Authorization: Bearer <secret> at the HTTP transport boundary.",
+    "The bearer secret must not appear in capability metadata, execution messages, execution events, provider output, or outcome evidence.",
+    "Unsupported security schemes, multiple alternatives, multiple simultaneous schemes, non-empty bearer scopes, and other unsupported security shapes abstain rather than guessing.",
+    "Root-level inherited security is not silently ignored. In this milestone it abstains unless an operation explicitly overrides it.",
+    "An explicit operation security: [] overrides root-level security and remains public.",
+    "Existing unauthenticated OpenAPI capabilities retain their current behavior.",
+    "Origin pinning and redirect protections remain unchanged.",
+    "No provider-specific or Cloudflare-specific behavior may be added.",
+    "No new MCP tool names may be added.",
+    "The existing context_run MCP input schema must remain unchanged.",
+    "The bearer secret must never be supplied as a context_run argument."
+  ],
+  "supersedesCompileInvalidRevision": {
+    "harnessCorrectionSHA256": "19f9f16cc26c825c63d3162a92db5eb20c8a7106ff85f65af482b4bec0b7e080",
+    "reason": "Test harness compile defect before semantic execution.",
+    "revision": "GREEN-001A"
+  },
+  "supportedAuthoritySlice": {
+    "credentialStorage": {
+      "accountFormat": "http-bearer|<canonical-origin>|<security-scheme-name>",
+      "backend": "macOS Keychain generic password",
+      "service": "ai.rightclick.openapi-authority"
+    },
+    "httpScheme": "bearer",
+    "openapiLocation": "operation-level security only",
+    "schemesPerRequirement": 1,
+    "scopes": [],
+    "securityRequirementAlternatives": 1,
+    "securitySchemeType": "http"
+  }
+}

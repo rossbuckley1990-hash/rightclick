@@ -1,0 +1,25 @@
+{
+  "action": "Create Structured Record",
+  "executionId": "CE8729EA-6B78-4EBE-B85D-FF808B6BD836",
+  "arguments": {
+    "title": "RightClick learned structured JSON live",
+    "priority": "high"
+  },
+  "request": {
+    "method": "POST",
+    "path": "/records",
+    "contentType": "application/json"
+  },
+  "providerHTTPStatus": 201,
+  "state": "succeeded",
+  "output": {
+    "id": "moat001-red-record",
+    "priority": "high",
+    "title": "RightClick learned structured JSON live"
+  },
+  "verification": {
+    "predicate": "text_equals",
+    "status": "VERIFIED_SUCCESS",
+    "outcomeVerified": true
+  }
+}
