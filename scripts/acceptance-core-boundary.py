@@ -10,6 +10,8 @@ import subprocess
 import sys
 import tempfile
 
+from native_core_harness import host_file_arguments
+
 root = pathlib.Path(__file__).resolve().parent.parent
 binary = pathlib.Path(sys.argv[1]).resolve()
 evidence = pathlib.Path(sys.argv[2]).resolve()
@@ -40,9 +42,10 @@ with tempfile.TemporaryDirectory(prefix="rightclick-neutral-core-") as directory
     entry = work / "Entry.swift"
     entry.write_text(harness)
     executable = work / "neutral-core"
+    native_arguments, native_provenance = host_file_arguments(root, work, evidence)
     command = ["xcrun", "swiftc", "-swift-version", "5", "-parse-as-library",
                "-module-cache-path", str(work / "modules"), "-framework", "AppKit",
-               *map(str, sources), str(entry), "-o", str(executable)]
+               *native_arguments, *map(str, sources), str(entry), "-o", str(executable)]
     compile_result = subprocess.run(command, capture_output=True, text=True, timeout=120)
     (evidence / "compile.txt").write_text(compile_result.stdout + compile_result.stderr)
     assert compile_result.returncode == 0, compile_result.stderr
@@ -80,6 +83,7 @@ result = {"direct": direct, "cliVerified": cli_verified,
           "equivalence": "PASS: contextual identity/types/support/policy and returned-text outcome evidence across direct, CLI, stdio and HTTP",
           "boundary": "Actual core sources compiled independently without MCP SDK or server. No hypothetical client support claimed.",
           "sources": {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},
+          "nativeDependency": native_provenance,
           "candidateSHA256": mcp["sha256"]}
 (evidence / "results.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
 print(result["equivalence"])
