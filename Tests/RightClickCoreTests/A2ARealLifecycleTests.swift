@@ -25,7 +25,7 @@ final class A2ARealLifecycleTests: XCTestCase {
 
     private func process(_ script: String) throws -> Process {
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        let process = Process(); process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
+        let process = Process(); process.executableURL = try NativeHTTPFixture.python()
         process.arguments = [root.appendingPathComponent("scripts/" + script).path, directory.path]
         if script == "a2a-proof-agent.py" { process.arguments!.append("--hold-until-file") }
         process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
@@ -40,13 +40,12 @@ final class A2ARealLifecycleTests: XCTestCase {
 
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("a2a-lifecycle-" + UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
         agent = try process("a2a-proof-agent.py"); observer = try process("a2a-proof-observer.py")
         let base = "http://127.0.0.1:" + (try port("port"))
         let observerBase = "http://127.0.0.1:" + (try port("observer-port"))
         let providers = directory.appendingPathComponent("providers.json")
-        try JSONSerialization.data(withJSONObject: ["version": 1, "agentCards": [base + "/.well-known/agent.json"]]).write(to: providers)
-        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: providers.path)
+        try NativeHTTPFixture.writePrivate(JSONSerialization.data(withJSONObject: ["version": 1, "agentCards": [base + "/.well-known/agent.json"]]), to: providers)
         source = ConfiguredA2ASource(configurationFile: providers)
         host = RCIRExecutionHost(); host.configuration = { self.config }
         engine = CapabilityEngine(reflectorSources: [source], experience: nil, rcirHost: host)
@@ -56,8 +55,7 @@ final class A2ARealLifecycleTests: XCTestCase {
         config.observers = [capability.id: check]
         let key = Curve25519.Signing.PrivateKey(); publicKey = key.publicKey.rawRepresentation
         let keyFile = directory.appendingPathComponent("signer.raw")
-        try key.rawRepresentation.write(to: keyFile)
-        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: keyFile.path)
+        try NativeHTTPFixture.writePrivate(key.rawRepresentation, to: keyFile)
         config.signingKeyFile = keyFile.path
     }
 
@@ -74,7 +72,7 @@ final class A2ARealLifecycleTests: XCTestCase {
             }
             try publicKey.write(to: out.appendingPathComponent("trusted-public-key.raw"))
         }
-        try? FileManager.default.removeItem(at: directory)
+        try? NativeHTTPFixture.remove(directory)
         engine = nil; host = nil
     }
 

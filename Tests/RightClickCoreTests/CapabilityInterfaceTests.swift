@@ -111,34 +111,62 @@ final class CapabilityInterfaceTests: XCTestCase {
         XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/nonexistent/rightclick-runtime"), arguments: []))
     }
     func testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline() throws {
+#if os(Windows)
+        let executable = try NativeHTTPFixture.python()
+        let wait = ["-c", "import time; time.sleep(2)"]
+#else
         let executable = URL(fileURLWithPath: "/bin/sleep")
+        let wait = ["2"]
+#endif
         XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: ["1"], maximumBytes: -1))
         XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: ["1"], timeout: .nan))
         let before = DispatchTime.now().uptimeNanoseconds
-        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: ["2"], timeout: 0.05))
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: wait, timeout: 0.05))
         XCTAssertLessThan(DispatchTime.now().uptimeNanoseconds - before, 1_000_000_000)
     }
     func testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation() throws {
         let input = Data("RIGHTCLICK:{\"challenge\":\"literal $(echo never-execute)\"}\n".utf8)
-        XCTAssertEqual(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/bin/cat"), arguments: [], input: input), input)
-        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/bin/cat"), arguments: [], input: Data(repeating: 0, count: 1_048_577)))
+#if os(Windows)
+        let executable = try NativeHTTPFixture.python()
+        let echo = ["-c", "import sys; sys.stdout.buffer.write(sys.stdin.buffer.read())"]
+        let noReadExecutable = executable
+        let noRead = ["-c", "pass"]
+#else
+        let executable = URL(fileURLWithPath: "/bin/cat")
+        let echo: [String] = []
+        let noReadExecutable = URL(fileURLWithPath: "/usr/bin/true")
+        let noRead: [String] = []
+#endif
+        XCTAssertEqual(try BoundedCapabilityProcess.run(executable: executable, arguments: echo, input: input), input)
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: echo, input: Data(repeating: 0, count: 1_048_577)))
         // A child may exit without consuming stdin; this must neither signal the
         // RIGHTCLICK process nor strand a blocked writer indefinitely.
-        XCTAssertEqual(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/usr/bin/true"), arguments: [], input: Data(repeating: 1, count: 1_048_576)), Data())
+        XCTAssertEqual(try BoundedCapabilityProcess.run(executable: noReadExecutable, arguments: noRead, input: Data(repeating: 1, count: 1_048_576)), Data())
     }
     func testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles() throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let secret = directory.appendingPathComponent("credential")
-        try Data("private-reference".utf8).write(to: secret)
-        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: secret.path)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
+        defer { try? NativeHTTPFixture.remove(directory) }
+        let actual = directory.appendingPathComponent("actual")
+        try NativeHTTPFixture.createPrivateDirectory(actual)
+        let secret = actual.appendingPathComponent("credential")
+        try NativeHTTPFixture.writePrivate(Data("private-reference".utf8), to: secret)
         XCTAssertEqual(try CapabilityProtectedReference.read(secret.path), Data("private-reference".utf8))
         let link = directory.appendingPathComponent("link")
+#if os(Windows)
+        try NativeHTTPFixture.junction(link, target: actual)
+        defer { try? FileManager.default.removeItem(at: link) }
+        XCTAssertThrowsError(try CapabilityProtectedReference.read(link.appendingPathComponent("credential").path))
+        try NativeHTTPFixture.nativeCommand("icacls.exe", [secret.path, "/grant", "*S-1-1-0:(R)"])
+        XCTAssertThrowsError(try CapabilityProtectedReference.read(secret.path))
+        // Restore only this synthetic fixture's ACL for bounded cleanup.
+        try NativeHTTPFixture.protect(secret)
+#else
         try FileManager.default.createSymbolicLink(at: link, withDestinationURL: secret)
         XCTAssertThrowsError(try CapabilityProtectedReference.read(link.path))
         try FileManager.default.setAttributes([.posixPermissions: 0o644], ofItemAtPath: secret.path)
         XCTAssertThrowsError(try CapabilityProtectedReference.read(secret.path))
+#endif
     }
     func testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity() throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)

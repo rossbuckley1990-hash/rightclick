@@ -14,7 +14,7 @@ public final class KubernetesCapabilityArtifactResolver: CapabilityArtifactResol
               let raw = descriptor.endpointURL, let endpoint = URL(string: raw),
               endpoint.scheme == "https", endpoint.host != nil, endpoint.user == nil, endpoint.password == nil,
               endpoint.query == nil, endpoint.fragment == nil, endpoint.path.isEmpty || endpoint.path == "/",
-              let path = environment["RIGHTCLICK_KUBERNETES_CLIENT"], path.hasPrefix("/"),
+              let path = environment["RIGHTCLICK_KUBERNETES_CLIENT"], RuntimePlatform.isAbsolutePath(path),
               let writerReference = environment["RIGHTCLICK_KUBERNETES_WRITER_CONFIG"],
               let observerReference = environment["RIGHTCLICK_KUBERNETES_OBSERVER_CONFIG"],
               writerReference != observerReference,

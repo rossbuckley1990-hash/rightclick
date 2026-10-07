@@ -11,7 +11,7 @@ final class RCIRDeferredProductionTests: XCTestCase {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("a2a-red-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        let process = Process(); process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
+        let process = Process(); process.executableURL = try NativeHTTPFixture.python()
         process.arguments = [root.appendingPathComponent("scripts/a2a-proof-agent.py").path, directory.path, "--hold-until-file"]
         process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
         try process.run()

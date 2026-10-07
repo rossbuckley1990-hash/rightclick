@@ -5,16 +5,16 @@ import XCTest
 final class CapabilityExecutableSnapshotPoolTests: XCTestCase {
     private func fixture(_ body: (URL) throws -> Void) throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        defer { try? FileManager.default.removeItem(at: directory) }
+        try NativeHTTPFixture.createPrivateDirectory(directory)
+        defer { try? NativeHTTPFixture.remove(directory) }
         try body(directory)
     }
     private func executable(_ directory: URL, _ name: String = "host.exe", value: String = "host-selected-executable") throws -> URL {
         let file = directory.appendingPathComponent(name)
-        try Data(value.utf8).write(to: file)
 #if os(Windows)
-        try NativeHTTPFixture.protect(file)
+        try NativeHTTPFixture.writePrivate(Data(value.utf8), to: file)
 #else
+        try Data(value.utf8).write(to: file)
         try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: file.path)
 #endif
         return file
@@ -28,7 +28,7 @@ final class CapabilityExecutableSnapshotPoolTests: XCTestCase {
             XCTAssertTrue(one === two); XCTAssertNotEqual(one.file, source)
             XCTAssertEqual(try Data(contentsOf: one.file), Data("host-selected-executable".utf8))
             let timestamp = try FileManager.default.attributesOfItem(atPath: source.path)[.modificationDate]
-            try Data("HOST-selected-executable".utf8).write(to: source)
+            try NativeHTTPFixture.replacePrivate(Data("HOST-selected-executable".utf8), at: source)
             if let timestamp { try FileManager.default.setAttributes([.modificationDate: timestamp], ofItemAtPath: source.path) }
             let changed = try pool.acquire(executable: source, maximum: 64)
             XCTAssertFalse(one === changed); XCTAssertNotEqual(one.sha256, changed.sha256)
@@ -41,6 +41,7 @@ final class CapabilityExecutableSnapshotPoolTests: XCTestCase {
             let source = try executable(directory)
             let pool = CapabilityExecutableSnapshotPool()
             let original = try pool.acquire(executable: source, maximum: 64)
+            try NativeHTTPFixture.release(source)
             try FileManager.default.removeItem(at: source)
             XCTAssertThrowsError(try pool.acquire(executable: source, maximum: 64))
             XCTAssertEqual(pool.retainedBudget.entries, 0); XCTAssertFalse(original.sourceStillMatches())
@@ -55,13 +56,14 @@ final class CapabilityExecutableSnapshotPoolTests: XCTestCase {
             let original = try pool.acquire(executable: source, maximum: 64)
             var replacement: CapabilityArtifactSnapshot?
             XCTAssertThrowsError(try pool.acquire(executable: source, maximum: 64, beforeReturn: {
-                try! Data("other-executable-bytes".utf8).write(to: source)
+                try! NativeHTTPFixture.replacePrivate(Data("other-executable-bytes".utf8), at: source)
                 replacement = try! pool.acquire(executable: source, maximum: 64)
             })) { XCTAssertEqual($0 as? RCIRError, .unavailable) }
             let current = try pool.acquire(executable: source, maximum: 64)
             XCTAssertTrue(current === replacement); XCTAssertFalse(current === original)
             XCTAssertEqual(pool.retainedBudget.entries, 1)
             XCTAssertThrowsError(try pool.acquire(executable: source, maximum: 64, beforeReturn: {
+                try! NativeHTTPFixture.release(source)
                 try! FileManager.default.removeItem(at: source)
             })) { XCTAssertEqual($0 as? RCIRError, .unavailable) }
             XCTAssertEqual(pool.retainedBudget.entries, 0)
