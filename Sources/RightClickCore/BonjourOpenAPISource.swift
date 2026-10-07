@@ -124,6 +124,16 @@ public final class BonjourOpenAPISource:
         -> [any CapabilityReflector]
     {
         lock.lock()
+        let compiled = currentReflectors
+        lock.unlock()
+        for (key, old) in compiled where old.requiresContractRefresh {
+            guard let refreshed = try? old.refreshContract() as? OpenAPIReflector else { continue }
+            lock.lock()
+            // A delayed refresh must never resurrect a removed/replaced service.
+            if currentReflectors[key] === old { currentReflectors[key] = refreshed }
+            lock.unlock()
+        }
+        lock.lock()
 
         let snapshot =
             Array(
@@ -172,7 +182,10 @@ public final class BonjourOpenAPISource:
                     baseURL:
                         material.baseURL,
                     externalBearerSchemeName:
-                        material.externalBearerSchemeName
+                        material.externalBearerSchemeName,
+                    revalidateSpecification: { [loader = specificationLoader] in
+                        try loader(material.specificationURL)
+                    }
                 )
 
             lock.lock()

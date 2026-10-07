@@ -909,6 +909,18 @@ public final class ConfiguredOpenAPISource:
         reloadLock.unlock()
 
         stateLock.lock()
+        let compiled = currentReflectors
+        stateLock.unlock()
+        for (key, old) in compiled where old.requiresContractRefresh {
+            // Keep an unavailable snapshot pending reacquisition; its mandatory
+            // execution check denies dispatch. A later read can recover it.
+            guard let refreshed = try? old.refreshContract() as? OpenAPIReflector else { continue }
+            stateLock.lock()
+            if currentReflectors[key] === old { currentReflectors[key] = refreshed }
+            stateLock.unlock()
+        }
+
+        stateLock.lock()
 
         let snapshot =
             Array(
@@ -1034,9 +1046,12 @@ public final class ConfiguredOpenAPISource:
                             specification,
                         baseURL:
                             baseURL,
-                        externalBearerSchemeName:
-                            provider
-                                .authorityScheme
+                    externalBearerSchemeName:
+                        provider
+                                .authorityScheme,
+                    revalidateSpecification: { [loader = specificationLoader] in
+                        try loader(specificationURL)
+                    }
                     )
 
                 next[

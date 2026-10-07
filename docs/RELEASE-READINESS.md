@@ -4,12 +4,12 @@ Candidate scope: mandatory OpenAPI RCIR admission through the existing engine/co
 
 | Required state | Candidate evidence/status |
 |---|---|
-| Implementation and meaningful RED | PASS, actual pre-change public path dispatched without RCIR; transport-boundary race separately reproduced |
-| Full native regressions | PASS, 569 tests, 26 explicit skips, no failures |
-| Real CryptoKit foundation | PASS, 63 assertions; Linux remote reproduction pending |
-| Public OpenAPI effect/read-back/signature controls | PASS on final debug and release bytes; seven controls each |
+| Implementation and meaningful RED | PASS, actual pre-change public path dispatched without RCIR; transport-boundary race, actual cached-schema drift, and bounded-body regression separately reproduced |
+| Full native regressions | PASS, 574 tests, 26 explicit skips, no failures |
+| Real CryptoKit foundation | PASS, 63 assertions; earlier exact-head remote Linux 61/macOS 63 passed |
+| Public OpenAPI effect/read-back/signature controls | PASS on final debug and release bytes; original seven controls plus additional ten-control live freshness proof on each |
 | Release-mode artifact build | PASS; SHA256 in candidate identities |
-| Exact-head remote CI/review | Pending; baseline main success does not establish candidate success |
+| Exact-head remote CI/review | Earlier head passed all six checks; latest fixes need new-head CI/review |
 | Merge | NOT_RUN |
 | Candidate publication/source/bottle pins | NOT_RUN; immutable 0.2.2 pins retained |
 | Fresh install / upgrade / client reconnection | NOT_RUN for candidate |

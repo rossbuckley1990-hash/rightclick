@@ -1,0 +1,129 @@
+{
+  "runtimeA": {
+    "executablePath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/release/rightclick",
+    "executableRealPath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/release/rightclick",
+    "executableSHA256": "8f6240a2870fad415a5905aba7411e19e7a51a58bad92b6ebec0da8b2c69d890",
+    "pid": 37751,
+    "product": "RIGHTCLICK",
+    "transport": "http",
+    "version": "0.2.2"
+  },
+  "runtimeB": {
+    "executablePath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/release/rightclick",
+    "executableRealPath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/release/rightclick",
+    "executableSHA256": "8f6240a2870fad415a5905aba7411e19e7a51a58bad92b6ebec0da8b2c69d890",
+    "pid": 37750,
+    "product": "RIGHTCLICK",
+    "transport": "http",
+    "version": "0.2.2"
+  },
+  "providerConfiguration": {
+    "configuration": "/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-federation-live-owp147or/b-home/Library/Application Support/RIGHTCLICK/providers.json",
+    "credentialStored": "false",
+    "id": "federation-live-proof",
+    "providerCount": "1",
+    "status": "CONFIGURED"
+  },
+  "before": {
+    "runtimeAHasRemoteProof": false,
+    "runtimeBHasRemoteProof": false
+  },
+  "appeared": {
+    "remote": {
+      "explanation": "Read federation proof",
+      "id": "openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof",
+      "inputTypes": [
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "provider": {
+        "name": "RIGHTCLICK Federation Remote Proof Provider"
+      },
+      "requiresConfirmation": true,
+      "safety": "unknown",
+      "source": "system",
+      "supportLevel": "experimental",
+      "title": "Read federation proof"
+    },
+    "federated": {
+      "explanation": "Read federation proof",
+      "id": "federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof",
+      "inputTypes": [
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "provider": {
+        "name": "RIGHTCLICK Runtime B"
+      },
+      "requiresConfirmation": true,
+      "safety": "unknown",
+      "source": "system",
+      "supportLevel": "experimental",
+      "title": "Read federation proof"
+    }
+  },
+  "execution": {
+    "actionId": "federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof",
+    "events": [
+      "HTTP GET https://raw.githubusercontent.com/rossbuckley1990-hash/rightclick/fc4eb128a814e799ca545d250dd487729a42185d/fixtures/federation-proof/result.txt",
+      "provider returned 200",
+      "RCIR admitted generation=1",
+      "RCIR consumed lease=D9E4A7CE-768C-4F16-8A11-DA4381D1D6D5",
+      "RCIR task=D55A1DCF-BB0C-458E-9F5F-E45D118885A6 outcome=succeeded",
+      "federation peer peer-b",
+      "remote execution F5E4E690-03D0-4496-BADA-0871D1AB6820"
+    ],
+    "evidence": {
+      "boundary": "Caller-declared returned-value postcondition; verifies returned bytes, not external effects.",
+      "outcomeVerified": true,
+      "type": "generic_postcondition"
+    },
+    "executionId": "68E826A6-16ED-4475-8BC9-D91C1DAB7CD7",
+    "message": "HTTP provider returned 200; semantic outcome is unverified.",
+    "output": "RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK",
+    "rcir": {
+      "generation": 1,
+      "leaseConsumed": true,
+      "leaseID": "D9E4A7CE-768C-4F16-8A11-DA4381D1D6D5",
+      "observationBoundary": "Caller-declared returned-value postcondition; no independent external effect observation.",
+      "outcome": "succeeded",
+      "phase": "completed",
+      "receipt": "UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxMzczODkyMTA4czY6ZXZlbnRzYTE6eDEyODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM3Mzg2MjM3OXM1OnZhbHVlczM2OlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PS3MxMDpmaW5pc2hlZEF0aTEzOjE3OTEzNzM4NjIzNzlzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxMzczODYyMzc5czEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OkQ5RTRBN0NFLTc2OEMtNEYxNi04QTExLURBNDM4MUQxRDZENXMxMTpvYnNlcnZhdGlvbngyMTpSSUdIVENMSUNLLVZBTFVFLTEAYjFzMTA6b2JzZXJ2ZWRBdGkxMzoxNzkxMzczODYyMzc5czU6cGhhc2VzOTpjb21wbGV0ZWRzNzpyZXF1ZXN0eDM0MjM6UklHSFRDTElDSy1SQ0lSLVJFUVVFU1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzY6czk6YXJndW1lbnRzeDEzMDpSSUdIVENMSUNLLVZBTFVFLTEAbzI6czk6YXJndW1lbnRzbzE6czM6cmVmczQwOmZjNGViMTI4YTgxNGU3OTljYTU0NWQyNTBkZDQ4NzcyOWE0MjE4NWRzNDppdGVtczMyOlJJR0hUQ0xJQ0sgZmVkZXJhdGlvbiBsaXZlIHByb29mczc6YmluZGluZ3gyNDk5OlJJR0hUQ0xJQ0stUkNJUi1CSU5ESU5HLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnM4OmNvbnRyYWN0eDIzMDY6UklHSFRDTElDSy1SQ0lSLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG80OnMzOmFiaXgxODM4OlJJR0hUQ0xJQ0stQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzc6czk6YXJndW1lbnRzeDE5NzpSSUdIVENMSUNLLVZBTFVFLTEAbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMjpzOTphcmd1bWVudHNvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8xOnMzOnJlZnM2OnN0cmluZ3M4OnJlcXVpcmVkYTE6czM6cmVmczQ6aXRlbXM2OnN0cmluZ3M4OnJlcXVpcmVkYTI6czk6YXJndW1lbnRzczQ6aXRlbXMxMDpjYXBhYmlsaXR5czEwOTpvcGVuYXBpOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTI6Y2M3Mjg3ZTViZDZmMTI0ZDpyZWFkRmVkZXJhdGlvblByb29mczExOmRlY2xhcmF0aW9ubzY6czQ6Ym9keW5zMTA6Y2FwYWJpbGl0eW8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMxMDQ6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsicmVmIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbInJlZiJdLCJ0eXBlIjoib2JqZWN0In1zNzpiYXNlVVJMczMzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbXM2Om1ldGhvZHMzOkdFVHMxMTpvcGVyYXRpb25JZHMxOTpyZWFkRmVkZXJhdGlvblByb29mczQ6cGF0aHM3NTovcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay97cmVmfS9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzMTY6cHJvdmlkZXJJZGVudGl0eXM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczE5OnJlc3BvbnNlQ29udGVudFR5cGVzMTA6dGV4dC9wbGFpbnMxOTpzcGVjaWZpY2F0aW9uU0hBMjU2czY0OjYyOTczOTYyODcyMjFhZGU5NzM1ODJkZmZlOTFhMzdlMDk2YmM3MGM4OGY3NDYwZjg5MzBiOTRkOGExYWNhYjhzOTpzdWJzdHJhdGVzNzpvcGVuYXBpczc6b3V0cHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzNDM6UklHSFRDTElDSyBGZWRlcmF0aW9uIFJlbW90ZSBQcm9vZiBQcm92aWRlcnMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTI6ZXhwZXJpbWVudGFsczU6dGl0bGVzMjE6UmVhZCBmZWRlcmF0aW9uIHByb29mczE0OmV4cGVjdGVkT3V0cHV0bnM2Om1ldGhvZHMzOkdFVHMxMDpyZXF1ZXN0VVJMczE0MzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay9mYzRlYjEyOGE4MTRlNzk5Y2E1NDVkMjUwZGQ0ODc3MjlhNDIxODVkL2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxMjp2ZXJpZmljYXRpb254ODY6eyJwcmVkaWNhdGVzIjpbeyJ0eXBlIjoidGV4dF9lcXVhbHMiLCJ2YWx1ZSI6IlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PSyJ9XX1zODpwcm92aWRlcnM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6cmVmbGVjdG9yczgyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM0OnJlYWRzODpyZXNvdXJjZXMxNDM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2svZmM0ZWIxMjhhODE0ZTc5OWNhNTQ1ZDI1MGRkNDg3NzI5YTQyMTg1ZC9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25vMzpzODpleHBlY3RlZGIxczg6b2JzZXJ2ZXJzMzU6aG9zdDpyZXR1cm5lZC12YWx1ZS1wb3N0Y29uZGl0aW9uLTFzNjpzY2hlbWF4Mjk6UklHSFRDTElDSy1WQUxVRS0xAHM3OmJvb2xlYW5zMTA6Z2VuZXJhdGlvbmkxOjFzOTpwcmluY2lwYWxzOTQ6bG9jYWwtb3duZXI6b3BlbmFwaS1yZWZsZWN0b3I6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnM5OmV4cGlyZXNBdGkxMzoxNzkxMzczODkyMTA4czg6aXNzdWVkQXRpMTM6MTc5MTM3Mzg2MjEwOHM2OnBvbGljeXg0NTI6UklHSFRDTElDSy1SQ0lSLVBPTElDWS0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMTA6cHJpbmNpcGFsc2ExOnM5NDpsb2NhbC1vd25lcjpvcGVuYXBpLXJlZmxlY3Rvcjo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczg6cmV2aXNpb25zODU6bG9jYWwtY29uZmlybWF0aW9uLTE6NjNjNTllYzZjNDYxN2E2Y2E4ZTgyNTRmMDA3MDU0OTNjMTkyM2I2ZmRjMWRkNjc2ZTdjNWM5ZmMwNWJiMGY1N3M2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM0OnJlYWRzODpyZXNvdXJjZXMxNDM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2svZmM0ZWIxMjhhODE0ZTc5OWNhNTQ1ZDI1MGRkNDg3NzI5YTQyMTg1ZC9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNDpyZWFkczg6cmVzb3VyY2VzMTQzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrL2ZjNGViMTI4YTgxNGU3OTljYTU0NWQyNTBkZDQ4NzcyOWE0MjE4NWQvZml4dHVyZXMvZmVkZXJhdGlvbi1wcm9vZi9yZXN1bHQudHh0czE1OnNlbWFudGljT3V0Y29tZXM5OnN1Y2NlZWRlZHM5OnN0YXJ0ZWRBdGkxMzoxNzkxMzczODYyMTA4czY6dGFza0lEczM2OkQ1NUExRENGLUJCMEMtNDU4RS05RjVGLUU0NUQxMTg4ODVBNg==",
+      "taskID": "D55A1DCF-BB0C-458E-9F5F-E45D118885A6",
+      "version": 1
+    },
+    "state": "succeeded",
+    "title": "Read federation proof",
+    "verification": {
+      "predicates": [
+        {
+          "actual": "RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK",
+          "evaluated": true,
+          "message": "Compared exact provider-returned text.",
+          "passed": true,
+          "predicate": {
+            "type": "text_equals",
+            "value": "RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK"
+          }
+        }
+      ],
+      "status": "VERIFIED_SUCCESS"
+    }
+  },
+  "disappeared": {
+    "runtimeAHasRemoteProof": false,
+    "runtimeBHasRemoteProof": false,
+    "runtimeBStillAlive": true
+  },
+  "acceptance": {
+    "TWO_LIVE_RIGHTCLICK_RUNTIMES": "YES",
+    "REMOTE_CAPABILITY_ABSENT_BEFORE_PROVIDER": "YES",
+    "REMOTE_CAPABILITY_DISCOVERED_THROUGH_FEDERATION": "YES",
+    "REMOTE_CAPABILITY_EXECUTED": "YES",
+    "REMOTE_RESULT_INDEPENDENTLY_VERIFIED": "YES",
+    "CAPABILITY_APPEARED_LIVE": "YES",
+    "CAPABILITY_DISAPPEARED_LIVE": "YES",
+    "RUNTIME_B_RESTARTED": "NO",
+    "MODEL_FACING_TOOLS_ADDED": "0"
+  }
+}

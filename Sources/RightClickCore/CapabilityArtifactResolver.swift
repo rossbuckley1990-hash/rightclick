@@ -379,6 +379,10 @@ public final class OpenAPICapabilityArtifactResolver:
                 )
         }
 
+        let revalidate: (() throws -> Data)? = descriptor.specificationURL.flatMap { raw in
+            guard let url = CapabilityArtifactURLPolicy.httpURL(raw) else { return nil }
+            return { [loader = specificationLoader] in try loader(url) }
+        }
         return try OpenAPIReflector(
             specificationData:
                 specification,
@@ -387,7 +391,8 @@ public final class OpenAPICapabilityArtifactResolver:
             externalBearerSchemeName:
                 descriptor.authorityScheme,
             session:
-                session
+                session,
+            revalidateSpecification: revalidate
         )
     }
 }
@@ -914,6 +919,9 @@ public final class ConfiguredCapabilityArtifactSource:
 
         if
             let lastRefresh,
+            !cachedReflectors.contains(where: {
+                ($0 as? any CapabilityContractRefreshingReflector)?.requiresContractRefresh == true
+            }),
             refreshInterval > 0,
             Date()
                 .timeIntervalSince(
