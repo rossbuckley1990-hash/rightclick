@@ -151,6 +151,36 @@ final class CapabilityArtifactResolverTests:
         )
     }
 
+    func testRegistryAcceptsOpaqueARDURNIdentity() throws {
+        let registry =
+            CapabilityArtifactResolverRegistry(
+                resolvers: [
+                    StubResolver(
+                        kind:
+                            "openapi",
+                        reflectorID:
+                            "fixture.urn"
+                    )
+                ]
+            )
+
+        let reflector =
+            try registry.resolve(
+                CapabilityArtifactDescriptor(
+                    id:
+                        "urn:air:registry.example:api:durable-records",
+                    kind:
+                        "openapi"
+                )
+            )
+
+        XCTAssertEqual(
+            reflector.id,
+            "fixture.urn"
+        )
+    }
+
+
     func testDuplicateResolverKindFailsClosed() {
         let registry =
             CapabilityArtifactResolverRegistry(
