@@ -1,0 +1,63 @@
+name: RIGHTCLICK remote multi-API current-source proof
+on:
+  push:
+    branches:
+      - experiment/multi-api-remote-20261007
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  isolated-macos:
+    runs-on: macos-26
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact current-source experiment branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
+      - name: Assert RIGHTCLICK production source unmodified
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only daf07d04ee11be59e3f499f370f0bba5df9998ad HEAD > /tmp/rightclick-changes.txt
+          cat /tmp/rightclick-changes.txt
+          if grep -E '^(Sources/|Tests/|Package.swift|Package.resolved)' /tmp/rightclick-changes.txt; then
+            echo "Production runtime changes not permitted in isolated experiment" >&2
+            exit 1
+          fi
+      - name: Build full RIGHTCLICK runtime from source on macOS
+        shell: bash
+        run: |
+          set -euo pipefail
+          swift --version
+          swift build -c release --product rightclick --force-resolved-versions
+          .build/release/rightclick version
+          shasum -a 256 .build/release/rightclick
+      - name: Restore immutable acceptance script and verify exact digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64, gzip, hashlib, pathlib
+          raw=gzip.decompress(base64.b64decode("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"))
+          digest=hashlib.sha256(raw).hexdigest()
+          assert digest == "76b07dd9b88a7c0d04ddc9e78e10d8d21883539d6559ebf705db5a4848456874", digest
+          p=pathlib.Path("rightclick-multi-api-measure.py")
+          p.write_bytes(raw)
+          print("HARNESS_SHA256="+digest)
+          PY
+      - name: Run seven-operation multi-API discovery and readback
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/rightclick-multi-api-evidence"
+          cp rightclick-multi-api-measure.py "$RUNNER_TEMP/rightclick-multi-api-evidence/harness.py"
+          python3 rightclick-multi-api-measure.py --binary .build/release/rightclick --output "$RUNNER_TEMP/rightclick-multi-api-evidence" --expected-commit "$GITHUB_SHA"
+      - name: Preserve receipts and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: rightclick-multi-api-current-source-${{ github.run_id }}
+          path: ${{ runner.temp }}/rightclick-multi-api-evidence/*
+          retention-days: 7
+          if-no-files-found: warn
