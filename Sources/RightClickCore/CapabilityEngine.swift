@@ -322,7 +322,12 @@ public final class CapabilityEngine {
             ]
         )
 
-        ExecutionStore.shared.put(initial)
+        guard ExecutionStore.shared.put(initial) else {
+            return RunResult(status: .rejected, actionID: capability.id, title: capability.title,
+                message: "Execution capacity is full; no provider was started.",
+                evidence: OutcomeEvidence(type: "execution_capacity",
+                    boundary: "Active execution bookkeeping could not be reserved before provider dispatch."))
+        }
 
         let startedRecord: ExecutionRecord
 
@@ -576,7 +581,12 @@ public final class CapabilityEngine {
             ]
         )
 
-        ExecutionStore.shared.put(initial)
+        guard ExecutionStore.shared.put(initial) else {
+            return ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title,
+                state: .rejected, message: "Execution capacity is full; no provider was started.",
+                evidence: OutcomeEvidence(type: "execution_capacity",
+                    boundary: "Active execution bookkeeping could not be reserved before provider dispatch."))
+        }
 
         var providerRecord: ExecutionRecord
 

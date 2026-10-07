@@ -33,6 +33,8 @@ jobs:
           set -euo pipefail
           "$RIGHTCLICK_WASM_TOOLS" parse examples/universal-descriptors/fingerprint.component.wat -o "$RUNNER_TEMP/fingerprint.component.wasm"
           RIGHTCLICK_TEST_WASM_COMPONENT="$RUNNER_TEMP/fingerprint.component.wasm" bash scripts/test-capability-interfaces.sh 2>&1 | tee evidence/interface-ci/architectural-tests.log
+      - name: Bound execution history using exact production sources
+        run: bash scripts/test-execution-retention.sh 2>&1 | tee evidence/interface-ci/execution-retention.log
       - name: Build candidate runtime
         run: swift build --force-resolved-versions --product rightclick --jobs 3
       - name: Prove the real seven-operation boundary
