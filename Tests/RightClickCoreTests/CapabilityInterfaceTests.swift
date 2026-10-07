@@ -78,6 +78,30 @@ final class CapabilityInterfaceTests: XCTestCase {
             host: RCIRExecutionHost(), revalidate: { true })
         XCTAssertEqual(denied.state, .rejected); XCTAssertEqual(calls, 1)
     }
+    func testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess() throws {
+        let item = try ContentParser.parse("preflight")
+        let capability = Capability(id: "preflight", title: "Preflight", source: .system, reflectorID: "interface:preflight",
+            provider: CapabilityProvider(name: "controlled"), inputs: ["text"], output: ["text"], safety: .unknown,
+            invocation: .direct, supportLevel: .publicSupported, requiresConfirmation: true)
+        let abi = try capability.abiContract(arguments: .string, result: .string)
+        let scope = RCIRScope("preflight-exact-resource", .execute)
+        for returned: ExecutionState in [.failed, .accepted, .succeeded] {
+            let host = RCIRExecutionHost()
+            var resultReads = 0
+            let record = try host.execute(abi: abi, discovery: abi, arguments: .string("input"), scope: scope,
+                capability: capability, executionID: returned.rawValue, argumentStrings: nil, item: item,
+                verification: nil, expectedOutput: "claimed", target: URL(string: "http://127.0.0.1:19143")!,
+                authority: { [scope] }, revalidate: { true }, dispatch: { _, _ in
+                    .init(executionId: returned.rawValue, actionId: capability.id, state: returned, message: "preflight compiler return", output: "claimed")
+                }, resultValue: { _ in resultReads += 1; return .string("claimed") })
+            XCTAssertEqual(record.rcir?.leaseConsumed, false)
+            XCTAssertEqual(record.rcir?.outcome, "unverified")
+            XCTAssertFalse(record.evidence.outcomeVerified)
+            XCTAssertFalse(record.events.contains { $0.contains("RCIR consumed lease=") })
+            XCTAssertEqual(record.state, returned == .failed ? .failed : .unknown)
+            XCTAssertEqual(resultReads, 0)
+        }
+    }
     func testBoundedExecutorAbstainsForOfflineTool() throws {
         XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/nonexistent/rightclick-runtime"), arguments: []))
     }
