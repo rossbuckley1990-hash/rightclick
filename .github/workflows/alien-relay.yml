@@ -1,0 +1,61 @@
+name: RIGHTCLICK Alien Relay
+
+on:
+  push:
+    branches:
+      - experiment/alien-relay-20261007
+      - experiment/alien-verifier-v1-fixed-20261007
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  alien-relay:
+    name: Remote Ubuntu adaptive multimodal round-trip proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out experiment branch
+        uses: actions/checkout@v4
+
+      - name: Preflight ASR observer regressions
+        run: python3 -m unittest discover -s experiments/alien-relay -p 'test_*.py' -v
+
+      - name: Acquire learned clients
+        shell: bash
+        run: |
+          set -e
+          python3 -m venv alien-venv
+          alien-venv/bin/python -m pip install --disable-pip-version-check --no-input gradio pillow huggingface_hub >gradio-install.log 2>&1
+
+      - name: Reproduce verified Generation 6 from immutable workflow
+        shell: bash
+        run: |
+          set -e
+          python3 - <<'PY'
+          import base64, re, urllib.request
+          url = "https://raw.githubusercontent.com/rossbuckley1990-hash/rightclick/5c8916745e04aa9e0e5a1ee9361a3ed7ac5b3a9c/.github/workflows/alien-relay.yml"
+          text = urllib.request.urlopen(url, timeout=30).read().decode("utf-8")
+          match = re.search(r"echo '([^']+)' \| base64 -d > generation6\.py", text)
+          if not match:
+              raise SystemExit("immutable Generation 6 payload not found")
+          open("generation6.py", "wb").write(base64.b64decode(match.group(1)))
+          PY
+          alien-venv/bin/python generation6.py
+
+      - name: Replay Generation 7 with contract-derived observer (new experiment run)
+        shell: bash
+        run: |
+          set -e
+          alien-venv/bin/python experiments/alien-relay/generation7_extension.py
+
+      - name: Upload proof artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rightclick-alien-proof-${{ github.run_id }}
+          path: alien-proof/
+          if-no-files-found: error
+          retention-days: 7
