@@ -34,6 +34,7 @@ def main():
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=True)
     marker = "GQL_" + uuid.uuid4().hex
     mutate, scalar, custom, recursive = [prefix + uuid.uuid4().hex[:12] for prefix in ("record_", "number_", "opaque_", "recursive_")]
+    nullable_echo, required_echo = ["echo_" + uuid.uuid4().hex[:12] for _ in range(2)]
     sdl = f"""
       enum Mode {{ FIRST SECOND }}
       input ChildInput {{ flag: Boolean!, count: Int!, note: String }}
@@ -42,7 +43,8 @@ def main():
       scalar Unspecified
       type Child {{ flag: Boolean!, count: Int!, note: String }}
       type Record {{ nonce: String!, children: [Child!]!, mode: Mode!, ratio: Float!, absent: Boolean }}
-      type Query {{ {scalar}: Float!, {custom}: Unspecified, {recursive}(value: Recursive): String }}
+      type Query {{ {scalar}: Float!, {custom}: Unspecified, {recursive}(value: Recursive): String,
+                    {nullable_echo}(value: String): String, {required_echo}(value: String!): String! }}
       type Mutation {{ {mutate}(nonce: String!, payload: Payload!): Record! }}
     """
     schema = build_schema(sdl)
@@ -87,6 +89,8 @@ def main():
                 with (out / "provider-requests.jsonl").open("a") as stream: stream.write(json.dumps(data) + "\n")
             current = build_schema(sdl.replace("mode: Mode!", "mode: String!") if state["drift"] else sdl)
             current.get_type("Query").fields[scalar].resolve = lambda *_: 1.0
+            current.get_type("Query").fields[nullable_echo].resolve = lambda *_, value=None: value
+            current.get_type("Query").fields[required_echo].resolve = lambda *_, value: value
             current.get_type("Mutation").fields[mutate].resolve = mutation
             result = graphql_sync(current, data["query"], variable_values=data.get("variables"), operation_name=data.get("operationName"))
             body = result.formatted
@@ -183,6 +187,20 @@ def main():
             number_payload = verify(number_result, private, out, public)
             number_value = verifier._value(verifier._domain(number_payload, "RECEIPT")["events"][-1])["value"]
             check("whole_float_keeps_number_type", lambda: require(isinstance(number_value, dict) and type(number_value["rightclickResult"]) is float, str(number_value)))
+            # Version-two preregistration: preserve all nullable string values
+            # through the declared legacy-text codec, including the null sentinel.
+            for label, field, supplied, expected in [
+                ("nullable_null", nullable_echo, "null", None),
+                ("nullable_plain_string", nullable_echo, "ordinary", "ordinary"),
+                ("required_literal_null", required_echo, "null", "null"),
+                ("nullable_literal_null_escape", nullable_echo, "\\null", "null"),
+                ("nullable_leading_backslash_escape", nullable_echo, "\\\\text", "\\text"),
+                ("nullable_backslash_null_escape", nullable_echo, "\\\\null", "\\null")]:
+                echo = next(value for value in actions if value["title"] == "GraphQL query: " + field)
+                echoed = client.call("context_run", {"item": marker, "actionId": echo["id"], "confirmed": True, "arguments": {"value": supplied}})
+                echo_payload = verify(echoed, private, out, public)
+                echo_value = verifier._value(verifier._domain(echo_payload, "RECEIPT")["events"][-1])["value"]
+                check(label, lambda echo_value=echo_value, expected=expected: require(echo_value == {"rightclickResult": expected}, str(echo_value)))
             state["drift"] = True; time.sleep(5.3)
             previous = len(effects)
             stale = run("stale-schema")
