@@ -257,6 +257,48 @@ This allows the live graph to extend beyond one process or one machine while pre
 
 Federated provider acceptance is still not automatically semantic success.
 
+## Universal capability artifact input
+
+On the repository integration line, RIGHTCLICK can accept provider-neutral artifact descriptors through one generic environment contract:
+
+```bash
+export RIGHTCLICK_CAPABILITY_ARTIFACTS='[
+  {
+    "id": "orders-api",
+    "kind": "openapi",
+    "specificationURL": "https://api.example.com/openapi.json",
+    "baseURL": "https://api.example.com"
+  },
+  {
+    "id": "knowledge-graph",
+    "kind": "graphql",
+    "endpointURL": "https://graph.example.com/graphql"
+  },
+  {
+    "id": "compute",
+    "kind": "grpc",
+    "endpointURL": "grpcs://compute.example.com:443"
+  }
+]'
+```
+
+Those three descriptors enter the same resolver registry and become ordinary RIGHTCLICK reflectors.
+
+The agent still sees the same seven operations.
+
+Security defaults remain conservative:
+
+- remote HTTP artifacts must use HTTPS
+- plaintext HTTP is loopback-only
+- remote gRPC must use `grpcs://`
+- plaintext `grpc://` is loopback-only
+- OpenAPI and GraphQL may reference a locally configured authority scheme
+- gRPC authority advertisements currently fail closed until generic metadata authority is implemented
+- duplicate descriptor IDs or duplicate resulting reflector identities are rejected
+- resolved artifacts are cached for a short bounded refresh window rather than reacquired for every agent query
+
+This environment contract is an integration surface for the current repository code. The published Homebrew v0.2.1 release predates this universal artifact layer.
+
 ## ARD as an optional discovery source
 
 RIGHTCLICK can consume supported ARD search results as another **source of capability artifacts**.
