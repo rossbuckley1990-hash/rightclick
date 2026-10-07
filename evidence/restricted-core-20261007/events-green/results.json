@@ -1,0 +1,26 @@
+{
+  "proofKind": "CONTROLLED_RPC_NOTIFICATION_FIXTURES_NO_ACTUAL_INFERENCE",
+  "driverSHA256": "f452c508d9dfc241e2f4d737dc2a1886298f6fdcad58085cac3a7cf29d085a37",
+  "controlSHA256": "c8f5ab3ae25726f03349d8e50d4c9ac14ee24732247bfa0e7f1394d205d05091",
+  "controls": {
+    "owned_message": {
+      "result": "PASS",
+      "driverExit": 0,
+      "driverInferenceClaimFromControlledFixture": true,
+      "failure": null
+    },
+    "foreign_thread": {
+      "result": "PASS",
+      "driverExit": 1,
+      "driverInferenceClaimFromControlledFixture": false,
+      "failure": "Foreign agent message cannot establish inference for this session"
+    },
+    "foreign_turn": {
+      "result": "PASS",
+      "driverExit": 1,
+      "driverInferenceClaimFromControlledFixture": false,
+      "failure": "Foreign agent message cannot establish inference for this session"
+    }
+  },
+  "result": "PASS"
+}

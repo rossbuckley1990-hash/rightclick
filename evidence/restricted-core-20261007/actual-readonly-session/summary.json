@@ -1,0 +1,183 @@
+{
+  "requestedActualMode": true,
+  "actualAIInference": true,
+  "clientBoundary": "PREFLIGHT_MATCHED_ACTUAL_REQUEST_NOT_INTERCEPTED",
+  "universalAcceptance": "NOT_EVALUATED",
+  "result": "PASS",
+  "phases": [
+    {
+      "name": "fresh-discovery",
+      "promptSHA256": "82324df9b5c4c617c0bc0fb505fdcff093593b33625eaacbeac0a907e763968f",
+      "terminal": {
+        "threadId": "01a11807-6d73-7eb3-a0ac-e42f5faa231d",
+        "turn": {
+          "id": "01a11807-6db1-7c53-82c5-f60730662528",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "msg_06e0fb97c6cc1ef3016ac6a9f271bc87d29615886e8c6ecf74",
+              "text": "Read-only discovery completed in the requested order on RIGHTCLICK 0.2.2. The supplied text was classified as `public.plain-text`.\n\nAcquired action: **Look Up in Dictionary**\n- ID: `service:com.apple.Dictionary:doLookupService`\n- Provider: **Dictionary** (`com.apple.Dictionary`)\n\nNo capability was executed.",
+              "phase": "final_answer",
+              "memoryCitation": null,
+              "delivery": null,
+              "questions": null
+            }
+          ],
+          "itemsView": "summary",
+          "status": "completed",
+          "error": null,
+          "startedAt": 1791404502,
+          "completedAt": 1791404534,
+          "durationMs": 31776
+        }
+      },
+      "turnID": "01a11807-6db1-7c53-82c5-f60730662528",
+      "hostOracle": {
+        "argv": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/private/tmp/rightclick-restricted-core-20261007/scripts/restricted-core-session-oracle.py",
+          "--output",
+          "/private/tmp/rightclick-restricted-client-actual-readonly-20261007",
+          "--completed-phases",
+          "1"
+        ],
+        "exitCode": 0,
+        "semanticAcceptance": "NOT_INFERRED_FROM_EXIT_CODE"
+      }
+    },
+    {
+      "name": "same-session-explanation",
+      "promptSHA256": "4f321fa971c84e99b7d4502ebe735154cd3aa2857c051acd46c9f1633c2a71c5",
+      "terminal": {
+        "threadId": "01a11807-6d73-7eb3-a0ac-e42f5faa231d",
+        "turn": {
+          "id": "01a11807-ea23-7292-8a69-49afe83cdeab",
+          "items": [
+            {
+              "type": "agentMessage",
+              "id": "msg_06e0fb97c6cc1ef3016ac6aa0d4e9887d2bbd669f0a7b5b08b",
+              "text": "Repeated `context_runtime` first and `context_providers` second; runtime remains RIGHTCLICK 0.2.2, PID 66701.\n\nExplained previously acquired **Look Up in Dictionary** (`service:com.apple.Dictionary:doLookupService`), provided by **Dictionary** (`com.apple.Dictionary`). Declared interface: `NSStringPboardType` input, no declared outputs, interactive invocation, public-supported service. Confirmation is required; safety is declared unknown.\n\nNo capability executed; no eleven-world acceptance claimed.",
+              "phase": "final_answer",
+              "memoryCitation": null,
+              "delivery": null,
+              "questions": null
+            }
+          ],
+          "itemsView": "summary",
+          "status": "completed",
+          "error": null,
+          "startedAt": 1791404534,
+          "completedAt": 1791404562,
+          "durationMs": 28345
+        }
+      },
+      "turnID": "01a11807-ea23-7292-8a69-49afe83cdeab",
+      "hostOracle": {
+        "argv": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/private/tmp/rightclick-restricted-core-20261007/scripts/restricted-core-session-oracle.py",
+          "--output",
+          "/private/tmp/rightclick-restricted-client-actual-readonly-20261007",
+          "--completed-phases",
+          "2"
+        ],
+        "exitCode": 0,
+        "semanticAcceptance": "NOT_INFERRED_FROM_EXIT_CODE"
+      }
+    }
+  ],
+  "actualAIToolCalls": [
+    {
+      "tool": "context_runtime",
+      "arguments": {},
+      "turnID": "01a11807-6db1-7c53-82c5-f60730662528"
+    },
+    {
+      "tool": "context_providers",
+      "arguments": {},
+      "turnID": "01a11807-6db1-7c53-82c5-f60730662528"
+    },
+    {
+      "tool": "context_inspect",
+      "arguments": {
+        "item": "RIGHTCLICK restricted client session"
+      },
+      "turnID": "01a11807-6db1-7c53-82c5-f60730662528"
+    },
+    {
+      "tool": "context_actions",
+      "arguments": {
+        "item": "RIGHTCLICK restricted client session"
+      },
+      "turnID": "01a11807-6db1-7c53-82c5-f60730662528"
+    },
+    {
+      "tool": "context_runtime",
+      "arguments": {},
+      "turnID": "01a11807-ea23-7292-8a69-49afe83cdeab"
+    },
+    {
+      "tool": "context_providers",
+      "arguments": {},
+      "turnID": "01a11807-ea23-7292-8a69-49afe83cdeab"
+    },
+    {
+      "tool": "context_explain",
+      "arguments": {
+        "actionId": "service:com.apple.Dictionary:doLookupService",
+        "item": "RIGHTCLICK restricted client session"
+      },
+      "turnID": "01a11807-ea23-7292-8a69-49afe83cdeab"
+    }
+  ],
+  "runtimeBinarySHA256": "e4a4b007830a606b4086fa0a503eba963c0ce43e4c22cc43d4a39c2af932bef5",
+  "clientLauncherSHA256": "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70",
+  "clientEntrypointPath": "/opt/homebrew/lib/node_modules/@openai/codex/bin/codex.js",
+  "clientExecutablePath": "/opt/homebrew/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex",
+  "clientExecutableSHA256": "4d210f7c5a18fd0386434df23b5bdbb8c0e7257d3e8a2b30b0769c8bbe99a878",
+  "clientConfigSHA256": "2bff91d2215f385837c589a09d61f6c6e332c1620feba66118c323372ad87e6d",
+  "modelCatalogSHA256": "64fb9b4de7fc9407592d4e3d66c631b87e7f45a0ab9d8a0ecd91284295c2c49b",
+  "restrictionsSHA256": "8e6033ff495a3f2b67ec3bb37b5c2d1e90e0e9f8e7beb63b0d4e687b2c2aedea",
+  "developerInstructionsSHA256": "06c383a319e3cdb66f675c713e3ecc984656bc32d340af7314239fa1c643a7c2",
+  "capabilityExecutionAllowed": false,
+  "probeSHA256": "f452c508d9dfc241e2f4d737dc2a1886298f6fdcad58085cac3a7cf29d085a37",
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-graphql-typed-binary-6d7154d/rightclick",
+    "executableRealPath": "/tmp/rightclick-graphql-typed-binary-6d7154d/rightclick",
+    "executableSHA256": "e4a4b007830a606b4086fa0a503eba963c0ce43e4c22cc43d4a39c2af932bef5",
+    "pid": 66701,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "dynamicToolsDeclared": [
+    "context_runtime",
+    "context_inspect",
+    "context_actions",
+    "context_explain",
+    "context_run",
+    "context_run_status",
+    "context_providers"
+  ],
+  "dynamicToolsSHA256": "10adf07ec6515ac5482f3c04db207f24ee0183176aef6503da521a9ca33c52b7",
+  "threadID": "01a11807-6d73-7eb3-a0ac-e42f5faa231d",
+  "sessionID": "01a11807-6d73-7eb3-a0ac-e42f5faa231d",
+  "model": "gpt-6.1-sol",
+  "proofKind": "ACTUAL_AI_CLIENT_SESSION_NOT_UNIVERSAL_ACCEPTANCE"
+}

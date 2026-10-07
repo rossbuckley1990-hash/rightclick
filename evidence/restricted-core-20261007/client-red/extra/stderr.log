@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/private/tmp/rightclick-restricted-client-red-v2-20261007/extra/source/restricted-core-probe.py", line 42, in <module>
+    tool_specs=rc.call('tools/list')['tools'];assert {t['name'] for t in tool_specs}==CANONICAL
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

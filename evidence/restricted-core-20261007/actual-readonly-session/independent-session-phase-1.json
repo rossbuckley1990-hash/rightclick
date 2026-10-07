@@ -1,0 +1,19 @@
+{
+  "proofKind": "ACTUAL_CLIENT_READONLY_SESSION_STRUCTURE_NOT_UNIVERSAL_ACCEPTANCE",
+  "checks": {
+    "oneFreshThread": true,
+    "sameThreadAcrossTurns": true,
+    "modelCallsUseOnlyCanonicalSeven": true,
+    "noCapabilityDispatch": true,
+    "modelRuntimeAndProviderCallsEachPhase": true,
+    "sameServingRuntimePIDAndBytes": true
+  },
+  "runtimePID": 66701,
+  "runtimeBinarySHA256": "e4a4b007830a606b4086fa0a503eba963c0ce43e4c22cc43d4a39c2af932bef5",
+  "modelCallCount": 4,
+  "transcriptSHA256": {
+    "app-server-transcript.jsonl": "91d00226957bd9b80f40c0a19dd7a0dd9f2aa84716f9d58ce8216b3f3ed1b65f",
+    "rightclick-transcript.jsonl": "920d45628f95f7a4f63497693ea908e6a6781f25fff4e62149fffb0b34ce7059"
+  },
+  "result": "PASS"
+}

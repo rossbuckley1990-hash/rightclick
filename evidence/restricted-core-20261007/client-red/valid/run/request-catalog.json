@@ -1,0 +1,116 @@
+[
+  {
+    "model": "gpt-6.1-sol",
+    "tools": [],
+    "additionalTools": [
+      {
+        "type": "additional_tools",
+        "id": "at_277a2c09-1a46-581d-906d-e9aed6a2d8f7",
+        "role": "developer",
+        "tools": [
+          {
+            "type": "namespace",
+            "name": "functions",
+            "description": "",
+            "tools": [
+              {
+                "type": "function",
+                "name": "context_runtime",
+                "description": "Client isolation fixture only",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_inspect",
+                "description": "Client isolation fixture only",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_actions",
+                "description": "Client isolation fixture only",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_explain",
+                "description": "Client isolation fixture only",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_run",
+                "description": "Client isolation fixture only",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_run_status",
+                "description": "Client isolation fixture only",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_providers",
+                "description": "Client isolation fixture only",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "requestKeys": [
+      "model",
+      "input",
+      "tool_choice",
+      "parallel_tool_calls",
+      "reasoning",
+      "store",
+      "stream",
+      "include",
+      "prompt_cache_key",
+      "text",
+      "client_metadata"
+    ],
+    "otherToolFields": {
+      "tool_choice": "auto",
+      "parallel_tool_calls": false
+    }
+  }
+]

@@ -1,0 +1,78 @@
+{
+  "requestedActualMode": false,
+  "actualAIInference": false,
+  "clientBoundary": "INCOMPLETE",
+  "universalAcceptance": "NOT_EVALUATED",
+  "result": "FAIL",
+  "phases": [
+    {
+      "name": "discovery",
+      "promptSHA256": "a9e0012aa4ca3212ee2e52111808a95f2757fd5eb2289ce4c0c4f14a876cf9d1",
+      "terminal": {
+        "threadId": "01a117ef-b5fc-7342-bce6-9ef001669f4d",
+        "turn": {
+          "id": "01a117ef-b6b0-7011-b906-afa1fbb9d49a",
+          "items": [],
+          "itemsView": "notLoaded",
+          "status": "failed",
+          "error": {
+            "message": "{\"error\":{\"code\":\"capture_complete\",\"message\":\"Local catalogue capture complete; no inference\",\"type\":\"invalid_request_error\"}}",
+            "codexErrorInfo": "other",
+            "additionalDetails": null,
+            "misalignment": null
+          },
+          "startedAt": 1791402948,
+          "completedAt": 1791402948,
+          "durationMs": 431
+        }
+      },
+      "turnID": "01a117ef-b6b0-7011-b906-afa1fbb9d49a"
+    }
+  ],
+  "actualAIToolCalls": [],
+  "runtimeBinarySHA256": "e4a4b007830a606b4086fa0a503eba963c0ce43e4c22cc43d4a39c2af932bef5",
+  "clientLauncherSHA256": "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70",
+  "clientConfigSHA256": "2bff91d2215f385837c589a09d61f6c6e332c1620feba66118c323372ad87e6d",
+  "modelCatalogSHA256": "64fb9b4de7fc9407592d4e3d66c631b87e7f45a0ab9d8a0ecd91284295c2c49b",
+  "restrictionsSHA256": "a07b2dd54463bd4a9cb3949b6131b9b7a3f69e4b1081e1ebec2e95998f9150fb",
+  "probeSHA256": "6eecf23167adcd6f644d3dd9b40d43ee8dd7cf7524f4e50a93fc20a55b82d9be",
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-graphql-typed-binary-6d7154d/rightclick",
+    "executableRealPath": "/tmp/rightclick-graphql-typed-binary-6d7154d/rightclick",
+    "executableSHA256": "e4a4b007830a606b4086fa0a503eba963c0ce43e4c22cc43d4a39c2af932bef5",
+    "pid": 36939,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "dynamicToolsDeclared": [
+    "context_runtime",
+    "context_inspect",
+    "context_actions",
+    "context_explain",
+    "context_run",
+    "context_run_status",
+    "context_providers"
+  ],
+  "dynamicToolsSHA256": "10adf07ec6515ac5482f3c04db207f24ee0183176aef6503da521a9ca33c52b7",
+  "threadID": "01a117ef-b5fc-7342-bce6-9ef001669f4d",
+  "sessionID": "01a117ef-b5fc-7342-bce6-9ef001669f4d",
+  "model": "gpt-6.1-sol",
+  "failure": "Outgoing function schema/description differs from supplied RIGHTCLICK declaration"
+}

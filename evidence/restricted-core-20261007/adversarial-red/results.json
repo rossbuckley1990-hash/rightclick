@@ -1,0 +1,22 @@
+{
+  "proofKind": "CLIENT_SECURITY_FIXTURES_AND_ACTUAL_OWNED_CHILD_NOT_PROVIDER_OR_AI_ACCEPTANCE",
+  "driverSHA256": "37a2b6ea50221e5f7a8cbd8c363ccd24505e221ff0de5c2b9e606651fc9e6c19",
+  "controlSHA256": "74d776a3a3ddf1a447ce5208863c9cd9d81cd62206334a171f22d610993b1ac6",
+  "controls": {
+    "changed_parameter_schema": {
+      "result": "FAIL",
+      "reason": "Invalid catalogue accepted"
+    },
+    "undeclared_builtin_tool_field": {
+      "result": "FAIL",
+      "reason": "Invalid catalogue accepted"
+    },
+    "evidence_failure_still_terminates_owned_child": {
+      "result": "FAIL",
+      "childStillRunning": true,
+      "pid": 32783,
+      "failure": "Controlled save OSError"
+    }
+  },
+  "result": "FAIL"
+}

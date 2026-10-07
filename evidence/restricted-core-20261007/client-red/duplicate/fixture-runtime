@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+import hashlib,json,os,pathlib,sys
+names=['context_runtime','context_inspect','context_actions','context_explain','context_run','context_run_status','context_providers']
+mode=os.environ['RC_CLIENT_CONTROL_MODE']
+if mode=='duplicate':names.append('context_runtime')
+if mode=='extra':names.append('unexpected_provider_tool')
+for line in sys.stdin:
+ q=json.loads(line); method=q['method']; args=q.get('params',{})
+ with open(os.environ['RC_CLIENT_CONTROL_TRACE'],'a') as log:log.write(json.dumps({'method':method,'tool':args.get('name')})+'\n')
+ if 'id' not in q:continue
+ if method=='initialize':result={'protocolVersion':'2025-03-26','capabilities':{'tools':{}},'serverInfo':{'name':'explicit-client-control-fixture','version':'1'}}
+ elif method=='tools/list':result={'tools':[{'name':n,'description':'Client isolation fixture only','inputSchema':{'type':'object','properties':{},'additionalProperties':False}} for n in names]}
+ elif method=='tools/call':
+  value={'providers':[]}
+  if args.get('name')=='context_runtime':value={'executableSHA256':'0'*64 if mode=='forged_sha' else hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest(),'executablePath':str(pathlib.Path(__file__).resolve()),'fixture':True}
+  result={'content':[{'type':'text','text':json.dumps(value)}]}
+ else:raise RuntimeError(method)
+ print(json.dumps({'jsonrpc':'2.0','id':q['id'],'result':result}),flush=True)

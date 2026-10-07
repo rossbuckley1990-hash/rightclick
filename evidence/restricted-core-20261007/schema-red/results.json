@@ -1,0 +1,28 @@
+{
+  "proofKind": "SCHEMA_COMPARISON_FIXTURES_NOT_PROVIDER_OR_AI_ACCEPTANCE",
+  "driverSHA256": "6eecf23167adcd6f644d3dd9b40d43ee8dd7cf7524f4e50a93fc20a55b82d9be",
+  "controlSHA256": "e976eed1f6c28cc063a1afdecde48405f041bec2723bdd2e9b2b88cf8e56b62e",
+  "controls": {
+    "sdk_empty_properties": {
+      "result": "FAIL",
+      "accepted": false,
+      "expectedAcceptance": true
+    },
+    "added_constraint": {
+      "result": "PASS",
+      "accepted": false,
+      "expectedAcceptance": false
+    },
+    "default_payload_changed": {
+      "result": "PASS",
+      "accepted": false,
+      "expectedAcceptance": false
+    },
+    "example_payload_changed": {
+      "result": "PASS",
+      "accepted": false,
+      "expectedAcceptance": false
+    }
+  },
+  "result": "FAIL"
+}

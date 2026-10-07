@@ -1,0 +1,241 @@
+[
+  {
+    "model": "gpt-6.1-sol",
+    "tools": [],
+    "additionalTools": [
+      {
+        "type": "additional_tools",
+        "id": "at_67a56e22-de0f-53e7-94db-b3505a3ec7e9",
+        "role": "developer",
+        "tools": [
+          {
+            "type": "namespace",
+            "name": "functions",
+            "description": "",
+            "tools": [
+              {
+                "type": "function",
+                "name": "context_runtime",
+                "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_inspect",
+                "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "item": {
+                      "type": "string",
+                      "description": "File path, http(s) URL, or plain text."
+                    }
+                  },
+                  "required": [
+                    "item"
+                  ]
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_actions",
+                "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "item": {
+                      "type": "string",
+                      "description": "File path, http(s) URL, or plain text."
+                    }
+                  },
+                  "required": [
+                    "item"
+                  ]
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_explain",
+                "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "actionId": {
+                      "type": "string",
+                      "description": "Capability id or exact title returned by context_actions."
+                    },
+                    "item": {
+                      "type": "string",
+                      "description": "File path, http(s) URL, or plain text."
+                    }
+                  },
+                  "required": [
+                    "item",
+                    "actionId"
+                  ]
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_run",
+                "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "actionId": {
+                      "type": "string",
+                      "description": "Capability id or exact title returned by context_actions."
+                    },
+                    "arguments": {
+                      "type": "object",
+                      "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                      "properties": {},
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "confirmed": {
+                      "type": "boolean",
+                      "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED."
+                    },
+                    "expectedOutput": {
+                      "type": "string",
+                      "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes."
+                    },
+                    "item": {
+                      "type": "string",
+                      "description": "File path, http(s) URL, or plain text."
+                    },
+                    "verification": {
+                      "type": "object",
+                      "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                      "properties": {
+                        "predicates": {
+                          "type": "array",
+                          "description": "Required provider-independent postconditions.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "bytes": {
+                                "type": "integer",
+                                "description": "Optional byte threshold."
+                              },
+                              "height": {
+                                "type": "integer",
+                                "description": "Optional expected image height."
+                              },
+                              "key": {
+                                "type": "string",
+                                "description": "Optional key, for example an extended-attribute name."
+                              },
+                              "reference": {
+                                "type": "string",
+                                "description": "Optional observation reference. Currently 'before' for before/after predicates."
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Provider-independent observable predicate type.",
+                                "enum": [
+                                  "text_equals",
+                                  "file_exists",
+                                  "file_readable",
+                                  "file_sha256_equals",
+                                  "file_sha256_differs",
+                                  "file_size_less_than",
+                                  "dimensions_equal",
+                                  "xattr_present",
+                                  "xattr_absent",
+                                  "metadata_value_present",
+                                  "metadata_value_absent"
+                                ]
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "Optional expected or forbidden exact value."
+                              },
+                              "width": {
+                                "type": "integer",
+                                "description": "Optional expected image width."
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ]
+                          }
+                        },
+                        "timeoutMilliseconds": {
+                          "type": "integer",
+                          "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms."
+                        }
+                      },
+                      "required": [
+                        "predicates"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "item",
+                    "actionId"
+                  ]
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_run_status",
+                "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "executionId": {
+                      "type": "string",
+                      "description": "executionId returned by context_run."
+                    }
+                  },
+                  "required": [
+                    "executionId"
+                  ]
+                }
+              },
+              {
+                "type": "function",
+                "name": "context_providers",
+                "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+                "strict": false,
+                "parameters": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "requestKeys": [
+      "model",
+      "input",
+      "tool_choice",
+      "parallel_tool_calls",
+      "reasoning",
+      "store",
+      "stream",
+      "include",
+      "prompt_cache_key",
+      "text",
+      "client_metadata"
+    ],
+    "otherToolFields": {
+      "tool_choice": "auto",
+      "parallel_tool_calls": false
+    }
+  }
+]

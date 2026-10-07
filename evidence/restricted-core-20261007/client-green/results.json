@@ -1,0 +1,40 @@
+{
+  "proofKind": "CLIENT_BOUNDARY_FIXTURES_NOT_PROVIDER_OR_AI_ACCEPTANCE",
+  "driverSHA256": "f452c508d9dfc241e2f4d737dc2a1886298f6fdcad58085cac3a7cf29d085a37",
+  "controlSHA256": "17bc72b8ceb4713a88c2ea574d6a4fd89b9f26c0498b7c5557a2bbf28500f8c9",
+  "controls": {
+    "valid": {
+      "result": "PASS",
+      "exitCode": 0,
+      "modelRequestCaptured": true,
+      "dynamicCataloguePublished": true,
+      "sourceDirectoryCatalogCreated": false,
+      "boundary": "Exactly seven outgoing functions captured by actual native client against a local inference fixture."
+    },
+    "forged_sha": {
+      "result": "PASS",
+      "exitCode": 1,
+      "modelRequestCaptured": false,
+      "dynamicCataloguePublished": false,
+      "sourceDirectoryCatalogCreated": false,
+      "boundary": "Invalid runtime identity/catalogue must be rejected before dynamic catalogue publication or model request."
+    },
+    "duplicate": {
+      "result": "PASS",
+      "exitCode": 1,
+      "modelRequestCaptured": false,
+      "dynamicCataloguePublished": false,
+      "sourceDirectoryCatalogCreated": false,
+      "boundary": "Invalid runtime identity/catalogue must be rejected before dynamic catalogue publication or model request."
+    },
+    "extra": {
+      "result": "PASS",
+      "exitCode": 1,
+      "modelRequestCaptured": false,
+      "dynamicCataloguePublished": false,
+      "sourceDirectoryCatalogCreated": false,
+      "boundary": "Invalid runtime identity/catalogue must be rejected before dynamic catalogue publication or model request."
+    }
+  },
+  "result": "PASS"
+}

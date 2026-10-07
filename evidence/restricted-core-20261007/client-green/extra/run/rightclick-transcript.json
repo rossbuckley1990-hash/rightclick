@@ -1,0 +1,160 @@
+[
+  {
+    "direction": "client",
+    "monotonic": 517351.246345916,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "exact-seven-client-proof",
+          "version": "2"
+        }
+      }
+    }
+  },
+  {
+    "direction": "server",
+    "monotonic": 517351.393532458,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {
+          "tools": {}
+        },
+        "serverInfo": {
+          "name": "explicit-client-control-fixture",
+          "version": "1"
+        }
+      }
+    }
+  },
+  {
+    "direction": "client",
+    "monotonic": 517351.393683458,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    }
+  },
+  {
+    "direction": "server",
+    "monotonic": 517351.39386025,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"executableSHA256\": \"f18733ebcd08710fe7ab0664559a9d7a89d738671079e636871f1185e259a2c2\", \"executablePath\": \"/private/tmp/rightclick-restricted-client-final-controls-20261007/extra/fixture-runtime\", \"fixture\": true}"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "direction": "client",
+    "monotonic": 517351.393887916,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/list",
+      "params": {}
+    }
+  },
+  {
+    "direction": "server",
+    "monotonic": 517351.394016625,
+    "message": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "tools": [
+          {
+            "name": "context_runtime",
+            "description": "Client isolation fixture only",
+            "inputSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "name": "context_inspect",
+            "description": "Client isolation fixture only",
+            "inputSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "name": "context_actions",
+            "description": "Client isolation fixture only",
+            "inputSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "name": "context_explain",
+            "description": "Client isolation fixture only",
+            "inputSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "name": "context_run",
+            "description": "Client isolation fixture only",
+            "inputSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "name": "context_run_status",
+            "description": "Client isolation fixture only",
+            "inputSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "name": "context_providers",
+            "description": "Client isolation fixture only",
+            "inputSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          {
+            "name": "unexpected_provider_tool",
+            "description": "Client isolation fixture only",
+            "inputSchema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          }
+        ]
+      }
+    }
+  }
+]

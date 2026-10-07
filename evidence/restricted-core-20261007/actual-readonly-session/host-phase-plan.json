@@ -1,0 +1,26 @@
+[
+  {
+    "name": "fresh-discovery",
+    "prompt": "Perform a read-only RIGHTCLICK discovery check. Call context_runtime first and context_providers second, then context_inspect with the text \"RIGHTCLICK restricted client session\" and context_actions for that same text. Report one acquired action identity and its provider if available, or accurately report abstention. Do not execute any capability or request additional tools. Keep your report brief.",
+    "oracle": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/private/tmp/rightclick-restricted-core-20261007/scripts/restricted-core-session-oracle.py",
+      "--output",
+      "/private/tmp/rightclick-restricted-client-actual-readonly-20261007",
+      "--completed-phases",
+      "1"
+    ]
+  },
+  {
+    "name": "same-session-explanation",
+    "prompt": "Continue this same read-only session. Call context_runtime first and context_providers second again. Reacquire actions for the same text if needed and use context_explain on one actual acquired action to describe its declared interface and confirmation requirements. If none are acquired, inspect another harmless text and report the exact abstention. Do not execute a capability. Do not claim eleven-world acceptance. Keep your report brief.",
+    "oracle": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/private/tmp/rightclick-restricted-core-20261007/scripts/restricted-core-session-oracle.py",
+      "--output",
+      "/private/tmp/rightclick-restricted-client-actual-readonly-20261007",
+      "--completed-phases",
+      "2"
+    ]
+  }
+]

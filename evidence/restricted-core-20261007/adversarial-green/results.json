@@ -1,0 +1,22 @@
+{
+  "proofKind": "CLIENT_SECURITY_FIXTURES_AND_ACTUAL_OWNED_CHILD_NOT_PROVIDER_OR_AI_ACCEPTANCE",
+  "driverSHA256": "f452c508d9dfc241e2f4d737dc2a1886298f6fdcad58085cac3a7cf29d085a37",
+  "controlSHA256": "74d776a3a3ddf1a447ce5208863c9cd9d81cd62206334a171f22d610993b1ac6",
+  "controls": {
+    "changed_parameter_schema": {
+      "result": "PASS",
+      "reason": "Outgoing function schema/description differs from supplied RIGHTCLICK declaration"
+    },
+    "undeclared_builtin_tool_field": {
+      "result": "PASS",
+      "reason": "Unknown or altered tool-bearing model request fields"
+    },
+    "evidence_failure_still_terminates_owned_child": {
+      "result": "PASS",
+      "childStillRunning": false,
+      "pid": 63712,
+      "failure": "Controlled save OSError"
+    }
+  },
+  "result": "PASS"
+}

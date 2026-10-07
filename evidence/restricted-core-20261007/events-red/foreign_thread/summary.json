@@ -1,0 +1,49 @@
+{
+  "requestedActualMode": true,
+  "actualAIInference": true,
+  "clientBoundary": "PREFLIGHT_MATCHED_ACTUAL_REQUEST_NOT_INTERCEPTED",
+  "universalAcceptance": "NOT_EVALUATED",
+  "result": "PASS",
+  "phases": [
+    {
+      "name": "discovery",
+      "promptSHA256": "a9e0012aa4ca3212ee2e52111808a95f2757fd5eb2289ce4c0c4f14a876cf9d1",
+      "terminal": {
+        "threadId": "owned-thread",
+        "turn": {
+          "id": "owned-turn",
+          "status": "completed"
+        }
+      },
+      "turnID": "owned-turn"
+    }
+  ],
+  "actualAIToolCalls": [],
+  "runtimeBinarySHA256": "b502cb4c5b46b8d4192ec6bcb600ce8922f1afc396fcf646e8765c6eba74a0bf",
+  "clientLauncherSHA256": "b502cb4c5b46b8d4192ec6bcb600ce8922f1afc396fcf646e8765c6eba74a0bf",
+  "clientEntrypointPath": "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+  "clientExecutablePath": "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+  "clientExecutableSHA256": "b502cb4c5b46b8d4192ec6bcb600ce8922f1afc396fcf646e8765c6eba74a0bf",
+  "clientConfigSHA256": "2bff91d2215f385837c589a09d61f6c6e332c1620feba66118c323372ad87e6d",
+  "modelCatalogSHA256": "f888492ab5d85b9e64183a3e580f53e03c5bf4e2922d5c935809fab60436c73c",
+  "restrictionsSHA256": "a07b2dd54463bd4a9cb3949b6131b9b7a3f69e4b1081e1ebec2e95998f9150fb",
+  "probeSHA256": "8c0078b59142a230bc31173cba035bec72e0c4bb316fe2ec3f59d9d52691b56a",
+  "runtime": {
+    "executableSHA256": "b502cb4c5b46b8d4192ec6bcb600ce8922f1afc396fcf646e8765c6eba74a0bf",
+    "controlledClientFixture": true
+  },
+  "dynamicToolsDeclared": [
+    "context_actions",
+    "context_explain",
+    "context_inspect",
+    "context_providers",
+    "context_run",
+    "context_run_status",
+    "context_runtime"
+  ],
+  "dynamicToolsSHA256": "2128e340f8c35ed961cd58732c4dab104a7faeb2168b2bc9c04441571e506f34",
+  "threadID": "owned-thread",
+  "sessionID": "owned-session",
+  "model": "controlled-fixture",
+  "proofKind": "ACTUAL_AI_CLIENT_SESSION_NOT_UNIVERSAL_ACCEPTANCE"
+}
