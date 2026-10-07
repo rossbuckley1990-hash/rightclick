@@ -9,7 +9,7 @@ defer { try? manager.removeItem(at: root) }
 let system = ProcessInfo.processInfo.environment["SystemRoot"] ?? "C:\\Windows"
 let powershell = "WindowsPowerShell\\v1.0\\powershell.exe"
 
-func invoke(_ label: String, _ executable: String, _ arguments: [String]) throws -> Int32 {
+func invoke(_ label: String, _ executable: String, _ arguments: [String], nativeModules: Bool = false) throws -> Int32 {
     let output = root.appendingPathComponent(UUID().uuidString + ".log")
     try Data().write(to: output, options: .withoutOverwriting)
     let handle = try FileHandle(forWritingTo: output)
@@ -17,6 +17,13 @@ func invoke(_ label: String, _ executable: String, _ arguments: [String]) throws
     let process = Process()
     process.executableURL = URL(fileURLWithPath: system + "\\System32\\" + executable)
     process.arguments = arguments
+    if nativeModules {
+        var environment = ProcessInfo.processInfo.environment.filter {
+            $0.key.caseInsensitiveCompare("PSModulePath") != .orderedSame
+        }
+        environment["PSModulePath"] = system + "\\System32\\WindowsPowerShell\\v1.0\\Modules"
+        process.environment = environment
+    }
     process.standardOutput = handle; process.standardError = handle
     try process.run(); process.waitUntilExit(); try handle.synchronize()
     let reader = try FileHandle(forReadingFrom: output)
@@ -57,5 +64,7 @@ _ = try invoke("assign-readonly-fixture", powershell, ["-NoProfile", "-NonIntera
     "[System.IO.File]::SetAttributes('\(selectedPath)', [System.IO.FileAttributes]::ReadOnly)"])
 _ = try invoke("original-null-dacl-script", powershell, ["-NoProfile", "-NonInteractive", "-Command",
     "$acl=Get-Acl -LiteralPath '\(selectedPath)'; $acl.SetSecurityDescriptorSddlForm('D:NO_ACCESS_CONTROL', [System.Security.AccessControl.AccessControlSections]::Access); Set-Acl -LiteralPath '\(selectedPath)' -AclObject $acl -ErrorAction Stop"])
+_ = try invoke("native-module-null-dacl-script", powershell, ["-NoProfile", "-NonInteractive", "-Command",
+    "$ErrorActionPreference='Stop'; $acl=Get-Acl -LiteralPath '\(selectedPath)'; $acl.SetSecurityDescriptorSddlForm('D:NO_ACCESS_CONTROL', [System.Security.AccessControl.AccessControlSections]::Access); Set-Acl -LiteralPath '\(selectedPath)' -AclObject $acl -ErrorAction Stop; (Get-Acl -LiteralPath '\(selectedPath)').GetSecurityDescriptorSddlForm([System.Security.AccessControl.AccessControlSections]::Access)"], nativeModules: true)
 _ = try invoke("release-owned-fixture", powershell, ["-NoProfile", "-NonInteractive", "-Command",
     "[System.IO.File]::SetAttributes('\(selectedPath)', [System.IO.FileAttributes]::Normal)"])

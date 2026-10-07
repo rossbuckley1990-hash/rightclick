@@ -1,0 +1,10 @@
+{"case":"ordinary-directory","openError":0,"disk":1,"nativeDirectory":1,"finalPathMatches":1,"ownerMatchesCurrentUser":0,"initialProtectedAuthority":0,"hardenResult":2,"protectedReadResult":-1,"bytesRead":0,"longPathMatches":1,"longPathChanged":1,"expectedHasShortAlias":1,"protectedReadExact":0}
+{"case":"ordinary-file","openError":0,"disk":1,"nativeDirectory":0,"finalPathMatches":1,"ownerMatchesCurrentUser":0,"initialProtectedAuthority":0,"hardenResult":2,"protectedReadResult":2,"bytesRead":0,"longPathMatches":1,"longPathChanged":1,"expectedHasShortAlias":1,"protectedReadExact":0}
+{"case":"explicit-owner-directory","openError":0,"disk":1,"nativeDirectory":1,"finalPathMatches":1,"ownerMatchesCurrentUser":1,"initialProtectedAuthority":1,"hardenResult":0,"protectedReadResult":-1,"bytesRead":0,"longPathMatches":1,"longPathChanged":1,"expectedHasShortAlias":1,"protectedReadExact":0}
+{"case":"explicit-owner-file","openError":0,"disk":1,"nativeDirectory":0,"finalPathMatches":1,"ownerMatchesCurrentUser":1,"initialProtectedAuthority":1,"hardenResult":0,"protectedReadResult":0,"bytesRead":15,"longPathMatches":1,"longPathChanged":1,"expectedHasShortAlias":1,"protectedReadExact":1}
+{"case":"runtime-created-directory","openError":0,"disk":1,"nativeDirectory":1,"finalPathMatches":1,"ownerMatchesCurrentUser":1,"initialProtectedAuthority":1,"hardenResult":0,"protectedReadResult":-1,"bytesRead":0,"longPathMatches":1,"longPathChanged":1,"expectedHasShortAlias":1,"protectedReadExact":0}
+{"case":"runtime-created-file","openError":0,"disk":1,"nativeDirectory":0,"finalPathMatches":1,"ownerMatchesCurrentUser":1,"initialProtectedAuthority":1,"hardenResult":0,"protectedReadResult":0,"bytesRead":15,"longPathMatches":1,"longPathChanged":1,"expectedHasShortAlias":1,"protectedReadExact":1}
+{"createdDirectory":0,"createdFile":0,"overwriteRejected":1,"existingDirectoryRejected":1}
+{"readOnlyOnlyAssigned":1,"readOnlyOnlyReleaseResult":0,"readOnlyFlagAbsent":1}
+{"parentJunctionCreated":1,"redirectedFileRejected":1,"redirectedFileAbsent":1,"redirectedDirectoryRejected":1,"redirectedDirectoryAbsent":1,"junctionRemovalAcknowledged":1}
+{"cleanupCommandsSucceeded":1}
