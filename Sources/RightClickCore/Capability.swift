@@ -56,6 +56,8 @@ public struct Capability: Codable, Sendable, Equatable, Identifiable {
     public var supportLevel: SupportLevel
     public var requiresConfirmation: Bool
     public var metadata: [String: String]
+    /// Engine-produced optional contract pin. Not permission to execute.
+    public var reviewedActionId: String? = nil
 
     public init(
         id: String,

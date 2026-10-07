@@ -165,6 +165,7 @@ public final class CapabilityEngine {
             for index in capabilities.indices {
                 capabilities[index].reflectorID =
                     reflector.id
+                capabilities[index].reviewedActionId = nil
             }
 
             reflected.append(
@@ -186,8 +187,8 @@ public final class CapabilityEngine {
     public func describe(id: String, item raw: String?) throws -> Capability {
         if let raw {
             let (_, capabilities) = try capabilities(for: raw)
-            if let match = capabilities.first(where: { $0.id == id || $0.title == id }) {
-                return match
+            if let match = CapabilityContract.select(id: id, from: capabilities) {
+                return CapabilityContract.explained(match)
             }
             throw RightClickError("No capability \(id) applies to this item.")
         }
@@ -231,15 +232,15 @@ public final class CapabilityEngine {
             try capabilities(for: raw)
 
         guard let capability =
-            capabilities.first(where: {
-                $0.id == id || $0.title == id
-            })
+            CapabilityContract.select(id: id, from: capabilities)
         else {
             return RunResult(
                 status: .unavailable,
                 actionID: id,
                 message:
-                    "No discovered capability matches \(id) for this item."
+                    id.hasPrefix("reviewed:")
+                    ? "REVIEWED_CONTRACT_MISMATCH. The reviewed contract is invalid, changed or unavailable. Discover and review again; do not retry unpinned automatically."
+                    : "No discovered capability matches \(id) for this item."
             )
         }
 
@@ -459,16 +460,16 @@ public final class CapabilityEngine {
             try capabilities(for: raw)
 
         guard let capability =
-            capabilities.first(where: {
-                $0.id == id || $0.title == id
-            })
+            CapabilityContract.select(id: id, from: capabilities)
         else {
             let record = ExecutionRecord(
                 executionId: executionId,
                 actionId: id,
                 state: .unavailable,
                 message:
-                    "No discovered capability matches \(id) for this item."
+                    id.hasPrefix("reviewed:")
+                    ? "REVIEWED_CONTRACT_MISMATCH. The reviewed contract is invalid, changed or unavailable. Discover and review again; do not retry unpinned automatically."
+                    : "No discovered capability matches \(id) for this item."
             )
 
             ExecutionStore.shared.put(
@@ -699,6 +700,7 @@ public final class CapabilityEngine {
         for var candidate in matches {
             // As in discovery, only the engine assigns reflector ownership.
             candidate.reflectorID = reflector.id
+            candidate.reviewedActionId = nil
             guard let actual = try? encoder.encode(candidate), actual == expected else {
                 return nil
             }
