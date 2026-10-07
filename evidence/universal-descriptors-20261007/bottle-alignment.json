@@ -1,0 +1,13 @@
+checkout version=0.2.2 kinds=16
+  artifact.resolver.graphql, artifact.resolver.grpc, artifact.resolver.mcp, artifact.resolver.openapi, artifact.resolver.wasm, authority.oauth_oidc, reflector.macos.action_extension, reflector.macos.service, reflector.macos.sharing, source.ard.registry, source.capability_artifact.configured, source.federation.mcp, source.graphql.bonjour, source.grpc.bonjour, source.openapi.bonjour, source.openapi.configured
+bottle version=0.2.2 sha256=a3953eb8f1be2f9123d694b90202244c94ee21971171972f8ce1d3bacf807ca5
+  artifact.resolver.graphql, artifact.resolver.grpc, artifact.resolver.openapi, authority.oauth_oidc, reflector.macos.action_extension, reflector.macos.service, reflector.macos.sharing, source.ard.registry, source.capability_artifact.configured, source.federation.mcp, source.graphql.bonjour, source.grpc.bonjour, source.openapi.bonjour, source.openapi.configured
+FAIL CLOSED: checkout kinds missing from published bottle:
+  - artifact.resolver.mcp
+  - artifact.resolver.wasm
+Alignment path:
+  - docs/BOTTLE-ALIGNMENT.md
+  - docs/RELEASE.md
+  - python3 scripts/detect-bottle-alignment.py --compare
+  - swift test && scripts/build-cli.sh && python3 scripts/package-source.py
+  - tag next immutable version; gh release create; update homebrew-tap Formula/rightclick.rb

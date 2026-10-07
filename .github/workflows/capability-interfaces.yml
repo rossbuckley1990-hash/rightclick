@@ -7,11 +7,11 @@ permissions:
   contents: read
 jobs:
   genuine-mcp-wasm:
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.12'
       - name: Provision official component tooling and SDK
@@ -34,7 +34,7 @@ jobs:
           "$RIGHTCLICK_WASM_TOOLS" parse examples/universal-descriptors/fingerprint.component.wat -o "$RUNNER_TEMP/fingerprint.component.wasm"
           RIGHTCLICK_TEST_WASM_COMPONENT="$RUNNER_TEMP/fingerprint.component.wasm" bash scripts/test-capability-interfaces.sh 2>&1 | tee evidence/interface-ci/architectural-tests.log
       - name: Build candidate runtime
-        run: swift build --product rightclick --jobs 3
+        run: swift build --force-resolved-versions --product rightclick --jobs 3
       - name: Prove the real seven-operation boundary
         run: |
           set -euo pipefail
@@ -47,7 +47,7 @@ jobs:
           done
           "$RUNNER_TEMP/mcp-venv/bin/python" scripts/acceptance-capability-interfaces.py .build/debug/rightclick evidence/interface-ci/public \
             --component "$RUNNER_TEMP/fingerprint.component.wasm" --runtime "$RIGHTCLICK_WASM_RUNTIME" --tools "$RIGHTCLICK_WASM_TOOLS"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: always()
         with:
           name: descriptor-interface-evidence
