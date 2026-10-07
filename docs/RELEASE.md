@@ -56,6 +56,10 @@ Before tagging, require:
 
 This proves the packaged asset contains every checkout substrate kind.
 
+CI keeps candidate package alignment and published bottle alignment as separate checks. The candidate's complete native tests, builds, real-provider acceptance and deterministic source-package gates must pass before tagging its reviewed bytes. Public bottle drift remains a failing check while the tap still points at 0.2.2; it is not a runtime test failure and must not be suppressed.
+
+Release staging therefore publishes the accepted candidate source first, independently re-downloads it, and verifies the matching new tap formula, bottle and fresh installation. Only then can the published bottle alignment check turn green. Do not merge the candidate PR until that public check and every other required check pass.
+
 After the public tap moves, require:
 
     python3 scripts/detect-bottle-alignment.py --compare

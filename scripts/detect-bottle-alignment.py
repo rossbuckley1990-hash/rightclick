@@ -495,14 +495,14 @@ def main(argv: list[str]) -> int:
             )
             print("  " + ", ".join(result["bottle"]["kind_ids"]))  # type: ignore[index]
             if comparison["missing_from_bottle"]:
-                print("FAIL CLOSED: checkout kinds missing from published bottle:")
+                print("FAIL CLOSED: checkout kinds missing from compared asset:")
                 for kind in comparison["missing_from_bottle"]:
                     print(f"  - {kind}")
                 print("Alignment path:")
                 for step in comparison["alignment_path"]:
                     print(f"  - {step}")
             else:
-                print("ALIGNED: published bottle contains every checkout substrate kind.")
+                print("ALIGNED: compared asset contains every checkout substrate kind.")
             if comparison["extra_in_bottle"]:
                 print("note: bottle still has kinds not detected in checkout:")
                 for kind in comparison["extra_in_bottle"]:

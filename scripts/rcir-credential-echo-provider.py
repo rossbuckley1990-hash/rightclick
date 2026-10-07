@@ -2,6 +2,7 @@
 """Private disposable credential echo pressure fixture. Never logs credentials."""
 import base64
 import http.server
+from fixture_http import LoopbackHTTPServer
 import json
 import pathlib
 import ssl
@@ -44,7 +45,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(data)
 
 
-server = http.server.HTTPServer(("127.0.0.1", 0), Handler)
+server = LoopbackHTTPServer(("127.0.0.1", 0), Handler)
 tls = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 tls.load_cert_chain(directory / "certificate.pem", directory / "tls-key.private")
 server.socket = tls.wrap_socket(server.socket, server_side=True)
