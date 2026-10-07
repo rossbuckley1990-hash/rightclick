@@ -92,7 +92,7 @@ final class CapabilityInterfaceTests: XCTestCase {
                 capability: capability, executionID: returned.rawValue, argumentStrings: nil, item: item,
                 verification: nil, expectedOutput: "claimed", target: URL(string: "http://127.0.0.1:19143")!,
                 authority: { [scope] }, revalidate: { true }, dispatch: { _, _ in
-                    .init(executionId: returned.rawValue, actionId: capability.id, state: returned, message: "preflight compiler return", output: "claimed")
+                    .init(executionId: returned.rawValue, actionId: capability.id, state: returned, message: "preflight compiler return", output: "claimed", evidence: .init(type: "input_contract_failure", boundary: "Specific compiler failure"))
                 }, resultValue: { _ in resultReads += 1; return .string("claimed") })
             XCTAssertEqual(record.rcir?.leaseConsumed, false)
             XCTAssertEqual(record.rcir?.outcome, "unverified")
@@ -100,6 +100,11 @@ final class CapabilityInterfaceTests: XCTestCase {
             XCTAssertFalse(record.events.contains { $0.contains("RCIR consumed lease=") })
             XCTAssertEqual(record.state, returned == .failed ? .failed : .unknown)
             XCTAssertEqual(resultReads, 0)
+            if returned == .failed {
+                XCTAssertEqual(record.evidence.type, "input_contract_failure")
+                XCTAssertEqual(record.message, "preflight compiler return")
+                XCTAssertTrue(record.evidence.boundary.hasPrefix("Specific compiler failure"))
+            }
         }
     }
     func testBoundedExecutorAbstainsForOfflineTool() throws {

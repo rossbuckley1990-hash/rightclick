@@ -241,9 +241,14 @@ public final class RCIRExecutionHost {
                     record.message = "Provider callback claimed progress without using the admitted start gate; the external outcome is unknown."
                 }
                 record.verification = nil
-                record.evidence = OutcomeEvidence(type: "rcir_transport_not_started",
-                    boundary: claimedEffect ? "No admitted provider start was witnessed; callback claims cannot prove whether an external effect occurred."
-                        : "Preflight returned before an admitted provider start; no provider effect was authorised by this invocation.", outcomeVerified: false)
+                if claimedEffect {
+                    record.evidence = OutcomeEvidence(type: "rcir_transport_not_started",
+                        boundary: "No admitted provider start was witnessed; callback claims cannot prove whether an external effect occurred.", outcomeVerified: false)
+                } else {
+                    if record.evidence.type == "none" { record.evidence.type = "rcir_transport_not_started" }
+                    record.evidence.boundary += " Preflight returned before an admitted provider start; no provider effect was authorised by this invocation."
+                    record.evidence.outcomeVerified = false
+                }
                 record.rcir = RCIRExecutionEvidence(version: 1, taskID: task.id.uuidString,
                     leaseID: lease.id.uuidString, generation: binding.generation, leaseConsumed: false,
                     phase: task.phase.rawValue, outcome: task.outcome.rawValue, receipt: nil, signedReceipt: nil,
