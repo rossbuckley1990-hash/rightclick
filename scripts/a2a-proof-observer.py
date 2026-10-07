@@ -3,7 +3,8 @@
 import argparse
 import json
 import pathlib
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler
+from fixture_http import LoopbackThreadingHTTPServer
 from urllib.parse import unquote
 
 parser = argparse.ArgumentParser()
@@ -40,6 +41,8 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, KeyError, FileNotFoundError):
             self.send_error(404)
 
-server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
-(args.directory / "observer-port").write_text(str(server.server_port))
+server = LoopbackThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+pending = args.directory / "observer-port.tmp"
+pending.write_text(str(server.server_port))
+pending.replace(args.directory / "observer-port")
 server.serve_forever()
