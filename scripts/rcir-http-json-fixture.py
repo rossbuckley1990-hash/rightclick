@@ -18,8 +18,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         challenge, value = body["id"], body["value"]
         if not challenge or not all(c.isascii() and (c.isalnum() or c == "-") for c in challenge): self.send_error(400); return
-        with (root / "effects.jsonl").open("a") as handle: handle.write(json.dumps({"challenge": challenge, "value": value}) + "\n")
-        if value != "missing": (root / "records" / challenge).write_bytes(("different" if value == "mismatch" else value).encode())
+        mutate = value != "missing" and not (root / "noop-provider").exists()
+        marker = self.headers.get("X-RightClick-Invocation", "")
+        with (root / "effects.jsonl").open("a") as handle: handle.write(json.dumps({"challenge": challenge, "value": value, "mutationApplied": mutate, "invocationID": marker}) + "\n")
+        if mutate:
+            (root / "records" / challenge).write_bytes(("different" if value == "mismatch" else value).encode())
+            if (root / "include-invocation").exists(): (root / "records" / (challenge + ".invocation")).write_text(marker)
         acknowledgement = (root / "ack-response").exists()
         response = json.dumps({"providerClaim": "effect verified", "undeclared": body} if acknowledgement else body).encode()
         status = int((root / "ack-status").read_text()) if acknowledgement and (root / "ack-status").exists() else (202 if acknowledgement else 200)
@@ -57,6 +61,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
         except FileNotFoundError: self.send_error(404); return
         body = {"challenge": challenge, "result": hashlib.sha256(artifact).hexdigest(), "machine": "disposable-native-http-fixture", "observation": "independent-file-sha256",
             "observerPrincipal": "fixture-readonly", "platform": "fixture", "principal": "fixture-writer", "uid": None}
+        if (root / "include-invocation").exists():
+            marker = root / "records" / (challenge + ".invocation")
+            if marker.exists(): body["invocationID"] = marker.read_text()
+        if (root / "echo-observer-credential").exists(): body["machine"] = readonly
         if challenge == "extra": body["undeclared"] = "rejected"
         response = json.dumps(body).encode(); self.send_response(200); self.send_header("Content-Type", "application/json")
         self.send_header("Set-Cookie", "rightclick-injected=must-not-persist; Path=/")
