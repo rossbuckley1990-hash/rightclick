@@ -5,6 +5,9 @@ import RightClickWindowsCOM
 /// Bounded native transport. The MTA owns all COM references; Swift holds only
 /// opaque acquisition/call tokens. Timeout permanently quarantines this client.
 final class WindowsCOMClient {
+    // Acquisition IDs belong to the owning MTA. Default sources and artifact
+    // resolvers share that bounded owner for current-process token resolution.
+    static let shared = try? WindowsCOMClient()
     private let client: OpaquePointer
     init() throws { guard let client = rc_com_open() else { throw RCIRError.unavailable }; self.client = client }
     deinit { rc_com_close(client) }
@@ -52,7 +55,7 @@ public final class WindowsCOMCapabilityArtifactResolver: CapabilityArtifactResol
     public let kind = "windows.com"
 #if os(Windows)
     private let client: WindowsCOMClient?
-    public init() { client = try? WindowsCOMClient() }
+    public init() { client = WindowsCOMClient.shared }
     init(client: WindowsCOMClient) { self.client = client }
     func catalog() throws -> [WindowsCOMTypeLibrary] { guard let client else { throw RCIRError.unavailable }; return try client.catalog() }
     func reflector(_ library: WindowsCOMTypeLibrary) throws -> any CapabilityReflector {

@@ -94,8 +94,29 @@ jobs:
       - name: Closed native compiler controls against Windows composition
         shell: pwsh
         run: |
-          swift test --scratch-path native-com-baseline/.build --force-resolved-versions --jobs 4 --filter WindowsCOMTypeLibraryTests 2>&1 | Tee-Object -FilePath native-com-green/type-controls.log
-          exit $LASTEXITCODE
+          $context = Get-Content native-com-green/fixture-context.json -Raw | ConvertFrom-Json
+          $controlDirectory = Join-Path (Get-Location) 'native-com-green/resolver-control'
+          New-Item -ItemType Directory -Path $controlDirectory | Out-Null
+          $fixturePath = (Resolve-Path windows-com-live.exe).Path
+          $libraryPath = (Resolve-Path native-com-green/proof.tlb).Path
+          $provider = Start-Process -FilePath $fixturePath -ArgumentList @('serve', $controlDirectory, $libraryPath, ('{' + $context.interfaceGUID + '}'), $context.moniker) -NoNewWindow -PassThru -RedirectStandardError (Join-Path $controlDirectory 'fixture.stderr.log')
+          try {
+            $ready = Join-Path $controlDirectory 'ready.json'
+            $deadline = (Get-Date).AddSeconds(5)
+            while (-not (Test-Path $ready) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 25 }
+            if (-not (Test-Path $ready)) { throw 'Real resolver-control provider did not become ready' }
+            $env:RIGHTCLICK_NATIVE_COM_CONTROL_DIRECTORY = $controlDirectory
+            $env:RIGHTCLICK_NATIVE_COM_CONTROL_MONIKER = (Get-Content $ready -Raw | ConvertFrom-Json).moniker
+            swift test --scratch-path native-com-baseline/.build --force-resolved-versions --jobs 4 --filter WindowsCOMTypeLibraryTests 2>&1 | Tee-Object -FilePath native-com-green/type-controls.log
+            $testExit = $LASTEXITCODE
+            if ($testExit -ne 0) { throw ('Native closed compiler/resolver controls failed: ' + $testExit) }
+          } finally {
+            $env:RIGHTCLICK_NATIVE_COM_CONTROL_DIRECTORY = $null
+            $env:RIGHTCLICK_NATIVE_COM_CONTROL_MONIKER = $null
+            New-Item -ItemType File -Path (Join-Path $controlDirectory 'stop') -Force | Out-Null
+            if (-not $provider.WaitForExit(5000)) { $provider.Kill(); $provider.WaitForExit() }
+          }
+          exit 0
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

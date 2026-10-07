@@ -66,6 +66,42 @@ final class WindowsCOMTypeLibraryTests: XCTestCase {
         guard case .null = try completion.resultValue(Data([0, 0])) else { return XCTFail("unit completion absent") }
         XCTAssertThrowsError(try completion.resultValue(Data([8, 0, 0, 0, 0, 0])))
     }
+#if os(Windows)
+    /// Actual native provider supplied by the CI infrastructure, not a metadata fixture.
+    func testDefaultNativeResolversShareCurrentTokenAndRejectWithdrawal() throws {
+        let environment = ProcessInfo.processInfo.environment
+        guard let directory = environment["RIGHTCLICK_NATIVE_COM_CONTROL_DIRECTORY"],
+              let moniker = environment["RIGHTCLICK_NATIVE_COM_CONTROL_MONIKER"] else {
+            throw XCTSkip("Real native COM provider was not supplied for this integration control")
+        }
+        let path = URL(fileURLWithPath: directory, isDirectory: true)
+        let first = WindowsCOMCapabilityArtifactResolver()
+        let library = try XCTUnwrap(first.catalog().first { $0.acquisition.moniker == moniker })
+        let token = library.acquisition.acquisitionID
+        let descriptor = CapabilityArtifactDescriptor(id: "native-live-control", kind: "windows.com",
+            endpointURL: "windows-com://running/" + token)
+        let second = WindowsCOMCapabilityArtifactResolver()
+        XCTAssertEqual(try second.resolve(descriptor).id, "windows.com:" + token)
+        let registry = CapabilityArtifactResolverRegistry()
+        XCTAssertEqual(try registry.resolve(descriptor).id, "windows.com:" + token)
+        let source = WindowsCOMRunningObjectSource()
+        XCTAssertTrue(source.reflectors().contains { $0.id == "windows.com:" + token })
+        XCTAssertThrowsError(try second.resolve(.init(id: "invented", kind: "windows.com",
+            endpointURL: "windows-com://running/" + UUID().uuidString)))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: path.appendingPathComponent("effect-count").path))
+        try Data().write(to: path.appendingPathComponent("withdraw"))
+        let deadline = Date().addingTimeInterval(3)
+        while !FileManager.default.fileExists(atPath: path.appendingPathComponent("withdrawn").path), Date() < deadline {
+            Thread.sleep(forTimeInterval: 0.02)
+        }
+        XCTAssertTrue(FileManager.default.fileExists(atPath: path.appendingPathComponent("withdrawn").path))
+        XCTAssertThrowsError(try first.resolve(descriptor))
+        XCTAssertThrowsError(try second.resolve(descriptor))
+        XCTAssertThrowsError(try registry.resolve(descriptor))
+        XCTAssertFalse(source.reflectors().contains { $0.id == "windows.com:" + token })
+        XCTAssertFalse(FileManager.default.fileExists(atPath: path.appendingPathComponent("effect-count").path))
+    }
+#endif
 #if !os(Windows)
     func testUnsupportedHostFabricatesNoNativeCapabilities() throws {
         XCTAssertTrue(WindowsCOMRunningObjectSource().reflectors().isEmpty)
