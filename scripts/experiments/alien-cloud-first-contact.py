@@ -27,7 +27,9 @@ TOOLS = {
     "context_runtime", "context_inspect", "context_actions",
     "context_explain", "context_run", "context_run_status", "context_providers",
 }
-CLOUD_URL = "https://api.restful-api.dev"
+CLOUD_URL = "https://restapi.fr"
+COLLECTION = "rightclick_alien_" + secrets.token_hex(7)
+COLLECTION_PATH = "/api/" + COLLECTION
 PETSTORE_SPEC = "https://petstore3.swagger.io/api/v3/openapi.json"
 PETSTORE_BASE = "https://petstore3.swagger.io/api/v3"
 CLOUD_PROVIDER = "RIGHTCLICK First Contact - Public Cloud CRUD"
@@ -51,10 +53,10 @@ def cloud_contract():
     return {
         "openapi": "3.0.3",
         "info": {"title": CLOUD_PROVIDER, "version": "1.0.0",
-                 "description": "Safe contract subset of public api.restful-api.dev"},
+                 "description": "Supported string-only contract subset of restapi.fr public temporary test storage"},
         "servers": [{"url": CLOUD_URL}],
         "paths": {
-            "/objects": {
+            COLLECTION_PATH: {
                 "post": {
                     "operationId": "createObject",
                     "summary": "Create synthetic public cloud record",
@@ -63,7 +65,7 @@ def cloud_contract():
                     "responses": {"200": result, "201": result},
                 },
             },
-            "/objects/{id}": {
+            COLLECTION_PATH + "/{id}": {
                 "get": {
                     "operationId": "readObject",
                     "summary": "Read cloud record by ID",
@@ -193,7 +195,7 @@ def main():
     env["RIGHTCLICK_EXPERIENCE"] = "off"
     report = {
         "started_at_utc": utc(), "run_kind": "fresh_remote_cloud_runner",
-        "target": CLOUD_URL, "petstore_native_schema": PETSTORE_SPEC,
+        "target": CLOUD_URL, "remote_collection": COLLECTION, "petstore_native_schema": PETSTORE_SPEC,
         "contract_provenance": "Public documented REST endpoints, operator-supplied restricted OpenAPI; NOT provider native schema",
         "contract_sha256": hashlib.sha256(contract_bytes).hexdigest(),
         "binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(),
@@ -278,9 +280,9 @@ def main():
         created = run("createObject", sample)
         report["create"] = created
         observed = parsed_output(created)
-        assert isinstance(observed, dict) and observed.get("id") is not None, (
+        assert isinstance(observed, dict) and observed.get("_id") is not None, (
             "No actual remote ID after POST: " + repr(observed))
-        record_id = str(observed["id"])
+        record_id = str(observed["_id"])
         mutated = True
         if observed.get("name") != marker:
             raise RuntimeError("POST returned an incorrect marker")
@@ -290,14 +292,14 @@ def main():
         read = run("readObject", {"id": record_id})
         report["rightclick_readback"] = read
         obj = parsed_output(read)
-        if not (obj.get("id") == record_id and obj.get("name") == sample["name"]
+        if not (obj.get("_id") == record_id and obj.get("name") == sample["name"]
                 and obj.get("data") == sample["data"]):
             raise RuntimeError("RIGHTCLICK readback mismatch: " + repr(obj))
-        remote = remote_get(CLOUD_URL + "/objects/" + record_id)
+        remote = remote_get(CLOUD_URL + COLLECTION_PATH + "/" + record_id)
         report["independent_http_readback"] = remote
         assert remote["http_status"] == 200
         remote_obj = json.loads(remote["body"])
-        assert remote_obj["id"] == record_id
+        assert remote_obj["_id"] == record_id
         assert remote_obj["name"] == sample["name"]
         assert remote_obj["data"] == sample["data"]
         report["controls"]["persistent_external_state_independently_verified"] = "PASS"
@@ -312,7 +314,7 @@ def main():
         obj2 = parsed_output(updated_read)
         if obj2["name"] != changed["name"] or obj2["data"] != changed["data"]:
             raise RuntimeError("PUT readback mismatch: " + repr(obj2))
-        independent2 = remote_get(CLOUD_URL + "/objects/" + record_id)
+        independent2 = remote_get(CLOUD_URL + COLLECTION_PATH + "/" + record_id)
         report["independent_updated_readback"] = independent2
         assert independent2["http_status"] == 200
         assert json.loads(independent2["body"])["name"] == changed["name"]
@@ -327,8 +329,8 @@ def main():
         # is explicit and is not misrepresented as a RIGHTCLICK execution.
         if record_id is not None and mutated:
             try:
-                deleted = remote_delete(CLOUD_URL + "/objects/" + record_id)
-                absence = remote_get(CLOUD_URL + "/objects/" + record_id)
+                deleted = remote_delete(CLOUD_URL + COLLECTION_PATH + "/" + record_id)
+                absence = remote_get(CLOUD_URL + COLLECTION_PATH + "/" + record_id)
                 report["teardown"] = {"delete": deleted, "after_get": absence,
                      "operator_http_cleanup_not_rightclick": True,
                      "confirmed_absent": absence["http_status"] in (404, 410)}
