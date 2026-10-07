@@ -319,15 +319,20 @@ public final class RCIRExecutionHost {
                             throw RCIRError.staleBinding
                         }
                         guard lease.scopes.isSubset(of: authority()) else { throw RCIRError.authorityDenied }
+                        // Configuration refresh is an operator callback and may
+                        // revoke issuer policy. Finish that refresh before the
+                        // final protected signing-authority check; never invoke
+                        // it again between that check and transport admission.
+                        let currentPolicy = try policy(self.configuration())
                         try signer?.validateCurrentAuthority()
                         let start = { dispatched = true; enqueue() }
                         if let attachment = invocationAuthority {
                             try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments),
                                 grant: attachment.grant, authenticated: attachment.authenticatedContext(),
-                                policy: policy(self.configuration()), now: self.now(), start: start)
+                                policy: currentPolicy, now: self.now(), start: start)
                         } else {
                             try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments), authority: authority(),
-                                policy: policy(self.configuration()), now: self.now(), start: start)
+                                policy: currentPolicy, now: self.now(), start: start)
                         }
                     }
                     if let hook = self.beforeStart { try hook(lease, admit, start) }
