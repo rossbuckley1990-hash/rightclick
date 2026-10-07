@@ -3,7 +3,6 @@ import CryptoKit
 #else
 import Crypto
 #endif
-import CoreFoundation
 import Foundation
 
 /// Shared lowering boundary for descriptor-acquired unary interfaces. Protocol
@@ -164,7 +163,7 @@ public enum CapabilityJSON {
         if raw is NSNull { return .null }
         if let string = raw as? String { return .string(string) }
         if let number = raw as? NSNumber {
-            if CFGetTypeID(number) == CFBooleanGetTypeID() { return .boolean(number.boolValue) }
+            if CapabilityJSONNumber.isBoolean(number) { return .boolean(number.boolValue) }
             if ["f", "d"].contains(String(cString: number.objCType)) { return .number(number.doubleValue) }
             guard let integer = Int64(number.stringValue) else { throw CapabilityABIError.invalidWire }
             return .integer(integer)
