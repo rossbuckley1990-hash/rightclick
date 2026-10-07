@@ -3,6 +3,14 @@ import XCTest
 @testable import RightClickCore
 
 final class RCIRStructuredObservationTests: XCTestCase {
+    func testExistingUnaryEvidenceInitializerDoesNotRequireTaskEvents() throws {
+        let value = RCIRExecutionEvidence(version: 1, taskID: "task", leaseID: "lease", generation: 1,
+            leaseConsumed: true, phase: "completed", outcome: "unverified", receipt: nil, signedReceipt: nil,
+            observationBoundary: "unverified")
+        XCTAssertNil(value.taskEvents)
+        let decoded = try JSONDecoder().decode(RCIRExecutionEvidence.self, from: JSONEncoder().encode(value))
+        XCTAssertNil(decoded.taskEvents); XCTAssertEqual(decoded.taskID, "task")
+    }
     private func contract() -> RCIRVerificationContract {
         .init(observerID: "host:scoped-resource-observer", schema: .object(properties: ["name": .string, "value": .string], required: ["name", "value"]),
             expected: .object(["name": .string("desired"), "value": .string("requested")]),
