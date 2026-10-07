@@ -142,7 +142,7 @@ public final class RCIRExecutionHost {
                  argumentStrings: CapabilityArguments?, item: ContentItem,
                  verification: VerificationSpec?, expectedOutput: String?, target: URL,
                  authority: @escaping () -> Set<RCIRScope>, revalidate: @escaping () -> Bool,
-                 lifecycle: RCIRDeferredLifecycle? = nil,
+                 lifecycle: RCIRDeferredLifecycle? = nil, observerFactory: RCIRHostObserverFactory? = nil,
                  dispatch: (String, (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord,
                  resultValue: (ExecutionRecord) throws -> CapabilityValue) throws -> ExecutionRecord {
         var dispatched = false
@@ -160,7 +160,8 @@ public final class RCIRExecutionHost {
             }
             let observation = try observer(config, capabilityID: capability.id,
                                            arguments: argumentStrings, target: target)
-            let structured = try observerFactories[capability.id]?(arguments)
+            guard observerFactory == nil || observerFactories[capability.id] == nil else { throw RCIRError.invalidContract }
+            let structured = try (observerFactory ?? observerFactories[capability.id])?(arguments)
             if let structured {
                 guard structured.contract.observerID.utf8.elementsEqual(structured.observer.observerID.utf8) else { throw RCIRError.observerMismatch }
             }

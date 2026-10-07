@@ -30,14 +30,17 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
     private let invoke: Invocation
     private let available: () -> Bool
     private let standaloneHost = RCIRExecutionHost()
+    private let observerFactory: ((String) -> RCIRHostObserverFactory?)?
 
     public init(id: String, provider: String, target: URL, substrate: String,
                 descriptorDigest: String, operations: [CapabilityInterfaceOperation],
-                provenance: [String: String] = [:], available: @escaping () -> Bool,
+                provenance: [String: String] = [:], observerFactory: ((String) -> RCIRHostObserverFactory?)? = nil,
+                available: @escaping () -> Bool,
                 invoke: @escaping Invocation) throws {
         guard !id.isEmpty, !operations.isEmpty, operations.count <= 256,
               Set(operations.map(\.name)).count == operations.count else { throw CapabilityABIError.invalidIdentity }
         self.id = id; self.target = target; self.invoke = invoke; self.available = available
+        self.observerFactory = observerFactory
         var indexed: [String: CapabilityInterfaceOperation] = [:]
         var capabilities: [String: Capability] = [:]
         for operation in operations {
@@ -104,6 +107,7 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
             capability: admissionOwner, executionID: executionID, argumentStrings: arguments, item: item,
             verification: verification, expectedOutput: expectedOutput, target: target,
             authority: { self.available() ? [scope] : [] }, revalidate: { self.available() && revalidate() },
+            observerFactory: observerFactory?(operation.name),
             dispatch: { _, admit in
                 let value = try self.invoke(operation.name, input, admit)
                 try operation.result.validate(value)
