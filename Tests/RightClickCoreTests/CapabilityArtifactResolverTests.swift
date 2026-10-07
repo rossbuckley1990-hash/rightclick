@@ -259,6 +259,114 @@ final class CapabilityArtifactResolverTests:
         )
     }
 
+    func testConfiguredSourceCachesResolvedSnapshotWithinRefreshWindow() {
+        final class CountingResolver:
+            CapabilityArtifactResolver
+        {
+            let kind =
+                "openapi"
+
+            var calls =
+                0
+
+            func resolve(
+                _ descriptor:
+                    CapabilityArtifactDescriptor
+            ) throws -> any CapabilityReflector {
+                calls += 1
+
+                return StubReflector(
+                    id:
+                        "fixture.cached"
+                )
+            }
+        }
+
+        let resolver =
+            CountingResolver()
+
+        let source =
+            ConfiguredCapabilityArtifactSource(
+                descriptors: [
+                    CapabilityArtifactDescriptor(
+                        id:
+                            "cached",
+                        kind:
+                            "openapi"
+                    )
+                ],
+                registry:
+                    CapabilityArtifactResolverRegistry(
+                        resolvers: [
+                            resolver
+                        ]
+                    ),
+                refreshInterval:
+                    60
+            )
+
+        XCTAssertEqual(
+            source.reflectors()
+                .count,
+            1
+        )
+
+        XCTAssertEqual(
+            source.reflectors()
+                .count,
+            1
+        )
+
+        XCTAssertEqual(
+            resolver.calls,
+            1
+        )
+    }
+
+    func testDuplicateConfiguredDescriptorIDsFailClosed() {
+        let source =
+            ConfiguredCapabilityArtifactSource(
+                descriptors: [
+                    CapabilityArtifactDescriptor(
+                        id:
+                            "duplicate",
+                        kind:
+                            "openapi"
+                    ),
+                    CapabilityArtifactDescriptor(
+                        id:
+                            "duplicate",
+                        kind:
+                            "graphql"
+                    ),
+                ],
+                registry:
+                    CapabilityArtifactResolverRegistry(
+                        resolvers: [
+                            StubResolver(
+                                kind:
+                                    "openapi",
+                                reflectorID:
+                                    "fixture.a"
+                            ),
+                            StubResolver(
+                                kind:
+                                    "graphql",
+                                reflectorID:
+                                    "fixture.b"
+                            ),
+                        ]
+                    ),
+                refreshInterval:
+                    0
+            )
+
+        XCTAssertTrue(
+            source.reflectors()
+                .isEmpty
+        )
+    }
+
     func testConfiguredSourceDropsAmbiguousDuplicateReflectorIdentity() {
         let registry =
             CapabilityArtifactResolverRegistry(
