@@ -31,6 +31,8 @@ public enum CapabilityReflectorSourceDefaults {
             )
         }
 
+        if let a2a = ConfiguredA2ASource.fromEnvironment() { sources.append(a2a) }
+
 #if canImport(RightClickARD)
         if let ard =
             ARDRegistrySource
