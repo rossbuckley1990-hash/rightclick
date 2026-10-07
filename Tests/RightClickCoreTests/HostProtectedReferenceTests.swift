@@ -70,7 +70,7 @@ final class HostProtectedReferenceTests: XCTestCase {
         let actual = root.appendingPathComponent("creation-target", isDirectory: true)
         try NativeHTTPFixture.createPrivateDirectory(actual)
         let alias = root.appendingPathComponent("creation-alias", isDirectory: true)
-        try nativeCommand("cmd.exe", ["/c", "mklink", "/J", alias.path, actual.path])
+        try nativeJunction(alias, target: actual)
         defer { try? FileManager.default.removeItem(at: alias) }
         let file = alias.appendingPathComponent("new-reference")
         let bytes = Data("must-not-reach-redirected-target".utf8)
@@ -98,10 +98,37 @@ final class HostProtectedReferenceTests: XCTestCase {
         let system = ProcessInfo.processInfo.environment["SystemRoot"] ?? "C:\\Windows"
         command.executableURL = URL(fileURLWithPath: system + "\\System32\\" + executable)
         command.arguments = arguments
-        command.standardOutput = FileHandle.nullDevice; command.standardError = FileHandle.nullDevice
+        if executable.hasPrefix("WindowsPowerShell\\") {
+            // The parent runner uses PowerShell 7. Its inherited module path
+            // cannot supply Windows PowerShell 5's native security module.
+            var environment = ProcessInfo.processInfo.environment.filter {
+                $0.key.caseInsensitiveCompare("PSModulePath") != .orderedSame
+            }
+            environment["PSModulePath"] = system + "\\System32\\WindowsPowerShell\\v1.0\\Modules"
+            command.environment = environment
+        }
+        // Retain bounded fixture diagnostics without blocking a child on a pipe.
+        // These commands operate only on this test's synthetic owned paths.
+        let output = root.appendingPathComponent("command-" + UUID().uuidString + ".log")
+        try Data().write(to: output, options: .withoutOverwriting)
+        let handle = try FileHandle(forWritingTo: output)
+        defer { try? handle.close(); try? FileManager.default.removeItem(at: output) }
+        command.standardOutput = handle; command.standardError = handle
         try command.run(); command.waitUntilExit()
-        XCTAssertEqual(command.terminationStatus, 0)
+        try handle.synchronize()
+        let reader = try FileHandle(forReadingFrom: output)
+        defer { try? reader.close() }
+        let bytes = try reader.read(upToCount: 16_384) ?? Data()
+        let diagnostic = String(decoding: bytes, as: UTF8.self)
+            .replacingOccurrences(of: root.path, with: "<owned-fixture>")
+            .replacingOccurrences(of: root.path.replacingOccurrences(of: "/", with: "\\"), with: "<owned-fixture>")
+        XCTAssertEqual(command.terminationStatus, 0, "Native fixture command \(executable): \(diagnostic)")
         guard command.terminationStatus == 0 else { throw RCIRError.authorityDenied }
+    }
+    private func nativeJunction(_ alias: URL, target: URL) throws {
+        try nativeCommand("cmd.exe", ["/d", "/c", "mklink", "/J",
+            alias.path.replacingOccurrences(of: "/", with: "\\"),
+            target.path.replacingOccurrences(of: "/", with: "\\")])
     }
     func testNullDACLNeverBecomesProtectedAuthority() throws {
         let selected = try file("null-dacl", Data("dummy-private-reference".utf8))
@@ -119,7 +146,7 @@ final class HostProtectedReferenceTests: XCTestCase {
         try NativeHTTPFixture.writePrivate(Data("dummy-private-reference".utf8), to: selected)
         files.append(selected)
         let alias = root.appendingPathComponent("alias", isDirectory: true)
-        try nativeCommand("cmd.exe", ["/c", "mklink", "/J", alias.path, actual.path])
+        try nativeJunction(alias, target: actual)
         defer { try? FileManager.default.removeItem(at: alias) }
         XCTAssertThrowsError(try CapabilityProtectedReference.read(alias.appendingPathComponent("reference").path, maximum: 1024))
         XCTAssertEqual(try CapabilityProtectedReference.read(selected.path, maximum: 1024), Data("dummy-private-reference".utf8))

@@ -2,6 +2,7 @@
    unit to observe its private gates, without a second file-authority engine. */
 #include "../../Sources/RightClickHostFiles/HostFiles.c"
 #include <stdio.h>
+#include <string.h>
 
 static int private_descriptor(SECURITY_DESCRIPTOR *descriptor, TOKEN_USER *user, PACL *acl) {
     EXPLICIT_ACCESS_W entry = {0};
@@ -61,17 +62,18 @@ static int report(const char *label, const WCHAR *path, int directory) {
     int read_result = -1;
     unsigned char *bytes = NULL; size_t count = 0;
     if (!directory) read_result = rc_host_read_file(utf8, 128, 1, &bytes, &count);
+    int exact_bytes = read_result == 0 && count == 15 && bytes && memcmp(bytes, "private fixture", 15) == 0;
     printf("{\"case\":\"%s\",\"openError\":%lu,\"disk\":%d,\"nativeDirectory\":%d,"
            "\"finalPathMatches\":%d,\"ownerMatchesCurrentUser\":%d,\"initialProtectedAuthority\":%d,"
            "\"hardenResult\":%d,\"protectedReadResult\":%d,\"bytesRead\":%zu,"
-           "\"longPathMatches\":%d,\"longPathChanged\":%d,\"expectedHasShortAlias\":%d}\n",
+           "\"longPathMatches\":%d,\"longPathChanged\":%d,\"expectedHasShortAlias\":%d,\"protectedReadExact\":%d}\n",
            label, (unsigned long)open_error, disk, native_directory, final_matches, owned, protected,
-           hardened, read_result, count, long_matches, long_changed, short_alias);
+           hardened, read_result, count, long_matches, long_changed, short_alias, exact_bytes);
     if (bytes) rc_host_free(bytes);
     if (user) free(user);
     if (!directory) rc_host_release_snapshot(utf8);
     return final_matches && owned && protected && hardened == 0 &&
-        (directory || (read_result == 0 && count == 15));
+        (directory || exact_bytes);
 }
 
 static int create_file(const WCHAR *path, SECURITY_ATTRIBUTES *attributes) {

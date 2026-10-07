@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/private/tmp/rightclick-package-3320d2f-jry0sxod/extracted/rightclick-0.2.2/scripts/rcir-dispatch-test-provider.py", line 42, in <module>
+    server=http.server.HTTPServer(('127.0.0.1',0),Handler)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socketserver.py", line 452, in __init__
+    self.server_bind()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/server.py", line 138, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socketserver.py", line 466, in server_bind
+    self.socket.bind(self.server_address)
+PermissionError: [Errno 1] Operation not permitted

@@ -138,6 +138,9 @@ final class CapabilityRuntimeDefaultsTests:
                 $0 is BonjourGRPCSource
             }
         )
+#elseif os(Linux)
+        XCTAssertEqual(sourceIDs, ["configured.openapi", "linux.dbus-session"])
+        XCTAssertTrue(sources.contains { $0 is DBusSessionSource })
 #else
         XCTAssertEqual(sourceIDs, ["configured.openapi"])
 #endif

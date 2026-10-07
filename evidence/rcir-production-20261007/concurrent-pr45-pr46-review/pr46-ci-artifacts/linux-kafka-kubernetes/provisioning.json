@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "acceptanceScope": "infrastructure readiness only",
+  "credentials": {
+    "linux": {
+      "source": "private-env-file",
+      "reference": "/home/runner/work/_temp/rightclick-proof-private/linux.env",
+      "authority": "isolated proof effect endpoint",
+      "principal": "container uid1000"
+    },
+    "kafka": {
+      "publisher": {
+        "source": "private-file",
+        "reference": "/home/runner/work/_temp/rightclick-proof-private/kafka-publisher.json",
+        "principal": "rightclick-proof-publisher",
+        "authority": "topic:rightclick.proof:write,describe"
+      },
+      "observer": {
+        "source": "private-file",
+        "reference": "/home/runner/work/_temp/rightclick-proof-private/kafka-observer.json",
+        "principal": "rightclick-proof-observer",
+        "authority": "topic:rightclick.proof:read,describe"
+      }
+    },
+    "kubernetes": {
+      "source": "Kubernetes TokenRequest",
+      "reference": "/home/runner/work/_temp/rightclick-proof-private/kubernetes-token",
+      "kubeconfigReference": "/home/runner/work/_temp/rightclick-proof-private/scoped.kubeconfig",
+      "principal": "system:serviceaccount:rightclick-proof:rightclick-proof",
+      "authority": "namespace:rightclick-proof:configmaps:get,create,update,patch,delete",
+      "expiry": "2026-10-07T14:12:18+00:00",
+      "server": "https://127.0.0.1:16443",
+      "observerCredential": {
+        "source": "Kubernetes TokenRequest",
+        "reference": "/home/runner/work/_temp/rightclick-proof-private/kubernetes-observer-token",
+        "kubeconfigReference": "/home/runner/work/_temp/rightclick-proof-private/observer.kubeconfig",
+        "principal": "system:serviceaccount:rightclick-proof:rightclick-proof-observer",
+        "authority": "namespace:rightclick-proof:configmaps:get",
+        "expiry": "2026-10-07T14:12:18+00:00",
+        "server": "https://127.0.0.1:16443"
+      }
+    }
+  },
+  "resources": {
+    "linux": "rightclick-proof-linux",
+    "kafka": "rightclick-proof-kafka",
+    "cluster": "rightclick-proof",
+    "namespace": "rightclick-proof"
+  },
+  "endpoints": {
+    "linux": "http://127.0.0.1:19141",
+    "kafka": "127.0.0.1:19092",
+    "kubernetes": "https://127.0.0.1:16443"
+  },
+  "providerProvenance": {
+    "rightclick-proof-linux": {
+      "imageReference": "python:3.12-alpine",
+      "imageSHA256": "sha256:979e5a8a56846771598d47ebf1f8a75b46155104e168a0b237c0783c1dedff8a"
+    },
+    "rightclick-proof-kafka": {
+      "imageReference": "docker.redpanda.com/redpandadata/redpanda:v26.2.3",
+      "imageSHA256": "sha256:4d9dcdfa1184e4da4256b0d33b725e714d57453b30e1628b41396e0670caf148"
+    },
+    "rightclick-proof-control-plane": {
+      "imageReference": "kindest/node:v1.36.1@sha256:3489c7674813ba5d8b1a9977baea8a6e553784dab7b84759d1014dbd78f7ebd5",
+      "imageSHA256": "sha256:152b34afd8a2de5c8348a264426bc99b71058ee0e1a15eab9b30849605e4752d"
+    }
+  }
+}
