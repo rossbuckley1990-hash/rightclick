@@ -1,0 +1,27 @@
+# RIGHTCLICK
+
+> A contextual capability runtime behind seven generic MCP operations. Full stable runtime: Apple Silicon macOS. Linux ARD acquisition is a separately tested component, not the full runtime.
+
+## Start here
+- README: https://github.com/rossbuckley1990-hash/rightclick/blob/main/README.md
+- Stable release: https://github.com/rossbuckley1990-hash/rightclick/releases/latest
+- Distribution: https://github.com/rossbuckley1990-hash/homebrew-tap
+- Security: https://github.com/rossbuckley1990-hash/rightclick/blob/main/SECURITY.md
+- Maintainer gates: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/MAINTENANCE.md
+
+## Runtime contract
+The MCP surface is context_runtime, context_inspect, context_providers, context_actions, context_explain, context_run and context_run_status. Capabilities and argument schemas are discovered at runtime. A provider capability is not a new top-level MCP tool.
+
+Attest the actual connected binary. Inspect the item, discover applicable capabilities and explain the exact selected ID. Honour the fresh schema, support status, confirmation and authority boundary. Invoke only an approved supported action. Inspect returned state and independently observable outcomes. Never infer permission from discovery or old success. Never label HTTP acceptance or echoed text as independently verified success.
+
+Supported capability families in 0.2.2 include macOS Services, sharing, supported OpenAPI/GraphQL/gRPC contracts, capability artifacts, ARD acquisition and configured MCP federation. Finder Action extensions are metadata discovery only. OAuth/OIDC foundations are not a claim of automatic login for every provider. Unsupported or ambiguous contracts fail closed.
+
+## Evidence and extension points
+- BBEdit acquisition: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/BBEDIT-PROOF.md
+- Cross-application composition: https://github.com/rossbuckley1990-hash/rightclick/tree/main/evidence/v0.1-scalability-blind
+- Reflected GitHub self-hosting: https://github.com/rossbuckley1990-hash/rightclick/blob/main/evidence/self-hosting-2026-10-07/README.md
+- Dispatch binding: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/DISPATCH-CONTRACT-BINDING.md
+- Federation: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/FEDERATION.md
+- Build programme: https://github.com/rossbuckley1990-hash/rightclick/blob/main/docs/BUILD-PROGRAMME.md
+
+Keep stable release, integration main, feature branches and roadmap claims separate. A merged PR targeting a feature branch may not be reachable from main. Capability experience is opt-in advisory observation, not authority, general procedural learning or automatic replay. Follow AGENTS.md and CONTRIBUTING.md when changing the repository. Preserve existing safety and negative tests.
