@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "maximumStartupSeconds": 10,
+  "sameInterpreter": true,
+  "pythonVersion": [
+    3,
+    12,
+    10
+  ],
+  "privateStderr": "SEPARATE_OWNER_ONLY_DIRECTORY",
+  "children": [
+    {
+      "label": "agent",
+      "readiness": "readiness_timeout",
+      "readinessElapsedMilliseconds": 10019,
+      "lifetimeMilliseconds": 10100,
+      "exitAtReadiness": null,
+      "cleanup": "terminated",
+      "finalReturnCode": -15,
+      "stderrBytes": 1646,
+      "stderrSHA256": "77744e0a0c4ea203d943ca817ed0ae4fac8cdeed3358fd3308a18df3ce5422b1",
+      "stderrRetainedBytes": 1646,
+      "stderrTruncated": false,
+      "sanitizedStack": {
+        "standardLibraryFrames": [
+          {
+            "moduleFile": "threading.py",
+            "line": 359,
+            "function": "wait"
+          },
+          {
+            "moduleFile": "threading.py",
+            "line": 655,
+            "function": "wait"
+          },
+          {
+            "moduleFile": "threading.py",
+            "line": 1012,
+            "function": "run"
+          },
+          {
+            "moduleFile": "threading.py",
+            "line": 1075,
+            "function": "_bootstrap_inner"
+          },
+          {
+            "moduleFile": "threading.py",
+            "line": 1032,
+            "function": "_bootstrap"
+          },
+          {
+            "moduleFile": "socket.py",
+            "line": 808,
+            "function": "getfqdn"
+          },
+          {
+            "moduleFile": "server.py",
+            "line": 138,
+            "function": "server_bind"
+          },
+          {
+            "moduleFile": "socketserver.py",
+            "line": 457,
+            "function": "__init__"
+          }
+        ],
+        "exceptionTypes": [],
+        "frameLimit": 32,
+        "scope": "Observed child stderr metadata; no messages, arguments, source lines or full paths."
+      },
+      "privateRawStderrPersisted": true
+    },
+    {
+      "label": "observer",
+      "readiness": "starting",
+      "readinessElapsedMilliseconds": null,
+      "lifetimeMilliseconds": 10102,
+      "exitAtReadiness": null,
+      "cleanup": "terminated",
+      "finalReturnCode": -15,
+      "stderrBytes": 1445,
+      "stderrSHA256": "07f69ede0a732a6116eeb3dbb1c466779a52f597405dac45cd25c679e2340e2f",
+      "stderrRetainedBytes": 1445,
+      "stderrTruncated": false,
+      "sanitizedStack": {
+        "standardLibraryFrames": [
+          {
+            "moduleFile": "pathlib.py",
+            "line": 840,
+            "function": "stat"
+          },
+          {
+            "moduleFile": "threading.py",
+            "line": 1012,
+            "function": "run"
+          },
+          {
+            "moduleFile": "threading.py",
+            "line": 1075,
+            "function": "_bootstrap_inner"
+          },
+          {
+            "moduleFile": "threading.py",
+            "line": 1032,
+            "function": "_bootstrap"
+          },
+          {
+            "moduleFile": "socket.py",
+            "line": 808,
+            "function": "getfqdn"
+          },
+          {
+            "moduleFile": "server.py",
+            "line": 138,
+            "function": "server_bind"
+          },
+          {
+            "moduleFile": "socketserver.py",
+            "line": 457,
+            "function": "__init__"
+          }
+        ],
+        "exceptionTypes": [],
+        "frameLimit": 32,
+        "scope": "Observed child stderr metadata; no messages, arguments, source lines or full paths."
+      },
+      "privateRawStderrPersisted": true
+    }
+  ]
+}

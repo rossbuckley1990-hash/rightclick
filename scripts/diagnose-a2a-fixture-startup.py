@@ -18,8 +18,8 @@ args.output.mkdir(parents=True, exist_ok=True)
 root = pathlib.Path(__file__).resolve().parent
 report = {"status": "FIXTURE_STARTUP_RED", "pythonVersion": list(sys.version_info[:3]),
     "sourceHashes": {name: hashlib.sha256((root / name).read_bytes()).hexdigest()
-        for name in ["fixture_startup.py", "a2a-proof-agent.py", "a2a-proof-observer.py"]},
-    "boundary": "Disposable original fixture startup only; no runtime or external effect acceptance claim."}
+        for name in ["fixture_startup.py", "fixture_http.py", "a2a-proof-agent.py", "a2a-proof-observer.py"]},
+    "boundary": "Disposable recorded-source fixture startup only; no runtime or external effect acceptance claim."}
 with tempfile.TemporaryDirectory(prefix="rightclick-a2a-startup-diagnostic-") as temporary:
     directory = pathlib.Path(temporary)
     with FixtureProcesses(args.output / "fixture-startup.json") as fixtures:

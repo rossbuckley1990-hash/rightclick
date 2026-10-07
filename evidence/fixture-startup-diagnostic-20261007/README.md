@@ -1,0 +1,3 @@
+The actual macOS CI run 37680669667 failed the unchanged ten-second A2A startup bound under both Python 3.14.7 and 3.12.10. Sanitized standard-library frames place both fixture servers in socket.getfqdn during HTTPServer.server_bind. Full stderr remained private on the disposable runner and is not included here.
+
+The repair keeps the actual numeric loopback TCP bind and OS-selected port, removes only the unrelated reverse-name lookup, and atomically publishes completed port bytes. The next diagnostic must pass both interpreters at the same ten-second deadline; readiness remains separate from runtime/effect/signature acceptance.
