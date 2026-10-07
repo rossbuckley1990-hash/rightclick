@@ -15,6 +15,7 @@ import subprocess
 import tempfile
 import time
 import uuid
+from fixture_startup import FixtureProcesses
 
 TOOLS = {"context_runtime", "context_inspect", "context_actions", "context_explain",
          "context_run", "context_run_status", "context_providers"}
@@ -31,20 +32,15 @@ def main():
     transcript, processes, report = [], [], {"runKind": "NEW_RUN", "controls": {}}
     report["binary"] = str(binary)
     report["binarySHA256"] = hashlib.sha256(binary.read_bytes()).hexdigest()
-    with tempfile.TemporaryDirectory(prefix="rightclick-a2a-acceptance-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="rightclick-a2a-acceptance-") as temporary, FixtureProcesses(out / "fixture-startup.json") as fixtures:
         tmp = pathlib.Path(temporary)
         def launch(script):
-            p = subprocess.Popen(["python3", str(root / script), str(tmp), "--hold-until-file"] if script == "a2a-proof-agent.py"
-                                 else ["python3", str(root / script), str(tmp)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            label, marker = ("agent", "port") if script == "a2a-proof-agent.py" else ("observer", "observer-port")
+            p = fixtures.launch(label, root / script, [str(tmp)] + (["--hold-until-file"] if label == "agent" else []), tmp / marker)
             processes.append(p)
             return p
         def port(filename):
-            deadline = time.monotonic() + 10
-            while time.monotonic() < deadline:
-                if (tmp / filename).exists():
-                    return (tmp / filename).read_text()
-                time.sleep(.01)
-            raise TimeoutError("lab startup")
+            return fixtures.wait_for_port("agent" if filename == "port" else "observer", timeout=10)
         agent = launch("a2a-proof-agent.py")
         launch("a2a-proof-observer.py")
         base = "http://127.0.0.1:" + port("port")
