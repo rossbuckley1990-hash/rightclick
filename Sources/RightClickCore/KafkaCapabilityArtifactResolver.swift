@@ -4,14 +4,31 @@ import Foundation
 /// integrity-bound SASL client. Topic capabilities are dynamically acquired from
 /// the broker under its actual scoped principal, never a static topic catalog.
 public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
+    struct Diagnostic: Codable {
+        enum Stage: String, Codable {
+            case credentialAcquisition, clientSnapshotAcquisition, metadataAcquisition
+            case referenceRevalidation, declarationRevalidation, metadataProcess, produceProcess, observerProcess
+            case controlMetadataProcess
+        }
+        let stage: Stage
+        let elapsedMilliseconds: Double
+        let succeeded: Bool
+        let process: BoundedCapabilityProcess.Diagnostic?
+        let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    }
     public let kind = "kafka"
     private let client: URL?
     private let credentialReference: String?
     private let observerReference: String?
-    public init(environment: [String: String] = ProcessInfo.processInfo.environment) {
+    private let diagnostic: ((Diagnostic) -> Void)?
+    public convenience init(environment: [String: String] = ProcessInfo.processInfo.environment) {
+        self.init(environment: environment, diagnostic: nil)
+    }
+    init(environment: [String: String], diagnostic: ((Diagnostic) -> Void)?) {
         client = environment["RIGHTCLICK_KAFKA_CLIENT"].map { URL(fileURLWithPath: $0) }
         credentialReference = environment["RIGHTCLICK_KAFKA_PUBLISHER_CONFIG"]
         observerReference = environment["RIGHTCLICK_KAFKA_OBSERVER_CONFIG"]
+        self.diagnostic = diagnostic
     }
     public func resolve(_ descriptor: CapabilityArtifactDescriptor) throws -> any CapabilityReflector {
         guard descriptor.kind == kind, descriptor.inlineData == nil, descriptor.authorityScheme == nil,
@@ -22,17 +39,36 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
               endpoint.path.isEmpty || endpoint.path == "/", let client, let credentialReference else {
             throw CapabilityArtifactResolutionError.invalidDescriptor("Kafka requires a safe broker endpoint and operator-selected client/credential reference.")
         }
-        let writer = try KafkaCredential(reference: credentialReference, broker: host + ":" + String(port))
+        let report = diagnostic
+        func measured<T>(_ stage: Diagnostic.Stage, _ body: () throws -> T) throws -> T {
+            let began = ProcessInfo.processInfo.systemUptime
+            var succeeded = false
+            defer { report?(.init(stage: stage, elapsedMilliseconds: (ProcessInfo.processInfo.systemUptime - began) * 1000,
+                succeeded: succeeded, process: nil)) }
+            let value = try body(); succeeded = true; return value
+        }
+        func processReport(_ stage: Diagnostic.Stage) -> (BoundedCapabilityProcess.Diagnostic) -> Void {
+            { value in report?(.init(stage: stage, elapsedMilliseconds: value.elapsedMilliseconds,
+                succeeded: value.outcome == .completed, process: value)) }
+        }
+        let writer = try measured(.credentialAcquisition) {
+            try KafkaCredential(reference: credentialReference, broker: host + ":" + String(port))
+        }
         let credentialSnapshot = writer.snapshot
         let reader = try observerReference.map { try KafkaCredential(reference: $0, broker: host + ":" + String(port)) }
         guard reader == nil || (observerReference != credentialReference && reader?.principal != writer.principal) else { throw RCIRError.authorityDenied }
-        let clientSnapshot = try CapabilityArtifactSnapshot(source: client, maximum: 268_435_456, executable: true)
+        let clientSnapshot = try measured(.clientSnapshotAcquisition) {
+            try CapabilityExecutableSnapshotPool.shared.acquire(executable: client, maximum: 268_435_456)
+        }
         let clientDigest = clientSnapshot.sha256
         func topics() throws -> [[String: Any]] {
-            let data = try BoundedCapabilityProcess.run(executable: clientSnapshot.file,
-                arguments: ["--config", credentialSnapshot.file.path, "topic", "list", "--format", "json"])
-            guard let topics = try JSONSerialization.jsonObject(with: data) as? [[String: Any]], topics.count <= 256 else { throw CapabilityABIError.invalidWire }
-            return topics.sorted { ($0["name"] as? String ?? "") < ($1["name"] as? String ?? "") }
+            try measured(.metadataAcquisition) {
+                let data = try BoundedCapabilityProcess.run(executable: clientSnapshot.file,
+                    arguments: ["--config", credentialSnapshot.file.path, "topic", "list", "--format", "json"],
+                    diagnostic: processReport(.metadataProcess))
+                guard let topics = try JSONSerialization.jsonObject(with: data) as? [[String: Any]], topics.count <= 256 else { throw CapabilityABIError.invalidWire }
+                return topics.sorted { ($0["name"] as? String ?? "") < ($1["name"] as? String ?? "") }
+            }
         }
         let acquired = try topics()
         let declaration = try JSONSerialization.data(withJSONObject: acquired, options: [.sortedKeys])
@@ -49,11 +85,18 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                     "completionBoundary": .string("Kafka all-replicas acknowledgement; independent consumer verification remains required")]), effect: .publish)
         }
         func unchanged() -> Bool {
-            guard credentialSnapshot.sourceStillMatches(), clientSnapshot.sourceStillMatches(),
-                  reader?.snapshot.sourceStillMatches() ?? true,
+            let began = ProcessInfo.processInfo.systemUptime
+            let matches = credentialSnapshot.sourceStillMatches() && FileManager.default.isExecutableFile(atPath: client.path) &&
+                clientSnapshot.sourceStillMatches() &&
+                (reader?.snapshot.sourceStillMatches() ?? true)
+            report?(.init(stage: .referenceRevalidation,
+                elapsedMilliseconds: (ProcessInfo.processInfo.systemUptime - began) * 1000, succeeded: matches, process: nil))
+            guard matches,
                   let currentTopics = try? topics(),
                   let latest = try? JSONSerialization.data(withJSONObject: currentTopics, options: [.sortedKeys]) else { return false }
-            return CapabilityJSON.digest(latest) == CapabilityJSON.digest(declaration)
+            let same = CapabilityJSON.digest(latest) == CapabilityJSON.digest(declaration)
+            report?(.init(stage: .declarationRevalidation, elapsedMilliseconds: 0, succeeded: same, process: nil))
+            return same
         }
         return try CapabilityInterfaceReflector(id: "kafka:" + descriptor.id, provider: descriptor.id, target: endpoint,
             substrate: kind, descriptorDigest: CapabilityJSON.digest(declaration), operations: operations,
@@ -70,7 +113,7 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                 let topic = String(name.dropFirst("publish.".count))
                 let observerID = "kafka:consume:" + endpoint.absoluteString + ":" + topic + ":" + reader.principal
                 let observer = KafkaRecordObserver(observerID: observerID, client: clientSnapshot,
-                    credential: reader, topic: topic, partitions: partitions)
+                    credential: reader, topic: topic, partitions: partitions, diagnostic: processReport(.observerProcess))
                 return { input in
                     let desired = try KafkaRecord.arguments(input)
                     let fields: [String: [String]] = ["topic": ["topic"], "key": ["key"], "value": ["value"]]
@@ -94,7 +137,8 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                         arguments: ["--config", credentialSnapshot.file.path, "topic", "produce", topic, "--key=" + key,
                                     "--header=rightclick.invocation:" + binding.id,
                                     "--format", "%V{big32}%v", "--output-format", "{\"topic\":\"%t\",\"partition\":%p,\"offset\":%o}\n",
-                                    "--acks=-1", "--delivery-timeout=3s"], input: framed, admitStart: gate)
+                                    "--acks=-1", "--delivery-timeout=3s"], input: framed,
+                        diagnostic: processReport(.produceProcess), admitStart: gate)
                 }
                 guard let ack = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                       ack["topic"] as? String == topic, let partition = ack["partition"] as? Int,
@@ -139,8 +183,11 @@ private final class KafkaRecordObserver: RCIRObserver {
     private let credential: KafkaCredential
     private let topic: String
     private let partitions: Int
-    init(observerID: String, client: CapabilityArtifactSnapshot, credential: KafkaCredential, topic: String, partitions: Int) {
+    private let diagnostic: ((BoundedCapabilityProcess.Diagnostic) -> Void)?
+    init(observerID: String, client: CapabilityArtifactSnapshot, credential: KafkaCredential, topic: String, partitions: Int,
+         diagnostic: ((BoundedCapabilityProcess.Diagnostic) -> Void)? = nil) {
         self.observerID = observerID; self.client = client; self.credential = credential; self.topic = topic; self.partitions = partitions
+        self.diagnostic = diagnostic
     }
     func observe(_ request: RCIRObservationRequest) throws -> CapabilityValue {
         guard credential.snapshot.sourceStillMatches(), client.sourceStillMatches(),
@@ -152,7 +199,8 @@ private final class KafkaRecordObserver: RCIRObserver {
         // trusted topic or replace the pre-bound expected key/payload/marker.
         let bytes = try BoundedCapabilityProcess.run(executable: client.file,
             arguments: ["--config", credential.snapshot.file.path, "topic", "consume", topic,
-                        "-p", String(partition), "-o", String(offset), "-n", "1", "--format", "json", "--pretty-print=false"], timeout: 5)
+                        "-p", String(partition), "-o", String(offset), "-n", "1", "--format", "json", "--pretty-print=false"], timeout: 5,
+            diagnostic: diagnostic)
         guard let observed = try JSONSerialization.jsonObject(with: bytes) as? [String: Any],
               observed["topic"] as? String == topic, observed["partition"] as? Int64 == partition,
               observed["offset"] as? Int64 == offset, let key = observed["key"] as? String,

@@ -10,6 +10,20 @@ import RightClickHostFiles
 /// never through a shell. Discovery data cannot select an executable or grant
 /// inherited environment, filesystem or network access to a guest.
 enum BoundedCapabilityProcess {
+    /// Host-only measurements. Never retain command arguments, environment,
+    /// filesystem paths, standard error, input or provider output bytes.
+    struct Diagnostic: Codable, Equatable {
+        enum Outcome: String, Codable {
+            case invalidConfiguration, admissionOrLaunchFailure, deadlineExceeded
+            case outputLimitExceeded, outputDrainFailure, childFailed, completed
+        }
+        let elapsedMilliseconds: Double
+        let launchMilliseconds: Double?
+        let started: Bool
+        let terminationStatus: Int32?
+        let stdoutBytes: Int
+        let outcome: Outcome
+    }
     final class Buffer: @unchecked Sendable {
         private let lock = NSLock()
         private var bytes = Data()
@@ -24,7 +38,17 @@ enum BoundedCapabilityProcess {
     static func run(executable: URL, arguments: [String], timeout: TimeInterval = 5,
                     maximumBytes: Int = 1_048_576,
                     input: Data? = nil,
+                    diagnostic: ((Diagnostic) -> Void)? = nil,
                     admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> Data {
+        let began = ProcessInfo.processInfo.systemUptime
+        var started = false, launchMilliseconds: Double?, terminationStatus: Int32?
+        var stdoutBytes = 0
+        var outcome = Diagnostic.Outcome.invalidConfiguration
+        defer {
+            diagnostic?(.init(elapsedMilliseconds: (ProcessInfo.processInfo.systemUptime - began) * 1000,
+                launchMilliseconds: launchMilliseconds, started: started, terminationStatus: terminationStatus,
+                stdoutBytes: stdoutBytes, outcome: outcome))
+        }
         guard executable.isFileURL, RuntimePlatform.isAbsolutePath(executable.path),
               FileManager.default.isExecutableFile(atPath: executable.path),
               timeout.isFinite, timeout > 0, timeout <= 10,
@@ -59,7 +83,12 @@ enum BoundedCapabilityProcess {
             }
         }
         var startError: Error?
-        let start = { do { try process.run() } catch { startError = error } }
+        let start = {
+            let launchBegan = ProcessInfo.processInfo.systemUptime
+            do { try process.run(); started = true } catch { startError = error }
+            launchMilliseconds = (ProcessInfo.processInfo.systemUptime - launchBegan) * 1000
+        }
+        outcome = .admissionOrLaunchFailure
         do {
             if let admitStart { try admitStart(start) } else { start() }
             if let startError { throw startError }
@@ -88,6 +117,7 @@ enum BoundedCapabilityProcess {
         let deadline = DispatchTime.now().uptimeNanoseconds + UInt64(timeout * 1_000_000_000)
         while process.isRunning {
             if DispatchTime.now().uptimeNanoseconds >= deadline || buffer.snapshot().1 {
+                outcome = buffer.snapshot().1 ? .outputLimitExceeded : .deadlineExceeded
                 process.terminate()
                 Thread.sleep(forTimeInterval: 0.020)
 #if os(Windows)
@@ -96,14 +126,25 @@ enum BoundedCapabilityProcess {
                 if process.isRunning { kill(process.processIdentifier, SIGKILL) }
 #endif
                 process.waitUntilExit(); try? pipe.fileHandleForWriting.close()
+                terminationStatus = process.terminationStatus
+                stdoutBytes = buffer.snapshot().0.count
                 throw RCIRError.invalidLimit
             }
             Thread.sleep(forTimeInterval: 0.002)
         }
         process.waitUntilExit(); try? pipe.fileHandleForWriting.close()
-        guard reader.wait(timeout: .now() + 1) == .success else { throw RCIRError.unavailable }
+        terminationStatus = process.terminationStatus
+        guard reader.wait(timeout: .now() + 1) == .success else {
+            outcome = .outputDrainFailure; stdoutBytes = buffer.snapshot().0.count
+            throw RCIRError.unavailable
+        }
         let (bytes, exceeded) = buffer.snapshot()
-        guard !exceeded, process.terminationStatus == 0 else { throw RCIRError.unavailable }
+        stdoutBytes = bytes.count
+        guard !exceeded, process.terminationStatus == 0 else {
+            outcome = exceeded ? .outputLimitExceeded : .childFailed
+            throw RCIRError.unavailable
+        }
+        outcome = .completed
         return bytes
     }
 }
