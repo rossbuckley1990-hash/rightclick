@@ -1110,8 +1110,8 @@ public final class GraphQLReflector:
         _ raw: String,
         type: TypeRef
     ) throws -> Any {
-        if !type.isNonNull, let named = type.namedType, named.kind == "SCALAR",
-           ["String", "ID"].contains(named.name), raw.hasPrefix("\\") {
+        if case let .named(kind, name) = type, kind == "SCALAR",
+           ["String", "ID"].contains(name), raw.hasPrefix("\\") {
             return String(raw.dropFirst())
         }
         if raw == "null" && !type.isNonNull {
@@ -2286,7 +2286,7 @@ public final class GraphQLReflector:
                     + "."
             }
 
-            if !argument.type.isNonNull, let named, named.kind == "SCALAR", ["String", "ID"].contains(named.name) {
+            if case let .named(kind, name) = argument.type, kind == "SCALAR", ["String", "ID"].contains(name) {
                 description += " null supplies a null value; prefix a backslash to force literal text (including literal null or a leading backslash)."
             }
 

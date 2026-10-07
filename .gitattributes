@@ -1,6 +1,8 @@
 # Retain exact native CI artifact bytes; manifests pin their original hashes.
 evidence/windows-protected-reference-20261007/fixture-diagnostic-6ea/*.jsonl -text -diff
 evidence/windows-protected-reference-20261007/fixture-diagnostic-6ea/*.txt -text -diff
+evidence/windows-protected-reference-20261007/native-boundary-38b/*.jsonl -text -diff
+evidence/windows-protected-reference-20261007/native-boundary-38b/*.txt -text -diff
 # Frozen provider source is evidence; preserve its exact emitted whitespace.
 evidence/graphql-typed-20261007/**/schema.graphql whitespace=-blank-at-eof,-blank-at-eol
 evidence/graphql-typed-20261007/**/*.log whitespace=-blank-at-eof,-blank-at-eol
