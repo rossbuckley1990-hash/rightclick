@@ -18,15 +18,18 @@ enum BoundedCapabilityProcess {
     }
     static func run(executable: URL, arguments: [String], timeout: TimeInterval = 5,
                     maximumBytes: Int = 1_048_576,
+                    input: Data? = nil,
                     admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> Data {
         guard executable.isFileURL, executable.path.hasPrefix("/"),
               FileManager.default.isExecutableFile(atPath: executable.path),
               timeout.isFinite, timeout > 0, timeout <= 10,
               (1...1_048_576).contains(maximumBytes) else { throw RCIRError.invalidLimit }
+        guard (input?.count ?? 0) <= 1_048_576 else { throw RCIRError.invalidLimit }
         let process = Process(); process.executableURL = executable; process.arguments = arguments
         process.environment = ["PATH": "/usr/bin:/bin", "HOME": "/private/tmp"]
         let pipe = Pipe(); process.standardOutput = pipe; process.standardError = FileHandle.nullDevice
-        process.standardInput = FileHandle.nullDevice
+        let inputPipe = input.map { _ in Pipe() }
+        process.standardInput = inputPipe ?? FileHandle.nullDevice
         let buffer = Buffer(); let reader = DispatchGroup()
         reader.enter()
         DispatchQueue.global(qos: .utility).async {
@@ -44,6 +47,14 @@ enum BoundedCapabilityProcess {
             if let startError { throw startError }
         } catch {
             try? pipe.fileHandleForWriting.close(); throw error
+        }
+        if let inputPipe, let input {
+            // Write only after the admitted child starts. A reader that never
+            // consumes stdin cannot block the caller's monotonic timeout loop.
+            DispatchQueue.global(qos: .utility).async {
+                defer { try? inputPipe.fileHandleForWriting.close() }
+                try? inputPipe.fileHandleForWriting.write(contentsOf: input)
+            }
         }
         let deadline = DispatchTime.now().uptimeNanoseconds + UInt64(timeout * 1_000_000_000)
         while process.isRunning {

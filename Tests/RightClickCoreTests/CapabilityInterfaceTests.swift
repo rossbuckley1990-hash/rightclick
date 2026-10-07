@@ -63,6 +63,11 @@ final class CapabilityInterfaceTests: XCTestCase {
         XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: ["2"], timeout: 0.05))
         XCTAssertLessThan(DispatchTime.now().uptimeNanoseconds - before, 1_000_000_000)
     }
+    func testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation() throws {
+        let input = Data("RIGHTCLICK:{\"challenge\":\"literal $(echo never-execute)\"}\n".utf8)
+        XCTAssertEqual(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/bin/cat"), arguments: [], input: input), input)
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/bin/cat"), arguments: [], input: Data(repeating: 0, count: 1_048_577)))
+    }
     func testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues() throws {
         XCTAssertThrowsError(try CapabilityJSON.value(NSNumber(value: UInt64.max)))
         var raw: Any = "leaf"
