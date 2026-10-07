@@ -1,0 +1,56 @@
+{
+  "scope": "Actual native COM transport controls + common production acquisition; not policy proof or eleven-world acceptance",
+  "sourceSHA": "695895d604224fd8cf107de4ead8af053c62f0a2",
+  "controls": {
+    "actual_dynamic_unsupported_native_declarations_observed": {
+      "result": "PASS",
+      "detail": null
+    },
+    "unsupported_native_types_rejected_before_enqueue_zero_effects": {
+      "result": "PASS",
+      "detail": null
+    },
+    "common_compiler_omits_unsupported_native_members_preserves_supported": {
+      "result": "PASS",
+      "detail": null
+    },
+    "retained_prepared_call_rejects_same_metadata_native_replacement_zero_effects": {
+      "result": "PASS",
+      "detail": {
+        "enqueue": 0,
+        "result": 1
+      }
+    },
+    "old_acquisition_never_revives_after_observed_replacement": {
+      "result": "PASS",
+      "detail": null
+    },
+    "native_enqueue_is_one_shot_no_replay": {
+      "result": "PASS",
+      "detail": null
+    },
+    "equal_duplicate_monikers_fail_closed_other_provider_remains_available": {
+      "result": "PASS",
+      "detail": null
+    },
+    "real_pending_native_rpc_deadline_quarantine_no_retry_bounded_close": {
+      "result": "PASS",
+      "detail": {
+        "elapsed": 3.015999999999849,
+        "status": 3
+      }
+    },
+    "late_rpc_return_cannot_start_invocation_after_quarantine": {
+      "result": "PASS",
+      "detail": null
+    }
+  },
+  "sha256": {
+    "D:\\a\\rightclick\\rightclick\\native-com-green\\rightclick-candidate.exe": "2732a5519f125e34d122b8a459b79aa7e3739e89fc508be5d2eb69d55308c6ab",
+    "D:\\a\\rightclick\\rightclick\\windows-com-live.exe": "9c2917724c770986a6e56a229bb56bad5ff32e6fe26ed25ed3d31273988037a3",
+    "D:\\a\\rightclick\\rightclick\\windows-com-paused.exe": "e60a1fbd9bf3113b239fb44d429cfb8001888af0b4b0d787169a8a12e6c6690e",
+    "D:\\a\\rightclick\\rightclick\\windows-com-bridge-probe.exe": "2e90d1ba352e67b459aa22d1b678888155363c26e228928fc78b128f868ba339",
+    "D:\\a\\rightclick\\rightclick\\scripts\\acceptance-windows-com-native-controls.py": "82969652d23f1debae3fca362e34eb378e7434a23ebde67a06ff542f57baadc1"
+  },
+  "status": "PASS_NATIVE_ENGINEERING_CONTROLS"
+}

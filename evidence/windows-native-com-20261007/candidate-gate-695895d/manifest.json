@@ -1,0 +1,445 @@
+{
+  "run": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37675352026",
+  "baseSource": "38b27e45e9f566588b398ace20ca3ed07a529da3",
+  "candidateSource": "695895d604224fd8cf107de4ead8af053c62f0a2",
+  "correctedPublicControlFreeze": "def411550f1030f442d4abde33baeff2979257b6",
+  "gates": {
+    "publicMCP": "11 PASS",
+    "nativeTransport": "9 PASS",
+    "nativeWindowsXCTest": "8 PASS / 0 skips / 0 failures",
+    "macOSFull": "783 tests /31 skips /0 failures",
+    "universalElevenWorldRestrictedAgent": "NOT_EVALUATED"
+  },
+  "sourceFilesSHA256": {
+    ".github/workflows/windows-native-com.yml": "a7e538fd63f5ab636461bea5d68619e8d0b454f4ea101d76427d8fb37407f0b2",
+    "Package.swift": "cbf0e9cefe002b485142fa308de21433d8a59ea34b8f356b836430fb5c56b097",
+    "Sources/RightClickCore/CapabilityArtifactResolver.swift": "fa95938d3b10157d061b701a95b41755035369b31d813cee717c43ad6dffe0ed",
+    "Sources/RightClickCore/CapabilityRuntimeDefaults.swift": "1c7d2490f9522ffccf39c37befbad50bc269d73b17e996f240e028f025ee14ef",
+    "Sources/RightClickCore/WindowsCOMCapabilityArtifactResolver.swift": "260ea6a1e5698b38e7ace6aecd6fe5315bb36faabd2a0a6183a4a6eba7fbe6a2",
+    "Sources/RightClickCore/WindowsCOMRunningObjectSource.swift": "239dc6e21a1a711aa559b77b4c730f4a6623b372e3093adb0a97119100bca0ba",
+    "Sources/RightClickCore/WindowsCOMTypeLibrary.swift": "f4085ef45fb042429304a6c4d40c99fb354cb080c533653f2bfcaea76d23feab",
+    "Sources/RightClickWindowsCOM/WindowsCOM.cpp": "d6fbfbaa0533cbc593a50d77d38f5dee521b6989c7ddd45cc52b734be00721ce",
+    "Sources/RightClickWindowsCOM/include/RightClickWindowsCOM.h": "42287c3cff70f3eef48a215afa6e85c7b14ed50dbb29572f594b6de7fa696b0a",
+    "Tests/Fixtures/windows-com-bridge-probe.cpp": "8c54587e4fa0a2738b1c2e3abe99f8730b0d9c4a52d43742c224c4101003054b",
+    "Tests/Fixtures/windows-com-live.cpp": "a2bacf1e0138124fbd559ec19764d512bc165df1bf1e926560567a6b0a212911",
+    "Tests/Fixtures/windows-com-paused.cpp": "293cdc3871d19e26e0f344a0dd41c95a7d59ff953deb7ecaaebc0d658f8bd5c4",
+    "Tests/RightClickCoreTests/WindowsCOMTypeLibraryTests.swift": "5ce272471f826e4a5080a08ad5914e85fc9c8e9da658315f35d751c7f93d4075",
+    "scripts/acceptance-windows-com-native-controls.py": "486c9cc1e5492c14c62c8a068b92b875e5dc3f8cdb05ede255f91ba3c2c80e42",
+    "scripts/acceptance-windows-com.py": "7f1efbed765ef20dafa5b6e290109b3758e4280a4fd097890eecd27859328a08"
+  },
+  "rawWindowsArtifactFiles": {
+    "native-com-controls/duplicate/ready.json": {
+      "sha256": "9a93b5eb5d51009a2bc6adbc419bb34981e44b1c8e8f17656135e66c6c7d12db",
+      "bytes": 70,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/duplicate/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-controls/duplicate/stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-controls/fixture-context.json": {
+      "sha256": "9e722a2807ebc17da935c3a12de4c347b3cfaeaab7647a4fa66fad2dae14e76e",
+      "bytes": 556,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/initial/ready.json": {
+      "sha256": "9a93b5eb5d51009a2bc6adbc419bb34981e44b1c8e8f17656135e66c6c7d12db",
+      "bytes": 70,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/initial/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-controls/initial/stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-controls/initial/withdraw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/initial/withdrawn": {
+      "sha256": "6f1c3810f93dacb6af7395490ec846eaee08be70448fcf71c24005581ad8d948",
+      "bytes": 23,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/native-bridge-catalog.json": {
+      "sha256": "0afca5e55086ffffa1e8d3dc2ffedee51d0fa8e95ffd6858e6bcc0a39d822702",
+      "bytes": 1974,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/peer/pause": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/peer/paused": {
+      "sha256": "bface3b9c947956e552b0686c93dd6d792f365183588e7a8587b403a7d8fb5b8",
+      "bytes": 17,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/peer/ready.json": {
+      "sha256": "35ea7a7e43b781a2923f33aafc99d0a658b5776f0b9a27076bcf11267465389b",
+      "bytes": 75,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/peer/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-controls/peer/stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-controls/peer/stop": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/peer/unpaused": {
+      "sha256": "81310f409660d2b151975bc01e54a68b297a8b38fc6b41b57fb36db59916572f",
+      "bytes": 18,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/probe.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-controls/probe.stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-controls/proof.idl": {
+      "sha256": "ac811b417a12f2e325d8dedd0dd4a513234494ffc336658401a0be581a968d25",
+      "bytes": 729,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/proof.tlb": {
+      "sha256": "cf22249a280e9b21ee5729947cf2fb7b8bf78fff08ae81119e6702f78b3ebd16",
+      "bytes": 2076,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/replacement/effect-1.bin": {
+      "sha256": "ea82359313a20e0d4c18cfb44b1ec117cf0467aa509ac57c5cb5554b405bafff",
+      "bytes": 66,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/replacement/effect-count": {
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "bytes": 1,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/replacement/ready.json": {
+      "sha256": "9a93b5eb5d51009a2bc6adbc419bb34981e44b1c8e8f17656135e66c6c7d12db",
+      "bytes": 70,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/replacement/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-controls/replacement/stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-controls/results.json": {
+      "sha256": "a3ac972ba7f40b81b749bb5432ebaf5f4a45453503f4da705e6622f97440542b",
+      "bytes": 2238,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-controls/runtime.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-controls/runtime.stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-controls/transcript.json": {
+      "sha256": "98a53767cff6cc022af26a2987712d00381a27b521dcbdc2962cffdc39b317b7",
+      "bytes": 16490,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/build.log": {
+      "sha256": "cf833d2ca9ba3bd01264eebcb6644844062aec010b01720db41a840806bef0d1",
+      "bytes": 41547,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-green/build.log.gz",
+      "committedSHA256": "9e3a2c449e657cae2a2cc661b305a8d01150dec8bbfbd981328350fffc6c42aa"
+    },
+    "native-com-green/candidate-source.txt": {
+      "sha256": "7f0845782affff2e73bbfb955975883b099734cab2170726d240e362e22be94d",
+      "bytes": 42,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/effect-1.bin": {
+      "sha256": "8eeb15f4d69aad8fe105e91dc2515b5c6ba9bc3e009dfd2aef026ce88eb0024e",
+      "bytes": 66,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/effect-count": {
+      "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "bytes": 1,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/fixture-context.json": {
+      "sha256": "4f49f90002d10ec53992093c6601b248f9d6764f6e78681e6796f8887f29d0e7",
+      "bytes": 431,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/fixture.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-green/fixture.stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-green/native-metadata-oracle.json": {
+      "sha256": "7e3a1a84e5fcc13f3230f14bbbd56f7d504c6bebabd57dfa0a0fd5e8d1cc47f3",
+      "bytes": 344,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/proof.idl": {
+      "sha256": "9ff361fb9b39fe8c16940cfffe539bd74bbdb9a240e5e313dee5a855ce76a607",
+      "bytes": 560,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/proof.tlb": {
+      "sha256": "69acb47db6ae590c81b1ac3147c60c79863c19894e027dd3ddd79c5d502734bf",
+      "bytes": 1836,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/ready.json": {
+      "sha256": "fd3aef088657326354085af494ee2c9fc212388570e5eb29ad875b412a6eaf96",
+      "bytes": 70,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/resolver-control/fixture.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-green/resolver-control/fixture.stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-green/resolver-control/ready.json": {
+      "sha256": "fd3aef088657326354085af494ee2c9fc212388570e5eb29ad875b412a6eaf96",
+      "bytes": 70,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/resolver-control/stop": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/resolver-control/withdraw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/resolver-control/withdrawn": {
+      "sha256": "6f1c3810f93dacb6af7395490ec846eaee08be70448fcf71c24005581ad8d948",
+      "bytes": 23,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/results.json": {
+      "sha256": "0d597c5076625340f2fdc01f3027aca6f12f4453e276093a6d6e49735b5f1312",
+      "bytes": 17972,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/rightclick-candidate.exe": {
+      "sha256": "2732a5519f125e34d122b8a459b79aa7e3739e89fc508be5d2eb69d55308c6ab",
+      "bytes": 73623552,
+      "retention": "GitHub artifact and external backup"
+    },
+    "native-com-green/runtime.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-green/runtime.stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-green/stop": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/transcript.json": {
+      "sha256": "8b556efdbd02485f5885b84f184aa533a3969d8a86ea3feddc402414212e7f84",
+      "bytes": 47103,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/type-controls.log": {
+      "sha256": "e851b7eb702d69513e78f7bf5eb49166776de14adfe84d74b918a057767601be",
+      "bytes": 17671,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-green/type-controls.log.gz",
+      "committedSHA256": "77128064f09770134cc232a31c5bf88216c0d85b6e4b11b32a552609e752c3c8"
+    },
+    "native-com-green/withdraw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-green/withdrawn": {
+      "sha256": "6f1c3810f93dacb6af7395490ec846eaee08be70448fcf71c24005581ad8d948",
+      "bytes": 23,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/acceptance.exit": {
+      "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04",
+      "bytes": 3,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/acceptance.log": {
+      "sha256": "81101a3ccc3ead81a9bbaebce99f55cc4b6f73ea6ae96ec69aa3ed79df548543",
+      "bytes": 583,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-red/acceptance.log.gz",
+      "committedSHA256": "e62337113a78a63193f1e5d91d6989587ba376be4e41425f7acaa95c488994a7"
+    },
+    "native-com-red/baseline-source.txt": {
+      "sha256": "cc6975a13c73aeabafebbe8f61638314689b9fa47586c032d96fe56842a3b048",
+      "bytes": 42,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/build.log": {
+      "sha256": "0909f851f7ee38440d19c1d4a16a57c0fddb98a517bf40c9f6359f56b33675b6",
+      "bytes": 80164,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-red/build.log.gz",
+      "committedSHA256": "d267810d847193986e4ee9c900a69e454d0c2d62e04d6ee20d1c6f9c2ec396c8"
+    },
+    "native-com-red/fixture-context.json": {
+      "sha256": "29996e1acd3e899b798fc991e72e9d27902b16e28f1f7df44e66a81ae598867b",
+      "bytes": 431,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/fixture.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-red/fixture.stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-red/native-metadata-oracle.json": {
+      "sha256": "bd303b83044ed28a40b15b5ca5f4c3f4182cc3d67eb8f8f59e4354c8ca38b94f",
+      "bytes": 344,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/proof.idl": {
+      "sha256": "e01a6833e49dae764ec25ce5108c44bbd77f397933230cf1e6c15bcba90659cf",
+      "bytes": 560,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/proof.tlb": {
+      "sha256": "f974a30134c403cb761c77937b8b2712a6714d975b5d172baa7592ac0b0d75ed",
+      "bytes": 1836,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/ready.json": {
+      "sha256": "b4ffe8ca1a0d0eb06263416d934850613407451e48df6c1cdb708917fbcffac6",
+      "bytes": 70,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/results.json": {
+      "sha256": "9cda6d77b6b5aa53514d37391975beb6636798d4f785c900ee9cc73ff1e343a4",
+      "bytes": 2493,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/rightclick-baseline.exe": {
+      "sha256": "71e2738fc1e690082dc13ea26f14bc90679c80fe3904aa33a9e8337f8768c192",
+      "bytes": 72089088,
+      "retention": "GitHub artifact and external backup"
+    },
+    "native-com-red/runtime.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "deterministic gzip; decompressed bytes exactly match raw artifact",
+      "committedPath": "native-com-red/runtime.stderr.log.gz",
+      "committedSHA256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    "native-com-red/stop": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/toolchain.txt": {
+      "sha256": "fa5f6abcb1a722939e20fac6e0f878c8e366d6fd43567690b60beaac53fc53d2",
+      "bytes": 103,
+      "retention": "byte-identical committed copy"
+    },
+    "native-com-red/transcript.json": {
+      "sha256": "f79792dc2ab9e9c8ed76dfc1670ca7d45d5377682d375dffda752b989139042d",
+      "bytes": 12387,
+      "retention": "byte-identical committed copy"
+    },
+    "windows-com-bridge-probe.exe": {
+      "sha256": "2e90d1ba352e67b459aa22d1b678888155363c26e228928fc78b128f868ba339",
+      "bytes": 448512,
+      "retention": "GitHub artifact and external backup"
+    },
+    "windows-com-live.exe": {
+      "sha256": "9c2917724c770986a6e56a229bb56bad5ff32e6fe26ed25ed3d31273988037a3",
+      "bytes": 345088,
+      "retention": "GitHub artifact and external backup"
+    },
+    "windows-com-paused.exe": {
+      "sha256": "e60a1fbd9bf3113b239fb44d429cfb8001888af0b4b0d787169a8a12e6c6690e",
+      "bytes": 348160,
+      "retention": "GitHub artifact and external backup"
+    }
+  },
+  "macOSFiles": {
+    "macos-full-regression-c32.log": {
+      "rawSHA256": "452134d5c99ca9b1fe7414346ad83c11f442b7100e098dba706a6e2523f6ded6",
+      "committedPath": "macos/macos-full-regression-c32.log.gz",
+      "committedSHA256": "22fd1bc0d7e72f9b6ff698c567110963e0ce97501d076591b1742e291edb4adf"
+    },
+    "macos-full-regression-c32-native.log": {
+      "rawSHA256": "3b7ccb42abad329ec45d0cac2f21bb01820bc078b235104fc8cb9bd45524e9e5",
+      "committedPath": "macos/macos-full-regression-c32-native.log.gz",
+      "committedSHA256": "ba568bc5dbc20e4ddbf33c21af37b00121af18605337b05a5c08d33e8d118976"
+    },
+    "macos-observer-recheck-c32.log": {
+      "rawSHA256": "16fc93e47ec88fe3cc993fb6e388df98de977576e154d6d1adaa1019b494fa48",
+      "committedPath": "macos/macos-observer-recheck-c32.log.gz",
+      "committedSHA256": "b0a1c6233fc533a34ed668a3c76444d1e82b44f2bb5cee19153994f6ab906e87"
+    },
+    "macos-type-controls.log": {
+      "rawSHA256": "ac89d23296fedc95ad642eaff082413891620455bfc03b079bd57a23d804b77d",
+      "committedPath": "macos/macos-type-controls.log.gz",
+      "committedSHA256": "bf45c17a2fbe1424936eab2ab76c7501f5cbc0cb9e5d188827834f537ba56348"
+    },
+    "macos-full-regression-695895d.log": {
+      "rawSHA256": "fc2ace238219282bc560855f019988cda9d0c4e9536cb4a290d512dee48c49e9",
+      "committedPath": "macos/macos-full-regression-695895d.log.gz",
+      "committedSHA256": "67dc27fdc3f783fa797a9632cb6d01d58383979ed6e8a8492c2cbf470b4aeb2a"
+    },
+    "macos-full-regression-c32.exit": {
+      "rawSHA256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "committedPath": "macos/macos-full-regression-c32.exit",
+      "committedSHA256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "macos-full-regression-c32-native.exit": {
+      "rawSHA256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "committedPath": "macos/macos-full-regression-c32-native.exit",
+      "committedSHA256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "macos-observer-recheck-c32.exit": {
+      "rawSHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "committedPath": "macos/macos-observer-recheck-c32.exit",
+      "committedSHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "macos-full-regression-695895d.exit": {
+      "rawSHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "committedPath": "macos/macos-full-regression-695895d.exit",
+      "committedSHA256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  },
+  "externalBackup": {
+    "bundleSHA256": "26cd95e001115c212e69bddce5effbc2197cdb75ce3df0a3aa64dcf1f757b210",
+    "sourceArchiveSHA256": "603effb80be64fa121ecb4ab737784a2cf70a0f22b031b1f451ad3b888ddae9c",
+    "fullHostedJobLogSHA256": "839772211b759779901d397b354e0032dfdb56bbbcc2fae5432fc5e60c210c04",
+    "fullHostedJobLogRetention": "external only; individual build/acceptance/test logs are committed"
+  }
+}

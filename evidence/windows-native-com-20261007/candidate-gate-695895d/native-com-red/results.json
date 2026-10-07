@@ -1,0 +1,81 @@
+{
+  "scope": "Native Windows COM disposable provider + production seven-operation transport; not eleven-world restricted-agent acceptance",
+  "binarySHA256": "71e2738fc1e690082dc13ea26f14bc90679c80fe3904aa33a9e8337f8768c192",
+  "fixtureSHA256": "9c2917724c770986a6e56a229bb56bad5ff32e6fe26ed25ed3d31273988037a3",
+  "harnessSHA256": "d82942781887a1d53cce2174db8525cb31ecdcf4ffed232233f95ca04bec32e6",
+  "controls": {
+    "native_dynamic_metadata_oracle": {
+      "result": "PASS",
+      "detail": null
+    },
+    "exactly_seven_operations": {
+      "result": "PASS",
+      "detail": null
+    },
+    "production_dynamic_native_acquisition": {
+      "result": "FAIL",
+      "detail": {
+        "nativeMatches": 0
+      }
+    },
+    "exact_native_typed_declaration_explained": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "confirmation_required_zero_native_effects": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "typed_schema_mismatch_zero_native_effects": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "typed_native_invoke_separately_observed_effect": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "acceptance_not_semantic_success": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "common_execution_identity_status": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "live_rot_withdrawal_removes_capability": {
+      "result": "NOT_RUN",
+      "detail": null
+    },
+    "stale_native_identity_zero_effects": {
+      "result": "NOT_RUN",
+      "detail": null
+    }
+  },
+  "status": "RED",
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "D:/a/rightclick/rightclick/native-com-red/rightclick-baseline.exe",
+    "executableRealPath": "D:/a/rightclick/rightclick/native-com-red/rightclick-baseline.exe",
+    "executableSHA256": "71e2738fc1e690082dc13ea26f14bc90679c80fe3904aa33a9e8337f8768c192",
+    "pid": 9600,
+    "platform": "Windows",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "failure": "production runtime does not acquire the native type-information declaration"
+}
