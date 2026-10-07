@@ -27,12 +27,10 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
 
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("http-json-" + UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try NativeHTTPFixture.protect(directory, directory: true)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
         reader = directory.appendingPathComponent("observer.token"); writer = directory.appendingPathComponent("writer.token")
         for file in [reader!, writer!] {
-            try Data(UUID().uuidString.utf8).write(to: file)
-            try NativeHTTPFixture.protect(file)
+            try NativeHTTPFixture.writePrivate(Data(UUID().uuidString.utf8), to: file)
         }
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         for role in ["provider", "observer", "trap"] {

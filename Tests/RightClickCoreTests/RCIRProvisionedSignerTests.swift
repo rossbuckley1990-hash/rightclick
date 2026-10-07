@@ -10,11 +10,10 @@ import XCTest
 final class RCIRProvisionedSignerTests: XCTestCase {
     func testWithdrawalAtPostSignatureBoundaryReturnsNoSignature() throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("rcir-signing-race-" + UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories:false)
-        try NativeHTTPFixture.protect(directory, directory:true)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
         defer { try? NativeHTTPFixture.remove(directory) }
         let file = directory.appendingPathComponent("key.raw")
-        try Curve25519.Signing.PrivateKey().rawRepresentation.write(to:file); try NativeHTTPFixture.protect(file)
+        try NativeHTTPFixture.writePrivate(Curve25519.Signing.PrivateKey().rawRepresentation, to: file)
         var checks = 0
         let signer = try RCIRProvisionedSigner(path:file.path, currentReference: {
             checks += 1

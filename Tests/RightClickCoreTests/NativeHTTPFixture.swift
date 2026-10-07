@@ -5,6 +5,27 @@ import RightClickHostFiles
 /// This chooses an installed interpreter and protects fixture references using
 /// the production host-file primitive; it does not fabricate runtime outcomes.
 enum NativeHTTPFixture {
+    static func createPrivateDirectory(_ directory: URL) throws {
+#if os(Windows)
+        guard directory.path.withCString({ rc_host_create_private_directory($0) }) == 0 else {
+            throw CocoaError(.fileWriteNoPermission)
+        }
+#else
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false,
+                                               attributes: [.posixPermissions: 0o700])
+#endif
+    }
+    static func writePrivate(_ bytes: Data, to file: URL) throws {
+#if os(Windows)
+        let result = bytes.withUnsafeBytes { buffer in
+            file.path.withCString { rc_host_create_private_file($0, buffer.bindMemory(to: UInt8.self).baseAddress, bytes.count) }
+        }
+        guard result == 0 else { throw CocoaError(.fileWriteNoPermission) }
+#else
+        try bytes.write(to: file, options: .withoutOverwriting)
+        try protect(file)
+#endif
+    }
     static func python() throws -> URL {
 #if os(Windows)
         let candidates = (ProcessInfo.processInfo.environment["PATH"] ?? "").split(separator: ";").map {

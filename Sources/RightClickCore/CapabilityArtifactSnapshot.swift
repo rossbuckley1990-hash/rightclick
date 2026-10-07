@@ -26,13 +26,19 @@ final class CapabilityArtifactSnapshot {
 #if os(Windows)
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("rightclick-artifact-" + UUID().uuidString, isDirectory: true)
         file = directory.appendingPathComponent(executable ? "executable.exe" : "artifact")
+        var createdDirectory = false
         do {
-            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
-            guard directory.path.withCString({ rc_host_harden_private($0, 1) }) == 0 else { throw RCIRError.authorityDenied }
-            try bytes.write(to: file, options: .withoutOverwriting)
-            guard file.path.withCString({ rc_host_harden_private($0, 0) }) == 0 else { throw RCIRError.authorityDenied }
+            guard directory.path.withCString({ rc_host_create_private_directory($0) }) == 0 else { throw RCIRError.authorityDenied }
+            createdDirectory = true
+            let created = bytes.withUnsafeBytes { buffer in
+                file.path.withCString { rc_host_create_private_file($0, buffer.bindMemory(to: UInt8.self).baseAddress, bytes.count) }
+            }
+            guard created == 0 else { throw RCIRError.authorityDenied }
         } catch {
-            try? FileManager.default.removeItem(at: directory)
+            if createdDirectory {
+                _ = file.path.withCString { rc_host_release_snapshot($0) }
+                try? FileManager.default.removeItem(at: directory)
+            }
             throw error
         }
 #else

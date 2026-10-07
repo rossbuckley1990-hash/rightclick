@@ -33,7 +33,7 @@ final class RCIRAuthorityDispatchTests: XCTestCase {
     }
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("rcir-authority-dispatch-"+UUID().uuidString)
-        try FileManager.default.createDirectory(at:directory,withIntermediateDirectories:true)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
         let repository = URL(fileURLWithPath:#filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         process = Process(); process.executableURL = try NativeHTTPFixture.python()
         process.arguments = [repository.appendingPathComponent("scripts/rcir-dispatch-test-provider.py").path,directory.path]
@@ -48,8 +48,8 @@ final class RCIRAuthorityDispatchTests: XCTestCase {
         scope = RCIRScope(base.absoluteString,.write); credentialScopes = [scope]
         config.observers = [capability.id:.init(urlTemplate:base.absoluteString+"/records/{id}",expectedArgument:"value")]
         key = Curve25519.Signing.PrivateKey()
-        let keyFile = directory.appendingPathComponent("signer.raw"); try key.rawRepresentation.write(to:keyFile)
-        try NativeHTTPFixture.protect(keyFile); config.signingKeyFile = keyFile.path
+        let keyFile = directory.appendingPathComponent("signer.raw")
+        try NativeHTTPFixture.writePrivate(key.rawRepresentation, to: keyFile); config.signingKeyFile = keyFile.path
         let verification = RCIRVerificationContract(observerID:base.absoluteString+"/records/bounded-child",schema:.string,expected:.string("requested"))
         binding = try host.admission.publishInvocation(.init(abi:abi,scopes:[scope],verification:verification),discovery:abi,
                                                        authenticatedPrincipal:"local-owner:"+abi.reflectorID)

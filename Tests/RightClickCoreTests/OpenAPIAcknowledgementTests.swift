@@ -25,12 +25,10 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
 
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("ack-http-" + UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try NativeHTTPFixture.protect(directory, directory: true)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
         try Data().write(to: directory.appendingPathComponent("ack-response"))
         let token = directory.appendingPathComponent("observer.token")
-        try Data(UUID().uuidString.utf8).write(to: token)
-        try NativeHTTPFixture.protect(token)
+        try NativeHTTPFixture.writePrivate(Data(UUID().uuidString.utf8), to: token)
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         for role in ["provider", "observer"] {
             let process = Process(); process.executableURL = try NativeHTTPFixture.python()
@@ -51,8 +49,7 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
         let reflector = try OpenAPIReflector(specificationData: JSONSerialization.data(withJSONObject: spec), baseURL: provider)
         host = RCIRExecutionHost(); host.configuration = { self.config }
         config.signingKeyFile = directory.appendingPathComponent("signer.raw").path
-        try Curve25519.Signing.PrivateKey().rawRepresentation.write(to: URL(fileURLWithPath: config.signingKeyFile!))
-        try NativeHTTPFixture.protect(URL(fileURLWithPath: config.signingKeyFile!))
+        try NativeHTTPFixture.writePrivate(Curve25519.Signing.PrivateKey().rawRepresentation, to: URL(fileURLWithPath: config.signingKeyFile!))
         engine = CapabilityEngine(reflectors: [reflector], experience: nil, rcirHost: host)
         capability = try engine.capabilities(for: item).capabilities.first { $0.metadata["operationId"] == "write" }
     }

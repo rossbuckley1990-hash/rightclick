@@ -7,6 +7,7 @@
 #include <wchar.h>
 
 static WCHAR *wide_path(const char *path) {
+    if (!path) return NULL;
     int length = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, path, -1, NULL, 0);
     if (length < 2 || length > 32768) return NULL;
     WCHAR *result = calloc((size_t)length, sizeof(WCHAR));
@@ -35,6 +36,11 @@ static int same_final_path(HANDLE file, const WCHAR *path) {
     DWORD e = GetFullPathNameW(path, 32768, expected, NULL);
     DWORD a = GetFinalPathNameByHandleW(file, actual, 32768, FILE_NAME_NORMALIZED | VOLUME_NAME_DOS);
     if (!e || e >= 32768 || !a || a >= 32768) return 0;
+    /* Windows TEMP may contain a legitimate 8.3 parent name. Expand lexical
+       component names, then still compare against the independently opened
+       final handle path; a junction/symlink target is not the selected path. */
+    DWORD l = GetLongPathNameW(expected, expected, 32768);
+    if (!l || l >= 32768) return 0;
     /* A final handle must refer to the exact selected path, including parents. */
     if (wcsncmp(actual, L"\\\\?\\UNC\\", 8) == 0) {
         WCHAR unc[32768] = L"\\\\";
@@ -58,8 +64,13 @@ static int current_owner(HANDLE file, TOKEN_USER *user) {
 static int set_readonly(HANDLE file, int readonly) {
     FILE_BASIC_INFO information;
     if (!GetFileInformationByHandleEx(file, FileBasicInfo, &information, sizeof(information))) return 0;
-    if (readonly) information.FileAttributes |= FILE_ATTRIBUTE_READONLY;
-    else information.FileAttributes &= ~FILE_ATTRIBUTE_READONLY;
+    if (readonly) {
+        information.FileAttributes &= ~FILE_ATTRIBUTE_NORMAL;
+        information.FileAttributes |= FILE_ATTRIBUTE_READONLY;
+    } else {
+        information.FileAttributes &= ~FILE_ATTRIBUTE_READONLY;
+        if (!information.FileAttributes) information.FileAttributes = FILE_ATTRIBUTE_NORMAL;
+    }
     return SetFileInformationByHandle(file, FileBasicInfo, &information, sizeof(information)) != 0;
 }
 
@@ -100,6 +111,149 @@ done:
     return permitted;
 }
 
+static int creation_descriptor(SECURITY_DESCRIPTOR *descriptor, TOKEN_USER *user, PACL *acl, int directory) {
+    EXPLICIT_ACCESS_W entry = {0};
+    entry.grfAccessPermissions = FILE_ALL_ACCESS;
+    entry.grfAccessMode = SET_ACCESS;
+    entry.grfInheritance = directory ? SUB_CONTAINERS_AND_OBJECTS_INHERIT : NO_INHERITANCE;
+    entry.Trustee.TrusteeForm = TRUSTEE_IS_SID;
+    entry.Trustee.TrusteeType = TRUSTEE_IS_USER;
+    entry.Trustee.ptstrName = (LPWSTR)user->User.Sid;
+    return SetEntriesInAclW(1, &entry, NULL, acl) == ERROR_SUCCESS &&
+        InitializeSecurityDescriptor(descriptor, SECURITY_DESCRIPTOR_REVISION) &&
+        SetSecurityDescriptorOwner(descriptor, user->User.Sid, FALSE) &&
+        SetSecurityDescriptorDacl(descriptor, TRUE, *acl, FALSE) &&
+        SetSecurityDescriptorControl(descriptor, SE_DACL_PROTECTED, SE_DACL_PROTECTED);
+}
+
+typedef struct {
+    WCHAR *path;
+    HANDLE handles[256];
+    size_t count;
+} PRIVATE_PARENT_PINS;
+
+static void release_parent_pins(PRIVATE_PARENT_PINS *pins) {
+    for (size_t i = 0; i < pins->count; ++i) CloseHandle(pins->handles[i]);
+    free(pins->path); free(pins);
+}
+
+/* Pin every existing ancestor before object creation, rejecting a static
+   redirect before it can create even an empty target. No write/delete sharing
+   is admitted while those native handles are retained. This does not claim
+   isolation from a compromised host owner or kernel. */
+static PRIVATE_PARENT_PINS *pin_private_parents(const WCHAR *path) {
+    PRIVATE_PARENT_PINS *pins = calloc(1, sizeof(PRIVATE_PARENT_PINS));
+    if (!pins) return NULL;
+    pins->path = calloc(32768, sizeof(WCHAR));
+    if (!pins->path) goto denied;
+    /* Never reinterpret a relative, device or drive-relative reference. */
+    int drive = ((path[0] >= L'A' && path[0] <= L'Z') || (path[0] >= L'a' && path[0] <= L'z')) &&
+        path[1] == L':' && (path[2] == L'\\' || path[2] == L'/');
+    int unc = path[0] == L'\\' && path[1] == L'\\' && path[2] != L'?' && path[2] != L'.';
+    if (!drive && !unc) goto denied;
+    DWORD length = GetFullPathNameW(path, 32768, pins->path, NULL);
+    if (!length || length >= 32768) goto denied;
+    size_t root = 2;
+    if (unc) {
+        WCHAR *server = wcschr(pins->path + 2, L'\\');
+        WCHAR *share = server ? wcschr(server + 1, L'\\') : NULL;
+        if (!server || server == pins->path + 2 || !share || share == server + 1) goto denied;
+        root = (size_t)(share - pins->path);
+    }
+    if (wcschr(pins->path + root + 1, L':')) goto denied;
+    for (size_t i = root; i < length; ++i) {
+        if (pins->path[i] != L'\\') continue;
+        /* Include the slash for the drive/UNC root; other prefixes end just
+           before a separator. The final selected leaf is not an ancestor. */
+        size_t end = i == root ? i + 1 : i;
+        WCHAR saved = pins->path[end]; pins->path[end] = 0;
+        HANDLE parent = CreateFileW(pins->path, READ_CONTROL | FILE_READ_ATTRIBUTES, FILE_SHARE_READ,
+            NULL, OPEN_EXISTING, FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_BACKUP_SEMANTICS, NULL);
+        BY_HANDLE_FILE_INFORMATION information;
+        int valid = parent != INVALID_HANDLE_VALUE && GetFileType(parent) == FILE_TYPE_DISK &&
+            GetFileInformationByHandle(parent, &information) &&
+            (information.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) &&
+            !(information.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) && same_final_path(parent, pins->path);
+        pins->path[end] = saved;
+        if (!valid || pins->count == 256) {
+            if (parent != INVALID_HANDLE_VALUE) CloseHandle(parent);
+            goto denied;
+        }
+        pins->handles[pins->count++] = parent;
+    }
+    if (!pins->count || pins->path[length - 1] == L'\\') goto denied;
+    return pins;
+denied:
+    release_parent_pins(pins); return NULL;
+}
+
+int rc_host_create_private_directory(const char *path) {
+    WCHAR *wide = wide_path(path);
+    TOKEN_USER *user = current_user();
+    SECURITY_DESCRIPTOR descriptor; PACL acl = NULL;
+    PRIVATE_PARENT_PINS *pins = NULL;
+    int result = 2;
+    if (!wide || !user || !creation_descriptor(&descriptor, user, &acl, 1)) goto done;
+    pins = pin_private_parents(wide);
+    if (!pins) goto done;
+    SECURITY_ATTRIBUTES attributes = {sizeof(SECURITY_ATTRIBUTES), &descriptor, FALSE};
+    if (!CreateDirectoryW(wide, &attributes)) goto done;
+    HANDLE file = CreateFileW(wide, READ_CONTROL | FILE_READ_ATTRIBUTES, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+        FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_BACKUP_SEMANTICS, NULL);
+    if (file != INVALID_HANDLE_VALUE) {
+        BY_HANDLE_FILE_INFORMATION information;
+        if (GetFileType(file) == FILE_TYPE_DISK && GetFileInformationByHandle(file, &information) &&
+            !(information.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) &&
+            (information.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) &&
+            same_final_path(file, wide) && protected_authority(file)) result = 0;
+        CloseHandle(file);
+    }
+done:
+    if (pins) release_parent_pins(pins);
+    if (acl) LocalFree(acl);
+    free(user); free(wide); return result;
+}
+
+int rc_host_create_private_file(const char *path, const unsigned char *bytes, size_t length) {
+    if (length > 268435456 || (!bytes && length)) return 3;
+    WCHAR *wide = wide_path(path);
+    TOKEN_USER *user = current_user();
+    SECURITY_DESCRIPTOR descriptor; PACL acl = NULL;
+    PRIVATE_PARENT_PINS *pins = NULL;
+    int result = 2;
+    if (!wide || !user || !creation_descriptor(&descriptor, user, &acl, 0)) goto done;
+    pins = pin_private_parents(wide);
+    if (!pins) goto done;
+    SECURITY_ATTRIBUTES attributes = {sizeof(SECURITY_ATTRIBUTES), &descriptor, FALSE};
+    HANDLE file = CreateFileW(wide, GENERIC_WRITE | READ_CONTROL | FILE_READ_ATTRIBUTES | DELETE, FILE_SHARE_READ, &attributes, CREATE_NEW,
+        FILE_FLAG_OPEN_REPARSE_POINT | FILE_ATTRIBUTE_NORMAL, NULL);
+    if (file == INVALID_HANDLE_VALUE) goto done;
+    BY_HANDLE_FILE_INFORMATION information;
+    if (GetFileType(file) != FILE_TYPE_DISK || !GetFileInformationByHandle(file, &information) ||
+        (information.dwFileAttributes & (FILE_ATTRIBUTE_REPARSE_POINT | FILE_ATTRIBUTE_DIRECTORY)) ||
+        !same_final_path(file, wide) || !protected_authority(file)) goto close;
+    size_t offset = 0;
+    while (offset < length) {
+        DWORD count = 0;
+        DWORD wanted = (DWORD)((length - offset) > 65536 ? 65536 : (length - offset));
+        if (!WriteFile(file, bytes + offset, wanted, &count, NULL) || !count) goto close;
+        offset += count;
+    }
+    if (same_final_path(file, wide) && protected_authority(file) && set_readonly(file, 1)) result = 0;
+close:
+    if (result != 0) {
+        /* Dispose only the original newly created handle; never remove a
+           path whose identity could have changed after failed admission. */
+        FILE_DISPOSITION_INFO disposition = {TRUE};
+        SetFileInformationByHandle(file, FileDispositionInfo, &disposition, sizeof(disposition));
+    }
+    CloseHandle(file);
+done:
+    if (pins) release_parent_pins(pins);
+    if (acl) LocalFree(acl);
+    free(user); free(wide); return result;
+}
+
 int rc_host_read_file(const char *path, uint64_t maximum, int protected_file,
                       unsigned char **bytes, size_t *length) {
     *bytes = NULL; *length = 0;
@@ -138,7 +292,7 @@ int rc_host_harden_private(const char *path, int directory) {
     WCHAR *wide = wide_path(path);
     TOKEN_USER *user = current_user();
     if (!wide || !user) { free(wide); free(user); return 2; }
-    HANDLE file = CreateFileW(wide, READ_CONTROL | WRITE_DAC | FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+    HANDLE file = CreateFileW(wide, READ_CONTROL | WRITE_DAC | FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                               FILE_FLAG_OPEN_REPARSE_POINT | (directory ? FILE_FLAG_BACKUP_SEMANTICS : 0), NULL);
     int result = 2;
     if (file == INVALID_HANDLE_VALUE) goto done;
@@ -186,6 +340,10 @@ int rc_host_read_file(const char *path, uint64_t maximum, int protected_file, un
     (void)path; (void)maximum; (void)protected_file; *bytes = NULL; *length = 0; return 2;
 }
 int rc_host_harden_private(const char *path, int directory) { (void)path; (void)directory; return 2; }
+int rc_host_create_private_directory(const char *path) { (void)path; return 2; }
+int rc_host_create_private_file(const char *path, const unsigned char *bytes, size_t length) {
+    (void)path; (void)bytes; (void)length; return 2;
+}
 int rc_host_release_snapshot(const char *path) { (void)path; return 2; }
 #endif
 void rc_host_free(void *value) { free(value); }

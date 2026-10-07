@@ -36,23 +36,23 @@ final class RCIRSigningLifecycleTests: XCTestCase {
     }
     private func key(at file: URL) throws -> Data {
         let key = Curve25519.Signing.PrivateKey()
-        if FileManager.default.fileExists(atPath: file.path) { try NativeHTTPFixture.release(file) }
-        try key.rawRepresentation.write(to: file)
-        try NativeHTTPFixture.protect(file)
+        if FileManager.default.fileExists(atPath: file.path) {
+            try NativeHTTPFixture.release(file)
+            try key.rawRepresentation.write(to: file)
+            try NativeHTTPFixture.protect(file)
+        } else { try NativeHTTPFixture.writePrivate(key.rawRepresentation, to: file) }
         return key.publicKey.rawRepresentation
     }
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("rcir-signing-" + UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: false)
-        try NativeHTTPFixture.protect(directory, directory: true)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
         agent = try launch("a2a-proof-agent.py"); observer = try launch("a2a-proof-observer.py")
         let port = directory.appendingPathComponent("port"), observerPort = directory.appendingPathComponent("observer-port")
         try waitFor(port); try waitFor(observerPort)
         let base = "http://127.0.0.1:" + (try String(contentsOf: port, encoding: .utf8))
         let observe = "http://127.0.0.1:" + (try String(contentsOf: observerPort, encoding: .utf8))
         let providers = directory.appendingPathComponent("providers.json")
-        try JSONSerialization.data(withJSONObject: ["version": 1, "agentCards": [base + "/.well-known/agent.json"]]).write(to: providers)
-        try NativeHTTPFixture.protect(providers)
+        try NativeHTTPFixture.writePrivate(JSONSerialization.data(withJSONObject: ["version": 1, "agentCards": [base + "/.well-known/agent.json"]]), to: providers)
         host = RCIRExecutionHost(); host.configuration = { [weak self] in
             guard let self else { throw RCIRError.authorityDenied }; return self.config
         }

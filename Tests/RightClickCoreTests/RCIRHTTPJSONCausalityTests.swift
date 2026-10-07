@@ -28,12 +28,10 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
 
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("http-causality-" + UUID().uuidString)
-        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try NativeHTTPFixture.protect(directory, directory: true)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
         for flag in ["ack-response", "include-invocation"] { try Data().write(to: directory.appendingPathComponent(flag)) }
         let token = directory.appendingPathComponent("observer.token")
-        try Data(UUID().uuidString.utf8).write(to: token)
-        try NativeHTTPFixture.protect(token)
+        try NativeHTTPFixture.writePrivate(Data(UUID().uuidString.utf8), to: token)
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         var provider: URL!
         for role in ["provider", "observer"] {
@@ -55,8 +53,7 @@ final class RCIRHTTPJSONCausalityTests: XCTestCase {
         host = RCIRExecutionHost(); host.configuration = { self.config }
         key = Curve25519.Signing.PrivateKey()
         config.signingKeyFile = directory.appendingPathComponent("signer.raw").path
-        try key.rawRepresentation.write(to: URL(fileURLWithPath: config.signingKeyFile!))
-        try NativeHTTPFixture.protect(URL(fileURLWithPath: config.signingKeyFile!))
+        try NativeHTTPFixture.writePrivate(key.rawRepresentation, to: URL(fileURLWithPath: config.signingKeyFile!))
         engine = CapabilityEngine(reflectors: [reflector], experience: nil, rcirHost: host)
         capability = try XCTUnwrap(engine.capabilities(for: item).capabilities.first)
     }
