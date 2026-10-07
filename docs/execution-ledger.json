@@ -755,5 +755,17 @@
     "pullRequest": "https://github.com/rossbuckley1990-hash/rightclick/pull/47",
     "checks": "All six SUCCESS; normal merge with matched exact head; no platform-security override",
     "boundary": "Merged runtime source, not a published/installed RCIR product or complete G3\u2013G11 acceptance."
+  },
+  "snapshotMetadata": {
+    "scope": "Historical accepted G2 source/package snapshot, not latest universal runtime acceptance",
+    "acceptedSource": "57b5d87cc54c26c2b444fb232bb2ffa8e49b34c3",
+    "acceptedMerge": "0ed7d3a61ba63a36474085ec2b6f141be1b9ee3d",
+    "successorPR": "https://github.com/rossbuckley1990-hash/rightclick/pull/49",
+    "releaseImmutability": {
+      "tag": "v0.2.2",
+      "githubReleaseID": 405528856,
+      "githubImmutable": false,
+      "boundary": "Content checksum pins remain unchanged; GitHub immutability is a separate unmet release gate"
+    }
   }
 }

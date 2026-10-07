@@ -1,5 +1,7 @@
 # RCIR execution continuation — 2026-10-07
 
+This is the historical G2 source/package acceptance snapshot at PR47 (`57b5d87` → `0ed7d3a`). Its counts and earlier next steps do not describe the later universal candidate. Current work continues in [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49); Windows/runtime/release gates remain independently required.
+
 This file is sufficient to resume without chat memory. It records a new engineering run; it does not claim the full release/universal mission is complete. Read `EXECUTION-LEDGER.md`, `execution-ledger.json`, `RELEASE-READINESS.md` and `RCIR-PRODUCTION.md` with the supplied mission/GATE-CONTRACTS.
 
 ## Workspace and preserved work
@@ -32,7 +34,7 @@ Actual installed/earlier connected runtime: `/opt/homebrew/Cellar/rightclick/0.2
 
 After plugin availability changed, tool inventories contained no callable RIGHTCLICK connector. Fresh read-only stdio engineering discovery launched the pinned installed executable, independently matched temporary runtime PID/hash, recorded exactly seven declarations and canonical sorted tool fingerprint `e0d4e1acdd4620c308b329be2105c64892f9d0aa118420dbc58bef3e7913944a`, then terminated it. Candidate proof fingerprint 4e2661a3 uses a different documented array-order algorithm; do not equate different fingerprint algorithms. No plugin reconnection or installed candidate claim follows. Stable plugin launcher can upgrade Homebrew; do not run it casually while release pins/product identity must remain unchanged.
 
-Current published release remains immutable v0.2.2. Source pin `a3953eb8f1be2f9123d694b90202244c94ee21971171972f8ce1d3bacf807ca5`; arm64 Tahoe rebuild 1 bottle `147828d2ad81b0238c4d733ad757c5c584b7fe359a58db34552052641ea762fd`. Development candidates still report 0.2.2 but have distinct bytes/capabilities. Candidate publication, precompiled bottle, fresh install/upgrade and actual client reconnection acceptance all NOT_RUN. Source-kind alignment is not binary/bottle/RCIR alignment. No eleven-substrate restricted-agent demonstration ran.
+The published release remains v0.2.2 with content-pinned source/bottle bytes. GitHub API release 405528856 currently reports `immutable: false`; checksum pins do not establish GitHub release immutability. Source pin `a3953eb8f1be2f9123d694b90202244c94ee21971171972f8ce1d3bacf807ca5`; arm64 Tahoe rebuild 1 bottle `147828d2ad81b0238c4d733ad757c5c584b7fe359a58db34552052641ea762fd`. Development candidates still report 0.2.2 but have distinct bytes/capabilities. Candidate publication, precompiled bottle, fresh install/upgrade and actual client reconnection acceptance all NOT_RUN. Source-kind alignment is not binary/bottle/RCIR alignment. No eleven-substrate restricted-agent demonstration ran.
 
 ## First next gate and other-owner work
 

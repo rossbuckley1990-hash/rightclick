@@ -1,5 +1,7 @@
 # RCIR execution ledger — 2026-10-07
 
+This is the historical G2 source/package acceptance snapshot at PR47 (`57b5d87` → `0ed7d3a`). Its counts and earlier next steps do not describe the later universal candidate. Current work continues in [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49); Windows/runtime/release gates remain independently required.
+
 This is a new engineering run implementing G0/G1 and the OpenAPI slice of G2 from the supplied mission. It does not establish G3–G11 or a released universal runtime. [Machine ledger](execution-ledger.json), [release readiness](RELEASE-READINESS.md), [operator contract](RCIR-PRODUCTION.md).
 
 ## Reconciliation and identities
