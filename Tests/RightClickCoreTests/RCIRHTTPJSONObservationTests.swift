@@ -28,14 +28,15 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("http-json-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        try NativeHTTPFixture.protect(directory, directory: true)
         reader = directory.appendingPathComponent("observer.token"); writer = directory.appendingPathComponent("writer.token")
         for file in [reader!, writer!] {
             try Data(UUID().uuidString.utf8).write(to: file)
-            try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: file.path)
+            try NativeHTTPFixture.protect(file)
         }
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         for role in ["provider", "observer", "trap"] {
-            let process = Process(); process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
+            let process = Process(); process.executableURL = try NativeHTTPFixture.python()
             process.arguments = [root.appendingPathComponent("scripts/rcir-http-json-fixture.py").path, directory.path, role]
             process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
             try process.run(); processes.append(process)
@@ -65,7 +66,7 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
             try data.write(to: out.appendingPathComponent(label + ".json"))
         }
         for process in processes where process.isRunning { process.terminate(); process.waitUntilExit() }
-        processes.removeAll(); if let directory { try? FileManager.default.removeItem(at: directory) }
+        processes.removeAll(); if let directory { try? NativeHTTPFixture.remove(directory) }
         engine = nil; host = nil
     }
     private func rows(_ filename: String) -> [[String: Any]] {
@@ -161,7 +162,7 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
         try configure(pin: provider)
         let denied = try invoke(); XCTAssertEqual(denied.state, .rejected); XCTAssertTrue(rows("effects.jsonl").isEmpty)
         try configure()
-        host.beforeConsume = { _ in try FileManager.default.removeItem(at: self.reader) }
+        host.beforeConsume = { _ in try NativeHTTPFixture.release(self.reader); try FileManager.default.removeItem(at: self.reader) }
         let unverified = try invoke(); XCTAssertEqual(unverified.rcir?.outcome, "unverified")
         XCTAssertTrue(rows("observations.jsonl").isEmpty)
     }

@@ -1,5 +1,12 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -19,13 +26,14 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("ack-http-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        try NativeHTTPFixture.protect(directory, directory: true)
         try Data().write(to: directory.appendingPathComponent("ack-response"))
         let token = directory.appendingPathComponent("observer.token")
         try Data(UUID().uuidString.utf8).write(to: token)
-        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: token.path)
+        try NativeHTTPFixture.protect(token)
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         for role in ["provider", "observer"] {
-            let process = Process(); process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
+            let process = Process(); process.executableURL = try NativeHTTPFixture.python()
             process.arguments = [root.appendingPathComponent("scripts/rcir-http-json-fixture.py").path, directory.path, role]
             process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
             try process.run(); processes.append(process)
@@ -44,7 +52,7 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
         host = RCIRExecutionHost(); host.configuration = { self.config }
         config.signingKeyFile = directory.appendingPathComponent("signer.raw").path
         try Curve25519.Signing.PrivateKey().rawRepresentation.write(to: URL(fileURLWithPath: config.signingKeyFile!))
-        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: config.signingKeyFile!)
+        try NativeHTTPFixture.protect(URL(fileURLWithPath: config.signingKeyFile!))
         engine = CapabilityEngine(reflectors: [reflector], experience: nil, rcirHost: host)
         capability = try engine.capabilities(for: item).capabilities.first { $0.metadata["operationId"] == "write" }
     }
@@ -52,7 +60,7 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
     override func tearDownWithError() throws {
         for process in processes where process.isRunning { process.terminate(); process.waitUntilExit() }
         processes.removeAll()
-        if let directory { try? FileManager.default.removeItem(at: directory) }
+        if let directory { try? NativeHTTPFixture.remove(directory) }
         engine = nil; host = nil
     }
 
