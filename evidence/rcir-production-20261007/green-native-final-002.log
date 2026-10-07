@@ -1,0 +1,40 @@
+warning: 'rightclick': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/13] Write sources
+[3/13] Write swift-version--58304C5D6DBC2206.txt
+[5/10] Emitting module RightClickCore
+[6/10] Compiling RightClickCore OpenAPIReflector.swift
+[7/10] Compiling RightClickCore RCIRExecutionHost.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Sources/RightClickCore/RCIRExecutionHost.swift:158:30: error: passing a closure which captures a non-escaping function parameter 'revalidate' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+156 |             var record: ExecutionRecord
+157 |             do {
+158 |                 record = try dispatch(task.id.uuidString) { start in
+    |                              `- error: passing a closure which captures a non-escaping function parameter 'revalidate' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+159 |                     let admit: (_ enqueue: () -> Void) throws -> Void = { enqueue in
+160 |                         // Refresh at the transport boundary too: transport setup
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Sources/RightClickCore/RCIRExecutionHost.swift:159:73: error: escaping closure captures non-escaping parameter 'revalidate'
+107 |                  argumentStrings: CapabilityArguments?, item: ContentItem,
+108 |                  verification: VerificationSpec?, expectedOutput: String?, target: URL,
+109 |                  authority: @escaping () -> Set<RCIRScope>, revalidate: () -> Bool,
+    |                                                             `- note: parameter 'revalidate' is implicitly non-escaping
+110 |                  dispatch: (String, (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord,
+111 |                  resultValue: (ExecutionRecord) throws -> CapabilityValue) throws -> ExecutionRecord {
+    :
+157 |             do {
+158 |                 record = try dispatch(task.id.uuidString) { start in
+159 |                     let admit: (_ enqueue: () -> Void) throws -> Void = { enqueue in
+    |                                                                         `- error: escaping closure captures non-escaping parameter 'revalidate'
+160 |                         // Refresh at the transport boundary too: transport setup
+161 |                         // may outlive the earlier graph check. Refresh outside
+162 |                         // the admission lock because it can withdraw bindings.
+163 |                         guard revalidate() else { throw RCIRError.staleBinding }
+    |                               `- note: captured here
+164 |                         try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments), authority: authority(),
+165 |                             policy: policy(self.configuration()), now: self.now()) {
+error: fatalError

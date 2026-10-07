@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 
-public final class OpenAPIReflector: CapabilityReflector {
+public final class OpenAPIReflector: RCIRExecutionReflector {
     private struct JSONStringProperty {
         let allowedValues: Set<String>?
     }
@@ -117,6 +117,7 @@ public final class OpenAPIReflector: CapabilityReflector {
 
     public let id: String
 
+    private let standaloneHost = RCIRExecutionHost()
     private let baseURL: URL
     private let providerName: String
     private let providerFingerprint: String
@@ -442,6 +443,14 @@ public final class OpenAPIReflector: CapabilityReflector {
         executionID: String,
         arguments: CapabilityArguments?
     ) throws -> ExecutionRecord {
+        try admittedBegin(capability: capability, admissionOwner: capability, item: item, executionID: executionID,
+                          arguments: arguments, verification: nil, expectedOutput: nil,
+                          host: standaloneHost, revalidate: { true })
+    }
+
+    public func admittedBegin(capability: Capability, admissionOwner: Capability, item: ContentItem, executionID: String,
+                              arguments: CapabilityArguments?, verification: VerificationSpec?, expectedOutput: String?,
+                              host: RCIRExecutionHost, revalidate: @escaping () -> Bool) throws -> ExecutionRecord {
         guard
             let operation =
                 operationByCapabilityID[
@@ -931,6 +940,70 @@ public final class OpenAPIReflector: CapabilityReflector {
                 "Accept"
         )
 
+        // The existing request compiler and credential origin checks above
+        // remain authoritative. Lower their exact output into the existing ABI.
+        func schema(_ object: JSONObjectSchema) -> CapabilitySchema {
+            .object(properties: object.properties.mapValues {
+                $0.allowedValues.map { .stringEnum($0.sorted()) } ?? .string
+            }, required: object.required.sorted())
+        }
+        let argumentSchema: CapabilitySchema
+        if let path = operation.pathArgumentsSchema, let body = operation.requestJSONSchema,
+           let combined = Self.combinedArgumentsSchema(pathSchema: path, requestSchema: body) {
+            argumentSchema = schema(combined)
+        } else if let object = operation.requestJSONSchema ?? operation.pathArgumentsSchema {
+            argumentSchema = schema(object)
+        } else { argumentSchema = .null }
+        let resultSchema: CapabilitySchema = operation.responseJSONSchema.map(schema)
+            ?? (operation.responseJSONSyntaxOnly ? .bytes : .string)
+        var owned = CapabilityExperience.withoutExperience(admissionOwner)
+        if owned.reflectorID == "unowned" { owned.reflectorID = id }
+        let reflected = try owned.abiContract(arguments: .object(properties: [
+            "item": .string, "arguments": argumentSchema
+        ], required: ["item", "arguments"]), result: resultSchema)
+        let abi = CapabilityContract(capabilityID: reflected.capabilityID, reflectorID: reflected.reflectorID,
+            providerID: reflected.providerID, arguments: reflected.arguments, result: resultSchema,
+            declaration: .object(["capability": reflected.declaration,
+                "requestURL": .string(targetURL.absoluteString), "method": .string(operation.method),
+                "body": requestBody.map { .bytes($0) } ?? .null,
+                "verification": try verification.map { .bytes(try JSONEncoder().encode($0)) } ?? .null,
+                "expectedOutput": expectedOutput.map { .string($0) } ?? .null]))
+        let input = CapabilityValue.object(["item": .string(item.text ?? ""),
+            "arguments": CapabilityValue.fromLegacyArguments(arguments) ?? .null])
+        // POST is conservatively execute (never inferred pure from a title).
+        let effect: RCIREffect = operation.method == "GET" ? .read : .execute
+        let scope = RCIRScope(targetURL.absoluteString, effect)
+        return try host.execute(abi: abi, arguments: input, scope: scope,
+            capability: admissionOwner, executionID: executionID, argumentStrings: arguments,
+            item: item, verification: verification, expectedOutput: expectedOutput, target: targetURL, authority: {
+                if let required = operation.authorityRequirement {
+                    guard let current = OpenAPIAuthorityStore.bearerToken(for: required),
+                          current.utf8.elementsEqual((bearerToken ?? "").utf8) else { return [] }
+                }
+                return [scope]
+            }, revalidate: revalidate, dispatch: { correlationID, admitStart in
+                var boundRequest = request
+                boundRequest.setValue(correlationID, forHTTPHeaderField: "X-RightClick-Invocation")
+                return try self.send(boundRequest, operation: operation, capability: capability,
+                                     executionID: executionID, admitStart: admitStart)
+            }, resultValue: { record in
+                if let object = operation.responseJSONSchema, let output = record.output {
+                    guard let json = try JSONSerialization.jsonObject(with: Data(output.utf8)) as? [String: String] else {
+                        throw RCIRError.invalidContract
+                    }
+                    let value = CapabilityValue.object(json.mapValues { .string($0) })
+                    try schema(object).validate(value)
+                    return value
+                }
+                if operation.responseJSONSyntaxOnly { return .bytes(Data((record.output ?? "").utf8)) }
+                return .string(record.output ?? "")
+            })
+    }
+
+    private func send(_ request: URLRequest, operation: Operation,
+                      capability: Capability, executionID: String,
+                      admitStart: (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord {
+        guard let targetURL = request.url else { throw RCIRError.invalidContract }
         let semaphore =
             DispatchSemaphore(
                 value: 0
@@ -956,7 +1029,9 @@ public final class OpenAPIReflector: CapabilityReflector {
                 semaphore.signal()
             }
 
-        task.resume()
+        // Only enqueue while the admission lock is held. Waiting below happens
+        // after unlocking, so disappearance can invalidate other live bindings.
+        try admitStart { task.resume() }
 
         let wait =
             semaphore.wait(
@@ -1000,9 +1075,9 @@ public final class OpenAPIReflector: CapabilityReflector {
                 title:
                     capability.title,
                 state:
-                    .failed,
+                    .unknown,
                 message:
-                    "The OpenAPI provider request failed: \(error.localizedDescription)",
+                    "The OpenAPI transport ended without acceptance: \(error.localizedDescription). External effects are unknown; do not retry blindly.",
                 evidence:
                     OutcomeEvidence(
                         type:

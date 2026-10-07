@@ -1,0 +1,37 @@
+{
+  "runKind": "NEW_RUN",
+  "binary": "/private/tmp/rightclick-rcir-prechange",
+  "binarySHA256": "774ff98c422cfa26bbbcda4531bcbb38697e6ba084a57705a800bbe14b31d937",
+  "controls": {
+    "confirmation_zero_effect": "PASS"
+  },
+  "toolSchemaSHA256": "4e2661a32122479d49b9e83261a767a9af36948a6280dd1db7a492c08b385fd5",
+  "runtime": {
+    "executablePath": "/tmp/rightclick-rcir-prechange",
+    "executableRealPath": "/tmp/rightclick-rcir-prechange",
+    "executableSHA256": "774ff98c422cfa26bbbcda4531bcbb38697e6ba084a57705a800bbe14b31d937",
+    "pid": 6906,
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "firstInvocation": {
+    "actionId": "openapi:f2741e9a9ea27b99722f452940f28e1f92ff4c3f045db3cd94d094224700f1d7:63394f8fd10c6ab8:writeRecord",
+    "events": [
+      "HTTP POST http://rosss-macbook-air.local:50119/records",
+      "provider returned 200"
+    ],
+    "evidence": {
+      "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+      "outcomeVerified": false,
+      "type": "provider_returned_text"
+    },
+    "executionId": "707B4A74-59F5-4002-9313-5ED761335AAE",
+    "message": "HTTP provider returned 200; semantic outcome is unverified.",
+    "output": "{\"id\":\"good\",\"value\":\"useful verified output\"}",
+    "state": "accepted",
+    "title": "Write disposable record"
+  },
+  "result": "FAIL",
+  "failure": "production invocation lacks mandatory RCIR admission/consumption"
+}

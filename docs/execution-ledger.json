@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-10-07",
+  "runKind": "NEW_RUN",
+  "environment": {
+    "os": "macOS 26.4.1 (25E253)",
+    "architecture": "arm64",
+    "swift": "6.3.3",
+    "coreTarget": "macOS 14+",
+    "routes": [
+      "ordinary source/build/CI workbench",
+      "RIGHTCLICK connected confirmed read"
+    ]
+  },
+  "identities": {
+    "baseCommit": "1f2219eafb4514b08c6364cb0ec3bb8bf105cf80",
+    "implementationManifestSHA256": "3f98d187fdacac5288609f769049412c4b6858bdd94df6e76c9b20a3a85cbbe3",
+    "binaryVersion": "0.2.2 (development candidate; release pins unchanged)",
+    "binaries": {
+      "debug": {
+        "path": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/debug/rightclick",
+        "sha256": "b4e175b69dd55d490f424232a66c5799fc3b3572b0c33f9940a1f95318c932b7"
+      },
+      "release": {
+        "path": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/release/rightclick",
+        "sha256": "8f6240a2870fad415a5905aba7411e19e7a51a58bad92b6ebec0da8b2c69d890"
+      }
+    }
+  },
+  "connectedRuntime": {
+    "path": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "version": "0.2.2",
+    "sha256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "pid": 67552,
+    "transport": "stdio",
+    "evidence": "evidence/rcir-production-20261007/connected-engineering-route.json",
+    "taskOutcome": "accepted/unverified; installed old runtime"
+  },
+  "gates": {
+    "G0": {
+      "implementation": "PASS",
+      "local_tests": "PASS",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "IN_PROGRESS",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G1": {
+      "implementation": "PASS",
+      "local_tests": "PASS",
+      "native_tests": "PASS",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "IN_PROGRESS",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G2": {
+      "implementation": "PASS",
+      "local_tests": "PASS",
+      "native_tests": "PASS",
+      "live_runtime": "PASS",
+      "restricted_agent": "NOT_RUN",
+      "review": "IN_PROGRESS",
+      "merge": "NOT_RUN",
+      "artifact_build": "PASS",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G3": {
+      "implementation": "NOT_STARTED",
+      "local_tests": "NOT_RUN",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "NOT_RUN",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G4": {
+      "implementation": "NOT_STARTED",
+      "local_tests": "NOT_RUN",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "NOT_RUN",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G5": {
+      "implementation": "NOT_STARTED",
+      "local_tests": "NOT_RUN",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "NOT_RUN",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G6": {
+      "implementation": "NOT_STARTED",
+      "local_tests": "NOT_RUN",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "NOT_RUN",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G7": {
+      "implementation": "NOT_STARTED",
+      "local_tests": "NOT_RUN",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "NOT_RUN",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G8": {
+      "implementation": "NOT_STARTED",
+      "local_tests": "NOT_RUN",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "NOT_RUN",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G9": {
+      "implementation": "NOT_STARTED",
+      "local_tests": "NOT_RUN",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "NOT_RUN",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G10": {
+      "implementation": "NOT_STARTED",
+      "local_tests": "NOT_RUN",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "NOT_RUN",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    },
+    "G11": {
+      "implementation": "NOT_STARTED",
+      "local_tests": "NOT_RUN",
+      "native_tests": "NOT_RUN",
+      "live_runtime": "NOT_RUN",
+      "restricted_agent": "NOT_RUN",
+      "review": "NOT_RUN",
+      "merge": "NOT_RUN",
+      "artifact_build": "NOT_RUN",
+      "artifact_publish": "NOT_RUN",
+      "fresh_install": "NOT_RUN",
+      "client_acceptance": "NOT_RUN"
+    }
+  },
+  "runs": [
+    {
+      "name": "pack-integrity",
+      "command": "python3 verify-pack.py",
+      "exitCode": 0,
+      "testsOrItems": 9,
+      "skips": 0,
+      "evidenceOrBoundary": "Externally sourced expected zip checksum unavailable; internal pack manifest only."
+    },
+    {
+      "name": "baseline-native",
+      "command": "swift test --force-resolved-versions",
+      "exitCode": 0,
+      "testsOrItems": 550,
+      "skips": 26,
+      "evidenceOrBoundary": "baseline-native.log.gz"
+    },
+    {
+      "name": "public-production-red",
+      "command": "python3 scripts/acceptance-rcir-openapi.py /private/tmp/rightclick-rcir-prechange evidence/rcir-production-20261007/red",
+      "exitCode": 1,
+      "testsOrItems": null,
+      "skips": null,
+      "evidenceOrBoundary": "red/results.json: provider effect happened, mandatory RCIR evidence absent."
+    },
+    {
+      "name": "foundation-native",
+      "command": "bash scripts/test-rcir.sh",
+      "exitCode": null,
+      "testsOrItems": 63,
+      "skips": 0,
+      "evidenceOrBoundary": "foundation-native-final.log: successful completion; process handle lost at turn interruption, exit code not captured."
+    },
+    {
+      "name": "full-native-final",
+      "command": "RCIR_DISPATCH_EVIDENCE=... swift test --force-resolved-versions",
+      "exitCode": 0,
+      "testsOrItems": 569,
+      "skips": 26,
+      "evidenceOrBoundary": "green-native-final-003.log and native-effects/"
+    },
+    {
+      "name": "transport-race-red",
+      "command": "swift test --force-resolved-versions --filter RCIRProductionDispatchTests.testRemovalAtTransportAdmissionProducesZeroProviderEffects",
+      "exitCode": 1,
+      "testsOrItems": 1,
+      "skips": 0,
+      "evidenceOrBoundary": "race-red.log and race-red-effects/: removed provider received one request."
+    },
+    {
+      "name": "release-build",
+      "command": "scripts/build-cli.sh",
+      "exitCode": 0,
+      "testsOrItems": null,
+      "skips": null,
+      "evidenceOrBoundary": "release-build-final.log and release-build-final.exit"
+    },
+    {
+      "name": "bottle-kind-alignment",
+      "command": "python3 scripts/detect-bottle-alignment.py --compare --json",
+      "exitCode": 0,
+      "testsOrItems": 14,
+      "skips": 0,
+      "evidenceOrBoundary": "bottle-alignment.json: source taxonomy comparison, NOT actual bottle-byte or RCIR alignment."
+    },
+    {
+      "name": "tap-probe-unit",
+      "command": "python3 -m unittest discover -s tests -v",
+      "exitCode": 0,
+      "testsOrItems": 34,
+      "skips": 0,
+      "evidenceOrBoundary": "Companion tap evidence/rcir-acceptance-20261007/probe-unit-final.log: 17 probe and 17 distribution tests."
+    },
+    {
+      "name": "installed-seven-tools",
+      "command": "python3 scripts/verify-seven-operations.py --binary /opt/homebrew/bin/rightclick --expected-version 0.2.2",
+      "exitCode": 0,
+      "testsOrItems": null,
+      "skips": null,
+      "evidenceOrBoundary": "Companion tap installed-smoke.json: no install or provider action."
+    },
+    {
+      "name": "green-live-release",
+      "command": "python3 scripts/acceptance-rcir-openapi.py .build/release/rightclick ...",
+      "exitCode": 0,
+      "evidence": "evidence/rcir-production-20261007/green-live-release.log"
+    },
+    {
+      "name": "setup-release",
+      "command": "python3 scripts/acceptance-setup.py .build/release/rightclick",
+      "exitCode": 0,
+      "evidence": "evidence/rcir-production-20261007/setup-release.log"
+    },
+    {
+      "name": "mcp-release",
+      "command": "python3 scripts/acceptance-mcp.py .build/release/rightclick ...",
+      "exitCode": 0,
+      "evidence": "evidence/rcir-production-20261007/mcp-release.log"
+    },
+    {
+      "name": "core-release",
+      "command": "Unchanged existing acceptance script; core equivalence in disclosed disposable profile",
+      "exitCode": 1,
+      "evidence": "evidence/rcir-production-20261007/core-release.log",
+      "boundary": "Original core equivalence failed with configured GitHub acquisition catalog absent from neutral core; rerun retained unchanged assertions with empty CFFIXED_USER_HOME."
+    },
+    {
+      "name": "mcp-release-clean",
+      "command": "Unchanged existing acceptance script; core equivalence in disclosed disposable profile",
+      "exitCode": 0,
+      "evidence": "evidence/rcir-production-20261007/mcp-release-clean.log",
+      "boundary": "Original core equivalence failed with configured GitHub acquisition catalog absent from neutral core; rerun retained unchanged assertions with empty CFFIXED_USER_HOME."
+    },
+    {
+      "name": "core-release-clean",
+      "command": "Unchanged existing acceptance script; core equivalence in disclosed disposable profile",
+      "exitCode": 0,
+      "evidence": "evidence/rcir-production-20261007/core-release-clean.log",
+      "boundary": "Original core equivalence failed with configured GitHub acquisition catalog absent from neutral core; rerun retained unchanged assertions with empty CFFIXED_USER_HOME."
+    }
+  ],
+  "remoteCI": {
+    "status": "NOT_RUN",
+    "instruction": "Resolve PR head SHA and inspect every check conclusion. Prior main CI does not establish candidate CI."
+  },
+  "release": {
+    "sourceTag": "v0.2.2",
+    "sourceSHA256": "a3953eb8f1be2f9123d694b90202244c94ee21971171972f8ce1d3bacf807ca5",
+    "candidatePublished": false,
+    "candidateFreshInstalled": false,
+    "candidateClientReconnected": false
+  },
+  "nextAction": "Inspect exact-head CI for the two narrow PRs; fix failures without weakening contracts, then review and merge only eligible scope. Begin real G3 issuer/provider acceptance before new substrates.",
+  "historicalEvidence": "Original foundation zip/raw logs not located; recovered pack patches/reports retained without treating historical PASS claims as reproduced."
+}

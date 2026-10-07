@@ -1,0 +1,121 @@
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/14] Write sources
+[3/14] Write swift-version--58304C5D6DBC2206.txt
+[5/10] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[6/10] Emitting module RightClickCoreTests
+[6/10] Linking rightclick
+[7/10] Applying rightclick
+[9/30] Compiling RightClickCLITests SetupTests.swift
+[10/30] Compiling RightClickCLITests StableEntrypointTests.swift
+[11/32] Compiling RightClickCLITests SetupAllTransactionRedTests.swift
+[12/32] Compiling RightClickCLITests SetupStateTests.swift
+[13/32] Compiling RightClickCLITests OnboardingEngineTests.swift
+[14/32] Compiling RightClickCLITests ProviderConfigurationCLITests.swift
+[15/32] Compiling RightClickCLITests ClaudeConfigDirTruthTests.swift
+[16/32] Compiling RightClickCLITests ClaudeOnboardingRedTests.swift
+[17/32] Compiling RightClickCLITests ClientRegistryRedTests.swift
+[18/32] Compiling RightClickCLITests CodexOnboardingRedTests.swift
+[19/32] Compiling RightClickCLITests ChatGPTOnboardingTests.swift
+[20/32] Compiling RightClickCLITests ChatGPTOnboardingTransactionTests.swift
+[21/32] Compiling RightClickCLITests AuthorityConfigurationCLITests.swift
+[22/32] Compiling RightClickCLITests BridgeRuntimeTests.swift
+[23/32] Compiling RightClickCLITests ChatGPTBridgeInstallerTests.swift
+[24/32] Compiling RightClickCLITests ChatGPTBridgeTests.swift
+[25/32] Compiling RightClickCLITests ChatGPTLiveAttestationTests.swift
+[26/32] Compiling RightClickCLITests LocalOnboardingTests.swift
+[27/32] Compiling RightClickCLITests NativeMutationLeaseRedTests.swift
+[28/32] Emitting module RightClickCLITests
+[29/32] Compiling RightClickCLITests StableProfileIntegrityTests.swift
+[30/32] Compiling RightClickCLITests StableUpgradeReconciliationTests.swift
+[30/32] Write Objects.LinkFileList
+[31/32] Linking rightclick-mcpPackageTests
+Build complete! (10.90s)
+Test Suite 'Selected tests' started at 2026-10-07 11:55:13.886.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 11:55:13.889.
+Test Suite 'ARDAcquisitionGateTests' started at 2026-10-07 11:55:13.889.
+Test Case '-[RightClickCoreTests.ARDAcquisitionGateTests testG13ARDSearchResponseBecomesOpenAPIAcquisitionCandidate]' started.
+Test Case '-[RightClickCoreTests.ARDAcquisitionGateTests testG13ARDSearchResponseBecomesOpenAPIAcquisitionCandidate]' passed (0.121 seconds).
+Test Case '-[RightClickCoreTests.ARDAcquisitionGateTests testG14CapabilityIsAbsentBeforeARDAndAppearsAfterDiscovery]' started.
+Test Case '-[RightClickCoreTests.ARDAcquisitionGateTests testG14CapabilityIsAbsentBeforeARDAndAppearsAfterDiscovery]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ARDAcquisitionGateTests testG15ExecutesARDAcquiredCapabilityThroughCapabilityEngine]' started.
+Test Case '-[RightClickCoreTests.ARDAcquisitionGateTests testG15ExecutesARDAcquiredCapabilityThroughCapabilityEngine]' passed (0.011 seconds).
+Test Case '-[RightClickCoreTests.ARDAcquisitionGateTests testG16IndependentReadBackVerifiesDurableState]' started.
+Test Case '-[RightClickCoreTests.ARDAcquisitionGateTests testG16IndependentReadBackVerifiesDurableState]' passed (0.010 seconds).
+Test Suite 'ARDAcquisitionGateTests' passed at 2026-10-07 11:55:14.033.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.143 (0.144) seconds
+Test Suite 'OpenAPIReflectorTests' started at 2026-10-07 11:55:14.033.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testCapabilityIdentityBindsEndpointAndSpecification]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testCapabilityIdentityBindsEndpointAndSpecification]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testExistingVerifierCanVerifyOpenAPIResult]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testExistingVerifierCanVerifyOpenAPIResult]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testExistingVerifierRejectsWrongOpenAPIResult]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testExistingVerifierRejectsWrongOpenAPIResult]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testGETPathParameterArgumentsFailClosedBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testGETPathParameterArgumentsFailClosedBeforeTransport]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testGETPathParameterUsesGenericArgumentsPercentEncodesAndSendsNoBody]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testGETPathParameterUsesGenericArgumentsPercentEncodesAndSendsNoBody]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testGETUnsupportedParameterShapesAbstainRatherThanGuessing]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testGETUnsupportedParameterShapesAbstainRatherThanGuessing]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testGETWithRequiredStringPathParameterReflectsGenericArgumentSchema]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testGETWithRequiredStringPathParameterReflectsGenericArgumentSchema]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testHTTPAcceptanceIsNotSemanticSuccess]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testHTTPAcceptanceIsNotSemanticSuccess]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testMissingOperationIDAbstains]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testMissingOperationIDAbstains]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testStructuredJSONObjectArgumentsFailClosedBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testStructuredJSONObjectArgumentsFailClosedBeforeTransport]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testStructuredJSONObjectOperationUsesGenericArgumentsAndReturnsCanonicalJSON]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testStructuredJSONObjectOperationUsesGenericArgumentsAndReturnsCanonicalJSON]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testSupportedStructuredJSONObjectOperationReflectsGenericArgumentSchema]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testSupportedStructuredJSONObjectOperationReflectsGenericArgumentSchema]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testUnknownOpenAPISpecReflectsTextOperation]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testUnknownOpenAPISpecReflectsTextOperation]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testUnsupportedSchemaAbstainsRatherThanGuessing]' started.
+Test Case '-[RightClickCoreTests.OpenAPIReflectorTests testUnsupportedSchemaAbstainsRatherThanGuessing]' passed (0.000 seconds).
+Test Suite 'OpenAPIReflectorTests' passed at 2026-10-07 11:55:14.054.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.020 (0.021) seconds
+Test Suite 'RCIRProductionDispatchTests' started at 2026-10-07 11:55:14.054.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' passed (0.201 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' passed (0.154 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' passed (0.160 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' passed (0.143 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' passed (0.133 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' passed (0.145 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:80: error: -[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects] : XCTUnwrap failed: expected non-nil value of type "Capability"
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:210: error: -[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects] : XCTAssertEqual failed: threw error "UnwrappingOptional(errorCode: 105, errorUserInfo: ["XCTestErrorUserInfoKeyShouldIgnore": true])"
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' failed (1.382 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' passed (0.166 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' passed (0.148 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' passed (0.134 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' passed (0.181 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' passed (0.133 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:100: error: -[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints] : XCTAssertEqual failed: ("unknown") is not equal to ("accepted")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift:102: error: -[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints] : XCTAssertEqual failed: ("0") is not equal to ("2")
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' failed (0.150 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' passed (0.168 seconds).
+Test Suite 'RCIRProductionDispatchTests' failed at 2026-10-07 11:55:17.453.
+	 Executed 14 tests, with 4 failures (1 unexpected) in 3.398 (3.399) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 11:55:17.453.
+	 Executed 32 tests, with 4 failures (1 unexpected) in 3.561 (3.564) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 11:55:17.453.
+	 Executed 32 tests, with 4 failures (1 unexpected) in 3.561 (3.567) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
