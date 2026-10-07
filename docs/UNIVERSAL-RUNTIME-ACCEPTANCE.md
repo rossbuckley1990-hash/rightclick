@@ -21,6 +21,13 @@ Main advanced during this work: OpenAPI RCIR admission and signed outcome work
 merged in #42. Subsequent integration must be tested on its actual final source;
 the earlier baseline cannot stand in for those checks.
 
+The snapshot change was then integrated with main `c2f3bac98ade0d5f87aeb079d4c2274c55ece561`
+at `f1a02ff42a429b417fb7b8830868a65ef6b9b8be`. The actual integrated native run
+executed 578 tests, with 26 explicit skips and zero failures. The standalone
+foundation run executed 63 tests with zero failures. Both logs are retained,
+including the earlier unsuccessful sandbox attempt. Large raw logs use lossless
+gzip archives; `compression-manifest.json` binds both original and archive hashes.
+
 ## Architecture/gap matrix
 
 | Boundary | Actual initial main | Remaining universal-runtime gap |
