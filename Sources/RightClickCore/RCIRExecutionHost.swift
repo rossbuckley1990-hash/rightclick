@@ -67,12 +67,20 @@ struct RCIRHostConfiguration: Codable {
     var deniedCapabilities: [String] = []
     var observers: [String: Observer]? = nil
     var signingKeyFile: String? = nil
+    var receiptTrustPolicyFile: String? = nil
 
     static func load() throws -> Self {
         guard let path = ProcessInfo.processInfo.environment["RIGHTCLICK_RCIR_CONFIG"] else { return Self() }
         let data = try protectedRead(path, maximum: 65_536)
+        return try decode(data)
+    }
+
+    static func decode(_ data: Data) throws -> Self {
+        guard data.count <= 65_536 else { throw RCIRError.invalidLimit }
+        do { try RCIRReceiptTrustJSON.validateUniqueKeys(data) }
+        catch { throw RCIRError.invalidContract }
         guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-              Set(object.keys).isSubset(of: ["version", "revision", "deniedCapabilities", "observers", "signingKeyFile"]) else { throw RCIRError.invalidContract }
+              Set(object.keys).isSubset(of: ["version", "revision", "deniedCapabilities", "observers", "signingKeyFile", "receiptTrustPolicyFile"]) else { throw RCIRError.invalidContract }
         if let observers = object["observers"] as? [String: [String: Any]] {
             for value in observers.values {
                 guard Set(value.keys).isSubset(of: ["urlTemplate", "expectedArgument", "trustedOrigin", "credentialFile", "jsonObservation"]) else { throw RCIRError.invalidContract }
@@ -119,6 +127,9 @@ public final class RCIRExecutionHost {
     private let sessionLock = NSLock()
     private var sessions: [String: RCIRDeferredSession] = [:]
     private var reservations: Set<String> = []
+    private let receiptTrustLock = NSLock()
+    private var receiptTrustReference: String?
+    private var provisionedReceiptTrust: RCIRProvisionedReceiptTrust?
     private let observerFactories: [String: RCIRHostObserverFactory]
     var now: () -> Int64 = { Int64(Date().timeIntervalSince1970 * 1000) }
     var configuration: () throws -> RCIRHostConfiguration = RCIRHostConfiguration.load
@@ -130,6 +141,39 @@ public final class RCIRExecutionHost {
 
     public init(observerFactories: [String: RCIRHostObserverFactory] = [:]) {
         self.observerFactories = observerFactories
+    }
+
+    /// One retained issuer policy per host, rather than a fresh policy per task.
+    /// A changed/removed reference cannot erase revocations or enable fallback.
+    private func receiptTrust(_ config: RCIRHostConfiguration) throws -> RCIRProvisionedReceiptTrust? {
+        receiptTrustLock.lock(); defer { receiptTrustLock.unlock() }
+        guard let path = config.receiptTrustPolicyFile else {
+            guard receiptTrustReference == nil else { throw RCIRError.authorityDenied }
+            return nil
+        }
+        guard config.signingKeyFile != nil else { throw RCIRError.authorityDenied }
+        if let reference = receiptTrustReference {
+            guard reference.utf8.elementsEqual(path.utf8) else { throw RCIRError.authorityDenied }
+        } else { receiptTrustReference = path }
+        if let provisionedReceiptTrust { return provisionedReceiptTrust }
+        let loader = try RCIRProvisionedReceiptTrust(path: path, currentReference: { [weak self] in
+            guard let self else { return nil }
+            return (try? self.configuration())?.receiptTrustPolicyFile
+        }, clock: { [weak self] in self?.now() ?? Int64.max })
+        provisionedReceiptTrust = loader
+        return loader
+    }
+
+    private func currentReceiptTrustMatches(_ expected: String?) -> Bool {
+        guard let current = try? configuration() else { return false }
+        receiptTrustLock.lock(); defer { receiptTrustLock.unlock() }
+        if let expected {
+            return current.receiptTrustPolicyFile?.utf8.elementsEqual(expected.utf8) == true &&
+                receiptTrustReference?.utf8.elementsEqual(expected.utf8) == true
+        }
+        // A retained legacy task cannot bypass policy armed by a later task,
+        // even if the host reference is subsequently removed again.
+        return current.receiptTrustPolicyFile == nil && receiptTrustReference == nil
     }
 
     /// Refresh a retained task through the existing context_run_status path.
@@ -231,10 +275,13 @@ public final class RCIRExecutionHost {
                                   scopes: config.deniedCapabilities.contains(capability.id) ? [] : [scope])
             }
             // Key errors are discovered before the provider can have an effect.
+            let receiptTrust = try self.receiptTrust(config)
             let signer = try config.signingKeyFile.map {
                 try RCIRProvisionedSigner(path: $0, currentReference: { [weak self] in
                     guard let self else { return nil }
                     return (try? self.configuration())?.signingKeyFile
+                }, receiptTrust: receiptTrust, currentReceiptTrust: { [weak self] in
+                    self?.currentReceiptTrustMatches(config.receiptTrustPolicyFile) == true
                 })
             }
             guard contract.scopes?.isSubset(of: authority()) == true else { throw RCIRError.authorityDenied }

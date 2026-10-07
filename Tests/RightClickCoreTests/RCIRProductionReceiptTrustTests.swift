@@ -8,9 +8,9 @@ import Crypto
 #endif
 
 /// Production wiring pressure test. Host-owned policy is separately provisioned
-/// and enforced by the delivered trust library. The default execution host has
-/// no receipt-policy input/seam yet; these tests explicitly expose that gap,
-/// rather than pretend the sidecar is already connected to the runtime.
+/// and enforced by the delivered trust library.
+/// Frozen RED evidence preserves the original missing policy seam. Current
+/// controls configure the protected host reference and verify real effects.
 final class RCIRProductionReceiptTrustTests: XCTestCase {
     private var directory: URL!
     private var keyFile: URL!
@@ -24,7 +24,8 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
     private var records: [ExecutionRecord] = []
     private var keys: [Data] = []
     private var keyRecords: [[String: Any]] = []
-    private var summary: [String: Any] = ["runtimeReceiptPolicySeam":"MISSING_IN_FROZEN_BASELINE"]
+    private var policyHistory: [[String: Any]] = []
+    private var summary: [String: Any] = ["runtimeReceiptPolicySeam":"HOST_PROTECTED_POLICY_REFERENCE"]
     private let issuer = "issuer:production-fixture"
 
     private func privateDirectory(_ path: URL) throws {
@@ -44,6 +45,16 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
 #else
         try bytes.write(to:path,options:.withoutOverwriting); try NativeHTTPFixture.protect(path)
 #endif
+        if path == policyFile {
+            policyHistory.append([
+                "sequence":policyHistory.count + 1,
+                "observedAtMilliseconds":Int64(Date().timeIntervalSince1970 * 1000),
+                "reference":"host-policy",
+                "sourceSHA256":SHA256.hash(data:bytes).map { String(format:"%02x",$0) }.joined(),
+                "publicPolicyBase64":bytes.base64EncodedString(),
+            ])
+            XCTAssertLessThanOrEqual(policyHistory.count,16)
+        }
     }
     private func launch(_ script: String) throws {
         let source = URL(fileURLWithPath:#filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
@@ -98,8 +109,7 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         keyRecords = [["keyID":record.keyID,"publicKey":publicKey.base64EncodedString(),"notBefore":record.notBefore,
                        "notAfter":record.notAfter,"retiredAt":NSNull(),"revoked":false]]
         try persistPolicy()
-        // Intentionally no nonexistent host property: the sidecar is a declared
-        // desired host input, not provider metadata and not an enforced seam.
+        configuration.receiptTrustPolicyFile = policyFile.path
     }
     override func tearDownWithError() throws {
         for process in processes where process.isRunning { process.terminate(); process.waitUntilExit() }
@@ -109,6 +119,10 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
             let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted,.sortedKeys]
             try encoder.encode(records).write(to:output.appendingPathComponent("runtime-records.json"))
             try JSONSerialization.data(withJSONObject:summary,options:[.prettyPrinted,.sortedKeys]).write(to:output.appendingPathComponent("control-summary.json"))
+            let history = try policyHistory.map { row in
+                try JSONSerialization.data(withJSONObject:row,options:[.sortedKeys]) + Data([10])
+            }.reduce(into:Data()) { $0.append($1) }
+            try history.write(to:output.appendingPathComponent("policy-history.jsonl"))
             if let policyFile, let data = try? RCIRHostConfiguration.protectedRead(policyFile.path,maximum:131_072) {
                 try data.write(to:output.appendingPathComponent("host-policy-current.json"))
             }
@@ -147,7 +161,15 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         XCTAssertEqual(rows("observations.jsonl").last?["invocation"] as? String,final.rcir?.taskID)
     }
     private func acceptedByPolicy(_ final: ExecutionRecord) throws -> Bool {
-        guard final.rcir?.signedReceipt != nil else { return false }
+        guard final.rcir?.signedReceipt != nil else {
+            // Withheld bytes cannot be signature-verified. Independently check
+            // current issuer authorization and label that separate decision.
+            summary["policyDecisionSource"] = "current-key-authorization-no-signature"
+            do { _ = try trust.authorization(for: keys[0]) }
+            catch { summary["policyRejectedBecauseRevoked"] = (error as? RCIRReceiptTrustError) == .keyRevoked }
+            return false
+        }
+        summary["policyDecisionSource"] = "actual-signed-receipt-verification"
         let receipt = try signed(final)
         do {
             let task = try XCTUnwrap(UUID(uuidString:XCTUnwrap(final.rcir?.taskID)))
@@ -208,5 +230,90 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         let accepted = try acceptedByPolicy(final); summary["currentPolicyAccepted"] = accepted
         XCTAssertTrue(accepted); XCTAssertNotEqual(final.rcir?.taskID,old.rcir?.taskID)
         try signed(final).verify(trustedPublicKey:keys[1],using:RCIREd25519Verifier())
+    }
+
+    func testRestoredOlderPolicyCannotResurrectObservedRevocation() throws {
+        let oldPolicy = try RCIRHostConfiguration.protectedRead(policyFile.path, maximum:131_072)
+        let initial = try begin(); XCTAssertEqual(initial.state,.started)
+        try revokeOriginal(); try release(); let final = finish(initial)
+        try independentlyObserved(final,count:1)
+        XCTAssertNil(final.rcir?.signedReceipt)
+        try privateWrite(oldPolicy,to:policyFile)
+        let replay = try begin()
+        XCTAssertEqual(replay.state,.rejected)
+        XCTAssertEqual(rows("requests.jsonl").count,1)
+        XCTAssertEqual(rows("effects.jsonl").count,1)
+        summary["restoredOldPolicyDenied"] = replay.state == .rejected
+    }
+
+    func testDeletedPolicyAfterAdmissionPreservesObservedUnsignedTruth() throws {
+        let initial = try begin(); XCTAssertEqual(initial.state,.started)
+        try NativeHTTPFixture.release(policyFile); try FileManager.default.removeItem(at:policyFile)
+        try release(); let final = finish(initial)
+        try independentlyObserved(final,count:1)
+        XCTAssertNotNil(final.rcir?.receipt); XCTAssertNil(final.rcir?.signedReceipt)
+        XCTAssertTrue(final.events.contains(RCIRReceiptEmission.withheldEvent))
+    }
+
+    func testMalformedPolicyBeforeAdmissionHasZeroProviderEffects() throws {
+        try privateWrite(Data(#"{"version":1,"version":1}"#.utf8),to:policyFile)
+        let initial = try begin()
+        XCTAssertEqual(initial.state,.rejected)
+        XCTAssertTrue(rows("requests.jsonl").isEmpty); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+    }
+
+    func testActuallyExpiredKeyBeforeAdmissionHasZeroProviderEffects() throws {
+        let expiry = Int64(Date().timeIntervalSince1970 * 1000) - 1
+        keyRecords[0]["notAfter"] = expiry
+        try persistPolicy()
+        let initial = try begin()
+        XCTAssertEqual(initial.state,.rejected)
+        XCTAssertTrue(rows("requests.jsonl").isEmpty); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+    }
+
+    func testActualClockExpiryAfterHeldAdmissionWithholdsSignature() throws {
+        let expiry = Int64(Date().timeIntervalSince1970 * 1000) + 1_500
+        keyRecords[0]["notAfter"] = expiry
+        try persistPolicy()
+        let initial = try begin(); XCTAssertEqual(initial.state,.started)
+        while Int64(Date().timeIntervalSince1970 * 1000) <= expiry { Thread.sleep(forTimeInterval:0.01) }
+        try release(); let final = finish(initial)
+        try independentlyObserved(final,count:1)
+        XCTAssertNotNil(final.rcir?.receipt); XCTAssertNil(final.rcir?.signedReceipt)
+        XCTAssertTrue(final.events.contains(RCIRReceiptEmission.withheldEvent))
+        summary["actualHostClockReachedExpiry"] = Int64(Date().timeIntervalSince1970 * 1000) >= expiry
+    }
+
+    func testConfigurationRefreshRevokesPolicyBeforeFinalAdmissionHasZeroEffects() throws {
+        var armed = false
+        var reads = 0
+        var revoked = false
+        host.configuration = { [weak self] in
+            guard let self else { throw RCIRError.authorityDenied }
+            if armed {
+                reads += 1
+                // The real host callback can update the public issuer policy
+                // after the old signing check but before consumeAndStart.
+                if reads == 5 { try self.revokeOriginal(); revoked = true }
+            }
+            return self.configuration
+        }
+        host.beforeStart = { _,admit,enqueue in
+            armed = true
+            try withoutActuallyEscaping(admit) { permit in
+                try withoutActuallyEscaping(enqueue) { start in try permit(start) }
+            }
+        }
+        let initial = try begin()
+        // Record any real unintended effect on RED, then assert zero effects.
+        if initial.state == .started { try release(); _ = finish(initial) }
+        summary["revokedDuringFinalAdmissionRefresh"] = revoked
+        summary["configurationReadsAfterBoundary"] = reads
+        summary["requests"] = rows("requests.jsonl").count
+        summary["effects"] = rows("effects.jsonl").count
+        XCTAssertTrue(revoked,"The actual final-admission callback must exercise policy withdrawal")
+        XCTAssertEqual(initial.state,.rejected)
+        XCTAssertTrue(rows("requests.jsonl").isEmpty)
+        XCTAssertTrue(rows("effects.jsonl").isEmpty)
     }
 }
