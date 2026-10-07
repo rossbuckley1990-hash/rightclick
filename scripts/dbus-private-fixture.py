@@ -79,7 +79,7 @@ elif role == "observer":
                 result = {"challenge": challenge, "digest": digest, "writerUID": record["writerUID"],
                     "observerUID": str(os.geteuid()), "platform": "Linux", "observation": "independent-file-sha256", "enabled": "true" if record["enabled"] else "false", "invocation": record["invocation"]}
                 with (root / "observer-state" / "observations.jsonl").open("a") as log:
-                    log.write(json.dumps(dict(result, invocation=self.headers.get("X-RightClick-Invocation"))) + "\n")
+                    log.write(json.dumps(dict(result, requestInvocation=self.headers.get("X-RightClick-Invocation"))) + "\n")
                 body = json.dumps(result).encode()
                 self.send_response(200); self.send_header("Content-Type", "application/json"); self.send_header("Content-Length", str(len(body))); self.end_headers(); self.wfile.write(body)
             except Exception: self.send_error(404)
