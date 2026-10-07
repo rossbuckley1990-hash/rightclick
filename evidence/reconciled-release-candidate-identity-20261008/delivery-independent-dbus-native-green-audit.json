@@ -1,0 +1,246 @@
+{
+  "status": "GREEN_SCOPED_NATIVE_DBUS_JOURNAL_PRESERVATION",
+  "source": "8f7372226749550767548352c5d6463f305a8794",
+  "sourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+  "ci": {
+    "runID": 37700326321,
+    "jobID": 113061966406,
+    "url": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37700326321",
+    "event": "push",
+    "branch": "diagnostic/dbus-observer-journal-preservation-20261007",
+    "artifactID": 11517308679,
+    "artifactAdvertisedDigest": "sha256:b3b6796e63a0b52bcb5a6bd1f54491e9cacfec78aaf58724722c264da11381fc",
+    "artifactDigestScope": "GitHub advertised archive digest; extracted artifact files independently hashed below."
+  },
+  "collectorSourceSHA256": {
+    "scripts/dbus-private-fixture.py": "b24cbda9d8b0eb952ad866a573ce46a5879266b13fe03b1caee4fc47342e6f21",
+    "scripts/acceptance-linux-dbus.py": "14111d166de07d698b77ffac362ca2e8b2eacb745638fee621172c24587e418e"
+  },
+  "runtimeSHA256": "f95e46ae3385d3783fcdd52cabaf7cdf279418f59e06d438408167ff03acad96",
+  "nativeTests": {
+    "tests": 13,
+    "skips": 0,
+    "failures": 0
+  },
+  "publicCore7": "PASS; exact catalogue unchanged before/after; actual calls to all seven operations",
+  "allTerminalReceiptsChecked": 6,
+  "receiptResults": [
+    {
+      "control": "unit",
+      "taskID": "40C57DE8-02BE-4CEF-8A14-28E1430DFD28",
+      "leaseID": "D5CFC40D-83BE-46CA-909F-808A5120519E",
+      "state": "accepted",
+      "outcome": "unverified",
+      "canonicalSignatureAndBoundClaims": "PASS",
+      "argumentBinding": "PASS"
+    },
+    {
+      "control": "positive",
+      "taskID": "64D37853-11DA-4B3C-B72B-F7AAB58099ED",
+      "leaseID": "DE23A25A-433E-416A-97C2-4A624E96170A",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "canonicalSignatureAndBoundClaims": "PASS",
+      "argumentBinding": "PASS",
+      "exactNativeJournalVsSignedObservation": "PASS",
+      "independentlyDerivedDigest": "249f8226641ff882e68b011737a6537a91bdbe55077038583efd544a91c7e19b",
+      "markers": {
+        "observedInvocation": "64D37853-11DA-4B3C-B72B-F7AAB58099ED",
+        "requestInvocation": "64D37853-11DA-4B3C-B72B-F7AAB58099ED"
+      }
+    },
+    {
+      "control": "missing",
+      "taskID": "6022D240-1988-4778-ADF4-41776BD6EAC8",
+      "leaseID": "D9DBE29D-6E90-455B-9982-2C132782CE7B",
+      "state": "accepted",
+      "outcome": "unverified",
+      "canonicalSignatureAndBoundClaims": "PASS",
+      "argumentBinding": "PASS"
+    },
+    {
+      "control": "replay",
+      "taskID": "89ACA707-7DD0-434D-A6C5-DE7F4B5E167B",
+      "leaseID": "2D92405C-88DA-4509-9FD1-A2A40326A207",
+      "state": "failed",
+      "outcome": "failed",
+      "canonicalSignatureAndBoundClaims": "PASS",
+      "argumentBinding": "PASS",
+      "exactNativeJournalVsSignedObservation": "PASS",
+      "independentlyDerivedDigest": "249f8226641ff882e68b011737a6537a91bdbe55077038583efd544a91c7e19b",
+      "markers": {
+        "observedInvocation": "64D37853-11DA-4B3C-B72B-F7AAB58099ED",
+        "requestInvocation": "89ACA707-7DD0-434D-A6C5-DE7F4B5E167B"
+      }
+    },
+    {
+      "control": "restored",
+      "taskID": "C868D57B-8158-4776-AA85-8C252E9AB7B1",
+      "leaseID": "26FC0D9E-AAE2-40D5-97D5-B685B4DC6164",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "canonicalSignatureAndBoundClaims": "PASS",
+      "argumentBinding": "PASS",
+      "exactNativeJournalVsSignedObservation": "PASS",
+      "independentlyDerivedDigest": "249f8226641ff882e68b011737a6537a91bdbe55077038583efd544a91c7e19b",
+      "markers": {
+        "observedInvocation": "C868D57B-8158-4776-AA85-8C252E9AB7B1",
+        "requestInvocation": "C868D57B-8158-4776-AA85-8C252E9AB7B1"
+      }
+    },
+    {
+      "control": "typed-array",
+      "taskID": "4EA8D703-E65D-4909-9829-A6022A407F37",
+      "leaseID": "9A9362D5-6AEA-4481-A64B-08DB37C2D430",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "canonicalSignatureAndBoundClaims": "PASS",
+      "argumentBinding": "PASS",
+      "typedCompletedArray": [
+        "safe native discovery",
+        "literal $(no-shell)",
+        "--address=unix:path=/must-not-connect"
+      ]
+    }
+  ],
+  "retainedStatus": "Exact first-success record and receipt retained",
+  "nativeJournal": {
+    "effects": 4,
+    "observations": 3,
+    "positiveObservedEqualsRequest": true,
+    "replayObservedPriorMarkerAndDifferentRequest": true,
+    "restoredObservedEqualsRequest": true
+  },
+  "leastAuthority": {
+    "methodDenials": {
+      "observerWrite": {
+        "exit": 1,
+        "stderr": "Call failed: Access denied\n"
+      },
+      "writerRead": {
+        "exit": 1,
+        "stderr": "Call failed: Access denied\n"
+      }
+    },
+    "scope": "Private Linux bus daemon EXTERNAL kernel UID enforces writer1100/observer1101 method separation; scoped host lease/policy. No issuer/delegation claim."
+  },
+  "ownerLifecycle": {
+    "originalOwner": ":1.0",
+    "restoredOwner": ":1.1264",
+    "actualGraphWithdrawalRestoration": "PASS",
+    "changedDescriptorBinding": "PASS",
+    "scope": "CI acceptance source also asserts old unique connection remains callable after ReleaseName; raw retained capability transcripts and owned effects confirm withdrawal/restoration."
+  },
+  "pin": {
+    "sha256": "c632f7b508a4ab1acfdd69d08b504f67c94209d85ffb5fce71a9bbfd8c0c0acd",
+    "bytes": 32
+  },
+  "unchangedVerifier": {
+    "sha256": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966",
+    "bytes": 28953
+  },
+  "externalTruth": "Actual separate native observer read bus and stored file, computing digest over provider bytes; exact preserved journal equals signed observation and digest is independently rederived from supplied owned value. Temporary record files were cleaned after CI and cannot be reread offline. Signature alone does not establish external truth.",
+  "exclusions": [
+    "all eleven substrates",
+    "fresh restricted AI",
+    "generic stream functionality",
+    "production issuer delegation",
+    "production persistent key/trust lifecycle",
+    "arbitrary Linux capabilities",
+    "fresh installed release"
+  ],
+  "artifactPins": {
+    "binary-sha256.txt": {
+      "sha256": "bfb181b6be220546945965251c30c4dcdbd5ff1baf71bb4525aea16b6b3dd26d",
+      "bytes": 92
+    },
+    "collector-source-sha256.txt": {
+      "sha256": "d1f23acf3d95ba6850d767afedc796930be694ebc8dbd02226665151e1aa508f",
+      "bytes": 197
+    },
+    "native-tests.log": {
+      "sha256": "f3aa74f407623baa2dea955820991b9343a3ff2993e5a5ae9b6cf4f55fde9dce",
+      "bytes": 184801
+    },
+    "seven-core/ack-unit-receipt.json": {
+      "sha256": "2981784220b3971d54521d7ab00fc98661207866f4b4515d8653b85a7464f8a8",
+      "bytes": 10235
+    },
+    "seven-core/actual-introspection.json": {
+      "sha256": "0de519d4f8f4daad48a9bf1fb49aaadd8dab80928ce04e1a28e27d3be4eec292",
+      "bytes": 1354
+    },
+    "seven-core/actual-introspection.xml": {
+      "sha256": "f418659c438f7728fe8b20a51d20e25b23e4ce4a6c5ac1753f7619f81fe44561",
+      "bytes": 1208
+    },
+    "seven-core/bus.stderr.log": {
+      "sha256": "c5b69212daa2b64d00f2d1d5bcd909e14a7f1cc7b3f80ba0aeb1dc4c5135d1cc",
+      "bytes": 947
+    },
+    "seven-core/default-session/mcp.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "seven-core/default-session/transcript.json": {
+      "sha256": "0c311685b5b0059d601f1b2eb8959d6200af9d2dc5077673d5f37d73ee27039b",
+      "bytes": 42179
+    },
+    "seven-core/effects.jsonl": {
+      "sha256": "af56530b81901d95b709a0a0bdaee8058045d7b2211beb0e1a50bae34c97b0ef",
+      "bytes": 497
+    },
+    "seven-core/mcp.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "seven-core/observations.jsonl": {
+      "sha256": "309e1493210acb588dde02d4c8bc961b96c7712d93ce70f33322c8c05d0c9a0d",
+      "bytes": 1107
+    },
+    "seven-core/observer.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "seven-core/private-bus-policy.xml": {
+      "sha256": "a27b44784f3c725349342b59b6f4c76c29f3c257508ec4666cccf1768c261b32",
+      "bytes": 1304
+    },
+    "seven-core/provider-enforced-denials.json": {
+      "sha256": "e4369642620b81299ba978a75bcecac7b41932b78431bbf27fdfa53a60139805",
+      "bytes": 171
+    },
+    "seven-core/results.json": {
+      "sha256": "e3bec48fddfe276461c72e77ed1e76af493544aa8bfb22e5aebb55ba463cb70b",
+      "bytes": 2382
+    },
+    "seven-core/service.stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "seven-core/success-receipt.json": {
+      "sha256": "9a8c738f5de46d997e8ea1e5a4f6b9b06a8c2e9c5946fecb5be8c1745c40bec2",
+      "bytes": 12747
+    },
+    "seven-core/transcript.json": {
+      "sha256": "e257671f8b9426b86662b7be7e5c7f4738f517e6a5171adb612ec42740efb83a",
+      "bytes": 200662
+    },
+    "seven-core/trusted-public-key.raw": {
+      "sha256": "c632f7b508a4ab1acfdd69d08b504f67c94209d85ffb5fce71a9bbfd8c0c0acd",
+      "bytes": 32
+    },
+    "source.txt": {
+      "sha256": "2d51b9b499f87dd52e4a97c532c92ddeedf46bfe3f0a7f8c37e161476957f71e",
+      "bytes": 41
+    },
+    "sources-tree.txt": {
+      "sha256": "85257b6e081713af4817fc8e991688f152c86ebb0738a5ef3b045b6ac4c64c7e",
+      "bytes": 41
+    },
+    "toolchain.txt": {
+      "sha256": "c01ffead3c63e0960a3ae3e8a6e737e13fee8812d378e0e7e40a62f20c00f71a",
+      "bytes": 75
+    }
+  }
+}

@@ -1,0 +1,11 @@
+# Reconciled runtime 0.2.3 candidate identity
+
+This index supersedes the earlier frozen ledger only where it described D2 as the current final archive or used the historical 64-minute Windows observation. Those original proof bytes remain unchanged. The new unpublished source archive is F984, Sources3f122, with reviewed current main28b preserved. The runtime implementation dependency tree is unchanged from the earlier focused fixes; whole-package identity changes because the standalone ARD helper and the two D-Bus collectors changed.
+
+Local package byte/mode closure, deterministic repeat, formula equality and21-kind inventory alignment passed. These are packaging checks, not runtime or all-substrate acceptance. Both generated repository formulas pin0.2.3/F984; the public Homebrew formula remains accepted0.2.2.
+
+The linked native D-Bus GREEN belongs to actual diagnostic head8f737/C741 and runtimef95e46. Six canonical receipts and exact observation/request journal markers were independently checked by this delivery agent. Its script-only repair is included here; the hardcoded diagnostic workflow is not imported. Temporary native records were cleaned by the executed workflow, so the retained offline audit uses journals and pinned collector source rather than rereading those records.
+
+The old39b Windows failure is an exact25-minute deadline with unknown cause. The isolated28a801 diagnostic has passed ownership/drain controls, protected references, complete build and discovery; integrated execution remains pending at this index timestamp. Do not infer a failing assertion, deadlock or wait location from buffered output.
+
+Earlier D2/23d9/4f6c and39b/physical35e9 proofs remain tied to their own source and binary identities. Main ARD metadata output has a scoped standalone compile/control proof; artifact fetch/adoption and full eleven-substrate acceptance are not established by it. Immutable publication, final-head platform gates, new bottle/tap alignment and fresh installation remain pending. Connected installation acceptance must verify a new process PID, runtime0.2.3 and the expected binary hash together. The inherited symlink identity weakness remains an original-goal RED, and no procedural memory retrieval is claimed.

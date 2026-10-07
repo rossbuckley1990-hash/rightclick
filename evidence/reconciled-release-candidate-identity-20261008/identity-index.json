@@ -1,0 +1,99 @@
+{
+  "status": "UNPUBLISHED_RECONCILED_RELEASE_CANDIDATE",
+  "observedAtUTC": "2026-10-07T23:23:37Z",
+  "runtimeVersion": "0.2.3",
+  "sourceHeadBeforeMetadataCommit": "fca70b91ac893aefe98cb982c616bfb4b040fe43",
+  "sourcesTree": "3f122015907d3b30d8442d5380e9803eb617876e",
+  "retainedMain": "28b2ab4b4cff713d6bbe5bbe3c7dfc5def40d961",
+  "publishedPR49Head": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+  "sourceArchive": {
+    "sha256": "f98408da81bd45ebcd526fcf9eb4995d4bd2bc471b1c58254792970e1befd054",
+    "bytes": 737919,
+    "members": 442,
+    "trackedScripts": 76,
+    "deterministicRepeat": "PASS",
+    "closedBytesAndModes": "PASS",
+    "localKindAlignment": "PASS:21 kinds; inventory comparison only",
+    "freshBuildAndRuntimeAcceptance": "PENDING: do not reuse old binary identity as this physical-head proof"
+  },
+  "packageChangesFromFrozenD2": [
+    "Sources/RightClickARDProbe/main.swift",
+    "scripts/acceptance-linux-dbus.py",
+    "scripts/dbus-private-fixture.py"
+  ],
+  "generatedFormulas": {
+    "version": "0.2.3",
+    "sourceSHA256": "f98408da81bd45ebcd526fcf9eb4995d4bd2bc471b1c58254792970e1befd054",
+    "paths": [
+      "packaging/homebrew/rightclick.rb",
+      "packaging/tap/Formula/rightclick.rb"
+    ],
+    "resourceSHA256": "b2cae3aa9df45b4c2fe9b1d700ebacce39f9feb6a6b46b86e6499f9a51bf72ff",
+    "byteEquality": "PASS",
+    "staleBottleBlockAbsent": true
+  },
+  "publicTap": {
+    "head": "72a632c9b7182f25e293eba9bc444c542ebf8c04",
+    "formulaVersion": "0.2.2",
+    "immutablePublicationRepairPR": 14,
+    "status": "Repair merged; no source asset, new bottle, formula version transition or install performed"
+  },
+  "connectedRuntime": {
+    "version": "0.2.2",
+    "pid": 67552,
+    "transport": "stdio",
+    "executablePath": "/opt/homebrew/bin/rightclick",
+    "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "attestationSource": "Actual canonical context_runtime on this delivery agent; no procedural memory retrieval demonstrated"
+  },
+  "scopedNativeDBus": {
+    "status": "GREEN",
+    "physicalHead": "8f7372226749550767548352c5d6463f305a8794",
+    "sourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+    "runID": 37700326321,
+    "jobID": 113061966406,
+    "runtimeSHA256": "f95e46ae3385d3783fcdd52cabaf7cdf279418f59e06d438408167ff03acad96",
+    "tests": 13,
+    "skips": 0,
+    "failures": 0,
+    "independentReceipts": 6,
+    "collectorSourceImported": "ccc3666b2be33624950b26c62a2ade81470b6e7b",
+    "evidence": "../dbus-observer-journal-preservation-20261007/native-green-20261008",
+    "scope": "Actual Linux collector/native provider/signatures/readback/UID/lifecycle; not fresh reconciled package/platform or eleven-substrate proof"
+  },
+  "nativeWindows": {
+    "status": "RED_PENDING_DIAGNOSIS_AND_FULL_ACCEPTANCE",
+    "old39bRunID": 37693558244,
+    "old39bJobID": 113039948241,
+    "oldConclusion": "FAILURE: exact 25-minute integrated deadline; cause UNKNOWN, no test-start trace or summary",
+    "dedicatedDiagnosticHead": "28a801d598e21e14a75ff3cf9940919c190aaeaf",
+    "diagnosticSourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+    "runID": 37699465385,
+    "jobID": 113059171723,
+    "completedSteps": "Native supervisor ownership/drain controls, protected references, complete test build and full discovery passed",
+    "integratedStartedAtUTC": "2026-10-07T23:15:14Z",
+    "integratedStatusAtObservation": "IN_PROGRESS",
+    "releaseAndActualCore7": "PENDING",
+    "scope": "No full Windows or reconciled-head GREEN claim"
+  },
+  "supersededFrozenProofIdentity": {
+    "sourceArchiveSHA256": "d2d42b8f24d9bfda18e7f2b2e36ee529db4a33c7bf763b8e83f3fca139974741",
+    "sourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+    "runtimeSHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+    "freshSourceBuiltRuntimeSHA256": "4f6cfc934be6fbca548d2a6ced7c7a2b8f7e27fdc39868eeec6e0a6eef67aa39",
+    "physicalSourceMacCheckout": "35e9ab847e1fbe4aaaeb680b9527717857b6d01b",
+    "physicalSourceMacTreeEquivalence": "Entire tree equals 39b; it does not include newer main28b",
+    "preservePriorLedger": "../final-supported-rest-native-unary-compatibility-20261007/focused-release-red-green-ledger.md",
+    "scope": "Prior source/binary/CI claims remain valid only for their recorded identities. Prior ledger description of D2 as current final archive is superseded by this index. The historical 64-minute Windows observation is superseded by the exact39b deadline and active diagnostic identity above."
+  },
+  "remainingGates": [
+    "Fresh reconciled extracted-source build and actual runtime/catalogue acceptance",
+    "Final exact physical-head native macOS/Linux/Windows CI and real provider transport acceptance",
+    "Accepted immutable source/runtime publication",
+    "Attested tested new bottle and public tap alignment",
+    "Fresh installed and connected runtime requires new PID plus version0.2.3 plus known executable SHA together",
+    "Inherited runtime symlink provenance RED remains original-goal follow-up",
+    "Complete eleven-substrate restricted-agent/authority/task/stream/delegation acceptance remains RED"
+  ]
+}
