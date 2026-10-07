@@ -51,3 +51,23 @@ Native Windows repair verification, Linux/Windows integrated convergence,
 Experience persistence, distribution and the eleven-substrate goal remain RED
 until their actual evidence passes. The new pre-provisioning diagnostic must run
 before CI changes its interpreter environment, preserving causal attribution.
+
+The native descriptor probe follows the documented output-validity boundary:
+`daclPresent=true` together with a NULL pointer is a NULL DACL, whereas a
+non-NULL ACL with zero measured ACEs is empty. When presence or descriptor read
+is false, pointer/defaulted outputs are reported as unavailable rather than
+inventing a NULL state. See Microsoft's
+[GetSecurityDescriptorDacl documentation](https://learn.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-getsecuritydescriptordacl)
+and the native
+[SetNamedSecurityInfoW](https://learn.microsoft.com/en-us/windows/win32/api/aclapi/nf-aclapi-setnamedsecurityinfow)
+and [GetNamedSecurityInfoW](https://learn.microsoft.com/en-us/windows/win32/api/aclapi/nf-aclapi-getnamedsecurityinfow)
+API declarations. These establish interpretation of the measured fields, not
+the actual state produced by the PowerShell recipe; that still needs live data.
+
+Shared Mac controls on repair source `c570ce9` pass 42 tests with two existing
+absent-WASM fixture skips and no failures. A separate actual HTTP/authority/
+causality/observation/deferred run passes all 41 tests, including all ten A2A
+lifecycle tests. The standalone Swift diagnostic compiles locally, but its
+Windows API execution and native client compilation remain pending actual CI.
+These local results do not upgrade the native Windows gate. The required bottle
+comparison still exits 1; release alignment belongs to the programme release lane.

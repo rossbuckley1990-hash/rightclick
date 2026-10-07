@@ -101,8 +101,12 @@ public class RightClickNativeDACLProbe {
     if(error!=0) return "{\"case\":\""+label+"\",\"descriptorError\":"+error+"}";
     try {
       bool present,defaulted; IntPtr actual; bool ok=GetSecurityDescriptorDacl(descriptor,out present,out actual,out defaulted);
-      ACL_SIZE_INFORMATION size=new ACL_SIZE_INFORMATION(); bool measured=ok && actual!=IntPtr.Zero && GetAclInformation(actual,out size,(uint)Marshal.SizeOf(typeof(ACL_SIZE_INFORMATION)),2);
-      return "{\"case\":\""+label+"\",\"descriptorRead\":"+ok.ToString().ToLowerInvariant()+",\"daclPresent\":"+present.ToString().ToLowerInvariant()+",\"daclIsNull\":"+(actual==IntPtr.Zero).ToString().ToLowerInvariant()+",\"daclDefaulted\":"+defaulted.ToString().ToLowerInvariant()+",\"aceCountMeasured\":"+measured.ToString().ToLowerInvariant()+",\"aceCount\":"+size.AceCount+"}";
+      ACL_SIZE_INFORMATION size=new ACL_SIZE_INFORMATION(); bool measured=ok && present && actual!=IntPtr.Zero && GetAclInformation(actual,out size,(uint)Marshal.SizeOf(typeof(ACL_SIZE_INFORMATION)),2);
+      string presentValue=ok ? present.ToString().ToLowerInvariant() : "null";
+      string nullValue=ok && present ? (actual==IntPtr.Zero).ToString().ToLowerInvariant() : "null";
+      string defaultedValue=ok && present ? defaulted.ToString().ToLowerInvariant() : "null";
+      string aceCountValue=measured ? size.AceCount.ToString() : "null";
+      return "{\"case\":\""+label+"\",\"descriptorRead\":"+ok.ToString().ToLowerInvariant()+",\"daclPresent\":"+presentValue+",\"daclIsNull\":"+nullValue+",\"daclDefaulted\":"+defaultedValue+",\"aceCountMeasured\":"+measured.ToString().ToLowerInvariant()+",\"aceCount\":"+aceCountValue+"}";
     } finally { LocalFree(descriptor); }
   }
   public static uint SetNull(string path) { return SetNamedSecurityInfo(path,1,4,IntPtr.Zero,IntPtr.Zero,IntPtr.Zero,IntPtr.Zero); }
