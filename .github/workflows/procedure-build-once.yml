@@ -1,0 +1,22 @@
+name: Procedure one-shot native build
+on:
+  push:
+    branches: [feature/procedural-knowledge-002]
+    paths: [scripts/procedure-bootstrap.py]
+permissions:
+  contents: read
+jobs:
+  build:
+    if: github.repository == 'rossbuckley1990-hash/rightclick' && github.ref == 'refs/heads/feature/procedural-knowledge-002'
+    runs-on: macos-26
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Apply hash-pinned upgrade to isolated worktree
+        run: python3 scripts/procedure-bootstrap.py apply
+      - name: Execute native and portable procedure tests
+        run: swift test --force-resolved-versions --filter Procedure
+      - name: Publish verified files to the same feature branch and remove bootstrap
+        run: python3 scripts/procedure-bootstrap.py publish
