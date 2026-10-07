@@ -50,14 +50,7 @@ jobs:
           VENV_STATUS=$?
           alien-venv/bin/python -m pip install --disable-pip-version-check --no-input gradio >alien-proof/gradio-install.log 2>&1
           INSTALL_STATUS=$?
-          GRADIO_VERSION="$(alien-venv/bin/python - <<'PY'
-import importlib.metadata
-try:
-    print(importlib.metadata.version("gradio"))
-except Exception as exc:
-    print(f"unavailable:{exc}")
-PY
-          )"
+          GRADIO_VERSION="$(alien-venv/bin/python -c 'import importlib.metadata; print(importlib.metadata.version("gradio"))' 2>/dev/null)"
 
           alien-venv/bin/gradio info gradio/calculator >alien-proof/calculator-info.json 2>alien-proof/calculator-info.err
           CALC_INFO_STATUS=$?
@@ -72,103 +65,105 @@ PY
           export VENV_STATUS INSTALL_STATUS GRADIO_VERSION CALC_INFO_STATUS CALC_PREDICT_STATUS FLUX_INFO_STATUS
 
           python3 - <<'PY'
-import json, os, pathlib, hashlib
+          import json, os, pathlib
 
-def load_json(path):
-    p = pathlib.Path(path)
-    if not p.exists():
-        return None
-    try:
-        return json.loads(p.read_text(encoding="utf-8", errors="replace"))
-    except Exception:
-        return None
+          def load_json(path):
+              p = pathlib.Path(path)
+              if not p.exists():
+                  return None
+              try:
+                  return json.loads(p.read_text(encoding="utf-8", errors="replace"))
+              except Exception:
+                  return None
 
-calc_info = load_json("alien-proof/calculator-info.json")
-calc_result = load_json("alien-proof/calculator-result.json")
-flux_info = load_json("alien-proof/flux-info.json")
+          calc_info = load_json("alien-proof/calculator-info.json")
+          calc_result = load_json("alien-proof/calculator-result.json")
+          flux_info = load_json("alien-proof/flux-info.json")
 
-observed_output = None
-if isinstance(calc_result, dict):
-    for key in ("output", "result", "value"):
-        if key in calc_result:
-            observed_output = calc_result[key]
-            break
-    if observed_output is None and len(calc_result) == 1:
-        observed_output = next(iter(calc_result.values()))
+          observed_output = None
+          if isinstance(calc_result, dict):
+              for key in ("output", "result", "value"):
+                  if key in calc_result:
+                      observed_output = calc_result[key]
+                      break
+              if observed_output is None and len(calc_result) == 1:
+                  observed_output = next(iter(calc_result.values()))
 
-calculator_verified = observed_output == 437 or observed_output == 437.0
+          calculator_verified = observed_output == 437 or observed_output == 437.0
 
-skill_ok = (
-    int(os.environ.get("SKILL_FETCH_STATUS", "999")) == 0
-    and int(os.environ.get("SKILL_INFO_INSTRUCTION_STATUS", "999")) == 0
-    and int(os.environ.get("SKILL_PREDICT_INSTRUCTION_STATUS", "999")) == 0
-)
+          skill_ok = (
+              int(os.environ.get("SKILL_FETCH_STATUS", "999")) == 0
+              and int(os.environ.get("SKILL_INFO_INSTRUCTION_STATUS", "999")) == 0
+              and int(os.environ.get("SKILL_PREDICT_INSTRUCTION_STATUS", "999")) == 0
+          )
 
-semantic_success = (
-    int(os.environ.get("GIT_STATUS", "999")) == 0
-    and skill_ok
-    and int(os.environ.get("VENV_STATUS", "999")) == 0
-    and int(os.environ.get("INSTALL_STATUS", "999")) == 0
-    and int(os.environ.get("CALC_INFO_STATUS", "999")) == 0
-    and int(os.environ.get("CALC_PREDICT_STATUS", "999")) == 0
-    and calculator_verified
-)
+          semantic_success = (
+              int(os.environ.get("GIT_STATUS", "999")) == 0
+              and skill_ok
+              and int(os.environ.get("VENV_STATUS", "999")) == 0
+              and int(os.environ.get("INSTALL_STATUS", "999")) == 0
+              and int(os.environ.get("CALC_INFO_STATUS", "999")) == 0
+              and int(os.environ.get("CALC_PREDICT_STATUS", "999")) == 0
+              and calculator_verified
+          )
 
-proof = {
-    "experiment": "RIGHTCLICK Alien Relay Generation 4",
-    "observed_utc": os.environ.get("OBSERVED_AT"),
-    "repository_commit_sha": os.environ.get("REPO_SHA"),
-    "runner": {
-        "os": os.environ.get("RUNNER_OS_VALUE"),
-        "arch": os.environ.get("RUNNER_ARCH_VALUE"),
-    },
-    "procedure": "skills/rightclick/procedures/recursive-capability-expansion.v1.json",
-    "recursive_path": [
-        "ChatGPT seven generic RIGHTCLICK operations",
-        "RIGHTCLICK reflected GitHub OpenAPI provider",
-        "GitHub-hosted Ubuntu runner",
-        "compiled RIGHTCLICK ARD probe",
-        "Hugging Face ARD discovery",
-        "huggingface-gradio application/ai-skill",
-        "Gradio protocol learned from immutable skill artifact",
-        "public Gradio Space API introspected at runtime",
-        "new remote application invoked",
-    ],
-    "learned_procedure": {
-        "source_commit": os.environ.get("SKILL_COMMIT"),
-        "source_url": os.environ.get("SKILL_URL"),
-        "sha256": os.environ.get("SKILL_SHA256"),
-        "contains_info_instruction": int(os.environ.get("SKILL_INFO_INSTRUCTION_STATUS", "999")) == 0,
-        "contains_predict_instruction": int(os.environ.get("SKILL_PREDICT_INSTRUCTION_STATUS", "999")) == 0,
-    },
-    "acquired_client": {
-        "gradio_version": os.environ.get("GRADIO_VERSION"),
-        "install_exit_status": int(os.environ.get("INSTALL_STATUS", "999")),
-    },
-    "new_remote_contract": {
-        "space": "gradio/calculator",
-        "info_exit_status": int(os.environ.get("CALC_INFO_STATUS", "999")),
-        "contract": calc_info,
-    },
-    "invocation": {
-        "endpoint": "/predict",
-        "arguments": {"num1": 19, "operation": "multiply", "num2": 23},
-        "exit_status": int(os.environ.get("CALC_PREDICT_STATUS", "999")),
-        "returned": calc_result,
-        "independent_postcondition": "output == 437",
-        "postcondition_observed": calculator_verified,
-    },
-    "next_context_probe": {
-        "space": "black-forest-labs/FLUX.2-dev",
-        "info_exit_status": int(os.environ.get("FLUX_INFO_STATUS", "999")),
-        "contract": flux_info,
-    },
-    "semantic_success": semantic_success,
-    "verification_rule": "Success requires an immutable discovered skill to teach both Gradio discovery and invocation, runtime acquisition of the client, live schema introspection of a previously unintegrated Space, execution of the discovered endpoint, and independent observation that 19*23 equals 437.",
-}
-with open("alien-proof/rightclick-alien-proof.json", "w", encoding="utf-8") as f:
-    json.dump(proof, f, indent=2, sort_keys=True)
-PY
+          proof = {
+              "experiment": "RIGHTCLICK Alien Relay Generation 4 Retry 1",
+              "observed_utc": os.environ.get("OBSERVED_AT"),
+              "repository_commit_sha": os.environ.get("REPO_SHA"),
+              "runner": {"os": os.environ.get("RUNNER_OS_VALUE"), "arch": os.environ.get("RUNNER_ARCH_VALUE")},
+              "procedure": "skills/rightclick/procedures/recursive-capability-expansion.v1.json",
+              "generation_4_failure": {
+                  "cause": "workflow YAML invalid because heredoc bodies escaped the run block indentation",
+                  "semantic_execution_reached": False,
+                  "response": "repair orchestration syntax only; preserve learned-protocol experiment and safety boundary",
+              },
+              "recursive_path": [
+                  "ChatGPT seven generic RIGHTCLICK operations",
+                  "RIGHTCLICK reflected GitHub OpenAPI provider",
+                  "GitHub-hosted Ubuntu runner",
+                  "compiled RIGHTCLICK ARD probe",
+                  "Hugging Face ARD discovery",
+                  "huggingface-gradio application/ai-skill",
+                  "Gradio protocol learned from immutable skill artifact",
+                  "public Gradio Space API introspected at runtime",
+                  "new remote application invoked",
+              ],
+              "learned_procedure": {
+                  "source_commit": os.environ.get("SKILL_COMMIT"),
+                  "source_url": os.environ.get("SKILL_URL"),
+                  "sha256": os.environ.get("SKILL_SHA256"),
+                  "contains_info_instruction": int(os.environ.get("SKILL_INFO_INSTRUCTION_STATUS", "999")) == 0,
+                  "contains_predict_instruction": int(os.environ.get("SKILL_PREDICT_INSTRUCTION_STATUS", "999")) == 0,
+              },
+              "acquired_client": {
+                  "gradio_version": os.environ.get("GRADIO_VERSION"),
+                  "install_exit_status": int(os.environ.get("INSTALL_STATUS", "999")),
+              },
+              "new_remote_contract": {
+                  "space": "gradio/calculator",
+                  "info_exit_status": int(os.environ.get("CALC_INFO_STATUS", "999")),
+                  "contract": calc_info,
+              },
+              "invocation": {
+                  "endpoint": "/predict",
+                  "arguments": {"num1": 19, "operation": "multiply", "num2": 23},
+                  "exit_status": int(os.environ.get("CALC_PREDICT_STATUS", "999")),
+                  "returned": calc_result,
+                  "independent_postcondition": "output == 437",
+                  "postcondition_observed": calculator_verified,
+              },
+              "next_context_probe": {
+                  "space": "black-forest-labs/FLUX.2-dev",
+                  "info_exit_status": int(os.environ.get("FLUX_INFO_STATUS", "999")),
+                  "contract": flux_info,
+              },
+              "semantic_success": semantic_success,
+              "verification_rule": "Success requires an immutable discovered skill to teach both Gradio discovery and invocation, runtime acquisition of the client, live schema introspection of a previously unintegrated Space, execution of the discovered endpoint, and independent observation that 19*23 equals 437.",
+          }
+          with open("alien-proof/rightclick-alien-proof.json", "w", encoding="utf-8") as f:
+              json.dump(proof, f, indent=2, sort_keys=True)
+          PY
 
           cat alien-proof/rightclick-alien-proof.json
 
