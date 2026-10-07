@@ -1,17 +1,6 @@
-#if canImport(CryptoKit)
 import CryptoKit
-#else
-import Crypto
-#endif
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#endif
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Optional generic execution edge. Substrate compilers retain their existing
 /// transports; the engine supplies the common admission owner and live graph.
@@ -90,9 +79,25 @@ struct RCIRHostConfiguration: Codable {
     }
 
     static func protectedRead(_ path: String, maximum: Int) throws -> Data {
-        try CapabilityProtectedReference.read(path, maximum: maximum)
+        let descriptor = open(path, O_RDONLY | O_NOFOLLOW | O_CLOEXEC)
+        guard descriptor >= 0 else { throw RCIRError.authorityDenied }
+        defer { close(descriptor) }
+        var info = stat()
+        guard fstat(descriptor, &info) == 0, info.st_mode & S_IFMT == S_IFREG,
+              info.st_uid == geteuid(), info.st_mode & 0o077 == 0,
+              info.st_size >= 0, info.st_size <= maximum else { throw RCIRError.authorityDenied }
+        var bytes = [UInt8](repeating: 0, count: maximum + 1)
+        var count = 0
+        while count < bytes.count {
+            let remaining = bytes.count - count
+            let n = bytes.withUnsafeMutableBytes { read(descriptor, $0.baseAddress!.advanced(by: count), remaining) }
+            guard n >= 0 else { throw RCIRError.authorityDenied }
+            if n == 0 { break }
+            count += n
+        }
+        guard count <= maximum else { throw RCIRError.invalidLimit }
+        return Data(bytes.prefix(count))
     }
-
 }
 
 /// Trusted host attachment for one invocation. The grant is immutable; context
@@ -100,13 +105,9 @@ struct RCIRHostConfiguration: Codable {
 /// seam does not itself authenticate MCP clients, operating-system users or peers.
 public struct RCIRHostAuthority {
     public let grant: RCIRAuthorityGrant
-    private let authenticate: () throws -> RCIRAuthorityContext
+    public let currentContext: () throws -> RCIRAuthorityContext
     public init(grant: RCIRAuthorityGrant, authenticatedContext: @escaping () throws -> RCIRAuthorityContext) {
-        self.grant = grant; authenticate = authenticatedContext
-    }
-    fileprivate func authenticatedContext() throws -> RCIRAuthorityContext {
-        do { return try authenticate() }
-        catch { throw RCIRError.authorityDenied }
+        self.grant = grant; currentContext = authenticatedContext
     }
 }
 
@@ -237,7 +238,7 @@ public final class RCIRExecutionHost {
             let lease: RCIRLease
             if let attachment = invocationAuthority {
                 lease = try admission.issue(binding, arguments: arguments, grant: attachment.grant,
-                    authenticated: attachment.authenticatedContext(), policy: policy(config), now: now())
+                    authenticated: attachment.currentContext(), policy: policy(config), now: now())
             } else {
                 lease = try admission.issue(binding, arguments: arguments, authority: authority(),
                     policy: policy(config), now: now())
@@ -245,7 +246,7 @@ public final class RCIRExecutionHost {
             func currentInvocationAuthority() -> Bool {
                 guard let attachment = invocationAuthority else { return true }
                 do {
-                    try self.admission.validateAuthority(attachment.grant, authenticated: attachment.authenticatedContext(),
+                    try self.admission.validateAuthority(attachment.grant, authenticated: attachment.currentContext(),
                         binding: binding, arguments: arguments, now: self.now())
                     return true
                 } catch { return false }
@@ -271,7 +272,7 @@ public final class RCIRExecutionHost {
                         let start = { dispatched = true; enqueue() }
                         if let attachment = invocationAuthority {
                             try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments),
-                                grant: attachment.grant, authenticated: attachment.authenticatedContext(),
+                                grant: attachment.grant, authenticated: attachment.currentContext(),
                                 policy: policy(self.configuration()), now: self.now(), start: start)
                         } else {
                             try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments), authority: authority(),
@@ -351,14 +352,7 @@ public final class RCIRExecutionHost {
                 return session.status(refresh: false)
             } else if record.state == .accepted || record.state == .succeeded {
                 do {
-                    if case .unit? = abi.result {
-                        // An acknowledgement with no declared output supplies
-                        // no typed result. Only host observation may verify it.
-                        record.output = nil
-                        try task.record(.completedWithoutOutput, sequence: 1, now: now())
-                    } else {
-                        try task.record(.completed(resultValue(record)), sequence: 1, now: now())
-                    }
+                    try task.record(.completed(resultValue(record)), sequence: 1, now: now())
                 } catch {
                     record.state = .unknown
                     try task.providerDisappeared(now: now())

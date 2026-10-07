@@ -24,14 +24,14 @@ jobs:
       - name: Actual engine and real HTTP effect controls
         run: |
           mkdir -p /tmp/rcir-evidence
-          RCIR_DISPATCH_EVIDENCE=/tmp/rcir-evidence/native-effects swift test --force-resolved-versions --filter RCIRProductionDispatchTests
+          RCIR_DISPATCH_EVIDENCE=/tmp/rcir-evidence/native-effects RCIR_AUTHORITY_EVIDENCE=/tmp/rcir-evidence/authority swift test --force-resolved-versions --filter 'RCIRProductionDispatchTests|RCIRAuthorityDispatchTests'
       - name: Real OpenAPI through exactly seven public operations
         run: python3 scripts/acceptance-rcir-openapi.py .build/debug/rightclick /tmp/rcir-evidence/public-mcp
       - name: Independently check signed claims and provider effect correlation
         run: |
           python3 -m venv /tmp/rcir-receipt-verifier
           /tmp/rcir-receipt-verifier/bin/python -m pip install cryptography==50.0.1
-          /tmp/rcir-receipt-verifier/bin/python -m unittest discover -s Tests -p 'test_rcir_receipt_verifier.py' -v
+          RIGHTCLICK_AUTHORITY_RECEIPT_EVIDENCE=/tmp/rcir-evidence/authority /tmp/rcir-receipt-verifier/bin/python -m unittest discover -s Tests -p 'test_rcir*receipt_verifier.py' -v
           /tmp/rcir-receipt-verifier/bin/python scripts/acceptance-rcir-signed-evidence.py --public /tmp/rcir-evidence/public-mcp --native /tmp/rcir-evidence/native-effects --output /tmp/rcir-evidence/independent-signed-claims
       - name: Actual live schema drift and reacquisition without reconnecting
         run: python3 scripts/acceptance-rcir-openapi-freshness.py .build/debug/rightclick /tmp/rcir-evidence/live-schema

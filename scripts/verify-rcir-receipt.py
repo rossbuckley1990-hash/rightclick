@@ -9,6 +9,7 @@ import argparse
 import base64
 import json
 import math
+import hashlib
 from pathlib import Path
 import re
 import struct
@@ -111,6 +112,107 @@ def _identifier(value):
     return value
 
 
+def _authority_claims(encoded, binding, request):
+    """Strict optional authority-v1 decode; no unknown fields or implicit scopes.
+
+    This checks the signed attenuation/binding claims, not live host-ledger state
+    or issuer enforcement. Only the runtime can attest atomic usage/revocation.
+    """
+    def fields(value, expected):
+        if not isinstance(value, dict) or set(value) != set(expected): raise ValueError("unsupported authority fields")
+    def identity(value):
+        if not isinstance(value, str) or not value or len(value.encode("utf-8")) > 4096 or "*" in value:
+            raise ValueError("invalid authority identity")
+        return value.encode("utf-8")
+    def collection(values, limit, parse, nonempty=True):
+        if not isinstance(values, list) or len(values) > limit or (nonempty and not values): raise ValueError("invalid authority set")
+        result = [parse(value) for value in values]
+        if len(set(result)) != len(result): raise ValueError("duplicate authority set value")
+        return set(result)
+    def scope(value):
+        fields(value, {"resource", "effect"})
+        if value["effect"] not in ("read", "write", "delete", "execute", "publish", "subscribe", "securityChange"):
+            raise ValueError("unknown authority effect")
+        return (identity(value["resource"]), value["effect"])
+    def target(value):
+        fields(value, {"provider", "capability", "providerPrincipal", "generation", "discovery"})
+        if type(value["generation"]) is not int or value["generation"] < 1 or not isinstance(value["discovery"], bytes):
+            raise ValueError("invalid authority target")
+        return (identity(value["provider"]), identity(value["capability"]), identity(value["providerPrincipal"]), value["generation"], value["discovery"])
+    def reference(value):
+        fields(value, {"id", "issuer", "audience"})
+        return (_identifier(value["id"]), identity(value["issuer"]), identity(value["audience"]))
+    contract = _domain(binding["contract"], "CONTRACT")
+    fields(contract, {"abi", "effects", "task", "verification"})
+    prefix = b"RIGHTCLICK-CONTRACT-1\0"
+    if not isinstance(contract["abi"], bytes) or not contract["abi"].startswith(prefix): raise ValueError("invalid capability ABI")
+    abi = _value(contract["abi"][len(prefix):])
+    fields(abi, {"version", "provider", "reflector", "capability", "arguments", "result", "declaration"})
+    if type(abi["version"]) is not int or abi["version"] != 1: raise ValueError("unsupported capability ABI version")
+    actual_target = (identity(abi["provider"]), identity(abi["capability"]), identity(binding["principal"]), binding["generation"], binding.get("discovery"))
+    actual_scopes = collection(request["scopes"],512,scope,False)
+    if collection(contract["effects"],512,scope,False) != actual_scopes: raise ValueError("lease effects do not match contract")
+    policy = _domain(request["policy"], "POLICY")
+    fields(policy, {"revision", "principals", "scopes"}); identity(policy["revision"])
+    if identity(binding["principal"]) not in collection(policy["principals"],512,identity) or not actual_scopes <= collection(policy["scopes"],512,scope,False):
+        raise ValueError("authority lease is outside bound policy")
+    fields(contract["task"], {"shape", "element", "cancellable", "maxEvents", "maxBytes"})
+    nodes = []; seen = set(); current = encoded
+    while current is not None:
+        if len(nodes) >= 17: raise ValueError("authority ancestry limit")
+        grant = _domain(current, "AUTHORITY")
+        fields(grant, {"id", "issuer", "request", "issuedAt", "parent", "credentialReferences"})
+        identifier = _identifier(grant["id"])
+        if identifier in seen: raise ValueError("authority cycle")
+        seen.add(identifier); issuer = identity(grant["issuer"])
+        r = grant["request"]
+        fields(r, {"subject", "audiences", "targets", "scopes", "arguments", "taskShapes", "expiresAt", "invocationLimit", "delegationDepth"})
+        identity(r["subject"])
+        audiences = collection(r["audiences"],64,identity)
+        targets = collection(r["targets"],64,target)
+        scopes = collection(r["scopes"],512,scope,False)
+        def shape(value):
+            if value not in ("unary","deferred","serverStream","clientStream","duplex"): raise ValueError("invalid task shape")
+            return value
+        shapes = collection(r["taskShapes"],5,shape)
+        arguments = None
+        if r["arguments"] is not None:
+            def argument(value):
+                _value(value); return value
+            arguments = collection(r["arguments"],256,argument)
+        refs = collection(grant["credentialReferences"],64,reference,False)
+        if any(ref[2] not in audiences for ref in refs): raise ValueError("credential reference audience mismatch")
+        for name in ("issuedAt",):
+            if type(grant[name]) is not int or grant[name] < 0: raise ValueError("invalid authority issuance")
+        for name in ("expiresAt", "invocationLimit", "delegationDepth"):
+            if type(r[name]) is not int: raise ValueError("invalid authority limit")
+        if not 0 < r["expiresAt"] - grant["issuedAt"] <= 60_000 or not 1 <= r["invocationLimit"] <= 4096 or not 0 <= r["delegationDepth"] <= 16:
+            raise ValueError("invalid authority bounds")
+        if not grant["issuedAt"] <= request["issuedAt"] < request["expiresAt"] <= r["expiresAt"]:
+            raise ValueError("lease outside ancestor authority interval")
+        node = {"id":identifier,"issuer":issuer,"request":r,"audiences":audiences,"targets":targets,"scopes":scopes,"arguments":arguments,"shapes":shapes,"references":refs,"issuedAt":grant["issuedAt"]}
+        if nodes:
+            child = nodes[-1]; cr = child["request"]
+            if child["issuer"] != issuer or child["issuedAt"] < grant["issuedAt"] or not child["audiences"] <= audiences or not child["targets"] <= targets or not child["scopes"] <= scopes or not child["shapes"] <= shapes or not child["references"] <= refs:
+                raise ValueError("authority ancestry widens set constraints")
+            if cr["expiresAt"] > r["expiresAt"] or cr["invocationLimit"] > r["invocationLimit"] or cr["delegationDepth"] >= r["delegationDepth"]:
+                raise ValueError("authority ancestry widens scalar constraints")
+            if arguments is not None and (child["arguments"] is None or not child["arguments"] <= arguments):
+                raise ValueError("authority ancestry widens arguments")
+        nodes.append(node); current = grant["parent"]
+    leaf = nodes[0]
+    if actual_target not in leaf["targets"] or not actual_scopes <= leaf["scopes"] or contract["task"]["shape"] not in leaf["shapes"]:
+        raise ValueError("authority does not cover bound capability effects")
+    if leaf["arguments"] is not None and request["arguments"] not in leaf["arguments"]:
+        raise ValueError("authority does not cover bound arguments")
+    return {"grantID":leaf["id"], "issuer":leaf["issuer"].decode("utf-8"), "subject":leaf["request"]["subject"],
+        "audiences":sorted(a.decode("utf-8") for a in leaf["audiences"]),
+        "ancestorGrantIDs":[n["id"] for n in nodes[1:]], "ancestorSubjects":[n["request"]["subject"] for n in nodes[1:]],
+        "invocationLimit":leaf["request"]["invocationLimit"], "delegationDepth":leaf["request"]["delegationDepth"],
+        "argumentSHA256":hashlib.sha256(request["arguments"]).hexdigest(),
+        "ancestrySHA256":hashlib.sha256(encoded).hexdigest()}
+
+
 def _signed_claims(payload: bytes) -> dict:
     receipt = _domain(payload, "RECEIPT")
     required = {"taskID", "leaseID", "request", "startedAt", "deadline", "finishedAt", "lastObservationTime",
@@ -155,7 +257,8 @@ def _signed_claims(payload: bytes) -> dict:
                 raise ValueError("invalid no-output completion")
             completion_without_output = True
     request = _domain(receipt["request"], "REQUEST")
-    if set(request) != {"binding", "arguments", "scopes", "policy", "issuedAt", "expiresAt"}:
+    legacy_fields = {"binding", "arguments", "scopes", "policy", "issuedAt", "expiresAt"}
+    if set(request) not in (legacy_fields, legacy_fields | {"authority"}):
         raise ValueError("unsupported request binding")
     if any(type(request[name]) is not int for name in ("issuedAt", "expiresAt")):
         raise ValueError("invalid lease time")
@@ -187,8 +290,10 @@ def _signed_claims(payload: bytes) -> dict:
         if scope["effect"] not in ("read", "write", "delete", "execute", "publish", "subscribe", "securityChange"):
             raise ValueError("unknown effect scope")
         effects.add(scope["effect"])
-    return {"taskID": task, "leaseID": lease, "providerGeneration": generation, "phase": phase,
-            "semanticOutcome": outcome, "scopeCount": len(scopes), "effects": sorted(effects)}
+    result = {"taskID": task, "leaseID": lease, "providerGeneration": generation, "phase": phase,
+              "semanticOutcome": outcome, "scopeCount": len(scopes), "effects": sorted(effects)}
+    if "authority" in request: result["authority"] = _authority_claims(request["authority"], binding, request)
+    return result
 
 
 def unique(pairs):
@@ -199,7 +304,7 @@ def unique(pairs):
     return obj
 
 
-def verify(envelope: Path, trusted_key: Path, *, expected_outcome=None, expected_task_id=None, expected_lease_id=None) -> dict:
+def verify(envelope: Path, trusted_key: Path, *, expected_outcome=None, expected_task_id=None, expected_lease_id=None, expected_authority=None) -> dict:
     # A bounded read, rather than an unbounded read after a racy stat check.
     with envelope.open("rb") as file:
         raw = file.read(1_500_001)
@@ -227,6 +332,10 @@ def verify(envelope: Path, trusted_key: Path, *, expected_outcome=None, expected
     for expected, name in ((expected_outcome, "semanticOutcome"), (expected_task_id, "taskID"), (expected_lease_id, "leaseID")):
         if expected is not None and expected != claims[name]:
             raise ReceiptClaimMismatch("valid signature authenticates a different requested claim")
+    if expected_authority is not None:
+        actual = claims.get("authority")
+        if not isinstance(expected_authority, dict) or not isinstance(actual, dict) or any(name not in actual or actual[name] != value for name, value in expected_authority.items()):
+            raise ReceiptClaimMismatch("valid signature authenticates different requested authority")
     return {"signature": "VALID", "algorithm": "Ed25519", "trustedKeyMatched": True,
             "payloadBytes": len(payload), "signedClaims": claims,
             "semanticClaim": "SIGNED_RUNTIME_ASSERTION", "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"}
@@ -239,10 +348,17 @@ def main():
     p.add_argument("--expected-outcome", choices=("succeeded", "failed", "unknown", "unverified"))
     p.add_argument("--expected-task-id")
     p.add_argument("--expected-lease-id")
+    p.add_argument("--expected-authority", type=Path, help="Bounded JSON of explicit expected authority claims")
     a = p.parse_args()
     try:
+        expected_authority = None
+        if a.expected_authority is not None:
+            with a.expected_authority.open("rb") as source: encoded = source.read(65_537)
+            if len(encoded) > 65_536: raise ValueError("expected authority size limit")
+            expected_authority = json.loads(encoded, object_pairs_hook=unique)
         print(json.dumps(verify(a.envelope, a.trusted_key, expected_outcome=a.expected_outcome,
-                                expected_task_id=a.expected_task_id, expected_lease_id=a.expected_lease_id), indent=2))
+                                expected_task_id=a.expected_task_id, expected_lease_id=a.expected_lease_id,
+                                expected_authority=expected_authority), indent=2))
         return 0
     except ReceiptClaimMismatch:
         print(json.dumps({"signature": "VALID", "requestedClaim": "MISMATCH"}), file=sys.stderr)

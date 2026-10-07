@@ -31,7 +31,7 @@ public struct RCIRScope: Sendable, Hashable {
     }
 }
 
-public enum RCIRTaskShape: String, Sendable {
+public enum RCIRTaskShape: String, Sendable, Hashable {
     case unary, deferred, serverStream, clientStream, duplex
 }
 
@@ -173,7 +173,7 @@ public struct RCIRBinding: Sendable {
     public let principal: String
     public let generation: Int64
     public let bytes: Data
-    fileprivate let graphDeclaration: Data
+    let graphDeclaration: Data
     fileprivate init(contract: RCIRContract, principal: String, generation: Int64, bytes: Data,
                      graphDeclaration: Data) {
         self.contract = contract; self.principal = principal; self.generation = generation; self.bytes = bytes
@@ -198,11 +198,13 @@ public struct RCIRLease: Sendable {
     public let expiresAt: Int64
     public let arguments: CapabilityValue
     public let requestBytes: Data
+    /// Host-local canonical grant ancestry; nil for the trusted legacy scope API.
+    public let authorityBytes: Data?
     fileprivate init(binding: RCIRBinding, scopes: Set<RCIRScope>, issuedAt: Int64,
-                     expiresAt: Int64, arguments: CapabilityValue, requestBytes: Data) {
+                     expiresAt: Int64, arguments: CapabilityValue, requestBytes: Data, authorityBytes: Data? = nil) {
         self.id = UUID(); self.binding = binding; self.scopes = scopes
         self.issuedAt = issuedAt; self.expiresAt = expiresAt
-        self.arguments = arguments; self.requestBytes = requestBytes
+        self.arguments = arguments; self.requestBytes = requestBytes; self.authorityBytes = authorityBytes
     }
 }
 
@@ -211,11 +213,12 @@ public struct RCIRLease: Sendable {
 /// A single lock serializes graph updates and lease admission. Transport handoff
 /// remains a host responsibility; this does not promise remote atomic execution.
 public final class RCIRAdmission: @unchecked Sendable {
-    private struct Entry { let lease: RCIRLease; let issuedAt: Int64; let policy: Data }
+    private struct Entry { let lease: RCIRLease; let issuedAt: Int64; let policy: Data; let grant: RCIRAuthorityGrant? }
     private let lock = NSLock()
     private var entries: [Data: RCIRBinding] = [:]
     private var leases: [UUID: Entry] = [:]
     private var generation: Int64 = 0
+    private var authorityLedger = RCIRAuthorityLedger()
     public init() {}
 
     public func publish(_ contract: RCIRContract, authenticatedPrincipal: String) throws -> RCIRBinding {
@@ -319,24 +322,114 @@ public final class RCIRAdmission: @unchecked Sendable {
         return required
     }
 
+    /// Trusted host credential-source registration. The reference stores no secret
+    /// and grants no authority by itself; issuer enforcement remains external.
+    public func registerCredentialReference(issuer: RCIRAuthorityIdentity,
+                                            audience: RCIRAuthorityIdentity) throws -> RCIRCredentialReference {
+        lock.lock(); defer { lock.unlock() }
+        return try authorityLedger.reference(issuer: issuer, audience: audience)
+    }
+
+    public func revokeCredentialReference(_ reference: RCIRCredentialReference) throws {
+        lock.lock(); defer { lock.unlock() }
+        try authorityLedger.revokeReference(reference)
+    }
+
+    /// Root grants may only be requested by a trusted host authorization broker.
+    /// No model-visible operation calls this method. Provider credentials never
+    /// enter this ledger, and a local grant is not issuer-enforced downscoping.
+    public func issueAuthority(_ request: RCIRAuthorityRequest, issuer: RCIRAuthorityIdentity,
+                               credentialReferences: Set<RCIRCredentialReference> = [], now: Int64) throws -> RCIRAuthorityGrant {
+        lock.lock(); defer { lock.unlock() }
+        try currentTargets(request.targets)
+        return try authorityLedger.issue(request, issuer: issuer, references: credentialReferences,
+                                         parent: nil, context: nil, now: now)
+    }
+
+    public func attenuate(_ parent: RCIRAuthorityGrant, request: RCIRAuthorityRequest,
+                          authenticated context: RCIRAuthorityContext,
+                          credentialReferences: Set<RCIRCredentialReference> = [], now: Int64) throws -> RCIRAuthorityGrant {
+        lock.lock(); defer { lock.unlock() }
+        try currentTargets(request.targets)
+        return try authorityLedger.issue(request, issuer: parent.issuer, references: credentialReferences,
+                                         parent: parent, context: context, now: now)
+    }
+
+    /// Revocation is trusted-host control, not possession of a model token.
+    /// Descendants are rejected by ancestry checks without a separate traversal.
+    public func revokeAuthority(_ grant: RCIRAuthorityGrant) throws {
+        lock.lock(); defer { lock.unlock() }
+        try authorityLedger.revoke(grant)
+    }
+
+    /// Revalidate ongoing work or independent observation after an admitted start.
+    /// Already consumed invocation budget is not a new invocation; identity,
+    /// ancestry revocation, expiry, target and arguments are still required.
+    public func validateAuthority(_ grant: RCIRAuthorityGrant, authenticated context: RCIRAuthorityContext,
+                                  binding: RCIRBinding, arguments: CapabilityValue, now: Int64) throws {
+        lock.lock(); defer { lock.unlock() }
+        try current(binding)
+        try authorityLedger.check(grant, context: context, binding: binding,
+                                  arguments: arguments, now: now, consume: false, enforceBudget: false)
+    }
+
+    private func currentTargets(_ targets: Set<RCIRAuthorityTarget>) throws {
+        for target in targets {
+            guard let binding = entries[Data(target.capability.value.utf8)],
+                  try RCIRAuthorityTarget(binding) == target else { throw RCIRError.staleBinding }
+        }
+    }
+
+    /// Compatibility entry point for trusted host scope callbacks. This API has
+    /// no invoking-agent authentication and must not represent delegated agency.
     public func issue(_ binding: RCIRBinding, arguments: CapabilityValue,
                       authority: Set<RCIRScope>, policy: RCIRPolicy, now: Int64,
                       ttl: Int64 = 30_000) throws -> RCIRLease {
-        guard now >= 0, (1...60_000).contains(ttl), now <= Int64.max - ttl else { throw RCIRError.invalidTime }
+        let policyData = try rcirPolicy(policy)
+        lock.lock(); defer { lock.unlock() }
+        return try issueLocked(binding, arguments: arguments, authority: authority, policy: policy,
+                               policyData: policyData, grant: nil, now: now, ttl: ttl)
+    }
+
+    public func issue(_ binding: RCIRBinding, arguments: CapabilityValue,
+                      grant: RCIRAuthorityGrant, authenticated context: RCIRAuthorityContext,
+                      policy: RCIRPolicy, now: Int64, ttl: Int64 = 30_000) throws -> RCIRLease {
         let policyData = try rcirPolicy(policy)
         lock.lock(); defer { lock.unlock() }
         try current(binding)
-        let required = try allowed(binding, arguments: arguments, authority: authority, policy: policy)
-        let bytes = try rcirEnvelope("REQUEST", .object([
+        try authorityLedger.check(grant, context: context, binding: binding, arguments: arguments, now: now, consume: false)
+        guard now >= 0, (1...60_000).contains(ttl), now <= Int64.max - ttl else { throw RCIRError.invalidTime }
+        return try issueLocked(binding, arguments: arguments, authority: grant.request.scopes, policy: policy,
+                               policyData: policyData, grant: grant, now: now,
+                               ttl: min(ttl, grant.request.expiresAt - now))
+    }
+
+    private func requestBytes(binding: RCIRBinding, arguments: CapabilityValue,
+                              scopes: Set<RCIRScope>, policy: Data, issuedAt: Int64,
+                              expiresAt: Int64, grant: RCIRAuthorityGrant?) throws -> Data {
+        var value: [String: CapabilityValue] = [
             "binding": .bytes(binding.bytes), "arguments": .bytes(try arguments.canonicalData()),
-            "scopes": try rcirScopes(required), "policy": .bytes(policyData),
-            "issuedAt": .integer(now), "expiresAt": .integer(now + ttl)
-        ]), limit: 131_072)
+            "scopes": try rcirScopes(scopes), "policy": .bytes(policy),
+            "issuedAt": .integer(issuedAt), "expiresAt": .integer(expiresAt)
+        ]
+        if let grant { value["authority"] = .bytes(grant.bytes) }
+        return try rcirEnvelope("REQUEST", .object(value), limit: 131_072)
+    }
+
+    private func issueLocked(_ binding: RCIRBinding, arguments: CapabilityValue,
+                             authority: Set<RCIRScope>, policy: RCIRPolicy, policyData: Data,
+                             grant: RCIRAuthorityGrant?, now: Int64, ttl: Int64) throws -> RCIRLease {
+        guard now >= 0, (1...60_000).contains(ttl), now <= Int64.max - ttl else { throw RCIRError.invalidTime }
+        try current(binding)
+        let required = try allowed(binding, arguments: arguments, authority: authority, policy: policy)
+        let bytes = try requestBytes(binding: binding, arguments: arguments, scopes: required, policy: policyData,
+                                     issuedAt: now, expiresAt: now + ttl, grant: grant)
         leases = leases.filter { $0.value.lease.expiresAt > now }
-        guard leases.count < 4096 else { throw RCIRError.invalidLimit }
+        let retainedBytes = leases.values.reduce(0) { $0 + $1.lease.requestBytes.count }
+        guard leases.count < 4096, bytes.count <= 16_777_216 - retainedBytes else { throw RCIRError.invalidLimit }
         let lease = RCIRLease(binding: binding, scopes: required, issuedAt: now,
-                              expiresAt: now + ttl, arguments: arguments, requestBytes: bytes)
-        leases[lease.id] = Entry(lease: lease, issuedAt: now, policy: policyData)
+                              expiresAt: now + ttl, arguments: arguments, requestBytes: bytes, authorityBytes: grant?.bytes)
+        leases[lease.id] = Entry(lease: lease, issuedAt: now, policy: policyData, grant: grant)
         return lease
     }
 
@@ -347,40 +440,64 @@ public final class RCIRAdmission: @unchecked Sendable {
         let policyData = try rcirPolicy(policy)
         lock.lock(); defer { lock.unlock() }
         try consumeLocked(lease, arguments: arguments, authority: authority,
-                          policy: policy, policyData: policyData, now: now)
+                          policy: policy, policyData: policyData, grant: nil, context: nil, now: now)
     }
 
-    /// Serialize lease consumption and the synchronous transport start with
-    /// graph withdrawal. Start must only enqueue the request, never wait for it.
-    /// This is an in-process handoff, not an exactly-once network guarantee.
+    public func consume(_ lease: RCIRLease, arguments: CapabilityValue,
+                        grant: RCIRAuthorityGrant, authenticated context: RCIRAuthorityContext,
+                        policy: RCIRPolicy, now: Int64) throws {
+        try consumeAndStart(lease, arguments: arguments, grant: grant, authenticated: context,
+                            policy: policy, now: now) {}
+    }
+
+    /// Serialize lease consumption, ancestor budget debit and synchronous enqueue
+    /// with graph withdrawal and authority revocation. Start must never wait.
     public func consumeAndStart(_ lease: RCIRLease, arguments: CapabilityValue,
                                authority: Set<RCIRScope>, policy: RCIRPolicy, now: Int64,
                                start: () -> Void) throws {
         let policyData = try rcirPolicy(policy)
         lock.lock(); defer { lock.unlock() }
         try consumeLocked(lease, arguments: arguments, authority: authority,
-                          policy: policy, policyData: policyData, now: now)
+                          policy: policy, policyData: policyData, grant: nil, context: nil, now: now)
+        start()
+    }
+
+    public func consumeAndStart(_ lease: RCIRLease, arguments: CapabilityValue,
+                               grant: RCIRAuthorityGrant, authenticated context: RCIRAuthorityContext,
+                               policy: RCIRPolicy, now: Int64, start: () -> Void) throws {
+        let policyData = try rcirPolicy(policy)
+        lock.lock(); defer { lock.unlock() }
+        try consumeLocked(lease, arguments: arguments, authority: grant.request.scopes,
+                          policy: policy, policyData: policyData, grant: grant, context: context, now: now)
         start()
     }
 
     private func consumeLocked(_ lease: RCIRLease, arguments: CapabilityValue,
                                authority: Set<RCIRScope>, policy: RCIRPolicy,
-                               policyData: Data, now: Int64) throws {
+                               policyData: Data, grant: RCIRAuthorityGrant?, context: RCIRAuthorityContext?, now: Int64) throws {
         guard let entry = leases[lease.id] else { throw RCIRError.leaseUsed }
         guard now >= entry.issuedAt else { throw RCIRError.invalidTime }
         guard now < entry.lease.expiresAt else { leases.removeValue(forKey: lease.id); throw RCIRError.leaseExpired }
         try current(entry.lease.binding)
+        if let issuedGrant = entry.grant {
+            guard let grant, let context, grant.bytes == issuedGrant.bytes else { throw RCIRError.authorityDenied }
+            try authorityLedger.check(grant, context: context, binding: entry.lease.binding,
+                                      arguments: arguments, now: now, consume: false)
+        } else if grant != nil || context != nil { throw RCIRError.authorityDenied }
         let required = try allowed(entry.lease.binding, arguments: arguments, authority: authority, policy: policy)
         guard policyData == entry.policy else { throw RCIRError.policyDenied }
-        let bytes = try rcirEnvelope("REQUEST", .object([
-            "binding": .bytes(entry.lease.binding.bytes), "arguments": .bytes(try arguments.canonicalData()),
-            "scopes": try rcirScopes(required), "policy": .bytes(policyData),
-            "issuedAt": .integer(entry.issuedAt), "expiresAt": .integer(entry.lease.expiresAt)
-        ]), limit: 131_072)
+        let bytes = try requestBytes(binding: entry.lease.binding, arguments: arguments, scopes: required,
+                                     policy: policyData, issuedAt: entry.issuedAt,
+                                     expiresAt: entry.lease.expiresAt, grant: entry.grant)
         guard bytes == entry.lease.requestBytes, lease.requestBytes == bytes,
               lease.binding.bytes == entry.lease.binding.bytes else { throw RCIRError.leaseMismatch }
+        if let grant, let context {
+            try authorityLedger.check(grant, context: context, binding: entry.lease.binding,
+                                      arguments: arguments, now: now, consume: true)
+        }
         leases.removeValue(forKey: lease.id)
     }
+
 }
 
 public enum RCIRTaskPhase: String, Sendable { case started, accepted, working, inputRequired, cancelRequested, completed, failed, cancelled, unknown }
