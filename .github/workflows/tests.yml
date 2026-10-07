@@ -32,6 +32,8 @@ jobs:
           echo "DEVELOPER_DIR=/Library/Developer/CommandLineTools" >> "$GITHUB_ENV"
       - run: scripts/build-cli.sh
       - run: python3 scripts/package-source.py
+      - name: Fail closed when checkout substrates drift from published bottle
+        run: python3 scripts/detect-bottle-alignment.py --compare --json
 
   ard-runtime:
     name: macOS ARD runtime gates

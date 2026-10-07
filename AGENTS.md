@@ -19,3 +19,14 @@ Preserve evidence and label unsupported or private mechanisms honestly.
 - Do not call private `NSExtension` methods from the product. The feasibility probe may record them as experimental.
 - External, destructive, and unknown capabilities return `CONFIRMATION_REQUIRED` until the caller passes confirmation.
 - Never disable SIP, inject code into Finder, patch system processes, modify protected databases, or bypass code signing.
+
+## Bottle alignment
+
+The Homebrew bottle is the installed product agents must keep aligned with `main`.
+
+Before finishing substrate work, run:
+
+    python3 scripts/detect-bottle-alignment.py --compare
+
+If it exits `1`, follow `docs/BOTTLE-ALIGNMENT.md` and `docs/RELEASE.md` to cut the next immutable release. Never force-move an existing release tag.
+
