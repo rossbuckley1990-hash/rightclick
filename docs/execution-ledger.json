@@ -14,16 +14,16 @@
   },
   "identities": {
     "baseCommit": "1f2219eafb4514b08c6364cb0ec3bb8bf105cf80",
-    "implementationManifestSHA256": "3fa85e126118c5d7cf6b5aa1af3ae3537cf21fe9b2587b5c637419cf516ff900",
+    "implementationManifestSHA256": "4df5137b86f0669ba86500eea878af5dd8310a559a7669c193a0b2eccb365cd7",
     "binaryVersion": "0.2.2 (development candidate; release pins unchanged)",
     "binaries": {
       "debug": {
         "path": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/debug/rightclick",
-        "sha256": "70d927751d0708b1567fd25a6e71a05212b5e748f5451dc062ce4bf1c673499a"
+        "sha256": "2ad37ddb286cbb0d12e7c247766526527ba4dd6155a87f18f7c51e5cd80457fe"
       },
       "release": {
         "path": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/release/rightclick",
-        "sha256": "55d8de46d9b5f4e1e5066e1ab5464ace232f8a01bc62923d8723dc681f86a44b"
+        "sha256": "49db5bd9d8622a922670671273a094dc3ce2b8ca1907ea2f8aca77e4b9549874"
       }
     },
     "sourceBoundary": "Implementation manifest freezes source independently of later evidence-only commit IDs."
@@ -410,15 +410,85 @@
       "testsOrItems": 14,
       "skips": 0,
       "evidenceOrBoundary": "final-bottle-alignment.json: source taxonomy only, NOT bottle binary or RCIR-component proof"
+    },
+    {
+      "name": "reconciled-native",
+      "command": "RCIR_DISPATCH_EVIDENCE=... swift test --force-resolved-versions",
+      "exitCode": 0,
+      "testsOrItems": 583,
+      "skips": 26,
+      "evidenceOrBoundary": "reconciled-native.log.gz; reconciled-native-effects/: 25 actual HTTP controls plus eight portable invocation-isolation tests preserved from PR43"
+    },
+    {
+      "name": "reconciled-release-build",
+      "command": "scripts/build-cli.sh",
+      "exitCode": 0,
+      "evidenceOrBoundary": "reconciled-release-build.log.gz; source and binary IDs in candidate-identities.json"
+    },
+    {
+      "name": "reconciled-foundation",
+      "exitCode": 0,
+      "testsOrItems": 71,
+      "skips": 0,
+      "evidenceOrBoundary": "reconciled-foundation.log; Standalone native package: original 63 plus eight isolation controls; no product/OS portability claim"
+    },
+    {
+      "name": "reconciled-public-debug",
+      "exitCode": 0,
+      "testsOrItems": 7,
+      "skips": 0,
+      "evidenceOrBoundary": "reconciled-public-debug/results.json.gz; Original frozen public MCP controls, debug"
+    },
+    {
+      "name": "reconciled-public-release",
+      "exitCode": 0,
+      "testsOrItems": 7,
+      "skips": 0,
+      "evidenceOrBoundary": "reconciled-public-release/results.json.gz; Original frozen public MCP controls, release"
+    },
+    {
+      "name": "reconciled-freshness-debug",
+      "exitCode": 0,
+      "testsOrItems": 10,
+      "skips": 0,
+      "evidenceOrBoundary": "reconciled-freshness-debug/results.json.gz; Frozen ten-control live schema proof, debug"
+    },
+    {
+      "name": "reconciled-freshness-release",
+      "exitCode": 0,
+      "testsOrItems": 10,
+      "skips": 0,
+      "evidenceOrBoundary": "reconciled-freshness-release/results.json.gz; Frozen ten-control live schema proof, release"
+    },
+    {
+      "name": "reconciled-setup",
+      "exitCode": 0,
+      "testsOrItems": null,
+      "skips": 0,
+      "evidenceOrBoundary": "reconciled-setup.log; Existing setup assertions unchanged"
+    },
+    {
+      "name": "reconciled-mcp",
+      "exitCode": 0,
+      "testsOrItems": null,
+      "skips": 0,
+      "evidenceOrBoundary": "reconciled-mcp/results.json.gz; Existing stdio and authenticated HTTP acceptance; disposable CFFIXED_USER_HOME and empty acquisition environment"
+    },
+    {
+      "name": "reconciled-core",
+      "exitCode": 0,
+      "testsOrItems": null,
+      "skips": 0,
+      "evidenceOrBoundary": "reconciled-core/results.json.gz; Independent actual core compilation and direct/CLI/MCP equivalence; same disposable profile"
     }
   ],
   "remoteCI": {
-    "status": "PENDING_NEW_HEAD",
+    "status": "PENDING_COMBINED_HEAD",
     "earlierHead": "fc4eb128a814e799ca545d250dd487729a42185d",
     "earlierChecks": "All six SUCCESS; original 19 native production controls, original seven public controls, Linux 61/macOS 63 foundation and complete native regressions",
     "boundary": "Earlier checks do not validate the subsequent cache, observer URI and body commitment changes.",
     "evidence": "evidence/rcir-production-20261007/pr42-first-checks.json",
-    "pullRequest": "https://github.com/rossbuckley1990-hash/rightclick/pull/42"
+    "pullRequest": "PENDING_CREATION on feature/rcir-live-contracts-20261007"
   },
   "release": {
     "sourceTag": "v0.2.2",
@@ -427,7 +497,7 @@
     "candidateFreshInstalled": false,
     "candidateClientReconnected": false
   },
-  "nextAction": "Commit/push fresh-schema fixes and preserved tests, inspect exact new-head CI, review and merge when eligible. Continue G3 only with an authorised real issuer/provider pair; no new substrate acquisition yet.",
+  "nextAction": "Validate and push combined candidate on dedicated fresh branch, inspect exact-head CI, review and merge eligible follow-up. G3 requires authorised real issuer/provider pair before new acquisition work.",
   "historicalEvidence": "Original foundation zip/raw logs not located; recovered pack patches/reports retained without treating historical PASS claims as reproduced.",
   "companionTap": {
     "source": "79a05ff7c666d6df7d3b1d63113f6bf6aed0d412",
@@ -442,5 +512,22 @@
       "action": "Prove issuer-enforced credential downscoping and an out-of-scope provider denial",
       "missingPrerequisite": "Authorised disposable issuer/provider URLs and approved credential provisioning route; user input requested, no answer received. Existing broad GitHub bearer proves availability only."
     }
-  ]
+  ],
+  "mergedFoundation": {
+    "source": "fc4eb128a814e799ca545d250dd487729a42185d",
+    "merge": "c2f3bac98ade0d5f87aeb079d4c2274c55ece561",
+    "mergedAt": "2026-10-07T12:43:54Z",
+    "pullRequest": "https://github.com/rossbuckley1990-hash/rightclick/pull/42",
+    "checks": "All six SUCCESS",
+    "boundary": "Merged by concurrent run before the freshness follow-up; not a published or fresh-installed RCIR release."
+  },
+  "candidateBranch": "feature/rcir-live-contracts-20261007",
+  "candidateBase": "c2f3bac98ade0d5f87aeb079d4c2274c55ece561",
+  "concurrentIntegration": {
+    "source": "46bda19cc4b9c62ad4a6d8bbfbebb872c2e11e91",
+    "pullRequest": "https://github.com/rossbuckley1990-hash/rightclick/pull/43",
+    "mergedInto": "feature/rcir-openapi-production-20261007",
+    "mainContainsSource": false,
+    "boundary": "Preserved with normal merge; combined source needs fresh native/live/CI checks. Original frozen assertions retained."
+  }
 }

@@ -5,12 +5,12 @@ Candidate scope: mandatory OpenAPI RCIR admission through the existing engine/co
 | Required state | Candidate evidence/status |
 |---|---|
 | Implementation and meaningful RED | PASS, actual pre-change public path dispatched without RCIR; transport-boundary race, actual cached-schema drift, and bounded-body regression separately reproduced |
-| Full native regressions | PASS, 574 tests, 26 explicit skips, no failures |
-| Real CryptoKit foundation | PASS, 63 assertions; earlier exact-head remote Linux 61/macOS 63 passed |
+| Full native regressions | PASS, 583 tests, 26 explicit skips, no failures |
+| Real CryptoKit foundation | PASS, 71 native assertions (63 original + eight isolation); latest remote Linux/macOS validation pending |
 | Public OpenAPI effect/read-back/signature controls | PASS on final debug and release bytes; original seven controls plus additional ten-control live freshness proof on each |
 | Release-mode artifact build | PASS; SHA256 in candidate identities |
-| Exact-head remote CI/review | Earlier head passed all six checks; latest fixes need new-head CI/review |
-| Merge | NOT_RUN |
+| Exact-head remote CI/review | Earlier head passed all six checks; combined source passed 583 native tests; dedicated follow-up needs exact-head CI/review |
+| Foundation merge | PASS: PR42 exact source fc4eb128 merged as c2f3bac; combined follow-up still pending |
 | Candidate publication/source/bottle pins | NOT_RUN; immutable 0.2.2 pins retained |
 | Fresh install / upgrade / client reconnection | NOT_RUN for candidate |
 | Installed current seven-operation interface | PASS for existing 0.2.2, separate from candidate |
@@ -21,3 +21,5 @@ The observer reads independently of the invocation output but trusts the same se
 Local scope restriction around an existing bearer token is not issuer-enforced credential downscoping. Receipts currently include invocation arguments and are not yet a minimised public disclosure format. Principal-owned cursor/cancellation, real streams, durable recovery, all-route RCIR coverage, and actual Windows/Linux products are unfinished gates. No universal-ready or production-trust claim is made.
 
 An accurately scoped incremental release can proceed only after its candidate review/CI, source packaging, actual publication workflow, downloaded artifact checks, tap/bottle alignment, fresh installation and reconnected-client task acceptance pass. The current kind-alignment check compares source taxonomy and cannot prove the bottle contains RCIR. Never repoint or force-move v0.2.2. Select a new version only when the replacement has passed the applicable gates.
+
+Concurrent invocation-isolation work from PR43 merged into the former feature branch after PR42 closed, rather than into main. It is preserved in the new live-contract follow-up and requires combined-source validation before integration. Old-head successful checks do not validate this combined candidate.
