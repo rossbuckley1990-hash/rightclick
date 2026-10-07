@@ -9,7 +9,7 @@ try {
             break
         }
         foreach ($id in $state.processes) {
-            if (-not (Get-Process -Id $id -ErrorAction SilentlyContinue)) { throw 'A Windows proof process disappeared before requested withdrawal' }
+            if (-not (Get-Process -Id $id -ErrorAction SilentlyContinue)) { throw "Windows proof process $id disappeared before requested withdrawal" }
         }
         Start-Sleep -Seconds 2
     }

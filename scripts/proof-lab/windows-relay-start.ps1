@@ -187,6 +187,7 @@ try {
     $published = $null
     @{schemaVersion = 1; expiresAt = $expires.ToString('o'); base = $base; processes = $processes; users = $created; disconnectFile = $disconnect} | ConvertTo-Json | Set-Content (Join-Path $base 'supervisor.json')
     "RIGHTCLICK_WINDOWS_RELAY_STATE=$base" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
+    $env:RIGHTCLICK_WINDOWS_RELAY_STATE = $base
     Write-Host 'Authenticated native Windows writer and get-only observer TLS relays are ready; connection credentials are encrypted for the operator.'
 } catch {
     foreach ($id in $processes) { Stop-Process -Id $id -Force -ErrorAction SilentlyContinue }

@@ -93,8 +93,11 @@ It requires a private-key file with owner-only permissions, verifies the operato
 key fingerprint, rejects altered authenticated ciphertext, and binds the decrypted
 connection to the reviewed source commit. Tokens remain in owner-only files.
 
-The workflow uploads `live-windows-proof-connection` while its provider is live,
-before the supervisor hold step. Before the workflow exists on the default branch,
+The workflow keeps setup and supervision in one persistent Windows PowerShell
+session, while a local Node action invokes the pinned official artifact uploader
+to publish `live-windows-proof-connection` during that session's hold. This avoids
+losing restricted processes when their hosting session closes between steps.
+Before the workflow exists on the default branch,
 launch it through a reviewed same-repository PR update on `codex/universal-proof-lab`
 that changes the explicit relay workflow/script/key paths. Once on the default
 branch, `workflow_dispatch` is available. Operator POST `/control/disconnect`
