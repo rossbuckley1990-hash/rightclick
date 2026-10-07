@@ -85,6 +85,38 @@ final class CapabilityInterfaceTests: XCTestCase {
         try FileManager.default.setAttributes([.posixPermissions: 0o644], ofItemAtPath: secret.path)
         XCTAssertThrowsError(try CapabilityProtectedReference.read(secret.path))
     }
+    func testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let source = directory.appendingPathComponent("source")
+        try Data("acquired bytes".utf8).write(to: source)
+        let snapshot = try CapabilityArtifactSnapshot(source: source, maximum: 100)
+        XCTAssertTrue(snapshot.sourceStillMatches())
+        try Data("replacement bytes".utf8).write(to: source, options: .atomic)
+        XCTAssertFalse(snapshot.sourceStillMatches())
+        XCTAssertEqual(try CapabilityArtifactSnapshot.read(source: snapshot.file, maximum: 100), Data("acquired bytes".utf8))
+        let permissions = try FileManager.default.attributesOfItem(atPath: snapshot.file.path)[.posixPermissions] as? NSNumber
+        XCTAssertEqual(permissions?.intValue, 0o400)
+        XCTAssertThrowsError(try CapabilityArtifactSnapshot(source: source, maximum: 2))
+    }
+    func testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability() throws {
+        let environment = ProcessInfo.processInfo.environment
+        guard let path = environment["RIGHTCLICK_TEST_WASM_COMPONENT"],
+              environment["RIGHTCLICK_WASM_TOOLS"] != nil, environment["RIGHTCLICK_WASM_RUNTIME"] != nil else {
+            throw XCTSkip("Real component not provisioned; no source-race GREEN claimed by this skip.")
+        }
+        let source = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".wasm")
+        try FileManager.default.copyItem(at: URL(fileURLWithPath: path), to: source)
+        defer { try? FileManager.default.removeItem(at: source) }
+        let reflector = try WASMCapabilityArtifactResolver(environment: environment)
+            .resolve(.init(id: "replaced", kind: "wasm", specificationURL: source.absoluteString))
+        let item = try ContentParser.parse("proof")
+        let capability = try reflector.capabilities(for: item)[0]
+        try Data("malformed replacement".utf8).write(to: source, options: .atomic)
+        XCTAssertEqual(try reflector.capabilities(for: item).count, 0)
+        XCTAssertThrowsError(try reflector.begin(capability: capability, item: item, executionID: "stale", arguments: ["challenge": "proof"]))
+    }
     func testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues() throws {
         XCTAssertThrowsError(try CapabilityJSON.value(NSNumber(value: UInt64.max)))
         var raw: Any = "leaf"

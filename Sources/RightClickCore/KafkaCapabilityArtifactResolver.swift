@@ -20,20 +20,20 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
               endpoint.path.isEmpty || endpoint.path == "/", let client, let credentialReference else {
             throw CapabilityArtifactResolutionError.invalidDescriptor("Kafka requires a safe broker endpoint and operator-selected client/credential reference.")
         }
-        let credential = try CapabilityProtectedReference.read(credentialReference)
+        let credentialSnapshot = try CapabilityArtifactSnapshot(source: URL(fileURLWithPath: credentialReference),
+                                                               maximum: 65_536, protected: true)
+        let clientSnapshot = try CapabilityArtifactSnapshot(source: client, maximum: 268_435_456, executable: true)
+        let credential = try CapabilityProtectedReference.read(credentialSnapshot.file.path)
         guard let configuration = try JSONSerialization.jsonObject(with: credential) as? [String: Any],
               let rpk = configuration["rpk"] as? [String: Any], let api = rpk["kafka_api"] as? [String: Any],
               let brokers = api["brokers"] as? [String], brokers == [host + ":" + String(port)],
               let sasl = api["sasl"] as? [String: Any], let principal = sasl["user"] as? String,
               !principal.isEmpty, sasl["mechanism"] as? String == "SCRAM-SHA-256",
               sasl["password"] is String else { throw RCIRError.authorityDenied }
-        let fingerprint = CapabilityJSON.digest(credential)
-        let clientBytes = try Data(contentsOf: client)
-        guard clientBytes.count <= 268_435_456 else { throw CapabilityABIError.limitExceeded }
-        let clientDigest = CapabilityJSON.digest(clientBytes)
+        let clientDigest = clientSnapshot.sha256
         func topics() throws -> [[String: Any]] {
-            let data = try BoundedCapabilityProcess.run(executable: client,
-                arguments: ["--config", credentialReference, "topic", "list", "--format", "json"])
+            let data = try BoundedCapabilityProcess.run(executable: clientSnapshot.file,
+                arguments: ["--config", credentialSnapshot.file.path, "topic", "list", "--format", "json"])
             guard let topics = try JSONSerialization.jsonObject(with: data) as? [[String: Any]], topics.count <= 256 else { throw CapabilityABIError.invalidWire }
             return topics.sorted { ($0["name"] as? String ?? "") < ($1["name"] as? String ?? "") }
         }
@@ -52,10 +52,7 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                     "completionBoundary": .string("Kafka all-replicas acknowledgement; independent consumer verification remains required")]), effect: .publish)
         }
         func unchanged() -> Bool {
-            guard let current = try? CapabilityProtectedReference.read(credentialReference),
-                  CapabilityJSON.digest(current) == fingerprint,
-                  let executable = try? Data(contentsOf: client), executable.count <= 268_435_456,
-                  CapabilityJSON.digest(executable) == clientDigest,
+            guard credentialSnapshot.sourceStillMatches(), clientSnapshot.sourceStillMatches(),
                   let currentTopics = try? topics(),
                   let latest = try? JSONSerialization.data(withJSONObject: currentTopics, options: [.sortedKeys]) else { return false }
             return CapabilityJSON.digest(latest) == CapabilityJSON.digest(declaration)
@@ -64,6 +61,7 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
             substrate: kind, descriptorDigest: CapabilityJSON.digest(declaration), operations: operations,
             provenance: ["credentialSourceType": "protected_file_reference", "credentialReference": credentialReference,
                          "providerPrincipal": principal, "authorityScheme": "SCRAM-SHA-256", "runtimeExecutable": client.path,
+                         "executionArtifactBinding": "host-private lifetime-managed read-only client and protected credential snapshots",
                          "runtimeSHA256": clientDigest, "verificationRequirement": "independent consumer of exact topic/partition/offset/key/payload"],
             available: unchanged, invoke: { name, input, admit in
                 guard unchanged(), name.hasPrefix("publish."), case let .object(arguments) = input,
@@ -73,8 +71,8 @@ public final class KafkaCapabilityArtifactResolver: CapabilityArtifactResolver {
                 let value = Data(payload.utf8); var length = UInt32(value.count).bigEndian
                 var framed = withUnsafeBytes(of: &length) { Data($0) }; framed.append(value)
                 let data = try withoutActuallyEscaping(admit) { gate in
-                    try BoundedCapabilityProcess.run(executable: client,
-                        arguments: ["--config", credentialReference, "topic", "produce", topic, "--key=" + key,
+                    try BoundedCapabilityProcess.run(executable: clientSnapshot.file,
+                        arguments: ["--config", credentialSnapshot.file.path, "topic", "produce", topic, "--key=" + key,
                                     "--format", "%V{big32}%v", "--output-format", "{\"topic\":\"%t\",\"partition\":%p,\"offset\":%o}\n",
                                     "--acks=-1", "--delivery-timeout=3s"], input: framed, admitStart: gate)
                 }
