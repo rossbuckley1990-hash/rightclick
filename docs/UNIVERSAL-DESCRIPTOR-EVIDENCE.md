@@ -16,6 +16,8 @@ unsupported component imports fail closed.
 | Malformed MCP descriptor | Unsupported semantic constraints must not be silently erased | Closed structural importer rejects unknown constraints, open objects and unsupported types | Protocol layer supplies raw declared schema | Real server introduces unsupported constraint; capability disappears and returns when descriptor is repaired | Every JSON-schema acquisition layer can reuse strict imports |
 | Duplicate names, range overflow and timing | Untrusted declarations/values and process controls need exact bounded representation | Duplicate identity rejection; Int64 range/depth checks; monotonic deadline and bounded output | No provider-specific logic | Eight exact-source tests pass, including real provisioned component; zero skips | Every acquired interface and process-backed substrate |
 | WASM/security review of mutable component/tool paths | Hashing source paths and later reopening them did not bind actually acquired/executed bytes | `CapabilityArtifactSnapshot`: bounded no-follow single-descriptor read, private lifetime-managed read-only byte snapshots, source freshness revocation | WIT extraction and component/tool/runtime launch use the same captured byte incarnations; Kafka client and credential files reuse it | Twelve exact-source tests pass, zero skips: deterministic source replacement leaves snapshot bytes intact; real component replacement withdraws and blocks the old capability | Every local descriptor, executable and protected authority reference, including Kafka and Kubernetes clients |
+| Genuine Kafka broker metadata | A registry could acquire HTTP/interface contracts but lacked a transport-neutral resource-operation boundary with publication effects | Shared interface operation now carries generic `RCIREffect.publish`; protected credential snapshots and admitted bounded binary stdin | rpk asks the genuine SASL broker for accessible topics and publishes one exact length-framed UTF-8 record | Actual RIGHTCLICK core acquired only `rightclick.proof`, published partition 0/offset 4, retained accepted/unverified receipt; separate read-only consumer matched exact topic, partition, offset, challenge and payload | Kubernetes/native process clients reuse protected references, typed effects and stdin without adding core protocol branches |
+| Kafka producer ACK | An independent workbench consumer does not establish runtime-owned semantic verification | Host-selected structured observer with separately scoped identity is being integrated by the async runtime workstream | Independent rpk consumer of exact ACK coordinates; coordinates are locators, not expected semantic truth | **RED** for runtime-owned seven-operation Kafka verification/status/receipt and live broker withdrawal until the integrated candidate actually demonstrates them | Event resources and control-plane operations can share structured observations with full raw evidence |
 
 The local candidate proof used runtime SHA-256
 `85c1e45ffacd8ca5ab8649c6ab8195ebfc60e4a78bb303845e975f411263d921`.
@@ -23,6 +25,14 @@ Evidence lives in `evidence/universal-descriptors-20261007/public-seven-operatio
 The exact tool count was seven before and after malformed-provider removal,
 component disappearance and previously unseen component appearance. No upstream
 MCP tools were added to the AI registry.
+
+That public run predates the private-snapshot security fix. Its protocol and
+outcome evidence is retained as historical evidence; the final acceptance run
+must rebuild and repeat it against the security-fixed candidate. The snapshot
+fix itself has twelve exact-source tests, zero skips, including actual component
+invocation and deterministic source replacement. Kafka's direct invocation and
+independent workbench consumer likewise remain preliminary evidence until the
+integrated runtime-owned observer proof passes through the seven operations.
 
 The deterministic component implements FNV-1a32 over exact UTF-8 challenge bytes;
 this is a deterministic verification test, not a cryptographic hash capability.
