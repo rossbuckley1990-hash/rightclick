@@ -67,6 +67,23 @@ final class CapabilityInterfaceTests: XCTestCase {
         let input = Data("RIGHTCLICK:{\"challenge\":\"literal $(echo never-execute)\"}\n".utf8)
         XCTAssertEqual(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/bin/cat"), arguments: [], input: input), input)
         XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/bin/cat"), arguments: [], input: Data(repeating: 0, count: 1_048_577)))
+        // A child may exit without consuming stdin; this must neither signal the
+        // RIGHTCLICK process nor strand a blocked writer indefinitely.
+        XCTAssertEqual(try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: "/usr/bin/true"), arguments: [], input: Data(repeating: 1, count: 1_048_576)), Data())
+    }
+    func testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let secret = directory.appendingPathComponent("credential")
+        try Data("private-reference".utf8).write(to: secret)
+        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: secret.path)
+        XCTAssertEqual(try CapabilityProtectedReference.read(secret.path), Data("private-reference".utf8))
+        let link = directory.appendingPathComponent("link")
+        try FileManager.default.createSymbolicLink(at: link, withDestinationURL: secret)
+        XCTAssertThrowsError(try CapabilityProtectedReference.read(link.path))
+        try FileManager.default.setAttributes([.posixPermissions: 0o644], ofItemAtPath: secret.path)
+        XCTAssertThrowsError(try CapabilityProtectedReference.read(secret.path))
     }
     func testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues() throws {
         XCTAssertThrowsError(try CapabilityJSON.value(NSNumber(value: UInt64.max)))
