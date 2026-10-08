@@ -185,7 +185,7 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
         let frozenArguments = arguments.map { Array($0.utf16) }
         try setPATH(sentinel)
         defer {
-            do { try setPATH(original); XCTAssertEqual(try readPATH().units, original.units) }
+            do { try setPATH(original); XCTAssertTrue(try readPATH().units == original.units, "NativePATHBoundary exact parent restoration mismatch") }
             catch { XCTFail("NativePATHBoundary exact parent restoration failed") }
         }
         let contexts = [TrustedHostProcessContext.isolated, search, .isolated]
@@ -207,7 +207,7 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
               binary == (try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)),
               try inputs.frozenInputs.enumerated().allSatisfy({ try CapabilityArtifactSnapshot.read(source: $0.element.0, maximum: $0.element.1) == frozen[$0.offset] }) else { throw RCIRError.unavailable }
         try setPATH(original)
-        XCTAssertEqual(try readPATH().units, original.units)
+        XCTAssertTrue(try readPATH().units == original.units, "NativePATHBoundary exact parent restoration mismatch")
         print("NativePATHBoundary evidenceClosed unchangedBinary=true unchangedInputs=true sameArguments=true restoredParentExactUTF16=true productionSourcesUnchanged=true diagnosticOnly=true")
     }
 
