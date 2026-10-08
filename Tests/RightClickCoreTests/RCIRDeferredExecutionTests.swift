@@ -1615,16 +1615,31 @@ final class RCIRDeferredExecutionTests: XCTestCase {
             let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
             let observer = Process(); observer.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
             observer.arguments = [root.appendingPathComponent("scripts/rcir-observer-gate-test-provider.py").path, "--state-dir", directory.path]
-            observer.standardOutput = FileHandle.nullDevice; observer.standardError = FileHandle.nullDevice
+            let errorURL = directory.appendingPathComponent("observer-error.log")
+            FileManager.default.createFile(atPath: errorURL.path, contents: nil)
+            let errorHandle = try FileHandle(forWritingTo: errorURL)
+            observer.standardOutput = FileHandle.nullDevice; observer.standardError = errorHandle
             try observer.run()
             defer {
                 if observer.isRunning { observer.terminate(); observer.waitUntilExit() }
+                try? errorHandle.close()
                 try? FileManager.default.removeItem(at: directory)
             }
             func awaitFile(_ name: String) throws {
                 let file = directory.appendingPathComponent(name), deadline = Date().addingTimeInterval(3)
-                while !FileManager.default.fileExists(atPath: file.path), Date() < deadline { Thread.sleep(forTimeInterval: 0.01) }
-                guard FileManager.default.fileExists(atPath: file.path) else { throw RightClickError("Gated observer did not advance") }
+                func ready() -> Bool {
+                    guard FileManager.default.fileExists(atPath: file.path) else { return false }
+                    guard name == "port" else { return true }
+                    guard let value = try? String(contentsOf: file, encoding: .utf8),
+                          let port = UInt16(value), port > 0 else { return false }
+                    return true
+                }
+                while !ready(), Date() < deadline { Thread.sleep(forTimeInterval: 0.01) }
+                guard ready() else {
+                    let processState = observer.isRunning ? "running" : "exited \(observer.terminationStatus)"
+                    let diagnostic = (try? String(contentsOf: errorURL, encoding: .utf8)) ?? ""
+                    throw RightClickError("Gated observer did not produce \(name) for late \(initialState); process \(processState). \(diagnostic)")
+                }
             }
             try awaitFile("port")
             let port = try String(contentsOf: directory.appendingPathComponent("port"), encoding: .utf8)

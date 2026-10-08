@@ -27,5 +27,9 @@ class Observer(http.server.BaseHTTPRequestHandler):
 
 
 server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Observer)
-(args.state_dir / "port").write_text(str(server.server_port))
+# Publish readiness only after all port bytes are present. An existence-only
+# reader must never see the empty file created by write_text before its write.
+pending_port = args.state_dir / "port.pending"
+pending_port.write_text(str(server.server_port))
+pending_port.replace(args.state_dir / "port")
 server.serve_forever()
