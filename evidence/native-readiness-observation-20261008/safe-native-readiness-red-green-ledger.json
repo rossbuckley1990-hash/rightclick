@@ -1,0 +1,134 @@
+{
+  "schema": "rightclick.red-green-native-stderr-observation.v1",
+  "substrate": "Native macOS CI child-process startup and owner-private stderr capture",
+  "genericRuntimeDeficiency": "The shared test harness assumed the readiness deadline also guaranteed asynchronous stderr emission and capture. Production capture remained bounded and private; the evidence precondition was wrong.",
+  "reusablePrimitive": "Independently await the observable diagnostic prefix with a monotonic 3 s deadline and 65,537-byte read cap, while preserving the separate 0.1 s readiness-failure bound.",
+  "thinnestProviderSpecificLayer": "Owned Python child emits the same 100,000-byte canary payload immediately or after 0.25 s. Existing native private-file/ACL helpers are unchanged.",
+  "testEvidenceTurningRedGreen": {
+    "originalActualCI": {
+      "jobID": 113288937516,
+      "runID": 37770595487,
+      "sourceHead": "053b6202df504ff1a33682a39f2e72a959f65983",
+      "rawBytes": 612135,
+      "rawSHA256": "8f8ac1ee1e689dd4a800b361d56c7ba5765b721481b9575d2e790d166f65f1af",
+      "starts": 996,
+      "uniqueStarts": 996,
+      "finishes": 996,
+      "states": {
+        "passed": 957,
+        "skipped": 38,
+        "failed": 1
+      },
+      "failedCases": [
+        "-[RightClickCoreTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr]"
+      ],
+      "outerSummaries": [
+        "Executed 3 tests, with 0 failures (0 unexpected) in 0.011 (0.012) seconds",
+        "Executed 6 tests, with 0 failures (0 unexpected) in 36.430 (36.432) seconds",
+        "Executed 996 tests, with 38 tests skipped and 2 failures (0 unexpected) in 317.687 (317.921) seconds",
+        "Executed 996 tests, with 38 tests skipped and 2 failures (0 unexpected) in 317.687 (317.924) seconds"
+      ],
+      "errorLineCount": 2,
+      "rawFilePreservesANSI": true
+    },
+    "controlledNativeRed": {
+      "head": "36bbb8422c055e4b719db178644a88442db49584",
+      "sourcesTree": "9716cb182db859368f47b603137189d3b257ca43",
+      "naturalExitCode": 1,
+      "rawLogBytes": 161164,
+      "rawLogSHA256": "75d867f2731a1048fb6ad1865dc0695fe60ebf53031c0005cbd0882bbc18989b",
+      "caseRows": [
+        {
+          "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr]",
+          "state": "failed"
+        }
+      ],
+      "assertionFailures": [
+        "93: error: -[RightClickCoreTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr] : XCTAssertEqual failed: (\"0\") is not equal to (\"65536\")",
+        "94: error: -[RightClickCoreTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr] : XCTAssertTrue failed"
+      ],
+      "testExecutable": {
+        "name": "rightclick-mcpPackageTests",
+        "bytes": 54675656,
+        "sha256": "4c7dd2d729c048b1557c07dd032aa8054151b3f7c866406eaa44478aceade1f5"
+      },
+      "frozenExecutableSHA256": "4c7dd2d729c048b1557c07dd032aa8054151b3f7c866406eaa44478aceade1f5",
+      "beforeManifestSHA256": "419f1ee6a0217146acd363dd4cbbe9827bbfe688cd949a23a02fd73cffbc7309",
+      "afterManifestSHA256": "6435e3a6cc10096d45d83d7f98fec5df14a28f15dc1b6242dce68707f810b2c2"
+    },
+    "nativeGreen": {
+      "head": "1d4fb7a7156ebe83b4d85215d43056b5c4effab8",
+      "sourcesTree": "9716cb182db859368f47b603137189d3b257ca43",
+      "naturalExitCode": 0,
+      "rawLogBytes": 3864,
+      "rawLogSHA256": "8cdb07e99eedb0a722bf6fc3a67a06db26be667a82be7c0f345a96cfce78b032",
+      "caseRows": [
+        {
+          "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testEmptyExistingMarkerWaitsForCompleteDecimalPort]",
+          "state": "passed"
+        },
+        {
+          "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testEmptyMarkerFailsWithinUnchangedBoundInsteadOfInventingReadiness]",
+          "state": "passed"
+        },
+        {
+          "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testExitedChildCannotPublishReadiness]",
+          "state": "passed"
+        },
+        {
+          "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation]",
+          "state": "passed"
+        },
+        {
+          "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted]",
+          "state": "passed"
+        },
+        {
+          "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr]",
+          "state": "passed"
+        },
+        {
+          "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testZeroOversizedAndNonDecimalMarkersCannotBecomePorts]",
+          "state": "passed"
+        }
+      ],
+      "actualNativeTestsPassed": 7,
+      "skips": 0,
+      "failures": 0,
+      "readinessTimeoutSecondsUnchanged": 0.1,
+      "controlledStartupDelays": [
+        0.0,
+        0.25
+      ],
+      "retainedPrefixExactBytes": 65536,
+      "boundedReadBytes": 65537,
+      "diagnosticObservationDeadlineSeconds": 3,
+      "originalOwnerModeAssertionsPreserved": true,
+      "ownedReadinessAndStderrDirectoriesAfterNaturalRunnerCompletion": 0,
+      "testExecutable": {
+        "name": "rightclick-mcpPackageTests",
+        "bytes": 54675656,
+        "sha256": "0402c8610220963a1c8fae91a68332f53f6a1342f05dfa8ef8d03918eca4d247"
+      },
+      "frozenExecutableSHA256": "0402c8610220963a1c8fae91a68332f53f6a1342f05dfa8ef8d03918eca4d247",
+      "all535MaterializedInputsBeforeAfterIdentical": true,
+      "sparseExcludedEvidenceMediaPaths": 3617,
+      "beforeManifestSHA256": "d2b30c48da95954e34c33fe9cf6843001892c7ffd30a037f6140146f715c6058",
+      "afterManifestSHA256": "cfac40ad593a5af5aae484eab6578ea0dbe2536a89431541d5fbb164a2636b44",
+      "repositorySwiftCompilerCommands": 12,
+      "compiledCoreInputs": 71,
+      "compiledCoreTestInputs": 110,
+      "externalDependencySourceCacheBytesIndividuallyRehashed": false
+    },
+    "finalCombinedFullSuiteAndCI": "PENDING; local selected-class GREEN is not a final release acceptance claim"
+  },
+  "otherSubstratesMadeEasier": "The same portable process fixture can validate Linux/Windows child startup diagnostics used by REST, gRPC and MCP tests without conflating startup failure with asynchronous evidence availability. Their final native results still require actual tests.",
+  "sourceReviewSHA256": "78b4a8671a7c69034fbabc013c5fe8a910b3d5a2416e2d910a7afffc4934580b",
+  "independentNativeClosure": {
+    "verdict": "PASS_SCOPED_ACTUAL_NATIVE_READINESS_DIAGNOSTIC_TIMING_RED_GREEN",
+    "sha256": "8394820a1b7ed3e065ee0ffefc38013666c2d8031fe7b3191fa0ff7eae223de1",
+    "file": "independent-native-red-green-closure.json",
+    "scope": "Seven selected native Mac tests with independently closed materialized repository inputs; final composed full suite and exact-head CI remain pending."
+  },
+  "publicRelease": "AUTHORIZED_PENDING_NATIVE_AND_DISTRIBUTION_GATES"
+}
