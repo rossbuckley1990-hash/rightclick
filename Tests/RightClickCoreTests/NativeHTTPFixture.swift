@@ -304,13 +304,28 @@ enum NativeHTTPFixture {
         var stage = PythonClientBootstrapStage.nativeCompilation
         var diagnostic: BoundedCapabilityProcess.Diagnostic?
         do {
+            stage = .ownedInputPreparation
+            let frozen = try inputs.frozenInputs.map { try CapabilityArtifactSnapshot.read(source: $0.0, maximum: $0.1) }
+            let frozenArguments = inputs.ownedArguments.map { Array($0.utf16) }
+            let absentOutputs = [inputs.client, inputs.object].allSatisfy { !FileManager.default.fileExists(atPath: $0.path) }
+            guard absentOutputs else { throw RCIRError.unavailable }
             stage = .nativeCompilation
-            _ = try BoundedCapabilityProcess.run(executable: inputs.executable, arguments: inputs.ownedArguments,
-                timeout: 10, maximumBytes: 16_384,
-                hostContext: try TrustedHostProcessContext.resolving(.systemExecutableSearch), diagnostic: { diagnostic = $0 })
+            _ = try BoundedCapabilityProcess.runForHostAcquisition(executable: inputs.executable, arguments: inputs.ownedArguments,
+                timeout: 30, maximumBytes: 16_384, diagnostic: { diagnostic = $0 })
             stage = .outputValidation
             let bytes = try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)
             guard isAMD64PE(bytes) else { throw RCIRError.unavailable }
+            let unchangedInputs = try inputs.frozenInputs.enumerated().allSatisfy {
+                try CapabilityArtifactSnapshot.read(source: $0.element.0, maximum: $0.element.1) == frozen[$0.offset]
+            }
+            let stableOutput = bytes == (try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608))
+            let sameArguments = inputs.ownedArguments.map({ Array($0.utf16) }) == frozenArguments
+            guard unchangedInputs, stableOutput, sameArguments, let diagnostic, diagnostic.started,
+                  diagnostic.outcome == .completed, diagnostic.terminationStatus == 0,
+                  diagnostic.stdoutBytes <= 16_384 else { throw RCIRError.unavailable }
+            let inputDigest = CapabilityJSON.digest(Data(frozen.map(CapabilityJSON.digest).joined(separator: ":").utf8))
+            let argumentDigest = CapabilityJSON.digest(try JSONSerialization.data(withJSONObject: frozenArguments))
+            print("NativePythonClient acquisitionCompleted outcome=\(diagnostic.outcome.rawValue) started=\(diagnostic.started) exit=\(diagnostic.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(diagnostic.stdoutBytes) elapsedMilliseconds=\(diagnostic.elapsedMilliseconds) freshPE=\(absentOutputs && isAMD64PE(bytes)) outputSHA256=\(CapabilityJSON.digest(bytes)) stableOutput=\(stableOutput) unchangedInputs=\(unchangedInputs) directInputSetSHA256=\(inputDigest) sameArguments=\(sameArguments) argumentsUTF16SHA256=\(argumentDigest) hostContext=isolated acquisitionCeilingSeconds=30 parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
             return inputs.client
         } catch {
             let kind = (error as? RCIRError).map { String(describing: $0) } ??

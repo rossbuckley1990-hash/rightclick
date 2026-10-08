@@ -2,7 +2,7 @@ class Rightclick < Formula
   desc "Install an app. Your AI learns what it can do"
   homepage "https://github.com/rossbuckley1990-hash/rightclick"
   url "https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.2.3/rightclick-0.2.3-source.tar.gz"
-  sha256 "45543386a6d1179823226a7dc7323c434fec4b163781de0e5f94d00515b897fd"
+  sha256 "58c6266da489142974977e667864397b21e50a8bcbf5be5c5d0685f72620552d"
   license "Apache-2.0"
 
   # RIGHTCLICK owns this compatibility pin.

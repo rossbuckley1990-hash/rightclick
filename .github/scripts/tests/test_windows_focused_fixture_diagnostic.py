@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / '.github/scripts'))
 import windows_focused_fixture_diagnostic as d
 
-EXPECTED = set(json.loads((ROOT / '.github/windows-current-context-focused-22-names.json').read_text()))
+EXPECTED = set(json.loads((ROOT / '.github/windows-current-context-focused-24-names.json').read_text()))
 BASELINE = set(json.loads((ROOT / '.github/windows-current-native-693-baseline-tests.json').read_text())['names'])
 ALGORITHMS = b'''contentType: id-smime-ct-authEnvelopedData
 keyEncryptionAlgorithm:
@@ -45,7 +45,7 @@ class CollectorTests(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
-    def test_all_693_baseline_names_required_even_with_698_total(self):
+    def test_all_693_baseline_names_required_even_with_700_total(self):
         # Synthetic extra names exercise the guard; they are not native evidence.
         extra = EXPECTED - BASELINE
         current = BASELINE | extra
@@ -60,7 +60,7 @@ class CollectorTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 d.checked_names(bad, 2)
 
-    def test_filter_selects_exact_twentytwo_and_rejects_similar_class_names(self):
+    def test_filter_selects_exact_twentyfour_and_rejects_similar_class_names(self):
         self.assertEqual({name for name in (BASELINE | EXPECTED) if re.search(d.FILTER, name)}, EXPECTED)
         similar = 'RightClickCoreTests.RCIRInvocationBindingTests/testOnlyHostTaskIdentityCanVerifyMatchingObservation'
         self.assertIn(similar, BASELINE)
@@ -68,11 +68,11 @@ class CollectorTests(unittest.TestCase):
         self.assertIsNone(re.search(d.FILTER,
             'RightClickCoreTests.UnrelatedInvocationBindingTests/testExtra'))
 
-    def test_complete_twentytwo_and_failure_are_distinct(self):
+    def test_complete_twentyfour_and_failure_are_distinct(self):
         result = d.execution(log(), EXPECTED)
-        self.assertEqual((result['passes'], result['failures'], result['skips']), (22, 0, 0))
+        self.assertEqual((result['passes'], result['failures'], result['skips']), (24, 0, 0))
         failed = d.execution(log().replace(' passed (', ' failed (', 1), EXPECTED)
-        self.assertEqual((failed['passes'], failed['failures']), (21, 1))
+        self.assertEqual((failed['passes'], failed['failures']), (23, 1))
         self.assertTrue(result['swiftTestingZeroSuiteObserved'])
 
     def test_truncated_duplicate_or_unselected_completion_rejected(self):
@@ -84,7 +84,19 @@ class CollectorTests(unittest.TestCase):
 
     def test_skipped_case_never_counted_as_pass(self):
         result = d.execution(log().replace(' passed (', ' skipped (', 1), EXPECTED)
-        self.assertEqual((result['passes'], result['skips']), (21, 1))
+        self.assertEqual((result['passes'], result['skips']), (23, 1))
+
+    def test_original_repairs_are_independent_of_new_diagnostic_failure(self):
+        text = log().replace('TrustedHostProcessContextTests.testHostAcquisitionBudgetIsFiniteAndCannotExpandOrdinaryInvocation\' passed',
+            'TrustedHostProcessContextTests.testHostAcquisitionBudgetIsFiniteAndCannotExpandOrdinaryInvocation\' failed')
+        observed = d.execution(text, EXPECTED)
+        self.assertEqual(observed['failures'], 1)
+        self.assertTrue(d.original_compilation_regressions(observed)['allThreeOriginalCasesPassed'])
+        failed = d.execution(log().replace('InvocationBindingTests.testFreshMarkersVerifyForBothTransports\' passed',
+            'InvocationBindingTests.testFreshMarkersVerifyForBothTransports\' failed'), EXPECTED)
+        self.assertFalse(d.original_compilation_regressions(failed)['allThreeOriginalCasesPassed'])
+        with self.assertRaises(ValueError):
+            d.original_compilation_regressions({'results': []})
 
     def test_closed_bootstrap_flags_and_stage_without_private_values(self):
         line = ('NativePythonClient stage=installationValidation kind=unavailable '

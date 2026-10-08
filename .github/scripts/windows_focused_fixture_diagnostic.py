@@ -14,8 +14,8 @@ import tarfile
 
 from windows_test_supervisor import supervise
 
-SOURCE = "3babe9e188f26b9006f40134bccbbd91bafc3113"
-SOURCES_TREE = "78987855329641667010be86d27719c0bc5ac253"
+SOURCE = "ca8965f275cd452d21c70ddb3b0ab0d5c5279db6"
+SOURCES_TREE = "e22a81b4e6af0672b077597768a694e6dc478e72"
 CERT_SHA = "1f10ec5ff26b0ef1fbb91248ac954cf15757e8782101f90abe05a171af58bf9d"
 BASELINE_SHA = "b62e1ac13d59f7ebb59a9a0329e4b247b09e2a7b2a4419cbf3aeb7963bbd0bed"
 INPUTS = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests",
@@ -69,31 +69,44 @@ def checked_names(data, count):
 
 def inventory(text, expected, baseline):
     names = [x.strip() for x in text.splitlines() if NAME.fullmatch(x.strip())]
-    current = checked_names(names, 698)
+    current = checked_names(names, 700)
     if not expected.issubset(current) or not baseline.issubset(current):
         raise ValueError("inventory_preservation")
-    return {"all698NamesUnique": True, "all693BaselineNamesPreserved": True,
+    return {"all700NamesUnique": True, "all693BaselineNamesPreserved": True,
             "selectedNames": sorted(expected)}
 
 
 def execution(text, expected):
     # XCTest omits the target prefix; exact discovery maps each class uniquely.
     short = {x.split(".", 1)[1].replace("/", "."): x for x in expected}
-    if len(short) != 22:
+    if len(short) != 24:
         raise ValueError("selected_names")
     starts = re.findall(r"Test Case '([^']+)' started", text)
     finishes = re.findall(r"Test Case '([^']+)' (passed|failed|skipped) \(([0-9.]+) seconds\)", text)
-    if (len(starts) != 22 or set(starts) != set(short)
-            or len(finishes) != 22 or {x[0] for x in finishes} != set(short)):
+    if (len(starts) != 24 or set(starts) != set(short)
+            or len(finishes) != 24 or {x[0] for x in finishes} != set(short)):
         raise ValueError("selected_completion")
     results = [{"test": short[n], "state": state, "seconds": float(seconds)}
                for n, state, seconds in finishes]
-    return {"starts": 22, "finishes": 22, "results": results,
+    return {"starts": 24, "finishes": 24, "results": results,
             "passes": sum(x["state"] == "passed" for x in results),
             "failures": sum(x["state"] == "failed" for x in results),
             "skips": sum(x["state"] == "skipped" for x in results),
             "swiftTestingZeroSuiteObserved": bool(re.search(
                 r"Test run with 0 tests in 0 suites passed", text))}
+
+
+def original_compilation_regressions(execution):
+    # Original repairs are independent of any new diagnostic or full-suite gate.
+    names = {
+        "RightClickCoreTests.InvocationBindingTests/testFreshMarkersVerifyForBothTransports",
+        "RightClickCoreTests.InvocationBindingTests/testMatchingStaleKafkaRecordCannotVerifyCurrentAppend",
+        "RightClickCoreTests.InvocationBindingTests/testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate"}
+    observed = [row for row in execution["results"] if row["test"] in names]
+    if len(observed) != 3 or {row["test"] for row in observed} != names:
+        raise ValueError("original_regression_completion")
+    return {"cases": observed, "allThreeOriginalCasesPassed":
+            all(row["state"] == "passed" for row in observed)}
 
 
 def stages(text):
@@ -212,7 +225,7 @@ def main():
     PRIVATE.mkdir(exist_ok=False)
     if unsafe_path(SAFE) or unsafe_path(PRIVATE):
         raise ValueError("owned_directory_type")
-    report = {"status": "STARTED", "diagnosticOnly": True, "full698GreenClaimed": False,
+    report = {"status": "STARTED", "diagnosticOnly": True, "full700GreenClaimed": False,
               "reviewedSource": SOURCE, "runtimeSourcesTree": SOURCES_TREE,
               "rawValuesArgumentsEnvironmentUploaded": False}
     exit_code = 125
@@ -231,8 +244,8 @@ def main():
         if not re.search(r"Swift version 6\.2\b", version):
             raise ValueError("swift_version")
         report["swiftVersion"] = version.strip()
-        names = json.loads(git("show", "HEAD:.github/windows-current-context-focused-22-names.json"))
-        expected = checked_names(names, 22)
+        names = json.loads(git("show", "HEAD:.github/windows-current-context-focused-24-names.json"))
+        expected = checked_names(names, 24)
         blob = git("show", "HEAD:.github/windows-current-native-693-baseline-tests.json")
         if digest(blob) != BASELINE_SHA:
             raise ValueError("baseline_pin")
@@ -285,14 +298,15 @@ def main():
         text = (PRIVATE / "focused-output.log").read_text(encoding="utf-8-sig")
         report["safeStagesByObservedTestInterval"] = bound_stages(text, expected)
         report["execution"] = execution(text, expected)
+        report["originalCompilationRegressionCases"] = original_compilation_regressions(report["execution"])
         if digest(binary.read_bytes()) != report["nativeXCTestPE_SHA256"]:
             raise ValueError("native_pe_changed")
-        if (exit_code == 0 and report["execution"]["passes"] == 22
+        if (exit_code == 0 and report["execution"]["passes"] == 24
                 and report["execution"]["skips"] == 0
                 and report["execution"]["swiftTestingZeroSuiteObserved"]):
-            report["status"] = "PASS_SCOPED_FOCUSED_22"
+            report["status"] = "PASS_SCOPED_FOCUSED_24"
         else:
-            report["status"] = "RED_SCOPED_FOCUSED_22"
+            report["status"] = "RED_SCOPED_FOCUSED_24"
             exit_code = exit_code or 1
     except Exception as error:
         report["status"] = "FAILED"

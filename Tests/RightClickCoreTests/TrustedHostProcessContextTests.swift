@@ -36,6 +36,32 @@ final class TrustedHostProcessContextTests: XCTestCase {
         XCTAssertTrue(TrustedHostProcessContext.isBoundedSingleSearchDirectoryPath("C:\\Windows\\System32"))
     }
 
+    func testHostAcquisitionBudgetIsFiniteAndCannotExpandOrdinaryInvocation() throws {
+        let executable = try NativeHTTPFixture.python()
+        let arguments = ["-I", "-S", "-c", "print('bounded-acquisition-control')"]
+        var ordinary: BoundedCapabilityProcess.Diagnostic?
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable, arguments: arguments,
+            timeout: 10.001, maximumBytes: 128, diagnostic: { ordinary = $0 })) {
+            XCTAssertEqual($0 as? RCIRError, .invalidLimit)
+        }
+        XCTAssertEqual(ordinary?.outcome, .invalidConfiguration); XCTAssertEqual(ordinary?.started, false)
+        for timeout in [0, -1, 30.001, .infinity, .nan] as [TimeInterval] {
+            var report: BoundedCapabilityProcess.Diagnostic?
+            XCTAssertThrowsError(try BoundedCapabilityProcess.runForHostAcquisition(executable: executable,
+                arguments: arguments, timeout: timeout, maximumBytes: 128, diagnostic: { report = $0 })) {
+                XCTAssertEqual($0 as? RCIRError, .invalidLimit)
+            }
+            XCTAssertEqual(report?.outcome, .invalidConfiguration); XCTAssertEqual(report?.started, false)
+            XCTAssertNil(report?.terminationStatus)
+        }
+        var acquired: BoundedCapabilityProcess.Diagnostic?
+        let bytes = try BoundedCapabilityProcess.runForHostAcquisition(executable: executable, arguments: arguments,
+            timeout: 12, maximumBytes: 128, diagnostic: { acquired = $0 })
+        XCTAssertEqual(String(decoding: bytes, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines), "bounded-acquisition-control")
+        XCTAssertEqual(acquired?.outcome, .completed); XCTAssertEqual(acquired?.terminationStatus, 0)
+        XCTAssertEqual(acquired?.started, true)
+    }
+
 #if os(Windows)
     private func fixedHostValue(_ name: String) throws -> String {
         let wide = Array(name.utf16) + [0]
@@ -73,6 +99,51 @@ final class TrustedHostProcessContextTests: XCTestCase {
         guard okay else { throw RCIRError.unavailable }
     }
 
+    func testActualFoundationChildEnvironmentOmitsCanaryAndScopesOnlyExplicitSearchRole() throws {
+        let key = "RIGHTCLICK_TEST_HOST_CONTEXT_SENTINEL"
+        let name = Array(key.utf16) + [0]
+        // A test-owned fixed sentinel must be absent before mutation. Never
+        // read, replace or erase a preexisting caller's value under this key.
+        let absent = name.withUnsafeBufferPointer {
+            GetEnvironmentVariableW($0.baseAddress, nil, 0) == 0 && GetLastError() == DWORD(ERROR_ENVVAR_NOT_FOUND)
+        }
+        guard absent else { throw RCIRError.unavailable }
+        func set(_ value: String?) throws {
+            let okay = name.withUnsafeBufferPointer { key -> Bool in
+                if let value {
+                    let wide = Array(value.utf16) + [0]
+                    return wide.withUnsafeBufferPointer { SetEnvironmentVariableW(key.baseAddress, $0.baseAddress) }
+                }
+                return SetEnvironmentVariableW(key.baseAddress, nil)
+            }
+            guard okay else { throw RCIRError.unavailable }
+        }
+        try set("rightclick-private-context-control")
+        defer { try? set(nil) }
+        let executable = try NativeHTTPFixture.python()
+        let frozenExecutable = try CapabilityArtifactSnapshot.read(source: executable, maximum: 8_388_608)
+        let script = "import json,os; print(json.dumps({'canaryPresent':'RIGHTCLICK_TEST_HOST_CONTEXT_SENTINEL' in os.environ,'pathPresent':'PATH' in os.environ,'machineDataPresent':'ProgramData' in os.environ,'systemRootPresent':'SystemRoot' in os.environ,'tempPresent':'TEMP' in os.environ,'tmpPresent':'TMP' in os.environ},sort_keys=True))"
+        let arguments = ["-I", "-S", "-c", script]
+        let frozenArguments = arguments.map { Array($0.utf16) }
+        let search = try TrustedHostProcessContext.resolving(.systemExecutableSearch)
+        var reports: [BoundedCapabilityProcess.Diagnostic] = []
+        var measured: [[String: Bool]] = []
+        for (index, context) in [TrustedHostProcessContext.isolated, search, .isolated].enumerated() {
+            guard arguments.map({ Array($0.utf16) }) == frozenArguments else { throw RCIRError.unavailable }
+            let bytes = try BoundedCapabilityProcess.run(executable: executable, arguments: arguments,
+                timeout: 5, maximumBytes: 512, hostContext: context, diagnostic: { reports.append($0) })
+            guard let flags = try JSONSerialization.jsonObject(with: bytes) as? [String: Bool],
+                  Set(flags.keys) == Set(["canaryPresent", "pathPresent", "machineDataPresent", "systemRootPresent", "tempPresent", "tmpPresent"]) else { throw RCIRError.unavailable }
+            measured.append(flags)
+            print("TrustedHostContext nativeChildEnvironment index=\(index) canaryPresent=\(flags["canaryPresent"]!) pathPresent=\(flags["pathPresent"]!) machineDataPresent=\(flags["machineDataPresent"]!) systemRootPresent=\(flags["systemRootPresent"]!) tempPresent=\(flags["tempPresent"]!) tmpPresent=\(flags["tmpPresent"]!)")
+        }
+        XCTAssertEqual(measured.map { $0["pathPresent"]! }, [false, true, false])
+        XCTAssertTrue(measured.allSatisfy { $0["canaryPresent"] == false && $0["machineDataPresent"] == false && $0["systemRootPresent"] == true && $0["tempPresent"] == true && $0["tmpPresent"] == true })
+        XCTAssertEqual(reports.count, 3)
+        XCTAssertTrue(reports.allSatisfy { $0.started && $0.outcome == .completed && $0.terminationStatus == 0 && $0.stdoutBytes <= 512 })
+        XCTAssertTrue(frozenExecutable == (try CapabilityArtifactSnapshot.read(source: executable, maximum: 8_388_608)))
+    }
+
     /// Exercise actual Foundation/BPC; Python's Windows argv renderer is not
     /// used here. Completion closes the parent and stdout only, not a Job group.
     private func compilerCounterfactual(rendererComparison: Bool) throws {
@@ -83,10 +154,9 @@ final class TrustedHostProcessContextTests: XCTestCase {
         try NativeHTTPFixture.writePrivate(Data("raise SystemExit(0)\n".utf8), to: script)
         let inputs = try NativeHTTPFixture.compilerInputs(script: script, directory: directory)
         let frozen = try inputs.frozenInputs.map { try CapabilityArtifactSnapshot.read(source: $0.0, maximum: $0.1) }
-        let search = try TrustedHostProcessContext.resolving(.systemExecutableSearch)
         let arguments = rendererComparison ? [inputs.packedArguments, inputs.ownedArguments, inputs.packedArguments] :
             [inputs.ownedArguments, inputs.ownedArguments, inputs.ownedArguments]
-        let contexts = rendererComparison ? [search, search, search] : [.isolated, search, .isolated]
+        let contexts = [TrustedHostProcessContext.isolated, .isolated, .isolated]
         let frozenArguments = arguments.map { $0.map { Array($0.utf16) } }
         var reports: [BoundedCapabilityProcess.Diagnostic] = []
         var success: [Bool] = [], freshPE: [Bool] = []
@@ -100,8 +170,8 @@ final class TrustedHostProcessContextTests: XCTestCase {
                 throw RCIRError.unavailable
             }
             do {
-                _ = try BoundedCapabilityProcess.run(executable: inputs.executable, arguments: arguments[index],
-                    timeout: 10, maximumBytes: 16_384, hostContext: contexts[index], diagnostic: { reports.append($0) })
+                _ = try BoundedCapabilityProcess.runForHostAcquisition(executable: inputs.executable, arguments: arguments[index],
+                    timeout: 30, maximumBytes: 16_384, hostContext: contexts[index], diagnostic: { reports.append($0) })
                 success.append(true)
             } catch let error as RCIRError {
                 guard error == .unavailable else { throw error }
@@ -129,20 +199,26 @@ final class TrustedHostProcessContextTests: XCTestCase {
             }
             guard stableOutput, unchangedInputs else { throw RCIRError.unavailable }
             let digest = emitted.map(CapabilityJSON.digest) ?? "none"
-            print("TrustedHostContext compilerProfile comparison=\(rendererComparison ? "renderer" : "searchRole") index=\(index) outcome=\(report.outcome.rawValue) started=\(report.started) exit=\(report.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(report.stdoutBytes) elapsedMilliseconds=\(report.elapsedMilliseconds) freshPE=\(validPE) outputSHA256=\(digest) stableOutput=\(stableOutput) unchangedInputs=\(unchangedInputs) parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
+            print("TrustedHostContext compilerProfile comparison=\(rendererComparison ? "renderer" : "isolatedAcquisition") index=\(index) outcome=\(report.outcome.rawValue) started=\(report.started) exit=\(report.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(report.stdoutBytes) elapsedMilliseconds=\(report.elapsedMilliseconds) freshPE=\(validPE) outputSHA256=\(digest) stableOutput=\(stableOutput) unchangedInputs=\(unchangedInputs) parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
         }
-        XCTAssertEqual(success, [false, true, false])
-        XCTAssertEqual(freshPE, [false, true, false])
-        XCTAssertTrue([0, 2].allSatisfy { reports[$0].outcome == .childFailed && reports[$0].terminationStatus != 0 })
+        // Actual f5 native evidence disproved search-role necessity: the same
+        // owned compiler succeeds in isolation. Preserve f5 as historical RED;
+        // this accurately named case verifies that no PATH grant is required.
+        if rendererComparison {
+            XCTAssertEqual(success, [false, true, false])
+            XCTAssertEqual(freshPE, [false, true, false])
+            XCTAssertTrue([0, 2].allSatisfy { reports[$0].outcome == .childFailed && reports[$0].terminationStatus != 0 })
+        } else {
+            XCTAssertEqual(success, [true, true, true])
+            XCTAssertEqual(freshPE, [true, true, true])
+            XCTAssertTrue(reports.allSatisfy { $0.outcome == .completed && $0.terminationStatus == 0 })
+        }
         XCTAssertTrue(reports[1].outcome == .completed && reports[1].terminationStatus == 0)
         XCTAssertTrue(reports.allSatisfy { $0.stdoutBytes <= 16_384 })
-        XCTAssertTrue(search.isCurrent)
-        XCTAssertNotEqual(search.identity, TrustedHostProcessContext.isolated.identity)
-        XCTAssertNotEqual(search.identity, try TrustedHostProcessContext.resolving(.machineApplicationData).identity)
-        XCTAssertEqual(String(reflecting: search), "TrustedHostProcessContext(systemExecutableSearch)")
+        XCTAssertTrue(TrustedHostProcessContext.isolated.isCurrent)
     }
 
-    func testActualFoundationCompilerRequiresSingleSystemSearchAndRestoresIsolation() throws {
+    func testActualFoundationOwnedCompilerSucceedsWithoutSystemSearchGrantAndRestoresIsolation() throws {
         try compilerCounterfactual(rendererComparison: false)
     }
 

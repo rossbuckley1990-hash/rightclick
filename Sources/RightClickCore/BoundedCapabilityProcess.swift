@@ -44,6 +44,30 @@ enum BoundedCapabilityProcess {
                     hostContext: TrustedHostProcessContext = .isolated,
                     diagnostic: ((Diagnostic) -> Void)? = nil,
                     admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> Data {
+        try execute(executable: executable, arguments: arguments, timeout: timeout, maximumTimeout: 10,
+                    maximumBytes: maximumBytes, input: input, hostContext: hostContext,
+                    diagnostic: diagnostic, admitStart: admitStart)
+    }
+
+    /// Host-selected acquisition only. Provider invocations, leases and their
+    /// ordinary execution ceiling do not acquire this budget from descriptors.
+    /// This still closes the Foundation parent/stdout, not an owned Job group.
+    static func runForHostAcquisition(executable: URL, arguments: [String], timeout: TimeInterval = 30,
+                    maximumBytes: Int = 1_048_576,
+                    input: Data? = nil,
+                    hostContext: TrustedHostProcessContext = .isolated,
+                    diagnostic: ((Diagnostic) -> Void)? = nil,
+                    admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> Data {
+        try execute(executable: executable, arguments: arguments, timeout: timeout, maximumTimeout: 30,
+                    maximumBytes: maximumBytes, input: input, hostContext: hostContext,
+                    diagnostic: diagnostic, admitStart: admitStart)
+    }
+
+    private static func execute(executable: URL, arguments: [String], timeout: TimeInterval,
+                    maximumTimeout: TimeInterval, maximumBytes: Int, input: Data?,
+                    hostContext: TrustedHostProcessContext,
+                    diagnostic: ((Diagnostic) -> Void)?,
+                    admitStart: ((_ start: () -> Void) throws -> Void)?) throws -> Data {
         let began = ProcessInfo.processInfo.systemUptime
         var started = false, launchMilliseconds: Double?, terminationStatus: Int32?
         var stdoutBytes = 0
@@ -55,7 +79,7 @@ enum BoundedCapabilityProcess {
         }
         guard executable.isFileURL, RuntimePlatform.isAbsolutePath(executable.path),
               FileManager.default.isExecutableFile(atPath: executable.path),
-              timeout.isFinite, timeout > 0, timeout <= 10,
+              timeout.isFinite, timeout > 0, timeout <= maximumTimeout,
               (1...1_048_576).contains(maximumBytes) else { throw RCIRError.invalidLimit }
         guard (input?.count ?? 0) <= 1_048_576 else { throw RCIRError.invalidLimit }
         let process = Process(); process.executableURL = executable; process.arguments = arguments
