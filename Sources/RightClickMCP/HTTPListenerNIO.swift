@@ -89,28 +89,31 @@ private final class BoundedHTTPHandler: ChannelInboundHandler {
             let request = HTTPRequest(method: head.method.rawValue, headers: headers,
                 body: body.isEmpty ? nil : body, path: requestPath)
             let handler = self.handler
+            // Channel supports cross-thread writes. Handler context and mutable
+            // request state remain confined to this event loop.
+            let channel = context.channel
             Task {
                 let response = await handler(request)
                 if case .stream(let stream, _) = response {
-                    do { try await self.sendStream(context, response: response, stream: stream) }
-                    catch { context.eventLoop.execute { context.close(promise: nil) } }
+                    do { try await Self.sendStream(channel, response: response, stream: stream) }
+                    catch { channel.close(promise: nil) }
                     return
                 }
                 let payload = response.bodyData ?? Data()
                 guard payload.count <= 4 * 1024 * 1024 else {
-                    context.eventLoop.execute { self.send(context, status: .internalServerError, headers: [:], body: Data()) }
+                    channel.eventLoop.execute { Self.send(channel, status: .internalServerError, headers: [:], body: Data()) }
                     return
                 }
-                context.eventLoop.execute {
-                    self.send(context, status: HTTPResponseStatus(statusCode: response.statusCode), headers: response.headers, body: payload)
+                channel.eventLoop.execute {
+                    Self.send(channel, status: HTTPResponseStatus(statusCode: response.statusCode), headers: response.headers, body: payload)
                 }
             }
         }
     }
     private func fail(_ context: ChannelHandlerContext, status: HTTPResponseStatus) {
-        dispatched = true; send(context, status: status, headers: [:], body: Data())
+        dispatched = true; Self.send(context.channel, status: status, headers: [:], body: Data())
     }
-    private func sendStream(_ context: ChannelHandlerContext, response: HTTPResponse,
+    private static func sendStream(_ channel: any Channel, response: HTTPResponse,
         stream: AsyncThrowingStream<Data, Error>) async throws {
         var fields = HTTPHeaders()
         for (key, value) in response.headers where !["content-length", "transfer-encoding", "connection"].contains(key.lowercased()) {
@@ -118,31 +121,31 @@ private final class BoundedHTTPHandler: ChannelInboundHandler {
         }
         fields.add(name: "Transfer-Encoding", value: "chunked")
         fields.add(name: "Connection", value: "close")
-        try await context.channel.writeAndFlush(wrapOutboundOut(.head(HTTPResponseHead(version: .http1_1,
-            status: HTTPResponseStatus(statusCode: response.statusCode), headers: fields)))).get()
+        try await channel.writeAndFlush(HTTPServerResponsePart.head(HTTPResponseHead(version: .http1_1,
+            status: HTTPResponseStatus(statusCode: response.statusCode), headers: fields))).get()
         var total = 0
         for try await chunk in stream {
             guard chunk.count <= 4 * 1024 * 1024 - total else { throw RightClickError("Stream response limit exceeded.") }
             total += chunk.count
-            var buffer = context.channel.allocator.buffer(capacity: chunk.count)
+            var buffer = channel.allocator.buffer(capacity: chunk.count)
             buffer.writeBytes(chunk)
-            try await context.channel.writeAndFlush(wrapOutboundOut(.body(.byteBuffer(buffer)))).get()
+            try await channel.writeAndFlush(HTTPServerResponsePart.body(.byteBuffer(buffer))).get()
         }
-        try await context.channel.writeAndFlush(wrapOutboundOut(.end(nil))).get()
-        try await context.channel.close().get()
+        try await channel.writeAndFlush(HTTPServerResponsePart.end(nil)).get()
+        try await channel.close().get()
     }
-    private func send(_ context: ChannelHandlerContext, status: HTTPResponseStatus, headers: [String: String], body: Data) {
+    private static func send(_ channel: any Channel, status: HTTPResponseStatus, headers: [String: String], body: Data) {
         var fields = HTTPHeaders()
         for (key, value) in headers where !["content-length", "transfer-encoding", "connection"].contains(key.lowercased()) {
             fields.add(name: key, value: value)
         }
         fields.add(name: "Content-Length", value: String(body.count)); fields.add(name: "Connection", value: "close")
-        context.write(wrapOutboundOut(.head(HTTPResponseHead(version: .http1_1, status: status, headers: fields))), promise: nil)
+        channel.write(HTTPServerResponsePart.head(HTTPResponseHead(version: .http1_1, status: status, headers: fields)), promise: nil)
         if !body.isEmpty {
-            var buffer = context.channel.allocator.buffer(capacity: body.count); buffer.writeBytes(body)
-            context.write(wrapOutboundOut(.body(.byteBuffer(buffer))), promise: nil)
+            var buffer = channel.allocator.buffer(capacity: body.count); buffer.writeBytes(body)
+            channel.write(HTTPServerResponsePart.body(.byteBuffer(buffer)), promise: nil)
         }
-        context.writeAndFlush(wrapOutboundOut(.end(nil))).whenComplete { _ in context.close(promise: nil) }
+        channel.writeAndFlush(HTTPServerResponsePart.end(nil)).whenComplete { _ in channel.close(promise: nil) }
     }
 }
 #endif

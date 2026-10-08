@@ -112,9 +112,9 @@ with tempfile.TemporaryDirectory(prefix="rightclick-portable-acceptance-") as di
         token = uuid.uuid4().hex+uuid.uuid4().hex
         process = subprocess.Popen([binary,"mcp","--http","--port",str(port)],env=dict(env,RIGHTCLICK_MCP_TOKEN=token),stdout=err,stderr=err)
         url = f"http://127.0.0.1:{port}/mcp"
-        def http(query, authorized=True):
+        def http(query, bearer=token):
             headers = {"Content-Type":"application/json","Accept":"application/json, text/event-stream"}
-            if authorized: headers["Authorization"] = "Bearer "+token
+            if bearer is not None: headers["Authorization"] = "Bearer "+bearer
             with urllib.request.urlopen(urllib.request.Request(url,data=json.dumps(query).encode(),headers=headers),timeout=40) as response:
                 return json.load(response)
         try:
@@ -122,8 +122,16 @@ with tempfile.TemporaryDirectory(prefix="rightclick-portable-acceptance-") as di
                 try:
                     with socket.create_connection(("127.0.0.1",port),timeout=.2): break
                 except OSError: time.sleep(.05)
-            try: http(message("tools/list"),False); raise AssertionError("authentication bypass")
-            except urllib.error.HTTPError as error: assert error.code == 401
+            for framing in ("Content-Length: -1", "Content-Length: nonsense", "Content-Length: 2000001", "Transfer-Encoding: chunked"):
+                with socket.create_connection(("127.0.0.1",port),timeout=5) as connection:
+                    connection.sendall(("POST /mcp HTTP/1.1\r\nHost: localhost\r\n"+framing+"\r\n\r\n").encode())
+                    response=connection.recv(4096)
+                    assert response.startswith(b"HTTP/1.1 400 "), (framing,response)
+                assert process.poll() is None, "Malformed request terminated the server"
+            for bearer in (None,"invalid-test-credential"):
+                try: http(message("tools/list"),bearer); raise AssertionError("authentication bypass")
+                except urllib.error.HTTPError as error: assert error.code == 401
+            print("http safety: PASS negative/invalid/oversized/unsupported framing, missing/incorrect credentials, listener remains available")
             exercise(http,"http")
         finally: process.terminate(); process.wait(timeout=10)
 server.shutdown()
