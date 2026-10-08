@@ -72,13 +72,15 @@ final class TrustedHostProcessContextTests: XCTestCase {
         XCTAssertFalse(installation.isEmpty)
         XCTAssertTrue(TrustedHostProcessContext.isBoundedLocalDirectoryPath(installation))
         XCTAssertFalse(selected.prefix(3).elementsEqual([239, 187, 191]))
-        XCTAssertTrue(beforeBytes == (try CapabilityArtifactSnapshot.read(source: executable, maximum: 8_388_608)))
+        let unchangedBinary = beforeBytes == (try CapabilityArtifactSnapshot.read(source: executable, maximum: 8_388_608))
+        XCTAssertTrue(unchangedBinary)
         XCTAssertEqual(reports.count, 3)
-        XCTAssertTrue(reports.allSatisfy { $0.started && $0.outcome == .completed && $0.terminationStatus == 0 })
+        let naturalCompletions = reports.filter { $0.started && $0.outcome == .completed && $0.terminationStatus == 0 }.count
+        XCTAssertEqual(naturalCompletions, 3)
         XCTAssertTrue(reports.allSatisfy { $0.stdoutBytes <= 32_768 })
         XCTAssertNotEqual(context.identity, TrustedHostProcessContext.isolated.identity)
         XCTAssertEqual(String(reflecting: context), "TrustedHostProcessContext(machineApplicationData)")
-        print("TrustedHostContext nativeFoundationCounterfactual minimalBytes=\(minimal.count) explicitBytes=\(selected.count) restoredBytes=\(restored.count) unchangedBinary=true naturalCompletions=3")
+        print("TrustedHostContext nativeFoundationCounterfactual minimalBytes=\(minimal.count) explicitBytes=\(selected.count) restoredBytes=\(restored.count) unchangedBinary=\(unchangedBinary) naturalCompletions=\(naturalCompletions)")
     }
 
     func testFrozenContextDriftAtAdmissionPreventsActualChildLaunch() throws {
