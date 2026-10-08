@@ -10,4 +10,4 @@ The independent current Linux D-Bus audit authenticates the API artifact, verifi
 
 `red-green-scope-ledger.json` records, for each current RED, its exposing substrate, generic deficiency, reusable primitive, thin platform layer, required GREEN evidence and potential reuse. The accompanying safe audits retain source/run/artifact pins and limits. The native isolation report alone is copied with CRLF converted to LF; its original and copied byte counts and SHA-256 are both recorded, and the parsed JSON is identical. Raw query output, host paths, private keys, environment values and raw Windows receipt capsules are excluded.
 
-Public release, tags, release assets and Homebrew publishing are held. Source review, CI and regression fixes continue.
+The audit was recorded while public publishing was held. The user subsequently authorized the public `v0.2.3` release and Homebrew update. Regression, review and exact published-byte verification gates remain required; this evidence does not claim those gates have passed.
