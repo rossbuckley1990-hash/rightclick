@@ -28,6 +28,14 @@ final class TrustedHostProcessContextTests: XCTestCase {
         XCTAssertTrue(TrustedHostProcessContext.isBoundedLocalDirectoryPath("D:/Machine Data"))
     }
 
+    func testSystemSearchRejectsPathListsAndRetainsSingleLocalDirectoryBounds() {
+        let invalid = ["C:\\Windows;D:\\Tools", "C:\\Windows;", ";C:\\Windows", "C:\\a\"b", "C:\\a\nb", "\\\\server\\share", "relative"]
+        for (index, value) in invalid.enumerated() {
+            XCTAssertFalse(TrustedHostProcessContext.isBoundedSingleSearchDirectoryPath(value), "invalid search case \(index)")
+        }
+        XCTAssertTrue(TrustedHostProcessContext.isBoundedSingleSearchDirectoryPath("C:\\Windows\\System32"))
+    }
+
 #if os(Windows)
     private func fixedHostValue(_ name: String) throws -> String {
         let wide = Array(name.utf16) + [0]
@@ -51,6 +59,154 @@ final class TrustedHostProcessContextTests: XCTestCase {
             return SetEnvironmentVariableW(key.baseAddress, nil)
         }
         guard okay else { throw RCIRError.unavailable }
+    }
+
+    private func setSystemRoot(_ value: String?) throws {
+        let name = Array("SystemRoot".utf16) + [0]
+        let okay = name.withUnsafeBufferPointer { key -> Bool in
+            if let value {
+                let wide = Array(value.utf16) + [0]
+                return wide.withUnsafeBufferPointer { SetEnvironmentVariableW(key.baseAddress, $0.baseAddress) }
+            }
+            return SetEnvironmentVariableW(key.baseAddress, nil)
+        }
+        guard okay else { throw RCIRError.unavailable }
+    }
+
+    /// Exercise actual Foundation/BPC; Python's Windows argv renderer is not
+    /// used here. Completion closes the parent and stdout only, not a Job group.
+    private func compilerCounterfactual(rendererComparison: Bool) throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("rightclick-foundation-compiler-" + UUID().uuidString)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
+        defer { try? NativeHTTPFixture.remove(directory) }
+        let script = directory.appendingPathComponent("owned-script.py")
+        try NativeHTTPFixture.writePrivate(Data("raise SystemExit(0)\n".utf8), to: script)
+        let inputs = try NativeHTTPFixture.compilerInputs(script: script, directory: directory)
+        let frozen = try inputs.frozenInputs.map { try CapabilityArtifactSnapshot.read(source: $0.0, maximum: $0.1) }
+        let search = try TrustedHostProcessContext.resolving(.systemExecutableSearch)
+        let arguments = rendererComparison ? [inputs.packedArguments, inputs.ownedArguments, inputs.packedArguments] :
+            [inputs.ownedArguments, inputs.ownedArguments, inputs.ownedArguments]
+        let contexts = rendererComparison ? [search, search, search] : [.isolated, search, .isolated]
+        let frozenArguments = arguments.map { $0.map { Array($0.utf16) } }
+        var reports: [BoundedCapabilityProcess.Diagnostic] = []
+        var success: [Bool] = [], freshPE: [Bool] = []
+        for index in 0..<3 {
+            for output in [inputs.client, inputs.object] where FileManager.default.fileExists(atPath: output.path) {
+                try FileManager.default.removeItem(at: output)
+            }
+            guard [inputs.client, inputs.object].allSatisfy({ !FileManager.default.fileExists(atPath: $0.path) }),
+                  arguments[index].map({ Array($0.utf16) }) == frozenArguments[index],
+                  try inputs.frozenInputs.enumerated().allSatisfy({ try CapabilityArtifactSnapshot.read(source: $0.element.0, maximum: $0.element.1) == frozen[$0.offset] }) else {
+                throw RCIRError.unavailable
+            }
+            do {
+                _ = try BoundedCapabilityProcess.run(executable: inputs.executable, arguments: arguments[index],
+                    timeout: 10, maximumBytes: 16_384, hostContext: contexts[index], diagnostic: { reports.append($0) })
+                success.append(true)
+            } catch let error as RCIRError {
+                guard error == .unavailable else { throw error }
+                success.append(false)
+            }
+            guard reports.count == index + 1 else { throw RCIRError.unavailable }
+            let report = reports[index]
+            // Cancellation, failed drain and truncation abort before reusing any
+            // output path. Do not treat them as the counterfactual's native RED.
+            guard report.started, report.terminationStatus != nil,
+                  report.outcome == .completed || report.outcome == .childFailed else {
+                print("TrustedHostContext compilerAborted index=\(index) outcome=\(report.outcome.rawValue)")
+                throw RCIRError.unavailable
+            }
+            let emitted: Data?
+            if FileManager.default.fileExists(atPath: inputs.client.path) {
+                emitted = try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)
+            } else { emitted = nil }
+            let validPE = emitted.map(NativeHTTPFixture.isAMD64PE) ?? false
+            freshPE.append(validPE)
+            Thread.sleep(forTimeInterval: 0.010)
+            let stableOutput = emitted == (try? CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608))
+            let unchangedInputs = try inputs.frozenInputs.enumerated().allSatisfy {
+                try CapabilityArtifactSnapshot.read(source: $0.element.0, maximum: $0.element.1) == frozen[$0.offset]
+            }
+            guard stableOutput, unchangedInputs else { throw RCIRError.unavailable }
+            let digest = emitted.map(CapabilityJSON.digest) ?? "none"
+            print("TrustedHostContext compilerProfile comparison=\(rendererComparison ? "renderer" : "searchRole") index=\(index) outcome=\(report.outcome.rawValue) started=\(report.started) exit=\(report.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(report.stdoutBytes) elapsedMilliseconds=\(report.elapsedMilliseconds) freshPE=\(validPE) outputSHA256=\(digest) stableOutput=\(stableOutput) unchangedInputs=\(unchangedInputs) parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
+        }
+        XCTAssertEqual(success, [false, true, false])
+        XCTAssertEqual(freshPE, [false, true, false])
+        XCTAssertTrue([0, 2].allSatisfy { reports[$0].outcome == .childFailed && reports[$0].terminationStatus != 0 })
+        XCTAssertTrue(reports[1].outcome == .completed && reports[1].terminationStatus == 0)
+        XCTAssertTrue(reports.allSatisfy { $0.stdoutBytes <= 16_384 })
+        XCTAssertTrue(search.isCurrent)
+        XCTAssertNotEqual(search.identity, TrustedHostProcessContext.isolated.identity)
+        XCTAssertNotEqual(search.identity, try TrustedHostProcessContext.resolving(.machineApplicationData).identity)
+        XCTAssertEqual(String(reflecting: search), "TrustedHostProcessContext(systemExecutableSearch)")
+    }
+
+    func testActualFoundationCompilerRequiresSingleSystemSearchAndRestoresIsolation() throws {
+        try compilerCounterfactual(rendererComparison: false)
+    }
+
+    func testActualFoundationCompilerRequiresOwnedBatchAndRestoresPackedRenderer() throws {
+        try compilerCounterfactual(rendererComparison: true)
+    }
+
+    func testSystemRootExactUnicodeDriftAtAdmissionPreventsLaunch() throws {
+        let original = try fixedHostValue("SystemRoot")
+        defer { try? setSystemRoot(original) }
+        let executable = try NativeHTTPFixture.python()
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
+        defer { try? NativeHTTPFixture.remove(directory) }
+        let composed = directory.appendingPathComponent("caf\u{e9}")
+        let decomposed = directory.appendingPathComponent("cafe\u{301}")
+        XCTAssertTrue(composed.path == decomposed.path)
+        XCTAssertFalse(composed.path.utf16.elementsEqual(decomposed.path.utf16))
+        for root in [composed, decomposed] {
+            try NativeHTTPFixture.createPrivateDirectory(root)
+            try NativeHTTPFixture.createPrivateDirectory(root.appendingPathComponent("System32"))
+        }
+        try setSystemRoot(composed.path)
+        let context = try TrustedHostProcessContext.resolving(.systemExecutableSearch)
+        let selected = try context.applying(to: ["fixed": "private-test-canary"])
+        XCTAssertEqual(Set(selected.keys), Set(["fixed", "PATH"]))
+        var report: BoundedCapabilityProcess.Diagnostic?
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable,
+            arguments: ["-c", "raise SystemExit(77)"], hostContext: context,
+            diagnostic: { report = $0 }, admitStart: { start in
+                try self.setSystemRoot(decomposed.path)
+                start()
+            })) { XCTAssertEqual($0 as? RCIRError, .unavailable) }
+        XCTAssertEqual(report?.started, false)
+        XCTAssertEqual(report?.outcome, .admissionOrLaunchFailure)
+        XCTAssertNil(report?.terminationStatus)
+        let changed = try TrustedHostProcessContext.resolving(.systemExecutableSearch)
+        XCTAssertNotEqual(context.identity, changed.identity)
+        XCTAssertFalse(context.isCurrent); XCTAssertTrue(changed.isCurrent)
+        XCTAssertFalse(String(reflecting: changed).contains(decomposed.path))
+    }
+
+    func testSystemSearchRejectsMissingAmbiguousAndRedirectedHostRoots() throws {
+        let original = try fixedHostValue("SystemRoot")
+        defer { try? setSystemRoot(original) }
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
+        defer { try? NativeHTTPFixture.remove(directory) }
+        let target = directory.appendingPathComponent("target"), alias = directory.appendingPathComponent("redirect")
+        try NativeHTTPFixture.createPrivateDirectory(target)
+        try NativeHTTPFixture.createPrivateDirectory(target.appendingPathComponent("System32"))
+        try NativeHTTPFixture.junction(alias, target: target)
+        let leafRoot = directory.appendingPathComponent("leaf-root")
+        try NativeHTTPFixture.createPrivateDirectory(leafRoot)
+        try NativeHTTPFixture.junction(leafRoot.appendingPathComponent("System32"), target: target.appendingPathComponent("System32"))
+        let fileRoot = directory.appendingPathComponent("file-root")
+        try NativeHTTPFixture.createPrivateDirectory(fileRoot)
+        try NativeHTTPFixture.writePrivate(Data("not-a-directory".utf8), to: fileRoot.appendingPathComponent("System32"))
+        for value in [nil, "relative", "\\\\server\\share", "C:\\a\"b", "C:\\a\nb", "C:\\Windows;D:\\Tools",
+                      "C:\\" + String(repeating: "a", count: 4094), alias.path, leafRoot.path, fileRoot.path,
+                      directory.appendingPathComponent("absent").path, directory.path] as [String?] {
+            try setSystemRoot(value)
+            XCTAssertThrowsError(try TrustedHostProcessContext.resolving(.systemExecutableSearch))
+        }
     }
 
     func testActualFoundationInstalledDiscoveryRequiresExplicitSingleLocationAndRestoresIsolation() throws {
@@ -81,97 +237,6 @@ final class TrustedHostProcessContextTests: XCTestCase {
         XCTAssertNotEqual(context.identity, TrustedHostProcessContext.isolated.identity)
         XCTAssertEqual(String(reflecting: context), "TrustedHostProcessContext(machineApplicationData)")
         print("TrustedHostContext nativeFoundationCounterfactual minimalBytes=\(minimal.count) explicitBytes=\(selected.count) restoredBytes=\(restored.count) unchangedBinary=\(unchangedBinary) naturalCompletions=\(naturalCompletions)")
-    }
-
-    /// Acquisition-only experiment: keep the actual fixture compiler command
-    /// and its owned inputs identical while varying only the typed host role.
-    /// This does not change pythonClient or any production resolver's context.
-    func testActualFoundationNativeCompilerRequiresExplicitSingleLocationAndRestoresIsolation() throws {
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("rightclick-compiler-counterfactual-" + UUID().uuidString)
-        try NativeHTTPFixture.createPrivateDirectory(directory)
-        defer { try? NativeHTTPFixture.remove(directory) }
-        let context = try TrustedHostProcessContext.resolving(.machineApplicationData)
-        let whereTool = URL(fileURLWithPath: try fixedHostValue("ProgramFiles(x86)"))
-            .appendingPathComponent("Microsoft Visual Studio/Installer/vswhere.exe")
-        let installed = try BoundedCapabilityProcess.run(executable: whereTool,
-            arguments: ["-latest", "-products", "*", "-requires", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property", "installationPath"],
-            timeout: 5, maximumBytes: 32_768, hostContext: context)
-        let installation = String(decoding: installed, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
-        guard TrustedHostProcessContext.isBoundedLocalDirectoryPath(installation) else { throw RCIRError.unavailable }
-        let setup = URL(fileURLWithPath: installation).appendingPathComponent("VC/Auxiliary/Build/vcvars64.bat")
-        let executable = URL(fileURLWithPath: try fixedHostValue("SystemRoot")).appendingPathComponent("System32/cmd.exe")
-        let repository = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        let source = directory.appendingPathComponent("client-launcher.c")
-        let header = directory.appendingPathComponent("windows-python-client-paths.h")
-        let script = directory.appendingPathComponent("owned-script.py")
-        let client = directory.appendingPathComponent("client.exe"), object = directory.appendingPathComponent("client.obj")
-        func literal(_ value: String) -> String { value.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"") }
-        func native(_ file: URL) -> String { file.path.replacingOccurrences(of: "/", with: "\\") }
-        let interpreter = try NativeHTTPFixture.python()
-        try NativeHTTPFixture.writePrivate(try CapabilityArtifactSnapshot.read(source: repository.appendingPathComponent("Tests/Fixtures/windows-python-client-launcher.c"), maximum: 65_536), to: source)
-        try NativeHTTPFixture.writePrivate(Data("raise SystemExit(0)\n".utf8), to: script)
-        let declaration = "#define RIGHTCLICK_FIXTURE_PYTHON L\"\(literal(interpreter.path))\"\n#define RIGHTCLICK_FIXTURE_SCRIPT L\"\(literal(script.path))\"\n"
-        try NativeHTTPFixture.writePrivate(Data(declaration.utf8), to: header)
-        // This is the exact batch/cl command shape in NativeHTTPFixture.
-        let command = "call \"\(native(setup))\" > nul && cl /nologo /std:c17 \"\(native(source))\" /Fe:\"\(native(client))\" /Fo:\"\(native(object))\""
-        let arguments = ["/d", "/s", "/c", command]
-        let inputs = [(executable, 8_388_608), (setup, 1_048_576), (source, 65_536), (header, 32_768), (script, 128)]
-        let frozen = try inputs.map { try CapabilityArtifactSnapshot.read(source: $0.0, maximum: $0.1) }
-        var reports: [BoundedCapabilityProcess.Diagnostic] = []
-        var invokedArguments: [[String]] = []
-        var success: [Bool] = [], freshPE: [Bool] = []
-        for (index, profile) in [TrustedHostProcessContext.isolated, context, .isolated].enumerated() {
-            // Reuse the exact command and path bytes, but never its output.
-            for output in [client, object] where FileManager.default.fileExists(atPath: output.path) {
-                try FileManager.default.removeItem(at: output)
-            }
-            guard [client, object].allSatisfy({ !FileManager.default.fileExists(atPath: $0.path) }) else { throw RCIRError.unavailable }
-            invokedArguments.append(arguments)
-            do {
-                _ = try BoundedCapabilityProcess.run(executable: executable, arguments: arguments,
-                    timeout: 5, maximumBytes: 16_384, hostContext: profile,
-                    diagnostic: { reports.append($0) })
-                success.append(true)
-            } catch let error as RCIRError {
-                guard error == .unavailable else { throw error }
-                success.append(false)
-            }
-            guard reports.count == index + 1 else { throw RCIRError.unavailable }
-            let report = reports[index]
-            // Never continue into another profile after cancellation, output
-            // truncation or failed drain: a late compiler output would destroy
-            // the same-input counterfactual. cmd waits for the foreground cl.
-            guard report.started, report.terminationStatus != nil,
-                  report.outcome == .completed || report.outcome == .childFailed else {
-                print("TrustedHostContext nativeCompilerAborted index=\(index) outcome=\(report.outcome.rawValue)")
-                throw RCIRError.unavailable
-            }
-            let emitted = try? CapabilityArtifactSnapshot.read(source: client, maximum: 8_388_608)
-            let validPE: Bool
-            if let emitted, emitted.count >= 64, emitted.prefix(2).elementsEqual([77, 90]) {
-                let offset = (0..<4).reduce(0) { $0 | (Int(emitted[60 + $1]) << (8 * $1)) }
-                validPE = offset <= emitted.count - 6 && emitted[offset..<(offset + 6)].elementsEqual([80, 69, 0, 0, 100, 134])
-            } else { validPE = false }
-            freshPE.append(validPE)
-            let outputDigest = emitted.map(CapabilityJSON.digest) ?? "none"
-            print("TrustedHostContext nativeCompilerProfile index=\(index) outcome=\(report.outcome.rawValue) started=\(report.started) exit=\(report.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(report.stdoutBytes) elapsedMilliseconds=\(report.elapsedMilliseconds) freshPE=\(validPE) outputSHA256=\(outputDigest)")
-        }
-        let sameArguments = invokedArguments.count == 3 && invokedArguments.allSatisfy {
-            $0.count == arguments.count && zip($0, arguments).allSatisfy { $0.0.utf16.elementsEqual($0.1.utf16) }
-        }
-        let unchangedInputs = try inputs.enumerated().allSatisfy {
-            try CapabilityArtifactSnapshot.read(source: $0.element.0, maximum: $0.element.1) == frozen[$0.offset]
-        }
-        let isolatedFailures = [0, 2].allSatisfy {
-            reports[$0].started && reports[$0].outcome == .childFailed && reports[$0].terminationStatus == 1
-        }
-        let explicitNaturalCompletion = reports[1].started && reports[1].outcome == .completed && reports[1].terminationStatus == 0
-        print("TrustedHostContext nativeCompilerCounterfactual unchangedInputs=\(unchangedInputs) sameArguments=\(sameArguments) isolatedFailures=\(isolatedFailures) explicitNaturalCompletion=\(explicitNaturalCompletion)")
-        XCTAssertEqual(success, [false, true, false])
-        XCTAssertEqual(freshPE, [false, true, false])
-        XCTAssertTrue(unchangedInputs); XCTAssertTrue(sameArguments); XCTAssertTrue(context.isCurrent)
-        XCTAssertTrue(isolatedFailures); XCTAssertTrue(explicitNaturalCompletion)
-        XCTAssertTrue(reports.allSatisfy { $0.stdoutBytes <= 16_384 })
     }
 
     func testFrozenContextDriftAtAdmissionPreventsActualChildLaunch() throws {
@@ -268,6 +333,9 @@ final class TrustedHostProcessContextTests: XCTestCase {
 #else
     func testUnavailableHostLocationCannotExpandNonWindowsEnvironment() {
         XCTAssertThrowsError(try TrustedHostProcessContext.resolving(.machineApplicationData)) {
+            XCTAssertEqual($0 as? RCIRError, .unavailable)
+        }
+        XCTAssertThrowsError(try TrustedHostProcessContext.resolving(.systemExecutableSearch)) {
             XCTAssertEqual($0 as? RCIRError, .unavailable)
         }
     }

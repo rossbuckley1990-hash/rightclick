@@ -76,31 +76,7 @@ enum RightClickChatGPTOnboarding {
             encoding: .utf8
         )
 
-        let regex = try NSRegularExpression(
-            pattern:
-                #"(?m)^\s*command:\s*"([^"]+)"\s*$"#
-        )
-
-        let range = NSRange(
-            text.startIndex..<text.endIndex,
-            in: text
-        )
-
-        guard
-            let match = regex.firstMatch(
-                in: text,
-                range: range
-            ),
-            match.numberOfRanges == 2,
-            let commandRange = Range(
-                match.range(at: 1),
-                in: text
-            )
-        else {
-            return nil
-        }
-
-        return String(text[commandRange])
+        return RightClickChatGPTBridgeProfile.command(in: text)
     }
 
     static func launchAgentArguments(

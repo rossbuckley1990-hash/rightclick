@@ -15,6 +15,7 @@ import WinSDK
 struct TrustedHostProcessContext: Sendable, Equatable, CustomStringConvertible, CustomDebugStringConvertible {
     enum KnownHostLocation: String, Sendable {
         case machineApplicationData
+        case systemExecutableSearch
     }
 
     private let location: KnownHostLocation?
@@ -36,7 +37,7 @@ struct TrustedHostProcessContext: Sendable, Equatable, CustomStringConvertible, 
 
     static func resolving(_ location: KnownHostLocation) throws -> Self {
 #if os(Windows)
-        let path = try readMachineApplicationData()
+        let path = try readKnownLocation(location)
         guard isExistingLocalDirectoryWithoutRedirects(path) else { throw RCIRError.unavailable }
         return Self(location: location, path: path)
 #else
@@ -47,11 +48,14 @@ struct TrustedHostProcessContext: Sendable, Equatable, CustomStringConvertible, 
     /// Values are private and mapped to one fixed key only. The caller owns the
     /// baseline; an isolated context cannot change it.
     func applying(to baseline: [String: String]) throws -> [String: String] {
-        guard location != nil else { return baseline }
+        guard let location else { return baseline }
 #if os(Windows)
         guard let path, isCurrent else { throw RCIRError.unavailable }
         var result = baseline
-        result["ProgramData"] = path
+        switch location {
+        case .machineApplicationData: result["ProgramData"] = path
+        case .systemExecutableSearch: result["PATH"] = path
+        }
         return result
 #else
         throw RCIRError.unavailable
@@ -59,9 +63,9 @@ struct TrustedHostProcessContext: Sendable, Equatable, CustomStringConvertible, 
     }
 
     var isCurrent: Bool {
-        guard location != nil else { return true }
+        guard let location else { return true }
 #if os(Windows)
-        guard let path, let current = try? Self.readMachineApplicationData(),
+        guard let path, let current = try? Self.readKnownLocation(location),
               current.utf16.elementsEqual(path.utf16) else { return false }
         return Self.isExistingLocalDirectoryWithoutRedirects(path)
 #else
@@ -83,11 +87,21 @@ struct TrustedHostProcessContext: Sendable, Equatable, CustomStringConvertible, 
             !components.contains(where: { $0 == "." || $0 == ".." || $0.last == "." || $0.last == " " })
     }
 
+    /// A search role carries exactly one directory, never a PATH list.
+    static func isBoundedSingleSearchDirectoryPath(_ path: String) -> Bool {
+        isBoundedLocalDirectoryPath(path) && !path.contains(";")
+    }
+
 #if os(Windows)
     /// Read exactly one reviewed nonsecret host key through the native API.
     /// Never enumerate/copy the ambient environment or read provider credentials.
-    private static func readMachineApplicationData() throws -> String {
-        let name = Array("ProgramData".utf16) + [0]
+    private static func readKnownLocation(_ location: KnownHostLocation) throws -> String {
+        let keyName: String
+        switch location {
+        case .machineApplicationData: keyName = "ProgramData"
+        case .systemExecutableSearch: keyName = "SystemRoot"
+        }
+        let name = Array(keyName.utf16) + [0]
         var buffer = [WCHAR](repeating: 0, count: 4097)
         let count = name.withUnsafeBufferPointer { key in
             buffer.withUnsafeMutableBufferPointer { value in
@@ -95,9 +109,17 @@ struct TrustedHostProcessContext: Sendable, Equatable, CustomStringConvertible, 
             }
         }
         guard count > 0, count <= 4096 else { throw RCIRError.unavailable }
-        let path = String(decoding: buffer.prefix(Int(count)), as: UTF16.self)
-        guard Array(path.utf16).elementsEqual(buffer.prefix(Int(count))),
-              isBoundedLocalDirectoryPath(path) else { throw RCIRError.unavailable }
+        let observed = String(decoding: buffer.prefix(Int(count)), as: UTF16.self)
+        guard Array(observed.utf16).elementsEqual(buffer.prefix(Int(count))),
+              isBoundedLocalDirectoryPath(observed) else { throw RCIRError.unavailable }
+        let path: String
+        switch location {
+        case .machineApplicationData: path = observed
+        case .systemExecutableSearch:
+            guard isBoundedSingleSearchDirectoryPath(observed) else { throw RCIRError.unavailable }
+            path = observed + "\\System32"
+            guard isBoundedSingleSearchDirectoryPath(path) else { throw RCIRError.unavailable }
+        }
         return path
     }
 
