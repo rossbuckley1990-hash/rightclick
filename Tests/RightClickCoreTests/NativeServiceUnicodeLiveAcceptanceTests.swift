@@ -57,5 +57,22 @@ final class NativeServiceUnicodeLiveAcceptanceTests: XCTestCase {
         XCTAssertEqual(record.output, "ＲｉｇｈｔＣｌｉｃｋ")
         XCTAssertTrue(record.state == .accepted || record.state == .succeeded)
     }
+
+    func testInstalledHalfWidthServicePreservesLiteralUTF8LookingText() throws {
+        guard ProcessInfo.processInfo.environment["RIGHTCLICK_LIVE_UNICODE_SERVICE"] == "1" else {
+            throw XCTSkip("Set RIGHTCLICK_LIVE_UNICODE_SERVICE=1 on a macOS host.")
+        }
+        let engine = CapabilityRuntimeDefaults.makeEngine(startBrowsing: false)
+        let input = "ｃａｆÃ©"
+        let expected = "cafÃ©"
+        let selected = try XCTUnwrap(engine.capabilities(for: input).capabilities.first {
+            $0.title == "Convert Text to Half Width"
+                && $0.provider?.bundleIdentifier == "com.apple.ChineseTextConverterService"
+        })
+        let record = try engine.begin(id: selected.id, item: input, confirmed: true)
+        XCTAssertEqual(record.output, expected)
+        XCTAssertEqual(Array(try XCTUnwrap(record.output).utf16), Array(expected.utf16))
+        XCTAssertTrue(record.state == .accepted || record.state == .succeeded)
+    }
 }
 #endif
