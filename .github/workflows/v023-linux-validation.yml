@@ -1,4 +1,4 @@
-name: v0.2.3 Linux exact-head validation
+name: v0.2.3 Linux exact-head diagnostic
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  validate:
+  diagnose:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -19,32 +19,52 @@ jobs:
         with:
           ref: d063fa35f8507adec9ea0c584f7fb96fd9822c3e
           fetch-depth: 0
-      - run: test "$(git rev-parse HEAD)" = "d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
-      - run: swift test
-      - run: swift build -c release
-      - run: python3 scripts/ci/queue_cleanup_policy.py --self-test
-      - run: git diff --exit-code
+      - name: Run all exact-head gates and preserve diagnostics
+        shell: bash
+        run: |
+          set +e
+          test "$(git rev-parse HEAD)" = "d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+          exact_rc=$?
+          swift test > /tmp/v023-test.log 2>&1
+          test_rc=$?
+          swift build -c release > /tmp/v023-build.log 2>&1
+          build_rc=$?
+          python3 scripts/ci/queue_cleanup_policy.py --self-test > /tmp/v023-policy.log 2>&1
+          policy_rc=$?
+          git diff --exit-code > /tmp/v023-clean.log 2>&1
+          clean_rc=$?
+          verdict=PASS
+          if [ $exact_rc -ne 0 ] || [ $test_rc -ne 0 ] || [ $build_rc -ne 0 ] || [ $policy_rc -ne 0 ] || [ $clean_rc -ne 0 ]; then verdict=FAIL; fi
+          {
+            echo "candidate=d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+            echo "exact_rc=$exact_rc"
+            echo "test_rc=$test_rc"
+            echo "build_rc=$build_rc"
+            echo "policy_rc=$policy_rc"
+            echo "clean_rc=$clean_rc"
+            echo "verdict=$verdict"
+          } > /tmp/v023-summary.env
+          tail -n 20 /tmp/v023-test.log | tr '\n' ' ' | cut -c1-1400 > /tmp/v023-test-tail.txt
+          tail -n 12 /tmp/v023-build.log | tr '\n' ' ' | cut -c1-900 > /tmp/v023-build-tail.txt
+          tail -n 8 /tmp/v023-policy.log | tr '\n' ' ' | cut -c1-600 > /tmp/v023-policy-tail.txt
+          exit 0
 
-  evidence:
-    if: always()
-    needs: [validate]
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v4
         with:
           ref: validation/v0.2.3-linux-20261008
           fetch-depth: 0
-      - name: Write durable result
-        env:
-          RESULT: ${{ needs.validate.result }}
+      - name: Publish diagnostic result
+        shell: bash
         run: |
           set -euo pipefail
-          verdict=FAIL
-          if [ "$RESULT" = "success" ]; then verdict=PASS; fi
+          source /tmp/v023-summary.env
+          test_tail=$(cat /tmp/v023-test-tail.txt)
+          build_tail=$(cat /tmp/v023-build-tail.txt)
+          policy_tail=$(cat /tmp/v023-policy-tail.txt)
           mkdir -p validation-results
-          printf 'candidate=d063fa35f8507adec9ea0c584f7fb96fd9822c3e\nlinux=%s\nresult=%s\n' "$RESULT" "$verdict" > validation-results/v0.2.3-linux-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt
+          cp /tmp/v023-summary.env validation-results/v0.2.3-linux-diagnostic-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add validation-results/v0.2.3-linux-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt
-          git commit -m "validation(v0.2.3-linux): $verdict exact head d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+          git add validation-results/v0.2.3-linux-diagnostic-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt
+          git commit -m "validation(v0.2.3-linux-diagnostic): $verdict exact=$exact_rc test=$test_rc build=$build_rc policy=$policy_rc clean=$clean_rc" -m "candidate=d063fa35f8507adec9ea0c584f7fb96fd9822c3e" -m "test_tail=$test_tail" -m "build_tail=$build_tail" -m "policy_tail=$policy_tail"
           git push origin HEAD:validation/v0.2.3-linux-20261008
