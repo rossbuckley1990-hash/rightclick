@@ -129,6 +129,33 @@ final class TrustedHostProcessContextTests: XCTestCase {
         XCTAssertThrowsError(try TrustedHostProcessContext.resolving(.machineApplicationData))
     }
 
+    func testCanonicallyEquivalentDifferentHostPathBytesAtAdmissionPreventLaunch() throws {
+        let original = try fixedHostValue("ProgramData")
+        defer { try? setMachineData(original) }
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
+        defer { try? NativeHTTPFixture.remove(directory) }
+        let composed = directory.appendingPathComponent("caf\u{e9}")
+        let decomposed = directory.appendingPathComponent("cafe\u{301}")
+        XCTAssertTrue(composed.path == decomposed.path)
+        XCTAssertFalse(composed.path.utf16.elementsEqual(decomposed.path.utf16))
+        try NativeHTTPFixture.createPrivateDirectory(composed)
+        try NativeHTTPFixture.createPrivateDirectory(decomposed)
+        try setMachineData(composed.path)
+        let context = try TrustedHostProcessContext.resolving(.machineApplicationData)
+        let executable = try NativeHTTPFixture.python()
+        var report: BoundedCapabilityProcess.Diagnostic?
+        XCTAssertThrowsError(try BoundedCapabilityProcess.run(executable: executable,
+            arguments: ["-c", "raise SystemExit(77)"], hostContext: context,
+            diagnostic: { report = $0 }, admitStart: { start in
+                try self.setMachineData(decomposed.path)
+                start()
+            })) { XCTAssertEqual($0 as? RCIRError, .unavailable) }
+        XCTAssertEqual(report?.started, false)
+        XCTAssertEqual(report?.outcome, .admissionOrLaunchFailure)
+        XCTAssertNil(report?.terminationStatus)
+    }
+
     func testLocationSnapshotIdentityChangesWithoutExposingPaths() throws {
         let original = try fixedHostValue("ProgramData")
         defer { try? setMachineData(original) }

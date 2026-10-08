@@ -61,7 +61,8 @@ struct TrustedHostProcessContext: Sendable, Equatable, CustomStringConvertible, 
     var isCurrent: Bool {
         guard location != nil else { return true }
 #if os(Windows)
-        guard let path, (try? Self.readMachineApplicationData()) == path else { return false }
+        guard let path, let current = try? Self.readMachineApplicationData(),
+              current.utf16.elementsEqual(path.utf16) else { return false }
         return Self.isExistingLocalDirectoryWithoutRedirects(path)
 #else
         return false
