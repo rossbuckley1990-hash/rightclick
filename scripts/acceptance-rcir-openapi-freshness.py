@@ -13,6 +13,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("binary", type=pathlib.Path)
     parser.add_argument("output", type=pathlib.Path)
+    parser.add_argument("--discovery", choices=("bonjour", "configured"), default="configured" if sys.platform == "linux" else "bonjour",
+                        help="Fixture discovery only; the runtime and seven operations are unchanged.")
     args = parser.parse_args()
     binary = args.binary.resolve(); out = args.output.resolve(); out.mkdir(parents=True, exist_ok=True)
     transcript = []; effects = []; values = {}; mode = {"value": "correct"}
@@ -43,7 +45,7 @@ def main():
             with (out/"effects.jsonl").open("a") as f: f.write(json.dumps(effect)+"\n")
             if mode["value"] != "missing": values[data["id"]] = data["value"] if mode["value"] == "correct" else "WRONG"
             self.reply(200,json.dumps(data).encode(),"application/json")
-    server = http.server.ThreadingHTTPServer(("127.0.0.1" if sys.platform == "linux" else "0.0.0.0",0),Handler)
+    server = http.server.ThreadingHTTPServer(("127.0.0.1" if args.discovery == "configured" else "0.0.0.0",0),Handler)
     threading.Thread(target=server.serve_forever,daemon=True).start()
     port = server.server_address[1]
     try:
@@ -60,7 +62,7 @@ def main():
             err = (out/"mcp.stderr.log").open("w")
             environment = dict(os.environ,RIGHTCLICK_RCIR_CONFIG=str(config),RIGHTCLICK_EXPERIENCE="off")
             # Linux uses the existing generic descriptor source; macOS keeps Bonjour.
-            if sys.platform == "linux":
+            if args.discovery == "configured":
                 environment["RIGHTCLICK_CAPABILITY_ARTIFACTS"] = json.dumps([{
                     "id":marker,"kind":"openapi","specificationURL":f"http://127.0.0.1:{port}/openapi.json",
                     "baseURL":f"http://127.0.0.1:{port}/"}])
@@ -89,11 +91,11 @@ def main():
                 result = request("tools/call",{"name":name,"arguments":arguments})
                 assert not result.get("isError"), result
                 return json.loads(result["content"][0]["text"])
-            report = {"runKind":"NEW_RUN","binary":str(binary),"binarySHA256":hashlib.sha256(binary.read_bytes()).hexdigest(),"discoveryMechanism":"configured_capability_artifact" if sys.platform == "linux" else "bonjour_dns_sd","controls":{}}
+            report = {"runKind":"NEW_RUN","binary":str(binary),"binarySHA256":hashlib.sha256(binary.read_bytes()).hexdigest(),"discoveryMechanism":"configured_capability_artifact" if args.discovery == "configured" else "bonjour_dns_sd","controls":{}}
             try:
                 process = subprocess.Popen([str(binary),"mcp"],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err,text=True,bufsize=1,
                     env=environment)
-                if sys.platform != "linux":
+                if args.discovery == "bonjour":
                     advertise = subprocess.Popen(["dns-sd","-R",marker,"_rightclick._tcp","local",str(port),
                                                  "kind=openapi","scheme=http","spec=/openapi.json","base=/"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
                 request("initialize",{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"rcir-production-acceptance","version":"1"}})
