@@ -1,0 +1,1484 @@
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/6] Write swift-version-24593BA9C3E375BF.txt
+Build complete! (2.10s)
+Test Suite 'All tests' started at 2026-10-07 19:34:04.428
+Test Suite 'debug.xctest' started at 2026-10-07 19:34:04.434
+Test Suite 'ARDPortableTests' started at 2026-10-07 19:34:04.434
+Test Case 'ARDPortableTests.testAmbiguousOpenAPIServerBindingAbstains' started at 2026-10-07 19:34:04.434
+Test Case 'ARDPortableTests.testAmbiguousOpenAPIServerBindingAbstains' passed (0.011 seconds)
+Test Case 'ARDPortableTests.testG13DecodesHfDiscoverSearchResponseShape' started at 2026-10-07 19:34:04.444
+Test Case 'ARDPortableTests.testG13DecodesHfDiscoverSearchResponseShape' passed (0.004 seconds)
+Test Case 'ARDPortableTests.testG13ExtractsSupportedOpenAPICandidate' started at 2026-10-07 19:34:04.449
+Test Case 'ARDPortableTests.testG13ExtractsSupportedOpenAPICandidate' passed (0.001 seconds)
+Test Case 'ARDPortableTests.testSearchRequestMatchesARDEnvelope' started at 2026-10-07 19:34:04.450
+Test Case 'ARDPortableTests.testSearchRequestMatchesARDEnvelope' passed (0.006 seconds)
+Test Case 'ARDPortableTests.testSearchResponseRequiresExactlyOneValueOrReference' started at 2026-10-07 19:34:04.456
+Test Case 'ARDPortableTests.testSearchResponseRequiresExactlyOneValueOrReference' passed (0.002 seconds)
+Test Suite 'ARDPortableTests' passed at 2026-10-07 19:34:04.458
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.024 (0.024) seconds
+Test Suite 'FederationTests' started at 2026-10-07 19:34:04.458
+Test Case 'FederationTests.testExplicitVerificationRunsAtRemoteBoundary' started at 2026-10-07 19:34:04.458
+Test Case 'FederationTests.testExplicitVerificationRunsAtRemoteBoundary' passed (0.032 seconds)
+Test Case 'FederationTests.testFederatedCapabilityAppearsAndDisappearsLive' started at 2026-10-07 19:34:04.491
+Test Case 'FederationTests.testFederatedCapabilityAppearsAndDisappearsLive' passed (0.001 seconds)
+Test Case 'FederationTests.testFederationDoesNotReexportFederatedCapability' started at 2026-10-07 19:34:04.492
+Test Case 'FederationTests.testFederationDoesNotReexportFederatedCapability' passed (0.001 seconds)
+Test Case 'FederationTests.testIncompleteRemoteVerificationIsDowngraded' started at 2026-10-07 19:34:04.493
+Test Case 'FederationTests.testIncompleteRemoteVerificationIsDowngraded' passed (0.001 seconds)
+Test Case 'FederationTests.testLoopbackIPPeersCanonicalizeToLocalhostForTransport' started at 2026-10-07 19:34:04.494
+Test Case 'FederationTests.testLoopbackIPPeersCanonicalizeToLocalhostForTransport' passed (0.004 seconds)
+Test Case 'FederationTests.testModelFacingToolSurfaceRemainsSevenGenericOperations' started at 2026-10-07 19:34:04.498
+Test Case 'FederationTests.testModelFacingToolSurfaceRemainsSevenGenericOperations' passed (0.005 seconds)
+Test Case 'FederationTests.testNonRightClickPeerContributesNoCapabilities' started at 2026-10-07 19:34:04.503
+Test Case 'FederationTests.testNonRightClickPeerContributesNoCapabilities' passed (0.001 seconds)
+Test Case 'FederationTests.testPeerConfigurationFailsClosedOutsideLoopback' started at 2026-10-07 19:34:04.504
+Test Case 'FederationTests.testPeerConfigurationFailsClosedOutsideLoopback' passed (0.002 seconds)
+Test Suite 'FederationTests' passed at 2026-10-07 19:34:04.506
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.047 (0.047) seconds
+Test Suite 'MCPInitializationCompatibilityTests' started at 2026-10-07 19:34:04.506
+Test Case 'MCPInitializationCompatibilityTests.testOtherMessagesAndMalformedCapabilityShapesAreNotRewritten' started at 2026-10-07 19:34:04.506
+Test Case 'MCPInitializationCompatibilityTests.testOtherMessagesAndMalformedCapabilityShapesAreNotRewritten' passed (0.001 seconds)
+Test Case 'MCPInitializationCompatibilityTests.testRealClientObjectExtensionDoesNotPreventSupportedHandshake' started at 2026-10-07 19:34:04.507
+Test Case 'MCPInitializationCompatibilityTests.testRealClientObjectExtensionDoesNotPreventSupportedHandshake' passed (0.003 seconds)
+Test Suite 'MCPInitializationCompatibilityTests' passed at 2026-10-07 19:34:04.510
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'A2ARealLifecycleTests' started at 2026-10-07 19:34:04.510
+Test Case 'A2ARealLifecycleTests.testAcceptedAndCompletedTaskWithMismatchedEffectFailsWithSignedReceipt' started at 2026-10-07 19:34:04.510
+Test Case 'A2ARealLifecycleTests.testAcceptedAndCompletedTaskWithMismatchedEffectFailsWithSignedReceipt' passed (1.221 seconds)
+Test Case 'A2ARealLifecycleTests.testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation' started at 2026-10-07 19:34:05.732
+Test Case 'A2ARealLifecycleTests.testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation' passed (0.883 seconds)
+Test Case 'A2ARealLifecycleTests.testCompletedWithoutIndependentEffectRemainsUnverified' started at 2026-10-07 19:34:06.615
+Test Case 'A2ARealLifecycleTests.testCompletedWithoutIndependentEffectRemainsUnverified' passed (0.856 seconds)
+Test Case 'A2ARealLifecycleTests.testDeadlineIsUnknownWithoutRetryingOrFabricatingCompletion' started at 2026-10-07 19:34:07.471
+Test Case 'A2ARealLifecycleTests.testDeadlineIsUnknownWithoutRetryingOrFabricatingCompletion' passed (0.425 seconds)
+Test Case 'A2ARealLifecycleTests.testGenuineDelegationObservesEffectAndSignsTerminalReceipt' started at 2026-10-07 19:34:07.895
+Test Case 'A2ARealLifecycleTests.testGenuineDelegationObservesEffectAndSignsTerminalReceipt' passed (1.309 seconds)
+Test Case 'A2ARealLifecycleTests.testPolicyAndConfirmationDenialsHaveZeroDelegatedEffects' started at 2026-10-07 19:34:09.205
+Test Case 'A2ARealLifecycleTests.testPolicyAndConfirmationDenialsHaveZeroDelegatedEffects' passed (0.325 seconds)
+Test Case 'A2ARealLifecycleTests.testPolicyRevocationDuringTaskCannotBeSilentlyIgnored' started at 2026-10-07 19:34:09.530
+Test Case 'A2ARealLifecycleTests.testPolicyRevocationDuringTaskCannotBeSilentlyIgnored' passed (0.268 seconds)
+Test Case 'A2ARealLifecycleTests.testProviderDisappearingMidTaskIsSignedUnknownWithoutReplay' started at 2026-10-07 19:34:09.798
+Test Case 'A2ARealLifecycleTests.testProviderDisappearingMidTaskIsSignedUnknownWithoutReplay' passed (0.318 seconds)
+Test Case 'A2ARealLifecycleTests.testRemoteTaskFailureCannotBecomeSemanticSuccess' started at 2026-10-07 19:34:10.116
+Test Case 'A2ARealLifecycleTests.testRemoteTaskFailureCannotBecomeSemanticSuccess' passed (1.216 seconds)
+Test Case 'A2ARealLifecycleTests.testUnpinnedIndependentObserverFailsBeforeDispatch' started at 2026-10-07 19:34:11.332
+Test Case 'A2ARealLifecycleTests.testUnpinnedIndependentObserverFailsBeforeDispatch' passed (0.544 seconds)
+Test Suite 'A2ARealLifecycleTests' passed at 2026-10-07 19:34:11.876
+	 Executed 10 tests, with 0 failures (0 unexpected) in 7.365 (7.365) seconds
+Test Suite 'ARDAcquisitionGateTests' started at 2026-10-07 19:34:11.876
+Test Case 'ARDAcquisitionGateTests.testG13ARDSearchResponseBecomesOpenAPIAcquisitionCandidate' started at 2026-10-07 19:34:11.876
+Test Case 'ARDAcquisitionGateTests.testG13ARDSearchResponseBecomesOpenAPIAcquisitionCandidate' passed (0.091 seconds)
+Test Case 'ARDAcquisitionGateTests.testG14CapabilityIsAbsentBeforeARDAndAppearsAfterDiscovery' started at 2026-10-07 19:34:11.968
+Test Case 'ARDAcquisitionGateTests.testG14CapabilityIsAbsentBeforeARDAndAppearsAfterDiscovery' passed (0.007 seconds)
+Test Case 'ARDAcquisitionGateTests.testG15ExecutesARDAcquiredCapabilityThroughCapabilityEngine' started at 2026-10-07 19:34:11.974
+Test Case 'ARDAcquisitionGateTests.testG15ExecutesARDAcquiredCapabilityThroughCapabilityEngine' passed (0.032 seconds)
+Test Case 'ARDAcquisitionGateTests.testG16IndependentReadBackVerifiesDurableState' started at 2026-10-07 19:34:12.007
+Test Case 'ARDAcquisitionGateTests.testG16IndependentReadBackVerifiesDurableState' passed (0.092 seconds)
+Test Suite 'ARDAcquisitionGateTests' passed at 2026-10-07 19:34:12.099
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.222 (0.222) seconds
+Test Suite 'BonjourOpenAPISourceTests' started at 2026-10-07 19:34:12.099
+Test Case 'BonjourOpenAPISourceTests.testAbsoluteBonjourDNSNameCanonicalizesTerminalRootDot' started at 2026-10-07 19:34:12.099
+Test Case 'BonjourOpenAPISourceTests.testAbsoluteBonjourDNSNameCanonicalizesTerminalRootDot' passed (0.039 seconds)
+Test Case 'BonjourOpenAPISourceTests.testEndpointReplacementChangesCapabilityIdentity' started at 2026-10-07 19:34:12.138
+Test Case 'BonjourOpenAPISourceTests.testEndpointReplacementChangesCapabilityIdentity' passed (0.014 seconds)
+Test Case 'BonjourOpenAPISourceTests.testMalformedMetadataAbstainsWithoutFetching' started at 2026-10-07 19:34:12.152
+Test Case 'BonjourOpenAPISourceTests.testMalformedMetadataAbstainsWithoutFetching' passed (0.003 seconds)
+Test Case 'BonjourOpenAPISourceTests.testMultipleTerminalRootDotsAreRejected' started at 2026-10-07 19:34:12.155
+Test Case 'BonjourOpenAPISourceTests.testMultipleTerminalRootDotsAreRejected' passed (0.001 seconds)
+Test Case 'BonjourOpenAPISourceTests.testRemovalMakesStaleCapabilityUnavailable' started at 2026-10-07 19:34:12.158
+Test Case 'BonjourOpenAPISourceTests.testRemovalMakesStaleCapabilityUnavailable' passed (0.012 seconds)
+Test Case 'BonjourOpenAPISourceTests.testResolvedAdvertisementCreatesDynamicOpenAPIReflector' started at 2026-10-07 19:34:12.170
+Test Case 'BonjourOpenAPISourceTests.testResolvedAdvertisementCreatesDynamicOpenAPIReflector' passed (0.01 seconds)
+Test Case 'BonjourOpenAPISourceTests.testTXTMetadataCannotRedirectToExternalHost' started at 2026-10-07 19:34:12.180
+Test Case 'BonjourOpenAPISourceTests.testTXTMetadataCannotRedirectToExternalHost' passed (0.001 seconds)
+Test Suite 'BonjourOpenAPISourceTests' passed at 2026-10-07 19:34:12.181
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.081 (0.081) seconds
+Test Suite 'BoundedCapabilityProcessDiagnosticTests' started at 2026-10-07 19:34:12.181
+Test Case 'BoundedCapabilityProcessDiagnosticTests.testDeniedStartReportsNoLaunchAndProducesNoRealEffect' started at 2026-10-07 19:34:12.181
+Test Case 'BoundedCapabilityProcessDiagnosticTests.testDeniedStartReportsNoLaunchAndProducesNoRealEffect' passed (0.02 seconds)
+Test Case 'BoundedCapabilityProcessDiagnosticTests.testDiagnosticSeparatesRealDeadlineExitAndInvalidInputWithoutChangingErrors' started at 2026-10-07 19:34:12.202
+Test Case 'BoundedCapabilityProcessDiagnosticTests.testDiagnosticSeparatesRealDeadlineExitAndInvalidInputWithoutChangingErrors' passed (0.178 seconds)
+Test Case 'BoundedCapabilityProcessDiagnosticTests.testTerminalMeasurementsContainNoArgumentsInputOutputOrErrorBytes' started at 2026-10-07 19:34:12.380
+Test Case 'BoundedCapabilityProcessDiagnosticTests.testTerminalMeasurementsContainNoArgumentsInputOutputOrErrorBytes' passed (0.226 seconds)
+Test Suite 'BoundedCapabilityProcessDiagnosticTests' passed at 2026-10-07 19:34:12.606
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.425 (0.425) seconds
+Test Suite 'CapabilityABIAdapterTests' started at 2026-10-07 19:34:12.607
+Test Case 'CapabilityABIAdapterTests.testChangesInAuthorityOrPolicyMetadataChangeFingerprint' started at 2026-10-07 19:34:12.607
+Test Case 'CapabilityABIAdapterTests.testChangesInAuthorityOrPolicyMetadataChangeFingerprint' passed (0.037 seconds)
+Test Case 'CapabilityABIAdapterTests.testGenericAdapterPreservesDeclarationsAndDoesNotMutateCapability' started at 2026-10-07 19:34:12.644
+Test Case 'CapabilityABIAdapterTests.testGenericAdapterPreservesDeclarationsAndDoesNotMutateCapability' passed (0.001 seconds)
+Test Case 'CapabilityABIAdapterTests.testSHA256MatchesCanonicalBytesAndHasNoSignatureSemantics' started at 2026-10-07 19:34:12.645
+Test Case 'CapabilityABIAdapterTests.testSHA256MatchesCanonicalBytesAndHasNoSignatureSemantics' passed (0.001 seconds)
+Test Case 'CapabilityABIAdapterTests.testUnownedCapabilitiesCannotAcquireAnABIIdentity' started at 2026-10-07 19:34:12.647
+Test Case 'CapabilityABIAdapterTests.testUnownedCapabilitiesCannotAcquireAnABIIdentity' passed (0.004 seconds)
+Test Suite 'CapabilityABIAdapterTests' passed at 2026-10-07 19:34:12.651
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.043 (0.043) seconds
+Test Suite 'CapabilityABIBoundaryTests' started at 2026-10-07 19:34:12.651
+Test Case 'CapabilityABIBoundaryTests.testDeterministicGeneratedRoundTrips' started at 2026-10-07 19:34:12.651
+Test Case 'CapabilityABIBoundaryTests.testDeterministicGeneratedRoundTrips' passed (0.045 seconds)
+Test Case 'CapabilityABIBoundaryTests.testLimitsCannotBeRaisedAboveReviewedCeilings' started at 2026-10-07 19:34:12.697
+Test Case 'CapabilityABIBoundaryTests.testLimitsCannotBeRaisedAboveReviewedCeilings' passed (0.005 seconds)
+Test Case 'CapabilityABIBoundaryTests.testNestedCodableWrapperCannotBypassValueValidation' started at 2026-10-07 19:34:12.702
+Test Case 'CapabilityABIBoundaryTests.testNestedCodableWrapperCannotBypassValueValidation' passed (0.007 seconds)
+Test Case 'CapabilityABIBoundaryTests.testResultSchemaIsBoundIntoContract' started at 2026-10-07 19:34:12.708
+Test Case 'CapabilityABIBoundaryTests.testResultSchemaIsBoundIntoContract' passed (0.003 seconds)
+Test Case 'CapabilityABIBoundaryTests.testSchemaDoesNotAcceptUnicodeEquivalentButDifferentKeyBytes' started at 2026-10-07 19:34:12.712
+Test Case 'CapabilityABIBoundaryTests.testSchemaDoesNotAcceptUnicodeEquivalentButDifferentKeyBytes' passed (0.003 seconds)
+Test Case 'CapabilityABIBoundaryTests.testSchemaRequiredKeysMustMatchExactUTF8' started at 2026-10-07 19:34:12.715
+Test Case 'CapabilityABIBoundaryTests.testSchemaRequiredKeysMustMatchExactUTF8' passed (0.004 seconds)
+Test Case 'CapabilityABIBoundaryTests.testVeryDeepSchemaAndVeryWideValuesReject' started at 2026-10-07 19:34:12.719
+Test Case 'CapabilityABIBoundaryTests.testVeryDeepSchemaAndVeryWideValuesReject' passed (0.003 seconds)
+Test Suite 'CapabilityABIBoundaryTests' passed at 2026-10-07 19:34:12.722
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.071 (0.071) seconds
+Test Suite 'CapabilityABITests' started at 2026-10-07 19:34:12.722
+Test Case 'CapabilityABITests.testAllValueKindsRoundTripWithoutCoercion' started at 2026-10-07 19:34:12.722
+Test Case 'CapabilityABITests.testAllValueKindsRoundTripWithoutCoercion' passed (0.004 seconds)
+Test Case 'CapabilityABITests.testArrayOrderAndOriginalUTF8Matter' started at 2026-10-07 19:34:12.727
+Test Case 'CapabilityABITests.testArrayOrderAndOriginalUTF8Matter' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testCanonicalByteLimitIncludesHeaderAndFraming' started at 2026-10-07 19:34:12.728
+Test Case 'CapabilityABITests.testCanonicalByteLimitIncludesHeaderAndFraming' passed (0.003 seconds)
+Test Case 'CapabilityABITests.testCanonicalGoldenVectors' started at 2026-10-07 19:34:12.730
+Test Case 'CapabilityABITests.testCanonicalGoldenVectors' passed (0.003 seconds)
+Test Case 'CapabilityABITests.testClosedObjectSchemaValidatesNestedValues' started at 2026-10-07 19:34:12.734
+Test Case 'CapabilityABITests.testClosedObjectSchemaValidatesNestedValues' passed (0.004 seconds)
+Test Case 'CapabilityABITests.testClosedSchemaRejectsUnknownMissingAndWrongTypes' started at 2026-10-07 19:34:12.738
+Test Case 'CapabilityABITests.testClosedSchemaRejectsUnknownMissingAndWrongTypes' passed (0.005 seconds)
+Test Case 'CapabilityABITests.testContractAndValueCanonicalDomainsAreDifferent' started at 2026-10-07 19:34:12.743
+Test Case 'CapabilityABITests.testContractAndValueCanonicalDomainsAreDifferent' passed (0.002 seconds)
+Test Case 'CapabilityABITests.testContractBindsIdentitySchemaAndDeclaration' started at 2026-10-07 19:34:12.746
+Test Case 'CapabilityABITests.testContractBindsIdentitySchemaAndDeclaration' passed (0.004 seconds)
+Test Case 'CapabilityABITests.testDepthLimitIsExact' started at 2026-10-07 19:34:12.750
+Test Case 'CapabilityABITests.testDepthLimitIsExact' passed (0.004 seconds)
+Test Case 'CapabilityABITests.testDuplicateObjectKeysRejectedRatherThanOverwritten' started at 2026-10-07 19:34:12.754
+Test Case 'CapabilityABITests.testDuplicateObjectKeysRejectedRatherThanOverwritten' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testEnumsAndInvalidSchemaDeclarationsFailClosed' started at 2026-10-07 19:34:12.755
+Test Case 'CapabilityABITests.testEnumsAndInvalidSchemaDeclarationsFailClosed' passed (0.002 seconds)
+Test Case 'CapabilityABITests.testInvalidContractIdentityRejected' started at 2026-10-07 19:34:12.758
+Test Case 'CapabilityABITests.testInvalidContractIdentityRejected' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testInvalidLimitsFailClosed' started at 2026-10-07 19:34:12.758
+Test Case 'CapabilityABITests.testInvalidLimitsFailClosed' passed (0.004 seconds)
+Test Case 'CapabilityABITests.testLargeIntegerWireDoesNotUseFloatingPoint' started at 2026-10-07 19:34:12.762
+Test Case 'CapabilityABITests.testLargeIntegerWireDoesNotUseFloatingPoint' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testLegacyAdapterNeverStringifiesRicherValues' started at 2026-10-07 19:34:12.763
+Test Case 'CapabilityABITests.testLegacyAdapterNeverStringifiesRicherValues' passed (0.002 seconds)
+Test Case 'CapabilityABITests.testLegacyStringsRoundTripAndNilIsPreserved' started at 2026-10-07 19:34:12.765
+Test Case 'CapabilityABITests.testLegacyStringsRoundTripAndNilIsPreserved' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testLengthFramingPreventsConcatenationAmbiguity' started at 2026-10-07 19:34:12.766
+Test Case 'CapabilityABITests.testLengthFramingPreventsConcatenationAmbiguity' passed (0.0 seconds)
+Test Case 'CapabilityABITests.testNodeLimitCountsKeysAndValues' started at 2026-10-07 19:34:12.767
+Test Case 'CapabilityABITests.testNodeLimitCountsKeysAndValues' passed (0.0 seconds)
+Test Case 'CapabilityABITests.testNonfiniteNumbersRejectedEverywhere' started at 2026-10-07 19:34:12.767
+Test Case 'CapabilityABITests.testNonfiniteNumbersRejectedEverywhere' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testNullableAndOptionalAreDifferent' started at 2026-10-07 19:34:12.768
+Test Case 'CapabilityABITests.testNullableAndOptionalAreDifferent' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testObjectInsertionOrderDoesNotMatter' started at 2026-10-07 19:34:12.768
+Test Case 'CapabilityABITests.testObjectInsertionOrderDoesNotMatter' passed (0.0 seconds)
+Test Case 'CapabilityABITests.testSchemaSetOrderIsCanonical' started at 2026-10-07 19:34:12.769
+Test Case 'CapabilityABITests.testSchemaSetOrderIsCanonical' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testStrictWireRejectsUnknownTrailingOrMalformedValues' started at 2026-10-07 19:34:12.769
+Test Case 'CapabilityABITests.testStrictWireRejectsUnknownTrailingOrMalformedValues' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testTypesAndSignedZeroHaveDifferentCanonicalBytes' started at 2026-10-07 19:34:12.770
+Test Case 'CapabilityABITests.testTypesAndSignedZeroHaveDifferentCanonicalBytes' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testUnknownArgumentSchemaIsNotUnrestricted' started at 2026-10-07 19:34:12.771
+Test Case 'CapabilityABITests.testUnknownArgumentSchemaIsNotUnrestricted' passed (0.001 seconds)
+Test Case 'CapabilityABITests.testWireByteLimitIsCheckedBeforeParsing' started at 2026-10-07 19:34:12.771
+Test Case 'CapabilityABITests.testWireByteLimitIsCheckedBeforeParsing' passed (0.0 seconds)
+Test Suite 'CapabilityABITests' passed at 2026-10-07 19:34:12.772
+	 Executed 26 tests, with 0 failures (0 unexpected) in 0.049 (0.049) seconds
+Test Suite 'CapabilityAcquisitionLifecycleTests' started at 2026-10-07 19:34:12.772
+Test Case 'CapabilityAcquisitionLifecycleTests.testRealProviderWithdrawalAndChangedReappearanceWithUnchangedConfiguration' started at 2026-10-07 19:34:12.772
+Test Case 'CapabilityAcquisitionLifecycleTests.testRealProviderWithdrawalAndChangedReappearanceWithUnchangedConfiguration' passed (10.621 seconds)
+Test Case 'CapabilityAcquisitionLifecycleTests.testUnchangedConfigurationDoesNotRetainWithdrawnProviderForever' started at 2026-10-07 19:34:23.393
+Test Case 'CapabilityAcquisitionLifecycleTests.testUnchangedConfigurationDoesNotRetainWithdrawnProviderForever' passed (5.119 seconds)
+Test Suite 'CapabilityAcquisitionLifecycleTests' passed at 2026-10-07 19:34:28.512
+	 Executed 2 tests, with 0 failures (0 unexpected) in 15.74 (15.74) seconds
+Test Suite 'CapabilityArtifactResolverTests' started at 2026-10-07 19:34:28.512
+Test Case 'CapabilityArtifactResolverTests.testConfiguredSourceCachesResolvedSnapshotWithinRefreshWindow' started at 2026-10-07 19:34:28.512
+Test Case 'CapabilityArtifactResolverTests.testConfiguredSourceCachesResolvedSnapshotWithinRefreshWindow' passed (0.001 seconds)
+Test Case 'CapabilityArtifactResolverTests.testConfiguredSourceComposesDifferentSubstratesIntoOneEngine' started at 2026-10-07 19:34:28.513
+Test Case 'CapabilityArtifactResolverTests.testConfiguredSourceComposesDifferentSubstratesIntoOneEngine' passed (0.002 seconds)
+Test Case 'CapabilityArtifactResolverTests.testConfiguredSourceDropsAmbiguousDuplicateReflectorIdentity' started at 2026-10-07 19:34:28.515
+Test Case 'CapabilityArtifactResolverTests.testConfiguredSourceDropsAmbiguousDuplicateReflectorIdentity' passed (0.0 seconds)
+Test Case 'CapabilityArtifactResolverTests.testDefaultRegistryAdvertisesGenericSubstrates' started at 2026-10-07 19:34:28.516
+Test Case 'CapabilityArtifactResolverTests.testDefaultRegistryAdvertisesGenericSubstrates' passed (0.007 seconds)
+Test Case 'CapabilityArtifactResolverTests.testDuplicateConfiguredDescriptorIDsFailClosed' started at 2026-10-07 19:34:28.522
+Test Case 'CapabilityArtifactResolverTests.testDuplicateConfiguredDescriptorIDsFailClosed' passed (0.102 seconds)
+Test Case 'CapabilityArtifactResolverTests.testDuplicateResolverKindFailsClosed' started at 2026-10-07 19:34:28.624
+Test Case 'CapabilityArtifactResolverTests.testDuplicateResolverKindFailsClosed' passed (0.102 seconds)
+Test Case 'CapabilityArtifactResolverTests.testPlainGRPCIsLoopbackOnly' started at 2026-10-07 19:34:28.726
+Test Case 'CapabilityArtifactResolverTests.testPlainGRPCIsLoopbackOnly' passed (0.007 seconds)
+Test Case 'CapabilityArtifactResolverTests.testPlainHTTPIsLoopbackOnly' started at 2026-10-07 19:34:28.732
+Test Case 'CapabilityArtifactResolverTests.testPlainHTTPIsLoopbackOnly' passed (0.001 seconds)
+Test Case 'CapabilityArtifactResolverTests.testRegistryAcceptsOpaqueARDURNIdentity' started at 2026-10-07 19:34:28.733
+Test Case 'CapabilityArtifactResolverTests.testRegistryAcceptsOpaqueARDURNIdentity' passed (0.0 seconds)
+Test Case 'CapabilityArtifactResolverTests.testRegistryRoutesByNormalizedKind' started at 2026-10-07 19:34:28.734
+Test Case 'CapabilityArtifactResolverTests.testRegistryRoutesByNormalizedKind' passed (0.001 seconds)
+Test Suite 'CapabilityArtifactResolverTests' passed at 2026-10-07 19:34:28.735
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.222 (0.222) seconds
+Test Suite 'CapabilityExecutableSnapshotPoolTests' started at 2026-10-07 19:34:28.735
+Test Case 'CapabilityExecutableSnapshotPoolTests.testEntryByteAndAbsoluteRetentionBudgetsDoNotGrowOnReuse' started at 2026-10-07 19:34:28.735
+Test Case 'CapabilityExecutableSnapshotPoolTests.testEntryByteAndAbsoluteRetentionBudgetsDoNotGrowOnReuse' passed (0.017 seconds)
+Test Case 'CapabilityExecutableSnapshotPoolTests.testIdleRetentionCleanupReleasesOnlyThePoolReference' started at 2026-10-07 19:34:28.752
+Test Case 'CapabilityExecutableSnapshotPoolTests.testIdleRetentionCleanupReleasesOnlyThePoolReference' passed (0.028 seconds)
+Test Case 'CapabilityExecutableSnapshotPoolTests.testNonExecutableSecretReferenceAndPermissionWithdrawalFailClosed' started at 2026-10-07 19:34:28.780
+Test Case 'CapabilityExecutableSnapshotPoolTests.testNonExecutableSecretReferenceAndPermissionWithdrawalFailClosed' passed (0.007 seconds)
+Test Case 'CapabilityExecutableSnapshotPoolTests.testPooledExecutableReplacementAtFinalRCIRGateBlocksActualChildEffect' started at 2026-10-07 19:34:28.787
+Test Case 'CapabilityExecutableSnapshotPoolTests.testPooledExecutableReplacementAtFinalRCIRGateBlocksActualChildEffect' passed (0.403 seconds)
+Test Case 'CapabilityExecutableSnapshotPoolTests.testReturnRaceRechecksWholeBytesAndDoesNotEvictConcurrentNewIncarnation' started at 2026-10-07 19:34:29.190
+Test Case 'CapabilityExecutableSnapshotPoolTests.testReturnRaceRechecksWholeBytesAndDoesNotEvictConcurrentNewIncarnation' passed (0.014 seconds)
+Test Case 'CapabilityExecutableSnapshotPoolTests.testReusesExactPrivateIncarnationWhileReadingCurrentByteIdentity' started at 2026-10-07 19:34:29.204
+Test Case 'CapabilityExecutableSnapshotPoolTests.testReusesExactPrivateIncarnationWhileReadingCurrentByteIdentity' passed (0.011 seconds)
+Test Case 'CapabilityExecutableSnapshotPoolTests.testSourceWithdrawalAndRestorationCannotReturnWithdrawnCacheEntry' started at 2026-10-07 19:34:29.215
+Test Case 'CapabilityExecutableSnapshotPoolTests.testSourceWithdrawalAndRestorationCannotReturnWithdrawnCacheEntry' passed (0.012 seconds)
+Test Suite 'CapabilityExecutableSnapshotPoolTests' passed at 2026-10-07 19:34:29.227
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.492 (0.492) seconds
+Test Suite 'CapabilityExperienceLedgerTests' started at 2026-10-07 19:34:29.227
+Test Case 'CapabilityExperienceLedgerTests.testAcceptanceRemainsUnverified' started at 2026-10-07 19:34:29.227
+Test Case 'CapabilityExperienceLedgerTests.testAcceptanceRemainsUnverified' passed (0.0 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testCapacityEvictsOldestAndPreservesNewest' started at 2026-10-07 19:34:29.228
+Test Case 'CapabilityExperienceLedgerTests.testCapacityEvictsOldestAndPreservesNewest' passed (0.002 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testCorruptDataIsRejectedNotSilentlyOverwritten' started at 2026-10-07 19:34:29.230
+Test Case 'CapabilityExperienceLedgerTests.testCorruptDataIsRejectedNotSilentlyOverwritten' passed (0.008 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testDuplicateExecutionIsNotDoubleCounted' started at 2026-10-07 19:34:29.238
+Test Case 'CapabilityExperienceLedgerTests.testDuplicateExecutionIsNotDoubleCounted' passed (0.0 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testEmptyLedgerHasNoLearnedEvidence' started at 2026-10-07 19:34:29.238
+Test Case 'CapabilityExperienceLedgerTests.testEmptyLedgerHasNoLearnedEvidence' passed (0.001 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testExecutionCannotBeReboundToChangedContract' started at 2026-10-07 19:34:29.239
+Test Case 'CapabilityExperienceLedgerTests.testExecutionCannotBeReboundToChangedContract' passed (0.0 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testExpiryDoesNotRefreshOnReadOrRepeatedCallback' started at 2026-10-07 19:34:29.239
+Test Case 'CapabilityExperienceLedgerTests.testExpiryDoesNotRefreshOnReadOrRepeatedCallback' passed (0.0 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testForgetAllPersists' started at 2026-10-07 19:34:29.239
+Test Case 'CapabilityExperienceLedgerTests.testForgetAllPersists' passed (0.009 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testFutureDatedEvidenceIsNotReusedAfterClockRollback' started at 2026-10-07 19:34:29.248
+Test Case 'CapabilityExperienceLedgerTests.testFutureDatedEvidenceIsNotReusedAfterClockRollback' passed (0.0 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testHardLinkedFileIsRejected' started at 2026-10-07 19:34:29.249
+Test Case 'CapabilityExperienceLedgerTests.testHardLinkedFileIsRejected' passed (0.002 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testHeldProcessLockFailsPromptlyInsteadOfHanging' started at 2026-10-07 19:34:29.251
+Test Case 'CapabilityExperienceLedgerTests.testHeldProcessLockFailsPromptlyInsteadOfHanging' passed (0.001 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testInvalidKeysAndBoundsAreRejected' started at 2026-10-07 19:34:29.252
+Test Case 'CapabilityExperienceLedgerTests.testInvalidKeysAndBoundsAreRejected' passed (0.001 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testLateAcceptanceDoesNotEraseFailure' started at 2026-10-07 19:34:29.253
+Test Case 'CapabilityExperienceLedgerTests.testLateAcceptanceDoesNotEraseFailure' passed (0.0 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testLateAcceptanceDoesNotEraseVerification' started at 2026-10-07 19:34:29.253
+Test Case 'CapabilityExperienceLedgerTests.testLateAcceptanceDoesNotEraseVerification' passed (0.0 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testOversizedDataIsRejected' started at 2026-10-07 19:34:29.254
+Test Case 'CapabilityExperienceLedgerTests.testOversizedDataIsRejected' passed (0.006 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testPersistedSchemaHasOnlyAllowlistedFields' started at 2026-10-07 19:34:29.260
+Test Case 'CapabilityExperienceLedgerTests.testPersistedSchemaHasOnlyAllowlistedFields' passed (0.007 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testPersistenceSurvivesNewInstance' started at 2026-10-07 19:34:29.267
+Test Case 'CapabilityExperienceLedgerTests.testPersistenceSurvivesNewInstance' passed (0.006 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testPrivateFilePermissions' started at 2026-10-07 19:34:29.272
+Test Case 'CapabilityExperienceLedgerTests.testPrivateFilePermissions' passed (0.003 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testSymlinkDataAndLockFilesAreRejectedWithoutChangingTarget' started at 2026-10-07 19:34:29.276
+Test Case 'CapabilityExperienceLedgerTests.testSymlinkDataAndLockFilesAreRejectedWithoutChangingTarget' passed (0.007 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testSymlinkDirectoryIsRejected' started at 2026-10-07 19:34:29.283
+Test Case 'CapabilityExperienceLedgerTests.testSymlinkDirectoryIsRejected' passed (0.003 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testTwoInstancesDoNotOverwriteEachOthersEvidence' started at 2026-10-07 19:34:29.287
+Test Case 'CapabilityExperienceLedgerTests.testTwoInstancesDoNotOverwriteEachOthersEvidence' passed (0.008 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testUnknownVersionAndDuplicateExecutionIDsAreRejected' started at 2026-10-07 19:34:29.295
+Test Case 'CapabilityExperienceLedgerTests.testUnknownVersionAndDuplicateExecutionIDsAreRejected' passed (0.006 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testUnsafeDirectoryPermissionsAreRejected' started at 2026-10-07 19:34:29.301
+Test Case 'CapabilityExperienceLedgerTests.testUnsafeDirectoryPermissionsAreRejected' passed (0.001 seconds)
+Test Case 'CapabilityExperienceLedgerTests.testVerificationReplacesAcceptanceRatherThanAddingSuccess' started at 2026-10-07 19:34:29.303
+Test Case 'CapabilityExperienceLedgerTests.testVerificationReplacesAcceptanceRatherThanAddingSuccess' passed (0.001 seconds)
+Test Suite 'CapabilityExperienceLedgerTests' passed at 2026-10-07 19:34:29.303
+	 Executed 24 tests, with 0 failures (0 unexpected) in 0.076 (0.076) seconds
+Test Suite 'CapabilityExperienceTests' started at 2026-10-07 19:34:29.303
+Test Case 'CapabilityExperienceTests.testContractKeyChangesWithAuthoritySchemaRouteAndPolicy' started at 2026-10-07 19:34:29.303
+Test Case 'CapabilityExperienceTests.testContractKeyChangesWithAuthoritySchemaRouteAndPolicy' passed (0.003 seconds)
+Test Case 'CapabilityExperienceTests.testDisabledExperienceDoesNotAddHints' started at 2026-10-07 19:34:29.306
+Test Case 'CapabilityExperienceTests.testDisabledExperienceDoesNotAddHints' passed (0.002 seconds)
+Test Case 'CapabilityExperienceTests.testEmptyFailedOrUnevaluatedPredicatesNeverTeachVerifiedSuccess' started at 2026-10-07 19:34:29.308
+Test Case 'CapabilityExperienceTests.testEmptyFailedOrUnevaluatedPredicatesNeverTeachVerifiedSuccess' passed (0.001 seconds)
+Test Case 'CapabilityExperienceTests.testGatedAndMismatchedResultsAreNotRecorded' started at 2026-10-07 19:34:29.309
+Test Case 'CapabilityExperienceTests.testGatedAndMismatchedResultsAreNotRecorded' passed (0.001 seconds)
+Test Case 'CapabilityExperienceTests.testNamespaceSeparatesExperience' started at 2026-10-07 19:34:29.309
+Test Case 'CapabilityExperienceTests.testNamespaceSeparatesExperience' passed (0.001 seconds)
+Test Case 'CapabilityExperienceTests.testNoCapabilitiesAreResurrectedByRecall' started at 2026-10-07 19:34:29.310
+Test Case 'CapabilityExperienceTests.testNoCapabilitiesAreResurrectedByRecall' passed (0.0 seconds)
+Test Case 'CapabilityExperienceTests.testOnlyFingerprintsAndOutcomesPersistNotUserData' started at 2026-10-07 19:34:29.310
+Test Case 'CapabilityExperienceTests.testOnlyFingerprintsAndOutcomesPersistNotUserData' passed (0.005 seconds)
+Test Case 'CapabilityExperienceTests.testProviderCannotForgeExperienceMetadata' started at 2026-10-07 19:34:29.315
+Test Case 'CapabilityExperienceTests.testProviderCannotForgeExperienceMetadata' passed (0.001 seconds)
+Test Case 'CapabilityExperienceTests.testProviderExperienceKeysCannotBlockFreshDispatchOrForgeHints' started at 2026-10-07 19:34:29.316
+Test Case 'CapabilityExperienceTests.testProviderExperienceKeysCannotBlockFreshDispatchOrForgeHints' passed (0.003 seconds)
+Test Case 'CapabilityExperienceTests.testRemovalSchemaDriftAndRevokedAuthorityRemainEnforced' started at 2026-10-07 19:34:29.319
+Test Case 'CapabilityExperienceTests.testRemovalSchemaDriftAndRevokedAuthorityRemainEnforced' passed (0.002 seconds)
+Test Case 'CapabilityExperienceTests.testRepeatedRunAndBeginRemainUsableWithAdvisoryHistory' started at 2026-10-07 19:34:29.321
+Test Case 'CapabilityExperienceTests.testRepeatedRunAndBeginRemainUsableWithAdvisoryHistory' passed (0.009 seconds)
+Test Case 'CapabilityExperienceTests.testRuntimeBeginLearnsVerifiedPredicatesButNextRunIsNotVerifiedByHistory' started at 2026-10-07 19:34:29.330
+Test Case 'CapabilityExperienceTests.testRuntimeBeginLearnsVerifiedPredicatesButNextRunIsNotVerifiedByHistory' passed (0.004 seconds)
+Test Case 'CapabilityExperienceTests.testRuntimeRunLearnsAcceptanceWithoutSkippingConfirmation' started at 2026-10-07 19:34:29.334
+Test Case 'CapabilityExperienceTests.testRuntimeRunLearnsAcceptanceWithoutSkippingConfirmation' passed (0.002 seconds)
+Test Case 'CapabilityExperienceTests.testRuntimeRunLearnsGenericVerification' started at 2026-10-07 19:34:29.336
+Test Case 'CapabilityExperienceTests.testRuntimeRunLearnsGenericVerification' passed (0.002 seconds)
+Test Case 'CapabilityExperienceTests.testVerifiedBooleanAloneNeverTeachesVerifiedSuccess' started at 2026-10-07 19:34:29.338
+Test Case 'CapabilityExperienceTests.testVerifiedBooleanAloneNeverTeachesVerifiedSuccess' passed (0.001 seconds)
+Test Suite 'CapabilityExperienceTests' passed at 2026-10-07 19:34:29.338
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.035 (0.035) seconds
+Test Suite 'CapabilityIntegerRangeTests' started at 2026-10-07 19:34:29.338
+Test Case 'CapabilityIntegerRangeTests.testInclusiveNarrowRangeRejectsOverflowAndOtherValueKinds' started at 2026-10-07 19:34:29.338
+Test Case 'CapabilityIntegerRangeTests.testInclusiveNarrowRangeRejectsOverflowAndOtherValueKinds' passed (0.001 seconds)
+Test Case 'CapabilityIntegerRangeTests.testRangeIsPartOfCanonicalContractAndExistingIntegerBytesRemainStable' started at 2026-10-07 19:34:29.339
+Test Case 'CapabilityIntegerRangeTests.testRangeIsPartOfCanonicalContractAndExistingIntegerBytesRemainStable' passed (0.0 seconds)
+Test Suite 'CapabilityIntegerRangeTests' passed at 2026-10-07 19:34:29.339
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'CapabilityInterfaceTests' started at 2026-10-07 19:34:29.339
+Test Case 'CapabilityInterfaceTests.testAcquiredDeclarationAndSelectedArgumentEncodingAreReadableWithoutCanonicalByteDecoding' started at 2026-10-07 19:34:29.339
+Test Case 'CapabilityInterfaceTests.testAcquiredDeclarationAndSelectedArgumentEncodingAreReadableWithoutCanonicalByteDecoding' passed (0.002 seconds)
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorAbstainsForOfflineTool' started at 2026-10-07 19:34:29.341
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorAbstainsForOfflineTool' passed (0.0 seconds)
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline' started at 2026-10-07 19:34:29.342
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline' passed (0.074 seconds)
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation' started at 2026-10-07 19:34:29.416
+Test Case 'CapabilityInterfaceTests.testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation' passed (0.009 seconds)
+Test Case 'CapabilityInterfaceTests.testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint' started at 2026-10-07 19:34:29.425
+Test Case 'CapabilityInterfaceTests.testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint' passed (0.005 seconds)
+Test Case 'CapabilityInterfaceTests.testDuplicateInterfaceNamesFailClosed' started at 2026-10-07 19:34:29.430
+Test Case 'CapabilityInterfaceTests.testDuplicateInterfaceNamesFailClosed' passed (0.0 seconds)
+Test Case 'CapabilityInterfaceTests.testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings' started at 2026-10-07 19:34:29.430
+Test Case 'CapabilityInterfaceTests.testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings' passed (0.001 seconds)
+Test Case 'CapabilityInterfaceTests.testImporterRejectsUnsupportedConstraintsAndOpenObjects' started at 2026-10-07 19:34:29.431
+Test Case 'CapabilityInterfaceTests.testImporterRejectsUnsupportedConstraintsAndOpenObjects' passed (0.0 seconds)
+Test Case 'CapabilityInterfaceTests.testOversizedWireDeclarationRejectsAcquisitionInsteadOfOmittingDisclosure' started at 2026-10-07 19:34:29.431
+Test Case 'CapabilityInterfaceTests.testOversizedWireDeclarationRejectsAcquisitionInsteadOfOmittingDisclosure' passed (0.036 seconds)
+Test Case 'CapabilityInterfaceTests.testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess' started at 2026-10-07 19:34:29.467
+Test Case 'CapabilityInterfaceTests.testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess' passed (0.005 seconds)
+Test Case 'CapabilityInterfaceTests.testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity' started at 2026-10-07 19:34:29.472
+Test Case 'CapabilityInterfaceTests.testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity' passed (0.008 seconds)
+Test Case 'CapabilityInterfaceTests.testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles' started at 2026-10-07 19:34:29.480
+Test Case 'CapabilityInterfaceTests.testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles' passed (0.003 seconds)
+Test Case 'CapabilityInterfaceTests.testRealWASMComponentWhenProvisioned' started at 2026-10-07 19:34:29.483
+Test Case 'CapabilityInterfaceTests.testRealWASMComponentWhenProvisioned' passed (7.178 seconds)
+Test Case 'CapabilityInterfaceTests.testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial' started at 2026-10-07 19:34:36.663
+Test Case 'CapabilityInterfaceTests.testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial' passed (0.017 seconds)
+Test Case 'CapabilityInterfaceTests.testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues' started at 2026-10-07 19:34:36.681
+Test Case 'CapabilityInterfaceTests.testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues' passed (0.005 seconds)
+Test Case 'CapabilityInterfaceTests.testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability' started at 2026-10-07 19:34:36.686
+Test Case 'CapabilityInterfaceTests.testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability' passed (1.026 seconds)
+Test Suite 'CapabilityInterfaceTests' passed at 2026-10-07 19:34:37.712
+	 Executed 16 tests, with 0 failures (0 unexpected) in 8.369 (8.369) seconds
+Test Suite 'CapabilityReflectorSourceTests' started at 2026-10-07 19:34:37.712
+Test Case 'CapabilityReflectorSourceTests.testDynamicSourceStillUsesReflectorOwnershipForExecution' started at 2026-10-07 19:34:37.712
+Test Case 'CapabilityReflectorSourceTests.testDynamicSourceStillUsesReflectorOwnershipForExecution' passed (0.104 seconds)
+Test Case 'CapabilityReflectorSourceTests.testDynamicSourceUsesExistingGenericVerifier' started at 2026-10-07 19:34:37.816
+Test Case 'CapabilityReflectorSourceTests.testDynamicSourceUsesExistingGenericVerifier' passed (0.001 seconds)
+Test Case 'CapabilityReflectorSourceTests.testSameEngineGainsAndLosesDynamicReflector' started at 2026-10-07 19:34:37.817
+Test Case 'CapabilityReflectorSourceTests.testSameEngineGainsAndLosesDynamicReflector' passed (0.001 seconds)
+Test Suite 'CapabilityReflectorSourceTests' passed at 2026-10-07 19:34:37.818
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.106 (0.106) seconds
+Test Suite 'CapabilityRuntimeDefaultsTests' started at 2026-10-07 19:34:37.818
+Test Case 'CapabilityRuntimeDefaultsTests.testDefaultSourceRegistryContainsDynamicProtocolSources' started at 2026-10-07 19:34:37.818
+Test Case 'CapabilityRuntimeDefaultsTests.testDefaultSourceRegistryContainsDynamicProtocolSources' passed (0.001 seconds)
+Test Case 'CapabilityRuntimeDefaultsTests.testRuntimeDefaultsConsumeLiveSuppliedSource' started at 2026-10-07 19:34:37.819
+Test Case 'CapabilityRuntimeDefaultsTests.testRuntimeDefaultsConsumeLiveSuppliedSource' passed (0.001 seconds)
+Test Suite 'CapabilityRuntimeDefaultsTests' passed at 2026-10-07 19:34:37.821
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'CapabilitySnapshotBoundaryTests' started at 2026-10-07 19:34:37.821
+Test Case 'CapabilitySnapshotBoundaryTests.testConcurrentObserversShareOneAcquisition' started at 2026-10-07 19:34:37.821
+Test Case 'CapabilitySnapshotBoundaryTests.testConcurrentObserversShareOneAcquisition' passed (0.002 seconds)
+Test Case 'CapabilitySnapshotBoundaryTests.testEngineRefreshInvalidatesGenericSourcesWithoutNewOperations' started at 2026-10-07 19:34:37.823
+Test Case 'CapabilitySnapshotBoundaryTests.testEngineRefreshInvalidatesGenericSourcesWithoutNewOperations' passed (0.0 seconds)
+Test Case 'CapabilitySnapshotBoundaryTests.testExpiryWithdrawsProviderAndAllowsChangedReappearance' started at 2026-10-07 19:34:37.823
+Test Case 'CapabilitySnapshotBoundaryTests.testExpiryWithdrawsProviderAndAllowsChangedReappearance' passed (0.0 seconds)
+Test Case 'CapabilitySnapshotBoundaryTests.testHostCannotRaiseSnapshotLifetimeAboveFiveMinutes' started at 2026-10-07 19:34:37.824
+Test Case 'CapabilitySnapshotBoundaryTests.testHostCannotRaiseSnapshotLifetimeAboveFiveMinutes' passed (0.0 seconds)
+Test Case 'CapabilitySnapshotBoundaryTests.testInvalidTimesAndLifetimesNeverCreateImmortalSnapshots' started at 2026-10-07 19:34:37.824
+Test Case 'CapabilitySnapshotBoundaryTests.testInvalidTimesAndLifetimesNeverCreateImmortalSnapshots' passed (0.0 seconds)
+Test Case 'CapabilitySnapshotBoundaryTests.testInvalidationCannotBeOverwrittenByAnInFlightAcquisition' started at 2026-10-07 19:34:37.824
+Test Case 'CapabilitySnapshotBoundaryTests.testInvalidationCannotBeOverwrittenByAnInFlightAcquisition' passed (0.0 seconds)
+Test Case 'CapabilitySnapshotBoundaryTests.testRegressedClockCannotExtendOldSnapshot' started at 2026-10-07 19:34:37.825
+Test Case 'CapabilitySnapshotBoundaryTests.testRegressedClockCannotExtendOldSnapshot' passed (0.0 seconds)
+Test Suite 'CapabilitySnapshotBoundaryTests' passed at 2026-10-07 19:34:37.825
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'CapabilityStringConstraintTests' started at 2026-10-07 19:34:37.825
+Test Case 'CapabilityStringConstraintTests.testActualChallengeDeclarationAcceptsExactBoundsAndCharacterSet' started at 2026-10-07 19:34:37.825
+Test Case 'CapabilityStringConstraintTests.testActualChallengeDeclarationAcceptsExactBoundsAndCharacterSet' passed (0.002 seconds)
+Test Case 'CapabilityStringConstraintTests.testChangingBoundOrCharacterSetChangesContractIdentity' started at 2026-10-07 19:34:37.827
+Test Case 'CapabilityStringConstraintTests.testChangingBoundOrCharacterSetChangesContractIdentity' passed (0.003 seconds)
+Test Case 'CapabilityStringConstraintTests.testEquivalentCharacterClassesAndEnumOrderHaveCanonicalIdentity' started at 2026-10-07 19:34:37.829
+Test Case 'CapabilityStringConstraintTests.testEquivalentCharacterClassesAndEnumOrderHaveCanonicalIdentity' passed (0.001 seconds)
+Test Case 'CapabilityStringConstraintTests.testLengthUsesUnicodeScalarsRatherThanGraphemesOrBytes' started at 2026-10-07 19:34:37.830
+Test Case 'CapabilityStringConstraintTests.testLengthUsesUnicodeScalarsRatherThanGraphemesOrBytes' passed (0.0 seconds)
+Test Case 'CapabilityStringConstraintTests.testMalformedLengthsAndEmptyIntersectionAbstain' started at 2026-10-07 19:34:37.830
+Test Case 'CapabilityStringConstraintTests.testMalformedLengthsAndEmptyIntersectionAbstain' passed (0.001 seconds)
+Test Case 'CapabilityStringConstraintTests.testNestedImportKeepsRequiredClosedObjectAndStringConstraint' started at 2026-10-07 19:34:37.831
+Test Case 'CapabilityStringConstraintTests.testNestedImportKeepsRequiredClosedObjectAndStringConstraint' passed (0.101 seconds)
+Test Case 'CapabilityStringConstraintTests.testOpenAPIOmitsUnsupportedPatternRatherThanErasingIt' started at 2026-10-07 19:34:37.932
+Test Case 'CapabilityStringConstraintTests.testOpenAPIOmitsUnsupportedPatternRatherThanErasingIt' passed (0.002 seconds)
+Test Case 'CapabilityStringConstraintTests.testOpenAPIPreservesActualProviderPatternInDiscoveredContract' started at 2026-10-07 19:34:37.934
+Test Case 'CapabilityStringConstraintTests.testOpenAPIPreservesActualProviderPatternInDiscoveredContract' passed (0.002 seconds)
+Test Case 'CapabilityStringConstraintTests.testOpenAPIRejectsInvalidValueBeforeTransport' started at 2026-10-07 19:34:37.936
+Test Case 'CapabilityStringConstraintTests.testOpenAPIRejectsInvalidValueBeforeTransport' passed (0.107 seconds)
+Test Case 'CapabilityStringConstraintTests.testPatternLengthAndEnumAreIntersectedWithoutWidening' started at 2026-10-07 19:34:38.043
+Test Case 'CapabilityStringConstraintTests.testPatternLengthAndEnumAreIntersectedWithoutWidening' passed (0.001 seconds)
+Test Case 'CapabilityStringConstraintTests.testUnsupportedRegexGrammarAndUnboundedRepetitionAbstain' started at 2026-10-07 19:34:38.043
+Test Case 'CapabilityStringConstraintTests.testUnsupportedRegexGrammarAndUnboundedRepetitionAbstain' passed (0.0 seconds)
+Test Case 'CapabilityStringConstraintTests.testZeroAndExactQuantifierRemainExact' started at 2026-10-07 19:34:38.044
+Test Case 'CapabilityStringConstraintTests.testZeroAndExactQuantifierRemainExact' passed (0.001 seconds)
+Test Suite 'CapabilityStringConstraintTests' passed at 2026-10-07 19:34:38.045
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.22 (0.22) seconds
+Test Suite 'CapabilityTypedCoreBoundaryTests' started at 2026-10-07 19:34:38.045
+Test Case 'CapabilityTypedCoreBoundaryTests.testAdapterPreservesLiteralStringsAndExactIntegerBits' started at 2026-10-07 19:34:38.045
+Test Case 'CapabilityTypedCoreBoundaryTests.testAdapterPreservesLiteralStringsAndExactIntegerBits' passed (0.001 seconds)
+Test Case 'CapabilityTypedCoreBoundaryTests.testAdapterRejectsCoercionUnknownFieldsWrongTagsAndInvalidNumbers' started at 2026-10-07 19:34:38.046
+Test Case 'CapabilityTypedCoreBoundaryTests.testAdapterRejectsCoercionUnknownFieldsWrongTagsAndInvalidNumbers' passed (0.0 seconds)
+Test Case 'CapabilityTypedCoreBoundaryTests.testArrayRetainsTypedElementsAndRejectsDepthLimit' started at 2026-10-07 19:34:38.046
+Test Case 'CapabilityTypedCoreBoundaryTests.testArrayRetainsTypedElementsAndRejectsDepthLimit' passed (0.0 seconds)
+Test Case 'CapabilityTypedCoreBoundaryTests.testDeclaredBooleanCanReachCommonHostWithExactTaggedCoreValue' started at 2026-10-07 19:34:38.047
+Test Case 'CapabilityTypedCoreBoundaryTests.testDeclaredBooleanCanReachCommonHostWithExactTaggedCoreValue' passed (0.003 seconds)
+Test Suite 'CapabilityTypedCoreBoundaryTests' passed at 2026-10-07 19:34:38.049
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'ConfiguredOpenAPISourceTests' started at 2026-10-07 19:34:38.049
+Test Case 'ConfiguredOpenAPISourceTests.testCredentialLikeUnknownFieldFailsClosed' started at 2026-10-07 19:34:38.049
+Test Case 'ConfiguredOpenAPISourceTests.testCredentialLikeUnknownFieldFailsClosed' passed (0.003 seconds)
+Test Case 'ConfiguredOpenAPISourceTests.testDuplicateProviderIDsFailClosed' started at 2026-10-07 19:34:38.053
+Test Case 'ConfiguredOpenAPISourceTests.testDuplicateProviderIDsFailClosed' passed (0.0 seconds)
+Test Case 'ConfiguredOpenAPISourceTests.testLongLivedEngineObservesConfiguredAddReplaceAndRemove' started at 2026-10-07 19:34:38.053
+Test Case 'ConfiguredOpenAPISourceTests.testLongLivedEngineObservesConfiguredAddReplaceAndRemove' passed (0.012 seconds)
+Test Case 'ConfiguredOpenAPISourceTests.testMalformedConfigurationRemovesPreviouslyVisibleReflector' started at 2026-10-07 19:34:38.065
+Test Case 'ConfiguredOpenAPISourceTests.testMalformedConfigurationRemovesPreviouslyVisibleReflector' passed (0.008 seconds)
+Test Case 'ConfiguredOpenAPISourceTests.testRegistryRejectsNonHTTPSAndCredentialBearingURLs' started at 2026-10-07 19:34:38.073
+Test Case 'ConfiguredOpenAPISourceTests.testRegistryRejectsNonHTTPSAndCredentialBearingURLs' passed (0.001 seconds)
+Test Case 'ConfiguredOpenAPISourceTests.testRegistryWriteIsDeterministicAndPrivate' started at 2026-10-07 19:34:38.074
+Test Case 'ConfiguredOpenAPISourceTests.testRegistryWriteIsDeterministicAndPrivate' passed (0.004 seconds)
+Test Case 'ConfiguredOpenAPISourceTests.testUnchangedConfigurationDoesNotRefetchSpecification' started at 2026-10-07 19:34:38.078
+Test Case 'ConfiguredOpenAPISourceTests.testUnchangedConfigurationDoesNotRefetchSpecification' passed (0.005 seconds)
+Test Suite 'ConfiguredOpenAPISourceTests' passed at 2026-10-07 19:34:38.083
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.034 (0.034) seconds
+Test Suite 'DBusNativeOwnerAcceptanceTests' started at 2026-10-07 19:34:38.083
+Test Case 'DBusNativeOwnerAcceptanceTests.testActualBusRestartReusesOwnerNameButInvalidatesOldAdmission' started at 2026-10-07 19:34:38.083
+/src/Tests/RightClickCoreTests/DBusNativeOwnerAcceptanceTests.swift:56: DBusNativeOwnerAcceptanceTests.testActualBusRestartReusesOwnerNameButInvalidatesOldAdmission : Test skipped - Private real D-Bus fixture not requested; this skip is not native Linux proof.
+Test Case 'DBusNativeOwnerAcceptanceTests.testActualBusRestartReusesOwnerNameButInvalidatesOldAdmission' skipped (0.0 seconds)
+Test Case 'DBusNativeOwnerAcceptanceTests.testActualOwnerWithdrawalAtFinalGateCannotConsumeOrMutate' started at 2026-10-07 19:34:38.084
+/src/Tests/RightClickCoreTests/DBusNativeOwnerAcceptanceTests.swift:56: DBusNativeOwnerAcceptanceTests.testActualOwnerWithdrawalAtFinalGateCannotConsumeOrMutate : Test skipped - Private real D-Bus fixture not requested; this skip is not native Linux proof.
+Test Case 'DBusNativeOwnerAcceptanceTests.testActualOwnerWithdrawalAtFinalGateCannotConsumeOrMutate' skipped (0.0 seconds)
+Test Suite 'DBusNativeOwnerAcceptanceTests' passed at 2026-10-07 19:34:38.084
+	 Executed 2 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'DBusRuntimeTests' started at 2026-10-07 19:34:38.084
+Test Case 'DBusRuntimeTests.testBusRestartCannotReuseAnOldUniqueOwnerAndDeclaration' started at 2026-10-07 19:34:38.084
+Test Case 'DBusRuntimeTests.testBusRestartCannotReuseAnOldUniqueOwnerAndDeclaration' passed (0.119 seconds)
+Test Case 'DBusRuntimeTests.testNativeIntrospectionPreservesBooleanArrayOrderAndUnit' started at 2026-10-07 19:34:38.203
+Test Case 'DBusRuntimeTests.testNativeIntrospectionPreservesBooleanArrayOrderAndUnit' passed (0.003 seconds)
+Test Case 'DBusRuntimeTests.testNativeUnitCompletionIsAcceptedAndNeverInventsJSONNullOutput' started at 2026-10-07 19:34:38.205
+Test Case 'DBusRuntimeTests.testNativeUnitCompletionIsAcceptedAndNeverInventsJSONNullOutput' passed (0.012 seconds)
+Test Case 'DBusRuntimeTests.testTrustedMarkerIsHiddenAndReplacedOnlyByAdmittedTaskIdentity' started at 2026-10-07 19:34:38.217
+Test Case 'DBusRuntimeTests.testTrustedMarkerIsHiddenAndReplacedOnlyByAdmittedTaskIdentity' passed (0.006 seconds)
+Test Case 'DBusRuntimeTests.testUnknownNativeTypesAndNoReplyAnnotationsAbstain' started at 2026-10-07 19:34:38.223
+Test Case 'DBusRuntimeTests.testUnknownNativeTypesAndNoReplyAnnotationsAbstain' passed (0.001 seconds)
+Test Case 'DBusRuntimeTests.testWithdrawalReplacementAndChangedTypedMetadataInvalidateOldReflector' started at 2026-10-07 19:34:38.224
+Test Case 'DBusRuntimeTests.testWithdrawalReplacementAndChangedTypedMetadataInvalidateOldReflector' passed (0.002 seconds)
+Test Case 'DBusRuntimeTests.testXMLRejectsEntitiesMalformedNamesDuplicateMethodsAndDeepTrees' started at 2026-10-07 19:34:38.226
+Test Case 'DBusRuntimeTests.testXMLRejectsEntitiesMalformedNamesDuplicateMethodsAndDeepTrees' passed (0.001 seconds)
+Test Suite 'DBusRuntimeTests' passed at 2026-10-07 19:34:38.227
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.143 (0.143) seconds
+Test Suite 'DispatchContractBindingTests' started at 2026-10-07 19:34:38.227
+Test Case 'DispatchContractBindingTests.testChangedAuthorityOriginIsNotDispatched' started at 2026-10-07 19:34:38.227
+Test Case 'DispatchContractBindingTests.testChangedAuthorityOriginIsNotDispatched' passed (0.004 seconds)
+Test Case 'DispatchContractBindingTests.testChangedEndpointIsNotDispatched' started at 2026-10-07 19:34:38.230
+Test Case 'DispatchContractBindingTests.testChangedEndpointIsNotDispatched' passed (0.002 seconds)
+Test Case 'DispatchContractBindingTests.testChangedInvocationOrProviderIsNotDispatched' started at 2026-10-07 19:34:38.233
+Test Case 'DispatchContractBindingTests.testChangedInvocationOrProviderIsNotDispatched' passed (0.002 seconds)
+Test Case 'DispatchContractBindingTests.testChangedSchemaOrMethodIsNotDispatched' started at 2026-10-07 19:34:38.235
+Test Case 'DispatchContractBindingTests.testChangedSchemaOrMethodIsNotDispatched' passed (0.003 seconds)
+Test Case 'DispatchContractBindingTests.testConfirmationStillStopsBeforeRevalidationOrDispatch' started at 2026-10-07 19:34:38.238
+Test Case 'DispatchContractBindingTests.testConfirmationStillStopsBeforeRevalidationOrDispatch' passed (0.001 seconds)
+Test Case 'DispatchContractBindingTests.testConflictingDuplicateCannotHideBehindFirstMatch' started at 2026-10-07 19:34:38.239
+Test Case 'DispatchContractBindingTests.testConflictingDuplicateCannotHideBehindFirstMatch' passed (0.002 seconds)
+Test Case 'DispatchContractBindingTests.testDelegatedVerificationCannotBypassBinding' started at 2026-10-07 19:34:38.241
+Test Case 'DispatchContractBindingTests.testDelegatedVerificationCannotBypassBinding' passed (0.002 seconds)
+Test Case 'DispatchContractBindingTests.testDistinctUnicodeAuthorityBytesAreNotConflated' started at 2026-10-07 19:34:38.243
+Test Case 'DispatchContractBindingTests.testDistinctUnicodeAuthorityBytesAreNotConflated' passed (0.103 seconds)
+Test Case 'DispatchContractBindingTests.testEngineAssignedOwnershipStillWinsOverProviderMetadata' started at 2026-10-07 19:34:38.346
+Test Case 'DispatchContractBindingTests.testEngineAssignedOwnershipStillWinsOverProviderMetadata' passed (0.004 seconds)
+Test Case 'DispatchContractBindingTests.testEquivalentRecreatedReflectorRemainsUsable' started at 2026-10-07 19:34:38.350
+Test Case 'DispatchContractBindingTests.testEquivalentRecreatedReflectorRemainsUsable' passed (0.003 seconds)
+Test Case 'DispatchContractBindingTests.testFailedRevalidationIsNotDispatched' started at 2026-10-07 19:34:38.353
+Test Case 'DispatchContractBindingTests.testFailedRevalidationIsNotDispatched' passed (0.102 seconds)
+Test Case 'DispatchContractBindingTests.testIdenticalDuplicateDoesNotBreakExistingProviders' started at 2026-10-07 19:34:38.455
+Test Case 'DispatchContractBindingTests.testIdenticalDuplicateDoesNotBreakExistingProviders' passed (0.003 seconds)
+Test Case 'DispatchContractBindingTests.testMetadataKeyOrderDoesNotInvalidateContract' started at 2026-10-07 19:34:38.458
+Test Case 'DispatchContractBindingTests.testMetadataKeyOrderDoesNotInvalidateContract' passed (0.105 seconds)
+Test Case 'DispatchContractBindingTests.testSafetyEscalationCannotInheritUnconfirmedRead' started at 2026-10-07 19:34:38.563
+Test Case 'DispatchContractBindingTests.testSafetyEscalationCannotInheritUnconfirmedRead' passed (0.001 seconds)
+Test Case 'DispatchContractBindingTests.testWithdrawnCapabilityIsNotDispatched' started at 2026-10-07 19:34:38.565
+Test Case 'DispatchContractBindingTests.testWithdrawnCapabilityIsNotDispatched' passed (0.001 seconds)
+Test Suite 'DispatchContractBindingTests' passed at 2026-10-07 19:34:38.565
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.338 (0.338) seconds
+Test Suite 'ExecutionCapacityAdmissionTests' started at 2026-10-07 19:34:38.566
+Test Case 'ExecutionCapacityAdmissionTests.testFullActiveHistoryRefusesBothEngineEntryPointsBeforeProviderStart' started at 2026-10-07 19:34:38.566
+Test Case 'ExecutionCapacityAdmissionTests.testFullActiveHistoryRefusesBothEngineEntryPointsBeforeProviderStart' passed (1.933 seconds)
+Test Case 'ExecutionCapacityAdmissionTests.testThrowingBeginReleasesReservationForBothEngineEntryPoints' started at 2026-10-07 19:34:40.499
+Test Case 'ExecutionCapacityAdmissionTests.testThrowingBeginReleasesReservationForBothEngineEntryPoints' passed (0.051 seconds)
+Test Suite 'ExecutionCapacityAdmissionTests' passed at 2026-10-07 19:34:40.550
+	 Executed 2 tests, with 0 failures (0 unexpected) in 1.984 (1.984) seconds
+Test Suite 'ExecutionRetentionTests' started at 2026-10-07 19:34:40.550
+Test Case 'ExecutionRetentionTests.testActualLargeEvidenceAndRecordFloodRespectIndependentBounds' started at 2026-10-07 19:34:40.550
+Test Case 'ExecutionRetentionTests.testActualLargeEvidenceAndRecordFloodRespectIndependentBounds' passed (0.059 seconds)
+Test Case 'ExecutionRetentionTests.testByteCapacityRefusalPreservesEveryExistingActiveReservation' started at 2026-10-07 19:34:40.609
+Test Case 'ExecutionRetentionTests.testByteCapacityRefusalPreservesEveryExistingActiveReservation' passed (0.002 seconds)
+Test Case 'ExecutionRetentionTests.testBytePressureEvictsOldestTerminalAndReadsNeverRefreshOrder' started at 2026-10-07 19:34:40.611
+Test Case 'ExecutionRetentionTests.testBytePressureEvictsOldestTerminalAndReadsNeverRefreshOrder' passed (0.0 seconds)
+Test Case 'ExecutionRetentionTests.testCompactedRCIRAcceptedTaskRetainsPendingOwnershipUntilTerminalSnapshot' started at 2026-10-07 19:34:40.611
+Test Case 'ExecutionRetentionTests.testCompactedRCIRAcceptedTaskRetainsPendingOwnershipUntilTerminalSnapshot' passed (0.001 seconds)
+Test Case 'ExecutionRetentionTests.testConcurrentUpdatesKeepSynchronizedAccountingAndActiveCallbacks' started at 2026-10-07 19:34:40.612
+Test Case 'ExecutionRetentionTests.testConcurrentUpdatesKeepSynchronizedAccountingAndActiveCallbacks' passed (0.225 seconds)
+Test Case 'ExecutionRetentionTests.testLargeActualSignedReceiptCompactionRetainsDigestWithoutInventingReceipt' started at 2026-10-07 19:34:40.838
+Test Case 'ExecutionRetentionTests.testLargeActualSignedReceiptCompactionRetainsDigestWithoutInventingReceipt' passed (0.044 seconds)
+Test Case 'ExecutionRetentionTests.testMonotonicExpiryIgnoresRegressionAndUpdatesReadsDoNotExtendTTL' started at 2026-10-07 19:34:40.882
+Test Case 'ExecutionRetentionTests.testMonotonicExpiryIgnoresRegressionAndUpdatesReadsDoNotExtendTTL' passed (0.002 seconds)
+Test Case 'ExecutionRetentionTests.testStartedReservationsSurviveExpiryAndFloodThenReleaseAtTerminalCallback' started at 2026-10-07 19:34:40.883
+Test Case 'ExecutionRetentionTests.testStartedReservationsSurviveExpiryAndFloodThenReleaseAtTerminalCallback' passed (0.014 seconds)
+Test Case 'ExecutionRetentionTests.testUnconfirmedAwaitingUserDoesNotReserveActiveCapacity' started at 2026-10-07 19:34:40.898
+Test Case 'ExecutionRetentionTests.testUnconfirmedAwaitingUserDoesNotReserveActiveCapacity' passed (0.005 seconds)
+Test Case 'ExecutionRetentionTests.testUpdateReaccountsLargeAndShrinkingOutputsAndCannotMoveIdentity' started at 2026-10-07 19:34:40.903
+Test Case 'ExecutionRetentionTests.testUpdateReaccountsLargeAndShrinkingOutputsAndCannotMoveIdentity' passed (0.021 seconds)
+Test Suite 'ExecutionRetentionTests' passed at 2026-10-07 19:34:40.924
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.374 (0.374) seconds
+Test Suite 'GRPCRealProviderAcceptanceTests' started at 2026-10-07 19:34:40.924
+Test Case 'GRPCRealProviderAcceptanceTests.testRealServerReflectionDiscoversProviderCapabilities' started at 2026-10-07 19:34:40.924
+/src/Tests/RightClickCoreTests/GRPCRealProviderAcceptanceTests.swift:21: GRPCRealProviderAcceptanceTests.testRealServerReflectionDiscoversProviderCapabilities : Test skipped - RIGHTCLICK_GRPC_REAL_HOST required for real gRPC reflection acceptance.
+Test Case 'GRPCRealProviderAcceptanceTests.testRealServerReflectionDiscoversProviderCapabilities' skipped (0.019 seconds)
+Test Suite 'GRPCRealProviderAcceptanceTests' passed at 2026-10-07 19:34:40.947
+	 Executed 1 test, with 1 test skipped and 0 failures (0 unexpected) in 0.019 (0.019) seconds
+Test Suite 'GRPCReflectionTransportTests' started at 2026-10-07 19:34:40.948
+Test Case 'GRPCReflectionTransportTests.testFileDescriptorResponseReturnsRawDescriptorBytes' started at 2026-10-07 19:34:40.948
+Test Case 'GRPCReflectionTransportTests.testFileDescriptorResponseReturnsRawDescriptorBytes' passed (0.076 seconds)
+Test Case 'GRPCReflectionTransportTests.testListServicesResponseParsesStandardReflectionEnvelope' started at 2026-10-07 19:34:41.024
+Test Case 'GRPCReflectionTransportTests.testListServicesResponseParsesStandardReflectionEnvelope' passed (0.013 seconds)
+Test Case 'GRPCReflectionTransportTests.testReflectionRequestsUseStandardWireFieldNumbers' started at 2026-10-07 19:34:41.037
+Test Case 'GRPCReflectionTransportTests.testReflectionRequestsUseStandardWireFieldNumbers' passed (0.0 seconds)
+Test Suite 'GRPCReflectionTransportTests' passed at 2026-10-07 19:34:41.038
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.09 (0.09) seconds
+Test Suite 'GRPCReflectorTests' started at 2026-10-07 19:34:41.038
+Test Case 'GRPCReflectorTests.testDescriptorReflectsUnaryAndStreamingMethodsWithoutGeneratedStubs' started at 2026-10-07 19:34:41.038
+Test Case 'GRPCReflectorTests.testDescriptorReflectsUnaryAndStreamingMethodsWithoutGeneratedStubs' passed (0.044 seconds)
+Test Case 'GRPCReflectorTests.testStreamingMethodFailsClosedBeforeTransport' started at 2026-10-07 19:34:41.081
+Test Case 'GRPCReflectorTests.testStreamingMethodFailsClosedBeforeTransport' passed (0.004 seconds)
+Test Case 'GRPCReflectorTests.testUnaryExecutionEncodesAndDecodesDynamicProtobuf' started at 2026-10-07 19:34:41.086
+Test Case 'GRPCReflectorTests.testUnaryExecutionEncodesAndDecodesDynamicProtobuf' passed (0.015 seconds)
+Test Case 'GRPCReflectorTests.testUnknownArgumentFailsBeforeTransport' started at 2026-10-07 19:34:41.101
+Test Case 'GRPCReflectorTests.testUnknownArgumentFailsBeforeTransport' passed (0.011 seconds)
+Test Suite 'GRPCReflectorTests' passed at 2026-10-07 19:34:41.112
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.075 (0.075) seconds
+Test Suite 'GraphQLReflectorTests' started at 2026-10-07 19:34:41.113
+Test Case 'GraphQLReflectorTests.testExecutesMutationWithJSONEncodedInputObject' started at 2026-10-07 19:34:41.113
+Test Case 'GraphQLReflectorTests.testExecutesMutationWithJSONEncodedInputObject' passed (0.041 seconds)
+Test Case 'GraphQLReflectorTests.testExecutesQueryWithVariablesAndSynthesizedSelection' started at 2026-10-07 19:34:41.154
+Test Case 'GraphQLReflectorTests.testExecutesQueryWithVariablesAndSynthesizedSelection' passed (0.017 seconds)
+Test Case 'GraphQLReflectorTests.testGraphQLErrorsFailEvenWhenPartialDataExists' started at 2026-10-07 19:34:41.171
+Test Case 'GraphQLReflectorTests.testGraphQLErrorsFailEvenWhenPartialDataExists' passed (0.011 seconds)
+Test Case 'GraphQLReflectorTests.testInvalidNestedEnumFailsBeforeTransport' started at 2026-10-07 19:34:41.182
+Test Case 'GraphQLReflectorTests.testInvalidNestedEnumFailsBeforeTransport' passed (0.007 seconds)
+Test Case 'GraphQLReflectorTests.testMutationRequiresConfirmationBeforeTransport' started at 2026-10-07 19:34:41.189
+Test Case 'GraphQLReflectorTests.testMutationRequiresConfirmationBeforeTransport' passed (0.003 seconds)
+Test Case 'GraphQLReflectorTests.testReflectsQueriesAndMutationsBehindGenericCapabilities' started at 2026-10-07 19:34:41.192
+Test Case 'GraphQLReflectorTests.testReflectsQueriesAndMutationsBehindGenericCapabilities' passed (0.002 seconds)
+Test Suite 'GraphQLReflectorTests' passed at 2026-10-07 19:34:41.193
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.08 (0.08) seconds
+Test Suite 'HostProtectedReferenceTests' started at 2026-10-07 19:34:41.193
+Test Case 'HostProtectedReferenceTests.testBroaderNativeReadAuthorityIsDenied' started at 2026-10-07 19:34:41.193
+Test Case 'HostProtectedReferenceTests.testBroaderNativeReadAuthorityIsDenied' passed (0.008 seconds)
+Test Case 'HostProtectedReferenceTests.testConfiguredPolicySigningAndObserverReferencesUseOneProtectedBackend' started at 2026-10-07 19:34:41.201
+Test Case 'HostProtectedReferenceTests.testConfiguredPolicySigningAndObserverReferencesUseOneProtectedBackend' passed (0.008 seconds)
+Test Case 'HostProtectedReferenceTests.testDirectoriesAndOversizedFilesNeverBecomeReferences' started at 2026-10-07 19:34:41.209
+Test Case 'HostProtectedReferenceTests.testDirectoriesAndOversizedFilesNeverBecomeReferences' passed (0.005 seconds)
+Test Case 'HostProtectedReferenceTests.testPrivateSnapshotRetainsExactBytesWhenSelectedSourceChanges' started at 2026-10-07 19:34:41.214
+Test Case 'HostProtectedReferenceTests.testPrivateSnapshotRetainsExactBytesWhenSelectedSourceChanges' passed (0.006 seconds)
+Test Suite 'HostProtectedReferenceTests' passed at 2026-10-07 19:34:41.220
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.027 (0.027) seconds
+Test Suite 'InvocationBindingTests' started at 2026-10-07 19:34:41.220
+Test Case 'InvocationBindingTests.testFreshMarkersVerifyForBothTransports' started at 2026-10-07 19:34:41.220
+Test Case 'InvocationBindingTests.testFreshMarkersVerifyForBothTransports' passed (3.268 seconds)
+Test Case 'InvocationBindingTests.testMatchingStaleKafkaRecordCannotVerifyCurrentAppend' started at 2026-10-07 19:34:44.489
+Test Case 'InvocationBindingTests.testMatchingStaleKafkaRecordCannotVerifyCurrentAppend' passed (0.779 seconds)
+Test Case 'InvocationBindingTests.testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate' started at 2026-10-07 19:34:45.268
+Test Case 'InvocationBindingTests.testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate' passed (1.481 seconds)
+Test Suite 'InvocationBindingTests' passed at 2026-10-07 19:34:46.749
+	 Executed 3 tests, with 0 failures (0 unexpected) in 5.528 (5.528) seconds
+Test Suite 'KafkaAcquisitionStabilityTests' started at 2026-10-07 19:34:46.749
+Test Case 'KafkaAcquisitionStabilityTests.testRealMetadataReadinessAndByteBindingCostWithoutConcurrentLoad' started at 2026-10-07 19:34:46.749
+/src/Tests/RightClickCoreTests/KafkaAcquisitionStabilityTests.swift:40: KafkaAcquisitionStabilityTests.testRealMetadataReadinessAndByteBindingCostWithoutConcurrentLoad : Test skipped - Real scoped Kafka stability probe not provisioned; no stability GREEN claimed.
+Test Case 'KafkaAcquisitionStabilityTests.testRealMetadataReadinessAndByteBindingCostWithoutConcurrentLoad' skipped (0.0 seconds)
+Test Case 'KafkaAcquisitionStabilityTests.testRealMetadataReadinessDuringBoundedConcurrentMetadataLoad' started at 2026-10-07 19:34:46.749
+/src/Tests/RightClickCoreTests/KafkaAcquisitionStabilityTests.swift:40: KafkaAcquisitionStabilityTests.testRealMetadataReadinessDuringBoundedConcurrentMetadataLoad : Test skipped - Real scoped Kafka stability probe not provisioned; no stability GREEN claimed.
+Test Case 'KafkaAcquisitionStabilityTests.testRealMetadataReadinessDuringBoundedConcurrentMetadataLoad' skipped (0.101 seconds)
+Test Case 'KafkaAcquisitionStabilityTests.testRealReadinessDuringBoundedConcurrentFreshAcquisition' started at 2026-10-07 19:34:46.850
+/src/Tests/RightClickCoreTests/KafkaAcquisitionStabilityTests.swift:40: KafkaAcquisitionStabilityTests.testRealReadinessDuringBoundedConcurrentFreshAcquisition : Test skipped - Real scoped Kafka stability probe not provisioned; no stability GREEN claimed.
+Test Case 'KafkaAcquisitionStabilityTests.testRealReadinessDuringBoundedConcurrentFreshAcquisition' skipped (0.001 seconds)
+Test Case 'KafkaAcquisitionStabilityTests.testRealReadinessDuringFiveFreshClients' started at 2026-10-07 19:34:46.851
+/src/Tests/RightClickCoreTests/KafkaAcquisitionStabilityTests.swift:40: KafkaAcquisitionStabilityTests.testRealReadinessDuringFiveFreshClients : Test skipped - Real scoped Kafka stability probe not provisioned; no stability GREEN claimed.
+Test Case 'KafkaAcquisitionStabilityTests.testRealReadinessDuringFiveFreshClients' skipped (0.0 seconds)
+Test Suite 'KafkaAcquisitionStabilityTests' passed at 2026-10-07 19:34:46.851
+	 Executed 4 tests, with 4 tests skipped and 0 failures (0 unexpected) in 0.102 (0.102) seconds
+Test Suite 'KafkaCapabilityTests' started at 2026-10-07 19:34:46.851
+Test Case 'KafkaCapabilityTests.testObserverCannotReuseWriterPrincipalAndCredentials' started at 2026-10-07 19:34:46.851
+/src/Tests/RightClickCoreTests/KafkaCapabilityTests.swift:19: KafkaCapabilityTests.testObserverCannotReuseWriterPrincipalAndCredentials : Test skipped - Genuine scoped Kafka broker not provisioned; no Kafka GREEN claimed.
+Test Case 'KafkaCapabilityTests.testObserverCannotReuseWriterPrincipalAndCredentials' skipped (0.0 seconds)
+Test Case 'KafkaCapabilityTests.testRealScopedKafkaHasUnverifiedACKThenIndependentArgumentBoundConsumerReceipt' started at 2026-10-07 19:34:46.852
+/src/Tests/RightClickCoreTests/KafkaCapabilityTests.swift:19: KafkaCapabilityTests.testRealScopedKafkaHasUnverifiedACKThenIndependentArgumentBoundConsumerReceipt : Test skipped - Genuine scoped Kafka broker not provisioned; no Kafka GREEN claimed.
+Test Case 'KafkaCapabilityTests.testRealScopedKafkaHasUnverifiedACKThenIndependentArgumentBoundConsumerReceipt' skipped (0.001 seconds)
+Test Suite 'KafkaCapabilityTests' passed at 2026-10-07 19:34:46.852
+	 Executed 2 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'KubernetesCapabilityArtifactTests' started at 2026-10-07 19:34:46.852
+Test Case 'KubernetesCapabilityArtifactTests.testCredentialPluginsAndTLSBypassAreRejectedBeforeAcquisition' started at 2026-10-07 19:34:46.852
+Test Case 'KubernetesCapabilityArtifactTests.testCredentialPluginsAndTLSBypassAreRejectedBeforeAcquisition' passed (0.023 seconds)
+Test Case 'KubernetesCapabilityArtifactTests.testProviderDescriptorCannotSelectExecutableCredentialOrNamespace' started at 2026-10-07 19:34:46.876
+Test Case 'KubernetesCapabilityArtifactTests.testProviderDescriptorCannotSelectExecutableCredentialOrNamespace' passed (0.0 seconds)
+Test Case 'KubernetesCapabilityArtifactTests.testRealNamespaceResourceIsVerifiedThroughIndependentGETIdentity' started at 2026-10-07 19:34:46.876
+/src/Tests/RightClickCoreTests/KubernetesCapabilityArtifactTests.swift:45: KubernetesCapabilityArtifactTests.testRealNamespaceResourceIsVerifiedThroughIndependentGETIdentity : Test skipped - Genuine scoped Kubernetes provider not provisioned; this skip is not substrate GREEN.
+Test Case 'KubernetesCapabilityArtifactTests.testRealNamespaceResourceIsVerifiedThroughIndependentGETIdentity' skipped (0.0 seconds)
+Test Suite 'KubernetesCapabilityArtifactTests' passed at 2026-10-07 19:34:46.876
+	 Executed 3 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.024 (0.024) seconds
+Test Suite 'MOAT004G1AcquisitionTests' started at 2026-10-07 19:34:46.876
+Test Case 'MOAT004G1AcquisitionTests.testExactFrozenGitHubSpecificationLoadsThroughOpenAPISpecificBound' started at 2026-10-07 19:34:46.876
+/src/Tests/RightClickCoreTests/MOAT004G1AcquisitionTests.swift:320: MOAT004G1AcquisitionTests.testExactFrozenGitHubSpecificationLoadsThroughOpenAPISpecificBound : Test skipped - MOAT004_G1_SPEC_URL and MOAT004_G1_SPEC_SHA256 required.
+Test Case 'MOAT004G1AcquisitionTests.testExactFrozenGitHubSpecificationLoadsThroughOpenAPISpecificBound' skipped (0.0 seconds)
+Test Case 'MOAT004G1AcquisitionTests.testFrozenBoundsRemainExplicit' started at 2026-10-07 19:34:46.877
+Test Case 'MOAT004G1AcquisitionTests.testFrozenBoundsRemainExplicit' passed (0.0 seconds)
+Test Case 'MOAT004G1AcquisitionTests.testGenericDefaultLoaderStillRejectsOneByteOverOneMiB' started at 2026-10-07 19:34:46.877
+Test Case 'MOAT004G1AcquisitionTests.testGenericDefaultLoaderStillRejectsOneByteOverOneMiB' passed (0.007 seconds)
+Test Case 'MOAT004G1AcquisitionTests.testOpenAPISpecificationLoaderAcceptsFrozenGitHubSize' started at 2026-10-07 19:34:46.884
+Test Case 'MOAT004G1AcquisitionTests.testOpenAPISpecificationLoaderAcceptsFrozenGitHubSize' passed (0.036 seconds)
+Test Case 'MOAT004G1AcquisitionTests.testOpenAPISpecificationLoaderRejectsOneByteOverSixteenMiB' started at 2026-10-07 19:34:46.920
+Test Case 'MOAT004G1AcquisitionTests.testOpenAPISpecificationLoaderRejectsOneByteOverSixteenMiB' passed (0.005 seconds)
+Test Case 'MOAT004G1AcquisitionTests.testOpenAPISpecificationLoaderRejectsRedirectResponse' started at 2026-10-07 19:34:46.925
+Test Case 'MOAT004G1AcquisitionTests.testOpenAPISpecificationLoaderRejectsRedirectResponse' passed (0.001 seconds)
+Test Suite 'MOAT004G1AcquisitionTests' passed at 2026-10-07 19:34:46.926
+	 Executed 6 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.049 (0.049) seconds
+Test Suite 'MOAT004G2SplitOriginTests' started at 2026-10-07 19:34:46.926
+Test Case 'MOAT004G2SplitOriginTests.testAbsoluteHTTPSModeLoadsSpecificationFromIndependentOriginAndReflectsBaseOrigin' started at 2026-10-07 19:34:46.926
+Test Case 'MOAT004G2SplitOriginTests.testAbsoluteHTTPSModeLoadsSpecificationFromIndependentOriginAndReflectsBaseOrigin' passed (0.002 seconds)
+Test Case 'MOAT004G2SplitOriginTests.testAbsoluteModeRequiresBothSpecificationAndBaseURLs' started at 2026-10-07 19:34:46.928
+Test Case 'MOAT004G2SplitOriginTests.testAbsoluteModeRequiresBothSpecificationAndBaseURLs' passed (0.001 seconds)
+Test Case 'MOAT004G2SplitOriginTests.testAbsoluteModeRequiresHTTPS' started at 2026-10-07 19:34:46.930
+Test Case 'MOAT004G2SplitOriginTests.testAbsoluteModeRequiresHTTPS' passed (0.002 seconds)
+Test Case 'MOAT004G2SplitOriginTests.testDeclaredLiteralServerMustMatchAdvertisedExecutionBase' started at 2026-10-07 19:34:46.932
+Test Case 'MOAT004G2SplitOriginTests.testDeclaredLiteralServerMustMatchAdvertisedExecutionBase' passed (0.011 seconds)
+Test Case 'MOAT004G2SplitOriginTests.testExactFrozenGitHubContractAcceptsSplitOriginButTargetRemainsOutsideG2' started at 2026-10-07 19:34:46.943
+/src/Tests/RightClickCoreTests/MOAT004G2SplitOriginTests.swift:646: MOAT004G2SplitOriginTests.testExactFrozenGitHubContractAcceptsSplitOriginButTargetRemainsOutsideG2 : Test skipped - MOAT004_G2_SPEC_PATH and MOAT004_G2_SPEC_URL required.
+Test Case 'MOAT004G2SplitOriginTests.testExactFrozenGitHubContractAcceptsSplitOriginButTargetRemainsOutsideG2' skipped (0.0 seconds)
+Test Case 'MOAT004G2SplitOriginTests.testLegacyRelativeAdvertisementModeRemainsSupported' started at 2026-10-07 19:34:46.943
+Test Case 'MOAT004G2SplitOriginTests.testLegacyRelativeAdvertisementModeRemainsSupported' passed (0.001 seconds)
+Test Case 'MOAT004G2SplitOriginTests.testLiteralServerAndExecutionBaseCanonicalizeBeforeComparison' started at 2026-10-07 19:34:46.944
+Test Case 'MOAT004G2SplitOriginTests.testLiteralServerAndExecutionBaseCanonicalizeBeforeComparison' passed (0.002 seconds)
+Test Case 'MOAT004G2SplitOriginTests.testMixedLegacyAndAbsoluteAdvertisementModesAreRejected' started at 2026-10-07 19:34:46.946
+Test Case 'MOAT004G2SplitOriginTests.testMixedLegacyAndAbsoluteAdvertisementModesAreRejected' passed (0.001 seconds)
+Test Case 'MOAT004G2SplitOriginTests.testServerVariablesRemainUnsupported' started at 2026-10-07 19:34:46.947
+Test Case 'MOAT004G2SplitOriginTests.testServerVariablesRemainUnsupported' passed (0.001 seconds)
+Test Suite 'MOAT004G2SplitOriginTests' passed at 2026-10-07 19:34:46.948
+	 Executed 9 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.021 (0.021) seconds
+Test Suite 'MOAT004G3ZeroArgumentGETTests' started at 2026-10-07 19:34:46.948
+Test Case 'MOAT004G3ZeroArgumentGETTests.testAbsentOperationParametersReflectsZeroArgumentGETWithoutArgumentsSchema' started at 2026-10-07 19:34:46.948
+Test Case 'MOAT004G3ZeroArgumentGETTests.testAbsentOperationParametersReflectsZeroArgumentGETWithoutArgumentsSchema' passed (0.002 seconds)
+Test Case 'MOAT004G3ZeroArgumentGETTests.testExistingRequiredStringPathGETRemainsSupported' started at 2026-10-07 19:34:46.950
+Test Case 'MOAT004G3ZeroArgumentGETTests.testExistingRequiredStringPathGETRemainsSupported' passed (0.002 seconds)
+Test Case 'MOAT004G3ZeroArgumentGETTests.testExplicitEmptyOperationParametersAlsoReflectZeroArgumentGET' started at 2026-10-07 19:34:46.952
+Test Case 'MOAT004G3ZeroArgumentGETTests.testExplicitEmptyOperationParametersAlsoReflectZeroArgumentGET' passed (0.001 seconds)
+Test Case 'MOAT004G3ZeroArgumentGETTests.testFrozenGitHubAuthenticatedUserStillDoesNotReflectUntilG4' started at 2026-10-07 19:34:46.953
+/src/Tests/RightClickCoreTests/MOAT004G3ZeroArgumentGETTests.swift:704: MOAT004G3ZeroArgumentGETTests.testFrozenGitHubAuthenticatedUserStillDoesNotReflectUntilG4 : Test skipped - MOAT004_G3_SPEC_PATH required.
+Test Case 'MOAT004G3ZeroArgumentGETTests.testFrozenGitHubAuthenticatedUserStillDoesNotReflectUntilG4' skipped (0.0 seconds)
+Test Case 'MOAT004G3ZeroArgumentGETTests.testGETWithRequestBodyDoesNotBecomeZeroArgumentGET' started at 2026-10-07 19:34:46.953
+Test Case 'MOAT004G3ZeroArgumentGETTests.testGETWithRequestBodyDoesNotBecomeZeroArgumentGET' passed (0.001 seconds)
+Test Case 'MOAT004G3ZeroArgumentGETTests.testPathLevelParametersDoNotBecomeZeroArgumentGET' started at 2026-10-07 19:34:46.955
+Test Case 'MOAT004G3ZeroArgumentGETTests.testPathLevelParametersDoNotBecomeZeroArgumentGET' passed (0.001 seconds)
+Test Case 'MOAT004G3ZeroArgumentGETTests.testQueryParameterGETDoesNotBecomeZeroArgumentGET' started at 2026-10-07 19:34:46.956
+Test Case 'MOAT004G3ZeroArgumentGETTests.testQueryParameterGETDoesNotBecomeZeroArgumentGET' passed (0.002 seconds)
+Test Case 'MOAT004G3ZeroArgumentGETTests.testZeroArgumentGETExecutesWithoutBodyOrContentType' started at 2026-10-07 19:34:46.958
+Test Case 'MOAT004G3ZeroArgumentGETTests.testZeroArgumentGETExecutesWithoutBodyOrContentType' passed (0.011 seconds)
+Test Case 'MOAT004G3ZeroArgumentGETTests.testZeroArgumentGETRejectsUnexpectedArgumentsBeforeTransport' started at 2026-10-07 19:34:46.969
+Test Case 'MOAT004G3ZeroArgumentGETTests.testZeroArgumentGETRejectsUnexpectedArgumentsBeforeTransport' passed (0.005 seconds)
+Test Suite 'MOAT004G3ZeroArgumentGETTests' passed at 2026-10-07 19:34:46.974
+	 Executed 9 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.026 (0.026) seconds
+Test Suite 'MOAT004G4JSONSyntaxFallbackTests' started at 2026-10-07 19:34:46.974
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testFrozenGitHubUserReflectsForFirstTimeButHasNoExternalAuthorityYet' started at 2026-10-07 19:34:46.974
+/src/Tests/RightClickCoreTests/MOAT004G4JSONSyntaxFallbackTests.swift:749: MOAT004G4JSONSyntaxFallbackTests.testFrozenGitHubUserReflectsForFirstTimeButHasNoExternalAuthorityYet : Test skipped - MOAT004_G4_SPEC_PATH required.
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testFrozenGitHubUserReflectsForFirstTimeButHasNoExternalAuthorityYet' skipped (0.0 seconds)
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testGETWithoutDeclaredJSONSchemaStillAbstains' started at 2026-10-07 19:34:46.974
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testGETWithoutDeclaredJSONSchemaStillAbstains' passed (0.001 seconds)
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testMutatingOperationWithUnsupportedJSONResponseUsesSyntaxOnlyMetadata' started at 2026-10-07 19:34:46.976
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testMutatingOperationWithUnsupportedJSONResponseUsesSyntaxOnlyMetadata' passed (0.002 seconds)
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testStrongClosedResponseSchemaRemainsPreferred' started at 2026-10-07 19:34:46.978
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testStrongClosedResponseSchemaRemainsPreferred' passed (0.102 seconds)
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testSyntaxOnlyGETAcceptsAndCanonicalizesValidJSON' started at 2026-10-07 19:34:47.079
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testSyntaxOnlyGETAcceptsAndCanonicalizesValidJSON' passed (0.008 seconds)
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testSyntaxOnlyGETRejectsInvalidJSON' started at 2026-10-07 19:34:47.087
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testSyntaxOnlyGETRejectsInvalidJSON' passed (0.007 seconds)
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testSyntaxOnlyGETStillRequiresApplicationJSONContentType' started at 2026-10-07 19:34:47.094
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testSyntaxOnlyGETStillRequiresApplicationJSONContentType' passed (0.107 seconds)
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testUnsupportedDeclaredJSONSchemaReflectsGETWithSyntaxOnlyMetadata' started at 2026-10-07 19:34:47.201
+Test Case 'MOAT004G4JSONSyntaxFallbackTests.testUnsupportedDeclaredJSONSchemaReflectsGETWithSyntaxOnlyMetadata' passed (0.001 seconds)
+Test Suite 'MOAT004G4JSONSyntaxFallbackTests' passed at 2026-10-07 19:34:47.202
+	 Executed 8 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.228 (0.228) seconds
+Test Suite 'MOAT004G6RealGitHubAuthenticatedCompatibilityTests' started at 2026-10-07 19:34:47.202
+Test Case 'MOAT004G6RealGitHubAuthenticatedCompatibilityTests.testFrozenOfficialContractDiscoversExactAuthenticatedUserCapability' started at 2026-10-07 19:34:47.202
+/src/Tests/RightClickCoreTests/MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift:21: MOAT004G6RealGitHubAuthenticatedCompatibilityTests.testFrozenOfficialContractDiscoversExactAuthenticatedUserCapability : Test skipped - MOAT004_G6_SPEC_URL required.
+Test Case 'MOAT004G6RealGitHubAuthenticatedCompatibilityTests.testFrozenOfficialContractDiscoversExactAuthenticatedUserCapability' skipped (0.0 seconds)
+Test Case 'MOAT004G6RealGitHubAuthenticatedCompatibilityTests.testRealAuthenticatedGitHubUserMatchesIndependentControl' started at 2026-10-07 19:34:47.202
+/src/Tests/RightClickCoreTests/MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift:21: MOAT004G6RealGitHubAuthenticatedCompatibilityTests.testRealAuthenticatedGitHubUserMatchesIndependentControl : Test skipped - MOAT004_G6_EXPECTED_LOGIN required.
+Test Case 'MOAT004G6RealGitHubAuthenticatedCompatibilityTests.testRealAuthenticatedGitHubUserMatchesIndependentControl' skipped (0.101 seconds)
+Test Suite 'MOAT004G6RealGitHubAuthenticatedCompatibilityTests' passed at 2026-10-07 19:34:47.304
+	 Executed 2 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.101 (0.101) seconds
+Test Suite 'MOAT005G1PathAndJSONBodyTests' started at 2026-10-07 19:34:47.304
+Test Case 'MOAT005G1PathAndJSONBodyTests.testCombinedContractRejectsUnknownArgumentBeforeTransport' started at 2026-10-07 19:34:47.304
+Test Case 'MOAT005G1PathAndJSONBodyTests.testCombinedContractRejectsUnknownArgumentBeforeTransport' passed (0.006 seconds)
+Test Case 'MOAT005G1PathAndJSONBodyTests.testPathAndBodyNameCollisionAbstains' started at 2026-10-07 19:34:47.310
+Test Case 'MOAT005G1PathAndJSONBodyTests.testPathAndBodyNameCollisionAbstains' passed (0.002 seconds)
+Test Case 'MOAT005G1PathAndJSONBodyTests.testPathAndJSONBodyPartitionsArgumentsBeforeTransport' started at 2026-10-07 19:34:47.311
+Test Case 'MOAT005G1PathAndJSONBodyTests.testPathAndJSONBodyPartitionsArgumentsBeforeTransport' passed (0.012 seconds)
+Test Case 'MOAT005G1PathAndJSONBodyTests.testPathAndJSONBodyReflectOneCombinedClosedArgumentSchema' started at 2026-10-07 19:34:47.323
+Test Case 'MOAT005G1PathAndJSONBodyTests.testPathAndJSONBodyReflectOneCombinedClosedArgumentSchema' passed (0.003 seconds)
+Test Suite 'MOAT005G1PathAndJSONBodyTests' passed at 2026-10-07 19:34:47.326
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.022 (0.022) seconds
+Test Suite 'MOAT005G2MultiplePathArgumentsTests' started at 2026-10-07 19:34:47.326
+Test Case 'MOAT005G2MultiplePathArgumentsTests.testDuplicatePathParameterNamesAbstain' started at 2026-10-07 19:34:47.326
+Test Case 'MOAT005G2MultiplePathArgumentsTests.testDuplicatePathParameterNamesAbstain' passed (0.002 seconds)
+Test Case 'MOAT005G2MultiplePathArgumentsTests.testMissingOneRequiredPathArgumentFailsBeforeTransport' started at 2026-10-07 19:34:47.328
+Test Case 'MOAT005G2MultiplePathArgumentsTests.testMissingOneRequiredPathArgumentFailsBeforeTransport' passed (0.006 seconds)
+Test Case 'MOAT005G2MultiplePathArgumentsTests.testMultiplePathArgumentsReflectInCombinedSchema' started at 2026-10-07 19:34:47.334
+Test Case 'MOAT005G2MultiplePathArgumentsTests.testMultiplePathArgumentsReflectInCombinedSchema' passed (0.002 seconds)
+Test Case 'MOAT005G2MultiplePathArgumentsTests.testMultiplePathArgumentsSubstituteAndPartition' started at 2026-10-07 19:34:47.336
+Test Case 'MOAT005G2MultiplePathArgumentsTests.testMultiplePathArgumentsSubstituteAndPartition' passed (0.011 seconds)
+Test Suite 'MOAT005G2MultiplePathArgumentsTests' passed at 2026-10-07 19:34:47.347
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.021 (0.021) seconds
+Test Suite 'MOAT005G3GitHubRequestSchemaTests' started at 2026-10-07 19:34:47.347
+Test Case 'MOAT005G3GitHubRequestSchemaTests.testFrozenGitHubRequestSchemaReflectsThroughSafeNarrowing' started at 2026-10-07 19:34:47.347
+Test Case 'MOAT005G3GitHubRequestSchemaTests.testFrozenGitHubRequestSchemaReflectsThroughSafeNarrowing' passed (0.003 seconds)
+Test Case 'MOAT005G3GitHubRequestSchemaTests.testNarrowedSchemaRetainsRequiredTitleAndOptionalBody' started at 2026-10-07 19:34:47.351
+Test Case 'MOAT005G3GitHubRequestSchemaTests.testNarrowedSchemaRetainsRequiredTitleAndOptionalBody' passed (0.003 seconds)
+Test Case 'MOAT005G3GitHubRequestSchemaTests.testTitleOneOfIsSafelyNarrowedToString' started at 2026-10-07 19:34:47.353
+Test Case 'MOAT005G3GitHubRequestSchemaTests.testTitleOneOfIsSafelyNarrowedToString' passed (0.003 seconds)
+Test Case 'MOAT005G3GitHubRequestSchemaTests.testUnsupportedOptionalProviderFieldIsRejectedBeforeTransport' started at 2026-10-07 19:34:47.356
+Test Case 'MOAT005G3GitHubRequestSchemaTests.testUnsupportedOptionalProviderFieldIsRejectedBeforeTransport' passed (0.006 seconds)
+Test Suite 'MOAT005G3GitHubRequestSchemaTests' passed at 2026-10-07 19:34:47.362
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.015 (0.015) seconds
+Test Suite 'MOAT005G4MutationJSONResponseFallbackTests' started at 2026-10-07 19:34:47.362
+Test Case 'MOAT005G4MutationJSONResponseFallbackTests.testMalformed201JSONFailsProviderContract' started at 2026-10-07 19:34:47.362
+Test Case 'MOAT005G4MutationJSONResponseFallbackTests.testMalformed201JSONFailsProviderContract' passed (0.012 seconds)
+Test Case 'MOAT005G4MutationJSONResponseFallbackTests.testRealMutationResponseReflectsWithJSONSyntaxFallback' started at 2026-10-07 19:34:47.374
+Test Case 'MOAT005G4MutationJSONResponseFallbackTests.testRealMutationResponseReflectsWithJSONSyntaxFallback' passed (0.002 seconds)
+Test Case 'MOAT005G4MutationJSONResponseFallbackTests.testValidRealStyle201JSONIsAcceptedButUnverified' started at 2026-10-07 19:34:47.376
+Test Case 'MOAT005G4MutationJSONResponseFallbackTests.testValidRealStyle201JSONIsAcceptedButUnverified' passed (0.01 seconds)
+Test Suite 'MOAT005G4MutationJSONResponseFallbackTests' passed at 2026-10-07 19:34:47.386
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.025 (0.025) seconds
+Test Suite 'MOAT005G5FullFrozenGitHubContractTests' started at 2026-10-07 19:34:47.387
+Test Case 'MOAT005G5FullFrozenGitHubContractTests.testFullContractExposesExactClosedArguments' started at 2026-10-07 19:34:47.387
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:61: error: MOAT005G5FullFrozenGitHubContractTests.testFullContractExposesExactClosedArguments : XCTAssertEqual failed: ("0") is not equal to ("1") - G5_ACQUISITION_FAILURE: production OpenAPI acquisition did not load the exact pinned contract.
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:89: error: MOAT005G5FullFrozenGitHubContractTests.testFullContractExposesExactClosedArguments : XCTAssertEqual failed: ("0") is not equal to ("1") - G5_TARGET_ABSENT: the full official contract did not dynamically expose exactly one issues/create capability.
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:95: error: MOAT005G5FullFrozenGitHubContractTests.testFullContractExposesExactClosedArguments : XCTUnwrap failed: expected non-nil value of type "Capability" - G5_TARGET_ABSENT
+Test Case 'MOAT005G5FullFrozenGitHubContractTests.testFullContractExposesExactClosedArguments' failed (0.004 seconds)
+Test Case 'MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesOriginBoundExternalAuthority' started at 2026-10-07 19:34:47.391
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:61: error: MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesOriginBoundExternalAuthority : XCTAssertEqual failed: ("0") is not equal to ("1") - G5_ACQUISITION_FAILURE: production OpenAPI acquisition did not load the exact pinned contract.
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:89: error: MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesOriginBoundExternalAuthority : XCTAssertEqual failed: ("0") is not equal to ("1") - G5_TARGET_ABSENT: the full official contract did not dynamically expose exactly one issues/create capability.
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:95: error: MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesOriginBoundExternalAuthority : XCTUnwrap failed: expected non-nil value of type "Capability" - G5_TARGET_ABSENT
+Test Case 'MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesOriginBoundExternalAuthority' failed (0.002 seconds)
+Test Case 'MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesUnverifiedJSONSyntaxResponseFallback' started at 2026-10-07 19:34:47.393
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:61: error: MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesUnverifiedJSONSyntaxResponseFallback : XCTAssertEqual failed: ("0") is not equal to ("1") - G5_ACQUISITION_FAILURE: production OpenAPI acquisition did not load the exact pinned contract.
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:89: error: MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesUnverifiedJSONSyntaxResponseFallback : XCTAssertEqual failed: ("0") is not equal to ("1") - G5_TARGET_ABSENT: the full official contract did not dynamically expose exactly one issues/create capability.
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:95: error: MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesUnverifiedJSONSyntaxResponseFallback : XCTUnwrap failed: expected non-nil value of type "Capability" - G5_TARGET_ABSENT
+Test Case 'MOAT005G5FullFrozenGitHubContractTests.testFullContractUsesUnverifiedJSONSyntaxResponseFallback' failed (0.002 seconds)
+Test Case 'MOAT005G5FullFrozenGitHubContractTests.testFullFrozenOfficialContractDiscoversIssuesCreate' started at 2026-10-07 19:34:47.395
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:61: error: MOAT005G5FullFrozenGitHubContractTests.testFullFrozenOfficialContractDiscoversIssuesCreate : XCTAssertEqual failed: ("0") is not equal to ("1") - G5_ACQUISITION_FAILURE: production OpenAPI acquisition did not load the exact pinned contract.
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:89: error: MOAT005G5FullFrozenGitHubContractTests.testFullFrozenOfficialContractDiscoversIssuesCreate : XCTAssertEqual failed: ("0") is not equal to ("1") - G5_TARGET_ABSENT: the full official contract did not dynamically expose exactly one issues/create capability.
+/src/Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift:95: error: MOAT005G5FullFrozenGitHubContractTests.testFullFrozenOfficialContractDiscoversIssuesCreate : XCTUnwrap failed: expected non-nil value of type "Capability" - G5_TARGET_ABSENT
+Test Case 'MOAT005G5FullFrozenGitHubContractTests.testFullFrozenOfficialContractDiscoversIssuesCreate' failed (0.001 seconds)
+Test Suite 'MOAT005G5FullFrozenGitHubContractTests' failed at 2026-10-07 19:34:47.396
+	 Executed 4 tests, with 12 failures (0 unexpected) in 0.01 (0.01) seconds
+Test Suite 'MOAT005G6MultiSegmentPathTests' started at 2026-10-07 19:34:47.396
+Test Case 'MOAT005G6MultiSegmentPathTests.testDeclaredMultiSegmentPathPreservesHierarchyButOrdinaryArgumentsDoNot' started at 2026-10-07 19:34:47.396
+Test Case 'MOAT005G6MultiSegmentPathTests.testDeclaredMultiSegmentPathPreservesHierarchyButOrdinaryArgumentsDoNot' passed (0.012 seconds)
+Test Case 'MOAT005G6MultiSegmentPathTests.testDeclaredMultiSegmentPathReflectsAsOrdinaryClosedStringArgument' started at 2026-10-07 19:34:47.408
+Test Case 'MOAT005G6MultiSegmentPathTests.testDeclaredMultiSegmentPathReflectsAsOrdinaryClosedStringArgument' passed (0.002 seconds)
+Test Case 'MOAT005G6MultiSegmentPathTests.testFullFrozenGitHubContractDiscoversCreateOrUpdateContents' started at 2026-10-07 19:34:47.410
+/src/Tests/RightClickCoreTests/MOAT005G6MultiSegmentPathTests.swift:868: error: MOAT005G6MultiSegmentPathTests.testFullFrozenGitHubContractDiscoversCreateOrUpdateContents : XCTAssertEqual failed: ("0") is not equal to ("1") - 
+/src/Tests/RightClickCoreTests/MOAT005G6MultiSegmentPathTests.swift:896: error: MOAT005G6MultiSegmentPathTests.testFullFrozenGitHubContractDiscoversCreateOrUpdateContents : XCTAssertEqual failed: ("0") is not equal to ("1") - The untouched frozen GitHub contract must expose exactly one contents write capability.
+/src/Tests/RightClickCoreTests/MOAT005G6MultiSegmentPathTests.swift:903: error: MOAT005G6MultiSegmentPathTests.testFullFrozenGitHubContractDiscoversCreateOrUpdateContents : XCTUnwrap failed: expected non-nil value of type "Capability" - 
+Test Case 'MOAT005G6MultiSegmentPathTests.testFullFrozenGitHubContractDiscoversCreateOrUpdateContents' failed (0.001 seconds)
+Test Case 'MOAT005G6MultiSegmentPathTests.testMalformedMultiSegmentExtensionAbstains' started at 2026-10-07 19:34:47.412
+Test Case 'MOAT005G6MultiSegmentPathTests.testMalformedMultiSegmentExtensionAbstains' passed (0.002 seconds)
+Test Case 'MOAT005G6MultiSegmentPathTests.testMultiSegmentPathTraversalAndEmptySegmentsFailBeforeTransport' started at 2026-10-07 19:34:47.414
+Test Case 'MOAT005G6MultiSegmentPathTests.testMultiSegmentPathTraversalAndEmptySegmentsFailBeforeTransport' passed (0.026 seconds)
+Test Case 'MOAT005G6MultiSegmentPathTests.testUndeclaredMultiSegmentPathKeepsSlashEncodedAsData' started at 2026-10-07 19:34:47.439
+Test Case 'MOAT005G6MultiSegmentPathTests.testUndeclaredMultiSegmentPathKeepsSlashEncodedAsData' passed (0.011 seconds)
+Test Suite 'MOAT005G6MultiSegmentPathTests' failed at 2026-10-07 19:34:47.451
+	 Executed 6 tests, with 3 failures (0 unexpected) in 0.054 (0.054) seconds
+Test Suite 'NativeBoundedHTTPTests' started at 2026-10-07 19:34:47.451
+Test Case 'NativeBoundedHTTPTests.testDeadlineCancelsNativeExchangeWithinBound' started at 2026-10-07 19:34:47.451
+Test Case 'NativeBoundedHTTPTests.testDeadlineCancelsNativeExchangeWithinBound' passed (0.129 seconds)
+Test Case 'NativeBoundedHTTPTests.testDeclaredAndChunkedOversizeNeverReturnAnAdmittedPrefix' started at 2026-10-07 19:34:47.579
+Test Case 'NativeBoundedHTTPTests.testDeclaredAndChunkedOversizeNeverReturnAnAdmittedPrefix' passed (0.15 seconds)
+Test Case 'NativeBoundedHTTPTests.testNativeCompletionReleasesWaiterAndReturnsExactCap' started at 2026-10-07 19:34:47.729
+Test Case 'NativeBoundedHTTPTests.testNativeCompletionReleasesWaiterAndReturnsExactCap' passed (0.156 seconds)
+Test Case 'NativeBoundedHTTPTests.testNativeErrorAndPrematureConnectionCloseRemainFailures' started at 2026-10-07 19:34:47.885
+Test Case 'NativeBoundedHTTPTests.testNativeErrorAndPrematureConnectionCloseRemainFailures' passed (0.117 seconds)
+Test Case 'NativeBoundedHTTPTests.testRedirectNeverReachesNewTarget' started at 2026-10-07 19:34:48.002
+Test Case 'NativeBoundedHTTPTests.testRedirectNeverReachesNewTarget' passed (0.108 seconds)
+Test Suite 'NativeBoundedHTTPTests' passed at 2026-10-07 19:34:48.110
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.66 (0.66) seconds
+Test Suite 'NetworkOriginAuthorityTests' started at 2026-10-07 19:34:48.110
+Test Case 'NetworkOriginAuthorityTests.testInvocationRedirectCannotEscapeDiscoveredOrigin' started at 2026-10-07 19:34:48.111
+/src/Tests/RightClickCoreTests/NetworkOriginAuthorityTests.swift:33: NetworkOriginAuthorityTests.testInvocationRedirectCannotEscapeDiscoveredOrigin : Test skipped - NS007_SOURCE_PORT and NS007_SINK_PORT required.
+Test Case 'NetworkOriginAuthorityTests.testInvocationRedirectCannotEscapeDiscoveredOrigin' skipped (0.001 seconds)
+Test Case 'NetworkOriginAuthorityTests.testSpecificationRedirectCannotEscapeDiscoveredOrigin' started at 2026-10-07 19:34:48.111
+/src/Tests/RightClickCoreTests/NetworkOriginAuthorityTests.swift:33: NetworkOriginAuthorityTests.testSpecificationRedirectCannotEscapeDiscoveredOrigin : Test skipped - NS007_SOURCE_PORT and NS007_SINK_PORT required.
+Test Case 'NetworkOriginAuthorityTests.testSpecificationRedirectCannotEscapeDiscoveredOrigin' skipped (0.0 seconds)
+Test Suite 'NetworkOriginAuthorityTests' passed at 2026-10-07 19:34:48.111
+	 Executed 2 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'OAuthOIDCAuthorityTests' started at 2026-10-07 19:34:48.111
+Test Case 'OAuthOIDCAuthorityTests.testAuthorizationURLUsesPKCES256AndNeverVerifier' started at 2026-10-07 19:34:48.111
+Test Case 'OAuthOIDCAuthorityTests.testAuthorizationURLUsesPKCES256AndNeverVerifier' passed (0.002 seconds)
+Test Case 'OAuthOIDCAuthorityTests.testBindingIsExactAcrossIssuerResourceClientAndScopes' started at 2026-10-07 19:34:48.114
+Test Case 'OAuthOIDCAuthorityTests.testBindingIsExactAcrossIssuerResourceClientAndScopes' passed (0.0 seconds)
+Test Case 'OAuthOIDCAuthorityTests.testKeychainRoundTripIsBoundToExactAuthorityLease' started at 2026-10-07 19:34:48.114
+/src/Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift:357: OAuthOIDCAuthorityTests.testKeychainRoundTripIsBoundToExactAuthorityLease : Test skipped - Native Keychain adapter requires macOS
+Test Case 'OAuthOIDCAuthorityTests.testKeychainRoundTripIsBoundToExactAuthorityLease' skipped (0.0 seconds)
+Test Case 'OAuthOIDCAuthorityTests.testLoopbackRedirectAndSecretValidationFailClosed' started at 2026-10-07 19:34:48.114
+Test Case 'OAuthOIDCAuthorityTests.testLoopbackRedirectAndSecretValidationFailClosed' passed (0.001 seconds)
+Test Case 'OAuthOIDCAuthorityTests.testMetadataDiscoveryURLsPreserveIssuerPathSemantics' started at 2026-10-07 19:34:48.115
+Test Case 'OAuthOIDCAuthorityTests.testMetadataDiscoveryURLsPreserveIssuerPathSemantics' passed (0.0 seconds)
+Test Case 'OAuthOIDCAuthorityTests.testMetadataRequiresExactIssuerHTTPSAndS256' started at 2026-10-07 19:34:48.116
+Test Case 'OAuthOIDCAuthorityTests.testMetadataRequiresExactIssuerHTTPSAndS256' passed (0.001 seconds)
+Test Case 'OAuthOIDCAuthorityTests.testRFC7636S256Vector' started at 2026-10-07 19:34:48.117
+Test Case 'OAuthOIDCAuthorityTests.testRFC7636S256Vector' passed (0.0 seconds)
+Test Case 'OAuthOIDCAuthorityTests.testTokenBundleScopeAndExpiryLease' started at 2026-10-07 19:34:48.117
+Test Case 'OAuthOIDCAuthorityTests.testTokenBundleScopeAndExpiryLease' passed (0.0 seconds)
+Test Suite 'OAuthOIDCAuthorityTests' passed at 2026-10-07 19:34:48.118
+	 Executed 8 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.006 (0.006) seconds
+Test Suite 'OpenAPIAcknowledgementTests' started at 2026-10-07 19:34:48.118
+Test Case 'OpenAPIAcknowledgementTests.testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition' started at 2026-10-07 19:34:48.118
+Test Case 'OpenAPIAcknowledgementTests.testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition' passed (0.297 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testAcknowledgementHasNoTypedOutputAndRemainsUnverified' started at 2026-10-07 19:34:48.415
+Test Case 'OpenAPIAcknowledgementTests.testAcknowledgementHasNoTypedOutputAndRemainsUnverified' passed (0.279 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testConfirmationAndCurrentHostPolicyStopAcknowledgementMutation' started at 2026-10-07 19:34:48.694
+Test Case 'OpenAPIAcknowledgementTests.testConfirmationAndCurrentHostPolicyStopAcknowledgementMutation' passed (0.265 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt' started at 2026-10-07 19:34:48.958
+Test Case 'OpenAPIAcknowledgementTests.testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt' passed (0.28 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testUndeclared2xxStatusRemainsUnknownDespiteActualEffect' started at 2026-10-07 19:34:49.238
+Test Case 'OpenAPIAcknowledgementTests.testUndeclared2xxStatusRemainsUnknownDespiteActualEffect' passed (0.265 seconds)
+Test Case 'OpenAPIAcknowledgementTests.testWrongOrMissingExternalEffectNeverBecomesSuccess' started at 2026-10-07 19:34:49.504
+Test Case 'OpenAPIAcknowledgementTests.testWrongOrMissingExternalEffectNeverBecomesSuccess' passed (0.306 seconds)
+Test Suite 'OpenAPIAcknowledgementTests' passed at 2026-10-07 19:34:49.810
+	 Executed 6 tests, with 0 failures (0 unexpected) in 1.692 (1.692) seconds
+Test Suite 'OpenAPIAcquisitionBoundsTests' started at 2026-10-07 19:34:49.810
+Test Case 'OpenAPIAcquisitionBoundsTests.testSmallSpecificationIsAccepted' started at 2026-10-07 19:34:49.810
+/src/Tests/RightClickCoreTests/OpenAPIAcquisitionBoundsTests.swift:27: OpenAPIAcquisitionBoundsTests.testSmallSpecificationIsAccepted : Test skipped - NS008_FIXTURE_PORT required.
+Test Case 'OpenAPIAcquisitionBoundsTests.testSmallSpecificationIsAccepted' skipped (0.0 seconds)
+Test Case 'OpenAPIAcquisitionBoundsTests.testSpecificationAcquisitionHasFiveSecondDeadline' started at 2026-10-07 19:34:49.810
+/src/Tests/RightClickCoreTests/OpenAPIAcquisitionBoundsTests.swift:27: OpenAPIAcquisitionBoundsTests.testSpecificationAcquisitionHasFiveSecondDeadline : Test skipped - NS008_FIXTURE_PORT required.
+Test Case 'OpenAPIAcquisitionBoundsTests.testSpecificationAcquisitionHasFiveSecondDeadline' skipped (0.0 seconds)
+Test Case 'OpenAPIAcquisitionBoundsTests.testSpecificationExactlyAtByteLimitIsAccepted' started at 2026-10-07 19:34:49.811
+/src/Tests/RightClickCoreTests/OpenAPIAcquisitionBoundsTests.swift:27: OpenAPIAcquisitionBoundsTests.testSpecificationExactlyAtByteLimitIsAccepted : Test skipped - NS008_FIXTURE_PORT required.
+Test Case 'OpenAPIAcquisitionBoundsTests.testSpecificationExactlyAtByteLimitIsAccepted' skipped (0.001 seconds)
+Test Case 'OpenAPIAcquisitionBoundsTests.testSpecificationOneByteOverLegacyGenericLimitIsAcceptedByOpenAPISource' started at 2026-10-07 19:34:49.811
+/src/Tests/RightClickCoreTests/OpenAPIAcquisitionBoundsTests.swift:27: OpenAPIAcquisitionBoundsTests.testSpecificationOneByteOverLegacyGenericLimitIsAcceptedByOpenAPISource : Test skipped - NS008_FIXTURE_PORT required.
+Test Case 'OpenAPIAcquisitionBoundsTests.testSpecificationOneByteOverLegacyGenericLimitIsAcceptedByOpenAPISource' skipped (0.0 seconds)
+Test Suite 'OpenAPIAcquisitionBoundsTests' passed at 2026-10-07 19:34:49.812
+	 Executed 4 tests, with 4 tests skipped and 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'OpenAPIAuthorityTests' started at 2026-10-07 19:34:49.812
+Test Case 'OpenAPIAuthorityTests.testBearerAuthorityDoesNotCrossOrigin' started at 2026-10-07 19:34:49.812
+/src/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:316: OpenAPIAuthorityTests.testBearerAuthorityDoesNotCrossOrigin : Test skipped - Native Keychain credential tests require macOS
+Test Case 'OpenAPIAuthorityTests.testBearerAuthorityDoesNotCrossOrigin' skipped (0.007 seconds)
+Test Case 'OpenAPIAuthorityTests.testBearerAuthorityIsInjectedFromOriginBoundKeychainWithoutSecretDisclosure' started at 2026-10-07 19:34:49.819
+/src/Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift:316: OpenAPIAuthorityTests.testBearerAuthorityIsInjectedFromOriginBoundKeychainWithoutSecretDisclosure : Test skipped - Native Keychain credential tests require macOS
+Test Case 'OpenAPIAuthorityTests.testBearerAuthorityIsInjectedFromOriginBoundKeychainWithoutSecretDisclosure' skipped (0.007 seconds)
+Test Case 'OpenAPIAuthorityTests.testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret' started at 2026-10-07 19:34:49.826
+Test Case 'OpenAPIAuthorityTests.testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret' passed (0.011 seconds)
+Test Case 'OpenAPIAuthorityTests.testExplicitEmptyOperationSecurityOverridesRootSecurityAsPublic' started at 2026-10-07 19:34:49.837
+Test Case 'OpenAPIAuthorityTests.testExplicitEmptyOperationSecurityOverridesRootSecurityAsPublic' passed (0.023 seconds)
+Test Case 'OpenAPIAuthorityTests.testMissingBearerAuthorityFailsBeforeTransport' started at 2026-10-07 19:34:49.860
+Test Case 'OpenAPIAuthorityTests.testMissingBearerAuthorityFailsBeforeTransport' passed (0.012 seconds)
+Test Case 'OpenAPIAuthorityTests.testRootLevelSecurityIsNotSilentlyIgnored' started at 2026-10-07 19:34:49.872
+Test Case 'OpenAPIAuthorityTests.testRootLevelSecurityIsNotSilentlyIgnored' passed (0.009 seconds)
+Test Case 'OpenAPIAuthorityTests.testUnsupportedSecurityRequirementsAbstainRatherThanGuessing' started at 2026-10-07 19:34:49.881
+Test Case 'OpenAPIAuthorityTests.testUnsupportedSecurityRequirementsAbstainRatherThanGuessing' passed (0.012 seconds)
+Test Suite 'OpenAPIAuthorityTests' passed at 2026-10-07 19:34:49.893
+	 Executed 7 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.081 (0.081) seconds
+Test Suite 'OpenAPIRealProviderAcceptanceTests' started at 2026-10-07 19:34:49.893
+Test Case 'OpenAPIRealProviderAcceptanceTests.testRealLocalhostProviderThroughUniversalRuntime' started at 2026-10-07 19:34:49.893
+/src/Tests/RightClickCoreTests/OpenAPIRealProviderAcceptanceTests.swift:62: OpenAPIRealProviderAcceptanceTests.testRealLocalhostProviderThroughUniversalRuntime : Test skipped - NS004_OPENAPI_BASE_URL is required for the real-provider gate.
+Test Case 'OpenAPIRealProviderAcceptanceTests.testRealLocalhostProviderThroughUniversalRuntime' skipped (0.001 seconds)
+Test Suite 'OpenAPIRealProviderAcceptanceTests' passed at 2026-10-07 19:34:49.894
+	 Executed 1 test, with 1 test skipped and 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'OpenAPIReflectorTests' started at 2026-10-07 19:34:49.894
+Test Case 'OpenAPIReflectorTests.testCapabilityIdentityBindsEndpointAndSpecification' started at 2026-10-07 19:34:49.894
+Test Case 'OpenAPIReflectorTests.testCapabilityIdentityBindsEndpointAndSpecification' passed (0.007 seconds)
+Test Case 'OpenAPIReflectorTests.testExistingVerifierCanVerifyOpenAPIResult' started at 2026-10-07 19:34:49.901
+Test Case 'OpenAPIReflectorTests.testExistingVerifierCanVerifyOpenAPIResult' passed (0.009 seconds)
+Test Case 'OpenAPIReflectorTests.testExistingVerifierRejectsWrongOpenAPIResult' started at 2026-10-07 19:34:49.910
+Test Case 'OpenAPIReflectorTests.testExistingVerifierRejectsWrongOpenAPIResult' passed (0.009 seconds)
+Test Case 'OpenAPIReflectorTests.testGETPathParameterArgumentsFailClosedBeforeTransport' started at 2026-10-07 19:34:49.918
+Test Case 'OpenAPIReflectorTests.testGETPathParameterArgumentsFailClosedBeforeTransport' passed (0.076 seconds)
+Test Case 'OpenAPIReflectorTests.testGETPathParameterUsesGenericArgumentsPercentEncodesAndSendsNoBody' started at 2026-10-07 19:34:49.994
+Test Case 'OpenAPIReflectorTests.testGETPathParameterUsesGenericArgumentsPercentEncodesAndSendsNoBody' passed (0.03 seconds)
+Test Case 'OpenAPIReflectorTests.testGETUnsupportedParameterShapesAbstainRatherThanGuessing' started at 2026-10-07 19:34:50.024
+Test Case 'OpenAPIReflectorTests.testGETUnsupportedParameterShapesAbstainRatherThanGuessing' passed (0.003 seconds)
+Test Case 'OpenAPIReflectorTests.testGETWithRequiredStringPathParameterReflectsGenericArgumentSchema' started at 2026-10-07 19:34:50.027
+Test Case 'OpenAPIReflectorTests.testGETWithRequiredStringPathParameterReflectsGenericArgumentSchema' passed (0.002 seconds)
+Test Case 'OpenAPIReflectorTests.testHTTPAcceptanceIsNotSemanticSuccess' started at 2026-10-07 19:34:50.029
+Test Case 'OpenAPIReflectorTests.testHTTPAcceptanceIsNotSemanticSuccess' passed (0.013 seconds)
+Test Case 'OpenAPIReflectorTests.testMissingOperationIDAbstains' started at 2026-10-07 19:34:50.043
+Test Case 'OpenAPIReflectorTests.testMissingOperationIDAbstains' passed (0.002 seconds)
+Test Case 'OpenAPIReflectorTests.testStructuredJSONObjectArgumentsFailClosedBeforeTransport' started at 2026-10-07 19:34:50.044
+Test Case 'OpenAPIReflectorTests.testStructuredJSONObjectArgumentsFailClosedBeforeTransport' passed (0.013 seconds)
+Test Case 'OpenAPIReflectorTests.testStructuredJSONObjectOperationUsesGenericArgumentsAndReturnsCanonicalJSON' started at 2026-10-07 19:34:50.058
+Test Case 'OpenAPIReflectorTests.testStructuredJSONObjectOperationUsesGenericArgumentsAndReturnsCanonicalJSON' passed (0.011 seconds)
+Test Case 'OpenAPIReflectorTests.testSupportedStructuredJSONObjectOperationReflectsGenericArgumentSchema' started at 2026-10-07 19:34:50.069
+Test Case 'OpenAPIReflectorTests.testSupportedStructuredJSONObjectOperationReflectsGenericArgumentSchema' passed (0.002 seconds)
+Test Case 'OpenAPIReflectorTests.testUnknownOpenAPISpecReflectsTextOperation' started at 2026-10-07 19:34:50.071
+Test Case 'OpenAPIReflectorTests.testUnknownOpenAPISpecReflectsTextOperation' passed (0.002 seconds)
+Test Case 'OpenAPIReflectorTests.testUnsupportedSchemaAbstainsRatherThanGuessing' started at 2026-10-07 19:34:50.073
+Test Case 'OpenAPIReflectorTests.testUnsupportedSchemaAbstainsRatherThanGuessing' passed (0.002 seconds)
+Test Suite 'OpenAPIReflectorTests' passed at 2026-10-07 19:34:50.075
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.181 (0.181) seconds
+Test Suite 'PolicyTests' started at 2026-10-07 19:34:50.075
+Test Case 'PolicyTests.testActionExtensionIsNotInvokable' started at 2026-10-07 19:34:50.075
+Test Case 'PolicyTests.testActionExtensionIsNotInvokable' passed (0.0 seconds)
+Test Case 'PolicyTests.testCodeExecutionRequiresConfirmationEvenWithTextOutput' started at 2026-10-07 19:34:50.075
+Test Case 'PolicyTests.testCodeExecutionRequiresConfirmationEvenWithTextOutput' passed (0.0 seconds)
+Test Case 'PolicyTests.testContentClassification' started at 2026-10-07 19:34:50.075
+Test Case 'PolicyTests.testContentClassification' passed (0.001 seconds)
+Test Case 'PolicyTests.testDedupeKeepsFirstIdentifier' started at 2026-10-07 19:34:50.076
+Test Case 'PolicyTests.testDedupeKeepsFirstIdentifier' passed (0.0 seconds)
+Test Case 'PolicyTests.testDestructiveRequiresConfirmation' started at 2026-10-07 19:34:50.076
+Test Case 'PolicyTests.testDestructiveRequiresConfirmation' passed (0.0 seconds)
+Test Case 'PolicyTests.testExternalShareRequiresConfirmation' started at 2026-10-07 19:34:50.077
+Test Case 'PolicyTests.testExternalShareRequiresConfirmation' passed (0.0 seconds)
+Test Case 'PolicyTests.testSecurityChangeRequiresConfirmationEvenWithTextOutput' started at 2026-10-07 19:34:50.077
+Test Case 'PolicyTests.testSecurityChangeRequiresConfirmationEvenWithTextOutput' passed (0.119 seconds)
+Test Case 'PolicyTests.testServiceIdentifierPrefersMessage' started at 2026-10-07 19:34:50.195
+Test Case 'PolicyTests.testServiceIdentifierPrefersMessage' passed (0.0 seconds)
+Test Case 'PolicyTests.testSharingIdentifierFallsBackToTitleSlug' started at 2026-10-07 19:34:50.196
+Test Case 'PolicyTests.testSharingIdentifierFallsBackToTitleSlug' passed (0.001 seconds)
+Test Case 'PolicyTests.testSharingIdentifierUsesPublicName' started at 2026-10-07 19:34:50.196
+Test Case 'PolicyTests.testSharingIdentifierUsesPublicName' passed (0.0 seconds)
+Test Case 'PolicyTests.testTextTransformContractStillRequiresConfirmation' started at 2026-10-07 19:34:50.197
+Test Case 'PolicyTests.testTextTransformContractStillRequiresConfirmation' passed (0.0 seconds)
+Test Case 'PolicyTests.testUntrustedTextReturnContractCannotGrantReadOnlyPermission' started at 2026-10-07 19:34:50.197
+Test Case 'PolicyTests.testUntrustedTextReturnContractCannotGrantReadOnlyPermission' passed (0.102 seconds)
+Test Suite 'PolicyTests' passed at 2026-10-07 19:34:50.299
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.224 (0.224) seconds
+Test Suite 'PortableRuntimeTests' started at 2026-10-07 19:34:50.299
+Test Case 'PortableRuntimeTests.testFilesAndUnknownExtensionsAreConservative' started at 2026-10-07 19:34:50.299
+Test Case 'PortableRuntimeTests.testFilesAndUnknownExtensionsAreConservative' passed (0.006 seconds)
+Test Case 'PortableRuntimeTests.testHostStorageDoesNotAcceptRelativeEnvironmentPaths' started at 2026-10-07 19:34:50.305
+Test Case 'PortableRuntimeTests.testHostStorageDoesNotAcceptRelativeEnvironmentPaths' passed (0.001 seconds)
+Test Case 'PortableRuntimeTests.testNativeCatalogIsAbsentOnOtherHosts' started at 2026-10-07 19:34:50.306
+Test Case 'PortableRuntimeTests.testNativeCatalogIsAbsentOnOtherHosts' passed (0.002 seconds)
+Test Case 'PortableRuntimeTests.testNativeJSONBooleanIdentityCannotBecomeNumericLength' started at 2026-10-07 19:34:50.308
+Test Case 'PortableRuntimeTests.testNativeJSONBooleanIdentityCannotBecomeNumericLength' passed (0.001 seconds)
+Test Case 'PortableRuntimeTests.testPKCEUsesPortableCryptographicRandomness' started at 2026-10-07 19:34:50.309
+Test Case 'PortableRuntimeTests.testPKCEUsesPortableCryptographicRandomness' passed (0.001 seconds)
+Test Case 'PortableRuntimeTests.testStableTextAndURLClassification' started at 2026-10-07 19:34:50.310
+Test Case 'PortableRuntimeTests.testStableTextAndURLClassification' passed (0.001 seconds)
+Test Case 'PortableRuntimeTests.testUnavailableSecureStorageAbstains' started at 2026-10-07 19:34:50.311
+Test Case 'PortableRuntimeTests.testUnavailableSecureStorageAbstains' passed (0.0 seconds)
+Test Suite 'PortableRuntimeTests' passed at 2026-10-07 19:34:50.311
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.012 (0.012) seconds
+Test Suite 'ProductSurfaceRuntimeTests' started at 2026-10-07 19:34:50.311
+Test Case 'ProductSurfaceRuntimeTests.testRuntimeIdentityReportsExactExecutableBytes' started at 2026-10-07 19:34:50.311
+Test Case 'ProductSurfaceRuntimeTests.testRuntimeIdentityReportsExactExecutableBytes' passed (0.004 seconds)
+Test Suite 'ProductSurfaceRuntimeTests' passed at 2026-10-07 19:34:50.315
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'RCIRAuthorityDispatchTests' started at 2026-10-07 19:34:50.315
+Test Case 'RCIRAuthorityDispatchTests.testAncestorRevocationAtFinalGateProducesZeroActualHTTPRequests' started at 2026-10-07 19:34:50.315
+Test Case 'RCIRAuthorityDispatchTests.testAncestorRevocationAtFinalGateProducesZeroActualHTTPRequests' passed (0.311 seconds)
+Test Case 'RCIRAuthorityDispatchTests.testAuthenticatedContextErrorsCannotLeakCredentialMaterial' started at 2026-10-07 19:34:50.626
+Test Case 'RCIRAuthorityDispatchTests.testAuthenticatedContextErrorsCannotLeakCredentialMaterial' passed (0.149 seconds)
+Test Case 'RCIRAuthorityDispatchTests.testCredentialScopeWithdrawalAtFinalGateProducesZeroActualHTTPRequests' started at 2026-10-07 19:34:50.775
+Test Case 'RCIRAuthorityDispatchTests.testCredentialScopeWithdrawalAtFinalGateProducesZeroActualHTTPRequests' passed (0.148 seconds)
+Test Case 'RCIRAuthorityDispatchTests.testLegalChildProducesIndependentlyObservedSignedEffect' started at 2026-10-07 19:34:50.923
+Test Case 'RCIRAuthorityDispatchTests.testLegalChildProducesIndependentlyObservedSignedEffect' passed (0.172 seconds)
+Test Case 'RCIRAuthorityDispatchTests.testPolicyRevocationAtFinalGateProducesZeroActualHTTPRequests' started at 2026-10-07 19:34:51.095
+Test Case 'RCIRAuthorityDispatchTests.testPolicyRevocationAtFinalGateProducesZeroActualHTTPRequests' passed (0.148 seconds)
+Test Case 'RCIRAuthorityDispatchTests.testRevocationAfterEffectWithholdsObservationAndSuccess' started at 2026-10-07 19:34:51.244
+Test Case 'RCIRAuthorityDispatchTests.testRevocationAfterEffectWithholdsObservationAndSuccess' passed (0.162 seconds)
+Test Case 'RCIRAuthorityDispatchTests.testSiblingAndParentCannotExceedSharedBudget' started at 2026-10-07 19:34:51.406
+Test Case 'RCIRAuthorityDispatchTests.testSiblingAndParentCannotExceedSharedBudget' passed (0.161 seconds)
+Test Case 'RCIRAuthorityDispatchTests.testWrongAudienceAtFinalGateProducesZeroActualHTTPRequests' started at 2026-10-07 19:34:51.567
+Test Case 'RCIRAuthorityDispatchTests.testWrongAudienceAtFinalGateProducesZeroActualHTTPRequests' passed (0.205 seconds)
+Test Case 'RCIRAuthorityDispatchTests.testWrongSubjectAtFinalGateProducesZeroActualHTTPRequests' started at 2026-10-07 19:34:51.772
+Test Case 'RCIRAuthorityDispatchTests.testWrongSubjectAtFinalGateProducesZeroActualHTTPRequests' passed (0.14 seconds)
+Test Suite 'RCIRAuthorityDispatchTests' passed at 2026-10-07 19:34:51.913
+	 Executed 9 tests, with 0 failures (0 unexpected) in 1.598 (1.598) seconds
+Test Suite 'RCIRAuthorityTests' started at 2026-10-07 19:34:51.913
+Test Case 'RCIRAuthorityTests.testAudienceScopesEffectsAndTaskShapesCannotWiden' started at 2026-10-07 19:34:51.913
+Test Case 'RCIRAuthorityTests.testAudienceScopesEffectsAndTaskShapesCannotWiden' passed (0.003 seconds)
+Test Case 'RCIRAuthorityTests.testAuthorityAggregateByteBudgetFailsClosedAndExpiredRecordsReap' started at 2026-10-07 19:34:51.916
+Test Case 'RCIRAuthorityTests.testAuthorityAggregateByteBudgetFailsClosedAndExpiredRecordsReap' passed (0.599 seconds)
+Test Case 'RCIRAuthorityTests.testChildAndAncestorRevocationRejectPreparedLease' started at 2026-10-07 19:34:52.515
+Test Case 'RCIRAuthorityTests.testChildAndAncestorRevocationRejectPreparedLease' passed (0.104 seconds)
+Test Case 'RCIRAuthorityTests.testChildRevocationDoesNotRevokeSibling' started at 2026-10-07 19:34:52.619
+Test Case 'RCIRAuthorityTests.testChildRevocationDoesNotRevokeSibling' passed (0.001 seconds)
+Test Case 'RCIRAuthorityTests.testChildrenAndParentShareInvocationBudget' started at 2026-10-07 19:34:52.620
+Test Case 'RCIRAuthorityTests.testChildrenAndParentShareInvocationBudget' passed (0.103 seconds)
+Test Case 'RCIRAuthorityTests.testClockRollbackAndInvalidLimitsFailClosed' started at 2026-10-07 19:34:52.723
+Test Case 'RCIRAuthorityTests.testClockRollbackAndInvalidLimitsFailClosed' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testConcurrentFreshChildLeasesStartOnlyOnce' started at 2026-10-07 19:34:52.726
+Test Case 'RCIRAuthorityTests.testConcurrentFreshChildLeasesStartOnlyOnce' passed (0.014 seconds)
+Test Case 'RCIRAuthorityTests.testCopiedLeaseWrongSubjectDoesNotStart' started at 2026-10-07 19:34:52.740
+Test Case 'RCIRAuthorityTests.testCopiedLeaseWrongSubjectDoesNotStart' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testCredentialReferenceAggregateBudgetAndRevocationReleaseSpace' started at 2026-10-07 19:34:52.742
+Test Case 'RCIRAuthorityTests.testCredentialReferenceAggregateBudgetAndRevocationReleaseSpace' passed (0.167 seconds)
+Test Case 'RCIRAuthorityTests.testCredentialReferencesAreHandlesAndCannotWiden' started at 2026-10-07 19:34:52.909
+Test Case 'RCIRAuthorityTests.testCredentialReferencesAreHandlesAndCannotWiden' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testExactUTF8IdentitiesAndScopes' started at 2026-10-07 19:34:52.910
+Test Case 'RCIRAuthorityTests.testExactUTF8IdentitiesAndScopes' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testExpiryInvocationCountAndDownstreamDepthCannotWiden' started at 2026-10-07 19:34:52.913
+Test Case 'RCIRAuthorityTests.testExpiryInvocationCountAndDownstreamDepthCannotWiden' passed (0.001 seconds)
+Test Case 'RCIRAuthorityTests.testGrantSubstitutionAndCrossLedgerHandleRejected' started at 2026-10-07 19:34:52.914
+Test Case 'RCIRAuthorityTests.testGrantSubstitutionAndCrossLedgerHandleRejected' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testLegacyScopeEntryPointCannotConsumeGrantLease' started at 2026-10-07 19:34:52.916
+Test Case 'RCIRAuthorityTests.testLegacyScopeEntryPointCannotConsumeGrantLease' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testOneUseLeaseReplayRejected' started at 2026-10-07 19:34:52.917
+Test Case 'RCIRAuthorityTests.testOneUseLeaseReplayRejected' passed (0.001 seconds)
+Test Case 'RCIRAuthorityTests.testOnlyAuthenticatedParentMayAttenuate' started at 2026-10-07 19:34:52.919
+Test Case 'RCIRAuthorityTests.testOnlyAuthenticatedParentMayAttenuate' passed (0.001 seconds)
+Test Case 'RCIRAuthorityTests.testOutstandingLeaseByteBudgetFailsClosedAndExpiredRecordsReap' started at 2026-10-07 19:34:52.920
+Test Case 'RCIRAuthorityTests.testOutstandingLeaseByteBudgetFailsClosedAndExpiredRecordsReap' passed (3.666 seconds)
+Test Case 'RCIRAuthorityTests.testPolicyDenialDoesNotConsumeAuthority' started at 2026-10-07 19:34:56.586
+Test Case 'RCIRAuthorityTests.testPolicyDenialDoesNotConsumeAuthority' passed (0.004 seconds)
+Test Case 'RCIRAuthorityTests.testProviderAndCapabilityCannotWiden' started at 2026-10-07 19:34:56.590
+Test Case 'RCIRAuthorityTests.testProviderAndCapabilityCannotWiden' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testProviderDescriptionCannotGrantAuthorityOrCredentialReferences' started at 2026-10-07 19:34:56.592
+Test Case 'RCIRAuthorityTests.testProviderDescriptionCannotGrantAuthorityOrCredentialReferences' passed (0.001 seconds)
+Test Case 'RCIRAuthorityTests.testProviderRemovalAndRestorationRequireNewGrant' started at 2026-10-07 19:34:56.593
+Test Case 'RCIRAuthorityTests.testProviderRemovalAndRestorationRequireNewGrant' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testReceiptRequestBindsCompleteAuthorityAncestry' started at 2026-10-07 19:34:56.595
+Test Case 'RCIRAuthorityTests.testReceiptRequestBindsCompleteAuthorityAncestry' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testResourceAndEffectMustMatchAtIssue' started at 2026-10-07 19:34:56.597
+Test Case 'RCIRAuthorityTests.testResourceAndEffectMustMatchAtIssue' passed (0.005 seconds)
+Test Case 'RCIRAuthorityTests.testRevokedCredentialReferenceRejectsPreparedGrantLease' started at 2026-10-07 19:34:56.601
+Test Case 'RCIRAuthorityTests.testRevokedCredentialReferenceRejectsPreparedGrantLease' passed (0.003 seconds)
+Test Case 'RCIRAuthorityTests.testRootAndChildExpiryBoundEveryLease' started at 2026-10-07 19:34:56.604
+Test Case 'RCIRAuthorityTests.testRootAndChildExpiryBoundEveryLease' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testUnicodeEquivalentSubjectAndAudienceDoNotAuthenticate' started at 2026-10-07 19:34:56.606
+Test Case 'RCIRAuthorityTests.testUnicodeEquivalentSubjectAndAudienceDoNotAuthenticate' passed (0.003 seconds)
+Test Case 'RCIRAuthorityTests.testWrongArgumentConstraintCannotBeIssuedOrWidened' started at 2026-10-07 19:34:56.609
+Test Case 'RCIRAuthorityTests.testWrongArgumentConstraintCannotBeIssuedOrWidened' passed (0.002 seconds)
+Test Case 'RCIRAuthorityTests.testWrongArgumentsAtConsumeDoNotDebitBudget' started at 2026-10-07 19:34:56.611
+Test Case 'RCIRAuthorityTests.testWrongArgumentsAtConsumeDoNotDebitBudget' passed (0.001 seconds)
+Test Case 'RCIRAuthorityTests.testWrongAudienceDoesNotStart' started at 2026-10-07 19:34:56.612
+Test Case 'RCIRAuthorityTests.testWrongAudienceDoesNotStart' passed (0.002 seconds)
+Test Suite 'RCIRAuthorityTests' passed at 2026-10-07 19:34:56.614
+	 Executed 29 tests, with 0 failures (0 unexpected) in 4.7 (4.7) seconds
+Test Suite 'RCIRBoundaryTests' started at 2026-10-07 19:34:56.614
+Test Case 'RCIRBoundaryTests.testConcurrentConsumptionHasOneWinner' started at 2026-10-07 19:34:56.614
+Test Case 'RCIRBoundaryTests.testConcurrentConsumptionHasOneWinner' passed (0.004 seconds)
+Test Case 'RCIRBoundaryTests.testFailedProviderResultStillDoesNotVerifyAnExternalFailure' started at 2026-10-07 19:34:56.618
+Test Case 'RCIRBoundaryTests.testFailedProviderResultStillDoesNotVerifyAnExternalFailure' passed (0.001 seconds)
+Test Case 'RCIRBoundaryTests.testInvalidObservationCannotSetSemanticSuccess' started at 2026-10-07 19:34:56.619
+Test Case 'RCIRBoundaryTests.testInvalidObservationCannotSetSemanticSuccess' passed (0.001 seconds)
+Test Case 'RCIRBoundaryTests.testRejectedArgumentsDoNotSpendAnOtherwiseValidLease' started at 2026-10-07 19:34:56.620
+Test Case 'RCIRBoundaryTests.testRejectedArgumentsDoNotSpendAnOtherwiseValidLease' passed (0.001 seconds)
+Test Case 'RCIRBoundaryTests.testTaskCannotPredateLease' started at 2026-10-07 19:34:56.621
+Test Case 'RCIRBoundaryTests.testTaskCannotPredateLease' passed (0.001 seconds)
+Test Suite 'RCIRBoundaryTests' passed at 2026-10-07 19:34:56.622
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.008 (0.008) seconds
+Test Suite 'RCIRDeferredCapacityTests' started at 2026-10-07 19:34:56.622
+Test Case 'RCIRDeferredCapacityTests.testExpiredPendingTasksAreReceiptedAndReapedBeforeNewAdmission' started at 2026-10-07 19:34:56.622
+Test Case 'RCIRDeferredCapacityTests.testExpiredPendingTasksAreReceiptedAndReapedBeforeNewAdmission' passed (2.62 seconds)
+Test Case 'RCIRDeferredCapacityTests.testInFlightReservationsCannotOverrunTheBoundedSessionCapacity' started at 2026-10-07 19:34:59.242
+Test Case 'RCIRDeferredCapacityTests.testInFlightReservationsCannotOverrunTheBoundedSessionCapacity' passed (2.949 seconds)
+Test Suite 'RCIRDeferredCapacityTests' passed at 2026-10-07 19:35:02.192
+	 Executed 2 tests, with 0 failures (0 unexpected) in 5.569 (5.569) seconds
+Test Suite 'RCIRDeferredProductionTests' started at 2026-10-07 19:35:02.193
+Test Case 'RCIRDeferredProductionTests.testAcceptedRemoteTaskRemainsPendingUntilLaterObservation' started at 2026-10-07 19:35:02.193
+Test Case 'RCIRDeferredProductionTests.testAcceptedRemoteTaskRemainsPendingUntilLaterObservation' passed (0.424 seconds)
+Test Suite 'RCIRDeferredProductionTests' passed at 2026-10-07 19:35:02.617
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.424 (0.424) seconds
+Test Suite 'RCIRHTTPJSONCausalityTests' started at 2026-10-07 19:35:02.617
+Test Case 'RCIRHTTPJSONCausalityTests.testFreshIndependentMarkerMatchesHostTaskAndProducesSignedSuccess' started at 2026-10-07 19:35:02.617
+Test Case 'RCIRHTTPJSONCausalityTests.testFreshIndependentMarkerMatchesHostTaskAndProducesSignedSuccess' passed (0.717 seconds)
+Test Case 'RCIRHTTPJSONCausalityTests.testInvalidCausalBindingPathsRejectBeforeActualMutation' started at 2026-10-07 19:35:03.334
+Test Case 'RCIRHTTPJSONCausalityTests.testInvalidCausalBindingPathsRejectBeforeActualMutation' passed (0.413 seconds)
+Test Case 'RCIRHTTPJSONCausalityTests.testMissingIndependentMarkerRemainsSignedUnverified' started at 2026-10-07 19:35:03.747
+Test Case 'RCIRHTTPJSONCausalityTests.testMissingIndependentMarkerRemainsSignedUnverified' passed (0.644 seconds)
+Test Case 'RCIRHTTPJSONCausalityTests.testNoOpAcknowledgementAndOldMatchingArtifactCannotVerifyCurrentMutation' started at 2026-10-07 19:35:04.391
+Test Case 'RCIRHTTPJSONCausalityTests.testNoOpAcknowledgementAndOldMatchingArtifactCannotVerifyCurrentMutation' passed (2.062 seconds)
+Test Case 'RCIRHTTPJSONCausalityTests.testObserverCannotReflectProtectedCredentialIntoMetadataOrReceipt' started at 2026-10-07 19:35:06.453
+Test Case 'RCIRHTTPJSONCausalityTests.testObserverCannotReflectProtectedCredentialIntoMetadataOrReceipt' passed (1.833 seconds)
+Test Case 'RCIRHTTPJSONCausalityTests.testStateOnlyPredicateDoesNotClaimCurrentMutationCausality' started at 2026-10-07 19:35:08.286
+Test Case 'RCIRHTTPJSONCausalityTests.testStateOnlyPredicateDoesNotClaimCurrentMutationCausality' passed (1.304 seconds)
+Test Suite 'RCIRHTTPJSONCausalityTests' passed at 2026-10-07 19:35:09.590
+	 Executed 6 tests, with 0 failures (0 unexpected) in 6.973 (6.973) seconds
+Test Suite 'RCIRHTTPJSONObservationTests' started at 2026-10-07 19:35:09.590
+Test Case 'RCIRHTTPJSONObservationTests.testAmbientCookiesCannotEnterObservationOrPersistResponseCookie' started at 2026-10-07 19:35:09.590
+Test Case 'RCIRHTTPJSONObservationTests.testAmbientCookiesCannotEnterObservationOrPersistResponseCookie' passed (3.079 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation' started at 2026-10-07 19:35:12.671
+Test Case 'RCIRHTTPJSONObservationTests.testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation' passed (4.51 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testDefaultCredentialStorageCannotSupplyObserverAuthority' started at 2026-10-07 19:35:17.182
+Test Case 'RCIRHTTPJSONObservationTests.testDefaultCredentialStorageCannotSupplyObserverAuthority' passed (6.55 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed' started at 2026-10-07 19:35:23.732
+Test Case 'RCIRHTTPJSONObservationTests.testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed' passed (1.371 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead' started at 2026-10-07 19:35:25.103
+Test Case 'RCIRHTTPJSONObservationTests.testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead' passed (0.89 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange' started at 2026-10-07 19:35:25.993
+Test Case 'RCIRHTTPJSONObservationTests.testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange' passed (0.488 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest' started at 2026-10-07 19:35:26.481
+Test Case 'RCIRHTTPJSONObservationTests.testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest' passed (0.752 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testRedirectNeverSendsObserverCredentialToAnotherOrigin' started at 2026-10-07 19:35:27.233
+Test Case 'RCIRHTTPJSONObservationTests.testRedirectNeverSendsObserverCredentialToAnotherOrigin' passed (0.908 seconds)
+Test Case 'RCIRHTTPJSONObservationTests.testWriterCredentialCannotActAsReadonlyObserver' started at 2026-10-07 19:35:28.142
+Test Case 'RCIRHTTPJSONObservationTests.testWriterCredentialCannotActAsReadonlyObserver' passed (5.93 seconds)
+Test Suite 'RCIRHTTPJSONObservationTests' passed at 2026-10-07 19:35:34.072
+	 Executed 9 tests, with 0 failures (0 unexpected) in 24.479 (24.479) seconds
+Test Suite 'RCIRIntegrationTests' started at 2026-10-07 19:35:34.076
+Test Case 'RCIRIntegrationTests.testBackendSignatureRejectionIsNotIgnored' started at 2026-10-07 19:35:34.076
+Test Case 'RCIRIntegrationTests.testBackendSignatureRejectionIsNotIgnored' passed (0.015 seconds)
+Test Case 'RCIRIntegrationTests.testEmbeddedKeyCannotEstablishTrust' started at 2026-10-07 19:35:34.091
+Test Case 'RCIRIntegrationTests.testEmbeddedKeyCannotEstablishTrust' passed (0.003 seconds)
+Test Case 'RCIRIntegrationTests.testEmptyTerminalPageIsDistinguishableFromLiveIdle' started at 2026-10-07 19:35:34.094
+Test Case 'RCIRIntegrationTests.testEmptyTerminalPageIsDistinguishableFromLiveIdle' passed (0.013 seconds)
+Test Case 'RCIRIntegrationTests.testEnvelopeRejectsNonReceiptPayload' started at 2026-10-07 19:35:34.107
+Test Case 'RCIRIntegrationTests.testEnvelopeRejectsNonReceiptPayload' passed (0.007 seconds)
+Test Case 'RCIRIntegrationTests.testEnvelopeRejectsWrongSignatureAndKeyLengths' started at 2026-10-07 19:35:34.114
+Test Case 'RCIRIntegrationTests.testEnvelopeRejectsWrongSignatureAndKeyLengths' passed (0.011 seconds)
+Test Case 'RCIRIntegrationTests.testEventPagesHaveBoundedStableCursors' started at 2026-10-07 19:35:34.125
+Test Case 'RCIRIntegrationTests.testEventPagesHaveBoundedStableCursors' passed (0.015 seconds)
+Test Case 'RCIRIntegrationTests.testObserverReceivesExactArgumentsAndBinding' started at 2026-10-07 19:35:34.140
+Test Case 'RCIRIntegrationTests.testObserverReceivesExactArgumentsAndBinding' passed (0.023 seconds)
+Test Case 'RCIRIntegrationTests.testPagesRejectInvalidCursorsAndLimits' started at 2026-10-07 19:35:34.163
+Test Case 'RCIRIntegrationTests.testPagesRejectInvalidCursorsAndLimits' passed (0.013 seconds)
+Test Case 'RCIRIntegrationTests.testRealCryptoKitSignatureAndPinnedKey' started at 2026-10-07 19:35:34.176
+Test Case 'RCIRIntegrationTests.testRealCryptoKitSignatureAndPinnedKey' passed (0.02 seconds)
+Test Case 'RCIRIntegrationTests.testRealCryptoKitSignatureDetectsPayloadTampering' started at 2026-10-07 19:35:34.196
+Test Case 'RCIRIntegrationTests.testRealCryptoKitSignatureDetectsPayloadTampering' passed (0.009 seconds)
+Test Case 'RCIRIntegrationTests.testUnsignedFixtureIsExplicitlyNotCryptographicEvidence' started at 2026-10-07 19:35:34.205
+Test Case 'RCIRIntegrationTests.testUnsignedFixtureIsExplicitlyNotCryptographicEvidence' passed (0.004 seconds)
+Test Case 'RCIRIntegrationTests.testWireTransportPreservesExactPayload' started at 2026-10-07 19:35:34.209
+Test Case 'RCIRIntegrationTests.testWireTransportPreservesExactPayload' passed (0.011 seconds)
+Test Suite 'RCIRIntegrationTests' passed at 2026-10-07 19:35:34.220
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.144 (0.144) seconds
+Test Suite 'RCIRInvocationBindingTests' started at 2026-10-07 19:35:34.220
+Test Case 'RCIRInvocationBindingTests.testInvocationBindingRejectsNoncanonicalIdentityAndUnboundedOrWildcardPaths' started at 2026-10-07 19:35:34.220
+Test Case 'RCIRInvocationBindingTests.testInvocationBindingRejectsNoncanonicalIdentityAndUnboundedOrWildcardPaths' passed (0.119 seconds)
+Test Case 'RCIRInvocationBindingTests.testMatchingOldMarkerIsRetainedInSignedFailureInsteadOfVerifyingCurrentInvocation' started at 2026-10-07 19:35:34.339
+Test Case 'RCIRInvocationBindingTests.testMatchingOldMarkerIsRetainedInSignedFailureInsteadOfVerifyingCurrentInvocation' passed (0.011 seconds)
+Test Case 'RCIRInvocationBindingTests.testOnlyHostTaskIdentityCanVerifyMatchingObservation' started at 2026-10-07 19:35:34.350
+Test Case 'RCIRInvocationBindingTests.testOnlyHostTaskIdentityCanVerifyMatchingObservation' passed (0.021 seconds)
+Test Suite 'RCIRInvocationBindingTests' passed at 2026-10-07 19:35:34.371
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.151 (0.151) seconds
+Test Suite 'RCIRInvocationIsolationTests' started at 2026-10-07 19:35:34.372
+Test Case 'RCIRInvocationIsolationTests.testCompilerCannotMixProviderIdentityOrArgumentTypes' started at 2026-10-07 19:35:34.372
+Test Case 'RCIRInvocationIsolationTests.testCompilerCannotMixProviderIdentityOrArgumentTypes' passed (0.014 seconds)
+Test Case 'RCIRInvocationIsolationTests.testDiscoveryDriftInvalidatesOutstandingInvocation' started at 2026-10-07 19:35:34.386
+Test Case 'RCIRInvocationIsolationTests.testDiscoveryDriftInvalidatesOutstandingInvocation' passed (0.012 seconds)
+Test Case 'RCIRInvocationIsolationTests.testEffectKindDriftInvalidatesOutstandingInvocation' started at 2026-10-07 19:35:34.398
+Test Case 'RCIRInvocationIsolationTests.testEffectKindDriftInvalidatesOutstandingInvocation' passed (0.004 seconds)
+Test Case 'RCIRInvocationIsolationTests.testInvocationDoesNotTurnUnknownEffectsIntoAuthority' started at 2026-10-07 19:35:34.402
+Test Case 'RCIRInvocationIsolationTests.testInvocationDoesNotTurnUnknownEffectsIntoAuthority' passed (0.009 seconds)
+Test Case 'RCIRInvocationIsolationTests.testPrincipalReplacementInvalidatesOutstandingInvocation' started at 2026-10-07 19:35:34.411
+Test Case 'RCIRInvocationIsolationTests.testPrincipalReplacementInvalidatesOutstandingInvocation' passed (0.008 seconds)
+Test Case 'RCIRInvocationIsolationTests.testResourcesAndPostconditionsAreBoundToIndependentLeases' started at 2026-10-07 19:35:34.419
+Test Case 'RCIRInvocationIsolationTests.testResourcesAndPostconditionsAreBoundToIndependentLeases' passed (0.009 seconds)
+Test Case 'RCIRInvocationIsolationTests.testTaskBudgetDriftInvalidatesOutstandingInvocation' started at 2026-10-07 19:35:34.429
+Test Case 'RCIRInvocationIsolationTests.testTaskBudgetDriftInvalidatesOutstandingInvocation' passed (0.018 seconds)
+Test Case 'RCIRInvocationIsolationTests.testWithdrawalAndReappearanceCannotReviveOldLease' started at 2026-10-07 19:35:34.447
+Test Case 'RCIRInvocationIsolationTests.testWithdrawalAndReappearanceCannotReviveOldLease' passed (0.02 seconds)
+Test Suite 'RCIRInvocationIsolationTests' passed at 2026-10-07 19:35:34.467
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.094 (0.094) seconds
+Test Suite 'RCIRNoOutputTests' started at 2026-10-07 19:35:34.467
+Test Case 'RCIRNoOutputTests.testExactUnchangedWindowsDeclarationAcquiresAcknowledgementCapability' started at 2026-10-07 19:35:34.467
+Test Case 'RCIRNoOutputTests.testExactUnchangedWindowsDeclarationAcquiresAcknowledgementCapability' passed (0.153 seconds)
+Test Case 'RCIRNoOutputTests.testInheritedSecurityUsesStrictSchemeResolutionAndOperationOverrides' started at 2026-10-07 19:35:34.620
+Test Case 'RCIRNoOutputTests.testInheritedSecurityUsesStrictSchemeResolutionAndOperationOverrides' passed (0.373 seconds)
+Test Case 'RCIRNoOutputTests.testUnknownOrUndeclaredOutputCannotBeRecategorizedAsAcknowledgement' started at 2026-10-07 19:35:34.994
+Test Case 'RCIRNoOutputTests.testUnknownOrUndeclaredOutputCannotBeRecategorizedAsAcknowledgement' passed (0.084 seconds)
+Test Suite 'RCIRNoOutputTests' passed at 2026-10-07 19:35:35.078
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.611 (0.611) seconds
+Test Suite 'RCIRProductionDispatchTests' started at 2026-10-07 19:35:35.078
+Test Case 'RCIRProductionDispatchTests.testActualArtifactSchemaDriftRejectsOldInvocationAndReacquires' started at 2026-10-07 19:35:35.078
+Test Case 'RCIRProductionDispatchTests.testActualArtifactSchemaDriftRejectsOldInvocationAndReacquires' passed (0.891 seconds)
+Test Case 'RCIRProductionDispatchTests.testActualContractDisappearanceDeniesEffectsAndRecoversNewLease' started at 2026-10-07 19:35:35.968
+Test Case 'RCIRProductionDispatchTests.testActualContractDisappearanceDeniesEffectsAndRecoversNewLease' passed (1.865 seconds)
+Test Case 'RCIRProductionDispatchTests.testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry' started at 2026-10-07 19:35:37.834
+Test Case 'RCIRProductionDispatchTests.testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry' passed (1.697 seconds)
+Test Case 'RCIRProductionDispatchTests.testBonjourReappearanceAfterDispatchPreservesUnknown' started at 2026-10-07 19:35:39.531
+Test Case 'RCIRProductionDispatchTests.testBonjourReappearanceAfterDispatchPreservesUnknown' passed (0.996 seconds)
+Test Case 'RCIRProductionDispatchTests.testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery' started at 2026-10-07 19:35:40.527
+Test Case 'RCIRProductionDispatchTests.testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery' passed (1.114 seconds)
+Test Case 'RCIRProductionDispatchTests.testBoundedLargeArgumentIsNotDuplicatedIntoContract' started at 2026-10-07 19:35:41.647
+Test Case 'RCIRProductionDispatchTests.testBoundedLargeArgumentIsNotDuplicatedIntoContract' passed (1.019 seconds)
+Test Case 'RCIRProductionDispatchTests.testCallerPostconditionCannotBeSilentlyIgnoredByHostObserver' started at 2026-10-07 19:35:42.666
+Test Case 'RCIRProductionDispatchTests.testCallerPostconditionCannotBeSilentlyIgnoredByHostObserver' passed (0.706 seconds)
+Test Case 'RCIRProductionDispatchTests.testChangedArgumentsCannotUseOriginalLease' started at 2026-10-07 19:35:43.372
+Test Case 'RCIRProductionDispatchTests.testChangedArgumentsCannotUseOriginalLease' passed (1.782 seconds)
+Test Case 'RCIRProductionDispatchTests.testChangedEndpointBeforeDispatchProducesZeroProviderEffects' started at 2026-10-07 19:35:45.155
+Test Case 'RCIRProductionDispatchTests.testChangedEndpointBeforeDispatchProducesZeroProviderEffects' passed (0.885 seconds)
+Test Case 'RCIRProductionDispatchTests.testCompetingConsumersStartAtMostOneRealRequest' started at 2026-10-07 19:35:46.040
+Test Case 'RCIRProductionDispatchTests.testCompetingConsumersStartAtMostOneRealRequest' passed (0.475 seconds)
+Test Case 'RCIRProductionDispatchTests.testConfirmationDenialProducesZeroProviderEffects' started at 2026-10-07 19:35:46.515
+Test Case 'RCIRProductionDispatchTests.testConfirmationDenialProducesZeroProviderEffects' passed (0.455 seconds)
+Test Case 'RCIRProductionDispatchTests.testCredentialFreeObserverCannotInheritInvocationCookie' started at 2026-10-07 19:35:46.970
+Test Case 'RCIRProductionDispatchTests.testCredentialFreeObserverCannotInheritInvocationCookie' passed (1.41 seconds)
+Test Case 'RCIRProductionDispatchTests.testCrossOriginObserverBlocksBeforeAnyEffect' started at 2026-10-07 19:35:48.380
+Test Case 'RCIRProductionDispatchTests.testCrossOriginObserverBlocksBeforeAnyEffect' passed (0.231 seconds)
+Test Case 'RCIRProductionDispatchTests.testCurrentPolicyRevocationProducesZeroProviderEffects' started at 2026-10-07 19:35:48.611
+Test Case 'RCIRProductionDispatchTests.testCurrentPolicyRevocationProducesZeroProviderEffects' passed (0.201 seconds)
+Test Case 'RCIRProductionDispatchTests.testExpiredLeaseProducesZeroProviderEffects' started at 2026-10-07 19:35:48.812
+Test Case 'RCIRProductionDispatchTests.testExpiredLeaseProducesZeroProviderEffects' passed (0.226 seconds)
+Test Case 'RCIRProductionDispatchTests.testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration' started at 2026-10-07 19:35:49.038
+Test Case 'RCIRProductionDispatchTests.testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration' passed (0.234 seconds)
+Test Case 'RCIRProductionDispatchTests.testInvalidSignerBlocksBeforeAnyEffect' started at 2026-10-07 19:35:49.272
+Test Case 'RCIRProductionDispatchTests.testInvalidSignerBlocksBeforeAnyEffect' passed (0.176 seconds)
+Test Case 'RCIRProductionDispatchTests.testLostResponseRetainsSignedUnknownAndDoesNotRetry' started at 2026-10-07 19:35:49.448
+Test Case 'RCIRProductionDispatchTests.testLostResponseRetainsSignedUnknownAndDoesNotRetry' passed (0.219 seconds)
+Test Case 'RCIRProductionDispatchTests.testMissingExactOriginAuthorityProducesZeroProviderEffects' started at 2026-10-07 19:35:49.668
+Test Case 'RCIRProductionDispatchTests.testMissingExactOriginAuthorityProducesZeroProviderEffects' passed (0.232 seconds)
+Test Case 'RCIRProductionDispatchTests.testNotYetValidLeaseProducesZeroProviderEffects' started at 2026-10-07 19:35:49.900
+Test Case 'RCIRProductionDispatchTests.testNotYetValidLeaseProducesZeroProviderEffects' passed (0.306 seconds)
+Test Case 'RCIRProductionDispatchTests.testObserverTraversalAndDoubleEncodingCannotDispatch' started at 2026-10-07 19:35:50.206
+Test Case 'RCIRProductionDispatchTests.testObserverTraversalAndDoubleEncodingCannotDispatch' passed (0.291 seconds)
+Test Case 'RCIRProductionDispatchTests.testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence' started at 2026-10-07 19:35:50.496
+Test Case 'RCIRProductionDispatchTests.testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence' passed (0.213 seconds)
+Test Case 'RCIRProductionDispatchTests.testRemovalAfterDispatchPreservesUnknownWithoutRetry' started at 2026-10-07 19:35:50.710
+Test Case 'RCIRProductionDispatchTests.testRemovalAfterDispatchPreservesUnknownWithoutRetry' passed (0.279 seconds)
+Test Case 'RCIRProductionDispatchTests.testRemovalAtTransportAdmissionProducesZeroProviderEffects' started at 2026-10-07 19:35:50.988
+Test Case 'RCIRProductionDispatchTests.testRemovalAtTransportAdmissionProducesZeroProviderEffects' passed (0.219 seconds)
+Test Case 'RCIRProductionDispatchTests.testRemovalBeforeDispatchProducesZeroProviderEffects' started at 2026-10-07 19:35:51.208
+Test Case 'RCIRProductionDispatchTests.testRemovalBeforeDispatchProducesZeroProviderEffects' passed (0.21 seconds)
+Test Case 'RCIRProductionDispatchTests.testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation' started at 2026-10-07 19:35:51.418
+Test Case 'RCIRProductionDispatchTests.testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation' passed (0.269 seconds)
+Test Case 'RCIRProductionDispatchTests.testSameProviderReappearingCannotReviveOldGeneration' started at 2026-10-07 19:35:51.687
+Test Case 'RCIRProductionDispatchTests.testSameProviderReappearingCannotReviveOldGeneration' passed (0.228 seconds)
+Test Case 'RCIRProductionDispatchTests.testSchemaDriftBeforeDispatchProducesZeroProviderEffects' started at 2026-10-07 19:35:51.915
+Test Case 'RCIRProductionDispatchTests.testSchemaDriftBeforeDispatchProducesZeroProviderEffects' passed (0.228 seconds)
+Test Case 'RCIRProductionDispatchTests.testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints' started at 2026-10-07 19:35:52.143
+Test Case 'RCIRProductionDispatchTests.testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints' passed (0.226 seconds)
+Test Case 'RCIRProductionDispatchTests.testSpentLeaseCannotDispatchAgain' started at 2026-10-07 19:35:52.369
+Test Case 'RCIRProductionDispatchTests.testSpentLeaseCannotDispatchAgain' passed (0.177 seconds)
+Test Suite 'RCIRProductionDispatchTests' passed at 2026-10-07 19:35:52.547
+	 Executed 30 tests, with 0 failures (0 unexpected) in 17.461 (17.461) seconds
+Test Suite 'RCIRProvisionedSignerTests' started at 2026-10-07 19:35:52.547
+Test Case 'RCIRProvisionedSignerTests.testWithdrawalAtPostSignatureBoundaryReturnsNoSignature' started at 2026-10-07 19:35:52.547
+Test Case 'RCIRProvisionedSignerTests.testWithdrawalAtPostSignatureBoundaryReturnsNoSignature' passed (0.03 seconds)
+Test Suite 'RCIRProvisionedSignerTests' passed at 2026-10-07 19:35:52.577
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.03 (0.03) seconds
+Test Suite 'RCIRSigningLifecycleTests' started at 2026-10-07 19:35:52.577
+Test Case 'RCIRSigningLifecycleTests.testFreshInvocationAfterRotationUsesNewProvisionedKey' started at 2026-10-07 19:35:52.577
+Test Case 'RCIRSigningLifecycleTests.testFreshInvocationAfterRotationUsesNewProvisionedKey' passed (1.707 seconds)
+Test Case 'RCIRSigningLifecycleTests.testKeyWithdrawalAtAdmissionBoundaryHasZeroProviderEffects' started at 2026-10-07 19:35:54.284
+Test Case 'RCIRSigningLifecycleTests.testKeyWithdrawalAtAdmissionBoundaryHasZeroProviderEffects' passed (0.244 seconds)
+Test Case 'RCIRSigningLifecycleTests.testSamePathKeyRotationDoesNotSignWithRetainedOldKey' started at 2026-10-07 19:35:54.528
+Test Case 'RCIRSigningLifecycleTests.testSamePathKeyRotationDoesNotSignWithRetainedOldKey' passed (1.068 seconds)
+Test Case 'RCIRSigningLifecycleTests.testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature' started at 2026-10-07 19:35:55.596
+Test Case 'RCIRSigningLifecycleTests.testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature' passed (0.901 seconds)
+Test Case 'RCIRSigningLifecycleTests.testUnaryHTTPAfterKeyWithdrawalRetainsActualEffectAndUnsignedTruth' started at 2026-10-07 19:35:56.497
+Test Case 'RCIRSigningLifecycleTests.testUnaryHTTPAfterKeyWithdrawalRetainsActualEffectAndUnsignedTruth' passed (0.763 seconds)
+Test Case 'RCIRSigningLifecycleTests.testUnchangedProvisionedSignerSignsGenuineEffect' started at 2026-10-07 19:35:57.261
+Test Case 'RCIRSigningLifecycleTests.testUnchangedProvisionedSignerSignsGenuineEffect' passed (1.243 seconds)
+Test Case 'RCIRSigningLifecycleTests.testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown' started at 2026-10-07 19:35:58.504
+Test Case 'RCIRSigningLifecycleTests.testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown' passed (1.375 seconds)
+Test Case 'RCIRSigningLifecycleTests.testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect' started at 2026-10-07 19:35:59.879
+Test Case 'RCIRSigningLifecycleTests.testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect' passed (1.361 seconds)
+Test Suite 'RCIRSigningLifecycleTests' passed at 2026-10-07 19:36:01.240
+	 Executed 8 tests, with 0 failures (0 unexpected) in 8.663 (8.663) seconds
+Test Suite 'RCIRStructuredObservationTests' started at 2026-10-07 19:36:01.240
+Test Case 'RCIRStructuredObservationTests.testArgumentBoundFieldsVerifyWhileAssignedMetadataRemainsInSignedBytes' started at 2026-10-07 19:36:01.240
+Test Case 'RCIRStructuredObservationTests.testArgumentBoundFieldsVerifyWhileAssignedMetadataRemainsInSignedBytes' passed (0.009 seconds)
+Test Case 'RCIRStructuredObservationTests.testExistingUnaryEvidenceInitializerDoesNotRequireTaskEvents' started at 2026-10-07 19:36:01.249
+Test Case 'RCIRStructuredObservationTests.testExistingUnaryEvidenceInitializerDoesNotRequireTaskEvents' passed (0.006 seconds)
+Test Case 'RCIRStructuredObservationTests.testFullObservationSchemaCannotBeDiscardedByProjection' started at 2026-10-07 19:36:01.256
+Test Case 'RCIRStructuredObservationTests.testFullObservationSchemaCannotBeDiscardedByProjection' passed (0.004 seconds)
+Test Case 'RCIRStructuredObservationTests.testIndependentMismatchIsVerifiedFailure' started at 2026-10-07 19:36:01.260
+Test Case 'RCIRStructuredObservationTests.testIndependentMismatchIsVerifiedFailure' passed (0.007 seconds)
+Test Case 'RCIRStructuredObservationTests.testObserverReceivesProviderCoordinatesAsUntrustedLocatorOnly' started at 2026-10-07 19:36:01.267
+Test Case 'RCIRStructuredObservationTests.testObserverReceivesProviderCoordinatesAsUntrustedLocatorOnly' passed (0.003 seconds)
+Test Case 'RCIRStructuredObservationTests.testProjectionRejectsWildcardMissingAndUnboundedContracts' started at 2026-10-07 19:36:01.270
+Test Case 'RCIRStructuredObservationTests.testProjectionRejectsWildcardMissingAndUnboundedContracts' passed (0.005 seconds)
+Test Suite 'RCIRStructuredObservationTests' passed at 2026-10-07 19:36:01.275
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.034 (0.034) seconds
+Test Suite 'RCIRTests' started at 2026-10-07 19:36:01.275
+Test Case 'RCIRTests.testAcceptanceAndCompletionAreNotSemanticSuccess' started at 2026-10-07 19:36:01.275
+Test Case 'RCIRTests.testAcceptanceAndCompletionAreNotSemanticSuccess' passed (0.002 seconds)
+Test Case 'RCIRTests.testArgumentTamperingRejected' started at 2026-10-07 19:36:01.277
+Test Case 'RCIRTests.testArgumentTamperingRejected' passed (0.004 seconds)
+Test Case 'RCIRTests.testBufferOverflowNeverSilentlyDropsEvents' started at 2026-10-07 19:36:01.281
+Test Case 'RCIRTests.testBufferOverflowNeverSilentlyDropsEvents' passed (0.002 seconds)
+Test Case 'RCIRTests.testByteBudgetEnforcedBeforeMutation' started at 2026-10-07 19:36:01.283
+Test Case 'RCIRTests.testByteBudgetEnforcedBeforeMutation' passed (0.004 seconds)
+Test Case 'RCIRTests.testCancellationRequestIsNotAcknowledgement' started at 2026-10-07 19:36:01.287
+Test Case 'RCIRTests.testCancellationRequestIsNotAcknowledgement' passed (0.004 seconds)
+Test Case 'RCIRTests.testCannotIssueFinalReceiptForRunningTask' started at 2026-10-07 19:36:01.292
+Test Case 'RCIRTests.testCannotIssueFinalReceiptForRunningTask' passed (0.005 seconds)
+Test Case 'RCIRTests.testChangedContractInvalidatesLease' started at 2026-10-07 19:36:01.297
+Test Case 'RCIRTests.testChangedContractInvalidatesLease' passed (0.004 seconds)
+Test Case 'RCIRTests.testClockRegressionRejected' started at 2026-10-07 19:36:01.301
+Test Case 'RCIRTests.testClockRegressionRejected' passed (0.003 seconds)
+Test Case 'RCIRTests.testContractBindsEffects' started at 2026-10-07 19:36:01.304
+Test Case 'RCIRTests.testContractBindsEffects' passed (0.002 seconds)
+Test Case 'RCIRTests.testContractBindsTaskShape' started at 2026-10-07 19:36:01.306
+Test Case 'RCIRTests.testContractBindsTaskShape' passed (0.003 seconds)
+Test Case 'RCIRTests.testContractBindsVerification' started at 2026-10-07 19:36:01.308
+Test Case 'RCIRTests.testContractBindsVerification' passed (0.003 seconds)
+Test Case 'RCIRTests.testContractRejectsUnboundedStream' started at 2026-10-07 19:36:01.311
+Test Case 'RCIRTests.testContractRejectsUnboundedStream' passed (0.002 seconds)
+Test Case 'RCIRTests.testDeadlineProducesUnknownNotSuccessOrRetry' started at 2026-10-07 19:36:01.313
+Test Case 'RCIRTests.testDeadlineProducesUnknownNotSuccessOrRetry' passed (0.003 seconds)
+Test Case 'RCIRTests.testExistingABIStillDistinguishesIntegerNumberAndString' started at 2026-10-07 19:36:01.316
+Test Case 'RCIRTests.testExistingABIStillDistinguishesIntegerNumberAndString' passed (0.003 seconds)
+Test Case 'RCIRTests.testExternalMismatchIsSemanticFailure' started at 2026-10-07 19:36:01.319
+Test Case 'RCIRTests.testExternalMismatchIsSemanticFailure' passed (0.002 seconds)
+Test Case 'RCIRTests.testIncorrectTypedArgumentsRejected' started at 2026-10-07 19:36:01.320
+Test Case 'RCIRTests.testIncorrectTypedArgumentsRejected' passed (0.002 seconds)
+Test Case 'RCIRTests.testInvalidScopeFailsClosed' started at 2026-10-07 19:36:01.323
+Test Case 'RCIRTests.testInvalidScopeFailsClosed' passed (0.003 seconds)
+Test Case 'RCIRTests.testLeaseCannotCrossAdmissionInstances' started at 2026-10-07 19:36:01.325
+Test Case 'RCIRTests.testLeaseCannotCrossAdmissionInstances' passed (0.003 seconds)
+Test Case 'RCIRTests.testLeaseConsumesOnce' started at 2026-10-07 19:36:01.328
+Test Case 'RCIRTests.testLeaseConsumesOnce' passed (0.002 seconds)
+Test Case 'RCIRTests.testLeaseExpiryBoundary' started at 2026-10-07 19:36:01.330
+Test Case 'RCIRTests.testLeaseExpiryBoundary' passed (0.002 seconds)
+Test Case 'RCIRTests.testLeaseInvalidTimesAndTTLRejected' started at 2026-10-07 19:36:01.332
+Test Case 'RCIRTests.testLeaseInvalidTimesAndTTLRejected' passed (0.007 seconds)
+Test Case 'RCIRTests.testLeastAuthorityIsExactRequiredSubset' started at 2026-10-07 19:36:01.339
+Test Case 'RCIRTests.testLeastAuthorityIsExactRequiredSubset' passed (0.008 seconds)
+Test Case 'RCIRTests.testMissingAuthorityRejected' started at 2026-10-07 19:36:01.347
+Test Case 'RCIRTests.testMissingAuthorityRejected' passed (0.003 seconds)
+Test Case 'RCIRTests.testMissingVerificationContractCannotSucceed' started at 2026-10-07 19:36:01.350
+Test Case 'RCIRTests.testMissingVerificationContractCannotSucceed' passed (0.002 seconds)
+Test Case 'RCIRTests.testObserverTransportFailureDoesNotBecomeSuccess' started at 2026-10-07 19:36:01.352
+Test Case 'RCIRTests.testObserverTransportFailureDoesNotBecomeSuccess' passed (0.006 seconds)
+Test Case 'RCIRTests.testOnlyBoundIndependentObserverCanVerify' started at 2026-10-07 19:36:01.358
+Test Case 'RCIRTests.testOnlyBoundIndependentObserverCanVerify' passed (0.002 seconds)
+Test Case 'RCIRTests.testPolicyChangeAndAuthorityRevocationRejected' started at 2026-10-07 19:36:01.360
+Test Case 'RCIRTests.testPolicyChangeAndAuthorityRevocationRejected' passed (0.008 seconds)
+Test Case 'RCIRTests.testPolicyDenyOverridesAuthority' started at 2026-10-07 19:36:01.368
+Test Case 'RCIRTests.testPolicyDenyOverridesAuthority' passed (0.008 seconds)
+Test Case 'RCIRTests.testPrincipalBoundToSnapshot' started at 2026-10-07 19:36:01.376
+Test Case 'RCIRTests.testPrincipalBoundToSnapshot' passed (0.005 seconds)
+Test Case 'RCIRTests.testProviderLossDuringWorkIsUnknown' started at 2026-10-07 19:36:01.380
+Test Case 'RCIRTests.testProviderLossDuringWorkIsUnknown' passed (0.005 seconds)
+Test Case 'RCIRTests.testPureOperationNeedsNoAuthority' started at 2026-10-07 19:36:01.385
+Test Case 'RCIRTests.testPureOperationNeedsNoAuthority' passed (0.001 seconds)
+Test Case 'RCIRTests.testReappearanceCannotResurrectOldLease' started at 2026-10-07 19:36:01.386
+Test Case 'RCIRTests.testReappearanceCannotResurrectOldLease' passed (0.006 seconds)
+Test Case 'RCIRTests.testReceiptBindsObservedOutcomeAndHasDomainSeparator' started at 2026-10-07 19:36:01.392
+Test Case 'RCIRTests.testReceiptBindsObservedOutcomeAndHasDomainSeparator' passed (0.003 seconds)
+Test Case 'RCIRTests.testRemovedProviderDisappearsAndOldBindingRejected' started at 2026-10-07 19:36:01.395
+Test Case 'RCIRTests.testRemovedProviderDisappearsAndOldBindingRejected' passed (0.002 seconds)
+Test Case 'RCIRTests.testResultShapeCheckedWithoutPromotion' started at 2026-10-07 19:36:01.397
+Test Case 'RCIRTests.testResultShapeCheckedWithoutPromotion' passed (0.002 seconds)
+Test Case 'RCIRTests.testSamePublicationDoesNotInvalidateBinding' started at 2026-10-07 19:36:01.399
+Test Case 'RCIRTests.testSamePublicationDoesNotInvalidateBinding' passed (0.003 seconds)
+Test Case 'RCIRTests.testScopesUseExactUTF8' started at 2026-10-07 19:36:01.402
+Test Case 'RCIRTests.testScopesUseExactUTF8' passed (0.003 seconds)
+Test Case 'RCIRTests.testStreamElementAndUnaryChunkValidation' started at 2026-10-07 19:36:01.405
+Test Case 'RCIRTests.testStreamElementAndUnaryChunkValidation' passed (0.002 seconds)
+Test Case 'RCIRTests.testStreamSequenceReplayAndGapRejected' started at 2026-10-07 19:36:01.407
+Test Case 'RCIRTests.testStreamSequenceReplayAndGapRejected' passed (0.003 seconds)
+Test Case 'RCIRTests.testTaskDeadlineMustBeFiniteAndForward' started at 2026-10-07 19:36:01.411
+Test Case 'RCIRTests.testTaskDeadlineMustBeFiniteAndForward' passed (0.002 seconds)
+Test Case 'RCIRTests.testTerminalTaskCannotBeReopened' started at 2026-10-07 19:36:01.413
+Test Case 'RCIRTests.testTerminalTaskCannotBeReopened' passed (0.003 seconds)
+Test Case 'RCIRTests.testUnknownArgumentSchemaRejected' started at 2026-10-07 19:36:01.416
+Test Case 'RCIRTests.testUnknownArgumentSchemaRejected' passed (0.001 seconds)
+Test Case 'RCIRTests.testUnknownEffectsRejected' started at 2026-10-07 19:36:01.417
+Test Case 'RCIRTests.testUnknownEffectsRejected' passed (0.001 seconds)
+Test Case 'RCIRTests.testUnsupportedCancellationRejected' started at 2026-10-07 19:36:01.418
+Test Case 'RCIRTests.testUnsupportedCancellationRejected' passed (0.002 seconds)
+Test Case 'RCIRTests.testUnsupportedClientAndDuplexStreamsAbstain' started at 2026-10-07 19:36:01.420
+Test Case 'RCIRTests.testUnsupportedClientAndDuplexStreamsAbstain' passed (0.003 seconds)
+Test Case 'RCIRTests.testVerifierCannotRunBeforeProviderCompletion' started at 2026-10-07 19:36:01.423
+Test Case 'RCIRTests.testVerifierCannotRunBeforeProviderCompletion' passed (0.004 seconds)
+Test Suite 'RCIRTests' passed at 2026-10-07 19:36:01.427
+	 Executed 46 tests, with 0 failures (0 unexpected) in 0.151 (0.151) seconds
+Test Suite 'RCIRUnaryAdmissionTests' started at 2026-10-07 19:36:01.427
+Test Case 'RCIRUnaryAdmissionTests.testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt' started at 2026-10-07 19:36:01.427
+Test Case 'RCIRUnaryAdmissionTests.testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt' passed (0.023 seconds)
+Test Case 'RCIRUnaryAdmissionTests.testChangedArgumentsAtAdmissionStopLegacyUnaryTransport' started at 2026-10-07 19:36:01.450
+Test Case 'RCIRUnaryAdmissionTests.testChangedArgumentsAtAdmissionStopLegacyUnaryTransport' passed (0.018 seconds)
+Test Case 'RCIRUnaryAdmissionTests.testCurrentHostPolicyDenialStopsLegacyUnaryTransport' started at 2026-10-07 19:36:01.468
+Test Case 'RCIRUnaryAdmissionTests.testCurrentHostPolicyDenialStopsLegacyUnaryTransport' passed (0.028 seconds)
+Test Case 'RCIRUnaryAdmissionTests.testLostUnaryResponsePreservesUnknownWithoutReplay' started at 2026-10-07 19:36:01.496
+Test Case 'RCIRUnaryAdmissionTests.testLostUnaryResponsePreservesUnknownWithoutReplay' passed (0.016 seconds)
+Test Suite 'RCIRUnaryAdmissionTests' passed at 2026-10-07 19:36:01.512
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.085 (0.085) seconds
+Test Suite 'RCIRUnitCompletionTests' started at 2026-10-07 19:36:01.512
+Test Case 'RCIRUnitCompletionTests.testNoOutputCompletionCannotBypassDeclaredOrUnknownOutput' started at 2026-10-07 19:36:01.512
+Test Case 'RCIRUnitCompletionTests.testNoOutputCompletionCannotBypassDeclaredOrUnknownOutput' passed (0.004 seconds)
+Test Case 'RCIRUnitCompletionTests.testNoOutputCompletionCarriesNoProviderValueAndRemainsUnverified' started at 2026-10-07 19:36:01.516
+Test Case 'RCIRUnitCompletionTests.testNoOutputCompletionCarriesNoProviderValueAndRemainsUnverified' passed (0.002 seconds)
+Test Case 'RCIRUnitCompletionTests.testNoOutputHasCanonicalIdentityDistinctFromJSONNull' started at 2026-10-07 19:36:01.518
+Test Case 'RCIRUnitCompletionTests.testNoOutputHasCanonicalIdentityDistinctFromJSONNull' passed (0.001 seconds)
+Test Case 'RCIRUnitCompletionTests.testOnlyIndependentObserverCanPromoteNoOutputOutcome' started at 2026-10-07 19:36:01.519
+Test Case 'RCIRUnitCompletionTests.testOnlyIndependentObserverCanPromoteNoOutputOutcome' passed (0.001 seconds)
+Test Suite 'RCIRUnitCompletionTests' passed at 2026-10-07 19:36:01.520
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.008 (0.008) seconds
+Test Suite 'RuntimeIdentityCompatibilityTests' started at 2026-10-07 19:36:01.520
+Test Case 'RuntimeIdentityCompatibilityTests.testActualInstalledCoreRuntimeIdentityRemainsDecodable' started at 2026-10-07 19:36:01.520
+Test Case 'RuntimeIdentityCompatibilityTests.testActualInstalledCoreRuntimeIdentityRemainsDecodable' passed (0.011 seconds)
+Test Case 'RuntimeIdentityCompatibilityTests.testCurrentRuntimeAdvertisesOnlyTheExistingCoreProfile' started at 2026-10-07 19:36:01.531
+Test Case 'RuntimeIdentityCompatibilityTests.testCurrentRuntimeAdvertisesOnlyTheExistingCoreProfile' passed (3.042 seconds)
+Test Suite 'RuntimeIdentityCompatibilityTests' passed at 2026-10-07 19:36:04.573
+	 Executed 2 tests, with 0 failures (0 unexpected) in 3.053 (3.053) seconds
+Test Suite 'ServiceOutcomeTests' started at 2026-10-07 19:36:04.576
+Test Case 'ServiceOutcomeTests.testChangedCounterWithoutDeclaredOutputIsNotVerification' started at 2026-10-07 19:36:04.576
+Test Case 'ServiceOutcomeTests.testChangedCounterWithoutDeclaredOutputIsNotVerification' passed (0.004 seconds)
+Test Case 'ServiceOutcomeTests.testEchoedInputWithChangedCounterIsNotSemanticProof' started at 2026-10-07 19:36:04.580
+Test Case 'ServiceOutcomeTests.testEchoedInputWithChangedCounterIsNotSemanticProof' passed (0.004 seconds)
+Test Case 'ServiceOutcomeTests.testExactPostconditionChecksEmptyUnicodeAndWhitespaceWithoutNormalization' started at 2026-10-07 19:36:04.584
+Test Case 'ServiceOutcomeTests.testExactPostconditionChecksEmptyUnicodeAndWhitespaceWithoutNormalization' passed (0.003 seconds)
+Test Case 'ServiceOutcomeTests.testRejectionAndDeadlineCannotSucceedOrLeakEchoedInput' started at 2026-10-07 19:36:04.586
+Test Case 'ServiceOutcomeTests.testRejectionAndDeadlineCannotSucceedOrLeakEchoedInput' passed (0.002 seconds)
+Test Case 'ServiceOutcomeTests.testReturnedOutputWithoutPostconditionIsNotSemanticSuccess' started at 2026-10-07 19:36:04.589
+Test Case 'ServiceOutcomeTests.testReturnedOutputWithoutPostconditionIsNotSemanticSuccess' passed (0.002 seconds)
+Test Case 'ServiceOutcomeTests.testUnchangedInputIsNotReturnedOrVerified' started at 2026-10-07 19:36:04.591
+Test Case 'ServiceOutcomeTests.testUnchangedInputIsNotReturnedOrVerified' passed (0.0 seconds)
+Test Suite 'ServiceOutcomeTests' passed at 2026-10-07 19:36:04.591
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.015 (0.015) seconds
+Test Suite 'SharingExecutionTests' started at 2026-10-07 19:36:04.591
+Test Case 'SharingExecutionTests.testDeadlineDoesNotOverrideATerminalCallback' started at 2026-10-07 19:36:04.591
+Test Case 'SharingExecutionTests.testDeadlineDoesNotOverrideATerminalCallback' passed (0.0 seconds)
+Test Case 'SharingExecutionTests.testDeadlineWithoutCallbackIsUnknown' started at 2026-10-07 19:36:04.591
+Test Case 'SharingExecutionTests.testDeadlineWithoutCallbackIsUnknown' passed (0.001 seconds)
+Test Case 'SharingExecutionTests.testDidFailToShareItemsFails' started at 2026-10-07 19:36:04.592
+Test Case 'SharingExecutionTests.testDidFailToShareItemsFails' passed (0.005 seconds)
+Test Case 'SharingExecutionTests.testDidShareItemsReportsAcceptanceWithoutIndependentOutcome' started at 2026-10-07 19:36:04.597
+Test Case 'SharingExecutionTests.testDidShareItemsReportsAcceptanceWithoutIndependentOutcome' passed (0.0 seconds)
+Test Case 'SharingExecutionTests.testPerformReturnWithoutCallbackStaysStarted' started at 2026-10-07 19:36:04.597
+Test Case 'SharingExecutionTests.testPerformReturnWithoutCallbackStaysStarted' passed (0.0 seconds)
+Test Case 'SharingExecutionTests.testWillShareItemsDoesNotFailTheExecution' started at 2026-10-07 19:36:04.597
+Test Case 'SharingExecutionTests.testWillShareItemsDoesNotFailTheExecution' passed (0.001 seconds)
+Test Suite 'SharingExecutionTests' passed at 2026-10-07 19:36:04.598
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.007 (0.007) seconds
+Test Suite 'UniversalReflectorContractTests' started at 2026-10-07 19:36:04.598
+Test Case 'UniversalReflectorContractTests.testEngineRoutesByReflectorOwnershipNotCapabilitySource' started at 2026-10-07 19:36:04.598
+Test Case 'UniversalReflectorContractTests.testEngineRoutesByReflectorOwnershipNotCapabilitySource' passed (0.014 seconds)
+Test Case 'UniversalReflectorContractTests.testGenericVerificationRemainsAboveReflectorBoundary' started at 2026-10-07 19:36:04.612
+Test Case 'UniversalReflectorContractTests.testGenericVerificationRemainsAboveReflectorBoundary' passed (0.007 seconds)
+Test Case 'UniversalReflectorContractTests.testRemovingReflectorRemovesCapability' started at 2026-10-07 19:36:04.618
+Test Case 'UniversalReflectorContractTests.testRemovingReflectorRemovesCapability' passed (0.015 seconds)
+Test Suite 'UniversalReflectorContractTests' passed at 2026-10-07 19:36:04.633
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.035 (0.035) seconds
+Test Suite 'WITComponentContractTests' started at 2026-10-07 19:36:04.633
+Test Case 'WITComponentContractTests.testActualTypedComponentWhenProvisioned' started at 2026-10-07 19:36:04.633
+Test Case 'WITComponentContractTests.testActualTypedComponentWhenProvisioned' passed (57.515 seconds)
+Test Case 'WITComponentContractTests.testCyclesUnknownKindsOutOfRangeReferencesAndAmbiguousFieldsFailClosed' started at 2026-10-07 19:37:02.149
+Test Case 'WITComponentContractTests.testCyclesUnknownKindsOutOfRangeReferencesAndAmbiguousFieldsFailClosed' passed (0.027 seconds)
+Test Case 'WITComponentContractTests.testDeclaredUnitRequiresExactUnitWriterFormAndCannotBecomeNullResult' started at 2026-10-07 19:37:02.176
+Test Case 'WITComponentContractTests.testDeclaredUnitRequiresExactUnitWriterFormAndCannotBecomeNullResult' passed (0.003 seconds)
+Test Case 'WITComponentContractTests.testDepthAndExpandedDAGRemainBoundedBeforeBuildingSchemas' started at 2026-10-07 19:37:02.178
+Test Case 'WITComponentContractTests.testDepthAndExpandedDAGRemainBoundedBeforeBuildingSchemas' passed (0.081 seconds)
+Test Case 'WITComponentContractTests.testExactWITIntegerWidthsRejectUnrepresentableDeclarationsAndWrongValues' started at 2026-10-07 19:37:02.259
+Test Case 'WITComponentContractTests.testExactWITIntegerWidthsRejectUnrepresentableDeclarationsAndWrongValues' passed (0.008 seconds)
+Test Case 'WITComponentContractTests.testImportsAsyncAndMalformedComponentShapeAbstain' started at 2026-10-07 19:37:02.267
+Test Case 'WITComponentContractTests.testImportsAsyncAndMalformedComponentShapeAbstain' passed (0.001 seconds)
+Test Case 'WITComponentContractTests.testQualifiedInterfaceVersionAndResolvedTypeCommitmentsAreExact' started at 2026-10-07 19:37:02.268
+Test Case 'WITComponentContractTests.testQualifiedInterfaceVersionAndResolvedTypeCommitmentsAreExact' passed (0.007 seconds)
+Test Case 'WITComponentContractTests.testTypedRecordsListsAndBooleanDoNotCoerceOrDiscardFields' started at 2026-10-07 19:37:02.275
+Test Case 'WITComponentContractTests.testTypedRecordsListsAndBooleanDoNotCoerceOrDiscardFields' passed (0.004 seconds)
+Test Case 'WITComponentContractTests.testWAVEStringEscapesPreserveExactUTF8IncludingNulAndUnicode' started at 2026-10-07 19:37:02.278
+Test Case 'WITComponentContractTests.testWAVEStringEscapesPreserveExactUTF8IncludingNulAndUnicode' passed (0.005 seconds)
+Test Suite 'WITComponentContractTests' passed at 2026-10-07 19:37:02.283
+	 Executed 9 tests, with 0 failures (0 unexpected) in 57.649 (57.649) seconds
+Test Suite 'debug.xctest' failed at 2026-10-07 19:37:02.284
+	 Executed 591 tests, with 26 tests skipped and 15 failures (0 unexpected) in 177.792 (177.792) seconds
+Test Suite 'All tests' failed at 2026-10-07 19:37:02.284
+	 Executed 591 tests, with 26 tests skipped and 15 failures (0 unexpected) in 177.792 (177.792) seconds
+◇ Test run started.
+↳ Testing Library Version: 6.2.4 (5ee435b15ad40ec)
+↳ Target Platform: aarch64-unknown-linux-gnu
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

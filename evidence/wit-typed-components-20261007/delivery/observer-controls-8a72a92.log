@@ -1,0 +1,42 @@
+warning: 'rightclick-wit-typed-20261007': found 4 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /private/tmp/rightclick-wit-typed-20261007/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /private/tmp/rightclick-wit-typed-20261007/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+    /private/tmp/rightclick-wit-typed-20261007/Tests/RightClickCoreTests/Fixtures/InstalledRuntime022Identity.json
+    /private/tmp/rightclick-wit-typed-20261007/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/12] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (31.94s)
+Test Suite 'Selected tests' started at 2026-10-07 20:43:59.061.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 20:43:59.063.
+Test Suite 'RCIRHTTPJSONObservationTests' started at 2026-10-07 20:43:59.063.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]' passed (0.724 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation]' passed (0.632 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testDefaultCredentialStorageCannotSupplyObserverAuthority]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testDefaultCredentialStorageCannotSupplyObserverAuthority]' passed (0.582 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]' passed (0.530 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead]' passed (0.481 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange]' passed (0.511 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest]' passed (0.575 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRedirectNeverSendsObserverCredentialToAnotherOrigin]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRedirectNeverSendsObserverCredentialToAnotherOrigin]' passed (0.572 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testWriterCredentialCannotActAsReadonlyObserver]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testWriterCredentialCannotActAsReadonlyObserver]' passed (0.615 seconds).
+Test Suite 'RCIRHTTPJSONObservationTests' passed at 2026-10-07 20:44:04.287.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 5.222 (5.224) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 20:44:04.287.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 5.222 (5.224) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 20:44:04.287.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 5.222 (5.226) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

@@ -53,6 +53,13 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
         self.argumentEncoding = argumentEncoding
         var indexed: [String: CapabilityInterfaceOperation] = [:]
         var capabilities: [String: Capability] = [:]
+        let encodingGuidance: String
+        switch argumentEncoding {
+        case .literalStrings:
+            encodingGuidance = "Pass a JSON object keyed by argument name; each argument value is a literal string."
+        case .taggedNonStrings:
+            encodingGuidance = #"Pass a JSON object keyed by argument name. String fields stay literal strings. For each non-string field, pass a JSON string containing CapabilityValue tagged JSON: ["boolean",true], ["integer","-7"], ["number","3ff0000000000000"] (IEEE-754 binary64 bits in hex), ["bytes","BASE64"], ["null"], ["array",[value,...]], or ["object",[["field",value],...]]. Inside containers, strings are ["string","text"]. Integers are exact decimal strings and must satisfy the acquired declaration's domain."#
+        }
         for operation in operations {
             guard !operation.name.isEmpty, operation.name.utf8.count <= 256,
                   operation.name.rangeOfCharacter(from: .controlCharacters) == nil else { throw CapabilityABIError.invalidIdentity }
@@ -63,6 +70,9 @@ public final class CapabilityInterfaceReflector: RCIRExecutionReflector {
                             "descriptorSHA256": descriptorDigest, "descriptorSource": target.absoluteString,
                             "operationName": operation.name, "executionMode": "unary",
                             "coreArgumentEncoding": argumentEncoding.rawValue,
+                            "coreArgumentEncodingGuidance": encodingGuidance,
+                            "interfaceDeclarationEncoding": "CapabilityValue tagged JSON",
+                            "interfaceDeclaration": String(decoding: try operation.declaration.wireData(), as: UTF8.self),
                             "effect": operation.effect.rawValue,
                             "argumentSchema": try operation.arguments.canonicalData().base64EncodedString(),
                             "resultSchema": try operation.result.canonicalData().base64EncodedString(),

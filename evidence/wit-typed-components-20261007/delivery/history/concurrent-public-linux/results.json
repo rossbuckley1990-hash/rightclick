@@ -1,0 +1,93 @@
+{
+  "sourceSHA": "8a72a92763ac618ed38beecf530d56fa92cf6316",
+  "binarySHA256": "17b1e98fd34891d3771feef80c5b58ef146d070a592649f7fe0b12d0be49e483",
+  "componentSHA256": "98dc973dfd0cf49bae3c50358abfe7badf58e819400c2dbaf9c1dfc18d5467c5",
+  "toolsSHA256": "b70db2712eea56102939d60822e6d830e8c739ad35d6783955bfa916bbc7e497",
+  "runtimeSHA256": "776cf37c495c70ee22144ff4c881bd18c1997edcb7a226dcc4583fd19cefc492",
+  "receiptVerifierSHA256": "982fac8dfb1ef87d6703fe8e88fe970fe00f73624a14fd512424495d7ee47fef",
+  "receiptReports": {},
+  "expectedActions": [
+    "wasm:typed-component:proof:typed/api.challenge-record",
+    "wasm:typed-component:proof:typed/api.echo-octets",
+    "wasm:typed-component:proof:typed/api.finish"
+  ],
+  "boundary": "Actual typed component/public seven-operation engineering proof; no fresh-AI or portable-release claim.",
+  "toolCountBefore": 7,
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/proof/final-binaries/linux/rightclick",
+    "executableRealPath": "/proof/final-binaries/linux/rightclick",
+    "executableSHA256": "17b1e98fd34891d3771feef80c5b58ef146d070a592649f7fe0b12d0be49e483",
+    "pid": 10,
+    "platform": "Linux",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "absentBeforeIntroduction": true,
+  "actualTypedActions": [
+    "wasm:typed-component:proof:typed/api.challenge-record",
+    "wasm:typed-component:proof:typed/api.echo-octets",
+    "wasm:typed-component:proof:typed/api.finish"
+  ],
+  "recordContract": {
+    "id": "wasm:typed-component:proof:typed/api.challenge-record",
+    "inputs": [
+      "text"
+    ],
+    "invocation": "direct",
+    "metadata": {
+      "acquisitionRuntimeSHA256": "b70db2712eea56102939d60822e6d830e8c739ad35d6783955bfa916bbc7e497",
+      "argumentNames": "request",
+      "argumentSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czc6cmVxdWVzdG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzM6czk6Y2hhbGxlbmdlczY6c3RyaW5nczc6ZW5hYmxlZHM3OmJvb2xlYW5zNjpvZmZzZXRvMTpzMTI6aW50ZWdlclJhbmdlbzI6czc6bWF4aW11bWkxMDoyMTQ3NDgzNjQ3czc6bWluaW11bWkxMTotMjE0NzQ4MzY0OHM4OnJlcXVpcmVkYTM6czk6Y2hhbGxlbmdlczc6ZW5hYmxlZHM2Om9mZnNldHM4OnJlcXVpcmVkYTE6czc6cmVxdWVzdA==",
+      "authorityScope": "exact component/export; no host filesystem, network or environment imports",
+      "componentSHA256": "98dc973dfd0cf49bae3c50358abfe7badf58e819400c2dbaf9c1dfc18d5467c5",
+      "coreArgumentEncoding": "taggedNonStrings",
+      "coreArgumentEncodingGuidance": "Pass a JSON object keyed by argument name. String fields stay literal strings. For each non-string field, pass a JSON string containing CapabilityValue tagged JSON: [\"boolean\",true], [\"integer\",\"-7\"], [\"number\",\"3ff0000000000000\"] (IEEE-754 binary64 bits in hex), [\"bytes\",\"BASE64\"], [\"null\"], [\"array\",[value,...]], or [\"object\",[[\"field\",value],...]]. Inside containers, strings are [\"string\",\"text\"]. Integers are exact decimal strings and must satisfy the acquired declaration's domain.",
+      "descriptorSHA256": "b64029b54be3a0616d37436644faacd25da1fab5a652943e8f6803ab1aef402e",
+      "descriptorSource": "file:///private/tmp/rightclick-wit-typed-awiqzbgn/introduced.component.wasm",
+      "effect": "execute",
+      "executionArtifactBinding": "host-private lifetime-managed read-only component/tools/runtime snapshots",
+      "executionMode": "unary",
+      "hostImports": "none",
+      "interfaceDeclaration": "[\"object\",[[\"export\",[\"string\",\"proof:typed/api.challenge-record\"]],[\"function\",[\"object\",[[\"kind\",[\"string\",\"freestanding\"]],[\"name\",[\"string\",\"challenge-record\"]],[\"params\",[\"array\",[[\"object\",[[\"name\",[\"string\",\"request\"]],[\"type\",[\"integer\",\"0\"]]]]]]],[\"result\",[\"integer\",\"1\"]]]]],[\"types\",[\"array\",[[\"object\",[[\"id\",[\"integer\",\"0\"]],[\"type\",[\"object\",[[\"kind\",[\"object\",[[\"record\",[\"object\",[[\"fields\",[\"array\",[[\"object\",[[\"name\",[\"string\",\"enabled\"]],[\"type\",[\"string\",\"bool\"]]]],[\"object\",[[\"name\",[\"string\",\"offset\"]],[\"type\",[\"string\",\"s32\"]]]],[\"object\",[[\"name\",[\"string\",\"challenge\"]],[\"type\",[\"string\",\"string\"]]]]]]]]]]]]],[\"name\",[\"string\",\"request\"]],[\"owner\",[\"object\",[[\"interface\",[\"integer\",\"0\"]]]]]]]]]],[\"object\",[[\"id\",[\"integer\",\"1\"]],[\"type\",[\"object\",[[\"kind\",[\"object\",[[\"record\",[\"object\",[[\"fields\",[\"array\",[[\"object\",[[\"name\",[\"string\",\"fingerprint\"]],[\"type\",[\"string\",\"u32\"]]]],[\"object\",[[\"name\",[\"string\",\"enabled\"]],[\"type\",[\"string\",\"bool\"]]]]]]]]]]]]],[\"name\",[\"string\",\"response\"]],[\"owner\",[\"object\",[[\"interface\",[\"integer\",\"0\"]]]]]]]]]]]]]]]",
+      "interfaceDeclarationEncoding": "CapabilityValue tagged JSON",
+      "interfaceKind": "wasm",
+      "operationName": "proof:typed/api.challenge-record",
+      "providerIdentity": "typed-component",
+      "requiredArguments": "request",
+      "resultSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzI6czc6ZW5hYmxlZHM3OmJvb2xlYW5zMTE6ZmluZ2VycHJpbnRvMTpzMTI6aW50ZWdlclJhbmdlbzI6czc6bWF4aW11bWkxMDo0Mjk0OTY3Mjk1czc6bWluaW11bWkxOjBzODpyZXF1aXJlZGEyOnM3OmVuYWJsZWRzMTE6ZmluZ2VycHJpbnQ=",
+      "runtimeExecutable": "/tools/wasmtime-v49.0.2-aarch64-linux/wasmtime",
+      "runtimeSHA256": "776cf37c495c70ee22144ff4c881bd18c1997edcb7a226dcc4583fd19cefc492",
+      "verificationBoundary": "Provider completion is unverified until the host establishes a postcondition."
+    },
+    "output": [
+      "typed_value"
+    ],
+    "provider": {
+      "name": "typed-component"
+    },
+    "reflectorID": "wasm:typed-component",
+    "requiresConfirmation": true,
+    "safety": "unknown",
+    "source": "system",
+    "supportLevel": "public_supported",
+    "title": "proof:typed/api.challenge-record"
+  },
+  "result": "RED",
+  "failure": "tools/call"
+}

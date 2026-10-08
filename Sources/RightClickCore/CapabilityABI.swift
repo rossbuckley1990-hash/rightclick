@@ -204,6 +204,9 @@ public indirect enum CapabilityValue: Sendable, Codable {
 /// Unknown constraints must be rejected by an importing compiler, never discarded.
 public indirect enum CapabilitySchema: Sendable {
     case null, boolean, integer, number, string, bytes
+    /// An exact inclusive domain for typed protocols with narrower integers.
+    /// Values still use the existing lossless Int64 representation.
+    case integerRange(minimum: Int64, maximum: Int64)
     /// Compiler-declared absence of a returned value, distinct from JSON null
     /// and from an unknown result schema. Completion cannot supply typed bytes.
     case unit
@@ -225,6 +228,9 @@ public indirect enum CapabilitySchema: Sendable {
         case .null: return .string("null")
         case .boolean: return .string("boolean")
         case .integer: return .string("integer")
+        case let .integerRange(minimum, maximum):
+            guard minimum <= maximum else { throw CapabilityABIError.invalidSchema }
+            return .object(["integerRange": .object(["minimum": .integer(minimum), "maximum": .integer(maximum)])])
         case .number: return .string("number")
         case .string: return .string("string")
         case .bytes: return .string("bytes")
@@ -269,6 +275,8 @@ public indirect enum CapabilitySchema: Sendable {
              (.number, .number), (.string, .string), (.bytes, .bytes): return
         case let (.stringEnum(choices), .string(text)):
             guard choices.contains(where: { $0.utf8.elementsEqual(text.utf8) }) else { throw CapabilityABIError.schemaMismatch }
+        case let (.integerRange(minimum, maximum), .integer(value)):
+            guard value >= minimum, value <= maximum else { throw CapabilityABIError.schemaMismatch }
         case let (.constrainedString(minimum, maximum, ascii, enumeration), .string(text)):
             let length = text.unicodeScalars.count
             let allowedBytes = ascii.map { Set($0.utf8) }

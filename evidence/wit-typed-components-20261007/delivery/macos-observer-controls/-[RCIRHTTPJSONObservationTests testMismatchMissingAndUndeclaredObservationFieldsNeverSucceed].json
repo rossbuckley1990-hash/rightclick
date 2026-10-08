@@ -1,0 +1,47 @@
+{
+  "contract" : "structured-projection",
+  "effects" : [
+    {
+      "challenge" : "BD8E0128-8B92-4116-8C30-6CD7B0A4B2C3",
+      "invocationID" : "8CA6868B-94B8-440A-A337-D4E7471EDF1C",
+      "mutationApplied" : true,
+      "value" : "mismatch"
+    },
+    {
+      "challenge" : "01A16310-627A-4AC4-ADF2-E68CB06795EC",
+      "invocationID" : "D2E9B0C0-379F-48E3-928F-F9E2E3DCF513",
+      "mutationApplied" : false,
+      "value" : "missing"
+    },
+    {
+      "challenge" : "extra",
+      "invocationID" : "A3ACC207-4752-4D48-A9FD-EF0CE80DEE3B",
+      "mutationApplied" : true,
+      "value" : "actual independent file"
+    }
+  ],
+  "observations" : [
+    {
+      "authorizationKind" : "Bearer",
+      "cookiePresent" : false,
+      "credentialRole" : "readonly",
+      "path" : "\/observations\/BD8E0128-8B92-4116-8C30-6CD7B0A4B2C3"
+    },
+    {
+      "authorizationKind" : "Bearer",
+      "cookiePresent" : false,
+      "credentialRole" : "readonly",
+      "path" : "\/observations\/01A16310-627A-4AC4-ADF2-E68CB06795EC"
+    },
+    {
+      "authorizationKind" : "Bearer",
+      "cookiePresent" : false,
+      "credentialRole" : "readonly",
+      "path" : "\/observations\/extra"
+    }
+  ],
+  "redirectTrap" : [
+
+  ],
+  "test" : "-[RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]"
+}

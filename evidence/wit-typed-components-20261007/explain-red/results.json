@@ -1,0 +1,77 @@
+{
+  "sourceSHA": "7f82de2a78570c3de510552df5eb89b2688d524d",
+  "binarySHA256": "556a79749d296cc2d3c473d7cd4c21de45ba8c278300f8c579865c76fb7e9c49",
+  "componentSHA256": "98dc973dfd0cf49bae3c50358abfe7badf58e819400c2dbaf9c1dfc18d5467c5",
+  "toolsSHA256": "ff29dc363d36c390ff0ef0f889f1234ef5f236590042a4b9c688de24e6a646de",
+  "runtimeSHA256": "4408e44af098f7581366b0396088924d7e181720b9309574b4c30bac1c86b6dc",
+  "boundary": "Actual context_explain engineering control; no fresh-AI/all-world/release claim.",
+  "toolCount": 7,
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-wasm-wit-audit-20261007/metadata-baseline-7f82de2/rightclick",
+    "executableRealPath": "/tmp/rightclick-wasm-wit-audit-20261007/metadata-baseline-7f82de2/rightclick",
+    "executableSHA256": "556a79749d296cc2d3c473d7cd4c21de45ba8c278300f8c579865c76fb7e9c49",
+    "pid": 4516,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "explanation": {
+    "id": "wasm:explain-component:proof:typed/api.challenge-record",
+    "inputs": [
+      "text"
+    ],
+    "invocation": "direct",
+    "metadata": {
+      "acquisitionRuntimeSHA256": "ff29dc363d36c390ff0ef0f889f1234ef5f236590042a4b9c688de24e6a646de",
+      "argumentNames": "request",
+      "argumentSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czc6cmVxdWVzdG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzM6czk6Y2hhbGxlbmdlczY6c3RyaW5nczc6ZW5hYmxlZHM3OmJvb2xlYW5zNjpvZmZzZXRvMTpzMTI6aW50ZWdlclJhbmdlbzI6czc6bWF4aW11bWkxMDoyMTQ3NDgzNjQ3czc6bWluaW11bWkxMTotMjE0NzQ4MzY0OHM4OnJlcXVpcmVkYTM6czk6Y2hhbGxlbmdlczc6ZW5hYmxlZHM2Om9mZnNldHM4OnJlcXVpcmVkYTE6czc6cmVxdWVzdA==",
+      "authorityScope": "exact component/export; no host filesystem, network or environment imports",
+      "componentSHA256": "98dc973dfd0cf49bae3c50358abfe7badf58e819400c2dbaf9c1dfc18d5467c5",
+      "coreArgumentEncoding": "taggedNonStrings",
+      "descriptorSHA256": "b64029b54be3a0616d37436644faacd25da1fab5a652943e8f6803ab1aef402e",
+      "descriptorSource": "file:///private/tmp/rightclick-wit-explain-1jlaiwmq/introduced.component.wasm",
+      "effect": "execute",
+      "executionArtifactBinding": "host-private lifetime-managed read-only component/tools/runtime snapshots",
+      "executionMode": "unary",
+      "hostImports": "none",
+      "interfaceKind": "wasm",
+      "operationName": "proof:typed/api.challenge-record",
+      "providerIdentity": "explain-component",
+      "requiredArguments": "request",
+      "resultSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzI6czc6ZW5hYmxlZHM3OmJvb2xlYW5zMTE6ZmluZ2VycHJpbnRvMTpzMTI6aW50ZWdlclJhbmdlbzI6czc6bWF4aW11bWkxMDo0Mjk0OTY3Mjk1czc6bWluaW11bWkxOjBzODpyZXF1aXJlZGEyOnM3OmVuYWJsZWRzMTE6ZmluZ2VycHJpbnQ=",
+      "runtimeExecutable": "/private/tmp/rightclick-wasm-toolchain/wasmtime-v49.0.2-aarch64-macos/wasmtime",
+      "runtimeSHA256": "4408e44af098f7581366b0396088924d7e181720b9309574b4c30bac1c86b6dc",
+      "verificationBoundary": "Provider completion is unverified until the host establishes a postcondition."
+    },
+    "output": [
+      "typed_value"
+    ],
+    "provider": {
+      "name": "explain-component"
+    },
+    "reflectorID": "wasm:explain-component",
+    "requiresConfirmation": true,
+    "safety": "unknown",
+    "source": "system",
+    "supportLevel": "public_supported",
+    "title": "proof:typed/api.challenge-record"
+  },
+  "result": "RED",
+  "failure": "'interfaceDeclarationEncoding'"
+}

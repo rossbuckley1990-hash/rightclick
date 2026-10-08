@@ -1,0 +1,11 @@
+RED: tools/call
+Traceback (most recent call last):
+  File "/private/tmp/rightclick-wit-typed-20261007/scripts/acceptance-wit-typed.py", line 197, in <module>
+    list_result = run(list_id, {"octets": wire(octets)}, json.dumps(octets, separators=(",", ":")))
+  File "/private/tmp/rightclick-wit-typed-20261007/scripts/acceptance-wit-typed.py", line 142, in run
+    return call("context_run", request, allow_error)
+  File "/private/tmp/rightclick-wit-typed-20261007/scripts/acceptance-wit-typed.py", line 107, in call
+    result = rpc("tools/call", {"name": name, "arguments": arguments})
+  File "/private/tmp/rightclick-wit-typed-20261007/scripts/acceptance-wit-typed.py", line 103, in rpc
+    raise TimeoutError(method)
+TimeoutError: tools/call
