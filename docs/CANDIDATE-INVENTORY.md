@@ -5,14 +5,15 @@ binary and an observed execution establish different facts. Record each identity
 before describing a capability as available. This inventory is not the eleven
 substrate acceptance scorecard.
 
-Reconciliation snapshot on 2026-10-08, after the final composed Mac gate and before native Linux/public distribution gates:
+Reconciliation snapshot on 2026-10-08, after the first exact-source CI wave exposed portable build and owned fixture failures; the reviewed repair candidate awaits fresh CI and public distribution gates:
 
 | Identity | Exact scope |
 | --- | --- |
 | Remote main | `381a87b53dbd0046f1acef1984587199da0e630c`; the direct A2A, Kafka, Kubernetes, WASM and D-Bus compiler files below are absent at this SHA |
-| Remote universal candidate | [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49), `2525794c390d19d54871f1a9695462425fc13051`; implemented compiler paths and native proofs use the older Core layout |
+| Remote universal candidate | [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49), `045d4940f52d39768d2c691e04b659716e08f128`; the reviewed portable composition is published. Its first native CI wave exposed the stale Linux process callsite, Swift 6.2 manifest inference and protected-reference fixture parent aliases |
 | Remote portable candidate | [PR99](https://github.com/rossbuckley1990-hash/rightclick/pull/99), `6a18aaae3ae3a15b9f6c78f189adc695ae11585a`; extracts the existing engine into portable modules, with macOS adapters and Linux composition |
-| Reviewed reconciled code | `fe10f424e5584cd3e2c6a5cf1fcc9eacdb0ecc48`, Sources `6c624ad4503999360938fa0c8c083010f9fad7c0`, Tests `2371a0d45ef2f4c4d14dc555cd065b839f9d2dd2`; includes the frozen403 foundation and all reviewed profile/process/authority/fixture repairs. Its complete Mac run is1107:1076PASS/31SKIP/0FAIL; native Linux and distribution acceptance remain pending |
+| Reviewed repair composition | `76a3852e52d28540cccbf7ff32a00965c0b5b0a5`, Sources `1122145c99f43fefa859643632c839b7156e0bfa`, Tests `2371a0d45ef2f4c4d14dc555cd065b839f9d2dd2`; retains the frozen403 foundation, all profile/process/authority repairs and 045 ancestry. The typed manifest, one thin Linux initializer label and ten owned producer parent resolutions are independently reviewed. Fresh native and provider CI remains required |
+| Earlier composed Mac proof | `fe10f424e5584cd3e2c6a5cf1fcc9eacdb0ecc48`, Sources `6c624ad4503999360938fa0c8c083010f9fad7c0`, same Tests tree; actual complete Mac run 1107 = 1076 PASS, 31 SKIP, zero FAIL. This is a preserved source-bound result, not a claim that the newly composed manifest/Linux/script bytes were tested |
 | Installed and connected stable runtime | v0.2.2, serving PID `67552`, executable SHA256 `d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d`, stdio; observed through `context_runtime` on 2026-10-08. This does not attest to candidate source |
 
 These remote and process values are snapshots. Refresh main, both PR heads,
@@ -57,6 +58,18 @@ The independent full Mac audit is SHA256
 Fresh native Linux x86_64/arm64 and provider lifecycle, authority, verification
 and receipt gates remain pending. Valid-trust HTTPS bearer/redirect acceptance
 remains RED; the new invalid-certificate negative is a separate passing control.
+
+
+The first 045 CI failures are retained: native Linux builds failed before tests at
+the obsolete `CapabilityExecutableProcess(source:)` initializer label, and Swift
+6.2 ARD gates failed while type-checking the manifest. The reviewed fixes preserve
+the shared API and original product/dependency/target expressions. The protected
+reference backend correctly rejected owned fixture files beneath lexical temporary
+aliases. Four unchanged-binary controls (A2A, OpenAPI, live schema refresh and
+portable Core7) each measured fail → pass → fail when only the producer-owned
+parent was resolved before provisioning. Untrusted authority references and every
+other assertion remain unchanged. These controlled positives do not establish
+fresh native Linux, current CI or installed distribution acceptance.
 
 Windows is not a supported v0.2.3 release host. Actual protected-reference and
 native environment-boundary controls have been run, and authority failures were
