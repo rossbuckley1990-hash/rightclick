@@ -20,7 +20,7 @@ CERT_SHA = "1f10ec5ff26b0ef1fbb91248ac954cf15757e8782101f90abe05a171af58bf9d"
 BASELINE_SHA = "469aa3ffc281dba40691650a7ed13b5117f99512e857bc4c4421269d1d8d6df6"
 INPUTS = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests",
           "Vendor", "fixtures", "packaging", "scripts"]
-FILTER = "InvocationBindingTests|CapabilityExecutableSnapshotPoolTests|RCIRReceiptTrustGapTests"
+FILTER = r"^RightClickCoreTests\.(?:InvocationBindingTests|CapabilityExecutableSnapshotPoolTests|RCIRReceiptTrustGapTests)/"
 EXPORTS = ["runtime-records.json", "requested-policy-matrix.json", "trust-results.json",
            "key-0-public.raw", "key-1-public.raw", "requests.jsonl", "effects.jsonl",
            "observations.jsonl", "polls.jsonl"]

@@ -4,6 +4,7 @@ import contextlib
 import io
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -58,6 +59,14 @@ class CollectorTests(unittest.TestCase):
         for bad in [[{}, 'a'], ['RightClickCoreTests.A/testA'] * 2]:
             with self.assertRaises(ValueError):
                 d.checked_names(bad, 2)
+
+    def test_filter_selects_exact_ten_and_rejects_similar_class_names(self):
+        self.assertEqual({name for name in BASELINE if re.search(d.FILTER, name)}, EXPECTED)
+        similar = 'RightClickCoreTests.RCIRInvocationBindingTests/testOnlyHostTaskIdentityCanVerifyMatchingObservation'
+        self.assertIn(similar, BASELINE)
+        self.assertIsNone(re.search(d.FILTER, similar))
+        self.assertIsNone(re.search(d.FILTER,
+            'RightClickCoreTests.UnrelatedInvocationBindingTests/testExtra'))
 
     def test_complete_ten_and_failure_are_distinct(self):
         result = d.execution(log(), EXPECTED)

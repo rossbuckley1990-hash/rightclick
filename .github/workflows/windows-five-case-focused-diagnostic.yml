@@ -32,6 +32,22 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -u .github/scripts/tests/test_windows_focused_fixture_diagnostic.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -u .github/scripts/tests/test_windows_installer_context_probe.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Read-only installed query context A/B control
+        timeout-minutes: 2
+        run: |
+          python -u .github/scripts/windows_test_supervisor.py --prefix installer-context-safe/owned-probe --deadline-seconds 45 --progress -- python -u .github/scripts/windows_installer_context_probe.py --output installer-context-safe/installer-context.json
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: windows-installer-context-read-only-${{ github.sha }}
+          path: |
+            installer-context-safe/installer-context.json
+            installer-context-safe/owned-probe-phase.json
+          if-no-files-found: error
+          retention-days: 14
       - name: Exact source and all-name guard, then selected ten tests
         # Contain the owned20/5/10minute phase deadlines and encryption cleanup.
         timeout-minutes: 45
