@@ -69,4 +69,26 @@ final class ServiceRTFUnicodeTests: XCTestCase {
         XCTAssertTrue(ServiceCatalog.prepareWebURLPasteboard(board, url: url, declaredSendTypes: ["public.rtf"]))
         XCTAssertEqual(try decode(XCTUnwrap(board.data(forType: .rtf))), url)
     }
+
+    func testSeededMixedUnicodeRoundTrips() throws {
+        let pieces = [
+            "A", "z", "0", " ", "{", "}", "\\", "\u{00e9}",
+            "e\u{0301}", "\u{1f680}", "\u{1f600}", "\u{20000}",
+            "\u{4e2d}", "\u{6587}", "\u{03a9}", "\u{05e9}",
+            "\u{0645}", "\u{0930}", "\u{20ac}", "\u{00a3}",
+            "\u{ff32}", "\u{ff23}", "\u{00a0}", "\u{202f}"
+        ]
+        var state: UInt64 = 20261008
+        for index in 0..<512 {
+            var text = ""
+            for _ in 0..<(1 + index % 64) {
+                state = state &* 6364136223846793005 &+ 1442695040888963407
+                text += pieces[Int(state % UInt64(pieces.count))]
+            }
+            let data = ServiceRTFEncoder.encode(text)
+            XCTAssertEqual(data, ServiceRTFEncoder.encode(text), "non-deterministic vector \(index)")
+            XCTAssertTrue(data.allSatisfy { $0 < 128 })
+            XCTAssertEqual(Array(try decode(data).utf16), Array(text.utf16), "seeded vector \(index)")
+        }
+    }
 }
