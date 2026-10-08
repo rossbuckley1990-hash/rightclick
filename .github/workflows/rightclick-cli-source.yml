@@ -1,0 +1,40 @@
+name: RIGHTCLICK CLI source evidence
+
+on:
+  push:
+    branches:
+      - rightclick-readonly-web-provider
+
+permissions:
+  contents: write
+
+jobs:
+  emit:
+    if: ${{ startsWith(github.event.head_commit.message, 'Emit RIGHTCLICK CLI source') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Emit bounded source
+        shell: bash
+        run: |
+          git config user.name "rightclick-evidence"
+          git config user.email "rightclick-evidence@users.noreply.github.com"
+          python3 - <<'PY'
+          import subprocess
+          files=[
+            "Sources/RightClickCLI/ProviderConfigurationCLI.swift",
+            "Sources/RightClickCore/CapabilityRuntimeDefaults.swift",
+            "Tests/RightClickCLITests/ProviderConfigurationCLITests.swift",
+          ]
+          for p in files:
+              text=open(p,encoding="utf-8",errors="replace").read()
+              size=6200
+              chunks=[text[i:i+size] for i in range(0,len(text),size)]
+              for idx,ch in enumerate(chunks,1):
+                  msg=f"RIGHTCLICK_CLI_SOURCE\nPATH={p}\nCHUNK={idx}/{len(chunks)}\n"+ch
+                  open("/tmp/msg.txt","w").write(msg[:7600])
+                  subprocess.run(["git","commit","--allow-empty","-F","/tmp/msg.txt"],check=True)
+          PY
+          git push origin HEAD:rightclick-readonly-web-provider

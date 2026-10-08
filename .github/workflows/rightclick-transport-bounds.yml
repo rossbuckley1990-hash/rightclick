@@ -1,0 +1,26 @@
+name: RIGHTCLICK transport bounds evidence
+on:
+  push:
+    branches: [rightclick-readonly-web-provider]
+permissions:
+  contents: write
+jobs:
+  emit:
+    if: ${{ startsWith(github.event.head_commit.message, 'Emit RIGHTCLICK transport bounds') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - shell: bash
+        run: |
+          git config user.name "rightclick-evidence"
+          git config user.email "rightclick-evidence@users.noreply.github.com"
+          {
+            echo RIGHTCLICK_TRANSPORT_BOUNDS
+            sed -n '1045,1255p' Sources/RightClickCore/OpenAPIReflector.swift
+            echo ORIGIN_PINNED_CONSTANTS
+            grep -nE 'maximum|timeout|resourceTimeout|requestTimeout|bytes|data.count|redirect' Sources/RightClickCore/OriginPinnedHTTP.swift
+          } > /tmp/msg.txt
+          head -c 14000 /tmp/msg.txt > /tmp/bounded.txt
+          git commit --allow-empty -F /tmp/bounded.txt
+          git push origin HEAD:rightclick-readonly-web-provider

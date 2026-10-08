@@ -1,0 +1,29 @@
+name: RIGHTCLICK provider CLI map
+
+on:
+  push:
+    branches:
+      - rightclick-readonly-web-provider
+
+permissions:
+  contents: write
+
+jobs:
+  map:
+    if: ${{ startsWith(github.event.head_commit.message, 'Add RIGHTCLICK provider CLI map') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Map provider management
+        shell: bash
+        run: |
+          git config user.name "rightclick-evidence"
+          git config user.email "rightclick-evidence@users.noreply.github.com"
+          {
+            echo "RIGHTCLICK_PROVIDER_MAP"
+            grep -RInE "ConfiguredOpenAPIProviderStore|ConfiguredOpenAPISource|providers\.json|authorityScheme|openapi.*(add|remove|provider)|provider.*openapi" Sources Tests README.md Package.swift 2>/dev/null | head -n 260
+          } > /tmp/map.txt
+          git commit --allow-empty -F /tmp/map.txt
+          git push origin HEAD:rightclick-readonly-web-provider
