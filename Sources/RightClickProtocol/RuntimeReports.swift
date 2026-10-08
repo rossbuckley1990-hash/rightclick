@@ -20,6 +20,9 @@ public struct ProviderSummary: Codable, Sendable {
 }
 
 public struct DoctorReport: Codable, Sendable {
+    /// Derived from the current host; not an attestation of a remote report.
+    public var platform: String { RuntimePlatform.name }
+
     public var macosVersion: String
     public var macosBuild: String
     public var sharingDiscovery: String
