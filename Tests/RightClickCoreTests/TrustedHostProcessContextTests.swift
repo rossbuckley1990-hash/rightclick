@@ -102,7 +102,12 @@ final class TrustedHostProcessContextTests: XCTestCase {
     func testActualFoundationChildEnvironmentOmitsCanaryAndScopesOnlyExplicitSearchRole() throws {
         let key = "RIGHTCLICK_TEST_HOST_CONTEXT_SENTINEL"
         let name = Array(key.utf16) + [0]
-        let original = try? fixedHostValue(key)
+        // A test-owned fixed sentinel must be absent before mutation. Never
+        // read, replace or erase a preexisting caller's value under this key.
+        let absent = name.withUnsafeBufferPointer {
+            GetEnvironmentVariableW($0.baseAddress, nil, 0) == 0 && GetLastError() == DWORD(ERROR_ENVVAR_NOT_FOUND)
+        }
+        guard absent else { throw RCIRError.unavailable }
         func set(_ value: String?) throws {
             let okay = name.withUnsafeBufferPointer { key -> Bool in
                 if let value {
@@ -114,8 +119,9 @@ final class TrustedHostProcessContextTests: XCTestCase {
             guard okay else { throw RCIRError.unavailable }
         }
         try set("rightclick-private-context-control")
-        defer { try? set(original) }
+        defer { try? set(nil) }
         let executable = try NativeHTTPFixture.python()
+        let frozenExecutable = try CapabilityArtifactSnapshot.read(source: executable, maximum: 8_388_608)
         let script = "import json,os; print(json.dumps({'canaryPresent':'RIGHTCLICK_TEST_HOST_CONTEXT_SENTINEL' in os.environ,'pathPresent':'PATH' in os.environ,'machineDataPresent':'ProgramData' in os.environ,'systemRootPresent':'SystemRoot' in os.environ,'tempPresent':'TEMP' in os.environ,'tmpPresent':'TMP' in os.environ},sort_keys=True))"
         let arguments = ["-I", "-S", "-c", script]
         let frozenArguments = arguments.map { Array($0.utf16) }
@@ -135,6 +141,7 @@ final class TrustedHostProcessContextTests: XCTestCase {
         XCTAssertTrue(measured.allSatisfy { $0["canaryPresent"] == false && $0["machineDataPresent"] == false && $0["systemRootPresent"] == true && $0["tempPresent"] == true && $0["tmpPresent"] == true })
         XCTAssertEqual(reports.count, 3)
         XCTAssertTrue(reports.allSatisfy { $0.started && $0.outcome == .completed && $0.terminationStatus == 0 && $0.stdoutBytes <= 512 })
+        XCTAssertTrue(frozenExecutable == (try CapabilityArtifactSnapshot.read(source: executable, maximum: 8_388_608)))
     }
 
     /// Exercise actual Foundation/BPC; Python's Windows argv renderer is not
