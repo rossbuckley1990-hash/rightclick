@@ -160,11 +160,28 @@ channel. The host and caller both connect outbound. Each exchange is attempted
 once; reconnect creates a fresh authenticated session and never retries an
 uncertain consequential request automatically.
 
+Authenticated re-enrollment of the same pinned client after temporary transport
+loss retains existing execution owners. Explicit removal creates a new
+enrollment generation and old owners remain invalid. Discovery and status have
+a separate durable expiry-scoped replay window; they do not consume permanent
+execution reservations. Ledger v2 preserves every historical v1 consequential
+and observation entry already in permanent history and denies unsupported
+downgrades rather than discarding that history.
+
 This is an opt-in embedding transport with a dedicated acceptance executable,
 not automated production enrollment. Internet deployment still needs operator
 pairing, revocation and approval interfaces, service supervision and availability
 controls. It does not claim a TLS implementation or a deployed cross-machine
 service. The normal CLI has no network-Link startup or enrollment command.
+
+The genuine two-machine acceptance is gated on an owner-supplied independent
+Ubuntu 24.04 x86_64 SSH host. Another process, local VM/container or tunnel back
+to the caller is not a substitute. The current strict freshness checks assume
+closely synchronized clocks; signed hello expiry and request admission can deny
+authentic traffic under clock skew. Record offset during host preflight and keep
+the checks intact. The proof fixture's short live duration and once-only
+connection/enrollment are also acceptance composition limits: existing library
+reconnect tests do not establish automatic proof-executable reconnection.
 
 Request v1 authenticates exact canonical bytes with Ed25519, domain separation,
 caller, target runtime/device, unique request ID, 32-byte nonce, bounded 60-second

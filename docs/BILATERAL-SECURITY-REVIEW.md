@@ -78,12 +78,46 @@ The encrypted transport authenticates the pinned target's signed ephemeral X2551
 
 The broker can deny availability, observe routing identities and timing, drop or delay messages, or exhaust bounded handshake capacity until expiry. These powers do not authorize an operation or change authenticated evidence. Public relay operation, rate limiting, and a broader transport interoperability audit remain future work. The proof uses two genuine isolated RIGHTCLICK processes on one host; it is not evidence of two physical machines, a Linux deployment, or Windows runtime support. The coordinator must report Linux and macOS matrix results separately.
 
-Polling is implemented; push subscriptions are not required and no eighth MCP operation is added. The observation replay cache is bounded and expiry-scoped; durable executable reservations are never automatically evicted, and unresolved restart reservations remain UNKNOWN. Capacity exhaustion denies further work rather than resetting history. There is no automatic uncertain-effect cross-node failover.
+Polling is implemented; push subscriptions are not required and no eighth MCP operation is added. The observation replay window is now durable, bounded and expiry-scoped; durable executable reservations are never automatically evicted, and unresolved restart reservations remain UNKNOWN. Capacity exhaustion denies further work rather than resetting history. There is no automatic uncertain-effect cross-node failover.
 
 Provider completion and a valid signature remain independent from semantic success. The unobserved fixture in the actual-process proof explicitly reports UNVERIFIED. A returned typed value postcondition is marked as a returned-value observation boundary; it is not external-state proof. An external observer must be bound during admission, and credentials/cookies from invocation are not borrowed for that observation.
 
 Local provider disappearance is detected on host withdrawal/synchronization, explicit execution-owner loss, or the task deadline. Every status call does not rediscover the dynamic capability catalog. Catalog TTL expiry alone is not proof that an admitted live execution ceased; remote status remains bound to the original execution owner. A future dedicated owner-liveness signal should preserve this separation.
 
 Terminal RCIR history is bounded, retained in immutable process-owned storage, and remote safe terminal summaries/events also remain in the durable Link journal. Full raw local RCIR receipts are not promised to survive a host process restart; the durable remote reservation safely reports UNKNOWN when live ownership is lost. Raw receipts/observation payloads are kept on the execution node. Only values explicitly allowed by the host export policy are exposed remotely, with bounded redaction for unsafe/oversized values.
+
+## Follow-up stacked review on 2026-10-08
+
+The follow-up review began with PR #99 at `6a18aaae` and PR #101 at `9fbb3e0`.
+Its new controls found and corrected additional issues; the preceding native CI
+counts describe the earlier head and must not be attributed to these fixes.
+
+| Finding | Severity and evidence | Correction |
+|---|---|---|
+| Unary before-reference verification captured the baseline after dispatch | HIGH false assurance: changed file bytes could compare with themselves and yield a signed success. Four negative/positive cases produced 20 failed assertions before the fix. | Capture the admitted pre-effect snapshot before provider start, reuse it in both unary postcondition branches and deferred ownership, and retain explicit external/returned observation boundaries. Regression tests independently validate the signed receipt against the provisioned pin and semantic outcome. |
+| Local bounded status mixed lifecycle and event snapshots | MEDIUM correctness: old ordering produced 374 torn replies in 6,869 reads; a newer page could accompany an older lifecycle. | Atomic host/store snapshot capture; corrected stress run produced zero torn replies in 232,468 reads. Retained terminal evidence takes precedence without a visibility gap. |
+| Re-enrollment after a disconnect invalidated existing routed owners | MEDIUM availability: routed MCP recovery failed while direct client reconnect tests passed. | Authenticated same-client re-enrollment preserves peer generation; explicit removal still invalidates old owners. Both recovery and removal controls pass with one provider effect. |
+| Harmless discovery consumed permanent execution capacity | MEDIUM availability: three observations exhausted a configured two-request consequential journal before any effect. | Durable v2 observation window for runtime/actions/status; permanent run identities and intents remain unchanged. Restart, full-window, expiry, rollback, cross-operation replay and validated v1 migration controls pass. Historical permanent v1 observations are never reclassified or removed. |
+| Generic ordinary verification omitted its observation boundary | MEDIUM evidence clarity: returned-value and file predicates both emitted a missing boundary. | Classify actually evaluated predicates and expose returnedValue or externalState on success/failure. Provider acceptance alone remains unverified. |
+| Background preparation initialized AppKit's event queue incorrectly | MEDIUM native availability: an existing async portable fixture followed by a native Service crashed with SIGTRAP. | Main-queue preparation entirely inside RightClickMacOSHost. A fresh isolated process and the original combined test ordering pass; embedding hosts must keep the native main queue running. |
+
+No remaining CRITICAL/HIGH finding was identified in the scoped independent
+review of these corrections. Strict shared-wall-clock freshness can reject
+authentic sessions under skew; the checks remain intact, and clock offset is an
+explicit deployment preflight requirement. Relay squatting and resource
+exhaustion remain availability risks rather than identity or authority bypasses.
+
+The generic local RCIR receipt signs a host-observed predicate outcome. It does
+not contain enough material to reconstruct the exact VerificationSpec and
+pre-effect snapshot from that opaque receipt alone. The host captures those
+inputs; a signed Link request additionally binds its supported caller
+postcondition. Consumers must not present a standalone generic receipt as a
+reconstructable proof of an arbitrary policy. A policy-digest receipt extension
+is separate future contract work.
+
+The owner confirmed that no genuinely independent Linux target exists yet.
+Live Rosss-MacBook-Air -> independent Ubuntu 24.04 x86_64 acceptance is paused at
+that environmental prerequisite. Additional local processes, VMs, containers,
+simulated transports or a tunnel back to this Mac do not complete the criterion.
 
 No release, main merge, Homebrew update, credential migration, public MCP listener, or Actenon edit forms part of this review.

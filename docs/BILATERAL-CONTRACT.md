@@ -101,8 +101,20 @@ acceptance/verification before updating caller status. Relay metadata is untrust
 Consequential ledger retains original binding and initial live snapshot durably;
 fresh same-intent retries reuse its execution. Restart with unresolved/live
 reservation becomes UNKNOWN, never dispatches. Terminal update is monotonic and
-immutable. Observational replay cache may expire only expired poll envelopes;
-it never evicts/reset consequential replay history or grants run authority.
+immutable. Runtime, actions and status use a separate durable, bounded window of
+observation envelope identities. Its 2,048 request/nonce digests may expire only
+after their original signed envelopes cannot validate. Runs and retries check
+both that window and permanent consequential identities before admission. The
+observation window never evicts or resets consequential history or grants run
+authority; harmless discovery cannot exhaust permanent execution reservations.
+Ledger format v2 preserves all validated v1 history on upgrade, including old
+observations previously recorded as permanent. Downgrades do not reset a ledger.
+
+Lifecycle metadata and its requested page are captured from the same immutable
+host/store snapshot. A callback cannot mix a newer sequence or terminal page
+with an older lifecycle/result. Captured execution owners survive authenticated
+same-client re-enrollment after temporary disconnection. Explicit removal still
+invalidates the enrollment generation and cannot revive those owners.
 
 Default remote projection redacts event values, raw results, receipts, diagnostics
 and private observations. Explicit host-owned capability export policy may permit
