@@ -26,7 +26,8 @@ subprocess.check_call(
 )
 
 inputs = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests", "Vendor",
-          "fixtures", "packaging/ThirdPartyLicenses", "packaging/substrate-kinds.json",
+          "fixtures", "examples/universal-descriptors",
+          "packaging/ThirdPartyLicenses", "packaging/substrate-kinds.json",
           "scripts/build-cli.sh"]
 paths = []
 for name in inputs:
