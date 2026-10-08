@@ -421,7 +421,7 @@ enum RightClickBridgeRuntime {
                 let profile
             ):
                 return """
-                ChatGPT tunnel profile does not declare an MCP command.
+                ChatGPT tunnel profile does not declare a single supported main MCP command.
 
                 profile: \(profile)
                 """
