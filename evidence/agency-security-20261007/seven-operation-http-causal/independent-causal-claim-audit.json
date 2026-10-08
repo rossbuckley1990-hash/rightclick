@@ -1,0 +1,35 @@
+{
+  "scope": "Independent Python canonical decoder; corroborates signed marker/state bindings. Actual resource observations are separately retained in the HTTP fixture evidence.",
+  "checks": [
+    {
+      "receipt": "success-receipt.json",
+      "expectedOutcome": "succeeded",
+      "pinnedPythonSignature": "VALID",
+      "contractCausalPath": [
+        "invocationID"
+      ],
+      "observedMarkerMatchesCurrentTask": true,
+      "observationRetained": true
+    },
+    {
+      "receipt": "old-marker-failed-receipt.json",
+      "expectedOutcome": "failed",
+      "pinnedPythonSignature": "VALID",
+      "contractCausalPath": [
+        "invocationID"
+      ],
+      "observedMarkerMatchesCurrentTask": false,
+      "observationRetained": true
+    },
+    {
+      "receipt": "credential-reflection-unverified-receipt.json",
+      "expectedOutcome": "unverified",
+      "pinnedPythonSignature": "VALID",
+      "contractCausalPath": [
+        "invocationID"
+      ],
+      "observedMarkerMatchesCurrentTask": null,
+      "observationRetained": false
+    }
+  ]
+}

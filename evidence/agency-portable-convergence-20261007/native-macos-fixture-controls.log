@@ -1,0 +1,77 @@
+warning: 'rightclick-agency-portable': found 3 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/14] Write sources
+[3/14] Write swift-version--58304C5D6DBC2206.txt
+[5/10] Compiling RightClickCoreTests NativeBoundedHTTPTests.swift
+[6/10] Compiling RightClickCoreTests NativeHTTPFixture.swift
+[7/10] Compiling RightClickCoreTests OpenAPIAcknowledgementTests.swift
+[8/11] Emitting module RightClickCoreTests
+[9/11] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+[9/11] Write Objects.LinkFileList
+[10/11] Linking rightclick-mcpPackageTests
+Build complete! (6.59s)
+Test Suite 'Selected tests' started at 2026-10-07 16:41:09.723.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 16:41:09.725.
+Test Suite 'NativeBoundedHTTPTests' started at 2026-10-07 16:41:09.725.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testDeadlineCancelsNativeExchangeWithinBound]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testDeadlineCancelsNativeExchangeWithinBound]' passed (0.260 seconds).
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testDeclaredAndChunkedOversizeNeverReturnAnAdmittedPrefix]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testDeclaredAndChunkedOversizeNeverReturnAnAdmittedPrefix]' passed (0.107 seconds).
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testNativeCompletionReleasesWaiterAndReturnsExactCap]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testNativeCompletionReleasesWaiterAndReturnsExactCap]' passed (0.117 seconds).
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testNativeErrorAndPrematureConnectionCloseRemainFailures]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testNativeErrorAndPrematureConnectionCloseRemainFailures]' passed (0.117 seconds).
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testRedirectNeverReachesNewTarget]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testRedirectNeverReachesNewTarget]' passed (0.117 seconds).
+Test Suite 'NativeBoundedHTTPTests' passed at 2026-10-07 16:41:10.442.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.716 (0.717) seconds
+Test Suite 'OpenAPIAcknowledgementTests' started at 2026-10-07 16:41:10.442.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition]' passed (0.311 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementHasNoTypedOutputAndRemainsUnverified]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementHasNoTypedOutputAndRemainsUnverified]' passed (0.232 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testConfirmationAndCurrentHostPolicyStopAcknowledgementMutation]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testConfirmationAndCurrentHostPolicyStopAcknowledgementMutation]' passed (0.231 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt]' passed (0.236 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testUndeclared2xxStatusRemainsUnknownDespiteActualEffect]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testUndeclared2xxStatusRemainsUnknownDespiteActualEffect]' passed (0.235 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testWrongOrMissingExternalEffectNeverBecomesSuccess]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testWrongOrMissingExternalEffectNeverBecomesSuccess]' passed (0.228 seconds).
+Test Suite 'OpenAPIAcknowledgementTests' passed at 2026-10-07 16:41:11.917.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 1.474 (1.475) seconds
+Test Suite 'RCIRHTTPJSONObservationTests' started at 2026-10-07 16:41:11.917.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]' passed (0.343 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation]' passed (0.349 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testDefaultCredentialStorageCannotSupplyObserverAuthority]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testDefaultCredentialStorageCannotSupplyObserverAuthority]' passed (0.357 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]' passed (0.375 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead]' passed (0.329 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange]' passed (0.324 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest]' passed (0.345 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRedirectNeverSendsObserverCredentialToAnotherOrigin]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRedirectNeverSendsObserverCredentialToAnotherOrigin]' passed (0.332 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testWriterCredentialCannotActAsReadonlyObserver]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testWriterCredentialCannotActAsReadonlyObserver]' passed (0.332 seconds).
+Test Suite 'RCIRHTTPJSONObservationTests' passed at 2026-10-07 16:41:15.005.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 3.087 (3.088) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 16:41:15.005.
+	 Executed 20 tests, with 0 failures (0 unexpected) in 5.277 (5.280) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 16:41:15.005.
+	 Executed 20 tests, with 0 failures (0 unexpected) in 5.277 (5.281) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

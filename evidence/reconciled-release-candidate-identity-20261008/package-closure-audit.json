@@ -1,0 +1,110 @@
+{
+  "status": "PASS_EXACT_RECONCILED_SOURCE_PACKAGE_CLOSURE",
+  "sourceHead": "fca70b91ac893aefe98cb982c616bfb4b040fe43",
+  "sourcesTree": "3f122015907d3b30d8442d5380e9803eb617876e",
+  "runtimeVersion": "0.2.3",
+  "archiveSHA256": "f98408da81bd45ebcd526fcf9eb4995d4bd2bc471b1c58254792970e1befd054",
+  "memberCount": 442,
+  "trackedScripts": 76,
+  "changedPackageMembersFromFrozenD2": [
+    "Sources/RightClickARDProbe/main.swift",
+    "scripts/acceptance-linux-dbus.py",
+    "scripts/dbus-private-fixture.py"
+  ],
+  "memberBytesModesAndClosedInventory": "PASS",
+  "formulaEquality": "PASS",
+  "resourcePinUnchanged": "PASS",
+  "legacyBottleBlockAbsent": true,
+  "substrateManifest": {
+    "kinds": [
+      {
+        "id": "artifact.resolver.dbus",
+        "title": "Linux D-Bus introspection capability resolver"
+      },
+      {
+        "id": "artifact.resolver.graphql",
+        "title": "GraphQL capability artifact resolver"
+      },
+      {
+        "id": "artifact.resolver.grpc",
+        "title": "gRPC capability artifact resolver"
+      },
+      {
+        "id": "artifact.resolver.kafka",
+        "title": "Acquired Kafka topic metadata capability resolver"
+      },
+      {
+        "id": "artifact.resolver.kubernetes",
+        "title": "Kubernetes discovered-resource capability resolver"
+      },
+      {
+        "id": "artifact.resolver.mcp",
+        "title": "Acquired MCP tool/schema capability resolver"
+      },
+      {
+        "id": "artifact.resolver.openapi",
+        "title": "OpenAPI capability artifact resolver"
+      },
+      {
+        "id": "artifact.resolver.wasm",
+        "title": "Actual component-model WIT capability resolver"
+      },
+      {
+        "id": "authority.oauth_oidc",
+        "title": "OAuth/OIDC authority"
+      },
+      {
+        "id": "reflector.macos.action_extension",
+        "title": "macOS Action Extension reflector"
+      },
+      {
+        "id": "reflector.macos.service",
+        "title": "macOS Services reflector"
+      },
+      {
+        "id": "reflector.macos.sharing",
+        "title": "macOS Sharing reflector"
+      },
+      {
+        "id": "source.a2a.configured",
+        "title": "Configured A2A agent-card source"
+      },
+      {
+        "id": "source.ard.registry",
+        "title": "ARD registry source"
+      },
+      {
+        "id": "source.capability_artifact.configured",
+        "title": "Universal configured capability artifacts"
+      },
+      {
+        "id": "source.dbus.session",
+        "title": "Linux D-Bus session discovery source"
+      },
+      {
+        "id": "source.federation.mcp",
+        "title": "MCP federation peer source"
+      },
+      {
+        "id": "source.graphql.bonjour",
+        "title": "Bonjour GraphQL source"
+      },
+      {
+        "id": "source.grpc.bonjour",
+        "title": "Bonjour gRPC source"
+      },
+      {
+        "id": "source.openapi.bonjour",
+        "title": "Bonjour OpenAPI source"
+      },
+      {
+        "id": "source.openapi.configured",
+        "title": "Configured OpenAPI source"
+      }
+    ],
+    "product": "RIGHTCLICK",
+    "schema": "rightclick.substrate-kinds.v1",
+    "version": "0.2.3"
+  },
+  "scope": "Local deterministic package/input equality only; fresh reconciled source build/platform/runtime/provider/public release/install acceptance pending."
+}

@@ -1,0 +1,126 @@
+{
+  "APIZIP_SHA256": "05e852204d9a30851bcd72f88adac0d0f170935890aa5d6b63400fb60bf304b5",
+  "artifactID": 11564668594,
+  "authenticatedPlaintextReconstructedAndModesChecked": true,
+  "cipherAlgorithms": [
+    "AuthEnvelopedData",
+    "AES256GCM",
+    "RSAOAEP-SHA256/MGF1SHA256"
+  ],
+  "compiler": [
+    {
+      "elapsedMilliseconds": 11983.999999999924,
+      "outputSHA256": "4897b0c68549b3ff6c95d19da76a0aeb16fd59180ff09de2ac95649e0938c8d2"
+    }
+  ],
+  "completeObservation": true,
+  "head": "197638806f8f4c4cb98bfc6c83b6c5c4476389a7",
+  "inventory": {
+    "all700ShippingNamesPreserved": true,
+    "count": 701,
+    "selectOne": "RightClickCoreTests.WindowsPATHBoundaryDiagnosticTests/testOwnedNativePATHOriginCounterfactualPreservesShippingSourcesAndParentSnapshot"
+  },
+  "jobID": 113422992089,
+  "limits": [
+    "Independent API/ZIP/CMS structure and reconstructed plaintext verified; root performs authenticated decryption with its off-runner key.",
+    "Actual runtime native PATH identity is observed; this diagnostic alone cannot establish issuer authority or fix shipping assertion.",
+    "The C probe PE and compiler inputs are closed in source-bound assertions but executable bytes are not exported for an independent physical PE digest.",
+    "Elapsed acquisition is total BPC diagnostic time; this does not independently establish child completion before30s.",
+    "Parent/stdout closure is the probe claim; production descendant-group closure, public release, installed image and full-eleven acceptance remain unproven."
+  ],
+  "nativeProfiles": [
+    {
+      "empty": false,
+      "originalParentMatch": false,
+      "ownedGroupClosureClaimed": false,
+      "ownedParentComponentPresent": true,
+      "ownedParentMatch": true,
+      "parentAndStdoutClosed": true,
+      "present": true,
+      "profile": "isolatedBefore",
+      "sha256": "23db4b17f982daa7f91efaf128c9d62b1b1581c1aaad0893262cae0430e72632",
+      "system32ComponentPresent": false,
+      "system32Match": false,
+      "units": 129
+    },
+    {
+      "empty": false,
+      "originalParentMatch": false,
+      "ownedGroupClosureClaimed": false,
+      "ownedParentComponentPresent": false,
+      "ownedParentMatch": false,
+      "parentAndStdoutClosed": true,
+      "present": true,
+      "profile": "explicitSystemSearch",
+      "sha256": "486746dc3bc266a5ca4fbc9289e97cbc4d24b99d0457efc33d25e2e1409ffcda",
+      "system32ComponentPresent": true,
+      "system32Match": true,
+      "units": 19
+    },
+    {
+      "empty": false,
+      "originalParentMatch": false,
+      "ownedGroupClosureClaimed": false,
+      "ownedParentComponentPresent": true,
+      "ownedParentMatch": true,
+      "parentAndStdoutClosed": true,
+      "present": true,
+      "profile": "isolatedAfter",
+      "sha256": "23db4b17f982daa7f91efaf128c9d62b1b1581c1aaad0893262cae0430e72632",
+      "system32ComponentPresent": false,
+      "system32Match": false,
+      "units": 129
+    },
+    {
+      "empty": false,
+      "originalParentMatch": false,
+      "ownedGroupClosureClaimed": false,
+      "ownedParentComponentPresent": true,
+      "ownedParentMatch": true,
+      "parentAndStdoutClosed": true,
+      "present": true,
+      "profile": "directFoundationEmptyPATH",
+      "sha256": "23db4b17f982daa7f91efaf128c9d62b1b1581c1aaad0893262cae0430e72632",
+      "system32ComponentPresent": false,
+      "system32Match": false,
+      "units": 129
+    }
+  ],
+  "rawEnvironmentValuesIncluded": false,
+  "releaseAccepted": false,
+  "reviewedProbe": "4b310ac7bebcd63aeb692aabf001df63da42bc47",
+  "reviewerReadPrivateKey": false,
+  "rootDecryptionProvenanceSHA256": "74cd8bb0b26fe40ed9e44f354e2101f74983ede12b2b6c1e02f825b402fd9d59",
+  "runID": 37809685487,
+  "runtimeSourcesTree": "e22a81b4e6af0672b077597768a694e6dc478e72",
+  "safePayloads": {
+    "build-phase.json": {
+      "bytes": 451,
+      "sha256": "0f0da8e4d92e3f65b33122ecfbc513904b454d5f0ad2bfb72116a00f4d3e4aa2"
+    },
+    "discovery-phase.json": {
+      "bytes": 449,
+      "sha256": "8d9da71f9d8c5db7edfd8ff83904ad1e2200f19670a6ecb2435b1e7fa5da5ca0"
+    },
+    "focused-phase.json": {
+      "bytes": 448,
+      "sha256": "217fd5f01fd9a543393351e8a25e69faba2ad5de5ed889411cb10549631183a7"
+    },
+    "owned-fixture-and-focused-log.cms": {
+      "bytes": 195201,
+      "sha256": "92bce92e6674f1a3262e32e2c37b1fda26a954b5251f67cf6493c521f04c6fa5"
+    },
+    "summary.json": {
+      "bytes": 5323,
+      "sha256": "b22599fc39cf036b014298489f113b26cf85fdf52b08b7139375a69c9f9bddf7"
+    }
+  },
+  "selectedCase": {
+    "seconds": 12.847,
+    "state": "passed",
+    "test": "WindowsPATHBoundaryDiagnosticTests.testOwnedNativePATHOriginCounterfactualPreservesShippingSourcesAndParentSnapshot"
+  },
+  "shipping700GreenClaimed": false,
+  "shippingSource": "ca8965f275cd452d21c70ddb3b0ab0d5c5279db6",
+  "verdict": "SCOPED_NATIVE_PATH_OBSERVATION_COMPLETE"
+}

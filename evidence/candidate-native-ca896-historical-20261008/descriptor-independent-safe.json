@@ -1,0 +1,78 @@
+{
+  "head": "ca8965f275cd452d21c70ddb3b0ab0d5c5279db6",
+  "SourcesTree": "e22a81b4e6af0672b077597768a694e6dc478e72",
+  "run": 37797019649,
+  "artifact": 11559801977,
+  "authenticatedZIP": "9e22a628bb25bb71c1aca311c0d1330c33f1b116318c014c65e1a3b214564693",
+  "payloadsRehashed": 15,
+  "transcriptEntries": 21,
+  "canonicalToolCalls": 18,
+  "exactCore7BeforeAfter": true,
+  "onlyCanonicalToolCalls": true,
+  "confirmationGateObserved": true,
+  "acceptedRemainsUnverified": true,
+  "WASMFNV1a32RecomputedFromExactUTF8Challenge": true,
+  "WASMMismatchFails": true,
+  "WASMTrapUnknown": true,
+  "MCPRetainedRCIRStatusExact": true,
+  "malformedDescriptorRemovalAndRestoration": true,
+  "offlineWASMRemovalAndUnseenIntroduction": true,
+  "policyDeniedResponseObserved": true,
+  "receiptDecoderSHA256": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966",
+  "separateHarnessPublicKeySHA256": "c280211965ac35f5e731ca31aa77e663167d474d3e64a9b03aa5680e3b0e3103",
+  "receipts": [
+    {
+      "label": "mcp-accepted",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "unverified",
+      "taskID": "00BF2310-A60C-42AD-8CE1-D98C5B59AD4E",
+      "leaseID": "E5B9F4F0-06EF-4002-B741-849DD21C2B23",
+      "envelopeSHA256": "992932b6b74596c1bc0d714c816114c89ef172254bde4542770f6b5baa5c3bf3",
+      "authorityEnvelopePresent": false
+    },
+    {
+      "label": "mcp-verified",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "succeeded",
+      "taskID": "3DE49924-CFB5-4803-B6F7-480C5C66CA7A",
+      "leaseID": "62DDC907-C5F0-4AB6-982E-11FB7B6768B6",
+      "envelopeSHA256": "6ed6f255cc8d6fc11c265e0fb501907de6a5004a6365adcc4ff0bbabd482eb92",
+      "authorityEnvelopePresent": false
+    },
+    {
+      "label": "wasm-verified",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "succeeded",
+      "taskID": "0F51D496-0A23-4E22-99A2-9FA30CFF246B",
+      "leaseID": "46E23B5F-8508-4267-AFB6-209CC8908C65",
+      "envelopeSHA256": "aae465a481c07062282ef12987ad152130510aad4fc96a6a14531102902b690c",
+      "authorityEnvelopePresent": false
+    },
+    {
+      "label": "wasm-mismatch",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "failed",
+      "taskID": "64C096B2-1DD7-42D7-B534-E80E47464629",
+      "leaseID": "98C32E3B-E1AB-436B-9AC1-C08EB0AB4FC8",
+      "envelopeSHA256": "523486e386f197d24e5b3c1b52e8527f075a7ee7d3949fb2283e106ce300fb32",
+      "authorityEnvelopePresent": false
+    },
+    {
+      "label": "wasm-trap",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "unknown",
+      "taskID": "8B87F684-45A3-47B4-A015-80EC41663E68",
+      "leaseID": "6B735BC8-CE77-41E0-BC3B-52B176F9CB10",
+      "envelopeSHA256": "1c9ab38c26fa208598768ce4eeb038f49a56fb7574a3174ca725df0f459a18a0",
+      "authorityEnvelopePresent": false
+    }
+  ],
+  "runtimeReportedVersion": "0.2.3",
+  "runtimeReportedBinarySHA256": "c8e226c913242947de177cefa5ed452b0bce34080c990c1b157415ff39439587",
+  "scope": "Authenticated real seven-operation transcript and independently decoded signatures/algorithm. Harness-generated trust pin is not external issuer authority. Effect bytes, executable bytes and compiled-input snapshots are not exported; the source-bound harness asserts filesystem observation and denial no-effect. Fresh installed distribution, mapped process image and fresh-agent all11 remain unproved."
+}

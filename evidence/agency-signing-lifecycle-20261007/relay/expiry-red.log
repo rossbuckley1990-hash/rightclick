@@ -1,0 +1,134 @@
+✔ finite future authenticated expiry allows private references (4649.827375ms)
+✖ malformed expiry cannot grant relay authority (4910.727625ms)
+✖ missing expiry cannot grant relay authority (5727.6465ms)
+✖ null expiry cannot grant relay authority (5514.869125ms)
+✖ numeric expiry cannot grant relay authority (4685.316333ms)
+✔ expired expiry cannot grant relay authority (2545.16625ms)
+✔ source commit mismatch cannot release credentials (3639.50125ms)
+✔ authenticated ciphertext mismatch cannot release credentials (1415.279083ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 4
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 45652.643084
+
+✖ failing tests:
+
+test at scripts/proof-lab/test-decrypt-relay.mjs:46:3
+✖ malformed expiry cannot grant relay authority (4910.727625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   accepted: true,
+  +   credentialsWritten: true,
+  +   referencesWritten: true
+  -   accepted: false,
+  -   credentialsWritten: false,
+  -   referencesWritten: false
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-security/scripts/proof-lab/test-decrypt-relay.mjs:47:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { accepted: true, credentialsWritten: true, referencesWritten: true },
+    expected: { accepted: false, credentialsWritten: false, referencesWritten: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/proof-lab/test-decrypt-relay.mjs:46:3
+✖ missing expiry cannot grant relay authority (5727.6465ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   accepted: true,
+  +   credentialsWritten: true,
+  +   referencesWritten: true
+  -   accepted: false,
+  -   credentialsWritten: false,
+  -   referencesWritten: false
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-security/scripts/proof-lab/test-decrypt-relay.mjs:47:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { accepted: true, credentialsWritten: true, referencesWritten: true },
+    expected: { accepted: false, credentialsWritten: false, referencesWritten: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/proof-lab/test-decrypt-relay.mjs:46:3
+✖ null expiry cannot grant relay authority (5514.869125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   accepted: true,
+  +   credentialsWritten: true,
+  +   referencesWritten: true
+  -   accepted: false,
+  -   credentialsWritten: false,
+  -   referencesWritten: false
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-security/scripts/proof-lab/test-decrypt-relay.mjs:47:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { accepted: true, credentialsWritten: true, referencesWritten: true },
+    expected: { accepted: false, credentialsWritten: false, referencesWritten: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/proof-lab/test-decrypt-relay.mjs:46:3
+✖ numeric expiry cannot grant relay authority (4685.316333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   accepted: true,
+  +   credentialsWritten: true,
+  +   referencesWritten: true
+  -   accepted: false,
+  -   credentialsWritten: false,
+  -   referencesWritten: false
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-security/scripts/proof-lab/test-decrypt-relay.mjs:47:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { accepted: true, credentialsWritten: true, referencesWritten: true },
+    expected: { accepted: false, credentialsWritten: false, referencesWritten: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

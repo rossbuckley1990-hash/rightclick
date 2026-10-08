@@ -1,0 +1,48 @@
+{
+  "runKind": "NEW_RUN",
+  "controls": {
+    "confirmationDenial": "PASS \u2014 zero delegated requests",
+    "acceptedIsNotVerified": "PASS \u2014 pending task, no effect, no terminal receipt",
+    "successSignature": "PASS \u2014 independently pinned OpenSSL Ed25519",
+    "independentEffect": "PASS \u2014 separate observer process/origin reads exact nonce-bound bytes",
+    "mismatchSignature": "PASS \u2014 independently pinned OpenSSL Ed25519",
+    "missingSignature": "PASS \u2014 independently pinned OpenSSL Ed25519",
+    "policyDenial": "PASS \u2014 denied before provider dispatch",
+    "liveProviderRemoval": "PASS \u2014 A2A capability disappears; tool definitions unchanged",
+    "noStatusReplay": "PASS \u2014 exactly three separately admitted tasks, no replay during status"
+  },
+  "binary": "/private/tmp/rightclick-receipt-candidate-b63256f2",
+  "binarySHA256": "eab48f21d55108123c5911cfb0cacf4bab6b963973052eef616dcf920f5bacca",
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-receipt-candidate-b63256f2",
+    "executableRealPath": "/tmp/rightclick-receipt-candidate-b63256f2",
+    "executableSHA256": "eab48f21d55108123c5911cfb0cacf4bab6b963973052eef616dcf920f5bacca",
+    "pid": 808,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "toolCountBefore": 7,
+  "toolCountAfter": 7,
+  "providerSpecificToolsAdded": 0,
+  "scopeBoundary": "Local exact endpoint/message lease and confirmation policy; public A2A endpoint, no authenticated issuer downscoping claim.",
+  "restrictedAgentBoundary": "Engineering MCP client uses only seven operations; fresh AI eleven-substrate proof remains a separate acceptance requirement.",
+  "status": "GREEN_FOR_THIS_BOUNDARY",
+  "unrelatedProviderGraphOmitted": true
+}

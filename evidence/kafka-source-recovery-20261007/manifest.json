@@ -1,0 +1,176 @@
+{
+  "format": "rightclick-recovered-source-v1",
+  "sourceBase": "b1e4db936ba2a5adc41ef0aa70d1b2b7fd0bf5c3",
+  "reconstruction": "Exact task-owned source write patches replayed in recorded order onto recovered original base. Original diagnostic/pool commit objects and red/green raw manifests have not been recovered. Do not infer byte verification against an unavailable manifest or a new test run.",
+  "sourceFiles": [
+    {
+      "path": "Sources/RightClickCore/BoundedCapabilityProcess.swift",
+      "sha256": "00e313e94603b977d06aef3d86d24a96421f6614559dd40ec6de67e766b4bb08",
+      "bytes": 7238
+    },
+    {
+      "path": "Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift",
+      "sha256": "5bdc5b3fbb2e121f1b22ecb551f10a1c79cd4ccd27ddc6f0002d3156273b806d",
+      "bytes": 16513
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityExecutableSnapshotPool.swift",
+      "sha256": "557c7adc201452cdeed563badad7ee27558d08adca9e989b659cde8b3fa565fe",
+      "bytes": 5251
+    },
+    {
+      "path": "Tests/RightClickCoreTests/BoundedCapabilityProcessDiagnosticTests.swift",
+      "sha256": "79a99d3427a62cbda633a07f06d55d7f608baf921ed957d92b0e00a010eca7b0",
+      "bytes": 3958
+    },
+    {
+      "path": "Tests/RightClickCoreTests/KafkaAcquisitionStabilityTests.swift",
+      "sha256": "f1674d91776939b79ebcb5be730dcdfe6eebcf86c3c4800313579f9c62fb82f7",
+      "bytes": 6503
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityExecutableSnapshotPoolTests.swift",
+      "sha256": "6b6a3225f1530b40f9129eb49f1d4c4ebbffc9161acc4d0375bd6d561175441f",
+      "bytes": 11130
+    },
+    {
+      "path": "docs/KAFKA-ACQUISITION-STABILITY-20261007.md",
+      "sha256": "b7338a29117a501a915829cde7cd7c1b0f2d64397a224ff7205170bc7084cf02",
+      "bytes": 10058
+    }
+  ],
+  "patches": [
+    {
+      "sessionLine": 1658,
+      "timestamp": "2026-10-07T16:46:17.754Z",
+      "callID": "call_73b4e7eda6464d1393f5ce92e82f656e",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1658-0.patch.gz",
+      "sha256": "86f790f8f90e50339058cc0b70b4e2cb3f8caf840619ae4e1e93f62d6180e22d",
+      "rawSHA256": "a099619d7742f48c3fb4ce926f9d8c5b92bf44c18c25495a55edb5ceefb4dfd5"
+    },
+    {
+      "sessionLine": 1665,
+      "timestamp": "2026-10-07T16:47:13.142Z",
+      "callID": "call_UyCI3zsaMeh475LlkQjFCR7v",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1665-0.patch.gz",
+      "sha256": "14d62bf696332a30b1dc3ff6c0b15d85c8046f16f529d046d2e45a76bc9edcec",
+      "rawSHA256": "3d1688cd1f65d020cda572098ed450d213acd98cb89ab719695bff63a8f236f2"
+    },
+    {
+      "sessionLine": 1687,
+      "timestamp": "2026-10-07T16:49:11.931Z",
+      "callID": "call_19447752b94240cc892dc33d0b1d7d3a",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1687-0.patch.gz",
+      "sha256": "72a3bfce0533b4f620d4b5708c18ee2eb3ed59fceba3ac18f06d1d4aa53d9915",
+      "rawSHA256": "93ae72f9ea72ab11b3eea72b564b5c54e6d2bc630c7ab881b6fc0c0cff910388"
+    },
+    {
+      "sessionLine": 1726,
+      "timestamp": "2026-10-07T16:51:52.599Z",
+      "callID": "call_62b7d3db16d2449eaa3f846feb731086",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1726-0.patch.gz",
+      "sha256": "3ff808da1cf17bbf4e2b0e828754c86072fdff12c53dd7ee753308cdffca92d6",
+      "rawSHA256": "36a18753e1f2f76654d744f1a1b0f1d3b7bd9e0b6e8e968cb80f9d7ce364c336"
+    },
+    {
+      "sessionLine": 1793,
+      "timestamp": "2026-10-07T16:55:53.957Z",
+      "callID": "call_XHCLMFB49gOHnnhcQpTSyI5Z",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1793-0.patch.gz",
+      "sha256": "cf0f8ba8bd811b85454df1efe5083ab12460b335542ff66db2cf9ae4c6d593d9",
+      "rawSHA256": "cf0e841338db245f81a2ef92cebada7bc04b46a959436c993694aeccf9b87de6"
+    },
+    {
+      "sessionLine": 1845,
+      "timestamp": "2026-10-07T16:59:41.929Z",
+      "callID": "call_AZbugsEkgZGCdMAvPscF3o1j",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1845-0.patch.gz",
+      "sha256": "97983868096513a05e9dc7498b522c99f026065a4df67644794e85a021535ede",
+      "rawSHA256": "b501738946deb99be28680ca7d5a8d360d395f599c38949775930d752a92f2c8"
+    },
+    {
+      "sessionLine": 1894,
+      "timestamp": "2026-10-07T17:03:45.936Z",
+      "callID": "call_LZ6Ll8X6iuk6OwqffAf5AoeA",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1894-0.patch.gz",
+      "sha256": "c54d5116c7b95a8b7dd3e5ba99ac7d241f8b5d3c42eec2be47fade4cacdae582",
+      "rawSHA256": "68632aafba2c87403bc60950209b6874fad877ebf1cc04f523db42f7f25874cb"
+    },
+    {
+      "sessionLine": 1927,
+      "timestamp": "2026-10-07T17:08:25.118Z",
+      "callID": "call_557e64961b5f485ba224014671ffd53e",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1927-0.patch.gz",
+      "sha256": "eaa30521c86201c57fa31f110f9b4d0a0921ce7954f26b3240c5153255559296",
+      "rawSHA256": "5c325779ac0b937185191f6f446e80e5ee0880a766ba674bf79453b4ba23820e"
+    },
+    {
+      "sessionLine": 1939,
+      "timestamp": "2026-10-07T17:10:29.812Z",
+      "callID": "call_xl34HzDzUlKFg6lm9aVefZp8",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1939-0.patch.gz",
+      "sha256": "da1293548394ccea31c43852376af1a72ced7ca44147ec2adb4527d00cd552f4",
+      "rawSHA256": "d3bf78afdecdb699082a30b8a0e0b5e4a909dfb579a7b3fd4bdd01b03d85a625"
+    },
+    {
+      "sessionLine": 1962,
+      "timestamp": "2026-10-07T17:12:40.142Z",
+      "callID": "call_UpyKr63EMbeoda4WPLARvppp",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/1962-0.patch.gz",
+      "sha256": "fea0e39375eca8d9195f057e419efea4ae7cefa77095a2d089cb6bb6355fec78",
+      "rawSHA256": "dc52f43b2b39ab2ee008b7180d8c7bc5fef61ea1ab96044c98ffb793dfd49ac1"
+    },
+    {
+      "sessionLine": 2042,
+      "timestamp": "2026-10-07T17:21:57.081Z",
+      "callID": "call_81pAhn4IjYhakIL7DBYlHAAm",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/2042-0.patch.gz",
+      "sha256": "fea011f1e0c30aefe090f0e139f181cf8db311a8d538a3f3de6e19f6cd592ebe",
+      "rawSHA256": "09dd26453621bc7c1684828e7753e4b4636e9e25959dacb5f5e55cb430446504"
+    },
+    {
+      "sessionLine": 2072,
+      "timestamp": "2026-10-07T17:24:59.292Z",
+      "callID": "call_f65e862b09864f87a08af7f60899b9c4",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/2072-0.patch.gz",
+      "sha256": "9a49c0fafe820df6927868fd26bd2aa9058ae3c0c4ac6b84d3550b88d003e4aa",
+      "rawSHA256": "6efe94f8931b68596074b662f03d454f0bf1a2ca20228f95aeb162e411ba3b22"
+    },
+    {
+      "sessionLine": 2095,
+      "timestamp": "2026-10-07T17:27:53.320Z",
+      "callID": "call_Xc5v8g7lLUOnhzuhc1svSoMr",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/2095-0.patch.gz",
+      "sha256": "c1482660c8b63da7060a9019e882c8345f068b1510804756e5ff537dbceed235",
+      "rawSHA256": "88869e6ce548cb9c4e7695f716ef3269360c7d7254e6bbf1eced9b7630fe3a3d"
+    },
+    {
+      "sessionLine": 2141,
+      "timestamp": "2026-10-07T17:33:10.939Z",
+      "callID": "call_hfjfxN5jFqbky8jpzdwTmt5a",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/2141-0.patch.gz",
+      "sha256": "0579fe64825a21fb253fd30cd79ab064fa239d076504682d219319a30329610b",
+      "rawSHA256": "69196ddeca4f6983a04567eb6a3703fb69d80eaddc16a2039de7ad91bdecceee"
+    },
+    {
+      "sessionLine": 2155,
+      "timestamp": "2026-10-07T17:35:25.749Z",
+      "callID": "call_15b81883ee394276b0adfb3f5e848689",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/2155-0.patch.gz",
+      "sha256": "bd09dfd89ddb7472316bc281373bd70c7e7e362ac6f5df355ae408e6f467a111",
+      "rawSHA256": "394c1ccbe75084aa1b131b964e97779a01bde1a95e0096923b674aa08ca33e86"
+    },
+    {
+      "sessionLine": 2191,
+      "timestamp": "2026-10-07T17:40:04.074Z",
+      "callID": "call_3fda2d0bcfc34d559304d440e78f8e27",
+      "path": "evidence/kafka-source-recovery-20261007/source-patches/2191-0.patch.gz",
+      "sha256": "8675cc6027b8d5f4fedb0b0c203f3d1ea04df1cff97f16d660d89de78ef019f2",
+      "rawSHA256": "eb2de3001120e576cac32e132808fdb09f965bcc7fa2680a16c39469c1eefe46"
+    }
+  ],
+  "recordedCommandOutputCount": 52,
+  "recordedCommandOutputsSHA256": "7b69d2f81e1dcdc49065295504c42290ebc119679dc3ddeb227a5d0c72424539",
+  "originalHistoricalClaim": "Five-client scoped GREEN and Core7 receipt verification were recorded before deletion; original raw transcript/manifests missing. Historical ready-to-unavailable cause remains unproven.",
+  "sessionSnapshotSHA256AtRecovery": "4398f714c5a349f3e79717f46f28050a9d5e0f5fab9d1c7b1128211fb4c7f5ec"
+}

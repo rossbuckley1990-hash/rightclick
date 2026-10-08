@@ -1,0 +1,79 @@
+{
+  "scope": "one_actual_native_PATH_origin_diagnostic",
+  "status": "PASS",
+  "selected": "RightClickCoreTests.WindowsPATHBoundaryDiagnosticTests/testOwnedNativePATHOriginCounterfactualPreservesShippingSourcesAndParentSnapshot",
+  "inventoryCount": 701,
+  "all700ShippingNamesPreserved": true,
+  "profiles": [
+    {
+      "profile": "isolatedBefore",
+      "present": true,
+      "empty": false,
+      "system32Match": false,
+      "system32ComponentPresent": false,
+      "ownedParentMatch": true,
+      "ownedParentComponentPresent": true,
+      "originalParentMatch": false,
+      "units": 129,
+      "sha256": "23db4b17f982daa7f91efaf128c9d62b1b1581c1aaad0893262cae0430e72632"
+    },
+    {
+      "profile": "explicitSystemSearch",
+      "present": true,
+      "empty": false,
+      "system32Match": true,
+      "system32ComponentPresent": true,
+      "ownedParentMatch": false,
+      "ownedParentComponentPresent": false,
+      "originalParentMatch": false,
+      "units": 19,
+      "sha256": "486746dc3bc266a5ca4fbc9289e97cbc4d24b99d0457efc33d25e2e1409ffcda"
+    },
+    {
+      "profile": "isolatedAfter",
+      "present": true,
+      "empty": false,
+      "system32Match": false,
+      "system32ComponentPresent": false,
+      "ownedParentMatch": true,
+      "ownedParentComponentPresent": true,
+      "originalParentMatch": false,
+      "units": 129,
+      "sha256": "23db4b17f982daa7f91efaf128c9d62b1b1581c1aaad0893262cae0430e72632"
+    },
+    {
+      "profile": "directFoundationEmptyPATH",
+      "present": true,
+      "empty": false,
+      "system32Match": false,
+      "system32ComponentPresent": false,
+      "ownedParentMatch": true,
+      "ownedParentComponentPresent": true,
+      "originalParentMatch": false,
+      "units": 129,
+      "sha256": "23db4b17f982daa7f91efaf128c9d62b1b1581c1aaad0893262cae0430e72632"
+    }
+  ],
+  "compiler": {
+    "elapsedMilliseconds": 11983.999999999924,
+    "nativeProbePE_SHA256": "4897b0c68549b3ff6c95d19da76a0aeb16fd59180ff09de2ac95649e0938c8d2"
+  },
+  "restoredParentExactUTF16": true,
+  "measuredOriginFacts": {
+    "controlledParentComponentInIsolatedBefore": true,
+    "controlledParentComponentInIsolatedAfter": true,
+    "system32ExactInExplicitSearch": true,
+    "system32ComponentInExplicitSearch": true,
+    "isolatedBeforeAfterNativeIdentityEqual": true,
+    "directFoundationExplicitEmptyWasNativeEmpty": false
+  },
+  "authenticatedInputDigests": {
+    "build-output.log": "5167b2b90df17c9badf6fec316b364d8440f4bab47f61b11ae6909abb7fff9dd",
+    "discovery-output.log": "00934bb16fb81721826622b9afdd0c8f616a6fa9ce65b4d49d4c8a8af3136fc6",
+    "focused-test-output.log": "fbc3f652d2049a76708cb6378a2566a675daf0c672149d6558701dc65550ad7b"
+  },
+  "shipping700SuiteGreenClaimed": false,
+  "releaseAcceptanceClaimed": false,
+  "ownedProcessGroupClosureClaimed": false,
+  "externalIssuerAuthorityClaimed": false
+}

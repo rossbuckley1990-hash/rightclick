@@ -1,0 +1,15 @@
+{
+  "status": "NO_BLOCKER_FOUND_TEST_ONLY_SCOPE",
+  "sourceCommit": "79aeccb62a8845fe4ded608520adfb54612a16ad",
+  "evidenceCommit": "3018871bc18a96d84f2881579dabaa01d8d133f8",
+  "all88ExistingAdopterNamesPreserved": true,
+  "allExistingXCTAssertLinesPreservedAfterTryNormalization": true,
+  "addedMeaningfulControls": 6,
+  "noSkipOverridesAdded": true,
+  "helperSourceSHA256": "04e232fe4b3443d8178dd9b3e6513bf375419bbabb3c0e577ad7866f8d663e53",
+  "admission": "Byte LF/CRLF delimiters retain exact record bytes; reject blank/bare/repeated CR framing. Parse each complete JSON object; non-object/malformed JSON raises a stable contents-free failure. Only genuine file-not-found returns an absent journal. No malformed rows silently disappear.",
+  "securityScope": "Test/evidence reader only. Existing policy, authority, causal marker and pinned signature assertions remain; signatures do not establish independently observed truth by themselves. Product runtime Sources/Package/Vendor/fixtures/scripts unchanged.",
+  "rootEvidenceManifestPayloadsVerified": 4,
+  "rootEvidenceScope": "Original raw Windows fatal log stays private; data-safe hash/case identity, explicitly synthetic CRLF replay and actual6 standalone XCTest controls only. Integrated local127 now supersedes the pending local-adopter scope without advancing Windows.",
+  "remaining": "Actual repaired Windows full suite, native acquisition and public release remain pending."
+}

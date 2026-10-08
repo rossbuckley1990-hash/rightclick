@@ -1,0 +1,49 @@
+{
+  "runKind": "NEW_NATIVE_LINUX_DBUS_RUN",
+  "controls": {
+    "defaultUsefulDiscovery": "PASS \u2014 native session environment alone discovers/executes exact typed EchoTags; no per-provider binder/adapter enablement",
+    "independentNativeEffect": "PASS \u2014 Linux UID1100 D-Bus mutation; UID1101 bus read + independent actual-file digest; invocation marker stored at provider ingress",
+    "confirmationPolicyTypedGate": "PASS \u2014 confirmation/policy and wrong Boolean encoding produce no effect",
+    "signature": "PASS \u2014 independently pinned OpenSSL Ed25519 signature",
+    "unixPrincipalLeastAuthority": "PASS \u2014 bus daemon EXTERNAL kernel UID enforces writer/observer method separation; direct forbidden calls fail",
+    "ownerWithdrawalRestoration": "PASS \u2014 ReleaseName withdraws capabilities while old unique connection remains callable; new unique owner changes descriptor binding; fresh invocation succeeds",
+    "noEffectAcceptance": "PASS \u2014 no-effect ACK and previously matching state with an old invocation marker cannot become current mutation success"
+  },
+  "principals": {
+    "writerUID": 1100,
+    "observerUID": 1101,
+    "serviceUID": 1102
+  },
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick",
+    "executableRealPath": "/work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick",
+    "executableSHA256": "98257efc23fe07cae2be20b12a0fe0100c8af725851f22f623f0673b48a8c758",
+    "pid": 14,
+    "platform": "Linux",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "binarySHA256": "98257efc23fe07cae2be20b12a0fe0100c8af725851f22f623f0673b48a8c758",
+  "originalOwner": ":1.0",
+  "status": "SCOPED_NATIVE_LINUX_DBUS_GREEN",
+  "restoredOwner": ":1.891",
+  "toolCountBefore": 7,
+  "toolCountAfter": 7,
+  "providerSpecificToolsAdded": 0
+}

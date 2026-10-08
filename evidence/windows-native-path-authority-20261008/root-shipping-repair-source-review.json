@@ -1,0 +1,603 @@
+{
+  "base": "ca8965f275cd452d21c70ddb3b0ab0d5c5279db6",
+  "head": "dfd59db79387a9b754f86784c4fa111ea087c242",
+  "sourcesTree": "0133e050845ff05e8b588f42eabe7fc1da00634d",
+  "testsTree": "54e5954bf91c81854ede61ffd772706b3a8906cf",
+  "sourceReview": "CLEAR_SCOPED_REPAIR_PENDING_NATIVE_GREEN",
+  "exactFourFileAllowlist": [
+    "Sources/RightClickCore/BoundedCapabilityProcess.swift",
+    "Sources/RightClickCore/TrustedHostProcessContext.swift",
+    "Tests/RightClickCoreTests/TrustedHostProcessContextTests.swift",
+    "Tests/RightClickCoreTests/WindowsPATHBoundaryTests.swift"
+  ],
+  "all145OtherShippingTestFilesUnchanged": [
+    {
+      "path": "Tests/Fixtures/invocation-binding-client.py",
+      "sha256": "ef1e82e7eddf63ebdc5bf4d91e51338d4f5932bc94bf175ccb33b9eb29339802"
+    },
+    {
+      "path": "Tests/Fixtures/windows-fixture-command-probe.swift",
+      "sha256": "bd7a3237d3f9bbbba2e7a4f9429bf6353f508b4caec3adff0dea825643efce68"
+    },
+    {
+      "path": "Tests/Fixtures/windows-protected-reference-probe.c",
+      "sha256": "684a50ad28faa4a20e1304df63409715c1da8d2f0d89b9c4988ab64d690f1717"
+    },
+    {
+      "path": "Tests/Fixtures/windows-python-client-launcher.c",
+      "sha256": "4fcd7989dba1baf2ec68df0c1ee9771ced5e09d0a725cd7dcf7b7f7e2a2b51a2"
+    },
+    {
+      "path": "Tests/RightClickARDTests/ARDPortableTests.swift",
+      "sha256": "8e2d509339081ed5140d68430eb97371764b9d84a8b9e9bf672b65d79e441a62"
+    },
+    {
+      "path": "Tests/RightClickCLITests/AuthorityConfigurationCLITests.swift",
+      "sha256": "d060139489548387847b16f5b6c467b9e5080dedfacd2e451fcb51d2e26ad782"
+    },
+    {
+      "path": "Tests/RightClickCLITests/BridgeRuntimeTests.swift",
+      "sha256": "ef558bd710ac8597f65084e3605ab3fbfef4d809f9a36778d86f0e112fe62448"
+    },
+    {
+      "path": "Tests/RightClickCLITests/ChatGPTBridgeInstallerTests.swift",
+      "sha256": "5c5b6a0abaeb357c742cda25fe5ad19173cfd1a94ed2a38208b6df89b7b60885"
+    },
+    {
+      "path": "Tests/RightClickCLITests/ChatGPTBridgeTests.swift",
+      "sha256": "4e7a2de89097463a2166452c4c034bbf02822bbd0bc7706fa0a5e2e236ac074d"
+    },
+    {
+      "path": "Tests/RightClickCLITests/ChatGPTLiveAttestationTests.swift",
+      "sha256": "9327f29f84cbce90169f83dfe84658dbdfb01285e29e37f28477f6495b35e662"
+    },
+    {
+      "path": "Tests/RightClickCLITests/ChatGPTOnboardingTests.swift",
+      "sha256": "09120697ddc6f6653d869f2b26e0133e321a91a72c85c7f559710edc86e531e9"
+    },
+    {
+      "path": "Tests/RightClickCLITests/ChatGPTOnboardingTransactionTests.swift",
+      "sha256": "ec73ca63571ba13402c59fbf901112aa0944255ac35f3bf9b9371634604219db"
+    },
+    {
+      "path": "Tests/RightClickCLITests/ClaudeConfigDirTruthTests.swift",
+      "sha256": "3a49b554c41de4f2018ef84af7165edd01fcdea28e1e38fedcc7f02825a1e673"
+    },
+    {
+      "path": "Tests/RightClickCLITests/ClaudeOnboardingRedTests.swift",
+      "sha256": "c919f88149e33f797e9d97396606d4083cea4a76866f648c6e20a2ab3e9691f2"
+    },
+    {
+      "path": "Tests/RightClickCLITests/ClientRegistryRedTests.swift",
+      "sha256": "ddea17b92253f87d16d692f24d8a676af4f2622c4e0b9dfd4b006dcca0c0f635"
+    },
+    {
+      "path": "Tests/RightClickCLITests/CodexOnboardingRedTests.swift",
+      "sha256": "6fc754178ca83a5b4cfa605bcad443ddae2685235797577ce41a6baced68f594"
+    },
+    {
+      "path": "Tests/RightClickCLITests/LocalOnboardingTests.swift",
+      "sha256": "31d5113788ec067fbc86d412fd029412f4750ad9e8c26d3c78814e85e6fed324"
+    },
+    {
+      "path": "Tests/RightClickCLITests/NativeMutationLeaseRedTests.swift",
+      "sha256": "4eecca07e3d6d9002776e39e8c125dd26362449f037a0b527ca5d4edef62912f"
+    },
+    {
+      "path": "Tests/RightClickCLITests/OnboardingEngineTests.swift",
+      "sha256": "47aac7bc3ea5bfe254080cd1f41add33d13ced8645b72c99552f6b6b182033ae"
+    },
+    {
+      "path": "Tests/RightClickCLITests/ProviderConfigurationCLITests.swift",
+      "sha256": "429b2737f86bbe7c4d0f603a03819da4ab7da7b117a57ca6f7f3e81aeebc3230"
+    },
+    {
+      "path": "Tests/RightClickCLITests/SetupAllTransactionRedTests.swift",
+      "sha256": "aa6f6d8e3ea16e591589a2bba8d59c8f5d16cff0c87482d2a675a7db0dbdb8f7"
+    },
+    {
+      "path": "Tests/RightClickCLITests/SetupStateTests.swift",
+      "sha256": "5c4d7dc5e88a3d928771404c9a12d2d2e86d83f94160fd4f8c3b13d60f4579b5"
+    },
+    {
+      "path": "Tests/RightClickCLITests/SetupTests.swift",
+      "sha256": "83f40b573d081bc572c635b8dad01bd193acce29319b26da5999738d3350fcba"
+    },
+    {
+      "path": "Tests/RightClickCLITests/StableEntrypointTests.swift",
+      "sha256": "18ca84cc8d5510963dafc7cb015c9249507e261980d8fe92df7406a5e182c3b8"
+    },
+    {
+      "path": "Tests/RightClickCLITests/StableProfileIntegrityTests.swift",
+      "sha256": "2b012bf0f5c54997b4431425308e7fb6367022ab50e051ca86d4ae2d03bbaa24"
+    },
+    {
+      "path": "Tests/RightClickCLITests/StableUpgradeReconciliationTests.swift",
+      "sha256": "2f01603d6f705b45cb4c6757cf84dd4647fe351f724f63971d47270d4d4fe065"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/A2ARealLifecycleTests.swift",
+      "sha256": "c00be36e8750435d481f9174cf4bafd731dc951136e31cbe4f9f566b195c24b2"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ARDAcquisitionGateTests.swift",
+      "sha256": "db640eb5f78aa74b4618933350066ea825f397501d3e17806f17bbcb90f5fa65"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/AcquisitionTests.swift",
+      "sha256": "74020cfe991b9df030abd7364729064a6f4c67f7eee52515bf6e6adfa4e39385"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/BonjourGRPCSourceTests.swift",
+      "sha256": "a26d752fc97891bcc60bed0efd20913d565177a42ae49526d64c42bbb2daf9db"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/BonjourOpenAPISourceTests.swift",
+      "sha256": "6b63b01bcf3e8e0abe8c78b5d842c36491f715df4cee8206950018d9c5a14b9b"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/BonjourRealLifecycleAcceptanceTests.swift",
+      "sha256": "dcb39ca2834344bccae9178e111aa9908d49c53b606d77bf8419d594a52fcce8"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/BoundedCapabilityProcessDiagnosticTests.swift",
+      "sha256": "fef775ee88759a6ee2e77bb9af960697ae0ca72ac5114ea591476bca645a0a7b"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CallerContractPinTests.swift",
+      "sha256": "dd8de439ddf037ce39e293c47127549fb50c6f184a0abd6fa5c7678a4b61b461"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityABIAdapterTests.swift",
+      "sha256": "985f7d5a425389cfc76bcdfe175fe4081b80af04f433d849d65346366733f311"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityABIBoundaryTests.swift",
+      "sha256": "526f4cb7c0ed6a58ae4cf651115c750e1307c4000beac954b72f9b29629a3b03"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityABITests.swift",
+      "sha256": "54e013339e00a062a8850a71e901a4826c539a0b662cf1d068a2f6a62ec2cd24"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityAcquisitionLifecycleTests.swift",
+      "sha256": "c1ab9ae20c58c7776b6e3116fda7b63fa7eb83094c3af65bdc06de505b0f5e77"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityArgumentPreflightTests.swift",
+      "sha256": "80678ddd1d3940bd503eaaba591779790f1f687d1e6da9e9749a6891bc5985bb"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityArtifactResolverTests.swift",
+      "sha256": "6eef2fbf62533655bf42a9bd1b944b0b80d775518d4f24b4c50d09769cc97f40"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityEffectAssessmentTests.swift",
+      "sha256": "f1ef2dfbcdd8ae618a506b30dcd565a19f403af2f8f9ac502952ff974a5ba487"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityExecutableSnapshotPoolTests.swift",
+      "sha256": "4174e86ecf0ebed7eb0b0ace1d99cc48803bfcc811dad1d7e7a699f3f46fd585"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityExperienceLedgerTests.swift",
+      "sha256": "a670b3398babf80cdb3ed0ec7d1b7e4ced251a3487545d0f8b951a7cdf528b60"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityExperienceTests.swift",
+      "sha256": "4176dc1483ba3d8ea0bb9ba76bb74d67fa970115877488d8acb7ffb38cd97b39"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityInterfaceTests.swift",
+      "sha256": "e23f5e97fc600014b3595ab2c028287d2beef9553eda49a3026f3aec882f219f"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityReflectorSourceTests.swift",
+      "sha256": "68ca4480a84201f8ee5e0a460001e628bd1f805238152ceabe524c8fd05d958f"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityRuntimeDefaultsTests.swift",
+      "sha256": "e177cb78ba94278e670351e3a647b5009d9d8e88776b6ad56ecfcc6749031672"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilitySelectionTests.swift",
+      "sha256": "8cc03c5fc5381ec5c8c1a523860ccc5ed1f3c7e416e953027dd458a3a8297de8"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilitySnapshotBoundaryTests.swift",
+      "sha256": "d7a55b7458095d5b1c3720cff212a97a62a16e5c65ea1d6c7aa22afd421914d0"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityStringConstraintTests.swift",
+      "sha256": "13199f7f5ba06f63f4191e1da2ee4bd1e8e7005b8b1dc6a0e062842fedb7da86"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityTypedCoreBoundaryTests.swift",
+      "sha256": "5e1ac1e8c3bfb9215863d619c1457a37717fd681a2a1f5c23f37023716ce34cb"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ConfiguredOpenAPISourceTests.swift",
+      "sha256": "4cb48087fa530c88d5814cb88089e8c897fd18a2e66f7b2c290bcc83ac431005"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/DBusNativeOwnerAcceptanceTests.swift",
+      "sha256": "82c95edb697ea1851deb1ab311c7a157ed151a4ccdeaaf38c77360b97e151afb"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/DBusRuntimeTests.swift",
+      "sha256": "c82222ea2ed05e3648c6b9413db5271024ea33bb32da54dd063efa981a5812ea"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/DispatchContractBindingTests.swift",
+      "sha256": "8ddbd5fedff407b086079fbf6f89c417f0a26c63096ce62ce505c072bcb33acb"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/EngineTests.swift",
+      "sha256": "851d27a65270c59f98a7f4fb9a8238429829d5c04b8cf4391a8ba3954690c74e"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ExecutionCapacityAdmissionTests.swift",
+      "sha256": "3f3d775731aad0c86edeaa49ffadfa8880d1656da99720b2902ca222096bed57"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ExecutionPreflightIntegrationTests.swift",
+      "sha256": "2e61864430a71541c4a7250a7165da2399d9b7eba919a5d7d35f1dd6575da5a3"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ExecutionRetentionTests.swift",
+      "sha256": "552d083beb442a57e3332ad341a172121cde9cd95d2ff28df658559724ba9b1a"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/FixtureLineFraming.swift",
+      "sha256": "04e232fe4b3443d8178dd9b3e6513bf375419bbabb3c0e577ad7866f8d663e53"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/FixtureLineFramingTests.swift",
+      "sha256": "f2afbbf1027daeec3dac160ec287b9ae8d67664ee207fbdfe3bde7398078b2ec"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/Fixtures/InstalledRuntime022Identity.json",
+      "sha256": "c296449361c4a476ff6ff8241137cf13e93785c9fc7feb3d88ab695a693d5aeb"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json",
+      "sha256": "60623f8fdb171f42d3fae1b80d23db9b988c0176e872059f56e55dd92bea6342"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json",
+      "sha256": "8a5928c166b46c00b39b879f01b3a68e26b937ad9ab4bf1965ce68cb29ba8015"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json",
+      "sha256": "9f739b77e5791b53b81457867d35f5021eab9cd8a7fcda643958639af811c5b8"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/GRPCRealProviderAcceptanceTests.swift",
+      "sha256": "05a5bb5ca9860ae6441ebfd023fb628e801ae755a92b512c709832469f8d7303"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/GRPCReflectionTransportTests.swift",
+      "sha256": "e8cc0c0fe5f33b1d924af2c96749fdfd865e8f2557cff944713fe071bf842420"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/GRPCReflectorTests.swift",
+      "sha256": "04369609d55193964e2b23a64ec7154881bb45752c74df5711b444fd3b995fe3"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/GRPCWireCodecBoundsTests.swift",
+      "sha256": "95196ce48a9d9b55621b2ab6abd37cb55647d3997fd0b5adc9024dff26fdaeec"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/GraphQLReflectorTests.swift",
+      "sha256": "304cf4d1a6521f8d0e3ec86536ed5a0b50ecb536e4734032a7846d1fc18cd27e"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/HostProtectedReferenceTests.swift",
+      "sha256": "e28616fd6ab6f61b2cc75a514ddf47c3591477074ddde54ed41aae9588ca9065"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/InvocationBindingTests.swift",
+      "sha256": "1b272a15c0feb396cde9c7b6eb4352ffac2f829208ba2545d0e49b208ea4f8ea"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/KafkaAcquisitionStabilityTests.swift",
+      "sha256": "f1674d91776939b79ebcb5be730dcdfe6eebcf86c3c4800313579f9c62fb82f7"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/KafkaCapabilityTests.swift",
+      "sha256": "f4d516be740cd2af9b36f46be650b338a75d03c893ffeddc71ea11ee6effc5b0"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/KubernetesCapabilityArtifactTests.swift",
+      "sha256": "86328c9e07dfa3c826e0dd5bf7b0f000320e07167bf41db4215d8af14bae005a"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT004G1AcquisitionTests.swift",
+      "sha256": "b06e4e624c6df8fffbaa3788afc25a5c38d54975040a09d3bb5869c4a625f2fa"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT004G2SplitOriginTests.swift",
+      "sha256": "5a08be9eaf62cf58834e5f4c8e58292a5c5646e9f753c72238e8229eec6a7953"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT004G3ZeroArgumentGETTests.swift",
+      "sha256": "4ce42ae1d2a78d174fe44f1a78d67bb694e1043a74b49f5304efd8a35f56f3cb"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT004G4JSONSyntaxFallbackTests.swift",
+      "sha256": "ccf5d3fd80e589d876a219704ff4e1e5f21b0b7fccc6a814967e2528e9218469"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT004G5ExternalBearerAuthorityTests.swift",
+      "sha256": "422b64d6d10cfbd9f14de34e2b34762a8bbaf6756912f44a9c22f658c151e56d"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift",
+      "sha256": "f2a52b3beba56e6b84ba08db697c52d758ab126fbcd58991c6abd3e7829d9f1a"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT005G1PathAndJSONBodyTests.swift",
+      "sha256": "38e3696e1f903a16750908a948cb7684b9f8b0fa0a41ca882a1032dea70d3baa"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT005G2MultiplePathArgumentsTests.swift",
+      "sha256": "0fe61b071cf82b34a94f46488ac79c77f649418e9f879a2b2645e80b3cd2ddaa"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT005G3GitHubRequestSchemaTests.swift",
+      "sha256": "e128c04334bd3177c62412e2d9cc11717712d928d642016f6b5b102384c15a22"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT005G4MutationJSONResponseFallbackTests.swift",
+      "sha256": "e21435416e817947c13c33920b749b32971063c3e533964821db280ae2b57bfd"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT005G5FullFrozenGitHubContractTests.swift",
+      "sha256": "4f9cf65d5574fce8d19ef0bf616d273a64c38a3bb312a705c671f9e684f0f4a3"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/MOAT005G6MultiSegmentPathTests.swift",
+      "sha256": "53281b58d224cc72b7473f8f34c528668d1f51e7b7948f7234870b0ebef22e9e"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/NativeBoundedHTTPTests.swift",
+      "sha256": "bbd1b9b215ce826c3fa57ffc5ba40179fc88ed761f125801d71acbd84e54ad53"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/NativeFixtureReadinessTests.swift",
+      "sha256": "459d7df6cc259dc91b49d5c684360ea5ab3766d71636c2be4105869f09e94cd1"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/NativeHTTPFixture.swift",
+      "sha256": "e705632539b59cddad632fffbd22042341180d4dff5f6e00e46d129f4496253e"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/NativeServiceUnicodeBoundaryTests.swift",
+      "sha256": "9fb7cda02df0e23f3f7230f5ef9ce7314f12df28dc4594be93341f3327173033"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/NativeServiceUnicodeLiveAcceptanceTests.swift",
+      "sha256": "cb5cf7dcefe816a3659fa84d6dc770d275f520284762a4e7abd0334e2e171000"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/NetworkOriginAuthorityTests.swift",
+      "sha256": "457939bd907cc18b0c46a3a6a8b4a5c6b0d50fbeafe4c8513b063a74b1960b46"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/OAuthOIDCAuthorityTests.swift",
+      "sha256": "075ff6156eaa4740630824a66456b744379ef990d8897e2229a77b1cb7159a4a"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/OpenAPIAcknowledgementTests.swift",
+      "sha256": "908e5a7567e0832f0ffde844a213d11dd2a1e9c745db7b9bc7335b15c2337d07"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/OpenAPIAcquisitionBoundsTests.swift",
+      "sha256": "adf120f2236fcb6ca512d47d9bbf949fdd33b40430494568d0458aecc7ed9a31"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/OpenAPIAuthorityManagementTests.swift",
+      "sha256": "9768514a9263dfcdcd977bf2b4272e28e8fa907c1382af1e117108057a22313e"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/OpenAPIAuthorityTests.swift",
+      "sha256": "d75ea6e18aa2e5f9ea727777a7f3d2010718909376a0da5d35344387b6653c1c"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/OpenAPICredentialEchoTests.swift",
+      "sha256": "021bcc7131bde91ab6643c2fc7ca7e362cc93fa82a78bf03704a8b88a3142da9"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/OpenAPIRealProviderAcceptanceTests.swift",
+      "sha256": "71a0da5b15c7bd33a755e9953f68e8d670c885091edb8347db4dffaef33b7e0b"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/OpenAPIReflectorTests.swift",
+      "sha256": "1591cbced0d4a8870f7162e5670eff4391c31740cb117fd0e5e0b31041709278"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/OutcomeVerifierTests.swift",
+      "sha256": "f7e90714ebdac1002c48ac4ce1390ff86c55fcc5f9ee09fda894ae5b7b5c7d9a"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/PolicyTests.swift",
+      "sha256": "348121e6f902a4e33819e47b19186837bc3ebd3fd328223cc96ea4957c5c72dd"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/PortableRuntimeTests.swift",
+      "sha256": "689ca0fbf57c72884d6a6cafb55a4c244f8e218e416526d20985df234225d4bc"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ProductSurfaceRuntimeTests.swift",
+      "sha256": "79897044f6d795fe8af9777c2a32c1331c1e35ad2edc90079a8ae665240d36ca"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRAuthorityDispatchTests.swift",
+      "sha256": "a4a32957d5e9280823a05c950f01b282a3f28b3936422c0a0ba19991658986dd"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRAuthorityTests.swift",
+      "sha256": "e3a44ad5f9c9bf60a9120ce2d07774c3f0329ea989f1c26646ac48ae97fb34cd"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRBoundaryTests.swift",
+      "sha256": "7fe61145900efdec9b00febd1aea0b6bc1a7cb7be68faabe2469510a2680c07d"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRDeferredCapacityTests.swift",
+      "sha256": "efe897be7f70aad135b8a54b8d3d1282299a1c9c845974d745e6127adebff8b1"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift",
+      "sha256": "4048b187575e9f17d0279d54138067fa606238d0bd9eaa7a89c9d9850eabc5ff"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRHTTPJSONCausalityTests.swift",
+      "sha256": "514f5d8da1c1c9caf24fc7d4731e61ddcb1a73d29f17d7e90a2dc5fe1342bdde"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRHTTPJSONObservationTests.swift",
+      "sha256": "365f97b777151ee6d9fbb8312be393ab93bdb97e06b8333ce090e8b56de55f6c"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRHostReceiptTrustConfigurationTests.swift",
+      "sha256": "596159c5ac937cc7158febed9e6e03167e7f4fce2abb26c79eada3363c0fa14f"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRIntegrationTests.swift",
+      "sha256": "fd3da777a42c66f6ead1bb80eb003cbfe99d3a9611adf62cccdd9d0cbfd3156e"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRInvocationBindingTests.swift",
+      "sha256": "cbf84557608f4d39f470ebffebe2dfcb27e658f4169665d9cffc2d303d961950"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRInvocationIsolationTests.swift",
+      "sha256": "b84fb7e02058d5c659ff9e0e36bf5de2b51d6fecdf51b6be4f8713e974be9592"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRInvocationJournalTests.swift",
+      "sha256": "670fd340dc1c3fea9e205a5ec810cd01d2afd265006601250f1dee93b6caa5c0"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRNoOutputTests.swift",
+      "sha256": "7b5d0ecab731334d27d908757051101546edb60ba783a7af9a58400e3df50719"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift",
+      "sha256": "51ebfb614f2547fbae3a964c42a8c78ae3e8528b62eba3ca9632318c6ed85806"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRProductionReceiptTrustTests.swift",
+      "sha256": "e97c3cb1f125dcc803a77673abd5db716a39be27e84d1640ab1ca2e93adc2561"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRProvisionedReceiptTrustTests.swift",
+      "sha256": "85f1d47c6f411a0998e72e3684e8d1575f3cd8ae87e5ad57d4d01bee9ed758c8"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRProvisionedSignerTests.swift",
+      "sha256": "f7f4b30fbad2de42686ba9e3c41e8bdcae08730f88c4f116bccea92f8f9e6f57"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRReceiptTrustGapTests.swift",
+      "sha256": "cdd7357eb8bc7019aa746823cec9cf559fa4c3419cff8e8da23992e848509d5a"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRReceiptTrustReconciliationTests.swift",
+      "sha256": "6e1106c37d0812ad551b50f7a5586ed3a4a4eec4171f328748cebb038845f275"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRReceiptTrustStructureTests.swift",
+      "sha256": "3f4630b149042ab02584b16fc0efef6ecd29facf0a5833501ce224ebe549443b"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRReceiptTrustTests.swift",
+      "sha256": "5f369474c9d4ae28a18a73e72c7dac712318b460b5982339a2490e611db473c3"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRSigningLifecycleTests.swift",
+      "sha256": "4d5c97294a0e591d36083eee726f008a6c2948d2695a1ae8eb068589ee71e6c4"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRStructuredObservationTests.swift",
+      "sha256": "3547e2cf1e0b34aec45c4e79b47f0551390031737fbc8e1b19818961e06afb73"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRTests.swift",
+      "sha256": "0ad24107def44b49ca06d81cd07b417b6e0193855c9cd826befc440e7ee1708e"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRUnaryAdmissionTests.swift",
+      "sha256": "f4fa21a2898b5635c35580a01f61ff64505054ac4a87f34aa6efce6844297fb7"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RCIRUnitCompletionTests.swift",
+      "sha256": "66086fd65a05d8d1cccc57b786ab9bcb8df9e4989d3690b892fa87e126bfc46c"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/RuntimeIdentityCompatibilityTests.swift",
+      "sha256": "19f78cdfdcc620340ed017c09f29c07300679d68897c4546071ad7916123a7a2"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/SemanticPreflightFixtures.swift",
+      "sha256": "ff60f7705cdfc6471288c3e376a117ac8432a2d2150e311d7acae9e44c86b602"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ServiceContextTests.swift",
+      "sha256": "9a24b4e4dab44a81932cd6e8f0fa9403c605a8bddb7150008bde771cf51615f2"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ServiceOutcomeTests.swift",
+      "sha256": "3e1d723ad3b5722ccf81d731b6620bbf68ed618327afa51b84b2b05f70c5e131"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ServiceRTFUnicodeTests.swift",
+      "sha256": "4c00711aa00bbb7015e1fc0b6bc861f58b537d6f9a2945e6532c069d9d0104ae"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/SharingExecutionTests.swift",
+      "sha256": "e73c24ee17a439481929b894fd2d8344c7c19ce3e19288ea2994bcb8bfa0b5f4"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/UniversalReflectorContractTests.swift",
+      "sha256": "ad66f5a775aaf3d639d1af9d28176a5c057a63c1ef821064c2944b1fcfd82caf"
+    },
+    {
+      "path": "Tests/RightClickCoreTests/VerificationIntegrationTests.swift",
+      "sha256": "8c18674a6691b717869a051816808878599982bc66d5002e35c79c766f8f64b6"
+    },
+    {
+      "path": "Tests/RightClickMCPTests/FederationTests.swift",
+      "sha256": "74488a082a200b9a54c46294285a2aab5b9d4e203abe5863c10b596330f82b59"
+    },
+    {
+      "path": "Tests/RightClickMCPTests/MCPInitializationCompatibilityTests.swift",
+      "sha256": "c9519a1804d1a919aa20f0249c56d4a8f3b985c731be8ec8b6af00f559ddd0e8"
+    },
+    {
+      "path": "Tests/test_rcir_authority_receipt_verifier.py",
+      "sha256": "fef07c19fb63e7aa0385267b4d66b199c1919bc4cff0c1e4aa32ed8cbb68c83f"
+    },
+    {
+      "path": "Tests/test_rcir_credential_echo_receipts.py",
+      "sha256": "1df1f8048f05fb4a321102286ab4664a655151755cfe31d6d29f39df61199666"
+    },
+    {
+      "path": "Tests/test_rcir_receipt_trust.py",
+      "sha256": "e58a0711095220dcaa53161558084e7c3578406fd1f2531fa16466bc1b794ae5"
+    },
+    {
+      "path": "Tests/test_rcir_receipt_verifier.py",
+      "sha256": "57322691b328693d3774cad3e349b83a78c6e489fd9a09c36d1de3c146e2fc90"
+    }
+  ],
+  "otherSevenPackagedInputsUnchanged": true,
+  "sharedProcessBodyChange": "Windows environment assignment only; original admission/timeout/arguments/stdin/stdout lifecycle unchanged",
+  "genericPrimitive": "Canonical ASCII Windows environment names; duplicate case identity and embeddedNUL values denied; exact Path key supplied explicitly empty unless host-selected context grants one bounded directory",
+  "nativeRegression": "Same fixed PE and UTF16argv; controlled parent PATH; exact empty/System32/empty flags+counts+digests; no inheritedsentinel component; original-match compares expected authorized identity; actual parent restored; rawvalues never printed",
+  "historicalNativeRedPeer": "9d7ecb5ae9451e9009dfebbe93586cb4f7437822183eb8aca111d2f57038debe",
+  "productionRepairNativeGreen": false,
+  "allElevenClaimed": false,
+  "bundleSHA256": "d19a303e2c88f55c5a7a51dae46b4a8fa6082ef8432524b16c554c47214bd063"
+}

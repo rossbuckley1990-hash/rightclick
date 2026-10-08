@@ -1,0 +1,37 @@
+{
+  "signature": "VALID",
+  "algorithm": "Ed25519",
+  "trustedKeyMatched": true,
+  "payloadBytes": 5835,
+  "signedClaims": {
+    "taskID": "3ADF88CF-08C6-475C-A4F1-A108E613C6D4",
+    "leaseID": "2BF9DCB2-C626-4CA2-857C-A7D90BBF02C4",
+    "providerGeneration": 1,
+    "phase": "completed",
+    "semanticOutcome": "succeeded",
+    "scopeCount": 1,
+    "effects": [
+      "write"
+    ],
+    "authority": {
+      "grantID": "076874D3-ECE2-44EB-8A5A-63B11E2E3A88",
+      "issuer": "issuer:host",
+      "subject": "agent:bob",
+      "audiences": [
+        "runtime:proof"
+      ],
+      "ancestorGrantIDs": [
+        "827F47F5-0EEB-4EEE-B0C6-EFECDA9A2CFE"
+      ],
+      "ancestorSubjects": [
+        "agent:alice"
+      ],
+      "invocationLimit": 1,
+      "delegationDepth": 0,
+      "argumentSHA256": "051d70c384aed5d90484a0e3eac05e1da59022428cbcccc8dc8245e1f04d5672",
+      "ancestrySHA256": "544e08fca2f5c6a8021ef6dd898b182e981ea031a63347f461165550ba274870"
+    }
+  },
+  "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+  "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+}

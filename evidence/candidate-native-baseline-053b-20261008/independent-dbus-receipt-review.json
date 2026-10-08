@@ -1,0 +1,112 @@
+{
+  "actualBinarySHA256": "bd93dd7fb14ff96bc595f034a25837ce9464b8c45a8cd4168d0abc2c10b19a46",
+  "actualRuntimeVersion": "0.2.3",
+  "apiZIP_SHA256": "510fbf443e2c56a39c2420d67261ec9f5962cb57cd23856dccb4bf3c74667334",
+  "artifact": 11548061820,
+  "attempt": 1,
+  "closedPayloadCount": 21,
+  "coreOperationsExactAndStable": 7,
+  "cryptographyVersion": "50.0.2",
+  "defaultSessionTypedArrayLiteralStringsPreserved": true,
+  "freshIndependentlyVerifiedDurableStoreObservations": 2,
+  "head": "053b6202df504ff1a33682a39f2e72a959f65983",
+  "independentDecoderSourceSHA256": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966",
+  "job": 113288937064,
+  "kernelUIDBusPolicyRolesVerified": {
+    "authentication": "EXTERNAL",
+    "directOppositeRoleCalls": "BOTH_ACCESS_DENIED",
+    "observer": 1101,
+    "service": 1102,
+    "writer": 1100
+  },
+  "limits": [
+    "Six receipts are separately harness-pinned; no external issuer or delegated-authority envelope is present.",
+    "Four journal rows are ingress dispatches; only two matching fresh observer records establish durable Store effects.",
+    "Old-marker rejection is a new-task causality check, not reuse of the same authority lease.",
+    "Intermediate no-record snapshots at confirmation/policy denial are source-asserted but not separately exported; final dispatch sequence is independently closed.",
+    "Actual record file bytes are not exported; independent kernel-separated observer journal and signed input digest are retained.",
+    "Still-callable old unique connection during withdrawal is a successful source-pinned harness assertion without a separately exported direct-call packet.",
+    "Executable bytes and compiler input snapshots are not retained by this artifact; hash matches runtime attestation and runner binary hash.",
+    "No fresh installed package, full Linux runtime or complete eleven-substrate acceptance is claimed."
+  ],
+  "nativePrimitiveTests": {
+    "failed": 0,
+    "passed": 13,
+    "skipped": 0,
+    "uniqueFinished": 13,
+    "uniqueStarted": 13
+  },
+  "nativeUnitCompletionUnverifiedWithoutFabricatedValue": true,
+  "negativeConfirmationPolicyTranscriptAndNoExtraStoreDispatch": true,
+  "noEffectACKUnverified": true,
+  "oldInvocationMarkerDetectedAsFailure": true,
+  "run": 37770595520,
+  "separateFixtureProvisionedPublicPinSHA256": "3eefef96ed4e73703d6fd90d6daa09720d7835b4086beec71ea3fe5a85c576cc",
+  "sourcesTree": "9716cb182db859368f47b603137189d3b257ca43",
+  "storeDispatchJournalRows": 4,
+  "uniqueSignedReceiptsVerified": [
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "e2a168127da05a4444db6b579e31613f4a0e91a1b5888dbf73c3f5f681b1d706",
+      "phase": "completed",
+      "providerGeneration": 1,
+      "role": "unit",
+      "semanticOutcome": "unverified",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "02dddabb1cd3f3dc758f02efbb99b9ad29e96e63a07cab40484be66cc53ba839",
+      "phase": "completed",
+      "providerGeneration": 2,
+      "role": "freshStore",
+      "semanticOutcome": "succeeded",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "6dd963c80a1f7cad0baf83d970fe45578db86f4d7c608690f44959778da9c3c9",
+      "phase": "completed",
+      "providerGeneration": 2,
+      "role": "noEffectACK",
+      "semanticOutcome": "unverified",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "e62bc46fbc25d32b70502c1e1430aed5d3defdd5bf3da15e30797c8c88879ae3",
+      "phase": "completed",
+      "providerGeneration": 2,
+      "role": "oldMarkerReplay",
+      "semanticOutcome": "failed",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "d983b832876b20d780b77eaa2ec1510e81851e9e2f72476f091fc826cbf6ce7c",
+      "phase": "completed",
+      "providerGeneration": 3,
+      "role": "restoredStore",
+      "semanticOutcome": "succeeded",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "8481d0e27f0abbb0a5a21bdc7a14b651cd2ca287fe3428bd536b6ad956a6efc5",
+      "phase": "completed",
+      "providerGeneration": 1,
+      "role": "nativeTypedArray",
+      "semanticOutcome": "succeeded",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    }
+  ],
+  "verdict": "INDEPENDENT_FINAL_SOURCE_NATIVE_LINUX_DBUS_SCOPED_GREEN",
+  "withdrawalRestorationGraphAndReceiptBindingsChanged": true,
+  "wrongBooleanChallengeAbsentFromDispatchJournal": true
+}

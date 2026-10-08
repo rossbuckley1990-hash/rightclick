@@ -1,0 +1,340 @@
+{
+  "schema": "rightclick-ca896-a2a-independent-transcript-receipt-journal-v1",
+  "head": "ca8965f275cd452d21c70ddb3b0ab0d5c5279db6",
+  "SourcesTree": "e22a81b4e6af0672b077597768a694e6dc478e72",
+  "run": 37797019836,
+  "artifact": 11559358054,
+  "authenticatedZIP": "11bda6fd6177c9cb98ec195e92f2ce831b612fbae36714977edbb4f1e145f808",
+  "closedPayloads": 57,
+  "transcriptEntries": 32,
+  "canonicalToolCalls": 29,
+  "exactCore7DefinitionsBeforeAfter": true,
+  "pendingWithoutTerminalReceipt": true,
+  "publicTaskHistory": [
+    {
+      "label": "success",
+      "pendingStatusRows": 5,
+      "finalState": "succeeded"
+    },
+    {
+      "label": "mismatch",
+      "pendingStatusRows": 5,
+      "finalState": "failed"
+    },
+    {
+      "label": "missing",
+      "pendingStatusRows": 4,
+      "finalState": "accepted"
+    }
+  ],
+  "publicReceipts": [
+    {
+      "label": "success",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "taskID": "4B8EAC39-6127-4E7A-892F-769E5CD3BC9C",
+      "leaseID": "5751B612-5A78-4CA1-8657-738B577D622A",
+      "outcome": "succeeded",
+      "signedMessageSHA256": "ff78cf704660e4fa79c70b6f1a1388704b98038ef8c1cd2f38677a79c20ece45",
+      "envelopeSHA256": "8bf61d53b211a054cc77d7def0fa3b5e85964510d1a23bdcd5777e9175d4c1a6",
+      "authorityEnvelopePresent": false
+    },
+    {
+      "label": "mismatch",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "taskID": "7E3466C6-ABDC-4FB7-82DE-BED3F16A607C",
+      "leaseID": "B05629BD-2E7E-4697-8702-5E57A0D0A071",
+      "outcome": "failed",
+      "signedMessageSHA256": "dc9ec417e4adcbdec9821ad7e7fc4294ceab732a426592cf6607f0f7eef476fe",
+      "envelopeSHA256": "7d06498c2789d7c91e31a244bb2a719db5899e0383bc7e43a78e821fa2939653",
+      "authorityEnvelopePresent": false
+    },
+    {
+      "label": "missing",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "taskID": "7E11E4C1-5468-410D-9C7E-95ED13E6CD01",
+      "leaseID": "215A3ED8-45E2-4A95-A1B1-BEF9F1EEF34C",
+      "outcome": "unverified",
+      "signedMessageSHA256": "c29628cbc35e0ae8a8e6da8aebbacaf210ea56a655dd7753cca4890f46b0d9d6",
+      "envelopeSHA256": "10f363ac1d999c97dc1c70528a8b02494c047dee94f49b8d167eedd38f1a9b8a",
+      "authorityEnvelopePresent": false
+    }
+  ],
+  "admittedDelegatedRequests": 3,
+  "statusCalls": 17,
+  "providerPollJournalRows": 17,
+  "effectJournalRows": 2,
+  "observerJournalRows": 2,
+  "successExactChallengeMessageObserved": true,
+  "mismatchDifferentEffectObserved": true,
+  "missingEffectNoExportedEffectOrObservation": true,
+  "confirmationAndPolicyCallsDoNotAddDelegatedRequests": true,
+  "liveA2ACapabilityAndProviderRemovalObserved": true,
+  "nativeRuntimeRecordCases": [
+    {
+      "case": "-[A2ARealLifecycleTests testAcceptedAndCompletedTaskWithMismatchedEffectFailsWithSignedReceipt]",
+      "recordCount": 8,
+      "initialState": "started",
+      "finalState": "failed",
+      "recordsSHA256": "4bcdd83299e5b36d87df204b71adb11a581a43dc06e595ee351fc97683f4d45f",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "failed",
+      "phase": "completed",
+      "taskID": "0AC5F5D3-0156-4634-A88B-6BDA36928394",
+      "leaseID": "F21A4DEE-8F73-4567-B100-91B170F40710",
+      "separatePublicPinSHA256": "f1778ee17a1c665a468d24e161f028123bc9f47f344cf987906ac1fcfeefc4d2",
+      "authorityEnvelopePresent": false,
+      "exportedJournals": [
+        {
+          "name": "effects.jsonl",
+          "rows": 1,
+          "sha256": "77160a0e263041c5e13b5b65f615a69685cd13977737458dc5ca8b01842bd7e4"
+        },
+        {
+          "name": "observation-attempts.jsonl",
+          "rows": 1,
+          "sha256": "3edd4ee809ffb8f79301d9fd26f9d133840a43a5645007cedd22d78b933f7f4f"
+        },
+        {
+          "name": "observations.jsonl",
+          "rows": 1,
+          "sha256": "03507bd691708e0aae85fd9a9116ef89f092b2e223190bd0bbaccb84751d500a"
+        },
+        {
+          "name": "polls.jsonl",
+          "rows": 7,
+          "sha256": "2dbe3ef101971fa6c68a2aa336cb8ab1acbc13b2155505013ba9150e9cec9c38"
+        },
+        {
+          "name": "requests.jsonl",
+          "rows": 1,
+          "sha256": "45c30c9d60c27729125b4e11f587d75692da94b908f7fbe8eeb6b27f6a826838"
+        }
+      ]
+    },
+    {
+      "case": "-[A2ARealLifecycleTests testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation]",
+      "recordCount": 8,
+      "initialState": "started",
+      "finalState": "accepted",
+      "recordsSHA256": "5ab90b74d45c6b7825ef9f4426b276089dd945e13d53ad9f82235e99e30a6687",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "unverified",
+      "phase": "completed",
+      "taskID": "E91388BF-C629-42CD-86FC-CF3E27860952",
+      "leaseID": "1EB6C81E-1A13-474E-A88C-6F35A28AA8F0",
+      "separatePublicPinSHA256": "20d736d719d2e91fd14f979cd9d366c2d3854a8f7e3daabef1e8ba8c5e6c37b7",
+      "authorityEnvelopePresent": false,
+      "exportedJournals": [
+        {
+          "name": "observation-attempts.jsonl",
+          "rows": 1,
+          "sha256": "71a0a18dd38d95b405b66f79ea3f62ab526642a6d3654a2e323185c2f15cd786"
+        },
+        {
+          "name": "polls.jsonl",
+          "rows": 6,
+          "sha256": "442295f2b2397e120466efcb28f12f9742add4f0f50bb6484b5b1f0fad5dcb34"
+        },
+        {
+          "name": "requests.jsonl",
+          "rows": 1,
+          "sha256": "64b96a24a489e55afd3820cadea3fa0263ad84414078fc3a8381ece822e6507a"
+        }
+      ]
+    },
+    {
+      "case": "-[A2ARealLifecycleTests testCompletedWithoutIndependentEffectRemainsUnverified]",
+      "recordCount": 7,
+      "initialState": "started",
+      "finalState": "accepted",
+      "recordsSHA256": "a29896e1c845b46c930f7b2dec58ff5768beb67b78d5a9ffb876a270efcf523a",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "unverified",
+      "phase": "completed",
+      "taskID": "E1F0735A-1D9A-4AD7-94AA-B377CD78E0C5",
+      "leaseID": "FC813826-0B80-4192-84D1-0CB123A0B99C",
+      "separatePublicPinSHA256": "88679eb5c0dfccdcca5a424baa119500728241f3e80173aa61dff671ca997ded",
+      "authorityEnvelopePresent": false,
+      "exportedJournals": [
+        {
+          "name": "observation-attempts.jsonl",
+          "rows": 1,
+          "sha256": "0309475c2cbd62385ce36e3bf060a1538a2e62a2f9616a91cba6cf1f7b7b6fa8"
+        },
+        {
+          "name": "polls.jsonl",
+          "rows": 6,
+          "sha256": "ca3349ff9946fad5366462b9f0b3149494803bf69935c4db36ef1d3044c5bb28"
+        },
+        {
+          "name": "requests.jsonl",
+          "rows": 1,
+          "sha256": "e419517c5f0213a36ba8853ab3c90e90be2772f7f0fc0139efe6d1b820f9e552"
+        }
+      ]
+    },
+    {
+      "case": "-[A2ARealLifecycleTests testDeadlineIsUnknownWithoutRetryingOrFabricatingCompletion]",
+      "recordCount": 2,
+      "initialState": "started",
+      "finalState": "unknown",
+      "recordsSHA256": "2c36d6401ec8820844f3f54aa4de5f83cd6b8f9e64795a2e188e7c0b61455fe4",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "unknown",
+      "phase": "unknown",
+      "taskID": "F9B4403E-D6A0-4217-88C5-28F7DEDBC911",
+      "leaseID": "C2B42535-8B2B-4A2E-BD61-5AE22BC57FC9",
+      "separatePublicPinSHA256": "724327b79756eaa2bb744a301d7ce089002fe489140740987dcedda215d3c929",
+      "authorityEnvelopePresent": false,
+      "exportedJournals": [
+        {
+          "name": "requests.jsonl",
+          "rows": 1,
+          "sha256": "9fc9e8c956521c1f12338836e4506698df163224a23081261ff0f91ebdc2d883"
+        }
+      ]
+    },
+    {
+      "case": "-[A2ARealLifecycleTests testGenuineDelegationObservesEffectAndSignsTerminalReceipt]",
+      "recordCount": 7,
+      "initialState": "started",
+      "finalState": "succeeded",
+      "recordsSHA256": "9691b362d70cf633fead4fafcf1ee14a35fc7de453a85dbd5e85cf2da1fb7a79",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "succeeded",
+      "phase": "completed",
+      "taskID": "7A2F0205-F385-4592-AB05-C7DCC2D12643",
+      "leaseID": "3704B9FC-1F52-4869-9F78-ABF399929929",
+      "separatePublicPinSHA256": "19d40de5a6b365510e3b83333b420d9d189177712df7f494e39e388081f33a56",
+      "authorityEnvelopePresent": false,
+      "exportedJournals": [
+        {
+          "name": "effects.jsonl",
+          "rows": 1,
+          "sha256": "6bfb44f6f99c3067eb2070e8c3503664a734ae101cfca129a8969a4d7c5a475c"
+        },
+        {
+          "name": "observation-attempts.jsonl",
+          "rows": 1,
+          "sha256": "a24ca9563d22b795dac81ee5e988b2bc04ec5aa6a5747919dcf8743c53425794"
+        },
+        {
+          "name": "observations.jsonl",
+          "rows": 1,
+          "sha256": "3dbf2b18b7b404dd1e3e6a9d5cc475965605a890f59e5653f523e2cc8650c619"
+        },
+        {
+          "name": "polls.jsonl",
+          "rows": 6,
+          "sha256": "5ecdb19fb1be65d0207103c6ed6a73d9b6ecff7f76ff24b58eb8da259cfdb469"
+        },
+        {
+          "name": "requests.jsonl",
+          "rows": 1,
+          "sha256": "e35da7a6180769b18e184ae20c3dc9142d43f83081000939b56c327fd6e940df"
+        }
+      ]
+    },
+    {
+      "case": "-[A2ARealLifecycleTests testPolicyAndConfirmationDenialsHaveZeroDelegatedEffects]",
+      "recordCount": 2,
+      "initialState": "awaiting_user",
+      "finalState": "rejected",
+      "recordsSHA256": "18444be03ead0f2d7b429b1fa546e9039854dc97d3afd1e27396fb4a4694557f",
+      "exportedJournals": []
+    },
+    {
+      "case": "-[A2ARealLifecycleTests testPolicyRevocationDuringTaskCannotBeSilentlyIgnored]",
+      "recordCount": 2,
+      "initialState": "started",
+      "finalState": "unknown",
+      "recordsSHA256": "3fa67628658ce35e636d793bd4753d08468791b54cc8d1feb733293b82a4f0e4",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "unknown",
+      "phase": "unknown",
+      "taskID": "75E645AF-B9EC-48CF-8911-1E6F997D00E8",
+      "leaseID": "CA1B779E-DF2A-4A57-BAC4-D03CBEF16865",
+      "separatePublicPinSHA256": "826ab57578c3cf6f39e24954666f5290cbf1e546e89b24a08ab081c4714bf2da",
+      "authorityEnvelopePresent": false,
+      "exportedJournals": [
+        {
+          "name": "requests.jsonl",
+          "rows": 1,
+          "sha256": "9fb59097b70907c1c09394befe9830d325175a630708ea59abaa407b63329980"
+        }
+      ]
+    },
+    {
+      "case": "-[A2ARealLifecycleTests testProviderDisappearingMidTaskIsSignedUnknownWithoutReplay]",
+      "recordCount": 2,
+      "initialState": "started",
+      "finalState": "unknown",
+      "recordsSHA256": "c54247f17d30d36b0b5460960e4d9823fd86e71a4453b5a85754b6e6b37275bb",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "unknown",
+      "phase": "unknown",
+      "taskID": "C4DA0DE9-D15A-448B-9778-995F3785BFC5",
+      "leaseID": "D4DDE144-1DDD-498F-A686-F4654E95E352",
+      "separatePublicPinSHA256": "b327873d2a28664d8a3b5a6bf0dc6268ede070b6a27545d6008750584b8f0ad7",
+      "authorityEnvelopePresent": false,
+      "exportedJournals": [
+        {
+          "name": "requests.jsonl",
+          "rows": 1,
+          "sha256": "52dfc9790ad94a59f3ae0ca8bb17cb56398686fc121466cc28a8e4804a2d4fb3"
+        }
+      ]
+    },
+    {
+      "case": "-[A2ARealLifecycleTests testRemoteTaskFailureCannotBecomeSemanticSuccess]",
+      "recordCount": 9,
+      "initialState": "started",
+      "finalState": "failed",
+      "recordsSHA256": "52420c52ffb4d9989f7e883ba8eeae2779f46ccc4de1ed9f128ee9136e87205c",
+      "signature": "VALID",
+      "trustedKeyMatched": true,
+      "outcome": "unverified",
+      "phase": "failed",
+      "taskID": "CD1C7938-6F23-4314-A1D5-5D406119EE84",
+      "leaseID": "51A7D738-172A-4691-8299-7C9F9E668370",
+      "separatePublicPinSHA256": "43a0b0fc5e59b127913a2bba59cf5b7d2f21d0540387ab5575b946b935557f21",
+      "authorityEnvelopePresent": false,
+      "exportedJournals": [
+        {
+          "name": "polls.jsonl",
+          "rows": 8,
+          "sha256": "63abd53db221abe1cb3d37e1fd06f87e224c935effc7b46ade3da07550811ce8"
+        },
+        {
+          "name": "requests.jsonl",
+          "rows": 1,
+          "sha256": "349684b0db8ece506fda0b5237d6d344619266eaf16d75a294b3208f58bbf791"
+        }
+      ]
+    },
+    {
+      "case": "-[A2ARealLifecycleTests testUnpinnedIndependentObserverFailsBeforeDispatch]",
+      "recordCount": 1,
+      "initialState": "rejected",
+      "finalState": "rejected",
+      "recordsSHA256": "dc9634c90e2222b232aa87c6ae6e7fff9b9e62ce95a8dd9ced065d4c29df2c62",
+      "exportedJournals": []
+    }
+  ],
+  "independentlyDecodedNativeTerminalReceipts": 8,
+  "receiptDecoderSHA256": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966",
+  "publicSeparateHarnessPinSHA256": "5209a84430f5b02efb1a796e57e0c2f5e9794495139abfb456d4bc3d1e4f9288",
+  "runtimeReportedVersion": "0.2.3",
+  "runtimeReportedBinarySHA256": "4266bf3c536fcd7a1db092a061678035391af7cb219d5621a4b434b50ca2cbb3",
+  "scope": "Authenticated real Core7 engineering-client lifecycle and independently decoded typed signatures; separate agent/observer journals bind exact admitted challenges, invocations and effects. No external issuer downscoping, executable/compiled-input bytes, durable effect-file bytes, fresh installed runtime or restricted fresh-agent all11 claim. Native record coverage is not relabelled as a complete suite inventory. Absent native journals do not independently establish absence of effects."
+}

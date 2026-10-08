@@ -1,0 +1,56 @@
+{
+  "auditor": "strict Python canonical decoder plus independently pinned Ed25519",
+  "externalTruth": "fixture journals, separately from signature",
+  "results": [
+    {
+      "case": "-[RCIRSigningLifecycleTests testSamePathKeyRotationDoesNotSignWithRetainedOldKey]",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "requests": 1,
+      "realEffects": 1,
+      "signedWithOriginalKey": true,
+      "originalKeyShouldRemainCurrent": false,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature]",
+      "state": "unknown",
+      "outcome": "unknown",
+      "requests": 1,
+      "realEffects": 1,
+      "signedWithOriginalKey": true,
+      "originalKeyShouldRemainCurrent": false,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testUnchangedProvisionedSignerSignsGenuineEffect]",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "requests": 1,
+      "realEffects": 1,
+      "signedWithOriginalKey": true,
+      "originalKeyShouldRemainCurrent": true,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown]",
+      "state": "unknown",
+      "outcome": "unknown",
+      "requests": 1,
+      "realEffects": 1,
+      "signedWithOriginalKey": true,
+      "originalKeyShouldRemainCurrent": false,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect]",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "requests": 1,
+      "realEffects": 1,
+      "signedWithOriginalKey": true,
+      "originalKeyShouldRemainCurrent": false,
+      "unsignedReceiptPresent": true
+    }
+  ]
+}

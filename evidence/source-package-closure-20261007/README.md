@@ -1,0 +1,5 @@
+Candidate source packaging repair at bd5ed53f02c5cf76fc35796e665ef2c076296dd2. The original unpublished archive omitted six existing subprocess fixtures referenced by its shipped Tests target. The repaired packager includes the Git-tracked scripts and helper closure, retains executable modes and excludes untracked script canaries. All 72 archived scripts match current source bytes.
+
+The existing source inventory omitted configured A2A, Kubernetes resolver, Linux D-Bus resolver and D-Bus session discovery; four composition checks now inventory those already-present paths. The local source asset detects all 21 kinds, with repeat SHA256 6844032159291d2cfb2b70d3a0a0ab3b70f294310a29803fe9ee82a854811325. This is packaging/source inventory evidence; it does not establish native runtime support for every kind.
+
+The comparison tool labels its explicit local asset as a published bottle in its canned message. No asset was published: these bytes are an isolated unpublished packaging check. Public Homebrew formula and accepted 0.2.2 source/bottle pins are unchanged. Repeat the archive and native/fresh-install gates from the final reviewed source before publication.

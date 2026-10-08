@@ -1,0 +1,109 @@
+{
+  "actualGreenDescriptionGeneratedInputsWorkspaceAndTestExecutableIndependentlyMatched": true,
+  "caseStates": {
+    "green": [
+      {
+        "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testEmptyExistingMarkerWaitsForCompleteDecimalPort]",
+        "state": "passed"
+      },
+      {
+        "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testEmptyMarkerFailsWithinUnchangedBoundInsteadOfInventingReadiness]",
+        "state": "passed"
+      },
+      {
+        "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testExitedChildCannotPublishReadiness]",
+        "state": "passed"
+      },
+      {
+        "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation]",
+        "state": "passed"
+      },
+      {
+        "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted]",
+        "state": "passed"
+      },
+      {
+        "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr]",
+        "state": "passed"
+      },
+      {
+        "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testZeroOversizedAndNonDecimalMarkersCannotBecomePorts]",
+        "state": "passed"
+      }
+    ],
+    "red": [
+      {
+        "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr]",
+        "state": "failed"
+      }
+    ]
+  },
+  "currentGreen535DiskBytesModesAndGitBlobsIndependentlyMatched": true,
+  "limitations": [
+    "Selected native class proof only; final composed full suite and new exact-head CI remain required",
+    "Sparse3617 excluded paths are evidence/media only; all535 materialized inputs and compiled repository modules are closed",
+    "External dependency source-cache bytes not individually rehashed",
+    "Historical RED input disk is represented by original before/after snapshots plus Git blobs and frozen executable/description; current disk is GREEN",
+    "Natural runner exit is owner-observed metadata with terminal matching native suite log, not a new reviewer execution"
+  ],
+  "ownedReadinessAndStderrDirectoriesAfterCompletion": 0,
+  "productionSourceUnchanged": true,
+  "productionSourcesTree": "9716cb182db859368f47b603137189d3b257ca43",
+  "publicLedgerPrivacyTruth": "CLEAR",
+  "redAndGreen": {
+    "green": {
+      "coreSwiftInputs": 71,
+      "coreTestInputs": 110,
+      "descriptionSHA256": "941768b9e93f417533eced550eb87a70def01751e5dcaa462ab26ff8121b5a2f",
+      "frozenExecutable": {
+        "bytes": 54675656,
+        "name": "rightclick-mcpPackageTests",
+        "sha256": "0402c8610220963a1c8fae91a68332f53f6a1342f05dfa8ef8d03918eca4d247"
+      },
+      "head": "1d4fb7a7156ebe83b4d85215d43056b5c4effab8",
+      "materializedGitInputs535BeforeAfterIdentical": true,
+      "nativeClosureSHA256": "3d10ea7320822b6b5ca0dcbd57fd058d036c7fa3be5ca1b767153c5985a84157",
+      "rawLogBytes": 3864,
+      "rawLogSHA256": "8cdb07e99eedb0a722bf6fc3a67a06db26be667a82be7c0f345a96cfce78b032",
+      "reportedNaturalExit": 0,
+      "sourceBoundCompiledModules": 12,
+      "sparseExcludedEvidenceMedia": 3617
+    },
+    "red": {
+      "coreSwiftInputs": 71,
+      "coreTestInputs": 110,
+      "descriptionSHA256": "941768b9e93f417533eced550eb87a70def01751e5dcaa462ab26ff8121b5a2f",
+      "frozenExecutable": {
+        "bytes": 54675656,
+        "name": "rightclick-mcpPackageTests",
+        "sha256": "4c7dd2d729c048b1557c07dd032aa8054151b3f7c866406eaa44478aceade1f5"
+      },
+      "head": "36bbb8422c055e4b719db178644a88442db49584",
+      "materializedGitInputs535BeforeAfterIdentical": true,
+      "nativeClosureSHA256": "43e1eee7aba0fc5c7d67ce2b84c210f7a3b9bb3c672728b1e0748dab02846827",
+      "rawLogBytes": 161164,
+      "rawLogSHA256": "75d867f2731a1048fb6ad1865dc0695fe60ebf53031c0005cbd0882bbc18989b",
+      "reportedNaturalExit": 1,
+      "sourceBoundCompiledModules": 12,
+      "sparseExcludedEvidenceMedia": 3617
+    }
+  },
+  "reviewedFixHead": "1d4fb7a7156ebe83b4d85215d43056b5c4effab8",
+  "reviewedLedgerSHA256": "beb3b2de30ab1931673335e4bca27c4d79a2c09758c9cb3a4832b9e2cbe931f6",
+  "schema": 1,
+  "securityBounds": {
+    "boundedReadBytes": 65537,
+    "controlledStartupDelaySeconds": [
+      0.0,
+      0.25
+    ],
+    "independentDiagnosticObservationSeconds": 3,
+    "ownerDirectoryMode": "0700",
+    "ownerFileMode": "0600",
+    "readinessSeconds": 0.1,
+    "retainedPrefixExactBytes": 65536
+  },
+  "sevenMethodNamesAndOriginalAssertionExpressionsPreserved": true,
+  "sourceReviewSHA256": "78b4a8671a7c69034fbabc013c5fe8a910b3d5a2416e2d910a7afffc4934580b",
+  "verdict": "PASS_SCOPED_ACTUAL_NATIVE_READINESS_DIAGNOSTIC_TIMING_RED_GREEN"
+}

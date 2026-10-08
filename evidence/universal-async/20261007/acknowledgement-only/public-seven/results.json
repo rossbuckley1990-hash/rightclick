@@ -1,0 +1,26 @@
+{
+  "runKind": "NEW_RUN",
+  "controls": {
+    "independentStructuredDigest": "PASS \u2014 distinct read-only credential/origin/process reads actual file and computes expected caller digest; complete metadata signed",
+    "signature": "PASS \u2014 separately pinned OpenSSL Ed25519 verification",
+    "confirmationPolicy": "PASS \u2014 both denials leave resource absent",
+    "noDeclaredOutput": "PASS \u2014 acquired202 ACK declaration emits no typed provider value; independently verified external file effect determines success",
+    "liveProviderRemoval": "PASS \u2014 dynamically acquired operation disappears; seven tool definitions unchanged"
+  },
+  "runtime": {
+    "executablePath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/.build/arm64-apple-macosx/debug/rightclick",
+    "executableRealPath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/.build/arm64-apple-macosx/debug/rightclick",
+    "executableSHA256": "cf86326d0f4d57373afa80d0fc64e556426d410dc736ca79fceefbaa482f4588",
+    "pid": 82975,
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "binary": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/.build/arm64-apple-macosx/debug/rightclick",
+  "binarySHA256": "cf86326d0f4d57373afa80d0fc64e556426d410dc736ca79fceefbaa482f4588",
+  "toolCountBefore": 7,
+  "toolCountAfter": 7,
+  "providerSpecificToolsAdded": 0,
+  "status": "GREEN_FOR_GENERIC_ACK_ONLY_BOUNDARY",
+  "substrateBoundary": "Actual generic HTTP fixture/process proof; native Windows/Linux effects are separately required."
+}

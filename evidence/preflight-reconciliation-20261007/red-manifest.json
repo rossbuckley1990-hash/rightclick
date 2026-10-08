@@ -1,0 +1,126 @@
+{
+  "format": "rightclick-preflight-red-v1",
+  "recoveredBaseline": "b819d4e",
+  "freshRecoveredControl": "111 tests / 16 assertion failures, real two-HTTP-provider Core7 control retained",
+  "redScriptSHA256": "8c311d3b206f70313e7850543ed89e7deb69f6ae7bd273907d2bb9a1a55132df",
+  "evidenceFiles": [
+    {
+      "path": "mounted-self-use.json",
+      "bytes": 192508,
+      "sha256": "b09641d1a34d71d021bac26507bdf95ffd7e33f7337034e8b80cb25bbbdec9dc"
+    },
+    {
+      "path": "original-recorded-command-outputs.json.gz",
+      "bytes": 33485,
+      "sha256": "bd59a6e685dbf7b0afc130ba0972b691b299cc3b9c62ded772473f473937e700"
+    },
+    {
+      "path": "recovered-original-evidence-manifest.json",
+      "bytes": 2354,
+      "sha256": "26f8dd0c1e5ef8dd663e65545bb119fc13020f98ec85ba5dad67af1ab7ca9209"
+    },
+    {
+      "path": "red-recovered/Capability.swift.gz",
+      "bytes": 4937,
+      "sha256": "6dfa18cbe836798d82a58964fa746f5afa0b2fb640baf49bd363f718c13c3669"
+    },
+    {
+      "path": "red-recovered/CapabilityEngine.swift.gz",
+      "bytes": 8148,
+      "sha256": "fc0267da576309b40a7127d61c6acb7cdac6092d98d12562772fecd06d31b54d"
+    },
+    {
+      "path": "red-recovered/ExecutionPreflightIntegrationTests.swift.gz",
+      "bytes": 1410,
+      "sha256": "afc0be94a41c76789c2a435ce711b1e6cc83268c19996bf07b1e5dbd73893482"
+    },
+    {
+      "path": "red-recovered/PolicyTests.swift.gz",
+      "bytes": 1138,
+      "sha256": "851c1d8a734df94ebb65808e4f2cfe9595d01865b39a089bd302116845aa4989"
+    },
+    {
+      "path": "red-recovered/Server.swift.gz",
+      "bytes": 5820,
+      "sha256": "1e05e080561d151c43ee18ad08131db05761eb681bd3275eb3032d7ed64def91"
+    },
+    {
+      "path": "red-recovered/baseline-controls.log.gz",
+      "bytes": 21516,
+      "sha256": "f892a31cfd440ca11b4cd658e11eabea7cea78c88f3f4543f3bde1a3027191e5",
+      "rawSHA256": "23e8cb0cbf7026dab51674771f0a1fbb364be7ebeb4746ae9261d8c526cd6159"
+    },
+    {
+      "path": "red-recovered/baseline-source.json",
+      "bytes": 19515,
+      "sha256": "7ce16f8c146af101f10e8c9c808c3f5e80c52130750fa0c1312d90ea12bda769"
+    },
+    {
+      "path": "red-recovered/frozen-acceptance-semantic-preflight.py",
+      "bytes": 14532,
+      "sha256": "8c311d3b206f70313e7850543ed89e7deb69f6ae7bd273907d2bb9a1a55132df"
+    },
+    {
+      "path": "red-recovered/pr-sweep-35-job-112703266903.log.gz",
+      "bytes": 31091,
+      "sha256": "c22aff2a7fe4123843af31b8ffbe32826fc3c688f04878d679434c72b3eb9e06"
+    },
+    {
+      "path": "red-recovered/pr-sweep-35-job-112703267229.log.gz",
+      "bytes": 30720,
+      "sha256": "4a9e3103b27610c35de8b51b72077cba3bc7e2dcce35a001e79333b0427d9ee0"
+    },
+    {
+      "path": "red-recovered/pr-sweep-39-job-112721502782.log.gz",
+      "bytes": 54217,
+      "sha256": "ba4c32cbb8ecdc2cdaa1aeae0d86cdfa638426486db5d40c126ae5605acb7afa"
+    },
+    {
+      "path": "red-recovered/pr35-source-handoff.diff.gz",
+      "bytes": 4311,
+      "sha256": "be2208a6dd040bdb3e7ccbd94f5068e40f5347cd859f143e41cc3707a63dc6bd"
+    },
+    {
+      "path": "red-recovered/pr39-source-handoff.diff.gz",
+      "bytes": 13441,
+      "sha256": "db186853a7db94d8db8a663153eedb15fe5828e3bb8c8aab74dbebef77c510f9"
+    },
+    {
+      "path": "red-recovered/public-seven/independent-readbacks.json",
+      "bytes": 276,
+      "sha256": "1650ea44467b2a57b1d38f59e7105ff088d467fb98b66659951ae74b1c6250df"
+    },
+    {
+      "path": "red-recovered/public-seven/provider-effects.json",
+      "bytes": 381,
+      "sha256": "a6fded688b9f296c9b0ad23772152d5ef15d7b8fc212e2a9b70bc4941df03162"
+    },
+    {
+      "path": "red-recovered/public-seven/provider-requests.json",
+      "bytes": 1507,
+      "sha256": "045a1fcfc25c8d38c6760bd6496f262cd372713af6fdc65b9e111e732c8a5f32"
+    },
+    {
+      "path": "red-recovered/public-seven/results.json",
+      "bytes": 2827,
+      "sha256": "bc392c69f8edb4dcea7792a9a7daa41126283a9dfff4354ae147df97da347334"
+    },
+    {
+      "path": "red-recovered/public-seven/runtime.stderr.log.gz",
+      "bytes": 20,
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "rawSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "red-recovered/public-seven/transcript.json",
+      "bytes": 525753,
+      "sha256": "e3eb9c5bb9e273290dad5d7d9f4ae4ddbf26fe8266fb06373eed9edf48e17ba8"
+    },
+    {
+      "path": "red-recovered/public-seven-driver.log.gz",
+      "bytes": 905,
+      "sha256": "87a197b8768ba588432c85b1399499e9f6805e20d02d73bfa680094541e022b2",
+      "rawSHA256": "bc392c69f8edb4dcea7792a9a7daa41126283a9dfff4354ae147df97da347334"
+    }
+  ]
+}

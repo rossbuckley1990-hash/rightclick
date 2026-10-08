@@ -1,0 +1,207 @@
+{
+  "actualBinarySHA256": "2f276b3e6bb66b615e0f0dabb68a906481c9cb368eb81356f7677ad022917493",
+  "actualRuntimeVersion": "0.2.3",
+  "apiZIP_SHA256": "a250177927ef23919bd391ef46928fe9bf9531775c14e28f08492bfa14ebb2b3",
+  "artifact": 11559801693,
+  "attempt": 1,
+  "closedPayloadCount": 21,
+  "closedPayloads": {
+    "binary-sha256.txt": {
+      "bytes": 92,
+      "sha256": "4e99e745604c1cee4e54d28f80920d7ad8eb4f63b27b8592b208f8829e4b992f"
+    },
+    "native-tests.log": {
+      "bytes": 182279,
+      "sha256": "9191dbbd16826f5c948d2e28321abdfcbaac0d238a37795eb43b35ce6cec9190"
+    },
+    "seven-core/ack-unit-receipt.json": {
+      "bytes": 10235,
+      "sha256": "2c23e3f9e5698295cc575e74d80e7750c3efc36e05f5c8c7f15c97329c69d2cd"
+    },
+    "seven-core/actual-introspection.json": {
+      "bytes": 1354,
+      "sha256": "0de519d4f8f4daad48a9bf1fb49aaadd8dab80928ce04e1a28e27d3be4eec292"
+    },
+    "seven-core/actual-introspection.xml": {
+      "bytes": 1208,
+      "sha256": "f418659c438f7728fe8b20a51d20e25b23e4ce4a6c5ac1753f7619f81fe44561"
+    },
+    "seven-core/bus.stderr.log": {
+      "bytes": 947,
+      "sha256": "ae50ef6a90795458424785363b2afbbfb11ca2ad2be37dffcdeec66f4ef77b67"
+    },
+    "seven-core/default-session/mcp.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "seven-core/default-session/transcript.json": {
+      "bytes": 42179,
+      "sha256": "67686ef567541453435efacc75777ecc9301ad46a406bb2192aa9ac2c1b9e49b"
+    },
+    "seven-core/effects.jsonl": {
+      "bytes": 497,
+      "sha256": "7e03edbc1acaf83ef18e189da32f57758d2f2bda3a7105947fcc8a04d6c75700"
+    },
+    "seven-core/mcp.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "seven-core/observations.jsonl": {
+      "bytes": 1107,
+      "sha256": "1a83a7ba95fc96d85c09a97c59533d18f87a14d69df2f1bfce21a822238993bd"
+    },
+    "seven-core/observer.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "seven-core/private-bus-policy.xml": {
+      "bytes": 1304,
+      "sha256": "d078f7784c4840068c21a4dc9ff38928861997817f38d9601bc0f97066eee702"
+    },
+    "seven-core/provider-enforced-denials.json": {
+      "bytes": 171,
+      "sha256": "e4369642620b81299ba978a75bcecac7b41932b78431bbf27fdfa53a60139805"
+    },
+    "seven-core/results.json": {
+      "bytes": 2382,
+      "sha256": "cf3e9a65d34271d5c535582266743f0161f2377339baf87f31a3f1d864faee39"
+    },
+    "seven-core/service.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "seven-core/success-receipt.json": {
+      "bytes": 12747,
+      "sha256": "0af074d946560a0d6d20af05ff104e5ae8247b5306d153ed12658a7e5e78f5b4"
+    },
+    "seven-core/transcript.json": {
+      "bytes": 200662,
+      "sha256": "ae816314eb3b26fd1660d50c3364ccfe86d6418b1243d1d52741e357950665a7"
+    },
+    "seven-core/trusted-public-key.raw": {
+      "bytes": 32,
+      "sha256": "eb91e80739774acaa41d21ca4dbbfdbc80d6c35af69da832755f3b669670f0ca"
+    },
+    "source.txt": {
+      "bytes": 41,
+      "sha256": "729e4cf239716db2425a87e01370667554ad88061cb06f6754227ccd9c387dc2"
+    },
+    "toolchain.txt": {
+      "bytes": 75,
+      "sha256": "c01ffead3c63e0960a3ae3e8a6e737e13fee8812d378e0e7e40a62f20c00f71a"
+    }
+  },
+  "coreOperationsExactAndStable": 7,
+  "cryptographyVersion": "50.0.2",
+  "defaultSessionTypedArrayLiteralStringsPreserved": true,
+  "freshIndependentlyVerifiedDurableStoreObservations": 2,
+  "head": "ca8965f275cd452d21c70ddb3b0ab0d5c5279db6",
+  "independentDecoderSourceSHA256": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966",
+  "job": 113379022186,
+  "kernelUIDBusPolicyRolesVerified": {
+    "authentication": "EXTERNAL",
+    "directOppositeRoleCalls": "BOTH_ACCESS_DENIED",
+    "observer": 1101,
+    "service": 1102,
+    "writer": 1100
+  },
+  "limits": [
+    "Later source or test changes require new source-bound D-Bus/native proof.",
+    "Six receipts are separately harness-pinned; no external issuer or delegated-authority envelope is present.",
+    "Four journal rows are ingress dispatches; only two matching fresh observer records establish durable Store effects.",
+    "Old-marker rejection is a new-task causality check, not reuse of the same authority lease.",
+    "Intermediate no-record snapshots at confirmation/policy denial are source-asserted but not separately exported; final dispatch sequence is independently closed.",
+    "Actual record file bytes are not exported; independent kernel-separated observer journal and signed input digest are retained.",
+    "Still-callable old unique connection during withdrawal is a successful source-pinned harness assertion without a separately exported direct-call packet.",
+    "Executable bytes and compiler input snapshots are not retained by this artifact; hash matches runtime attestation and runner binary hash.",
+    "No fresh installed package, full Linux runtime or complete eleven-substrate acceptance is claimed."
+  ],
+  "nativePrimitiveTests": {
+    "failed": 0,
+    "passed": 13,
+    "skipped": 0,
+    "uniqueFinished": 13,
+    "uniqueStarted": 13
+  },
+  "nativeUnitCompletionUnverifiedWithoutFabricatedValue": true,
+  "negativeConfirmationPolicyTranscriptAndNoExtraStoreDispatch": true,
+  "noEffectACKUnverified": true,
+  "oldInvocationMarkerDetectedAsFailure": true,
+  "priorReviewedHarnessScriptBytesAllIdentical": true,
+  "run": 37797019647,
+  "separateFixtureProvisionedPublicPinSHA256": "eb91e80739774acaa41d21ca4dbbfdbc80d6c35af69da832755f3b669670f0ca",
+  "sourceBoundHarnessScriptsSHA256": {
+    "acceptance-linux-dbus.py": "14111d166de07d698b77ffac362ca2e8b2eacb745638fee621172c24587e418e",
+    "canonical-mcp-proof-client.py": "adbd95214211cbfd9bce5aaab098fe15e199a122105685ddea516c4ae78f6470",
+    "dbus-private-fixture.py": "b24cbda9d8b0eb952ad866a573ce46a5879266b13fe03b1caee4fc47342e6f21",
+    "verify-rcir-receipt.py": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966"
+  },
+  "sourcesTree": "e22a81b4e6af0672b077597768a694e6dc478e72",
+  "storeDispatchJournalRows": 4,
+  "testsTree": "43f41481e19ded09e8eec098ee1bc06c70a0d91f",
+  "uniqueSignedReceiptsVerified": [
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "441fbe4cec6ca3b87e6552c3ac54fbe6a75339dc2452638e41228ba5144e09eb",
+      "phase": "completed",
+      "providerGeneration": 1,
+      "role": "unit",
+      "semanticOutcome": "unverified",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "6b4f3b8998d88fe600603f484f1cf89c9c114faa5c35b9b91244236966b5e7fd",
+      "phase": "completed",
+      "providerGeneration": 2,
+      "role": "freshStore",
+      "semanticOutcome": "succeeded",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "a118f613f66239fb8c9e8c914e8efd2f1c60c7ba4c91c92c248b2e31a447b88e",
+      "phase": "completed",
+      "providerGeneration": 2,
+      "role": "noEffectACK",
+      "semanticOutcome": "unverified",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "2cc740a674000adad3e79530f9e96dcbe3196cc7de899bcf1040813105c2dd36",
+      "phase": "completed",
+      "providerGeneration": 2,
+      "role": "oldMarkerReplay",
+      "semanticOutcome": "failed",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "6401c4e0012dff283cbe3504e721df3e31ad443cb4188386afd9e67ebec6e64d",
+      "phase": "completed",
+      "providerGeneration": 3,
+      "role": "restoredStore",
+      "semanticOutcome": "succeeded",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    },
+    {
+      "externalAuthorityEnvelope": false,
+      "payloadSHA256": "308fa0a32e507d1d49133e72298ad7ab2c3e38a16b5ec6bcb5bfd9ab5b8da98e",
+      "phase": "completed",
+      "providerGeneration": 1,
+      "role": "nativeTypedArray",
+      "semanticOutcome": "succeeded",
+      "separatePinMatched": true,
+      "signature": "VALID"
+    }
+  ],
+  "verdict": "INDEPENDENT_CA8965_NATIVE_LINUX_DBUS_SCOPED_GREEN",
+  "withdrawalRestorationGraphAndReceiptBindingsChanged": true,
+  "wrongBooleanChallengeAbsentFromDispatchJournal": true
+}

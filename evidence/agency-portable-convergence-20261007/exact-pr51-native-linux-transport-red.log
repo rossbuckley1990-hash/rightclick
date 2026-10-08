@@ -1,0 +1,25 @@
+warning: 'work': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /work/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /work/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+Building for debugging...
+[0/3] Write sources
+[1/3] Write swift-version-24593BA9C3E375BF.txt
+[3/5] Compiling resolve_diagnostic main.swift
+[4/5] Emitting module resolve_diagnostic
+[5/8] Wrapping AST for resolve-diagnostic for debugging
+[6/8] Write Objects.LinkFileList
+[7/8] Linking resolve-diagnostic
+Build of product 'resolve-diagnostic' complete! (18.84s)
+NATIVE COMPLETION 588 200 nil
+NATIVE WAIT true
+RESOLVER ERROR deadlineExceeded
+DIAGNOSTIC {"actions": [], "providers": []}
+Traceback (most recent call last):
+  File "/work/scripts/diagnostic-acceptance.py", line 112, in <module>
+    try: exercise(stdio, "stdio")
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/scripts/diagnostic-acceptance.py", line 69, in exercise
+    action = next(a for a in actions if a.get("provider", {}).get("name") == "Portable acceptance")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration

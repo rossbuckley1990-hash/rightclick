@@ -1,0 +1,168 @@
+{
+  "audit": "PASS",
+  "baseline": {
+    "runtime": {
+      "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+      "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+      "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+      "pid": 85228,
+      "product": "RIGHTCLICK",
+      "transport": "stdio",
+      "version": "0.2.2"
+    },
+    "independentlyHashedBinary": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "catalogueCount": 7,
+    "operationsObserved": [
+      "context_actions",
+      "context_explain",
+      "context_inspect",
+      "context_providers",
+      "context_run",
+      "context_run_status",
+      "context_runtime"
+    ],
+    "descriptorSHA256": "bc30e6f198e9bfae8008065a15a038538033c5b87adcf2322ddf3a9f1eda6b04",
+    "discoveredUnaryTitle": "gRPC rightclick.pressure.Streams/Echo",
+    "confirmedState": "accepted",
+    "nativeCallCount": 1,
+    "inputHashes": {
+      "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/tools.json": {
+        "sha256": "836d6b6b459dc11a15bc48aba313352ec33b7643828be5d7934ebb4b7730ed9e",
+        "bytes": 7053
+      },
+      "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/exchanges.json": {
+        "sha256": "8c89ac2a59d922463d51a02863da192b93aeedec3d7e82dd0c87b08b98e8da51",
+        "bytes": 6853
+      },
+      "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/capability.json": {
+        "sha256": "b1ac15bccc4955f558a085ac66ffa5efc051735bc1b8c275ceb2e5d0d418b2a5",
+        "bytes": 504
+      },
+      "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/advertisement.log": {
+        "sha256": "40a36ce06d3c524414533b43c70231e592158087258d6e5496f7a571b60d0e66",
+        "bytes": 491
+      },
+      "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/stream-events.jsonl": {
+        "sha256": "55a33d590b529860b6a51ac9974dd6e752427d84fcb7540d4291ffefeb64753a",
+        "bytes": 94
+      },
+      "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/echo-parity-c9ea4760dec14877b2602e9539206949.txt": {
+        "sha256": "145c6ef41c786b8867bbadf6edd51b5a3e80eae42277184814ad167e47d0eb9d",
+        "bytes": 39
+      },
+      "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/runtime-records.json": {
+        "sha256": "3532c3b415b5ec41e094840152959af579433bef4763d08a96344ac9c3248ebc",
+        "bytes": 1752
+      }
+    },
+    "audit": "PASS",
+    "nativeFileEffect": true,
+    "requestChallenge": "parity-c9ea4760dec14877b2602e9539206949",
+    "exactReturnedJSON": true,
+    "retainedFullResultEqual": true,
+    "semanticOutcomeVerified": false,
+    "nativeMarker": null,
+    "gatingTemporalScope": "awaiting_user reply plus one total call; pre-confirmation zero-call timing is a separate harness assertion",
+    "externalTruth": "exact owned file and native request correspondence; runtime acceptance alone does not establish truth"
+  },
+  "candidate": {
+    "runtime": {
+      "agentABIProfiles": [
+        {
+          "id": "core",
+          "operations": [
+            "context_runtime",
+            "context_providers",
+            "context_inspect",
+            "context_actions",
+            "context_explain",
+            "context_run",
+            "context_run_status"
+          ],
+          "version": 1
+        }
+      ],
+      "executablePath": "/tmp/rightclick-parity-candidate-c61f0cb2",
+      "executableRealPath": "/tmp/rightclick-parity-candidate-c61f0cb2",
+      "executableSHA256": "c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12",
+      "pid": 85172,
+      "platform": "macOS",
+      "product": "RIGHTCLICK",
+      "transport": "stdio",
+      "version": "0.2.3"
+    },
+    "independentlyHashedBinary": "c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12",
+    "catalogueCount": 7,
+    "operationsObserved": [
+      "context_actions",
+      "context_explain",
+      "context_inspect",
+      "context_providers",
+      "context_run",
+      "context_run_status",
+      "context_runtime"
+    ],
+    "descriptorSHA256": "bc30e6f198e9bfae8008065a15a038538033c5b87adcf2322ddf3a9f1eda6b04",
+    "discoveredUnaryTitle": "gRPC rightclick.pressure.Streams/Echo",
+    "confirmedState": "accepted",
+    "nativeCallCount": 1,
+    "inputHashes": {
+      "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/tools.json": {
+        "sha256": "9035305b839de7083e57350751fb2a1487a64f85c921ca93eed2f58d8496c2d7",
+        "bytes": 7358
+      },
+      "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/exchanges.json": {
+        "sha256": "32249b7f84d5044068bfa0fcc112ba7d810175d39c0595c88c7bc75a3ff8ba94",
+        "bytes": 25022
+      },
+      "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/capability.json": {
+        "sha256": "c97e2af641cbd8eed862d6d8b25a9ec25b58a0747884984ae117c7b959bdb3b0",
+        "bytes": 592
+      },
+      "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/advertisement.log": {
+        "sha256": "9e164d1283d3ef329c7ce18d2b90e0d0037e2e1b7181ed0d3f2d07aa262c50e8",
+        "bytes": 491
+      },
+      "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/stream-events.jsonl": {
+        "sha256": "1fcd5d7e8d14def6e596bf1bbfa0df544a6d1618aef2657d396f4d47abadde51",
+        "bytes": 94
+      },
+      "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/echo-parity-681a0b6a76e049db8b954efeedcd18a6.txt": {
+        "sha256": "8f6bcf726fc361852d22cd89b4b9cc0354a2da8533c9f92bd2c5daa7bc83f2a6",
+        "bytes": 39
+      },
+      "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/runtime-records.json": {
+        "sha256": "12149b2f41e1cc1f5d4ce0aaa558872c84500c7bb914a19fc9ce7770b9abe162",
+        "bytes": 19126
+      }
+    },
+    "audit": "PASS",
+    "nativeFileEffect": true,
+    "requestChallenge": "parity-681a0b6a76e049db8b954efeedcd18a6",
+    "exactReturnedJSON": true,
+    "retainedFullResultEqual": true,
+    "semanticOutcomeVerified": false,
+    "nativeMarker": null,
+    "gatingTemporalScope": "awaiting_user reply plus one total call; pre-confirmation zero-call timing is a separate harness assertion",
+    "externalTruth": "exact owned file and native request correspondence; runtime acceptance alone does not establish truth"
+  },
+  "publicCatalogueCompatibility": {
+    "audit": "PASS",
+    "canonicalNamesAndOrderEqual": true,
+    "legacyPropertiesAndRequiredFieldsEqual": true,
+    "differences": [
+      {
+        "tool": "context_run",
+        "change": "optional contractSHA256 string property only"
+      }
+    ]
+  },
+  "unaryReflectedContractEqual": true,
+  "excluded": [
+    "new stream support",
+    "issuer authentication or authority proof",
+    "fresh restricted AI",
+    "all eleven substrates",
+    "shipping or publication"
+  ]
+}
