@@ -1,5 +1,5 @@
 {
-  "status": "UNPUBLISHED_RECONCILED_RELEASE_CANDIDATE",
+  "status": "UNPUBLISHED_REPAIRED_RELEASE_CANDIDATE",
   "observedAtUTC": "2026-10-07T23:23:37Z",
   "runtimeVersion": "0.2.3",
   "sourceHeadBeforeMetadataCommit": "fca70b91ac893aefe98cb982c616bfb4b040fe43",
@@ -138,5 +138,49 @@
     "portableProviderControls": "PASS: all7 actual operation types on both transports; owned HTTP dispatch, zero-effect confirmation/argument denials, accepted/unverified result and retained RCIR status",
     "independentReview": "Stream verifier checked8 payload hashes/sizes, selected values against private original, script identities, archive/source/binary/helper/build linkage and privacy; no blocker",
     "scope": "Fresh local packaged-source Mac/provider controls only. No final-head CI, released/installed bytes, Windows, all11, issuer or independent external-truth advancement. Historical build-audit acceptance-pending sentence is superseded by selected-controls and README."
+  },
+  "latestRepairedBatch": {
+    "observedAtUTC": "2026-10-08T00:26:31.452519+00:00",
+    "status": "UNPUBLISHED_REPAIRED_CANDIDATE_FROZEN_INPUTS_PENDING_FULL_CI",
+    "headBeforeMetadata": "f24861fd68c67021e58fd13ba92b87a32d9ba028",
+    "sourcesTree": "fd3f153c2a1e195e7766a40a1585f6526c73794a",
+    "runtimeVersion": "0.2.3",
+    "archiveSHA256": "e39c6ff67400d165b9e1829a4bbb11388d8bebc6a050683b563f96ef123d57d6",
+    "archiveMembers": 444,
+    "trackedScripts": 76,
+    "formulaPaths": [
+      "packaging/homebrew/rightclick.rb",
+      "packaging/tap/Formula/rightclick.rb"
+    ],
+    "formulaSourcePin": "e39c6ff67400d165b9e1829a4bbb11388d8bebc6a050683b563f96ef123d57d6",
+    "resourceSHA256": "b2cae3aa9df45b4c2fe9b1d700ebacce39f9feb6a6b46b86e6499f9a51bf72ff",
+    "priorF984SourceAnd997ecBinary": "Prior frozen source/package/Mac/provider proof only; not the new repaired archive or runtime",
+    "reviewedRepairs": [
+      "Bounded byte LF/CRLF port and JSONL record parsing",
+      "Real Windows PE fixture bytes retain identity/race/budget controls",
+      "Existing Windows experience-path test setup",
+      "Explicit owned native NUL writer verified FILE_TYPE_CHAR; no stderr pipe/reader"
+    ],
+    "compiledNativeNullBoundary": {
+      "runID": 37707049705,
+      "head": "931b2a6b135f3403470bf982128d8b18a4da593d",
+      "status": "GREEN_SCOPED_STANDALONE_CONTROL",
+      "productSuite": "PENDING"
+    },
+    "rejectedPipeCleanup": {
+      "runID": 37706342739,
+      "status": "RED_NOT_IMPORTED",
+      "closeMilliseconds": [
+        4000,
+        4484
+      ]
+    },
+    "completeNativeWindowsInventory": "PENDING: all666 actual baseline names plus8 new methods, current674 equality and all execution rows",
+    "freshRepairedBinary": "PENDING",
+    "finalExactHeadPlatformGates": "PENDING",
+    "publicReleaseTagBottleFormulaWrites": "HELD_PENDING_USER_CLARIFICATION_AND_PASSING_GATES",
+    "connectedRuntime": "Actual fresh canonical0.2.2/PID67552/d314; no upgrade performed",
+    "proceduralMemoryRetrieval": "NOT_DEMONSTRATED",
+    "elevenSubstrateAcceptance": "RED"
   }
 }

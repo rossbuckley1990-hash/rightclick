@@ -1,109 +1,300 @@
 {
-  "scope": "Evidence/index only; prior proof bytes retained without relabeling; scoped fresh-source Mac/provider and reviewed terminal Windows diagnosis included",
-  "files": {
-    "README.md": {
-      "bytes": 4070,
-      "sha256": "814c2bbb6c2397dedde81ba96331ec36b75d656cb67c47927ba7ac4a11634567"
+  "files": [
+    {
+      "bytes": 5791,
+      "path": "README.md",
+      "sha256": "61ac4d548ab45cb3f70ebcc9b6522a39b9ac10cf0e2dc9ee1a9a593485dc15e9"
     },
-    "audit-package-closure.py": {
+    {
       "bytes": 4242,
+      "path": "audit-package-closure.py",
       "sha256": "475ccd9dbf6769fd04e71f93ab0d1c620af4aa32cef79206272e4e0a1c0eb9b9"
     },
-    "delivery-independent-dbus-native-green-audit.json": {
+    {
       "bytes": 9512,
+      "path": "delivery-independent-dbus-native-green-audit.json",
       "sha256": "3daf27e29ae418968511578134dc0e7706c8e43fec2e549dbd8879ee6273e42e"
     },
-    "fresh-source-mac-provider-20261008/README.md": {
+    {
       "bytes": 1673,
+      "path": "fresh-source-mac-provider-20261008/README.md",
       "sha256": "fa408049827cf248ce6ac5c8ad0511ca2d89b9277654f0f76d35520d73167594"
     },
-    "fresh-source-mac-provider-20261008/build-audit.json": {
+    {
       "bytes": 1241,
+      "path": "fresh-source-mac-provider-20261008/build-audit.json",
       "sha256": "11ecc9c0932cfe53a022d73402083035f586e3fff0e8f85c65fedb03dba6e7bf"
     },
-    "fresh-source-mac-provider-20261008/executed-script-pins.json": {
+    {
       "bytes": 419,
+      "path": "fresh-source-mac-provider-20261008/executed-script-pins.json",
       "sha256": "08f6771059af5a0a346eaf114bbb18ecfc4b89d85f132d27cd7a40e21d7582b5"
     },
-    "fresh-source-mac-provider-20261008/extraction-record.json": {
+    {
       "bytes": 563,
+      "path": "fresh-source-mac-provider-20261008/extraction-record.json",
       "sha256": "7f10b9493b76864d7b1b8181b0591cde102710c931d44bd78e195586073e4f5c"
     },
-    "fresh-source-mac-provider-20261008/manifest.json": {
+    {
       "bytes": 1267,
+      "path": "fresh-source-mac-provider-20261008/manifest.json",
       "sha256": "77b844e7c140ca4ea8b4e93adf73a4029694a6b61bc08175cf0b02574ca0352d"
     },
-    "fresh-source-mac-provider-20261008/mcp-acceptance.log": {
+    {
       "bytes": 501,
+      "path": "fresh-source-mac-provider-20261008/mcp-acceptance.log",
       "sha256": "65998a9c2efa4f08ffe35f6a6784d12fe40c715549dc5a8e133e9eb12a4309f9"
     },
-    "fresh-source-mac-provider-20261008/mcp-selected-controls.json": {
+    {
       "bytes": 27993,
+      "path": "fresh-source-mac-provider-20261008/mcp-selected-controls.json",
       "sha256": "30b31822cf5c81b5186aa7c8c0d4c20ad57fd87cbc91ee3b3e8674f55e3ca349"
     },
-    "fresh-source-mac-provider-20261008/portable-acceptance.log": {
+    {
       "bytes": 299,
+      "path": "fresh-source-mac-provider-20261008/portable-acceptance.log",
       "sha256": "6fd0f67b8e7360c471cf7633de3bab026061f5691fac5f9da8034c4098cda591"
     },
-    "fresh-source-mac-provider-20261008/release-build.log": {
+    {
       "bytes": 30805,
+      "path": "fresh-source-mac-provider-20261008/release-build.log",
       "sha256": "641db23e3ab15ad38297c9311c5c8cef2fea1f2285023e754a8ec9b2060b9c65"
     },
-    "identity-index.json": {
-      "bytes": 8572,
-      "sha256": "da76b3ac3d77680436e8df5013db19543eefff21bcb35edc0ce5af68b1fcfb52"
+    {
+      "bytes": 10662,
+      "path": "identity-index.json",
+      "sha256": "3dd9fa486f65f6f7005a19eaf32f0833c19c335b85601c9b06050b500ef74a44"
     },
-    "local-package-alignment.json": {
+    {
       "bytes": 8686,
+      "path": "local-package-alignment.json",
       "sha256": "cbd2f2cd488817b09452b6377b95a5dbbc267b8f7273f9b5cded1c70b5d79940"
     },
-    "package-closure-audit.json": {
+    {
       "bytes": 3299,
+      "path": "package-closure-audit.json",
       "sha256": "2e63970aaa2e4d8c51e50c7be77c46bc4eb7f4fbc69c39a14bfe07ee3cdbd225"
     },
-    "windows-primary-terminal-20261008/README.md": {
-      "bytes": 634,
-      "sha256": "9fb103215a1179a11875485e2dbd3d0607a7456623f3fff14420c8b2811e0d4d"
+    {
+      "bytes": 1980,
+      "path": "repaired-batch-superseding-status.json",
+      "sha256": "e100a2a20c37869b70cd56aa34f03fcc8e47c75ef14962f548351d57b27d10e1"
     },
-    "windows-primary-terminal-20261008/audit.json": {
-      "bytes": 4988,
-      "sha256": "d3d9d8c961c9a97bdb578dd07b1c3ab4a9691f5d806e139f6027b6eaeabaf959"
+    {
+      "bytes": 1257,
+      "path": "repaired-local-package-alignment.json",
+      "sha256": "445ad9a4940c28a0c3a861d25aa6b8815cc8af2b6c866bb857a50fbc73e6ee37"
     },
-    "windows-primary-terminal-20261008/manifest.json": {
-      "bytes": 1060,
-      "sha256": "ba094ab0f42c410bff420dbbeb222c6fa372a04bd634dd634bfa4f112f32b6ca"
+    {
+      "bytes": 4425,
+      "path": "repaired-package-closure-audit.json",
+      "sha256": "dafcce563d655814b6d29fd1846957d20e66de659d4e5afb57f27dfbf88f811e"
     },
-    "windows-primary-terminal-20261008/portable-source.txt": {
+    {
+      "bytes": 4500,
+      "path": "repaired-package-closure-audit.py",
+      "sha256": "6e31fb073ae225f5cd368f1244f49662b76b76787c408bf794904350251aff3c"
+    },
+    {
+      "bytes": 4512,
+      "path": "repaired-static-test-retention.json",
+      "sha256": "6f52362472fc47bfd249af5d5a1cde31426954129e3ba8c50abf54cd86c18eb3"
+    },
+    {
+      "bytes": 2901,
+      "path": "reviewed-direct-windows-terminal-projection.json",
+      "sha256": "18e19b9b2d125239c289f46725bb0e3032bd732e0a6ff5011be69b488f6c7a05"
+    },
+    {
+      "bytes": 2207,
+      "path": "windows-inherited-stderr-close-red-20261008/README.md",
+      "sha256": "bf23283cbdbfa3e545ff976bd8ea83e0c744e0e9f8d6c0fc2982e608019643f0"
+    },
+    {
+      "bytes": 1372,
+      "path": "windows-inherited-stderr-close-red-20261008/manifest.json",
+      "sha256": "8cb516f09b5590fcecc3f4d006296017ca5131ca4435c5294e26f3ff4f937509"
+    },
+    {
+      "bytes": 2645,
+      "path": "windows-inherited-stderr-close-red-20261008/provenance-and-scope.json",
+      "sha256": "62edcd143e187b80730066e9341c9ac54be047a9181765c7d34bd57827c21e47"
+    },
+    {
+      "bytes": 175,
+      "path": "windows-inherited-stderr-close-red-20261008/windows-probe-cleanup-binary-sha256.txt",
+      "sha256": "a2a915240c35e56f8e2a18283844dd40bc3a6dd7cc727358c1740cba49d3af86"
+    },
+    {
       "bytes": 42,
-      "sha256": "017e322828f64d93220893e0b8176099bcee86a636addbd4dd154851a49cb868"
+      "path": "windows-inherited-stderr-close-red-20261008/windows-probe-source.txt",
+      "sha256": "373044a81f83017f3fdb88cfa7bb0ecb9748af7f5eb3350381b5cd56e266c62c"
     },
-    "windows-primary-terminal-20261008/portable-toolchain.txt": {
+    {
       "bytes": 103,
+      "path": "windows-inherited-stderr-close-red-20261008/windows-probe-toolchain.txt",
       "sha256": "fa5f6abcb1a722939e20fac6e0f878c8e366d6fd43567690b60beaac53fc53d2"
     },
-    "windows-primary-terminal-20261008/windows-integrated-events.jsonl": {
+    {
+      "bytes": 450,
+      "path": "windows-inherited-stderr-close-red-20261008/windows-stderr-cleanup-phase.json",
+      "sha256": "448f02e9bb383b32aac6d7947e19a3824709636ad0ddd0c22cc6de519324310b"
+    },
+    {
+      "bytes": 1017,
+      "path": "windows-inherited-stderr-close-red-20261008/windows-stderr-cleanup-probe.json",
+      "sha256": "7cda7420f91b2fe8dbd264cacb63fa296046b55405c94a26eff2881a44a7bd48"
+    },
+    {
+      "bytes": 1349,
+      "path": "windows-inherited-stderr-close-red-20261008/windows-supervisor-self-checks.log",
+      "sha256": "643b459dd7bc4c075f30c68f0db69592e1c5c4348d7ef859724e0cb2c3f718a4"
+    },
+    {
+      "bytes": 2455,
+      "path": "windows-null-stderr-paired-20261008/README.md",
+      "sha256": "a23ee399addfc508764146eba34c8be5c077411ee5cee5a79d5b92cb82a4f1c6"
+    },
+    {
+      "bytes": 1362,
+      "path": "windows-null-stderr-paired-20261008/manifest.json",
+      "sha256": "6307c95584c8f5a793a9488768a8860015a9a4e014e2b4f518e74e71c537de20"
+    },
+    {
+      "bytes": 2635,
+      "path": "windows-null-stderr-paired-20261008/provenance-and-scope.json",
+      "sha256": "c8c3f3379be070d12ed44c5de826cacc35dfd82bef286cb3bb6c195865a2afc7"
+    },
+    {
+      "bytes": 953,
+      "path": "windows-null-stderr-paired-20261008/windows-discarded-stderr-probe.json",
+      "sha256": "bdcadd0372c2fabf02ac11080fec86e58855a5de72e05e2a20047bd3401861e4"
+    },
+    {
+      "bytes": 447,
+      "path": "windows-null-stderr-paired-20261008/windows-null-stderr-phase.json",
+      "sha256": "775f86d705bee7ba46892f02fb61d9beadc0439b335b663f28328c5b3c904792"
+    },
+    {
+      "bytes": 177,
+      "path": "windows-null-stderr-paired-20261008/windows-probe-binary-sha256.txt",
+      "sha256": "5245077f32db25cf6d886651df7e67fcba30131ab861aeaff5412a298ee85892"
+    },
+    {
+      "bytes": 42,
+      "path": "windows-null-stderr-paired-20261008/windows-probe-source.txt",
+      "sha256": "03f9f1a13cee6140555b360bfd0b4f9675dbc1ae735c578b0917da47cdd28884"
+    },
+    {
+      "bytes": 103,
+      "path": "windows-null-stderr-paired-20261008/windows-probe-toolchain.txt",
+      "sha256": "fa5f6abcb1a722939e20fac6e0f878c8e366d6fd43567690b60beaac53fc53d2"
+    },
+    {
+      "bytes": 1350,
+      "path": "windows-null-stderr-paired-20261008/windows-supervisor-self-checks.log",
+      "sha256": "51502731ea3b275d69215d35433d152b33c6676c91676b6725b6cb4fe59f3269"
+    },
+    {
+      "bytes": 2496,
+      "path": "windows-owned-nul-green-20261008/README.md",
+      "sha256": "d3c58d7c9e106f974068ad96e3e8fecce3c972d6724f5c5f655cfc5365e5d652"
+    },
+    {
+      "bytes": 1353,
+      "path": "windows-owned-nul-green-20261008/manifest.json",
+      "sha256": "da4e09d2bde229f19fef293819b947cc1bc759412f60eb05e37b358b7da23d6e"
+    },
+    {
+      "bytes": 3963,
+      "path": "windows-owned-nul-green-20261008/provenance-and-scope.json",
+      "sha256": "a062c26c66b1c83c3c843f8f10ba1050effd427ce3336bb7e0d69c06c27b429a"
+    },
+    {
+      "bytes": 171,
+      "path": "windows-owned-nul-green-20261008/windows-null-binary-sha256.txt",
+      "sha256": "a58c4c468df33149cc19bbee0bacc38bc09fdca24de8047dda8bcd5778f88e59"
+    },
+    {
+      "bytes": 42,
+      "path": "windows-owned-nul-green-20261008/windows-null-source.txt",
+      "sha256": "3de849c38d4b1d0815f737109946d83bf678ba926dc448c31b4201d3591d3f55"
+    },
+    {
+      "bytes": 103,
+      "path": "windows-owned-nul-green-20261008/windows-null-toolchain.txt",
+      "sha256": "fa5f6abcb1a722939e20fac6e0f878c8e366d6fd43567690b60beaac53fc53d2"
+    },
+    {
+      "bytes": 448,
+      "path": "windows-owned-nul-green-20261008/windows-owned-null-phase.json",
+      "sha256": "049f8196c9da008be3ba2a3ce7076f20105a547cde6179289d784e28f4cf3e20"
+    },
+    {
+      "bytes": 2417,
+      "path": "windows-owned-nul-green-20261008/windows-owned-null-probe.json",
+      "sha256": "6bd93b1dfd51936a1f6c02ecf6bd1fa8d2e25ba260cb80702dae3bb21f33a943"
+    },
+    {
+      "bytes": 1349,
+      "path": "windows-owned-nul-green-20261008/windows-supervisor-self-checks.log",
+      "sha256": "c1b64c99e1895d75b945109b724405af714cab1104e8408cbccb479361916881"
+    },
+    {
+      "bytes": 634,
+      "path": "windows-primary-terminal-20261008/README.md",
+      "sha256": "9fb103215a1179a11875485e2dbd3d0607a7456623f3fff14420c8b2811e0d4d"
+    },
+    {
+      "bytes": 4988,
+      "path": "windows-primary-terminal-20261008/audit.json",
+      "sha256": "d3d9d8c961c9a97bdb578dd07b1c3ab4a9691f5d806e139f6027b6eaeabaf959"
+    },
+    {
+      "bytes": 1060,
+      "path": "windows-primary-terminal-20261008/manifest.json",
+      "sha256": "ba094ab0f42c410bff420dbbeb222c6fa372a04bd634dd634bfa4f112f32b6ca"
+    },
+    {
+      "bytes": 42,
+      "path": "windows-primary-terminal-20261008/portable-source.txt",
+      "sha256": "017e322828f64d93220893e0b8176099bcee86a636addbd4dd154851a49cb868"
+    },
+    {
+      "bytes": 103,
+      "path": "windows-primary-terminal-20261008/portable-toolchain.txt",
+      "sha256": "fa5f6abcb1a722939e20fac6e0f878c8e366d6fd43567690b60beaac53fc53d2"
+    },
+    {
       "bytes": 117881,
+      "path": "windows-primary-terminal-20261008/windows-integrated-events.jsonl",
       "sha256": "4aba4537183059728b351dc34be65701f5b7c76bfa40289601688bcf413a1b9a"
     },
-    "windows-primary-terminal-20261008/windows-integrated-output.log": {
+    {
       "bytes": 22,
+      "path": "windows-primary-terminal-20261008/windows-integrated-output.log",
       "sha256": "41f2b55958e9bc122ad7167a329416ffa5196ce9401735f79c372f749c65dde8"
     },
-    "windows-primary-terminal-20261008/windows-integrated-phase.json": {
+    {
       "bytes": 453,
+      "path": "windows-primary-terminal-20261008/windows-integrated-phase.json",
       "sha256": "7bd862d3128b03767a3f39c0056326daed43a73dc9bbd799cebfc10f7723fbaf"
     },
-    "windows-primary-terminal-20261008/windows-supervisor-self-checks.log": {
+    {
       "bytes": 1349,
+      "path": "windows-primary-terminal-20261008/windows-supervisor-self-checks.log",
       "sha256": "fde80e9b05956db041f47842dd79ecee31366fba63143ebe912713215c1672b9"
     },
-    "windows-primary-terminal-20261008/windows-test-build-phase.json": {
+    {
       "bytes": 164,
+      "path": "windows-primary-terminal-20261008/windows-test-build-phase.json",
       "sha256": "1276107f41cf72a0bc9b7d762f3986853768082c8851904f3e6cab22fd3e971e"
     },
-    "windows-primary-terminal-20261008/windows-test-discovery-summary.json": {
+    {
       "bytes": 130,
+      "path": "windows-primary-terminal-20261008/windows-test-discovery-summary.json",
       "sha256": "df08e955956c482d65a27c91d525a96d57bb7714dd58a9300995e5075e323e00"
     }
-  }
+  ],
+  "schema": "rightclick-owned-evidence-manifest-v1"
 }
