@@ -62,6 +62,25 @@ struct TrustedHostProcessContext: Sendable, Equatable, CustomStringConvertible, 
 #endif
     }
 
+    /// Windows names are case insensitive, but Foundation's ambient search
+    /// fallback checks the exact spelling `Path`. Emit one canonical key with
+    /// an explicit empty value when the host has granted no search directory.
+    /// Reject aliases before dispatch; dictionary iteration cannot choose which
+    /// authority-bearing value the native child receives.
+    static func canonicalWindowsEnvironment(_ environment: [String: String]) throws -> [String: String] {
+        var names = Set<String>(), result: [String: String] = [:]
+        for (key, value) in environment {
+            guard !key.isEmpty, key.utf8.allSatisfy({ (65...90).contains($0) || (97...122).contains($0) || (48...57).contains($0) || $0 == 95 }) else {
+                throw RCIRError.invalidIdentity
+            }
+            let identity = key.uppercased()
+            guard names.insert(identity).inserted else { throw RCIRError.invalidIdentity }
+            result[identity == "PATH" ? "Path" : key] = value
+        }
+        if result["Path"] == nil { result["Path"] = "" }
+        return result
+    }
+
     var isCurrent: Bool {
         guard let location else { return true }
 #if os(Windows)

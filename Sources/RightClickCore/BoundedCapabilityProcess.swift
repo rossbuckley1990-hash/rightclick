@@ -85,8 +85,9 @@ enum BoundedCapabilityProcess {
         let process = Process(); process.executableURL = executable; process.arguments = arguments
 #if os(Windows)
         let environment = ProcessInfo.processInfo.environment
-        process.environment = try hostContext.applying(to: ["SystemRoot": environment["SystemRoot"] ?? "C:\\Windows",
-            "TEMP": FileManager.default.temporaryDirectory.path, "TMP": FileManager.default.temporaryDirectory.path])
+        process.environment = try TrustedHostProcessContext.canonicalWindowsEnvironment(
+            hostContext.applying(to: ["SystemRoot": environment["SystemRoot"] ?? "C:\\Windows",
+                "TEMP": FileManager.default.temporaryDirectory.path, "TMP": FileManager.default.temporaryDirectory.path]))
 #else
         process.environment = try hostContext.applying(to: ["PATH": "/usr/bin:/bin", "HOME": FileManager.default.temporaryDirectory.path])
 #endif

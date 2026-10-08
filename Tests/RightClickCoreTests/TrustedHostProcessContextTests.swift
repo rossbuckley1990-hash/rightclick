@@ -6,6 +6,20 @@ import WinSDK
 #endif
 
 final class TrustedHostProcessContextTests: XCTestCase {
+    func testWindowsDispatchCanonicalizesSearchAndRejectsAmbiguousEnvironmentNames() throws {
+        let empty = try TrustedHostProcessContext.canonicalWindowsEnvironment(["SystemRoot": "fixed-root", "TEMP": "fixed-temp"])
+        XCTAssertEqual(empty["Path"], ""); XCTAssertNil(empty["PATH"])
+        XCTAssertEqual(empty["SystemRoot"], "fixed-root"); XCTAssertEqual(empty["TEMP"], "fixed-temp")
+        for key in ["PATH", "Path", "path", "pAtH"] {
+            let search = try TrustedHostProcessContext.canonicalWindowsEnvironment([key: "one-fixed-directory"])
+            XCTAssertEqual(search, ["Path": "one-fixed-directory"])
+        }
+        for value in [["PATH": "one", "Path": "two"], ["TEMP": "one", "temp": "two"], ["": "one"], ["Path=other": "one"], ["Páth": "one"]] {
+            XCTAssertThrowsError(try TrustedHostProcessContext.canonicalWindowsEnvironment(value)) {
+                XCTAssertEqual($0 as? RCIRError, .invalidIdentity)
+            }
+        }
+    }
     func testIsolatedContextPreservesBaselineAndHasStableOpaqueIdentity() throws {
         let baseline = ["fixed": "private-test-canary"]
         XCTAssertEqual(try TrustedHostProcessContext.isolated.applying(to: baseline), baseline)
@@ -122,7 +136,7 @@ final class TrustedHostProcessContextTests: XCTestCase {
         defer { try? set(nil) }
         let executable = try NativeHTTPFixture.python()
         let frozenExecutable = try CapabilityArtifactSnapshot.read(source: executable, maximum: 8_388_608)
-        let script = "import json,os; print(json.dumps({'canaryPresent':'RIGHTCLICK_TEST_HOST_CONTEXT_SENTINEL' in os.environ,'pathPresent':'PATH' in os.environ,'machineDataPresent':'ProgramData' in os.environ,'systemRootPresent':'SystemRoot' in os.environ,'tempPresent':'TEMP' in os.environ,'tmpPresent':'TMP' in os.environ},sort_keys=True))"
+        let script = "import json,os; print(json.dumps({'canaryPresent':'RIGHTCLICK_TEST_HOST_CONTEXT_SENTINEL' in os.environ,'pathPresent':'PATH' in os.environ,'pathEmpty':os.environ.get('PATH')=='','machineDataPresent':'ProgramData' in os.environ,'systemRootPresent':'SystemRoot' in os.environ,'tempPresent':'TEMP' in os.environ,'tmpPresent':'TMP' in os.environ},sort_keys=True))"
         let arguments = ["-I", "-S", "-c", script]
         let frozenArguments = arguments.map { Array($0.utf16) }
         let search = try TrustedHostProcessContext.resolving(.systemExecutableSearch)
@@ -133,11 +147,15 @@ final class TrustedHostProcessContextTests: XCTestCase {
             let bytes = try BoundedCapabilityProcess.run(executable: executable, arguments: arguments,
                 timeout: 5, maximumBytes: 512, hostContext: context, diagnostic: { reports.append($0) })
             guard let flags = try JSONSerialization.jsonObject(with: bytes) as? [String: Bool],
-                  Set(flags.keys) == Set(["canaryPresent", "pathPresent", "machineDataPresent", "systemRootPresent", "tempPresent", "tmpPresent"]) else { throw RCIRError.unavailable }
+                  Set(flags.keys) == Set(["canaryPresent", "pathPresent", "pathEmpty", "machineDataPresent", "systemRootPresent", "tempPresent", "tmpPresent"]) else { throw RCIRError.unavailable }
             measured.append(flags)
             print("TrustedHostContext nativeChildEnvironment index=\(index) canaryPresent=\(flags["canaryPresent"]!) pathPresent=\(flags["pathPresent"]!) machineDataPresent=\(flags["machineDataPresent"]!) systemRootPresent=\(flags["systemRootPresent"]!) tempPresent=\(flags["tempPresent"]!) tmpPresent=\(flags["tmpPresent"]!)")
         }
-        XCTAssertEqual(measured.map { $0["pathPresent"]! }, [false, true, false])
+        // Explicit emptiness suppresses Foundation's inherited search fallback.
+        // Native identity/controlled-parent assertions are covered independently
+        // by WindowsPATHBoundaryTests, rather than inferred from Python presence.
+        XCTAssertEqual(measured.map { $0["pathPresent"]! }, [true, true, true])
+        XCTAssertEqual(measured.map { $0["pathEmpty"]! }, [true, false, true])
         XCTAssertTrue(measured.allSatisfy { $0["canaryPresent"] == false && $0["machineDataPresent"] == false && $0["systemRootPresent"] == true && $0["tempPresent"] == true && $0["tmpPresent"] == true })
         XCTAssertEqual(reports.count, 3)
         XCTAssertTrue(reports.allSatisfy { $0.started && $0.outcome == .completed && $0.terminationStatus == 0 && $0.stdoutBytes <= 512 })
