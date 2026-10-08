@@ -81,70 +81,83 @@ jobs:
           set +e
           mkdir -p "$EVIDENCE_DIR"
           LOG="$EVIDENCE_DIR/k8s-bootstrap.log"
+          STATE="$EVIDENCE_DIR/k8s-status.env"
           : > "$LOG"
-          STATUS="READY"
-          DETAIL="none"
+          write_state() {
+            printf 'K8S_STATUS=%s\nK8S_DETAIL=%s\n' "$1" "$2" > "$STATE"
+          }
+          write_state STARTING init
 
           docker version >>"$LOG" 2>&1
-          if [ $? -ne 0 ]; then STATUS="FAILED"; DETAIL="docker"; fi
+          RC=$?
+          if [ "$RC" -ne 0 ]; then write_state FAILED docker; exit 0; fi
+          write_state STARTING docker_ok
 
-          if [ "$STATUS" = "READY" ]; then
-            curl -fsSLo /tmp/kind https://kind.sigs.k8s.io/dl/v0.27.0/kind-linux-amd64 >>"$LOG" 2>&1
-            if [ $? -ne 0 ]; then STATUS="FAILED"; DETAIL="kind_download"; fi
-          fi
+          curl -fsSLo /tmp/kind https://kind.sigs.k8s.io/dl/v0.27.0/kind-linux-amd64 >>"$LOG" 2>&1
+          RC=$?
+          if [ "$RC" -ne 0 ]; then write_state FAILED kind_download; exit 0; fi
+          chmod +x /tmp/kind
+          sudo mv /tmp/kind /usr/local/bin/kind
+          kind version >>"$LOG" 2>&1
+          RC=$?
+          if [ "$RC" -ne 0 ]; then write_state FAILED kind_binary; exit 0; fi
+          write_state STARTING kind_binary_ok
 
-          if [ "$STATUS" = "READY" ]; then
-            chmod +x /tmp/kind
-            sudo mv /tmp/kind /usr/local/bin/kind
-            kind version >>"$LOG" 2>&1
-            if [ $? -ne 0 ]; then STATUS="FAILED"; DETAIL="kind_binary"; fi
-          fi
+          kind create cluster --name rc-fabric --wait 120s >>"$LOG" 2>&1
+          RC=$?
+          if [ "$RC" -ne 0 ]; then write_state FAILED kind_create; exit 0; fi
+          write_state STARTING kind_cluster_ok
 
-          if [ "$STATUS" = "READY" ]; then
-            kind create cluster --name rc-fabric --wait 120s >>"$LOG" 2>&1
-            if [ $? -ne 0 ]; then STATUS="FAILED"; DETAIL="kind_create"; fi
-          fi
+          kind load docker-image rc-wasm-executor:local --name rc-fabric >>"$LOG" 2>&1
+          RC=$?
+          if [ "$RC" -ne 0 ]; then write_state FAILED kind_load; exit 0; fi
+          write_state STARTING image_loaded
 
-          if [ "$STATUS" = "READY" ]; then
-            kind load docker-image rc-wasm-executor:local --name rc-fabric >>"$LOG" 2>&1
-            if [ $? -ne 0 ]; then STATUS="FAILED"; DETAIL="kind_load"; fi
-          fi
+          KUBE_JSON=$(kubectl version -o json 2>>"$LOG")
+          RC=$?
+          if [ "$RC" -ne 0 ]; then write_state FAILED kubectl; exit 0; fi
 
-          if [ "$STATUS" = "READY" ]; then
-            KUBE_JSON=$(kubectl version -o json 2>>"$LOG")
-            if [ $? -ne 0 ]; then STATUS="FAILED"; DETAIL="kubectl"; fi
-          fi
+          KIND_VERSION=$(kind version | tr -d '\n')
+          DOCKER_VERSION=$(docker --version | tr -d '\n')
+          jq -n \
+            --arg kind "$KIND_VERSION" \
+            --arg docker "$DOCKER_VERSION" \
+            --arg wasmtime "$WASMTIME_VERSION" \
+            --argjson kubernetes "$KUBE_JSON" \
+            '{kind:$kind,docker:$docker,wasmtime:$wasmtime,kubernetes:$kubernetes,substrate:"GitHub-hosted Ubuntu runner + kind"}' \
+            > "$EVIDENCE_DIR/environment.json"
+          RC=$?
+          if [ "$RC" -ne 0 ]; then write_state FAILED environment_json; exit 0; fi
 
-          echo "K8S_STATUS=$STATUS" >> "$GITHUB_ENV"
-          echo "K8S_DETAIL=$DETAIL" >> "$GITHUB_ENV"
+          kubectl get nodes -o wide >>"$LOG" 2>&1
+          RC=$?
+          if [ "$RC" -ne 0 ]; then write_state FAILED kubectl_nodes; exit 0; fi
 
-          if [ "$STATUS" = "READY" ]; then
-            KIND_VERSION=$(kind version | tr -d '\n')
-            DOCKER_VERSION=$(docker --version | tr -d '\n')
-            jq -n \
-              --arg kind "$KIND_VERSION" \
-              --arg docker "$DOCKER_VERSION" \
-              --arg wasmtime "$WASMTIME_VERSION" \
-              --argjson kubernetes "$KUBE_JSON" \
-              '{kind:$kind,docker:$docker,wasmtime:$wasmtime,kubernetes:$kubernetes,substrate:"GitHub-hosted Ubuntu runner + kind"}' \
-              > "$EVIDENCE_DIR/environment.json"
-            kubectl get nodes -o wide >>"$LOG" 2>&1
-          fi
+          write_state READY kind
 
       - name: Checkpoint Kubernetes bootstrap status
         if: always()
         shell: bash
         run: |
           set -e
-          printf '{"run_id":"%s","stage":"K8S","status":"%s","detail":"%s"}\n' "${{ github.run_id }}" "$K8S_STATUS" "$K8S_DETAIL" > "$EVIDENCE_DIR/progress.json"
+          STATUS="STEP_FAILED"
+          DETAIL="bootstrap_shell"
+          if [ -f "$EVIDENCE_DIR/k8s-status.env" ]; then
+            . "$EVIDENCE_DIR/k8s-status.env"
+            STATUS="$K8S_STATUS"
+            DETAIL="$K8S_DETAIL"
+          fi
+          TAIL=$(tail -n 2 "$EVIDENCE_DIR/k8s-bootstrap.log" 2>/dev/null | tr '\n' ' ' | cut -c1-120)
+          printf '{"run_id":"%s","stage":"K8S","status":"%s","detail":"%s"}\n' "${{ github.run_id }}" "$STATUS" "$DETAIL" > "$EVIDENCE_DIR/progress.json"
           git add -A "$EVIDENCE_DIR"
-          git commit -m "EXPERIMENT_STAGE K8S_$K8S_STATUS run=${{ github.run_id }} detail=$K8S_DETAIL"
+          git commit -m "EXPERIMENT_STAGE K8S_$STATUS run=${{ github.run_id }} detail=$DETAIL :: $TAIL"
           git pull --rebase origin "$GITHUB_REF_NAME" || true
           git push origin HEAD:"$GITHUB_REF_NAME" || true
 
       - name: Require Kubernetes bootstrap
         shell: bash
         run: |
+          . "$EVIDENCE_DIR/k8s-status.env"
           test "$K8S_STATUS" = "READY"
 
       - name: Deploy three discoverable A2A-style agents
