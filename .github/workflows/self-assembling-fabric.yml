@@ -62,6 +62,18 @@ jobs:
           echo "WASMTIME_VERSION=$WASMTIME_VERSION" >> "$GITHUB_ENV"
           jq -n             --arg sha256 "$WASM_SHA"             --argjson bytes "$WASM_SIZE"             --arg runtime "wasmtime-python"             --arg runtime_version "$WASMTIME_VERSION"             '{sha256:$sha256,bytes:$bytes,runtime:$runtime,runtime_version:$runtime_version,source:"compute.wat",function:"sum_squares"}'             > "$EVIDENCE_DIR/wasm_manifest.json"
 
+
+      - name: Checkpoint WASM_READY
+        if: success()
+        shell: bash
+        run: |
+          set -e
+          printf '{"run_id":"%s","stage":"WASM_READY","state":"OK"}\n' "${{ github.run_id }}" > "$EVIDENCE_DIR/progress.json"
+          git add "$EVIDENCE_DIR/progress.json"
+          git commit -m "EXPERIMENT_STAGE WASM_READY run=${{ github.run_id }}"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
+
       - name: Bootstrap real ephemeral Kubernetes cluster
         shell: bash
         run: |
@@ -77,6 +89,18 @@ jobs:
           jq -n             --arg kind "$KIND_VERSION"             --arg docker "$DOCKER_VERSION"             --arg wasmtime "$WASMTIME_VERSION"             --argjson kubernetes "$KUBE_JSON"             '{kind:$kind,docker:$docker,wasmtime:$wasmtime,kubernetes:$kubernetes,substrate:"GitHub-hosted Ubuntu runner + kind"}'             > "$EVIDENCE_DIR/environment.json"
           kubectl get nodes -o wide | tee -a "$EVIDENCE_DIR/full-experiment.log"
 
+
+      - name: Checkpoint K8S_READY
+        if: success()
+        shell: bash
+        run: |
+          set -e
+          printf '{"run_id":"%s","stage":"K8S_READY","state":"OK"}\n' "${{ github.run_id }}" > "$EVIDENCE_DIR/progress.json"
+          git add "$EVIDENCE_DIR/progress.json"
+          git commit -m "EXPERIMENT_STAGE K8S_READY run=${{ github.run_id }}"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
+
       - name: Deploy three discoverable A2A-style agents
         shell: bash
         run: |
@@ -84,10 +108,26 @@ jobs:
           kubectl create namespace rc-fabric
           kubectl -n rc-fabric create configmap fabric-code             --from-file=agent.py="$EXP_DIR/agent.py"             --from-file=coordinator.py="$EXP_DIR/coordinator.py"
           sed "s/__MODULE_SHA__/$WASM_SHA/g" "$EXP_DIR/k8s.yaml" | kubectl apply -f -
-          kubectl -n rc-fabric rollout status deployment/agent-a --timeout=120s
-          kubectl -n rc-fabric rollout status deployment/agent-b --timeout=120s
-          kubectl -n rc-fabric rollout status deployment/agent-c --timeout=120s
+          kubectl -n rc-fabric rollout status deployment/agent-a --timeout=90s &
+          P1=$!
+          kubectl -n rc-fabric rollout status deployment/agent-b --timeout=90s &
+          P2=$!
+          kubectl -n rc-fabric rollout status deployment/agent-c --timeout=90s &
+          P3=$!
+          wait "$P1" "$P2" "$P3"
           kubectl -n rc-fabric get deployments,services,pods -o wide | tee -a "$EVIDENCE_DIR/full-experiment.log"
+
+
+      - name: Checkpoint A2A_AGENTS_READY
+        if: success()
+        shell: bash
+        run: |
+          set -e
+          printf '{"run_id":"%s","stage":"A2A_AGENTS_READY","state":"OK"}\n' "${{ github.run_id }}" > "$EVIDENCE_DIR/progress.json"
+          git add "$EVIDENCE_DIR/progress.json"
+          git commit -m "EXPERIMENT_STAGE A2A_AGENTS_READY run=${{ github.run_id }}"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
 
       - name: Run negotiated computation with forced worker death
         shell: bash
@@ -129,7 +169,7 @@ jobs:
                     name: fabric-code
           EOF
           kubectl apply -f /tmp/coordinator-job.yaml
-          if ! kubectl -n rc-fabric wait --for=condition=complete job/coordinator --timeout=240s; then
+          if ! kubectl -n rc-fabric wait --for=condition=complete job/coordinator --timeout=180s; then
             kubectl -n rc-fabric logs job/coordinator | tee -a "$EVIDENCE_DIR/full-experiment.log" || true
             kubectl -n rc-fabric describe job/coordinator | tee -a "$EVIDENCE_DIR/full-experiment.log" || true
             exit 1
@@ -138,6 +178,18 @@ jobs:
           EVIDENCE_B64=$(grep '^EVIDENCE_B64=' "$EVIDENCE_DIR/full-experiment.log" | tail -1 | cut -d= -f2-)
           test -n "$EVIDENCE_B64"
           printf '%s' "$EVIDENCE_B64" | base64 -d > "$EVIDENCE_DIR/evidence.json"
+
+
+      - name: Checkpoint COMPUTE_FINISHED
+        if: success()
+        shell: bash
+        run: |
+          set -e
+          printf '{"run_id":"%s","stage":"COMPUTE_FINISHED","state":"OK"}\n' "${{ github.run_id }}" > "$EVIDENCE_DIR/progress.json"
+          git add "$EVIDENCE_DIR/progress.json"
+          git commit -m "EXPERIMENT_STAGE COMPUTE_FINISHED run=${{ github.run_id }}"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin HEAD:"$GITHUB_REF_NAME"
 
       - name: Independently verify and preserve execution evidence
         shell: bash
