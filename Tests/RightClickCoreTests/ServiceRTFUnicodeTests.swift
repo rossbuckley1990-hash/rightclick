@@ -1,3 +1,4 @@
+#if canImport(AppKit)
 import AppKit
 import XCTest
 @testable import RightClickCore
@@ -92,3 +93,4 @@ final class ServiceRTFUnicodeTests: XCTestCase {
         }
     }
 }
+#endif

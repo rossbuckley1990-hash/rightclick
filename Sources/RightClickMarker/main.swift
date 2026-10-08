@@ -1,5 +1,7 @@
-import AppKit
 import Foundation
+
+#if canImport(AppKit)
+import AppKit
 
 /// A tiny Services provider used only to prove that a newly installed
 /// contextual service shows up in RIGHTCLICK without changing RIGHTCLICK.
@@ -20,3 +22,4 @@ NSRegisterServicesProvider(provider, "RightClickMarker")
 NSUpdateDynamicServices()
 NSApplication.shared.setActivationPolicy(.accessory)
 NSApp.run()
+#endif
