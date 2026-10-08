@@ -2,6 +2,7 @@
 import base64
 import importlib.util
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -13,9 +14,11 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("receipt_verifier", ROOT / "scripts/verify-rcir-receipt.py")
 verifier = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verifier)
-FIXTURE = ROOT / "evidence/rcir-invocation-isolation-20261007/public-mcp"
+FIXTURE = Path(os.environ.get("RIGHTCLICK_PUBLIC_RECEIPT_EVIDENCE", ROOT / "evidence/rcir-invocation-isolation-20261007/public-mcp"))
 KEY = FIXTURE / "trusted-public-key.raw"
-ACK_FIXTURE = ROOT / "evidence/universal-async/20261007/acknowledgement-only/receipts"
+ACK_FIXTURE = Path(os.environ.get("RIGHTCLICK_ACK_RECEIPT_EVIDENCE", ROOT / "evidence/universal-async/20261007/acknowledgement-only/receipts"))
+SIGNED_FIXTURE = Path(os.environ.get("RIGHTCLICK_SIGNED_RECEIPT_EVIDENCE", ROOT / "evidence/rcir-signed-claims-20261007"))
+NATIVE_FIXTURE = Path(os.environ.get("RIGHTCLICK_NATIVE_RECEIPT_EVIDENCE", SIGNED_FIXTURE / "green-transport"))
 
 
 def canonical_for_test(value):
@@ -136,10 +139,9 @@ class ReceiptVerifierTests(unittest.TestCase):
         self.assertNotIn("observation", result["signedClaims"])
 
     def test_real_signed_unknown_and_unverified_remain_non_success(self):
-        evidence = ROOT / "evidence/rcir-signed-claims-20261007"
-        cases = [(evidence / "unverified-receipt.json", KEY, "unverified"),
-                 (evidence / "green-transport/lost-response-receipt.json",
-                  evidence / "green-transport/lost-response-public-key.raw", "unknown")]
+        cases = [(SIGNED_FIXTURE / "unverified-receipt.json", KEY, "unverified"),
+                 (NATIVE_FIXTURE / "lost-response-receipt.json",
+                  NATIVE_FIXTURE / "lost-response-public-key.raw", "unknown")]
         for receipt, key, outcome in cases:
             with self.subTest(outcome=outcome):
                 result = verifier.verify(receipt, key, expected_outcome=outcome)
@@ -148,8 +150,10 @@ class ReceiptVerifierTests(unittest.TestCase):
                 with self.assertRaises(ValueError): verifier.verify(receipt, key, expected_outcome="succeeded")
 
     def test_lost_response_receipt_matches_the_one_real_provider_effect(self):
-        evidence = ROOT / "evidence/rcir-signed-claims-20261007/green-transport"
-        effects = json.loads((evidence / "-[RCIRProductionDispatchTests testLostResponseRetainsSignedUnknownAndDoesNotRetry].json").read_text())["effects"]
+        evidence = NATIVE_FIXTURE
+        logs = list(evidence.glob("*testLostResponseRetainsSignedUnknownAndDoesNotRetry*.json"))
+        self.assertEqual(len(logs), 1, "One exact native lost-response control must supply the effect log")
+        effects = json.loads(logs[0].read_text())["effects"]
         self.assertEqual(len(effects), 1)
         result = verifier.verify(evidence / "lost-response-receipt.json", evidence / "lost-response-public-key.raw",
                                  expected_task_id=effects[0]["taskID"], expected_outcome="unknown")
