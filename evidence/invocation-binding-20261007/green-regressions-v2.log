@@ -1,0 +1,108 @@
+warning: /Users/ross/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.
+warning: 'security-core': failed storing manifest for 'security-core' in cache: attempt to write a readonly database
+Building for debugging...
+[0/4] Write sources
+[1/4] Write swift-version--58304C5D6DBC2206.txt
+[3/6] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+[4/6] Emitting module RightClickCoreTests
+[5/7] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+[5/7] Write Objects.LinkFileList
+[6/7] Linking SecurityInvocationValidationPackageTests
+Build complete! (4.38s)
+Test Suite 'All tests' started at 2026-10-07 15:29:19.420.
+Test Suite 'SecurityInvocationValidationPackageTests.xctest' started at 2026-10-07 15:29:19.423.
+Test Suite 'CapabilityInterfaceTests' started at 2026-10-07 15:29:19.423.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorAbstainsForOfflineTool]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorAbstainsForOfflineTool]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline]' passed (0.142 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation]' passed (0.154 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint]' passed (2.123 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testDuplicateInterfaceNamesFailClosed]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testDuplicateInterfaceNamesFailClosed]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterRejectsUnsupportedConstraintsAndOpenObjects]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterRejectsUnsupportedConstraintsAndOpenObjects]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess]' passed (0.007 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity]' passed (0.047 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles]' passed (0.007 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testRealWASMComponentWhenProvisioned]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:192: -[RightClickCoreTests.CapabilityInterfaceTests testRealWASMComponentWhenProvisioned] : Test skipped - Real component toolchain not provisioned; no WASM GREEN claimed by this skip.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testRealWASMComponentWhenProvisioned]' skipped (0.002 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial]' passed (0.006 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:162: -[RightClickCoreTests.CapabilityInterfaceTests testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability] : Test skipped - Real component not provisioned; no source-race GREEN claimed by this skip.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability]' skipped (0.000 seconds).
+Test Suite 'CapabilityInterfaceTests' passed at 2026-10-07 15:29:21.919.
+	 Executed 14 tests, with 2 tests skipped and 0 failures (0 unexpected) in 2.493 (2.496) seconds
+Test Suite 'InvocationBindingTests' started at 2026-10-07 15:29:21.919.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testFreshMarkersVerifyForBothTransports]' started.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testFreshMarkersVerifyForBothTransports]' passed (10.581 seconds).
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend]' started.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend]' passed (4.081 seconds).
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate]' started.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate]' passed (7.714 seconds).
+Test Suite 'InvocationBindingTests' passed at 2026-10-07 15:29:44.296.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 22.376 (22.377) seconds
+Test Suite 'KafkaCapabilityTests' started at 2026-10-07 15:29:44.296.
+Test Case '-[RightClickCoreTests.KafkaCapabilityTests testObserverCannotReuseWriterPrincipalAndCredentials]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/KafkaCapabilityTests.swift:12: -[RightClickCoreTests.KafkaCapabilityTests testObserverCannotReuseWriterPrincipalAndCredentials] : Test skipped - Genuine scoped Kafka broker not provisioned; no Kafka GREEN claimed.
+Test Case '-[RightClickCoreTests.KafkaCapabilityTests testObserverCannotReuseWriterPrincipalAndCredentials]' skipped (0.000 seconds).
+Test Case '-[RightClickCoreTests.KafkaCapabilityTests testRealScopedKafkaHasUnverifiedACKThenIndependentArgumentBoundConsumerReceipt]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/KafkaCapabilityTests.swift:12: -[RightClickCoreTests.KafkaCapabilityTests testRealScopedKafkaHasUnverifiedACKThenIndependentArgumentBoundConsumerReceipt] : Test skipped - Genuine scoped Kafka broker not provisioned; no Kafka GREEN claimed.
+Test Case '-[RightClickCoreTests.KafkaCapabilityTests testRealScopedKafkaHasUnverifiedACKThenIndependentArgumentBoundConsumerReceipt]' skipped (0.000 seconds).
+Test Suite 'KafkaCapabilityTests' passed at 2026-10-07 15:29:44.297.
+	 Executed 2 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'KubernetesCapabilityArtifactTests' started at 2026-10-07 15:29:44.297.
+Test Case '-[RightClickCoreTests.KubernetesCapabilityArtifactTests testCredentialPluginsAndTLSBypassAreRejectedBeforeAcquisition]' started.
+Test Case '-[RightClickCoreTests.KubernetesCapabilityArtifactTests testCredentialPluginsAndTLSBypassAreRejectedBeforeAcquisition]' passed (0.051 seconds).
+Test Case '-[RightClickCoreTests.KubernetesCapabilityArtifactTests testProviderDescriptorCannotSelectExecutableCredentialOrNamespace]' started.
+Test Case '-[RightClickCoreTests.KubernetesCapabilityArtifactTests testProviderDescriptorCannotSelectExecutableCredentialOrNamespace]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.KubernetesCapabilityArtifactTests testRealNamespaceResourceIsVerifiedThroughIndependentGETIdentity]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/KubernetesCapabilityArtifactTests.swift:45: -[RightClickCoreTests.KubernetesCapabilityArtifactTests testRealNamespaceResourceIsVerifiedThroughIndependentGETIdentity] : Test skipped - Genuine scoped Kubernetes provider not provisioned; this skip is not substrate GREEN.
+Test Case '-[RightClickCoreTests.KubernetesCapabilityArtifactTests testRealNamespaceResourceIsVerifiedThroughIndependentGETIdentity]' skipped (0.000 seconds).
+Test Suite 'KubernetesCapabilityArtifactTests' passed at 2026-10-07 15:29:44.348.
+	 Executed 3 tests, with 1 test skipped and 0 failures (0 unexpected) in 0.051 (0.052) seconds
+Test Suite 'RCIRInvocationBindingTests' started at 2026-10-07 15:29:44.348.
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testInvocationBindingRejectsNoncanonicalIdentityAndUnboundedOrWildcardPaths]' started.
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testInvocationBindingRejectsNoncanonicalIdentityAndUnboundedOrWildcardPaths]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testMatchingOldMarkerIsRetainedInSignedFailureInsteadOfVerifyingCurrentInvocation]' started.
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testMatchingOldMarkerIsRetainedInSignedFailureInsteadOfVerifyingCurrentInvocation]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testOnlyHostTaskIdentityCanVerifyMatchingObservation]' started.
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testOnlyHostTaskIdentityCanVerifyMatchingObservation]' passed (0.001 seconds).
+Test Suite 'RCIRInvocationBindingTests' passed at 2026-10-07 15:29:44.352.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+Test Suite 'RCIRStructuredObservationTests' started at 2026-10-07 15:29:44.352.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testArgumentBoundFieldsVerifyWhileAssignedMetadataRemainsInSignedBytes]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testArgumentBoundFieldsVerifyWhileAssignedMetadataRemainsInSignedBytes]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testExistingUnaryEvidenceInitializerDoesNotRequireTaskEvents]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testExistingUnaryEvidenceInitializerDoesNotRequireTaskEvents]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testFullObservationSchemaCannotBeDiscardedByProjection]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testFullObservationSchemaCannotBeDiscardedByProjection]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testIndependentMismatchIsVerifiedFailure]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testIndependentMismatchIsVerifiedFailure]' passed (0.004 seconds).
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testObserverReceivesProviderCoordinatesAsUntrustedLocatorOnly]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testObserverReceivesProviderCoordinatesAsUntrustedLocatorOnly]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testProjectionRejectsWildcardMissingAndUnboundedContracts]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testProjectionRejectsWildcardMissingAndUnboundedContracts]' passed (0.000 seconds).
+Test Suite 'RCIRStructuredObservationTests' passed at 2026-10-07 15:29:44.360.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.008 (0.008) seconds
+Test Suite 'SecurityInvocationValidationPackageTests.xctest' passed at 2026-10-07 15:29:44.360.
+	 Executed 31 tests, with 5 tests skipped and 0 failures (0 unexpected) in 24.932 (24.937) seconds
+Test Suite 'All tests' passed at 2026-10-07 15:29:44.360.
+	 Executed 31 tests, with 5 tests skipped and 0 failures (0 unexpected) in 24.932 (24.940) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

@@ -1,0 +1,135 @@
+{
+  "all686NamesPreserved": true,
+  "allOther684BaselineStatesPreserved": true,
+  "artifactID": 11548039084,
+  "attempt": 1,
+  "authenticatedAPIZIP_SHA256": "619e1f9a9bd561e8233c280a80f46529f99cf7a7ba7c15f221310a5b72e4680f",
+  "authenticatedBaselineArtifact": 11542994620,
+  "baselineSkipReportingDiscrepancyPreserved": {
+    "explicitStates": 25,
+    "outerSummary": 26
+  },
+  "baselineStateChangesOnly": [
+    {
+      "after": "passed",
+      "before": "failed",
+      "case": "CapabilityExecutableSnapshotPoolTests.testReusesExactPrivateIncarnationWhileReadingCurrentByteIdentity"
+    },
+    {
+      "after": "passed",
+      "before": "failed",
+      "case": "RCIRReceiptTrustGapTests.testActualLegalRotationReceiptsRequireExplicitIssuerLifecyclePolicy"
+    }
+  ],
+  "caseCounts": {
+    "explicitSkip": 25,
+    "fail": 3,
+    "pass": 665
+  },
+  "closedPayloads": {
+    "portable-module-availability.log": {
+      "bytes": 111,
+      "sha256": "ba9d8681c78fb6ee5c66e2b14bd4343cdf18b1e35b6ced011b12a1cfc5db045e"
+    },
+    "portable-source.txt": {
+      "bytes": 42,
+      "sha256": "06b61e2304beb09b7e18823ef0cfd3d604924cb693ec5f55ff0df626233d978b"
+    },
+    "portable-toolchain.txt": {
+      "bytes": 103,
+      "sha256": "fa5f6abcb1a722939e20fac6e0f878c8e366d6fd43567690b60beaac53fc53d2"
+    },
+    "windows-integrated-phase.json": {
+      "bytes": 237,
+      "sha256": "56ee59c8dd02473e1a78a0424cc783d9a20e3c41597672ae93c5cb3fc642d779"
+    },
+    "windows-protected-files.log": {
+      "bytes": 122572,
+      "sha256": "d683e06552872d95147b12ebe8bbf5e75ffd4ac192e7bb79be079b9bc04aa7af"
+    },
+    "windows-python-before-setup.log": {
+      "bytes": 63,
+      "sha256": "15b146bee63ddda151c80ba1b32e2c1c97d27cb3855f02352f40807fcd77f6db"
+    },
+    "windows-test-discovery.log": {
+      "bytes": 67724,
+      "sha256": "ba89de6fe23fa002a8dbf8040807dc5c3999b08b62230d548201bee8f1013bdf"
+    },
+    "windows-tests.log": {
+      "bytes": 203495,
+      "sha256": "02d20452feaac682fd281ce0b585e8228acb5baeb01e03698fdd9173e4724365"
+    }
+  },
+  "currentSkipExplicitAndOuterAgree": 25,
+  "failureStage": {
+    "invocationReached": false,
+    "naturalExit": 1,
+    "stage": "nativeCompilation",
+    "stdoutBytes": 0
+  },
+  "foundationCounterfactual": {
+    "minimalBytes": 0,
+    "naturalCompletions": 3,
+    "restoredMinimalBytes": 0,
+    "sameBinary": true,
+    "selectedSingleMachineDataBytes": 58
+  },
+  "head": "053b6202df504ff1a33682a39f2e72a959f65983",
+  "integratedPhase": {
+    "completedUTC": "2026-10-08T11:51:03.1273471Z",
+    "exitCode": 1,
+    "phase": "integrated-tests",
+    "source": "053b6202df504ff1a33682a39f2e72a959f65983",
+    "startedUTC": "2026-10-08T11:45:32.5039547Z",
+    "state": "COMPLETED"
+  },
+  "jobConclusion": "failure",
+  "jobID": 113288937949,
+  "limitations": [
+    "Actual final Windows full suite remains RED; release executable and real-provider Core7 acceptance did not run",
+    "Foundation context acquisition is demonstrated; compiler context sufficiency is separate pending native18 experiment",
+    "Full-suite artifact contains no raw trust receipts; independent cryptographic/policy proof is separately source40a/3ffc with identical runtime Sources",
+    "Native compiler command input/disk snapshots and executable bytes not exported by this full-suite job",
+    "No published package, fresh install, external issuer identity or eleven-substrate GREEN claim"
+  ],
+  "newSevenNativeContextCases": {
+    "TrustedHostProcessContextTests.testActualFoundationInstalledDiscoveryRequiresExplicitSingleLocationAndRestoresIsolation": "passed",
+    "TrustedHostProcessContextTests.testCanonicallyEquivalentDifferentHostPathBytesAtAdmissionPreventLaunch": "passed",
+    "TrustedHostProcessContextTests.testFrozenContextDriftAtAdmissionPreventsActualChildLaunch": "passed",
+    "TrustedHostProcessContextTests.testIsolatedContextPreservesBaselineAndHasStableOpaqueIdentity": "passed",
+    "TrustedHostProcessContextTests.testLocalPathValidationRejectsUnboundedAmbiguousAndRemoteInputs": "passed",
+    "TrustedHostProcessContextTests.testLocationSnapshotIdentityChangesWithoutExposingPaths": "passed",
+    "TrustedHostProcessContextTests.testMissingInvalidAndRedirectedLocationCannotCreateContext": "passed"
+  },
+  "portableRTF": {
+    "ServiceRTFUnicodeTests.testRTFMetacharactersAreNotInterpretedAsInstructions": "passed",
+    "ServiceRTFUnicodeTests.testSeededMixedUnicodeRoundTrips": "passed",
+    "ServiceRTFUnicodeTests.testSupplementaryScalarsUseSignedSurrogateEscapes": "passed",
+    "ServiceRTFUnicodeTests.testUnicodeRoundTripThroughRTFEncoder": "passed"
+  },
+  "protectedNativeCases": {
+    "fail": 0,
+    "pass": 9,
+    "skip": 0
+  },
+  "releaseAndCore7": [
+    {
+      "conclusion": "skipped",
+      "name": "Native release build"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "Real provider through seven operations"
+    }
+  ],
+  "remainingFailures": [
+    "InvocationBindingTests.testFreshMarkersVerifyForBothTransports",
+    "InvocationBindingTests.testMatchingStaleKafkaRecordCannotVerifyCurrentAppend",
+    "InvocationBindingTests.testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate"
+  ],
+  "runID": 37770595695,
+  "schema": 1,
+  "sourcesTree": "9716cb182db859368f47b603137189d3b257ca43",
+  "uniqueStartsFinishesDiscovery": 693,
+  "verdict": "RED_SCOPED_FINAL_WINDOWS_FULL_SUITE_THREE_COMPILATION_FAILURES"
+}

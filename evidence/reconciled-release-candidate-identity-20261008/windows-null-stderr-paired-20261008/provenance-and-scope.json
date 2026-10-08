@@ -1,0 +1,76 @@
+{
+  "actualControls": [
+    {
+      "completed": true,
+      "discardedStderrBytes": 0,
+      "inputEchoMatches": false,
+      "stderrDrainCompleted": true,
+      "stderrMode": "null-device",
+      "stderrPresent": false,
+      "stdinPresent": true,
+      "stdoutBytes": 2,
+      "stdoutDrainCompleted": true,
+      "terminationStatus": 1
+    },
+    {
+      "completed": true,
+      "discardedStderrBytes": 20,
+      "inputEchoMatches": true,
+      "stderrDrainCompleted": true,
+      "stderrMode": "owned-drained-pipe",
+      "stderrPresent": true,
+      "stdinPresent": true,
+      "stdoutBytes": 6,
+      "stdoutDrainCompleted": true,
+      "terminationStatus": 0
+    }
+  ],
+  "artifact": {
+    "digest": "sha256:584e61cafdf96bc69b12b70360156335fdf9451887de7e74bb46c1760c17d59c",
+    "expired": false,
+    "id": 11519661415,
+    "name": "windows-stderr-paired-control-2c6a496d0b68e9ad681761f16d629e53650a4131",
+    "size_in_bytes": 3216
+  },
+  "binarySHA256": "f36c4a34ce10118642d72c0e06d7980dc8aa02368ad5bf15ce436d4d31d8fcc3",
+  "conclusion": "success",
+  "headSHA": "2c6a496d0b68e9ad681761f16d629e53650a4131",
+  "jobID": 113078084324,
+  "nativeSupervisorControls": {
+    "count": 8,
+    "elapsedSeconds": 10.245,
+    "passed": true
+  },
+  "originalSwiftPMTimeoutCause": "UNKNOWN",
+  "physicalCheckoutSHA": "2c6a496d0b68e9ad681761f16d629e53650a4131",
+  "productTestsRun": false,
+  "remainingRED": [
+    "Reviewed BoundedCapabilityProcess drain/discard implementation",
+    "Complete revised native Windows baseline inventory and new tests",
+    "Windows release binary actual Core7 provider acceptance",
+    "Final fresh exact-head platform/source-package gates",
+    "Public release/distribution/install alignment held"
+  ],
+  "repository": "rossbuckley1990-hash/rightclick",
+  "runAttempt": 1,
+  "runID": 37705285865,
+  "runURL": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37705285865",
+  "schema": "rightclick-native-control-scope-v1",
+  "sourceChanged": false,
+  "sourcePins": {
+    ".github/scripts/windows_discarded_stderr_probe.swift": {
+      "bytes": 6234,
+      "sha256": "611831679de603f8b91a2d9ce2b4a496e0fc74923fbbf0dbca3f8d9fa6dca8f0"
+    },
+    ".github/scripts/windows_test_supervisor.py": {
+      "bytes": 16233,
+      "sha256": "f6201b803ad380753cb4d441d558d6c7a123df542f0b3e3f00866c5a0d1a9d36"
+    },
+    ".github/workflows/windows-discarded-stderr-probe.yml": {
+      "bytes": 2361,
+      "sha256": "33ff54f946a8caed695be75cc7e57d36d3296a4bea15ad719f7897158749a587"
+    }
+  },
+  "supervisorElapsedSeconds": 0.125,
+  "workflowPath": ".github/workflows/windows-discarded-stderr-probe.yml"
+}

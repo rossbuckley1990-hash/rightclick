@@ -1,0 +1,20 @@
+{
+  "sourceBase": "e09f0179f738189fb30b87c652a5433fba648054",
+  "faultFixture": "ACTUAL_EARLY_EXIT_7",
+  "harnessFailure": "fixture agent: child_exited",
+  "elapsedMilliseconds": 162,
+  "childrenAfterContextCleanup": [
+    {
+      "label": "a2a-proof-agent.py",
+      "returnCode": 7,
+      "alive": false
+    },
+    {
+      "label": "a2a-proof-observer.py",
+      "returnCode": -15,
+      "alive": false
+    }
+  ],
+  "CIOriginalCause": "UNPROVEN",
+  "semanticAcceptanceAssertions": "UNCHANGED_AND_NOT_REACHED"
+}

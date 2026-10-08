@@ -1,0 +1,40 @@
+name: Universal async pressure
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  a2a-real-lifecycle:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record exact candidate source
+        env:
+          RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p evidence/ci-universal-async
+          test "$(git rev-parse HEAD)" = "$RIGHTCLICK_CI_SOURCE"
+          git rev-parse HEAD > evidence/ci-universal-async/source-commit.txt
+          git rev-parse HEAD:Sources > evidence/ci-universal-async/sources-tree.txt
+      - name: Select receipt verification backend
+        run: echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
+      - name: Real task and adversarial pressure controls
+        env:
+          RCIR_DEFERRED_EVIDENCE: evidence/ci-universal-async/native
+        run: swift test --force-resolved-versions --jobs 3 --filter 'RCIRDeferredProductionTests|RCIRDeferredCapacityTests|A2ARealLifecycleTests|RCIRProductionDispatchTests|CapabilityInterfaceTests|RCIRStructuredObservationTests|KubernetesCapabilityArtifactTests'
+      - name: Seven-operation real A2A proof
+        run: |
+          swift build --force-resolved-versions --product rightclick --jobs 3
+          python3 scripts/acceptance-a2a.py .build/debug/rightclick evidence/ci-universal-async/public-mcp
+          git rev-parse HEAD > evidence/ci-universal-async/source-commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: universal-async-evidence
+          path: evidence/ci-universal-async

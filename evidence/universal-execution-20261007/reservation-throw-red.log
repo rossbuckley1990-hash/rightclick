@@ -1,0 +1,39 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: 'rightclick-universal': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/13] Write sources
+[3/13] Write swift-version--58304C5D6DBC2206.txt
+[5/8] Emitting module RightClickCore
+[6/11] Emitting module RightClickMCP
+[7/10] Emitting module RightClickMCPTests
+[8/10] Compiling RightClickCoreTests ExecutionCapacityAdmissionTests.swift
+[9/10] Emitting module RightClickCoreTests
+[9/11] Write Objects.LinkFileList
+[10/11] Linking rightclick-mcpPackageTests
+Build complete! (43.07s)
+Test Suite 'Selected tests' started at 2026-10-07 15:16:28.728.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 15:16:28.731.
+Test Suite 'ExecutionCapacityAdmissionTests' started at 2026-10-07 15:16:28.731.
+Test Case '-[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/ExecutionCapacityAdmissionTests.swift:26: error: -[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints] : XCTAssertEqual failed: ("1") is not equal to ("0")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/ExecutionCapacityAdmissionTests.swift:30: error: -[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints] : XCTAssertEqual failed: ("2") is not equal to ("0")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/ExecutionCapacityAdmissionTests.swift:26: error: -[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints] : XCTAssertEqual failed: ("3") is not equal to ("0")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/ExecutionCapacityAdmissionTests.swift:30: error: -[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints] : XCTAssertEqual failed: ("4") is not equal to ("0")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/ExecutionCapacityAdmissionTests.swift:26: error: -[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints] : XCTAssertEqual failed: ("5") is not equal to ("0")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/ExecutionCapacityAdmissionTests.swift:30: error: -[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints] : XCTAssertEqual failed: ("6") is not equal to ("0")
+Test Case '-[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints]' failed (0.805 seconds).
+Test Suite 'ExecutionCapacityAdmissionTests' failed at 2026-10-07 15:16:29.536.
+	 Executed 1 test, with 6 failures (0 unexpected) in 0.805 (0.805) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 15:16:29.536.
+	 Executed 1 test, with 6 failures (0 unexpected) in 0.805 (0.805) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 15:16:29.536.
+	 Executed 1 test, with 6 failures (0 unexpected) in 0.805 (0.809) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

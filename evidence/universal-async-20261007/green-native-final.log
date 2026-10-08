@@ -1,0 +1,36 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: 'rightclick-universal-async': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/15] Write sources
+[4/15] Write swift-version--58304C5D6DBC2206.txt
+[6/12] Emitting module RightClickCore
+[7/12] Compiling RightClickCore RCIRExecutionHost.swift
+[8/12] Compiling RightClickCore RCIRDeferredExecution.swift
+[9/20] Compiling RightClickCore ConfiguredOpenAPISource.swift
+[10/20] Compiling RightClickCore BonjourOpenAPISource.swift
+[11/20] Compiling RightClickCore CapabilityArtifactResolver.swift
+[12/20] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+[13/20] Compiling RightClickCore CapabilityEngine.swift
+[14/20] Compiling RightClickCore OpenAPIReflector.swift
+[15/20] Compiling RightClickCore A2AReflector.swift
+[16/20] Compiling RightClickCore ARDRegistrySource.swift
+[16/26] Write Objects.LinkFileList
+[18/26] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+[19/26] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+[20/26] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[21/26] Emitting module RightClickCoreTests
+[22/26] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/RCIRDeferredCapacityTests.swift:17:21: error: passing a non-escaping function parameter 'starts' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+15 |             item: try ContentParser.parse("capacity"), verification: nil, expectedOutput: nil,
+16 |             target: target, authority: { [scope] }, revalidate: { true }, dispatch: { _, admit in
+17 |                 try admit(starts)
+   |                     `- error: passing a non-escaping function parameter 'starts' to a call to a non-escaping function parameter can allow re-entrant modification of a variable
+18 |                 return ExecutionRecord(executionId: "", actionId: "capacity", state: .started, message: "pending")
+19 |             }, resultValue: { _ in .string("") })
+[22/26] Linking rightclick
+error: fatalError

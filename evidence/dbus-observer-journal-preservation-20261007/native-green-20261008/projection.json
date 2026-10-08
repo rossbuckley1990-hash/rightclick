@@ -1,0 +1,26 @@
+{
+  "privateOriginalsUnchanged": true,
+  "signedReceiptValues": "Complete envelope field values and signed payload/signature preserved unchanged. Existing artifact envelopes are copied byte-for-byte; additional envelopes are exact object extractions from owned public records.",
+  "projection": "Only the owned private D-Bus lab proof. Any provider or action outside org.rightclick.Pressure is excluded from a projected transcript; removals recorded below. Raw private original hashes retained. No bearer token, private key, unrelated installed/user inventory or raw runner environment dump is published.",
+  "transcripts": {
+    "owned-transcript.json": {
+      "rawOriginalSHA256": "e257671f8b9426b86662b7be7e5c7f4738f517e6a5171adb612ec42740efb83a",
+      "rawOriginalBytes": 200662,
+      "records": 21,
+      "omittedUnrelatedArrayMembers": 0,
+      "signedReceiptObjectsPreserved": 6,
+      "losslessForOwnedProof": true,
+      "rawOwnedBytesIncludedAs": "raw-owned-transcript.json"
+    },
+    "owned-default-session-transcript.json": {
+      "rawOriginalSHA256": "0c311685b5b0059d601f1b2eb8959d6200af9d2dc5077673d5f37d73ee27039b",
+      "rawOriginalBytes": 42179,
+      "records": 6,
+      "omittedUnrelatedArrayMembers": 0,
+      "signedReceiptObjectsPreserved": 1,
+      "losslessForOwnedProof": true,
+      "rawOwnedBytesIncludedAs": "raw-owned-default-session-transcript.json"
+    }
+  },
+  "rawOwnedTranscriptsIncluded": true
+}

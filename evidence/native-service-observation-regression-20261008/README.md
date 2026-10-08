@@ -1,0 +1,9 @@
+# Native Service observation regression
+
+The Apple half-width Service converts the full-width letters in `ｃａｆÃ©` and returns literal `cafÃ©`. The candidate's CP1252 heuristic rewrote that legitimate observation to `café`. The real candidate engine regression failed both exact text and UTF-16 checks before the repair. Execution now preserves the provider-written observation; the Unicode-safe RTF input encoder remains.
+
+The separate existing half-width acceptance test expected full-width letters to remain unchanged. Its expected text now follows the actual conversion contract and adds exact UTF-16 equality. Both original native method names remain, and the literal-observation method is added. The six original synthetic heuristic method names and vectors remain, but their unsound decode expectations are explicitly corrected to observation integrity; their old assertion lines are not claimed preserved.
+
+`red-green-native-tests.json` pins the exact sources, private log sizes/hashes, every completion and the six required RED fields. The repaired combined source passes all 993 Mac cases: 958 passed, 35 existing skips, zero failures, natural exit zero. This run enables all three opt-in real Apple Service tests; the previous 975 cases and result states are retained exactly. The Swift Testing zero-test suite also completes normally. The AppKit test portability repair preserves all seven Mac methods and guards only native decoder/pasteboard operations.
+
+This is a Mac observation/encoding regression proof, not a claim of independent external side-effect verification, production receipt trust, native Windows/Linux GREEN, fresh installation or the eleven-substrate goal. Current candidate platform CI, compiler provisioning, release packaging and fresh-byte acceptance remain separate. Public publishing remains held. Raw provider logs stay private.

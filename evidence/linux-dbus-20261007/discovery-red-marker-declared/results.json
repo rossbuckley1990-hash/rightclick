@@ -1,0 +1,40 @@
+{
+  "runKind": "NEW_NATIVE_LINUX_DBUS_RUN",
+  "controls": {
+    "realMetadataMissingFromRuntime": "RED \u2014 actual native service exports Store(ssbs)->s and typed EchoTags(as)->as; default runtime discovers neither"
+  },
+  "principals": {
+    "writerUID": 1100,
+    "observerUID": 1101,
+    "serviceUID": 1102
+  },
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick",
+    "executableRealPath": "/work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick",
+    "executableSHA256": "a7a657369876c30878a81d54a360e396bc45a18ae72e22661db86b7b84e3effc",
+    "pid": 14,
+    "platform": "Linux",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "binarySHA256": "a7a657369876c30878a81d54a360e396bc45a18ae72e22661db86b7b84e3effc",
+  "originalOwner": ":1.0",
+  "status": "FROZEN_NATIVE_DBUS_DISCOVERY_RED",
+  "toolCount": 7
+}

@@ -1,0 +1,165 @@
+{
+  "status": "ENVIRONMENT_CONTEXT_DIFFERENCE_OBSERVED",
+  "diagnosticOnly": true,
+  "runtimeEnvironmentChanged": false,
+  "providerExecutionClaimed": false,
+  "rawEnvironmentPathsOrQueryOutputPublished": false,
+  "physicalHead": "9118efdfdfa1bafd96afb667a4880473fd575021",
+  "reviewedSource": "f07db3725e185babd7abd6e55942c5e616b01eac",
+  "runtimeSourcesTree": "fd3f153c2a1e195e7766a40a1585f6526c73794a",
+  "packagedInputsEqualReviewedSource": true,
+  "installedQuerySHA256": "c54f3b7c9164ea9a0db8641e81ecdda80c2664ef5a47c4191406f848cc07c662",
+  "fixedArgumentsSHA256": "d859acda8bd8a61499e3f9293f94b6de4f7cceae47c9cb821d87d964ffcb1c15",
+  "explicitContextPresence": {
+    "ALLUSERSPROFILE": true,
+    "ProgramData": true,
+    "ProgramFiles": true,
+    "ProgramFiles(x86)": true
+  },
+  "transport": "PythonNativeSubprocessSameAbsoluteBinaryAndArguments",
+  "productionFoundationInvocationRepaired": false,
+  "samples": [
+    {
+      "profile": "minimal_before",
+      "outcome": "completed",
+      "exitCode": 0,
+      "stdoutBytes": 0,
+      "retainedBytes": 0,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "elapsedMilliseconds": 344.0,
+      "outputDrainCompleted": true,
+      "validation": {
+        "empty": true,
+        "isAbsolute": false,
+        "containsQuote": false,
+        "containsEmbeddedLF": false,
+        "startsUTF8BOM": false
+      }
+    },
+    {
+      "profile": "known_location_all_user_application_data",
+      "outcome": "completed",
+      "exitCode": 0,
+      "stdoutBytes": 0,
+      "retainedBytes": 0,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "elapsedMilliseconds": 31.0,
+      "outputDrainCompleted": true,
+      "validation": {
+        "empty": true,
+        "isAbsolute": false,
+        "containsQuote": false,
+        "containsEmbeddedLF": false,
+        "startsUTF8BOM": false
+      }
+    },
+    {
+      "profile": "known_location_machine_application_data",
+      "outcome": "completed",
+      "exitCode": 0,
+      "stdoutBytes": 58,
+      "retainedBytes": 58,
+      "stdoutSHA256": "7889cf20064288061cad9c1983f1febeb96837fe461a0422f1205c17dbebafeb",
+      "elapsedMilliseconds": 78.0,
+      "outputDrainCompleted": true,
+      "validation": {
+        "empty": false,
+        "isAbsolute": true,
+        "containsQuote": false,
+        "containsEmbeddedLF": false,
+        "startsUTF8BOM": false
+      }
+    },
+    {
+      "profile": "known_location_native_program_files",
+      "outcome": "completed",
+      "exitCode": 0,
+      "stdoutBytes": 0,
+      "retainedBytes": 0,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "elapsedMilliseconds": 16.0,
+      "outputDrainCompleted": true,
+      "validation": {
+        "empty": true,
+        "isAbsolute": false,
+        "containsQuote": false,
+        "containsEmbeddedLF": false,
+        "startsUTF8BOM": false
+      }
+    },
+    {
+      "profile": "known_location_x86_program_files",
+      "outcome": "completed",
+      "exitCode": 0,
+      "stdoutBytes": 0,
+      "retainedBytes": 0,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "elapsedMilliseconds": 31.0,
+      "outputDrainCompleted": true,
+      "validation": {
+        "empty": true,
+        "isAbsolute": false,
+        "containsQuote": false,
+        "containsEmbeddedLF": false,
+        "startsUTF8BOM": false
+      }
+    },
+    {
+      "profile": "bounded_installer_context",
+      "outcome": "completed",
+      "exitCode": 0,
+      "stdoutBytes": 58,
+      "retainedBytes": 58,
+      "stdoutSHA256": "7889cf20064288061cad9c1983f1febeb96837fe461a0422f1205c17dbebafeb",
+      "elapsedMilliseconds": 31.0,
+      "outputDrainCompleted": true,
+      "validation": {
+        "empty": false,
+        "isAbsolute": true,
+        "containsQuote": false,
+        "containsEmbeddedLF": false,
+        "startsUTF8BOM": false
+      }
+    },
+    {
+      "profile": "minimal_after",
+      "outcome": "completed",
+      "exitCode": 0,
+      "stdoutBytes": 0,
+      "retainedBytes": 0,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "elapsedMilliseconds": 16.0,
+      "outputDrainCompleted": true,
+      "validation": {
+        "empty": true,
+        "isAbsolute": false,
+        "containsQuote": false,
+        "containsEmbeddedLF": false,
+        "startsUTF8BOM": false
+      }
+    }
+  ],
+  "installedQueryUnchanged": true,
+  "minimalProfilesBothEmpty": true,
+  "boundedContextReturnsAbsoluteSelection": true,
+  "singleKnownLocationResults": {
+    "all_user_application_data": {
+      "contextNamePresent": true,
+      "returnsAbsoluteSelection": false
+    },
+    "machine_application_data": {
+      "contextNamePresent": true,
+      "returnsAbsoluteSelection": true
+    },
+    "native_program_files": {
+      "contextNamePresent": true,
+      "returnsAbsoluteSelection": false
+    },
+    "x86_program_files": {
+      "contextNamePresent": true,
+      "returnsAbsoluteSelection": false
+    }
+  },
+  "isolationMatrixMeasured": true,
+  "scope": "ReadOnlyDiagnosticNoProductionPromotionNoProviderGREEN"
+}

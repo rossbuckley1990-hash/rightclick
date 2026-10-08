@@ -1,0 +1,464 @@
+[
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "rightclick-native-dbus-proof",
+          "version": "1"
+        }
+      }
+    },
+    "response": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.2"
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list"
+    },
+    "response": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"executablePath\" : \"/work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick\",\n  \"executableRealPath\" : \"/work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick\",\n  \"executableSHA256\" : \"21799d1a32d90bf749c39b9778786c1534210e99286e5a7be0e26d849d92dd97\",\n  \"pid\" : 14,\n  \"platform\" : \"Linux\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"stdio\",\n  \"version\" : \"0.2.2\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "tools/call",
+      "params": {
+        "name": "context_inspect",
+        "arguments": {
+          "item": "Native Linux session D-Bus proof"
+        }
+      }
+    },
+    "response": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"byteCount\" : 32,\n  \"display\" : \"Native Linux session D-Bus proof\",\n  \"isDirectory\" : false,\n  \"kind\" : \"text\",\n  \"text\" : \"Native Linux session D-Bus proof\",\n  \"typeDescription\" : \"Plain text\",\n  \"typeIdentifier\" : \"public.plain-text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "method": "tools/call",
+      "params": {
+        "name": "context_providers",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "[\n  {\n    \"capabilityTitles\" : [\n      \"Acknowledge\",\n      \"EchoTags\",\n      \"GetProof\",\n      \"Store\"\n    ],\n    \"name\" : \"org.rightclick.Pressure\",\n    \"source\" : \"interface\"\n  }\n]",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "Native Linux session D-Bus proof"
+        }
+      }
+    },
+    "response": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actions\" : [\n    {\n      \"explanation\" : \"Acknowledge\",\n      \"id\" : \"dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.Acknowledge\",\n      \"inputTypes\" : [\n        \"text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"name\" : \"org.rightclick.Pressure\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"system\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Acknowledge\"\n    },\n    {\n      \"explanation\" : \"EchoTags\",\n      \"id\" : \"dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.EchoTags\",\n      \"inputTypes\" : [\n        \"text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"name\" : \"org.rightclick.Pressure\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"system\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"EchoTags\"\n    },\n    {\n      \"explanation\" : \"GetProof\",\n      \"id\" : \"dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.GetProof\",\n      \"inputTypes\" : [\n        \"text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"name\" : \"org.rightclick.Pressure\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"system\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"GetProof\"\n    },\n    {\n      \"explanation\" : \"Store\",\n      \"id\" : \"dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.Store\",\n      \"inputTypes\" : [\n        \"text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"name\" : \"org.rightclick.Pressure\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"system\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Store\"\n    }\n  ],\n  \"contentType\" : \"public.plain-text\",\n  \"item\" : \"Native Linux session D-Bus proof\",\n  \"kind\" : \"text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "tools/call",
+      "params": {
+        "name": "context_explain",
+        "arguments": {
+          "item": "Native Linux session D-Bus proof",
+          "actionId": "dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.Store"
+        }
+      }
+    },
+    "response": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"id\" : \"dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.Store\",\n  \"inputs\" : [\n    \"text\"\n  ],\n  \"invocation\" : \"direct\",\n  \"metadata\" : {\n    \"argumentNames\" : \"challenge,enabled,value\",\n    \"argumentSchema\" : \"UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzM6czk6Y2hhbGxlbmdlczY6c3RyaW5nczc6ZW5hYmxlZHM3OmJvb2xlYW5zNTp2YWx1ZXM2OnN0cmluZ3M4OnJlcXVpcmVkYTM6czk6Y2hhbGxlbmdlczc6ZW5hYmxlZHM1OnZhbHVl\",\n    \"authorityBoundary\" : \"Common local lease/policy plus native bus issuer policy; no bearer secret in model inputs\",\n    \"coreArgumentEncoding\" : \"taggedNonStrings\",\n    \"coreTypedInput\" : \"String fields literal; non-string fields bounded CapabilityValue tagged wire JSON\",\n    \"dbusAuthentication\" : \"native Unix EXTERNAL principal; bus daemon policy independently enforces method rights\",\n    \"dbusBusAddress\" : \"unix:path=/tmp/rightclick-dbus-private-tizrfnqr/bus\",\n    \"dbusClientSHA256\" : \"abe9b9f6a8d8826dde773ef1a4396f71d78e221409d54227c2909524b01bb5e6\",\n    \"dbusObjectPath\" : \"/org/rightclick/Pressure\",\n    \"dbusOmittedUnsupportedMethods\" : \"org.rightclick.Pressure.UnsupportedVariant\",\n    \"dbusOwnerUnixUID\" : \"1102\",\n    \"dbusUniqueOwner\" : \":1.0\",\n    \"descriptorSHA256\" : \"47a76ca4d64533c7e5a0ba30068a7ebd03f3737715c6a49212c67f445edb42aa\",\n    \"descriptorSource\" : \"dbus://org.rightclick.Pressure/org/rightclick/Pressure\",\n    \"discoveryBoundary\" : \"Documented ListNames/GetNameOwner/Introspect; auto-start disabled\",\n    \"effect\" : \"execute\",\n    \"executionMode\" : \"unary\",\n    \"hostInvocationArgument\" : \"invocation\",\n    \"interfaceKind\" : \"dbus\",\n    \"liveOwnerBinding\" : \"Unique owner and exact introspection rechecked at discovery and final transport gate; auto-start disabled\",\n    \"nativeDescriptorSHA256\" : \"f418659c438f7728fe8b20a51d20e25b23e4ce4a6c5ac1753f7619f81fe44561\",\n    \"operationName\" : \"org.rightclick.Pressure.Store\",\n    \"providerIdentity\" : \"org.rightclick.Pressure\",\n    \"requiredArguments\" : \"challenge,enabled,value\",\n    \"resultSchema\" : \"UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZw==\",\n    \"verificationBoundary\" : \"Provider completion is unverified until the host establishes a postcondition.\"\n  },\n  \"output\" : [\n    \"typed_value\"\n  ],\n  \"provider\" : {\n    \"name\" : \"org.rightclick.Pressure\"\n  },\n  \"reflectorID\" : \"dbus:org.rightclick.Pressure/org/rightclick/Pressure\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"unknown\",\n  \"source\" : \"system\",\n  \"supportLevel\" : \"public_supported\",\n  \"title\" : \"Store\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "Native Linux session D-Bus proof",
+          "actionId": "dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.Store",
+          "confirmed": false,
+          "arguments": {
+            "challenge": "1e6d23ff549a47fcbf4da9781ce5df46",
+            "value": "native typed D-Bus effect b4b66fc92f9341e09557a8bce43c8e64",
+            "enabled": "[\"boolean\",true]"
+          },
+          "expectedOutput": "ec9414fc77060c0f7eaaa2c820ace0304514c81e6d70b5914d9302364e75c7f3"
+        }
+      }
+    },
+    "response": {
+      "id": 8,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.Store\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No outcome observation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"none\"\n  },\n  \"executionId\" : \"6CCFE7B0-784E-4E16-A0A1-EA5298FC4D89\",\n  \"message\" : \"CONFIRMATION_REQUIRED. Store is unknown.\",\n  \"state\" : \"awaiting_user\",\n  \"title\" : \"Store\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 9,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "Native Linux session D-Bus proof",
+          "actionId": "dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.Store",
+          "confirmed": true,
+          "arguments": {
+            "challenge": "1e6d23ff549a47fcbf4da9781ce5df46",
+            "value": "native typed D-Bus effect b4b66fc92f9341e09557a8bce43c8e64",
+            "enabled": "[\"boolean\",true]"
+          },
+          "expectedOutput": "ec9414fc77060c0f7eaaa2c820ace0304514c81e6d70b5914d9302364e75c7f3"
+        }
+      }
+    },
+    "response": {
+      "id": 9,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.Store\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No provider dispatch was authorised by this invocation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"rcir_admission_denied\"\n  },\n  \"executionId\" : \"60FAD648-05ED-4714-BC38-34572A2DF272\",\n  \"message\" : \"RCIR admission failed: policyDenied\",\n  \"state\" : \"rejected\",\n  \"title\" : \"Store\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 10,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "Native Linux session D-Bus proof",
+          "actionId": "dbus:org.rightclick.Pressure/org/rightclick/Pressure:org.rightclick.Pressure.Store",
+          "confirmed": true,
+          "arguments": {
+            "challenge": "79728240afbf45e29ded462198b97618",
+            "value": "native typed D-Bus effect b4b66fc92f9341e09557a8bce43c8e64",
+            "enabled": "true"
+          },
+          "expectedOutput": "ec9414fc77060c0f7eaaa2c820ace0304514c81e6d70b5914d9302364e75c7f3"
+        }
+      }
+    },
+    "response": {
+      "id": 10,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "typeMismatch(Swift.Array<Any>, Swift.DecodingError.Context(codingPath: [], debugDescription: \"Expected to decode Array<Any> but found bool instead.\", underlyingError: nil))",
+            "type": "text"
+          }
+        ],
+        "isError": true
+      }
+    }
+  }
+]

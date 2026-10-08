@@ -1,0 +1,9 @@
+# Native stderr observation RED → GREEN
+
+The actual primary macOS CI run at `053b6202df504ff1a33682a39f2e72a959f65983` failed one shared process-fixture test: the 0.1 s readiness deadline expired before asynchronous stderr became observable. The production capture remained bounded and private. A separate delayed-child control reproduced the original two assertion failures on native macOS.
+
+The test repair at `1d4fb7a7156ebe83b4d85215d43056b5c4effab8` preserves the original readiness deadline and every original assertion. It independently awaits retained diagnostic bytes with a monotonic 3 s deadline and 65,537-byte read cap, then requires exactly 65,536 canary bytes and the original 0700/0600 permissions. Both immediate and 0.25 s delayed children pass. All seven selected native methods pass, with no skipped or failed cases and natural runner exit 0. Owned private fixture directories are gone after completion.
+
+The six-field ledger includes the original authenticated CI RED, controlled native RED, selected native GREEN, source-input/executable hashes and independent closure. The original independent audit bytes have SHA-256 `8394820a1b7ed3e065ee0ffefc38013666c2d8031fe7b3191fa0ff7eae223de1`. Its reviewed-ledger hash identifies the earlier private ledger; the packaged ledger adds this closure and readability spacing only.
+
+All 535 materialized tracked input bytes and Git modes were independently checked; 3,617 sparsely excluded paths are evidence/media only. Twelve actual repository Swift commands include 71 Core and 110 Core-test inputs. External dependency source-cache bytes were not individually rehashed. This is selected native test evidence; the final composed full suite, exact-head CI and distribution acceptance remain pending. No public release, installed runtime upgrade or full eleven-substrate acceptance is claimed.
