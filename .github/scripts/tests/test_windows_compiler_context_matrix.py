@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import importlib.util, json, struct, sys, tempfile, unittest
+import ast, ctypes, importlib.util, json, os, shutil, struct, sys, tempfile, unittest, uuid
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / '.github/scripts'))
@@ -8,6 +8,40 @@ import windows_compiler_context_matrix as m
 
 
 class MatrixControls(unittest.TestCase):
+    def test_private_payload_parameter_cannot_be_reassigned(self):
+        code = ast.parse((ROOT / '.github/scripts/windows_compiler_context_matrix.py').read_text())
+        function = next(n for n in code.body if isinstance(n, ast.FunctionDef) and n.name == 'private_object')
+        self.assertIn('data', [a.arg for a in function.args.args])
+        self.assertFalse(any(isinstance(n, ast.Name) and n.id == 'data' and isinstance(n.ctx, ast.Store) for n in ast.walk(function)))
+
+    @unittest.skipUnless(os.name == 'nt', 'Protected Windows file roundtrip requires native Windows')
+    def test_native_owner_acl_exact_payload_readonly_and_exclusive_roundtrip(self):
+        from ctypes import wintypes as w
+        kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel.GetFileAttributesW.argtypes, kernel.GetFileAttributesW.restype = [w.LPCWSTR], w.DWORD
+        kernel.SetFileAttributesW.argtypes, kernel.SetFileAttributesW.restype = [w.LPCWSTR, w.DWORD], w.BOOL
+        root = Path(tempfile.gettempdir()) / ('rightclick-private-file-control-' + uuid.uuid4().hex)
+        file = root / 'fixed-owned-canary.bin'
+        payload = b'RIGHTCLICK fixed private file canary\x00\x01\xff'
+        try:
+            m.private_directory(root)
+            m.private_file(file, payload, read_only=True)
+            self.assertTrue(m.checked_read(file, 128) == payload)
+            attrs = kernel.GetFileAttributesW(str(file.absolute()))
+            self.assertNotEqual(attrs, 0xffffffff); self.assertTrue(attrs & 1)
+            with self.assertRaises(ValueError): m.private_file(file, b'wrong replacement')
+            with self.assertRaises(OSError): file.write_bytes(b'wrong replacement')
+            self.assertTrue(m.checked_read(file, 128) == payload)
+        except Exception as error:
+            raise AssertionError('native_private_file_roundtrip_failed_' + type(error).__name__) from None
+        finally:
+            try:
+                if file.exists() and not kernel.SetFileAttributesW(str(file.absolute()), 0x80):
+                    raise RuntimeError('owned_control_attribute_release')
+                if root.exists(): shutil.rmtree(root)
+            except Exception as error:
+                raise AssertionError('native_private_owned_cleanup_failed_' + type(error).__name__) from None
+
     def test_reads_only_three_fixed_keys_never_ambient_path(self):
         class Environment:
             def __init__(self): self.keys = []

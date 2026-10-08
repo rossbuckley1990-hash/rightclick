@@ -80,10 +80,10 @@ def private_object(path, directory, data=b'', read_only=False):
         a.GetTokenInformation(token, 1, None, 0, ctypes.byref(size))
         if not 0 < size.value <= 4096:
             raise ValueError('private_token_budget')
-        data = ctypes.create_string_buffer(size.value)
-        if not a.GetTokenInformation(token, 1, data, size, ctypes.byref(size)):
+        token_buffer = ctypes.create_string_buffer(size.value)
+        if not a.GetTokenInformation(token, 1, token_buffer, size, ctypes.byref(size)):
             raise ValueError('private_token')
-        sid = TokenUser.from_buffer(data).sid
+        sid = TokenUser.from_buffer(token_buffer).sid
         if not a.ConvertSidToStringSidW(sid, ctypes.byref(sid_text)):
             raise ValueError('private_sid')
         value = sid_text.value
