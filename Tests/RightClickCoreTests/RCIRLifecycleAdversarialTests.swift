@@ -186,4 +186,139 @@ final class RCIRLifecycleAdversarialTests: XCTestCase {
         XCTAssertNotNil(status.rcir?.receipt)
         XCTAssertEqual(status.rcirEvents?.map(\.kind), ["accepted", "completed"])
     }
+
+    func testDeferredCompletionCannotSilentlyIgnoreAdmissionBoundTypedPostcondition() throws {
+        for matches in [true, false] {
+            let host = RCIRExecutionHost(), id = UUID().uuidString
+            var stamp: Int64 = 101
+            host.now = { stamp }; host.configuration = { RCIRHostConfiguration() }
+            let capability = Capability(id: "fixture:typed-postcondition", title: "Deferred typed postcondition",
+                source: .system, safety: .read, invocation: .direct, supportLevel: .experimental, requiresConfirmation: false)
+            let abi = CapabilityContract(capabilityID: capability.id, reflectorID: "fixture:postcondition-owner",
+                providerID: "fixture:postcondition-provider", arguments: .string,
+                result: .object(properties: ["state": .string], required: ["state"]),
+                declaration: .string("Admission-bound typed result fixture"))
+            let scope = RCIRScope("urn:rightclick:adversarial:typed-postcondition", .execute)
+            let specification = VerificationSpec(predicates: [.init(type: .resultPathEquals, key: "state", value: "wanted")])
+            let initial = try host.execute(abi: abi, discovery: abi, arguments: .string("fixture"), scope: scope,
+                taskModel: .init(shape: .deferred), capability: capability, executionID: id, argumentStrings: nil,
+                item: ContentItem(kind: "text", display: "fixture", text: "fixture"),
+                verification: specification, expectedOutput: nil, target: URL(string: "https://example.invalid/fixture")!,
+                authority: { [scope] }, revalidate: { true }, currentContract: { true },
+                dispatch: { _, start in
+                    try start {}
+                    return .init(executionId: id, actionId: capability.id, state: .started, message: "Live fixture")
+                }, resultValue: { _ in throw RightClickError("A live provider has no terminal result") })
+            XCTAssertEqual(initial.lifecycle?.terminal, false)
+            stamp = 102
+            try host.recordActiveTaskEvent(executionID: id, event: .accepted, now: stamp)
+            stamp = 103
+            try host.recordActiveTaskEvent(executionID: id,
+                event: .completed(.object(["state": .string(matches ? "wanted" : "different")])), now: stamp)
+            let deadline = Date().addingTimeInterval(3)
+            while ExecutionStore.shared.get(id)?.lifecycle?.terminal != true && Date() < deadline {
+                Thread.sleep(forTimeInterval: 0.005)
+            }
+            let terminal = try XCTUnwrap(ExecutionStore.shared.get(id))
+            XCTAssertEqual(terminal.lifecycle?.terminal, true, "Bounded asynchronous host adjudication must publish terminal evidence")
+            XCTAssertEqual(terminal.verification?.status, matches ? .verifiedSuccess : .verifiedFailure)
+            XCTAssertEqual(terminal.lifecycle?.verification, matches ? .verifiedSuccess : .verifiedFailure)
+            XCTAssertEqual(terminal.lifecycle?.semanticOutcome, matches ? .succeeded : .failed)
+            XCTAssertEqual(terminal.lifecycle?.observationBoundary, .returnedValue)
+            XCTAssertEqual(terminal.evidence.observationBoundary, .returnedValue)
+            XCTAssertEqual(terminal.lifecycle?.providerAcceptance, .accepted)
+            XCTAssertEqual(terminal.rcir?.outcome, matches ? "succeeded" : "failed")
+        }
+    }
+
+    func testPendingIndependentObserverDoesNotBlockCallbacksAndLateSuccessCannotReopenUnknown() throws {
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent("rightclick-observer-gate-" + UUID().uuidString)
+            .standardizedFileURL.resolvingSymlinksInPath()
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true,
+            attributes: [.posixPermissions: 0o700])
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+        let process = Process(); process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+        process.arguments = ["python3", root.appendingPathComponent("scripts/rcir-observer-gate-test-provider.py").path,
+            "--state-dir", directory.path]
+        process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
+        try process.run()
+        defer { if process.isRunning { process.terminate(); process.waitUntilExit() } }
+        func awaitFile(_ name: String) throws {
+            let deadline = Date().addingTimeInterval(3), file = directory.appendingPathComponent(name)
+            while !FileManager.default.fileExists(atPath: file.path) && Date() < deadline {
+                Thread.sleep(forTimeInterval: 0.01)
+            }
+            XCTAssertTrue(FileManager.default.fileExists(atPath: file.path), "Bounded observer fixture did not produce \(name)")
+            guard FileManager.default.fileExists(atPath: file.path) else { throw RightClickError("Observer gate fixture failed") }
+        }
+        try awaitFile("port")
+        let port = try String(contentsOf: directory.appendingPathComponent("port"), encoding: .utf8)
+        let base = "http://127.0.0.1:" + port
+        let host = RCIRExecutionHost(), id = UUID().uuidString
+        let capability = Capability(id: "fixture:gated-observer", title: "Gated independent observer", source: .system,
+            safety: .read, invocation: .direct, supportLevel: .experimental, requiresConfirmation: false)
+        let abi = CapabilityContract(capabilityID: capability.id, reflectorID: "fixture:gated-observer-owner",
+            providerID: "fixture:gated-observer-provider", arguments: .string, result: .string,
+            declaration: .string("Independent gated observer fixture"))
+        let scope = RCIRScope("urn:rightclick:adversarial:gated-observer", .execute)
+        host.configuration = {
+            var config = RCIRHostConfiguration()
+            config.observers = [capability.id: .init(urlTemplate: base + "/observe/{expected}", expectedArgument: "expected")]
+            return config
+        }
+        let initial = try host.execute(abi: abi, discovery: abi, arguments: .string("fixture"), scope: scope,
+            taskModel: .init(shape: .deferred), capability: capability, executionID: id,
+            argumentStrings: ["expected": "wanted"], item: ContentItem(kind: "text", display: "fixture", text: "fixture"),
+            verification: nil, expectedOutput: nil, target: URL(string: base + "/invoke")!, authority: { [scope] },
+            revalidate: { true }, currentContract: { true }, dispatch: { _, start in
+                try start {}
+                return .init(executionId: id, actionId: capability.id, state: .started, message: "Live fixture")
+            }, resultValue: { _ in throw RightClickError("Live task cannot demand terminal result") })
+        XCTAssertEqual(initial.lifecycle?.terminal, false)
+        func now() -> Int64 { Int64(Date().timeIntervalSince1970 * 1000) }
+        try host.recordActiveTaskEvent(executionID: id, event: .accepted, now: now())
+        try host.recordActiveTaskEvent(executionID: id, event: .working, now: now())
+        let start = Date()
+        try host.recordActiveTaskEvent(executionID: id, event: .completed(.string("provider response")), now: now())
+        XCTAssertLessThan(Date().timeIntervalSince(start), 1, "Provider callback blocked on the independent observer")
+        try awaitFile("observer-started")
+        let pending = try XCTUnwrap(host.activeExecutionStatus(executionID: id))
+        XCTAssertEqual(pending.lifecycle?.terminal, false)
+        XCTAssertEqual(pending.lifecycle?.receiptAvailable, false)
+        XCTAssertNil(ExecutionStore.shared.get(id)?.rcir)
+
+        // A second admitted provider callback can proceed while the first task's
+        // observer is blocked. No host-wide active-task/admission lock is held.
+        let otherID = UUID().uuidString
+        let otherInitial = try host.execute(abi: abi, discovery: abi, arguments: .string("second"), scope: scope,
+            taskModel: .init(shape: .deferred), capability: capability, executionID: otherID,
+            argumentStrings: ["expected": "wanted"], item: ContentItem(kind: "text", display: "second", text: "second"),
+            verification: nil, expectedOutput: nil, target: URL(string: base + "/invoke")!, authority: { [scope] },
+            revalidate: { true }, currentContract: { true }, dispatch: { _, start in
+                try start {}
+                return .init(executionId: otherID, actionId: capability.id, state: .started, message: "Unrelated live fixture")
+            }, resultValue: { _ in throw RightClickError("Live task cannot demand terminal result") })
+        XCTAssertEqual(otherInitial.lifecycle?.terminal, false)
+        let otherStart = Date()
+        try host.recordActiveTaskEvent(executionID: otherID, event: .accepted, now: now())
+        try host.recordActiveTaskEvent(executionID: otherID, event: .working, now: now())
+        XCTAssertEqual(host.activeExecutionStatus(executionID: otherID)?.lifecycle?.phase, .working)
+        XCTAssertLessThan(Date().timeIntervalSince(otherStart), 1, "Unrelated lifecycle blocked behind observer I/O")
+
+        _ = try host.markActiveTaskUnknown(executionID: id, now: now())
+        let unknown = try XCTUnwrap(ExecutionStore.shared.get(id))
+        XCTAssertEqual(unknown.state, .unknown)
+        XCTAssertEqual(unknown.lifecycle?.terminal, true)
+        XCTAssertEqual(unknown.lifecycle?.verification, .unverified)
+        XCTAssertNotNil(unknown.rcir?.receipt)
+        XCTAssertEqual(unknown.rcirEvents?.map(\.kind), ["accepted", "working", "completed"])
+        try Data().write(to: directory.appendingPathComponent("release"))
+        try awaitFile("observer-finished")
+        Thread.sleep(forTimeInterval: 0.15)
+        let immutable = try XCTUnwrap(ExecutionStore.shared.get(id))
+        let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
+        XCTAssertEqual(try encoder.encode(immutable), try encoder.encode(unknown), "Late observer success reopened UNKNOWN")
+        _ = try host.markActiveTaskUnknown(executionID: otherID, now: now())
+    }
 }
