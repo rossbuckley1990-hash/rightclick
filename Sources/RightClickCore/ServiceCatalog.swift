@@ -339,12 +339,7 @@ enum ServiceCatalog {
     }
 
     private static func plainTextRTF(_ text: String) -> Data {
-        let escaped = text
-            .replacingOccurrences(of: "\\", with: "\\\\")
-            .replacingOccurrences(of: "{", with: "\\{")
-            .replacingOccurrences(of: "}", with: "\\}")
-            .replacingOccurrences(of: "\n", with: "\\par ")
-        return Data("{\\rtf1\\ansi \(escaped)}".utf8)
+        ServiceRTFEncoder.encode(text)
     }
 
     private static func retain(_ pasteboard: NSPasteboard, seconds: TimeInterval) {
