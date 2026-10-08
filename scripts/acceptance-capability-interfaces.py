@@ -32,7 +32,7 @@ args = parser.parse_args()
 root = pathlib.Path(__file__).resolve().parent.parent
 evidence = args.evidence.resolve(); evidence.mkdir(parents=True, exist_ok=True)
 lab_directory = tempfile.TemporaryDirectory(prefix="rightclick-interface-acceptance-")
-lab = pathlib.Path(lab_directory.name)
+lab = pathlib.Path(lab_directory.name).resolve()
 lab.chmod(0o700)
 component = lab / "fingerprint.component.wasm"; shutil.copyfile(args.component, component)
 unseen = lab / "unseen.component.wasm"

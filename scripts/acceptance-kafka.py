@@ -19,7 +19,7 @@ args = parser.parse_args()
 root = pathlib.Path(__file__).resolve().parent.parent
 out = args.evidence.resolve(); out.mkdir(parents=True, exist_ok=True)
 lab_directory = tempfile.TemporaryDirectory(prefix='rightclick-kafka-acceptance-')
-lab = pathlib.Path(lab_directory.name); lab.chmod(0o700)
+lab = pathlib.Path(lab_directory.name).resolve(); lab.chmod(0o700)
 key = Ed25519PrivateKey.generate(); keyfile = lab/'signer.raw'
 keyfile.write_bytes(key.private_bytes(serialization.Encoding.Raw, serialization.PrivateFormat.Raw, serialization.NoEncryption())); keyfile.chmod(0o600)
 public = out/'trusted-public-key.raw'; public.write_bytes(key.public_key().public_bytes(serialization.Encoding.Raw, serialization.PublicFormat.Raw))
