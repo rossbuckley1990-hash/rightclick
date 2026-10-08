@@ -70,6 +70,9 @@ jobs:
           PYTHONDONTWRITEBYTECODE=1 python3 -W error::ResourceWarning -m unittest discover \
             -s scripts/tests -p test_dbus_coexistence_hook.py -v \
             2>&1 | tee evidence/linux-dbus/coexistence-adapter-controls.log
+          PYTHONDONTWRITEBYTECODE=1 python3 -W error::ResourceWarning -m unittest discover \
+            -s scripts/tests -p test_linux_dbus_principals.py -v \
+            2>&1 | tee evidence/linux-dbus/principal-controls.log
       - name: Typed compiler and genuine final-gate owner controls
         env:
           RIGHTCLICK_TEST_DBUS_NATIVE: '1'

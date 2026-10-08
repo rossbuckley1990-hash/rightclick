@@ -89,16 +89,27 @@ jobs:
           assert lab.owned(lab.KAFKA)
           before = json.loads(lab.docker('inspect', lab.KAFKA).stdout)[0]
           assert before['Config']['Image'] == lab.REDPANDA
-          path = lab.docker('exec', lab.KAFKA, 'sh', '-c', 'readlink -f "$(command -v rpk)"').stdout.strip()
-          assert path.startswith('/') and '\n' not in path
+          wrapper = lab.docker('exec', lab.KAFKA, 'sh', '-c', 'readlink -f "$(command -v rpk)"').stdout.strip()
+          assert wrapper == '/opt/redpanda/bin/rpk'
+          wrapper_digest = lab.docker('exec', lab.KAFKA, 'sha256sum', wrapper).stdout.split()[0]
+          assert len(wrapper_digest) == 64 and all(character in '0123456789abcdef' for character in wrapper_digest)
+          # The documented bin/rpk entry is a shell wrapper over libexec/rpk.
+          # Snapshot the actual executable from the same pinned owned container.
+          path = lab.docker('exec', lab.KAFKA, 'readlink', '-f', '/opt/redpanda/libexec/rpk').stdout.strip()
+          assert path == '/opt/redpanda/libexec/rpk'
           lab.docker('cp', lab.KAFKA + ':' + path, sys.argv[1])
           after = json.loads(lab.docker('inspect', lab.KAFKA).stdout)[0]
           assert before['Id'] == after['Id'] and before['Image'] == after['Image']
-          target = pathlib.Path(sys.argv[1]); target.chmod(0o755)
+          target = pathlib.Path(sys.argv[1])
+          executable_bytes = target.read_bytes()
+          assert executable_bytes[:4] == b'\x7fELF', 'Expected actual ELF, not a shell wrapper'
+          target.chmod(0o755)
           import hashlib
           record = {'source': 'actual executable extracted from exact existing owned Redpanda container',
                     'containerID': before['Id'], 'imageID': before['Image'], 'imageReference': before['Config']['Image'],
-                    'clientSHA256': hashlib.sha256(target.read_bytes()).hexdigest(), 'nativeArchitecture': 'x86_64'}
+                    'wrapperSourcePath': wrapper, 'wrapperSHA256': wrapper_digest, 'executableSourcePath': path,
+                    'copiedELFMagicVerified': True,
+                    'clientSHA256': hashlib.sha256(executable_bytes).hexdigest(), 'nativeArchitecture': 'x86_64'}
           pathlib.Path('evidence/proof-lab/rpk-provenance.json').write_text(json.dumps(record, indent=2) + '\n')
           PY
           image="$(cat "$RUNNER_TEMP/rightclick-product-image")"

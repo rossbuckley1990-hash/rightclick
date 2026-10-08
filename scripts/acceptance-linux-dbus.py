@@ -41,7 +41,10 @@ def main():
     report = {"runKind": "NEW_NATIVE_LINUX_DBUS_RUN", "controls": {}, "principals": {"writerUID": 1100, "observerUID": 1101, "serviceUID": 1102}}
     processes = []; client = None
     with tempfile.TemporaryDirectory(prefix="rightclick-dbus-private-") as temporary:
-        root = pathlib.Path(temporary); root.chmod(0o711)
+        root = pathlib.Path(temporary)
+        # Protected references open each ancestor read-only. Only the existing
+        # writer group may read these names; observer/service retain traversal.
+        os.chown(root, 0, 1100); root.chmod(0o751)
         for name, owner, group, mode in [("state", 1102, 1101, 0o750), ("records", 1102, 1101, 0o750), ("observer-state", 1101, 1101, 0o750), ("writer-state", 1100, 1100, 0o700)]:
             target = root / name; target.mkdir(); os.chown(target, owner, group); target.chmod(mode)
         token = uuid.uuid4().hex
