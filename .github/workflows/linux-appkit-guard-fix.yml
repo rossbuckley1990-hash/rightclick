@@ -1,4 +1,4 @@
-name: apply Linux AppKit test guard
+name: apply Linux AppKit portability guards
 
 on:
   push:
@@ -13,20 +13,27 @@ permissions:
 jobs:
   fix-and-verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
           ref: fix/linux-appkit-test-guard-20261008
           fetch-depth: 0
-      - name: Guard macOS-only test on non-AppKit platforms
+      - name: Guard macOS-only tests and probe
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p = Path('Tests/RightClickCoreTests/ServiceRTFUnicodeTests.swift')
-          s = p.read_text()
+
+          test = Path('Tests/RightClickCoreTests/ServiceRTFUnicodeTests.swift')
+          s = test.read_text()
           if not s.startswith('#if canImport(AppKit)\n'):
-              p.write_text('#if canImport(AppKit)\n' + s.rstrip() + '\n#endif\n')
+              test.write_text('#if canImport(AppKit)\n' + s.rstrip() + '\n#endif\n')
+
+          probe = Path('Sources/RightClickProbe/main.swift')
+          s = probe.read_text()
+          guard = '#if canImport(AppKit) && canImport(AVFoundation) && canImport(CoreGraphics)\n'
+          if not s.startswith(guard):
+              probe.write_text(guard + s.rstrip() + '\n#else\nprint("rightclick-probe unavailable: requires macOS AppKit/AVFoundation/CoreGraphics")\n#endif\n')
           PY
           git diff --check
       - name: Linux test
@@ -41,6 +48,6 @@ jobs:
           rm .github/workflows/linux-appkit-guard-fix.yml
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add Tests/RightClickCoreTests/ServiceRTFUnicodeTests.swift .github/workflows/linux-appkit-guard-fix.yml
-          git commit -m 'test(linux): guard AppKit-only Unicode tests' -m 'Verified on ubuntu-latest with swift test, swift build -c release, and 51 cleanup-policy cases.'
+          git add Tests/RightClickCoreTests/ServiceRTFUnicodeTests.swift Sources/RightClickProbe/main.swift .github/workflows/linux-appkit-guard-fix.yml
+          git commit -m 'fix(linux): guard macOS-only probe and Unicode tests' -m 'Verified on ubuntu-latest with swift test, swift build -c release, and 51 cleanup-policy cases.'
           git push origin HEAD:fix/linux-appkit-test-guard-20261008
