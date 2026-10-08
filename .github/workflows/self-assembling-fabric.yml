@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: self-assembling-k8s-wasm-a2a
+  cancel-in-progress: true
+
 jobs:
   fabric:
     runs-on: ubuntu-latest
@@ -23,6 +27,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
+
+      - name: Record cloud run start
+        shell: bash
+        run: |
+          set -e
+          mkdir -p "$EVIDENCE_DIR"
+          printf '{"run_id":"%s","ref":"%s","sha":"%s","state":"STARTED"}\n' "${{ github.run_id }}" "${{ github.ref }}" "${{ github.sha }}" > "$EVIDENCE_DIR/run_started.json"
+          git config user.name "RIGHTCLICK Experiment"
+          git config user.email "rightclick-experiment@users.noreply.github.com"
+          git add "$EVIDENCE_DIR/run_started.json"
+          git commit -m "EXPERIMENT_STARTED run=${{ github.run_id }}"
+          git push origin HEAD:"$GITHUB_REF_NAME"
 
       - name: Prepare evidence directory
         run: |
@@ -213,4 +229,5 @@ jobs:
           fi
           MSG="EXPERIMENT_RESULT VERIFIED=${RESULT_VERIFIED:-unknown} OBSERVED=${OBSERVED:-unknown} EXPECTED=${EXPECTED:-unknown} RECOVERED=${RECOVERED:-unknown} A2A_HTTP=${A2A_HTTP:-unknown} WASM_SHA=${WASM_SHA:-unknown}"
           git commit -m "$MSG"
+          git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin HEAD:"$GITHUB_REF_NAME"
