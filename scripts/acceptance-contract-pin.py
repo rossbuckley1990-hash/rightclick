@@ -116,7 +116,7 @@ def main():
     server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     with tempfile.TemporaryDirectory(prefix="rightclick-contract-pin-") as temporary:
-        config = pathlib.Path(temporary) / "host.json"
+        config = pathlib.Path(temporary).resolve() / "host.json"
         config.write_text(json.dumps({"version": 1, "revision": "controlled-pin-1", "deniedCapabilities": []}))
         config.chmod(0o600)
         environment = dict(os.environ, RIGHTCLICK_RCIR_CONFIG=str(config), RIGHTCLICK_EXPERIENCE="off",

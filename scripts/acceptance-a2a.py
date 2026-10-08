@@ -33,7 +33,7 @@ def main():
     report["binary"] = str(binary)
     report["binarySHA256"] = hashlib.sha256(binary.read_bytes()).hexdigest()
     with tempfile.TemporaryDirectory(prefix="rightclick-a2a-acceptance-") as temporary, FixtureProcesses(out / "fixture-startup.json") as fixtures:
-        tmp = pathlib.Path(temporary)
+        tmp = pathlib.Path(temporary).resolve()
         def launch(script):
             label, marker = ("agent", "port") if script == "a2a-proof-agent.py" else ("observer", "observer-port")
             p = fixtures.launch(label, root / script, [str(tmp)] + (["--hold-until-file"] if label == "agent" else []), tmp / marker)
