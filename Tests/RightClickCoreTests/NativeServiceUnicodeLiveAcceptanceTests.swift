@@ -20,6 +20,9 @@ final class NativeServiceUnicodeLiveAcceptanceTests: XCTestCase {
 
         let engine = CapabilityRuntimeDefaults.makeEngine(startBrowsing: false)
         let input = "café € 漢字 🚀 ＲｉｇｈｔＣｌｉｃｋ"
+        // Half-width conversion must transform the full-width letters while
+        // preserving the other Unicode scalars, including the emoji.
+        let expected = "café € 漢字 🚀 RightClick"
         let capabilities = try engine.capabilities(for: input).capabilities
         guard let selected = capabilities.first(where: {
             $0.title == "Convert Text to Half Width"
@@ -36,9 +39,10 @@ final class NativeServiceUnicodeLiveAcceptanceTests: XCTestCase {
 
         XCTAssertEqual(
             output.output,
-            input,
+            expected,
             "Installed text converter introduced or retained Unicode mojibake."
         )
+        XCTAssertEqual(Array(try XCTUnwrap(output.output).utf16), Array(expected.utf16))
         XCTAssertTrue(
             output.state == .accepted || output.state == .succeeded,
             "Native converter invocation was not accepted."
@@ -57,6 +61,23 @@ final class NativeServiceUnicodeLiveAcceptanceTests: XCTestCase {
         })
         let record = try engine.begin(id: selected.id, item: input, confirmed: true)
         XCTAssertEqual(record.output, "ＲｉｇｈｔＣｌｉｃｋ")
+        XCTAssertTrue(record.state == .accepted || record.state == .succeeded)
+    }
+
+    func testInstalledHalfWidthServicePreservesLiteralUTF8LookingText() throws {
+        guard ProcessInfo.processInfo.environment["RIGHTCLICK_LIVE_UNICODE_SERVICE"] == "1" else {
+            throw XCTSkip("Set RIGHTCLICK_LIVE_UNICODE_SERVICE=1 on a macOS host.")
+        }
+        let engine = CapabilityRuntimeDefaults.makeEngine(startBrowsing: false)
+        let input = "ｃａｆÃ©"
+        let expected = "cafÃ©"
+        let selected = try XCTUnwrap(engine.capabilities(for: input).capabilities.first {
+            $0.title == "Convert Text to Half Width"
+                && $0.provider?.bundleIdentifier == "com.apple.ChineseTextConverterService"
+        })
+        let record = try engine.begin(id: selected.id, item: input, confirmed: true)
+        XCTAssertEqual(record.output, expected)
+        XCTAssertEqual(Array(try XCTUnwrap(record.output).utf16), Array(expected.utf16))
         XCTAssertTrue(record.state == .accepted || record.state == .succeeded)
     }
 }

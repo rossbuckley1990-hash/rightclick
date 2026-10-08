@@ -4,7 +4,10 @@
 @testable import RightClickMacOS
 @testable import RightClickMacOSHost
 #endif
+import Foundation
+#if canImport(AppKit)
 import AppKit
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -16,6 +19,7 @@ final class ServiceRTFUnicodeTests: XCTestCase {
         "\u{20ac}\u{00a3}", "\u{2028}\u{2029}"
     ]
 
+    #if canImport(AppKit)
     private func decode(_ data: Data) throws -> String {
         try NSAttributedString(
             data: data,
@@ -23,15 +27,18 @@ final class ServiceRTFUnicodeTests: XCTestCase {
             documentAttributes: nil
         ).string
     }
+    #endif
 
     func testUnicodeRoundTripThroughRTFEncoder() throws {
         for (index, text) in vectors.enumerated() {
             let data = ServiceRTFEncoder.encode(text)
             XCTAssertTrue(data.allSatisfy { $0 < 128 }, "vector \(index): RTF wire must be ASCII")
+            #if canImport(AppKit)
             let decoded = try decode(data)
             // Swift String equality ignores canonical normalization. Compare
             // UTF-16 units as well so a combining-mark regression is visible.
             XCTAssertEqual(Array(decoded.utf16), Array(text.utf16), "vector \(index)")
+            #endif
         }
     }
 
@@ -42,9 +49,16 @@ final class ServiceRTFUnicodeTests: XCTestCase {
 
     func testRTFMetacharactersAreNotInterpretedAsInstructions() throws {
         let text = "{\\rtf1\\ansi injected} \\u65? \\par"
+        XCTAssertEqual(
+            String(decoding: ServiceRTFEncoder.encode(text), as: UTF8.self),
+            "{\\rtf1\\ansi\\ansicpg1252\\uc1 \\{\\\\rtf1\\\\ansi injected\\} \\\\u65? \\\\par}"
+        )
+        #if canImport(AppKit)
         XCTAssertEqual(try decode(ServiceRTFEncoder.encode(text)), text)
+        #endif
     }
 
+    #if canImport(AppKit)
     func testDeclaredRTFPasteboardUsesUnicodeEncoder() throws {
         for type in ["public.rtf", "NSRTFPboardType"] {
             for text in vectors {
@@ -75,6 +89,7 @@ final class ServiceRTFUnicodeTests: XCTestCase {
         XCTAssertTrue(ServiceCatalog.prepareWebURLPasteboard(board, url: url, declaredSendTypes: ["public.rtf"]))
         XCTAssertEqual(try decode(XCTUnwrap(board.data(forType: .rtf))), url)
     }
+    #endif
 
     func testSeededMixedUnicodeRoundTrips() throws {
         let pieces = [
@@ -94,7 +109,9 @@ final class ServiceRTFUnicodeTests: XCTestCase {
             let data = ServiceRTFEncoder.encode(text)
             XCTAssertEqual(data, ServiceRTFEncoder.encode(text), "non-deterministic vector \(index)")
             XCTAssertTrue(data.allSatisfy { $0 < 128 })
+            #if canImport(AppKit)
             XCTAssertEqual(Array(try decode(data).utf16), Array(text.utf16), "seeded vector \(index)")
+            #endif
         }
     }
 }
