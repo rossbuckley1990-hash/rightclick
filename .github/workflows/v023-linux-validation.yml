@@ -17,13 +17,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: d063fa35f8507adec9ea0c584f7fb96fd9822c3e
+          ref: 143d6065cb5d5fc96d482ac6d17a9cda735cdc88
           fetch-depth: 0
       - name: Run all exact-head gates and preserve diagnostics
         shell: bash
         run: |
           set +e
-          test "$(git rev-parse HEAD)" = "d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+          test "$(git rev-parse HEAD)" = "143d6065cb5d5fc96d482ac6d17a9cda735cdc88"
           exact_rc=$?
           swift test > /tmp/v023-test.log 2>&1
           test_rc=$?
@@ -36,7 +36,7 @@ jobs:
           verdict=PASS
           if [ $exact_rc -ne 0 ] || [ $test_rc -ne 0 ] || [ $build_rc -ne 0 ] || [ $policy_rc -ne 0 ] || [ $clean_rc -ne 0 ]; then verdict=FAIL; fi
           {
-            echo "candidate=d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+            echo "candidate=143d6065cb5d5fc96d482ac6d17a9cda735cdc88"
             echo "exact_rc=$exact_rc"
             echo "test_rc=$test_rc"
             echo "build_rc=$build_rc"
@@ -62,9 +62,9 @@ jobs:
           build_tail=$(cat /tmp/v023-build-tail.txt)
           policy_tail=$(cat /tmp/v023-policy-tail.txt)
           mkdir -p validation-results
-          cp /tmp/v023-summary.env validation-results/v0.2.3-linux-diagnostic-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt
+          cp /tmp/v023-summary.env validation-results/v0.2.3-linux-diagnostic-143d6065cb5d5fc96d482ac6d17a9cda735cdc88.txt
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add validation-results/v0.2.3-linux-diagnostic-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt
-          git commit -m "validation(v0.2.3-linux-diagnostic): $verdict exact=$exact_rc test=$test_rc build=$build_rc policy=$policy_rc clean=$clean_rc" -m "candidate=d063fa35f8507adec9ea0c584f7fb96fd9822c3e" -m "test_tail=$test_tail" -m "build_tail=$build_tail" -m "policy_tail=$policy_tail"
+          git add validation-results/v0.2.3-linux-diagnostic-143d6065cb5d5fc96d482ac6d17a9cda735cdc88.txt
+          git commit -m "validation(v0.2.3-linux-diagnostic): $verdict exact=$exact_rc test=$test_rc build=$build_rc policy=$policy_rc clean=$clean_rc" -m "candidate=143d6065cb5d5fc96d482ac6d17a9cda735cdc88" -m "test_tail=$test_tail" -m "build_tail=$build_tail" -m "policy_tail=$policy_tail"
           git push origin HEAD:validation/v0.2.3-linux-20261008
