@@ -170,6 +170,23 @@ def active_processes(job):
     return info.active
 
 
+def observe_quiescence(job, deadline, query=active_processes, now=time.monotonic, pause=time.sleep):
+    """Observe this owned job within the original child deadline, never cleanup."""
+    began = now()
+    initial = current = query(job)
+    observed = now()
+    polls = 1
+    while current != 0 and observed < deadline:
+        pause(min(0.002, deadline - observed))
+        current = query(job)
+        observed = now(); polls += 1
+    return {'initialOwnedActiveProcesses': initial, 'finalOwnedActiveProcesses': current,
+            'ownedQuiescenceWaitMilliseconds': round((observed - began) * 1000, 3),
+            'postParentRemainingBudgetMilliseconds': round(max(0, deadline - began) * 1000, 3),
+            'ownedQuiescencePolls': polls,
+            'ownedQuiescenceObservedBeforeDeadline': current == 0 and observed <= deadline}
+
+
 class BoundedStream:
     def __init__(self, maximum):
         self.maximum, self.data, self.observed = maximum, bytearray(), 0
@@ -201,9 +218,11 @@ class BoundedStream:
 
 def sample(executable, arguments, environment, out, name, maximum=MAX_STDOUT):
     began = time.monotonic()
+    deadline = began + 5
     stdout, stderr = BoundedStream(maximum), BoundedStream(MAX_STDERR)
     job, child, threads = None, None, []
     outcome, exit_code, quiescent = 'launch_failed', None, False
+    observation = {}
     snapshots = {}
     try:
         job = WindowsJob()
@@ -217,13 +236,16 @@ def sample(executable, arguments, environment, out, name, maximum=MAX_STDOUT):
         while child.poll() is None:
             if stdout.over or stderr.over:
                 outcome = 'output_budget'; break
-            if time.monotonic() - began >= 5:
+            if time.monotonic() >= deadline:
                 outcome = 'deadline'; break
             time.sleep(0.002)
         if outcome != 'completed': job.terminate()
         child.wait(timeout=2)
-        # A foreground exit cannot hide active descendants or a late PE.
-        quiescent = active_processes(job) == 0
+        # A foreground exit cannot hide active descendants or a late PE. Native
+        # job accounting can still be nonzero immediately after parent exit;
+        # require an actual zero observation within the SAME original deadline.
+        observation = observe_quiescence(job, deadline)
+        quiescent = observation['ownedQuiescenceObservedBeforeDeadline']
         if not quiescent:
             outcome = 'descendants_not_quiescent'; job.terminate()
         for thread in threads: thread.join(timeout=1)
@@ -252,6 +274,7 @@ def sample(executable, arguments, environment, out, name, maximum=MAX_STDOUT):
             private_file(path, data)
     return {'outcome': outcome, 'exitCode': exit_code, 'stdout': snapshots['stdout'],
             'stderr': snapshots['stderr'], 'ownedDescendantsQuiescentBeforeCleanup': quiescent,
+            **observation,
             'deadlineSeconds': 5,
             'elapsedMilliseconds': round((time.monotonic() - began) * 1000, 3)}
 

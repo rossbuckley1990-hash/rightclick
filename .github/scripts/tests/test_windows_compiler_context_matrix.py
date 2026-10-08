@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import ast, ctypes, importlib.util, json, os, shutil, struct, sys, tempfile, unittest, uuid
+import ast, ctypes, importlib.util, json, os, shutil, struct, subprocess, sys, tempfile, time, unittest, uuid
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / '.github/scripts'))
@@ -8,6 +8,61 @@ import windows_compiler_context_matrix as m
 
 
 class MatrixControls(unittest.TestCase):
+    def test_accounting_lag_requires_actual_zero_within_original_budget(self):
+        clock = [1.0]; values = iter((2, 1, 0))
+        def pause(seconds): clock[0] += seconds
+        observed = m.observe_quiescence(None, 1.005, query=lambda _: next(values), now=lambda: clock[0], pause=pause)
+        self.assertTrue(observed['ownedQuiescenceObservedBeforeDeadline'])
+        self.assertEqual((observed['initialOwnedActiveProcesses'], observed['finalOwnedActiveProcesses']), (2, 0))
+        self.assertEqual(observed['ownedQuiescencePolls'], 3)
+        self.assertEqual(observed['postParentRemainingBudgetMilliseconds'], 5)
+        self.assertEqual(observed['ownedQuiescenceWaitMilliseconds'], 4)
+
+    def test_active_descendants_abort_at_original_deadline(self):
+        clock = [1.0]
+        def pause(seconds): clock[0] += seconds
+        observed = m.observe_quiescence(None, 1.005, query=lambda _: 1, now=lambda: clock[0], pause=pause)
+        self.assertFalse(observed['ownedQuiescenceObservedBeforeDeadline'])
+        self.assertEqual(observed['finalOwnedActiveProcesses'], 1)
+        self.assertEqual(observed['ownedQuiescenceWaitMilliseconds'], 5)
+
+    def test_late_zero_observation_cannot_cross_original_deadline(self):
+        clock = [1.0]
+        def late_query(_): clock[0] = 1.006; return 0
+        observed = m.observe_quiescence(None, 1.005, query=late_query, now=lambda: clock[0])
+        self.assertFalse(observed['ownedQuiescenceObservedBeforeDeadline'])
+        self.assertEqual(observed['finalOwnedActiveProcesses'], 0)
+
+    @unittest.skipUnless(os.name == 'nt', 'Owned native job quiescence requires Windows')
+    def test_native_owned_job_observes_natural_zero_and_rejects_still_active(self):
+        selected = m.selected_host_context(os.environ)
+        environment = m.profiles(selected, tempfile.gettempdir())[0]
+        for lifetime, budget, expected in ((0.05, 2, True), (2, 0.02, False)):
+            job, child = None, None
+            try:
+                job = m.WindowsJob()
+                child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(' + str(lifetime) + ')'],
+                    env=environment, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL, creationflags=4)
+                job.assign_and_resume(child)
+                observed = m.observe_quiescence(job, time.monotonic() + budget)
+                self.assertGreater(observed['initialOwnedActiveProcesses'], 0)
+                self.assertEqual(observed['ownedQuiescenceObservedBeforeDeadline'], expected)
+                if expected:
+                    self.assertEqual(observed['finalOwnedActiveProcesses'], 0)
+                    self.assertEqual(child.wait(timeout=1), 0)
+                else: self.assertGreater(observed['finalOwnedActiveProcesses'], 0)
+            except Exception as error:
+                raise AssertionError('native_owned_quiescence_control_failed_' + type(error).__name__) from None
+            finally:
+                if job:
+                    try: job.terminate()
+                    finally: job.close()
+                if child:
+                    try: child.wait(timeout=2)
+                    except subprocess.TimeoutExpired:
+                        child.kill(); child.wait(timeout=2)
+
     def test_private_payload_parameter_cannot_be_reassigned(self):
         code = ast.parse((ROOT / '.github/scripts/windows_compiler_context_matrix.py').read_text())
         function = next(n for n in code.body if isinstance(n, ast.FunctionDef) and n.name == 'private_object')
