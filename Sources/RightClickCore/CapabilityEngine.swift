@@ -960,26 +960,21 @@ public final class CapabilityEngine {
                                 maximumBytes: Int = 262_144) throws -> ExecutionRecord {
         guard cursor >= 0 else { throw RCIRError.invalidSequence }
         guard (1...256).contains(limit), (1...262_144).contains(maximumBytes) else { throw RCIRError.invalidLimit }
-        let live = rcirHost.activeExecutionStatus(executionID: executionId)
-        var record = executionStatus(executionId)
-        if record.lifecycle?.terminal != true, let live { record = live }
-        // Re-read terminal storage after the live lookup: publication can race
-        // either lookup, but retained history is installed before live removal.
-        if let terminal = ExecutionStore.shared.get(executionId), terminal.lifecycle?.terminal == true {
-            record = terminal
-        }
-        if let page = try ExecutionStore.shared.rcirEventPage(executionId: executionId,
-            after: cursor, limit: limit, maximumBytes: maximumBytes) {
-            record.rcirEventPage = page
-        } else if let page = try rcirHost.activeEventPage(executionID: executionId,
-            after: cursor, limit: limit, maximumBytes: maximumBytes) {
-            record.rcirEventPage = page
-        } else if cursor != 0 {
-            record.rcirEventPage = nil
-        }
-        // Event history is exposed only through the bounded page in status.
-        record.rcirEvents = nil
-        return record
+        // Each owner captures lifecycle, result and bounded event history from
+        // the same immutable snapshot. Completion or a working callback cannot
+        // mix a newer page with an older lifecycle while this call is reading.
+        let live = try rcirHost.activeExecutionStatus(executionID: executionId,
+            after: cursor, limit: limit, maximumBytes: maximumBytes)
+        let retained = try ExecutionStore.shared.statusSnapshot(executionId: executionId,
+            after: cursor, limit: limit, maximumBytes: maximumBytes)
+        // Terminal publication precedes live removal. Prefer retained completion
+        // if it raced the live capture; otherwise that coherent live snapshot
+        // remains a valid observation of the earlier point in time.
+        if retained?.lifecycle?.terminal == true { return retained! }
+        if let live { return live }
+        if let retained { return retained }
+        return ExecutionRecord(executionId: executionId, actionId: "", state: .unknown,
+            message: "No execution with that id.")
     }
 
     /// Captured before dispatch, so later discovery cannot change execution's owner.

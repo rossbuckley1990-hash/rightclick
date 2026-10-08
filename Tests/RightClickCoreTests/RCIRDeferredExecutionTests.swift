@@ -100,6 +100,91 @@ final class RCIRDeferredExecutionTests: XCTestCase {
         )
     }
 
+    func testCoherentStatusSnapshotsBoundPagesAndDoNotInventRoutedHistory() throws {
+        let id = UUID().uuidString, host = RCIRExecutionHost()
+        host.now = { 103 }
+        try host.registerActiveTask(deferredTask(), executionID: id)
+        ExecutionStore.shared.put(try XCTUnwrap(host.activeExecutionStatus(executionID: id)))
+        try host.recordActiveTaskEvent(executionID: id, event: .accepted, now: 103)
+        try host.recordActiveTaskEvent(executionID: id, event: .working, now: 103)
+        let live = try XCTUnwrap(host.activeExecutionStatus(executionID: id, after: 1, limit: 1, maximumBytes: 16_384))
+        XCTAssertEqual(live.lifecycle?.sequence, 2)
+        XCTAssertEqual(live.lifecycle?.terminal, false)
+        XCTAssertEqual(live.rcirEventPage?.events.map(\.sequence), [2])
+        XCTAssertEqual(live.rcirEventPage?.terminal, false)
+        XCTAssertNil(live.rcirEvents)
+        XCTAssertNil(live.rcir)
+        let engine = CapabilityEngine(reflectors: [], experience: nil, rcirHost: host)
+        XCTAssertEqual(try engine.executionStatus(id, cursor: 1, limit: 1).rcirEventPage?.nextCursor, 2,
+            "A stale initial stored sequence cannot reject a valid current live cursor")
+        try host.recordActiveTaskEvent(executionID: id, event: .completed(.integer(7)), now: 104)
+        let terminal = try XCTUnwrap(ExecutionStore.shared.statusSnapshot(executionId: id, after: 1, limit: 1, maximumBytes: 16_384))
+        XCTAssertEqual(terminal.lifecycle?.sequence, 3)
+        XCTAssertEqual(terminal.lifecycle?.terminal, true)
+        XCTAssertEqual(terminal.rcirEventPage?.nextCursor, 2)
+        XCTAssertEqual(terminal.rcirEventPage?.hasMore, true)
+        XCTAssertEqual(terminal.rcirEventPage?.terminal, true)
+        XCTAssertNotNil(terminal.rcir?.receipt)
+        XCTAssertEqual(try terminal.result?.canonicalData(), try CapabilityValue.integer(7).canonicalData())
+        XCTAssertNil(terminal.rcirEvents)
+        XCTAssertThrowsError(try ExecutionStore.shared.statusSnapshot(executionId: id, after: 4))
+
+        let routedStore = ExecutionStore()
+        var alias = terminal; alias.executionId = UUID().uuidString
+        try routedStore.putTerminalSnapshot(alias)
+        let exact = try XCTUnwrap(routedStore.statusSnapshot(executionId: alias.executionId, after: 1, limit: 1, maximumBytes: 16_384))
+        XCTAssertEqual(exact.rcirEventPage?.events.map(\.sequence), [2])
+        XCTAssertNil(try routedStore.statusSnapshot(executionId: alias.executionId, after: 0)?.rcirEventPage,
+            "A retained remote view cannot justify a different requested cursor")
+        XCTAssertNil(try routedStore.statusSnapshot(executionId: alias.executionId, after: 1, maximumBytes: 1)?.rcirEventPage,
+            "A retained remote view cannot exceed this query's byte budget")
+        XCTAssertEqual(try routedStore.statusSnapshot(executionId: alias.executionId, after: 0)?.lifecycle?.terminal, true)
+        XCTAssertThrowsError(try routedStore.statusSnapshot(executionId: alias.executionId, after: 4))
+    }
+
+    func testConcurrentStatusReadsKeepLifecyclePageAndTerminalEvidenceCoherent() throws {
+        let host = RCIRExecutionHost(); host.now = { 103 }
+        let engine = CapabilityEngine(reflectors: [], experience: nil, rcirHost: host)
+        var reads = 0
+        for _ in 0..<100 {
+            let id = UUID().uuidString
+            try host.registerActiveTask(deferredTask(), executionID: id)
+            let completion = DispatchGroup(); completion.enter()
+            DispatchQueue.global().async {
+                defer { completion.leave() }
+                do {
+                    try host.recordActiveTaskEvent(executionID: id, event: .accepted, now: 103)
+                    for eventIndex in 0..<13 {
+                        try host.recordActiveTaskEvent(executionID: id,
+                            event: eventIndex.isMultiple(of: 2) ? .working : .inputRequired, now: 103)
+                        Thread.sleep(forTimeInterval: 0.00001)
+                    }
+                    try host.recordActiveTaskEvent(executionID: id, event: .completed(.integer(7)), now: 104)
+                } catch { XCTFail("The admitted callback must retain all events and terminal evidence: \(error)") }
+            }
+            repeat {
+                let record = try engine.executionStatus(id, cursor: 0, limit: 16)
+                let lifecycle = try XCTUnwrap(record.lifecycle), page = try XCTUnwrap(record.rcirEventPage)
+                reads += 1
+                XCTAssertEqual(page.terminal, lifecycle.terminal, "Metadata and events must describe one lifecycle observation")
+                XCTAssertEqual(page.nextCursor, lifecycle.sequence, "Events cannot advance beyond their captured lifecycle")
+                XCTAssertFalse(page.hasMore)
+                XCTAssertNil(record.rcirEvents)
+                if lifecycle.terminal {
+                    XCTAssertNotNil(record.rcir?.receipt)
+                    XCTAssertEqual(try record.result?.canonicalData(), try CapabilityValue.integer(7).canonicalData())
+                }
+            } while completion.wait(timeout: .now()) != .success
+            let terminal = try engine.executionStatus(id, cursor: 0, limit: 16)
+            XCTAssertEqual(terminal.lifecycle?.terminal, true)
+            XCTAssertEqual(terminal.rcirEventPage?.terminal, true)
+            XCTAssertEqual(terminal.lifecycle?.sequence, 15)
+            XCTAssertEqual(terminal.rcirEventPage?.nextCursor, 15)
+            XCTAssertNotNil(terminal.rcir?.receipt)
+        }
+        XCTAssertGreaterThan(reads, 100)
+    }
+
     func testHostOwnsLiveDeferredTaskUntilTerminalization() throws {
         let executionID =
             "live-deferred-"

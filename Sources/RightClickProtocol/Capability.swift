@@ -277,6 +277,39 @@ public final class ExecutionStore: @unchecked Sendable {
         return entries[executionId]?.terminal ?? entries[executionId]?.record
     }
 
+    /// Capture immutable retained metadata and its complete history together.
+    /// Routed aliases may have only an authenticated bounded view, so their
+    /// existing page is preserved without manufacturing complete local history.
+    public func statusSnapshot(executionId: String, after cursor: Int64 = 0, limit: Int = 64,
+                               maximumBytes: Int = 262_144) throws -> ExecutionRecord? {
+        guard cursor >= 0 else { throw RCIRError.invalidSequence }
+        guard (1...256).contains(limit), (1...262_144).contains(maximumBytes) else { throw RCIRError.invalidLimit }
+        lock.lock()
+        let record = entries[executionId]?.terminal ?? entries[executionId]?.record
+        let history = entries[executionId]?.history
+        lock.unlock()
+        guard var snapshot = record else { return nil }
+        // A nonterminal cached initial response may trail its live owner. Only
+        // terminal metadata provides an authoritative retained sequence bound.
+        if snapshot.lifecycle?.terminal == true, let sequence = snapshot.lifecycle?.sequence,
+           cursor > sequence { throw RCIRError.invalidSequence }
+        if let history {
+            snapshot.rcirEventPage = try rcirExecutionEventPage(history, after: cursor, limit: limit,
+                maximumBytes: maximumBytes, terminal: true)
+        } else if let page = snapshot.rcirEventPage {
+            // A cached routed page is reusable only for this exact query. Its
+            // view cannot justify synthesizing pages for another cursor.
+            let matchesCursor = page.nextCursor >= cursor &&
+                page.nextCursor - cursor == Int64(page.events.count) &&
+                page.events.enumerated().allSatisfy { $0.element.sequence > cursor &&
+                    $0.element.sequence - cursor == Int64($0.offset + 1) }
+            let bytes = try page.events.reduce(0) { $0 + (try $1.canonicalData().count) }
+            if !matchesCursor || page.events.count > limit || bytes > maximumBytes { snapshot.rcirEventPage = nil }
+        }
+        snapshot.rcirEvents = nil
+        return snapshot
+    }
+
     public func update(_ executionId: String, _ body: (inout ExecutionRecord) -> Void) {
         lock.lock(); defer { lock.unlock() }
         guard var entry = entries[executionId], entry.terminal == nil, var record = entry.record else { return }

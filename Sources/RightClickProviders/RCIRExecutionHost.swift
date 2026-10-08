@@ -148,27 +148,46 @@ public final class RCIRExecutionHost {
 
     public func activeExecutionStatus(executionID: String) -> ExecutionRecord? {
         activeTaskLock.lock(); defer { activeTaskLock.unlock() }
+        do { return try activeStatusLocked(executionID: executionID)?.record }
+        catch { return nil }
+    }
+
+    /// Capture lifecycle metadata and the requested event page from the same
+    /// task copy. Provider callbacks cannot advance between those observations.
+    public func activeExecutionStatus(executionID: String, after cursor: Int64, limit: Int,
+                                      maximumBytes: Int) throws -> ExecutionRecord? {
+        guard cursor >= 0 else { throw RCIRError.invalidSequence }
+        guard (1...256).contains(limit), (1...262_144).contains(maximumBytes) else { throw RCIRError.invalidLimit }
+        activeTaskLock.lock(); defer { activeTaskLock.unlock() }
+        guard let captured = try activeStatusLocked(executionID: executionID) else { return nil }
+        var record = captured.record
+        record.rcirEventPage = try captured.task.statusEventPage(after: cursor, limit: limit, maximumBytes: maximumBytes)
+        record.rcirEvents = nil
+        return record
+    }
+
+    /// Caller holds activeTaskLock. Terminal history is installed before live
+    /// removal, including deadline finalization; observer I/O never runs here.
+    private func activeStatusLocked(executionID: String) throws -> (task: RCIRTask, record: ExecutionRecord)? {
         guard var active = activeTasks[executionID] else { return nil }
-        do {
-            let stamp = max(now(), active.pendingTerminal?.lastObservationTime ?? active.task.lastObservationTime)
-            if let pending = active.pendingTerminal, stamp >= pending.deadline {
-                active.task = pending
-                try active.task.finalizationFailed(now: stamp)
-                active.pendingTerminal = nil
-            } else if active.pendingTerminal == nil {
-                try active.task.checkDeadline(now: stamp)
-            }
-            if active.task.terminal {
-                let record = try terminalRecord(active, executionID: executionID)
-                try ExecutionStore.shared.putTerminal(record, events: active.task.typedEvents)
-                activeTasks[executionID] = nil
-                return record
-            }
-            activeTasks[executionID] = active
-            var record = try snapshot(active, executionID: executionID)
-            if active.pendingTerminal != nil { record.message = "Provider completion received; host verification is pending." }
-            return record
-        } catch { return nil }
+        let stamp = max(now(), active.pendingTerminal?.lastObservationTime ?? active.task.lastObservationTime)
+        if let pending = active.pendingTerminal, stamp >= pending.deadline {
+            active.task = pending
+            try active.task.finalizationFailed(now: stamp)
+            active.pendingTerminal = nil
+        } else if active.pendingTerminal == nil {
+            try active.task.checkDeadline(now: stamp)
+        }
+        if active.task.terminal {
+            let record = try terminalRecord(active, executionID: executionID)
+            try ExecutionStore.shared.putTerminal(record, events: active.task.typedEvents)
+            activeTasks[executionID] = nil
+            return (active.task, record)
+        }
+        activeTasks[executionID] = active
+        var record = try snapshot(active, executionID: executionID)
+        if active.pendingTerminal != nil { record.message = "Provider completion received; host verification is pending." }
+        return (active.task, record)
     }
 
     public func activeEventPage(executionID: String, after cursor: Int64 = 0, limit: Int = 64,
