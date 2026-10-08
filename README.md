@@ -34,6 +34,53 @@ RIGHTCLICK distinguishes provider acceptance from verified outcome
 
 Architecture illustration, not an execution transcript. [Media provenance](docs/media/README.md).
 
+## An AI agent used RIGHTCLICK to modify RIGHTCLICK
+
+I wanted to find out whether an AI agent really needs a separate
+tool for every service it interacts with.
+
+RIGHTCLICK exposes seven generic MCP operations. Instead of
+adding a GitHub-specific tool, I configured GitHub as an authorised
+OpenAPI provider and let the agent discover the available capabilities.
+
+The agent discovered "Merge a branch" and invoked it through
+RIGHTCLICK's existing `context_run` interface.
+
+GitHub returned HTTP 201.
+
+But an HTTP success response isn't proof that the intended
+outcome actually happened.
+
+A separate repository read verified the resulting branch state
+and commit ancestry.
+
+**The result:** RIGHTCLICK was used to merge changes into its
+own source repository, without adding another AI-facing tool.
+
+### The evidence
+
+- [Actual GitHub commit](https://github.com/rossbuckley1990-hash/rightclick/commit/fee4d5efee2131ecb0eb9cccb19250752f51e25e)
+- [Full self-hosting experiment](evidence/self-hosting-2026-10-07/README.md)
+- [The seven generic operations](#seven-operations-not-a-tool-per-provider)
+
+### What this does and doesn't prove
+
+GitHub was explicitly configured and authorised.
+
+The agent did not discover credentials or bypass permissions.
+It discovered a supported operation through RIGHTCLICK's
+generic capability interface.
+
+The merge updated a source branch, not the running binary.
+
+The experiment demonstrates capability discovery, invocation
+and independent verification through a stable MCP interface.
+
+It doesn't demonstrate unrestricted autonomous self-modification.
+
+**The question I'm exploring: why should agents need a new
+tool definition every time they encounter a new capability?**
+
 ---
 
 # Try it in 30 seconds
