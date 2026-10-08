@@ -47,6 +47,10 @@ public enum OriginPinnedHTTP {
         NSObject,
         URLSessionTaskDelegate
     {
+        // Explicit witness permits subclass overrides on FoundationNetworking,
+        // where inherited protocol defaults do not use Objective-C selectors.
+        func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {}
+
         func urlSession(
             _ session: URLSession,
             task: URLSessionTask,
@@ -188,7 +192,7 @@ public enum OriginPinnedHTTP {
             }
         }
 
-        func urlSession(
+        override func urlSession(
             _ session: URLSession,
             task: URLSessionTask,
             didCompleteWithError error:

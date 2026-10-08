@@ -1,5 +1,6 @@
 import CryptoKit
 import Foundation
+import LocalAuthentication
 import RightClickProtocol
 import Security
 
@@ -23,7 +24,9 @@ public final class KeychainLinkSigner: RCIRReceiptSigning {
             var readQuery = query
             readQuery[kSecReturnData as String] = true
             readQuery[kSecMatchLimit as String] = kSecMatchLimitOne
-            readQuery[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUIFail
+            let context = LAContext()
+            context.interactionNotAllowed = true
+            readQuery[kSecUseAuthenticationContext as String] = context
             let status = SecItemCopyMatching(readQuery as CFDictionary, &value)
             if status == errSecItemNotFound { return nil }
             guard status == errSecSuccess, let data = value as? Data, data.count == 32

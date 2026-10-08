@@ -93,6 +93,15 @@ final class RCIRProductionDispatchTests: XCTestCase {
                                 arguments: ["id": name, "value": "requested"])
     }
 
+    func testSuccessfulBoundedProviderAcquisitionSignalsTaskCompletion() throws {
+        let bytes = specification()
+        try bytes.write(to: directory.appendingPathComponent("spec.json"))
+        let started = Date()
+        XCTAssertEqual(try OriginPinnedHTTP.loadOpenAPISpecification(base.appendingPathComponent("openapi.json")), bytes)
+        XCTAssertLessThan(Date().timeIntervalSince(started), OriginPinnedHTTP.acquisitionDeadline)
+        XCTAssertTrue(effectRows().isEmpty)
+    }
+
     func testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence() throws {
         let result = try invoke()
         XCTAssertEqual(result.state, .accepted)
@@ -173,20 +182,19 @@ final class RCIRProductionDispatchTests: XCTestCase {
 
     func testCompetingConsumersStartAtMostOneRealRequest() throws {
         host.beforeStart = { _, admit, enqueue in
-            // Swift's closure lifetime is bounded by the group wait below.
+            // Synchronous concurrentPerform releases its work before returning.
+            // DispatchGroup.leave could wake the caller before an async work
+            // item's captured closures were destroyed, violating this scope.
             withoutActuallyEscaping(admit) { admit in
                 withoutActuallyEscaping(enqueue) { enqueue in
-                    let group = DispatchGroup(); let lock = NSLock()
+                    let lock = NSLock()
                     var permitted = 0; var replayed = 0
-                    for _ in 0..<2 {
-                        group.enter()
-                        DispatchQueue.global().async {
-                            defer { group.leave() }
-                            do { try admit(enqueue); lock.lock(); permitted += 1; lock.unlock() }
-                            catch { lock.lock(); replayed += 1; lock.unlock() }
-                        }
+                    let started = Date()
+                    DispatchQueue.concurrentPerform(iterations: 2) { _ in
+                        do { try admit(enqueue); lock.lock(); permitted += 1; lock.unlock() }
+                        catch { lock.lock(); replayed += 1; lock.unlock() }
                     }
-                    XCTAssertEqual(group.wait(timeout: .now() + 3), .success)
+                    XCTAssertLessThan(Date().timeIntervalSince(started), 3, "Competing consumers must finish within the original three-second bound")
                     XCTAssertEqual(permitted, 1); XCTAssertEqual(replayed, 1)
                 }
             }

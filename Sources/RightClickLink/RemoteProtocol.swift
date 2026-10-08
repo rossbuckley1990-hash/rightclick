@@ -210,7 +210,6 @@ enum RemoteWire {
     static let maximumWireBytes = 49_152
     static let requestDomain = Data("RIGHTCLICK-LINK-REQUEST-1\0".utf8)
     static let resultDomain = Data("RIGHTCLICK-LINK-RESULT-1\0".utf8)
-    static let helloDomain = Data("RIGHTCLICK-LINK-HELLO-1\0".utf8)
     static func digest(_ data: Data) -> String { SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined() }
     static func runtimeID(_ key: Data) -> String { "runtime:" + digest(key) }
     static func deviceID(_ key: Data) -> String { "device:" + digest(key) }
