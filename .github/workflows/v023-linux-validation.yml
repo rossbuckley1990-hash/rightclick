@@ -19,15 +19,24 @@ jobs:
         with:
           ref: 143d6065cb5d5fc96d482ac6d17a9cda735cdc88
           fetch-depth: 0
-      - name: Simulate proposed RightClickProbe portability guard
+      - name: Simulate corrected RightClickProbe portability guard
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p = Path('Sources/RightClickProbe/main.swift')
           s = p.read_text()
           guard = '#if canImport(AppKit) && canImport(AVFoundation) && canImport(CoreGraphics)\n'
+          fallback = '''\n#else
+          @main
+          struct RightClickProbeUnsupportedPlatform {
+              static func main() {
+                  print("rightclick-probe unavailable: requires macOS AppKit/AVFoundation/CoreGraphics")
+              }
+          }
+          #endif
+          '''
           if not s.startswith(guard):
-              p.write_text(guard + s.rstrip() + '\n#else\nprint("rightclick-probe unavailable: requires macOS AppKit/AVFoundation/CoreGraphics")\n#endif\n')
+              p.write_text(guard + s.rstrip() + fallback)
           PY
           git diff --check
       - name: Run patched exact-head gates and preserve diagnostics
@@ -46,7 +55,7 @@ jobs:
           if [ $exact_rc -ne 0 ] || [ $test_rc -ne 0 ] || [ $build_rc -ne 0 ] || [ $policy_rc -ne 0 ]; then verdict=FAIL; fi
           {
             echo "candidate=143d6065cb5d5fc96d482ac6d17a9cda735cdc88"
-            echo "simulated_probe_guard=true"
+            echo "simulated_probe_guard=at-main"
             echo "exact_rc=$exact_rc"
             echo "test_rc=$test_rc"
             echo "build_rc=$build_rc"
@@ -71,9 +80,9 @@ jobs:
           build_tail=$(cat /tmp/v023-build-tail.txt)
           policy_tail=$(cat /tmp/v023-policy-tail.txt)
           mkdir -p validation-results
-          cp /tmp/v023-summary.env validation-results/v0.2.3-linux-patched-143d6065cb5d5fc96d482ac6d17a9cda735cdc88.txt
+          cp /tmp/v023-summary.env validation-results/v0.2.3-linux-patched-atmain-143d6065cb5d5fc96d482ac6d17a9cda735cdc88.txt
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add validation-results/v0.2.3-linux-patched-143d6065cb5d5fc96d482ac6d17a9cda735cdc88.txt
-          git commit -m "validation(v0.2.3-linux-patched): $verdict exact=$exact_rc test=$test_rc build=$build_rc policy=$policy_rc" -m "candidate=143d6065cb5d5fc96d482ac6d17a9cda735cdc88" -m "test_tail=$test_tail" -m "build_tail=$build_tail" -m "policy_tail=$policy_tail"
+          git add validation-results/v0.2.3-linux-patched-atmain-143d6065cb5d5fc96d482ac6d17a9cda735cdc88.txt
+          git commit -m "validation(v0.2.3-linux-atmain): $verdict exact=$exact_rc test=$test_rc build=$build_rc policy=$policy_rc" -m "candidate=143d6065cb5d5fc96d482ac6d17a9cda735cdc88" -m "test_tail=$test_tail" -m "build_tail=$build_tail" -m "policy_tail=$policy_tail"
           git push origin HEAD:validation/v0.2.3-linux-20261008
