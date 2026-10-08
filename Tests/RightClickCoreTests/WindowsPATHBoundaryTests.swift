@@ -151,7 +151,8 @@ final class WindowsPATHBoundaryTests: XCTestCase {
             XCTAssertTrue(observation["present"] as? Bool == true)
             XCTAssertTrue(observation["ownedParentMatch"] as? Bool == false)
             XCTAssertTrue(observation["ownedParentComponentPresent"] as? Bool == false)
-            XCTAssertTrue(observation["originalParentMatch"] as? Bool == false)
+            // Original PATH may already be empty or exactly System32. Only
+            // the controlled sentinel and exact expected child value prove isolation.
             if index == 1 {
                 XCTAssertTrue(observation["empty"] as? Bool == false)
                 XCTAssertTrue(observation["system32Match"] as? Bool == true)

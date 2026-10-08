@@ -70,7 +70,7 @@ struct TrustedHostProcessContext: Sendable, Equatable, CustomStringConvertible, 
     static func canonicalWindowsEnvironment(_ environment: [String: String]) throws -> [String: String] {
         var names = Set<String>(), result: [String: String] = [:]
         for (key, value) in environment {
-            guard !key.isEmpty, key.utf8.allSatisfy({ (65...90).contains($0) || (97...122).contains($0) || (48...57).contains($0) || $0 == 95 }) else {
+            guard !value.utf8.contains(0), !key.isEmpty, key.utf8.allSatisfy({ (65...90).contains($0) || (97...122).contains($0) || (48...57).contains($0) || $0 == 95 }) else {
                 throw RCIRError.invalidIdentity
             }
             let identity = key.uppercased()

@@ -14,7 +14,7 @@ final class TrustedHostProcessContextTests: XCTestCase {
             let search = try TrustedHostProcessContext.canonicalWindowsEnvironment([key: "one-fixed-directory"])
             XCTAssertEqual(search, ["Path": "one-fixed-directory"])
         }
-        for value in [["PATH": "one", "Path": "two"], ["TEMP": "one", "temp": "two"], ["": "one"], ["Path=other": "one"], ["Páth": "one"]] {
+        for value in [["PATH": "one", "Path": "two"], ["TEMP": "one", "temp": "two"], ["": "one"], ["Path=other": "one"], ["Páth": "one"], ["PATH": "one\u{0}two"], ["TEMP": "one\u{0}two"]] {
             XCTAssertThrowsError(try TrustedHostProcessContext.canonicalWindowsEnvironment(value)) {
                 XCTAssertEqual($0 as? RCIRError, .invalidIdentity)
             }
@@ -149,7 +149,7 @@ final class TrustedHostProcessContextTests: XCTestCase {
             guard let flags = try JSONSerialization.jsonObject(with: bytes) as? [String: Bool],
                   Set(flags.keys) == Set(["canaryPresent", "pathPresent", "pathEmpty", "machineDataPresent", "systemRootPresent", "tempPresent", "tmpPresent"]) else { throw RCIRError.unavailable }
             measured.append(flags)
-            print("TrustedHostContext nativeChildEnvironment index=\(index) canaryPresent=\(flags["canaryPresent"]!) pathPresent=\(flags["pathPresent"]!) machineDataPresent=\(flags["machineDataPresent"]!) systemRootPresent=\(flags["systemRootPresent"]!) tempPresent=\(flags["tempPresent"]!) tmpPresent=\(flags["tmpPresent"]!)")
+            print("TrustedHostContext nativeChildEnvironment index=\(index) canaryPresent=\(flags["canaryPresent"]!) pathPresent=\(flags["pathPresent"]!) pathEmpty=\(flags["pathEmpty"]!) machineDataPresent=\(flags["machineDataPresent"]!) systemRootPresent=\(flags["systemRootPresent"]!) tempPresent=\(flags["tempPresent"]!) tmpPresent=\(flags["tmpPresent"]!)")
         }
         // Explicit emptiness suppresses Foundation's inherited search fallback.
         // Native identity/controlled-parent assertions are covered independently
