@@ -305,9 +305,8 @@ enum NativeHTTPFixture {
         var diagnostic: BoundedCapabilityProcess.Diagnostic?
         do {
             stage = .nativeCompilation
-            _ = try BoundedCapabilityProcess.run(executable: inputs.executable, arguments: inputs.ownedArguments,
-                timeout: 10, maximumBytes: 16_384,
-                hostContext: try TrustedHostProcessContext.resolving(.systemExecutableSearch), diagnostic: { diagnostic = $0 })
+            _ = try BoundedCapabilityProcess.runForHostAcquisition(executable: inputs.executable, arguments: inputs.ownedArguments,
+                timeout: 30, maximumBytes: 16_384, diagnostic: { diagnostic = $0 })
             stage = .outputValidation
             let bytes = try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)
             guard isAMD64PE(bytes) else { throw RCIRError.unavailable }
