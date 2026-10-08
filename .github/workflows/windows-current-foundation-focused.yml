@@ -1,0 +1,51 @@
+# Isolated diagnostic, never a replacement for the complete candidate suite.
+name: Windows current Foundation context focused diagnostics
+on:
+  push:
+    branches: ['codex/windows-current-foundation-focused-20261008']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: windows-current-foundation-focused-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+        with:
+          swift-version: swift-6.2-release
+          swift-build: 6.2-RELEASE
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Native ownership and collector negative controls
+        timeout-minutes: 3
+        run: |
+          python -u .github/scripts/tests/test_windows_test_supervisor.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -u .github/scripts/tests/test_windows_focused_fixture_diagnostic.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Exact source and all-name guard, then selected twenty-two tests
+        # Contain the owned20/5/10minute phase deadlines and encryption cleanup.
+        timeout-minutes: 45
+        run: |
+          New-Item -ItemType Directory -Path focused-console-private -ErrorAction Stop | Out-Null
+          # The unchanged supervisor forwards raw child stdout. This outer
+          # redirection remains private even on a late bounded-drain failure.
+          # Its stderr progress contains only fixed process metadata.
+          python -u .github/scripts/windows_focused_fixture_diagnostic.py 1> focused-console-private/controller.log
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: windows-focused-encrypted-evidence-${{ github.sha }}
+          path: focused-safe/
+          if-no-files-found: error
+          retention-days: 14
