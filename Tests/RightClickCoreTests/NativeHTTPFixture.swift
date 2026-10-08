@@ -331,8 +331,11 @@ enum NativeHTTPFixture {
             let absentOutputs = [inputs.client, inputs.object].allSatisfy { !FileManager.default.fileExists(atPath: $0.path) }
             guard absentOutputs else { throw RCIRError.unavailable }
             stage = .nativeCompilation
+            // Actual same-input native A/B/A requires only this reviewed host
+            // search directory for SDK bootstrapping. Guest execution stays isolated.
+            let compilerContext = try TrustedHostProcessContext.resolving(.systemExecutableSearch)
             _ = try BoundedCapabilityProcess.runForHostAcquisition(executable: inputs.executable, arguments: inputs.ownedArguments,
-                timeout: 30, maximumBytes: 16_384, diagnostic: { diagnostic = $0 })
+                timeout: 30, maximumBytes: 16_384, hostContext: compilerContext, diagnostic: { diagnostic = $0 })
             stage = .outputValidation
             let bytes = try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)
             guard isAMD64PE(bytes) else { throw RCIRError.unavailable }
@@ -346,7 +349,7 @@ enum NativeHTTPFixture {
                   diagnostic.stdoutBytes <= 16_384 else { throw RCIRError.unavailable }
             let inputDigest = CapabilityJSON.digest(Data(frozen.map(CapabilityJSON.digest).joined(separator: ":").utf8))
             let argumentDigest = CapabilityJSON.digest(try JSONSerialization.data(withJSONObject: frozenArguments))
-            print("NativePythonClient acquisitionCompleted outcome=\(diagnostic.outcome.rawValue) started=\(diagnostic.started) exit=\(diagnostic.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(diagnostic.stdoutBytes) elapsedMilliseconds=\(diagnostic.elapsedMilliseconds) freshPE=\(absentOutputs && isAMD64PE(bytes)) outputSHA256=\(CapabilityJSON.digest(bytes)) stableOutput=\(stableOutput) unchangedInputs=\(unchangedInputs) directInputSetSHA256=\(inputDigest) sameArguments=\(sameArguments) argumentsUTF16SHA256=\(argumentDigest) hostContext=isolated acquisitionCeilingSeconds=30 parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
+            print("NativePythonClient acquisitionCompleted outcome=\(diagnostic.outcome.rawValue) started=\(diagnostic.started) exit=\(diagnostic.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(diagnostic.stdoutBytes) elapsedMilliseconds=\(diagnostic.elapsedMilliseconds) freshPE=\(absentOutputs && isAMD64PE(bytes)) outputSHA256=\(CapabilityJSON.digest(bytes)) stableOutput=\(stableOutput) unchangedInputs=\(unchangedInputs) directInputSetSHA256=\(inputDigest) sameArguments=\(sameArguments) argumentsUTF16SHA256=\(argumentDigest) hostContext=systemExecutableSearch acquisitionCeilingSeconds=30 parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
             return inputs.client
         } catch {
             let kind = (error as? RCIRError).map { String(describing: $0) } ??

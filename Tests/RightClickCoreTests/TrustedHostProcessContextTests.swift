@@ -176,7 +176,11 @@ final class TrustedHostProcessContextTests: XCTestCase {
         let frozen = try inputs.frozenInputs.map { try CapabilityArtifactSnapshot.read(source: $0.0, maximum: $0.1) }
         let arguments = rendererComparison ? [inputs.packedArguments, inputs.ownedArguments, inputs.packedArguments] :
             [inputs.ownedArguments, inputs.ownedArguments, inputs.ownedArguments]
-        let contexts = [TrustedHostProcessContext.isolated, .isolated, .isolated]
+        let search = try TrustedHostProcessContext.resolving(.systemExecutableSearch)
+        // Hold search authority fixed while comparing renderer shapes; hold the
+        // owned arguments fixed while measuring isolated/search/isolated.
+        let contexts = rendererComparison ? [search, search, search] :
+            [TrustedHostProcessContext.isolated, search, .isolated]
         let frozenArguments = arguments.map { $0.map { Array($0.utf16) } }
         var reports: [BoundedCapabilityProcess.Diagnostic] = []
         var success: [Bool] = [], freshPE: [Bool] = []
@@ -219,26 +223,22 @@ final class TrustedHostProcessContextTests: XCTestCase {
             }
             guard stableOutput, unchangedInputs else { throw RCIRError.unavailable }
             let digest = emitted.map(CapabilityJSON.digest) ?? "none"
-            print("TrustedHostContext compilerProfile comparison=\(rendererComparison ? "renderer" : "isolatedAcquisition") index=\(index) outcome=\(report.outcome.rawValue) started=\(report.started) exit=\(report.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(report.stdoutBytes) elapsedMilliseconds=\(report.elapsedMilliseconds) freshPE=\(validPE) outputSHA256=\(digest) stableOutput=\(stableOutput) unchangedInputs=\(unchangedInputs) parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
+            print("TrustedHostContext compilerProfile comparison=\(rendererComparison ? "renderer" : "boundedSystemSearch") index=\(index) outcome=\(report.outcome.rawValue) started=\(report.started) exit=\(report.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(report.stdoutBytes) elapsedMilliseconds=\(report.elapsedMilliseconds) freshPE=\(validPE) outputSHA256=\(digest) stableOutput=\(stableOutput) unchangedInputs=\(unchangedInputs) parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
         }
-        // Actual f5 native evidence disproved search-role necessity: the same
-        // owned compiler succeeds in isolation. Preserve f5 as historical RED;
-        // this accurately named case verifies that no PATH grant is required.
-        if rendererComparison {
-            XCTAssertEqual(success, [false, true, false])
-            XCTAssertEqual(freshPE, [false, true, false])
-            XCTAssertTrue([0, 2].allSatisfy { reports[$0].outcome == .childFailed && reports[$0].terminationStatus != 0 })
-        } else {
-            XCTAssertEqual(success, [true, true, true])
-            XCTAssertEqual(freshPE, [true, true, true])
-            XCTAssertTrue(reports.allSatisfy { $0.outcome == .completed && $0.terminationStatus == 0 })
-        }
+        // Native run37818580352 measured this SDK dependency only after the
+        // generic runtime stopped inheriting ambient Path. Preserve that RED and
+        // require the same fresh-PE A/B/A law with explicit bounded host authority.
+        XCTAssertEqual(success, [false, true, false])
+        XCTAssertEqual(freshPE, [false, true, false])
+        XCTAssertTrue([0, 2].allSatisfy { reports[$0].outcome == .childFailed && reports[$0].terminationStatus != 0 })
+        print("TrustedHostContext compilerCounterfactualClosed comparison=\(rendererComparison ? "renderer" : "boundedSystemSearch") success=\(success.map(String.init).joined(separator: ",")) freshPE=\(freshPE.map(String.init).joined(separator: ",")) searchRoleCurrent=\(search.isCurrent) defaultIsolationRestored=\(TrustedHostProcessContext.isolated.isCurrent)")
+        XCTAssertTrue(search.isCurrent)
         XCTAssertTrue(reports[1].outcome == .completed && reports[1].terminationStatus == 0)
         XCTAssertTrue(reports.allSatisfy { $0.stdoutBytes <= 16_384 })
         XCTAssertTrue(TrustedHostProcessContext.isolated.isCurrent)
     }
 
-    func testActualFoundationOwnedCompilerSucceedsWithoutSystemSearchGrantAndRestoresIsolation() throws {
+    func testActualFoundationOwnedCompilerRequiresBoundedSystemSearchAndRestoresIsolation() throws {
         try compilerCounterfactual(rendererComparison: false)
     }
 

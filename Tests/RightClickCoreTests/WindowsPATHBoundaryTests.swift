@@ -114,15 +114,17 @@ final class WindowsPATHBoundaryTests: XCTestCase {
         let compilerArguments = inputs.ownedArguments.map { Array($0.utf16) }
         guard !FileManager.default.fileExists(atPath: inputs.client.path), !FileManager.default.fileExists(atPath: inputs.object.path) else { throw RCIRError.unavailable }
         var compiler: BoundedCapabilityProcess.Diagnostic?
+        let compilerContext = try TrustedHostProcessContext.resolving(.systemExecutableSearch)
         _ = try BoundedCapabilityProcess.runForHostAcquisition(executable: inputs.executable,
-            arguments: inputs.ownedArguments, timeout: 30, maximumBytes: 16_384, diagnostic: { compiler = $0 })
+            arguments: inputs.ownedArguments, timeout: 30, maximumBytes: 16_384,
+            hostContext: compilerContext, diagnostic: { compiler = $0 })
         let binary = try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)
         guard NativeHTTPFixture.isAMD64PE(binary), binary == (try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)),
               let compiler, compiler.started, compiler.outcome == .completed, compiler.terminationStatus == 0,
               compiler.stdoutBytes <= 16_384,
               inputs.ownedArguments.map({ Array($0.utf16) }) == compilerArguments,
               try inputs.frozenInputs.enumerated().allSatisfy({ try CapabilityArtifactSnapshot.read(source: $0.element.0, maximum: $0.element.1) == frozen[$0.offset] }) else { throw RCIRError.unavailable }
-        print("NativePATHBoundary compilerCompleted exit=0 elapsedMilliseconds=\(compiler.elapsedMilliseconds) freshPE=true stableOutput=true unchangedInputs=true sameArguments=true outputSHA256=\(CapabilityJSON.digest(binary)) parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
+        print("NativePATHBoundary compilerCompleted exit=0 elapsedMilliseconds=\(compiler.elapsedMilliseconds) freshPE=true stableOutput=true unchangedInputs=true sameArguments=true outputSHA256=\(CapabilityJSON.digest(binary)) hostContext=systemExecutableSearch parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
         let owned = directory.appendingPathComponent("parent-search-sentinel")
         try NativeHTTPFixture.createPrivateDirectory(owned); try requireLocalDirectory(owned)
         let original = try readPATH()
