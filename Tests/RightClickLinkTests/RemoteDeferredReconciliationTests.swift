@@ -122,6 +122,107 @@ final class RemoteDeferredReconciliationTests: XCTestCase {
         }
     }
 
+    /// A native Linux MCP worker may poll a retained RCIR task off MainActor.
+    /// Local revocation must share Core's serialization boundary with that poll.
+    private final class OwnedPollGate: @unchecked Sendable {
+        let entered = DispatchSemaphore(value: 0)
+        let release = DispatchSemaphore(value: 0)
+        let revocationReturned = DispatchSemaphore(value: 0)
+        let controllerFinished = DispatchSemaphore(value: 0)
+        let pollFinished = DispatchSemaphore(value: 0)
+        private let lock = NSLock()
+        private var hasHeld = false
+        private var overlap = false
+        private var timedOut = false
+        let configuration: RCIRHostConfiguration
+        // Core owns synchronization for this single engine. The background
+        // worker calls only its self-locking retained-status entry point.
+        private let engine: CapabilityEngine
+        private let executionID: String
+        init(_ configuration: RCIRHostConfiguration, engine: CapabilityEngine, executionID: String) {
+            self.configuration = configuration
+            self.engine = engine
+            self.executionID = executionID
+        }
+        func poll() {
+            _ = engine.executionStatus(executionID)
+            pollFinished.signal()
+        }
+        func waitUntilEntered() -> Bool { entered.wait(timeout: .now() + 5) == .success }
+        func waitUntilFinished() -> Bool {
+            let controller = controllerFinished.wait(timeout: .now() + 5) == .success
+            let poll = pollFinished.wait(timeout: .now() + 5) == .success
+            return controller && poll
+        }
+        func load() throws -> RCIRHostConfiguration {
+            lock.lock()
+            let hold = !hasHeld
+            hasHeld = true
+            lock.unlock()
+            if hold {
+                entered.signal()
+                if release.wait(timeout: .now() + 5) != .success {
+                    lock.lock(); timedOut = true; lock.unlock()
+                    throw RightClickError("Owned poll gate timed out")
+                }
+            }
+            return configuration
+        }
+        func control() {
+            // The status callback already holds Core's real engine lock. Give
+            // revoke an opportunity to return before releasing that callback.
+            let returned = revocationReturned.wait(timeout: .now() + .milliseconds(250)) == .success
+            lock.lock(); overlap = returned; lock.unlock()
+            release.signal()
+            controllerFinished.signal()
+        }
+        var revocationOverlappedOwnedPoll: Bool {
+            lock.lock(); defer { lock.unlock() }; return overlap
+        }
+        var pollGateTimedOut: Bool {
+            lock.lock(); defer { lock.unlock() }; return timedOut
+        }
+    }
+
+    @MainActor func testLocalGrantRevocationSerializesWithBackgroundOwnedA2AStatus() async throws {
+        let f = try Fixture(); defer { f.close() }
+        try await f.dispatcher.establishOutboundConnection(to: f.relay)
+        let client = try f.client(), request = try f.run(client: client)
+        f.approval.ticket = try .init(approvedRequest: request, capabilityDigest: request.capabilityDigest!)
+        let initial = try await client.send(request)
+        XCTAssertEqual(initial.summary.state, .started)
+        XCTAssertEqual(initial.summary.taskPhase, "accepted")
+        let id = try XCTUnwrap(initial.summary.evidenceExecutionID)
+        let gate = OwnedPollGate(f.configuration, engine: f.engine, executionID: id)
+        f.host.configuration = { [weak gate] in
+            guard let gate else { throw RightClickError("Owned poll gate is unavailable") }
+            return try gate.load()
+        }
+        let engine = f.engine
+        DispatchQueue.global().async { gate.poll() }
+        guard gate.waitUntilEntered() else {
+            gate.release.signal()
+            XCTFail("Actual retained RCIR status did not enter host revalidation")
+            return
+        }
+        DispatchQueue.global().async { gate.control() }
+        // The old implementation returns here while the background RCIR status
+        // still holds Core's lock and owns a continuing grant check.
+        f.dispatcher.revoke(callerID: request.callerID)
+        gate.revocationReturned.signal()
+        XCTAssertTrue(gate.waitUntilFinished())
+        XCTAssertFalse(gate.pollGateTimedOut)
+        XCTAssertFalse(gate.revocationOverlappedOwnedPoll,
+            "Grant revocation mutated actor-owned authority while a background Core/RCIR poll owned the engine")
+        let next = engine.executionStatus(id)
+        XCTAssertEqual(next.state, .unknown, "The next poll must withhold revoked authority")
+        XCTAssertFalse(next.evidence.outcomeVerified)
+        XCTAssertEqual(try f.rows("requests.jsonl"), 1)
+        XCTAssertEqual(try f.rows("effects.jsonl"), 0)
+        XCTAssertThrowsError(try f.dispatcher.handle(SignedRemoteMessage.request(f.status(client: client, executionID: id), signer: f.caller)))
+        print("GRANT SERIALIZATION: actual A2A retained task; serialized=\(!gate.revocationOverlappedOwnedPoll) nextStatus=\(next.state.rawValue) sends=\(try f.rows("requests.jsonl")) effects=\(try f.rows("effects.jsonl"))")
+    }
+
     @MainActor func testSevenOperationRoutedA2ATaskRefreshesThroughItsOriginalExecutionNode() async throws {
         let f = try Fixture(); defer { f.close() }
         f.approval.approveLocally = true // Explicit fixture-side user approval, never supplied by the caller.

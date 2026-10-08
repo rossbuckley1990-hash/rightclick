@@ -22,7 +22,11 @@ public final class RemoteExecutionDispatcher {
         self.localApproval = localApproval
         self.grants = Dictionary(uniqueKeysWithValues: grants.map { ($0.callerID, $0) })
     }
-    public func revoke(callerID: String) { grants.removeValue(forKey: callerID) }
+    public func revoke(callerID: String) {
+        // Retained RCIR checks may run on a headless MCP worker. Revocation
+        // shares the same Core executor as every grant read, including status.
+        engine.withExclusiveAccess { _ = grants.removeValue(forKey: callerID) }
+    }
     public func establishOutboundConnection(to relay: SimulatedLinkRelay) async throws {
         guard enabled else { throw RemoteLinkError.disabled }
         await relay.attachOutboundNode(self, runtimeID: identity.runtimeID)
