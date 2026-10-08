@@ -1,0 +1,120 @@
+# CI-only full native validation of the exact reviewed repaired source closure.
+# The source pin must be frozen before this diagnostic branch is published.
+# This is supplementary evidence; the retained normal SwiftPM result stays separate.
+name: Windows repaired direct full-suite diagnostics
+on:
+  push:
+    branches: ['codex/windows-test-direct-diagnostic-*']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: windows-test-direct-diagnostic-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+        with:
+          swift-version: swift-6.2-release
+          swift-build: 6.2-RELEASE
+      - name: Preserve original Windows interpreter availability
+        run: |
+          $pathNames = @(Get-ChildItem Env: | Where-Object { $_.Name -ieq 'PATH' } | ForEach-Object { $_.Name })
+          $python = Get-Command python.exe -ErrorAction SilentlyContinue
+          @{ pathEnvironmentNames = $pathNames; pythonCommandPresent = ($null -ne $python) } |
+            ConvertTo-Json -Compress | Tee-Object -FilePath windows-python-before-setup.log
+      - name: Provision the native Python fixture interpreter
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Native supervisor ownership and drainage self-checks
+        timeout-minutes: 2
+        run: |
+          python -u .github/scripts/tests/test_windows_test_supervisor.py 2>&1 | Tee-Object -FilePath windows-supervisor-self-checks.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Direct inventory and completion self-checks
+        timeout-minutes: 2
+        run: |
+          python -u .github/scripts/windows_direct_test.py baseline
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -u .github/scripts/tests/test_windows_direct_test.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Native protected policy, signing and observer references
+        timeout-minutes: 45
+        run: |
+          git rev-parse HEAD | Out-File -Encoding utf8 portable-source.txt
+          swift --version | Out-File -Encoding utf8 portable-toolchain.txt
+          @'
+          #if canImport(FoundationXML)
+          import FoundationXML
+          print("FoundationXML=available")
+          #else
+          print("FoundationXML=unavailable")
+          #endif
+          '@ | Set-Content -Encoding utf8 portable-module-probe.swift
+          swiftc portable-module-probe.swift -o portable-module-probe.exe 2>&1 | Tee-Object -FilePath portable-module-availability.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & .\portable-module-probe.exe 2>&1 | Tee-Object -FilePath portable-module-availability.log -Append
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          swift test --force-resolved-versions --filter HostProtectedReferenceTests 2>&1 | Tee-Object -FilePath windows-protected-files.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Complete native test build before execution diagnostics
+        timeout-minutes: 15
+        run: |
+          swift build --build-tests --force-resolved-versions 2>&1 | Tee-Object -FilePath windows-test-build.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          @{ source = (git rev-parse HEAD); phase = 'test-build'; state = 'COMPLETED'; completedUTC = (Get-Date).ToUniversalTime().ToString('o') } |
+            ConvertTo-Json | Set-Content -Encoding utf8 windows-test-build-phase.json
+      - name: Native full-suite discovery diagnostic
+        timeout-minutes: 5
+        run: |
+          swift test list --skip-build 2>&1 | Tee-Object -FilePath windows-test-discovery.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $lines = @(Get-Content windows-test-discovery.log)
+          $testNames = @($lines | Where-Object { $_ -match '^RightClick\w+Tests\.\w+/\w+$' })
+          $uniqueCount = @($testNames | Sort-Object -Unique).Count
+          @{ source = (git rev-parse HEAD); logLines = $lines.Count; testNames = $testNames.Count; uniqueTestNames = $uniqueCount } |
+            ConvertTo-Json | Set-Content -Encoding utf8 windows-test-discovery-summary.json
+          if ($testNames.Count -ne 674 -or $uniqueCount -ne 674) { throw 'Repaired suite discovery does not match all 674 distinct tests.' }
+      - name: Prove exact native runner and complete inventory
+        timeout-minutes: 5
+        run: |
+          python -u .github/scripts/windows_direct_test.py inventory
+          exit $LASTEXITCODE
+      - name: Direct full unfiltered XCTest and Swift Testing
+        timeout-minutes: 30
+        run: |
+          python -u .github/scripts/windows_direct_test.py full
+          exit $LASTEXITCODE
+      - name: Native release build
+        timeout-minutes: 45
+        run: |
+          swift build -c release --product rightclick --force-resolved-versions 2>&1 | Tee-Object -FilePath windows-build.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-FileHash .build/release/rightclick.exe -Algorithm SHA256 | Format-List | Out-File windows-binary-sha256.txt
+      - name: Real provider through seven operations
+        timeout-minutes: 5
+        run: |
+          python scripts/acceptance-portable.py .build/release/rightclick.exe 2>&1 | Tee-Object -FilePath windows-acceptance.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: windows-direct-test-diagnostic-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            portable-source.txt
+            portable-toolchain.txt
+            portable-module-availability.log
+            windows-*.log
+            windows-direct-*.json
+            windows-direct-*.jsonl
+            windows-test-build-phase.json
+            windows-test-discovery-summary.json
+            windows-binary-sha256.txt

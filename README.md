@@ -30,6 +30,8 @@ RIGHTCLICK distinguishes provider acceptance from verified outcome
 
 **Stable:** v0.2.2 · Apple Silicon · macOS 14+ · Homebrew · MCP · Apache-2.0
 
+The shared macOS, Linux and Windows runtime is an unreleased candidate. See [portable runtime build instructions and adapter limits](docs/PORTABILITY.md) for its validation and release gates.
+
 <img src="docs/media/rightclick-hero-architecture.gif" alt="Supplied RIGHTCLICK 0.2.2 architecture illustration showing OpenAPI, GraphQL and gRPC behind one generic interface" width="960">
 
 Architecture illustration, not an execution transcript. [Media provenance](docs/media/README.md).

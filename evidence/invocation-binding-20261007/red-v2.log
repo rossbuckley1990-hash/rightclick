@@ -1,0 +1,38 @@
+warning: /Users/ross/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.
+warning: 'security-core': failed storing manifest for 'security-core' in cache: attempt to write a readonly database
+[0/1] Planning build
+Building for debugging...
+[0/3] Write sources
+[1/3] Write swift-version--58304C5D6DBC2206.txt
+[3/5] Emitting module RightClickCoreTests
+[4/5] Compiling RightClickCoreTests InvocationBindingTests.swift
+[4/6] Write Objects.LinkFileList
+[5/6] Linking SecurityInvocationValidationPackageTests
+Build complete! (4.17s)
+Test Suite 'All tests' started at 2026-10-07 15:25:37.223.
+Test Suite 'SecurityInvocationValidationPackageTests.xctest' started at 2026-10-07 15:25:37.224.
+Test Suite 'InvocationBindingTests' started at 2026-10-07 15:25:37.224.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testFreshMarkersVerifyForBothTransports]' started.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testFreshMarkersVerifyForBothTransports]' passed (7.995 seconds).
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/InvocationBindingTests.swift:59: error: -[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend] : XCTAssertEqual failed: ("succeeded") is not equal to ("failed")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/InvocationBindingTests.swift:60: error: -[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend] : XCTAssertEqual failed: ("Optional("succeeded")") is not equal to ("Optional("failed")")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/InvocationBindingTests.swift:61: error: -[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend] : XCTAssertFalse failed
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend]' failed (2.964 seconds).
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/InvocationBindingTests.swift:65: error: -[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate] : XCTAssertEqual failed: ("succeeded") is not equal to ("failed")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/InvocationBindingTests.swift:66: error: -[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate] : XCTAssertEqual failed: ("Optional("succeeded")") is not equal to ("Optional("failed")")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/InvocationBindingTests.swift:67: error: -[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate] : XCTAssertFalse failed
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate]' failed (3.898 seconds).
+Test Suite 'InvocationBindingTests' failed at 2026-10-07 15:25:52.082.
+	 Executed 3 tests, with 6 failures (0 unexpected) in 14.857 (14.858) seconds
+Test Suite 'SecurityInvocationValidationPackageTests.xctest' failed at 2026-10-07 15:25:52.082.
+	 Executed 3 tests, with 6 failures (0 unexpected) in 14.857 (14.858) seconds
+Test Suite 'All tests' failed at 2026-10-07 15:25:52.082.
+	 Executed 3 tests, with 6 failures (0 unexpected) in 14.857 (14.859) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

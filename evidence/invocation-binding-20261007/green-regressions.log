@@ -1,0 +1,77 @@
+warning: /Users/ross/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.
+warning: 'security-core': failed storing manifest for 'security-core' in cache: attempt to write a readonly database
+[0/1] Planning build
+Building for debugging...
+[0/4] Write sources
+[1/4] Write swift-version--58304C5D6DBC2206.txt
+[3/8] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[4/8] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+[5/8] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+[6/8] Emitting module RightClickCoreTests
+[7/10] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/RCIRInvocationBindingTests.swift:40:39: error: incorrect argument label in call (have 'privateKey:', expected 'rawPrivateKey:')
+38 |         XCTAssertNotNil(payload.range(of: try observation(marker: oldMarker).canonicalData()))
+39 |         let key = Curve25519.Signing.PrivateKey()
+40 |         let signer = RCIREd25519Signer(privateKey: key.rawRepresentation)
+   |                                       `- error: incorrect argument label in call (have 'privateKey:', expected 'rawPrivateKey:')
+41 |         let receipt = try RCIRSignedReceipt(payload: payload, signer: signer)
+42 |         try receipt.verify(trustedPublicKey: key.publicKey.rawRepresentation, using: RCIREd25519Verifier())
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/RCIRInvocationBindingTests.swift:41:71: error: extra argument 'signer' in call
+39 |         let key = Curve25519.Signing.PrivateKey()
+40 |         let signer = RCIREd25519Signer(privateKey: key.rawRepresentation)
+41 |         let receipt = try RCIRSignedReceipt(payload: payload, signer: signer)
+   |                                                                       `- error: extra argument 'signer' in call
+42 |         try receipt.verify(trustedPublicKey: key.publicKey.rawRepresentation, using: RCIREd25519Verifier())
+43 |     }
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/RCIRInvocationBindingTests.swift:41:44: error: missing arguments for parameters 'signature', 'publicKey' in call
+39 |         let key = Curve25519.Signing.PrivateKey()
+40 |         let signer = RCIREd25519Signer(privateKey: key.rawRepresentation)
+41 |         let receipt = try RCIRSignedReceipt(payload: payload, signer: signer)
+   |                                            `- error: missing arguments for parameters 'signature', 'publicKey' in call
+42 |         try receipt.verify(trustedPublicKey: key.publicKey.rawRepresentation, using: RCIREd25519Verifier())
+43 |     }
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Sources/RightClickCore/RCIRSignedReceipt.swift:28:12: note: 'init(payload:signature:publicKey:)' declared here
+26 |     public let publicKey: Data
+27 | 
+28 |     public init(payload: Data, signature: Data, publicKey: Data) throws {
+   |            `- note: 'init(payload:signature:publicKey:)' declared here
+29 |         guard payload.starts(with: Data("RIGHTCLICK-RCIR-RECEIPT-1\0".utf8)),
+30 |               payload.count > 24, payload.count <= 1_048_576,
+[8/10] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/RCIRInvocationBindingTests.swift:40:39: error: incorrect argument label in call (have 'privateKey:', expected 'rawPrivateKey:')
+38 |         XCTAssertNotNil(payload.range(of: try observation(marker: oldMarker).canonicalData()))
+39 |         let key = Curve25519.Signing.PrivateKey()
+40 |         let signer = RCIREd25519Signer(privateKey: key.rawRepresentation)
+   |                                       `- error: incorrect argument label in call (have 'privateKey:', expected 'rawPrivateKey:')
+41 |         let receipt = try RCIRSignedReceipt(payload: payload, signer: signer)
+42 |         try receipt.verify(trustedPublicKey: key.publicKey.rawRepresentation, using: RCIREd25519Verifier())
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/RCIRInvocationBindingTests.swift:41:71: error: extra argument 'signer' in call
+39 |         let key = Curve25519.Signing.PrivateKey()
+40 |         let signer = RCIREd25519Signer(privateKey: key.rawRepresentation)
+41 |         let receipt = try RCIRSignedReceipt(payload: payload, signer: signer)
+   |                                                                       `- error: extra argument 'signer' in call
+42 |         try receipt.verify(trustedPublicKey: key.publicKey.rawRepresentation, using: RCIREd25519Verifier())
+43 |     }
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Tests/RightClickCoreTests/RCIRInvocationBindingTests.swift:41:44: error: missing arguments for parameters 'signature', 'publicKey' in call
+39 |         let key = Curve25519.Signing.PrivateKey()
+40 |         let signer = RCIREd25519Signer(privateKey: key.rawRepresentation)
+41 |         let receipt = try RCIRSignedReceipt(payload: payload, signer: signer)
+   |                                            `- error: missing arguments for parameters 'signature', 'publicKey' in call
+42 |         try receipt.verify(trustedPublicKey: key.publicKey.rawRepresentation, using: RCIREd25519Verifier())
+43 |     }
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-security/.build/security-core/Sources/RightClickCore/RCIRSignedReceipt.swift:28:12: note: 'init(payload:signature:publicKey:)' declared here
+26 |     public let publicKey: Data
+27 | 
+28 |     public init(payload: Data, signature: Data, publicKey: Data) throws {
+   |            `- note: 'init(payload:signature:publicKey:)' declared here
+29 |         guard payload.starts(with: Data("RIGHTCLICK-RCIR-RECEIPT-1\0".utf8)),
+30 |               payload.count > 24, payload.count <= 1_048_576,
+error: fatalError

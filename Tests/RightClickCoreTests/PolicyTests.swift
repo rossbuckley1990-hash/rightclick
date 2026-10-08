@@ -78,7 +78,7 @@ final class PolicyTests: XCTestCase {
         XCTAssertTrue(policy.requiresConfirmation)
     }
 
-    func testDedupeKeepsFirstIdentifier() {
+    func testDedupeQuarantinesConflictingIdentity() {
         let first = Capability(
             id: "sharing:example",
             title: "Example",
@@ -90,7 +90,8 @@ final class PolicyTests: XCTestCase {
         )
         var second = first
         second.title = "Other"
-        XCTAssertEqual(dedupeCapabilities([first, second]).map(\.title), ["Example"])
+        XCTAssertTrue(dedupeCapabilities([first, second, first]).isEmpty)
+        XCTAssertEqual(dedupeCapabilities([first, first]).map(\.title), ["Example"])
     }
 
     func testContentClassification() throws {

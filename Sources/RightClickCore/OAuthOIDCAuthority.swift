@@ -1,6 +1,12 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import Foundation
+#if canImport(Security)
 import Security
+#endif
 
 public enum OAuthOIDCAuthorityError: Error, LocalizedError {
     case invalidIssuer
@@ -11,7 +17,8 @@ public enum OAuthOIDCAuthorityError: Error, LocalizedError {
     case invalidRedirectURI
     case invalidState
     case invalidTokenBundle(String)
-    case keychain(OSStatus)
+    case keychain(Int32)
+    case unavailable
 
     public var errorDescription: String? {
         switch self {
@@ -31,11 +38,17 @@ public enum OAuthOIDCAuthorityError: Error, LocalizedError {
             return "OAuth state is empty, too large, or contains control characters."
         case let .invalidTokenBundle(reason):
             return "OAuth token bundle is invalid: \(reason)"
+        case .unavailable:
+            return "Secure credential storage is unavailable on this platform."
         case let .keychain(status):
+#if canImport(Security)
             if let message = SecCopyErrorMessageString(status, nil) as String? {
                 return "macOS Keychain error: \(message)"
             }
             return "macOS Keychain error: \(status)"
+#else
+            return "Secure credential store error: \(status)"
+#endif
         }
     }
 }
@@ -196,17 +209,8 @@ public struct OAuthPKCE: Equatable, Sendable {
     public let codeChallenge: String
 
     public static func generate() throws -> Self {
-        var bytes = [UInt8](repeating: 0, count: 32)
-
-        let status = SecRandomCopyBytes(
-            kSecRandomDefault,
-            bytes.count,
-            &bytes
-        )
-
-        guard status == errSecSuccess else {
-            throw OAuthOIDCAuthorityError.invalidPKCE
-        }
+        var generator = SystemRandomNumberGenerator()
+        let bytes = (0..<32).map { _ in UInt8.random(in: .min ... .max, using: &generator) }
 
         return try make(randomBytes: Data(bytes))
     }
@@ -410,6 +414,8 @@ public enum OAuthOIDCAuthority {
         _ bundle: OAuthTokenBundle,
         for binding: OAuthAuthorityBinding
     ) throws {
+#if canImport(Security)
+
         guard Set(binding.scopes).isSubset(of: Set(bundle.scopes)) else {
             throw OAuthOIDCAuthorityError.invalidTokenBundle(
                 "granted scopes do not satisfy the authority binding"
@@ -447,11 +453,17 @@ public enum OAuthOIDCAuthority {
         guard addStatus == errSecSuccess else {
             throw OAuthOIDCAuthorityError.keychain(addStatus)
         }
-    }
+
+#else
+        throw OAuthOIDCAuthorityError.unavailable
+#endif
+}
 
     public static func read(
         for binding: OAuthAuthorityBinding
     ) throws -> OAuthTokenBundle? {
+#if canImport(Security)
+
         var query = keychainQuery(for: binding)
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
@@ -477,7 +489,11 @@ public enum OAuthOIDCAuthority {
             OAuthTokenBundle.self,
             from: data
         )
-    }
+
+#else
+        throw OAuthOIDCAuthorityError.unavailable
+#endif
+}
 
     public static func contains(
         binding: OAuthAuthorityBinding
@@ -489,6 +505,8 @@ public enum OAuthOIDCAuthority {
     public static func delete(
         binding: OAuthAuthorityBinding
     ) throws -> Bool {
+#if canImport(Security)
+
         let status = SecItemDelete(
             keychainQuery(for: binding) as CFDictionary
         )
@@ -502,7 +520,11 @@ public enum OAuthOIDCAuthority {
         }
 
         throw OAuthOIDCAuthorityError.keychain(status)
-    }
+
+#else
+        throw OAuthOIDCAuthorityError.unavailable
+#endif
+}
 
     static func canonicalIssuer(_ raw: String) throws -> String {
         guard
@@ -655,10 +677,16 @@ public enum OAuthOIDCAuthority {
     private static func keychainQuery(
         for binding: OAuthAuthorityBinding
     ) -> [String: Any] {
+#if canImport(Security)
+
         [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: keychainService,
             kSecAttrAccount as String: binding.keychainAccount,
         ]
-    }
+
+#else
+        return [:]
+#endif
+}
 }

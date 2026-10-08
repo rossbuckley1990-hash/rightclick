@@ -1,0 +1,61 @@
+{
+  "actualControls": [
+    "seven canonical operations/names",
+    "local-only DNS-SD and native reflection",
+    "native unary request",
+    "one actual owned file effect per process",
+    "exact returned JSON challenge",
+    "exact retained invocation/status",
+    "confirmation zero-dispatch",
+    "all legacy seven schemas preserved; optional contractSHA256 addition"
+  ],
+  "baseline": {
+    "sha256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "version": "0.2.2"
+  },
+  "candidate": {
+    "sha256": "c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12",
+    "source": "bd5ed53f02c5cf76fc35796e665ef2c076296dd2",
+    "version": "0.2.3"
+  },
+  "excluded": [
+    "broader connector operation",
+    "fresh restricted AI",
+    "new streams",
+    "issuer authentication/downscope",
+    "public release/fresh install"
+  ],
+  "outcome": "accepted/unverified on both; external engineering checker correlates actual effect separately",
+  "priorHarnessFailures": [
+    "metadata read from CapabilityView instead of context_explain",
+    "irrelevant new RCIR config lacked required revision; omitted on matched legacy unary controls"
+  ],
+  "results": "BOTH_PASS",
+  "scope": "Published0.2.2 versus exact0.2.3 candidate bd5 native gRPC unary parity; no stream feature acceptance",
+  "sha256": {
+    "audit_public_unary.py": "63f126404730b50ed2dbc5d6aa449bbb8cd70b26ac3645e4d458474399434366",
+    "baseline/advertisement.log": "40a36ce06d3c524414533b43c70231e592158087258d6e5496f7a571b60d0e66",
+    "baseline/capability.json": "b1ac15bccc4955f558a085ac66ffa5efc051735bc1b8c275ceb2e5d0d418b2a5",
+    "baseline/echo-parity-c9ea4760dec14877b2602e9539206949.txt": "145c6ef41c786b8867bbadf6edd51b5a3e80eae42277184814ad167e47d0eb9d",
+    "baseline/exchanges.json": "8c89ac2a59d922463d51a02863da192b93aeedec3d7e82dd0c87b08b98e8da51",
+    "baseline/native-driver.log": "b418115845c0419d579e48836913640e96b6af777d98215dcb1918968de8ba1a",
+    "baseline/results.json": "56bed2e16cf7ac6e0fa3824312e27edec653e99cc33eddaa78aa49b28140a144",
+    "baseline/runtime-records.json": "3532c3b415b5ec41e094840152959af579433bef4763d08a96344ac9c3248ebc",
+    "baseline/stream-events.jsonl": "55a33d590b529860b6a51ac9974dd6e752427d84fcb7540d4291ffefeb64753a",
+    "baseline/tools.json": "836d6b6b459dc11a15bc48aba313352ec33b7643828be5d7934ebb4b7730ed9e",
+    "candidate/advertisement.log": "9e164d1283d3ef329c7ce18d2b90e0d0037e2e1b7181ed0d3f2d07aa262c50e8",
+    "candidate/capability.json": "c97e2af641cbd8eed862d6d8b25a9ec25b58a0747884984ae117c7b959bdb3b0",
+    "candidate/echo-parity-681a0b6a76e049db8b954efeedcd18a6.txt": "8f6bcf726fc361852d22cd89b4b9cc0354a2da8533c9f92bd2c5daa7bc83f2a6",
+    "candidate/exchanges.json": "32249b7f84d5044068bfa0fcc112ba7d810175d39c0595c88c7bc75a3ff8ba94",
+    "candidate/native-driver.log": "4e651f267279d44be566d8e045d75a48d6517ec5ef1d50e1382386fe7bf09926",
+    "candidate/results.json": "ecd86420bf11b6461c7d35f5feacbad03a94f3ac1e37e5eb42b974f04d721384",
+    "candidate/runtime-records.json": "12149b2f41e1cc1f5d4ce0aaa558872c84500c7bb914a19fc9ce7770b9abe162",
+    "candidate/stream-events.jsonl": "1fcd5d7e8d14def6e596bf1bbfa0df544a6d1618aef2657d396f4d47abadde51",
+    "candidate/tools.json": "9035305b839de7083e57350751fb2a1487a64f85c921ca93eed2f58d8496c2d7",
+    "corrected-final-evidence-manifest.json": "a3338778d699857cb14d9c7518c01dabf4e40c9eff0934a67fa7134cd3abd509",
+    "corrected-public-unary-parity-audit.json": "5b798ad483d5c97f0aaf4968742c69cdbf05b60dd84ee5694b19c0d428bfc902",
+    "grpc-stream-core7-proof.py": "7f6f90ce11b373126cf6785ea252aa72b07ccfb7b04082eeb770b6545afab2a6",
+    "grpc-stream-pressure-provider.py": "278fa24f316663b3c37936f8940da5f63ce5e2b005d68c5571deaf097cddaee1",
+    "source-and-result-parity-supplement.json": "3d1b113d92f74ea68b7ac1cbe4c97cc6d9eb80d57034908f7c3c95a55d40efdb"
+  }
+}

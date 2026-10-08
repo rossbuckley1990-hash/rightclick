@@ -1,0 +1,89 @@
+{
+  "auditor": "strict Python canonical decoder plus independently pinned Ed25519",
+  "externalTruth": "fixture journals, separately from signature",
+  "results": [
+    {
+      "case": "-[RCIRSigningLifecycleTests testFreshInvocationAfterRotationUsesNewProvisionedKey]",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "requests": 2,
+      "realEffects": 2,
+      "signatureMatchesSeparatePin": true,
+      "pin": "fresh-key",
+      "provisionedPinShouldRemainCurrent": true,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testKeyWithdrawalAtAdmissionBoundaryHasZeroProviderEffects]",
+      "state": "rejected",
+      "requests": 0,
+      "realEffects": 0
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testSamePathKeyRotationDoesNotSignWithRetainedOldKey]",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "requests": 1,
+      "realEffects": 1,
+      "signatureMatchesSeparatePin": false,
+      "pin": "original-key",
+      "provisionedPinShouldRemainCurrent": false,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature]",
+      "state": "unknown",
+      "outcome": "unknown",
+      "requests": 1,
+      "realEffects": 1,
+      "signatureMatchesSeparatePin": false,
+      "pin": "original-key",
+      "provisionedPinShouldRemainCurrent": false,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testUnaryHTTPAfterKeyWithdrawalRetainsActualEffectAndUnsignedTruth]",
+      "state": "accepted",
+      "outcome": "unverified",
+      "requests": 1,
+      "realEffects": 1,
+      "signatureMatchesSeparatePin": false,
+      "pin": "original-key",
+      "provisionedPinShouldRemainCurrent": false,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testUnchangedProvisionedSignerSignsGenuineEffect]",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "requests": 1,
+      "realEffects": 1,
+      "signatureMatchesSeparatePin": true,
+      "pin": "original-key",
+      "provisionedPinShouldRemainCurrent": true,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown]",
+      "state": "unknown",
+      "outcome": "unknown",
+      "requests": 1,
+      "realEffects": 1,
+      "signatureMatchesSeparatePin": false,
+      "pin": "original-key",
+      "provisionedPinShouldRemainCurrent": false,
+      "unsignedReceiptPresent": true
+    },
+    {
+      "case": "-[RCIRSigningLifecycleTests testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect]",
+      "state": "succeeded",
+      "outcome": "succeeded",
+      "requests": 1,
+      "realEffects": 1,
+      "signatureMatchesSeparatePin": false,
+      "pin": "original-key",
+      "provisionedPinShouldRemainCurrent": false,
+      "unsignedReceiptPresent": true
+    }
+  ]
+}

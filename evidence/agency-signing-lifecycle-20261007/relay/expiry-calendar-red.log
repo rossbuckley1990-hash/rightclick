@@ -1,0 +1,78 @@
+✔ finite future authenticated expiry allows private references (57.577625ms)
+✔ malformed expiry cannot grant relay authority (51.15025ms)
+✔ missing expiry cannot grant relay authority (52.650833ms)
+✔ null expiry cannot grant relay authority (49.016125ms)
+✔ numeric expiry cannot grant relay authority (49.323917ms)
+✖ invalid February calendar expiry cannot grant relay authority (53.757625ms)
+✖ invalid April calendar expiry cannot grant relay authority (51.491542ms)
+✔ expired expiry cannot grant relay authority (49.78ms)
+✔ source commit mismatch cannot release credentials (48.629709ms)
+✔ authenticated ciphertext mismatch cannot release credentials (48.975958ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 8
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 650.849958
+
+✖ failing tests:
+
+test at scripts/proof-lab/test-decrypt-relay.mjs:48:3
+✖ invalid February calendar expiry cannot grant relay authority (53.757625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   accepted: true,
+  +   credentialsWritten: true,
+  +   referencesWritten: true
+  -   accepted: false,
+  -   credentialsWritten: false,
+  -   referencesWritten: false
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-security/scripts/proof-lab/test-decrypt-relay.mjs:49:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { accepted: true, credentialsWritten: true, referencesWritten: true },
+    expected: { accepted: false, credentialsWritten: false, referencesWritten: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/proof-lab/test-decrypt-relay.mjs:48:3
+✖ invalid April calendar expiry cannot grant relay authority (51.491542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   accepted: true,
+  +   credentialsWritten: true,
+  +   referencesWritten: true
+  -   accepted: false,
+  -   credentialsWritten: false,
+  -   referencesWritten: false
+    }
+  
+      at TestContext.<anonymous> (file:///Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-security/scripts/proof-lab/test-decrypt-relay.mjs:49:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { accepted: true, credentialsWritten: true, referencesWritten: true },
+    expected: { accepted: false, credentialsWritten: false, referencesWritten: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

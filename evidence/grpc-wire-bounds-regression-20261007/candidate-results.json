@@ -1,0 +1,20 @@
+{
+  "codecSHA256": "8a64f3c757b028602f24040cb2bf35f34d281ef7c5b9290546ed38aac5057824",
+  "binarySHA256": "c1c3872a3326efef8ab528e54c2c5fa592389504b4e0883731fd93cc4696045c",
+  "results": [
+    {
+      "case": "length",
+      "returnCode": 0,
+      "stdout": "bounded_encoding_rejected\n",
+      "stderrBytes": 0,
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "overwide-varint",
+      "returnCode": 0,
+      "stdout": "bounded_encoding_rejected\n",
+      "stderrBytes": 0,
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "provenance": "new recovery commit from this agent's exact source inputs/outputs; fetched PR49 baseline6ea1d3096eb7bba55417d46e7820796bef24daff; original unpushed objects/effect journals not recovered",
+  "scope": "Foundation gate only; native loader and production wiring remain separate gates",
+  "macTests": 116,
+  "linuxTests": 114,
+  "failures": 0,
+  "sourceSHA256": {
+    "Sources/RightClickCore/RCIRReceiptClaims.swift": "6b081b09e51451b76f965c555dd459ee16f282319b6dc7165716941204d7f5f7",
+    "Sources/RightClickCore/RCIRReceiptTrust.swift": "598881d8054656b90b1bd3369c799df067995fc0c34e140b998df5f3d886ac9f",
+    "Sources/RightClickCore/RCIRReceiptTrustDocument.swift": "459a28897cd78508fc1a12407929129bc458b940869910b3edbb6d8f4a6f9b9e",
+    "Sources/RightClickCore/RCIRProvisionedReceiptTrust.swift": "d032b1886836f5844aa25883d0051d11a7c24a0fd7b62517f8208ced0dd41ff7",
+    "Tests/RightClickCoreTests/RCIRReceiptTrustTests.swift": "5f369474c9d4ae28a18a73e72c7dac712318b460b5982339a2490e611db473c3",
+    "Tests/RightClickCoreTests/RCIRReceiptTrustStructureTests.swift": "3f4630b149042ab02584b16fc0efef6ecd29facf0a5833501ce224ebe549443b",
+    "Tests/RightClickCoreTests/RCIRReceiptTrustGapTests.swift": "7007cabf4c31aee2227042fd9b2aee66ec6df76b16c588b7f863dc637c56c591",
+    "Tests/RightClickCoreTests/RCIRProvisionedReceiptTrustTests.swift": "85f1d47c6f411a0998e72e3684e8d1575f3cd8ae87e5ad57d4d01bee9ed758c8",
+    "Tests/RightClickCoreTests/RCIRReceiptTrustReconciliationTests.swift": "6e1106c37d0812ad551b50f7a5586ed3a4a4eec4171f328748cebb038845f275",
+    "Tests/RightClickCoreTests/RCIRProductionReceiptTrustTests.swift": "645aca4ab2dc42ab8874137edd1e6aa3e3ac58f472b3aed40fd958f73955ea4f",
+    "scripts/verify-rcir-receipt.py": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966",
+    "scripts/audit-receipt-trust.py": "8cb60ead8ea55c20a1fae376d744d230b014fe0a2efbb3455fa7154cf2dc8844",
+    "scripts/audit-production-receipt-trust.py": "960388f4fa68884b0927b780ca1a92a1b0f74f913fa1be57949bffad8a3c6756",
+    "Tests/test_rcir_receipt_trust.py": "e58a0711095220dcaa53161558084e7c3578406fd1f2531fa16466bc1b794ae5"
+  },
+  "evidenceSHA256": {
+    "foundation-linux.log.gz": "1cdbbf6a2b49685722ec91bec7b67f8dea72d08ba5e730cc2b9ac81a84ca5c0c",
+    "foundation-mac.log.gz": "7c67e4597839ecc55f756ed1ea6fbafea81382755239aaaa67b59590df00173e",
+    "native-mac48.log.gz": "d38016307fa29b5b152554e9011a68d1c30a602fafc2820b5be58f921a1366e3"
+  },
+  "nativeMacTargetedTests": 48,
+  "nativeMacScope": "Actual protected loader/parser/lifecycle plus existing Ed25519/trust/signing and bounded real A2A fixtures; production policy wiring excluded"
+}

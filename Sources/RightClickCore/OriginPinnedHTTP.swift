@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// HTTP transport policy for capability providers whose authority is bound
 /// to one explicitly selected origin.
@@ -54,6 +57,9 @@ enum OriginPinnedHTTP {
         ) {
             completionHandler(nil)
         }
+        // A concrete witness is required on hosts using Swift protocol dispatch.
+        // The bounded subclass overrides completion to release its waiter.
+        func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {}
     }
 
     /// Incrementally collects one provider document.
@@ -184,7 +190,7 @@ enum OriginPinnedHTTP {
             }
         }
 
-        func urlSession(
+        override func urlSession(
             _ session: URLSession,
             task: URLSessionTask,
             didCompleteWithError error:
@@ -298,16 +304,48 @@ enum OriginPinnedHTTP {
         return try boundedLoad(url, maximumBytes: maximumBytes, template: .shared, initialRequest: request, credentialFree: true)
     }
 
+    /// Shared bounded exchange for descriptor protocols requiring response
+    /// headers (for example negotiated session identifiers). The same no-redirect,
+    /// origin, response size and deadline rules apply to acquisition and calls.
+    static func exchange(_ request: URLRequest, maximumBytes: Int = maximumAcquisitionBytes,
+                         template: URLSession = .shared, deadline: TimeInterval = acquisitionDeadline,
+                         successfulStatusRequired: Bool = true,
+                         admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> (Data, HTTPURLResponse) {
+        guard let url = request.url else { throw RightClickError("Missing exchange target.") }
+        return try boundedExchange(url, maximumBytes: maximumBytes, template: template, initialRequest: request,
+            admitStart: admitStart, deadline: deadline, successfulStatusRequired: successfulStatusRequired)
+    }
+
+    /// Bounded shared invocation edge. Admission consumes authority atomically
+    /// with enqueue; response collection and waiting happen after its lock.
+    static func loadInvocation(_ request: URLRequest, maximumBytes: Int,
+                               admitStart: (_ enqueue: () -> Void) throws -> Void) throws -> Data {
+        guard let url = request.url else { throw RCIRError.invalidContract }
+        return try withoutActuallyEscaping(admitStart) { start in
+            try boundedLoad(url, maximumBytes: maximumBytes, template: .shared,
+                            initialRequest: request, admitStart: start)
+        }
+    }
+
     private static func boundedLoad(
         _ url: URL,
         maximumBytes: Int,
         template: URLSession,
         initialRequest: URLRequest? = nil,
+        admitStart: ((_ enqueue: () -> Void) throws -> Void)? = nil,
         credentialFree: Bool = false
     ) throws -> Data {
-        precondition(
-            maximumBytes > 0
-        )
+        try boundedExchange(url, maximumBytes: maximumBytes, template: template,
+                            initialRequest: initialRequest, admitStart: admitStart, credentialFree: credentialFree).0
+    }
+
+    private static func boundedExchange(_ url: URL, maximumBytes: Int, template: URLSession,
+                                        initialRequest: URLRequest?,
+                                        admitStart: ((_ start: () -> Void) throws -> Void)? = nil,
+                                        deadline: TimeInterval = acquisitionDeadline,
+                                        successfulStatusRequired: Bool = true, credentialFree: Bool = false) throws -> (Data, HTTPURLResponse) {
+        guard maximumBytes > 0, maximumBytes <= maximumOpenAPISpecificationBytes,
+              deadline.isFinite, deadline > 0, deadline <= 10 else { throw RCIRError.invalidLimit }
 
         let configuration = credentialFree ? URLSessionConfiguration.ephemeral : template.configuration
         if credentialFree {
@@ -319,11 +357,11 @@ enum OriginPinnedHTTP {
 
         configuration
             .timeoutIntervalForRequest =
-                acquisitionDeadline
+                deadline
 
         configuration
             .timeoutIntervalForResource =
-                acquisitionDeadline
+                deadline
 
         let delegate =
             BoundedLoadDelegate(
@@ -350,18 +388,19 @@ enum OriginPinnedHTTP {
         if credentialFree { request.httpShouldHandleCookies = false }
 
         request.timeoutInterval =
-            acquisitionDeadline
+            deadline
 
         let task =
             session.dataTask(
                 with: request
             )
 
-        task.resume()
+        if let admitStart { try admitStart { task.resume() } }
+        else { task.resume() }
 
         let deadlineMilliseconds =
             Int(
-                acquisitionDeadline
+                deadline
                 * 1_000
             )
 
@@ -412,7 +451,7 @@ enum OriginPinnedHTTP {
         }
 
         guard
-            (200...299)
+            !successfulStatusRequired || (200...299)
                 .contains(
                     response.statusCode
                 )
@@ -432,7 +471,7 @@ enum OriginPinnedHTTP {
                 .responseTooLarge
         }
 
-        return result.data
+        return (result.data, response)
     }
 
     /// Origin equality follows URL origin semantics:

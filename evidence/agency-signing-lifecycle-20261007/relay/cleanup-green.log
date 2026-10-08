@@ -1,0 +1,42 @@
+[
+  {
+    "case": "success",
+    "commandFailed": false,
+    "fixtureError": null,
+    "processSurvived": false,
+    "userCallbackStateSurvived": false,
+    "privateDirectorySurvived": false,
+    "withdrawalClaim": true,
+    "evidenceAccurate": true
+  },
+  {
+    "case": "process-survives",
+    "commandFailed": true,
+    "fixtureError": "Windows proof withdrawal could not be independently confirmed; consult cleanup evidence at 47",
+    "processSurvived": true,
+    "userCallbackStateSurvived": false,
+    "privateDirectorySurvived": false,
+    "withdrawalClaim": false,
+    "evidenceAccurate": true
+  },
+  {
+    "case": "user-survives",
+    "commandFailed": true,
+    "fixtureError": "Windows proof withdrawal could not be independently confirmed; consult cleanup evidence at 47",
+    "processSurvived": false,
+    "userCallbackStateSurvived": true,
+    "privateDirectorySurvived": false,
+    "withdrawalClaim": false,
+    "evidenceAccurate": true
+  },
+  {
+    "case": "private-state-survives",
+    "commandFailed": true,
+    "fixtureError": "Windows proof withdrawal could not be independently confirmed; consult cleanup evidence at 47",
+    "processSurvived": false,
+    "userCallbackStateSurvived": false,
+    "privateDirectorySurvived": true,
+    "withdrawalClaim": false,
+    "evidenceAccurate": true
+  }
+]

@@ -1,9 +1,17 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractRefreshingReflector {
     private struct JSONStringProperty {
-        let allowedValues: Set<String>?
+        let schema: CapabilitySchema
+        let raw: [String: Any]
     }
 
     private struct JSONObjectSchema {
@@ -55,7 +63,9 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
             String?
 
         let responseContentType:
-            String
+            String?
+
+        let acknowledgementStatuses: Set<Int>?
 
         let requestJSONSchema:
             JSONObjectSchema?
@@ -259,6 +269,8 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 ? "public.json"
                 : "public.plain-text"
 
+            let outputTypes = operation.acknowledgementStatuses == nil ? [outputType] : []
+
             let policy =
                 SafetyPolicy.classify(
                     title:
@@ -267,9 +279,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                     sendTypes: [
                         "public.plain-text"
                     ],
-                    returnTypes: [
-                        outputType
-                    ]
+                    returnTypes: outputTypes
                 )
 
             var metadata:
@@ -290,7 +300,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                         baseURL.absoluteString,
                     "responseContentType":
                         operation
-                            .responseContentType,
+                            .responseContentType ?? "none",
                 ]
 
             if let acquisitionIncarnation {
@@ -355,6 +365,11 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                     "json_syntax_only"
             }
 
+            if let statuses = operation.acknowledgementStatuses {
+                metadata["resultValidation"] = "no_declared_output"
+                metadata["acknowledgementStatuses"] = statuses.sorted().map(String.init).joined(separator: ",")
+            }
+
             if let authority =
                 operation.authorityRequirement
             {
@@ -396,9 +411,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 inputs: [
                     "public.plain-text"
                 ],
-                output: [
-                    outputType
-                ],
+                output: outputTypes,
                 safety:
                     policy.safety,
                 invocation:
@@ -961,7 +974,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         // remain authoritative. Lower their exact output into the existing ABI.
         func schema(_ object: JSONObjectSchema) -> CapabilitySchema {
             .object(properties: object.properties.mapValues {
-                $0.allowedValues.map { .stringEnum($0.sorted()) } ?? .string
+                $0.schema
             }, required: object.required.sorted())
         }
         let argumentSchema: CapabilitySchema
@@ -971,8 +984,8 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         } else if let object = operation.requestJSONSchema ?? operation.pathArgumentsSchema {
             argumentSchema = schema(object)
         } else { argumentSchema = .null }
-        let resultSchema: CapabilitySchema = operation.responseJSONSchema.map(schema)
-            ?? (operation.responseJSONSyntaxOnly ? .bytes : .string)
+        let resultSchema: CapabilitySchema = operation.acknowledgementStatuses != nil ? .unit :
+            (operation.responseJSONSchema.map(schema) ?? (operation.responseJSONSyntaxOnly ? .bytes : .string))
         var owned = CapabilityExperience.withoutExperience(admissionOwner)
         if owned.reflectorID == "unowned" { owned.reflectorID = id }
         let reflected = try owned.abiContract(arguments: .object(properties: [
@@ -993,6 +1006,10 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         // POST is conservatively execute (never inferred pure from a title).
         let effect: RCIREffect = operation.method == "GET" ? .read : .execute
         let scope = RCIRScope(targetURL.absoluteString, effect)
+        // Credentials are host-only input to this transport. A provider that
+        // receives them may echo them in its result; reject known material
+        // before retaining output, schema errors, task evidence or receipts.
+        let sensitiveMaterial = try bearerToken.map { try CapabilitySensitiveMaterial([Data($0.utf8)]) }
         return try host.execute(abi: abi, discovery: reflected, arguments: input, scope: scope,
             capability: admissionOwner, executionID: executionID, argumentStrings: arguments,
             item: item, verification: verification, expectedOutput: expectedOutput, target: targetURL, authority: {
@@ -1005,8 +1022,9 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 var boundRequest = request
                 boundRequest.setValue(correlationID, forHTTPHeaderField: "X-RightClick-Invocation")
                 return try self.send(boundRequest, operation: operation, capability: capability,
-                                     executionID: executionID, admitStart: admitStart)
+                                     executionID: executionID, sensitiveMaterial: sensitiveMaterial, admitStart: admitStart)
             }, resultValue: { record in
+                if operation.acknowledgementStatuses != nil { throw RCIRError.invalidContract }
                 if let object = operation.responseJSONSchema, let output = record.output {
                     guard let json = try JSONSerialization.jsonObject(with: Data(output.utf8)) as? [String: String] else {
                         throw RCIRError.invalidContract
@@ -1044,6 +1062,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
 
     private func send(_ request: URLRequest, operation: Operation,
                       capability: Capability, executionID: String,
+                      sensitiveMaterial: CapabilitySensitiveMaterial?,
                       admitStart: (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord {
         guard let targetURL = request.url else { throw RCIRError.invalidContract }
         let semaphore =
@@ -1109,6 +1128,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
             box.snapshot()
 
         if let error = result.error {
+            try sensitiveMaterial?.requireAbsent(in: .string(error.localizedDescription))
             return ExecutionRecord(
                 executionId:
                     executionID,
@@ -1211,6 +1231,30 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
 
         let responseData =
             result.data ?? Data()
+
+        if let sensitiveMaterial {
+            try sensitiveMaterial.requireAbsent(in: .bytes(responseData))
+            if operation.responseContentType == "application/json",
+               let json = try? JSONSerialization.jsonObject(with: responseData) {
+                // Decode JSON escapes before comparing material, including
+                // strings in fields that later fail the declared schema.
+                try sensitiveMaterial.requireAbsent(in: CapabilityJSON.value(json))
+            }
+        }
+
+        if let statuses = operation.acknowledgementStatuses {
+            guard statuses.contains(response.statusCode) else {
+                return ExecutionRecord(executionId: executionID, actionId: capability.id, title: capability.title,
+                    state: .unknown, message: "The provider returned an undeclared acknowledgement status; the external outcome is unknown.",
+                    evidence: OutcomeEvidence(type: "provider_contract_failure", boundary: "The response status was not among the acquired ACK-only success declarations."))
+            }
+            // No response schema was declared. Untrusted response bytes must
+            // not become a typed result or a returned-value postcondition.
+            return ExecutionRecord(executionId: executionID, actionId: capability.id, title: capability.title,
+                state: .accepted, message: "HTTP provider acknowledged \(response.statusCode) without declaring an output; the external outcome is unverified.",
+                events: ["HTTP \(operation.method) \(targetURL.absoluteString)", "provider acknowledged \(response.statusCode) without declared output"],
+                evidence: OutcomeEvidence(type: "provider_http_acceptance", boundary: "Declared ACK status only; no typed provider output and no independently verified effect.", outcomeVerified: false))
+        }
 
         let mediaType =
             response
@@ -1797,14 +1841,6 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 "security"
             )
 
-        let rootSecurityIsExplicitlyEmpty =
-            rootHasSecurity
-            && (
-                root[
-                    "security"
-                ] as? [Any]
-            )?.isEmpty == true
-
         let components =
             root["components"]
                 as? [String: Any]
@@ -1878,8 +1914,8 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                         operation,
                     rootHasSecurity:
                         rootHasSecurity,
-                    rootSecurityIsExplicitlyEmpty:
-                        rootSecurityIsExplicitlyEmpty,
+                    rootSecurity:
+                        root["security"],
                     securitySchemes:
                         securitySchemes,
                     authorityOrigin:
@@ -1905,7 +1941,9 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                     String?
 
                 let responseContentType:
-                    String
+                    String?
+
+                let acknowledgementStatuses = supportedAcknowledgementStatuses(operation)
 
                 let requestJSONSchema:
                     JSONObjectSchema?
@@ -1986,6 +2024,10 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                         responseJSONSchema =
                             nil
 
+                    } else if acknowledgementStatuses != nil {
+                        responseJSONSyntaxOnly = false
+                        responseContentType = nil
+                        responseJSONSchema = nil
                     } else {
                         let responseSchema =
                             supportedJSONObjectResponseSchema(
@@ -2020,9 +2062,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                         supportsPlainTextRequest(
                             operation
                         ),
-                        supportsPlainTextResponse(
-                            operation
-                        )
+                        supportsPlainTextResponse(operation) || acknowledgementStatuses != nil
                     {
                         guard
                             !path.contains("{"),
@@ -2041,7 +2081,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                             "text/plain"
 
                         responseContentType =
-                            "text/plain"
+                            acknowledgementStatuses == nil ? "text/plain" : nil
 
                         requestJSONSchema =
                             nil
@@ -2069,6 +2109,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                         guard
                             responseSchema != nil
                             || responseSyntaxOnly
+                            || acknowledgementStatuses != nil
                         else {
                             continue
                         }
@@ -2121,7 +2162,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                             "application/json"
 
                         responseContentType =
-                            "application/json"
+                            acknowledgementStatuses == nil ? "application/json" : nil
 
                         requestJSONSchema =
                             requestSchema
@@ -2200,6 +2241,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                             requestContentType,
                         responseContentType:
                             responseContentType,
+                        acknowledgementStatuses: acknowledgementStatuses,
                         requestJSONSchema:
                             requestJSONSchema,
                         pathArgumentsSchema:
@@ -2247,8 +2289,8 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
             [String: Any],
         rootHasSecurity:
             Bool,
-        rootSecurityIsExplicitlyEmpty:
-            Bool,
+        rootSecurity:
+            Any?,
         securitySchemes:
             [String: Any],
         authorityOrigin:
@@ -2256,18 +2298,14 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         externalBearerSchemeName:
             String?
     ) -> AuthorityResolution {
-        guard
-            operation.keys.contains(
-                "security"
-            )
-        else {
-            if rootHasSecurity {
-                return
-                    rootSecurityIsExplicitlyEmpty
-                    ? .publicAccess
-                    : .unsupported
-            }
-
+        // The operation overrides inherited security even when explicitly
+        // empty. Both locations pass through exactly the same strict parser.
+        let declaredSecurity: Any?
+        if operation.keys.contains("security") {
+            declaredSecurity = operation["security"]
+        } else if rootHasSecurity {
+            declaredSecurity = rootSecurity
+        } else {
             if let externalBearerSchemeName {
                 return .required(
                     .httpBearer(
@@ -2284,9 +2322,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
 
         guard
             let rawSecurity =
-                operation[
-                    "security"
-                ] as? [Any]
+                declaredSecurity as? [Any]
         else {
             return .unsupported
         }
@@ -2886,6 +2922,23 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         return true
     }
 
+    /// Explicit ACK-only success responses declare no returned value. A missing
+    /// responses object, unresolved reference, unknown schema or mixed output
+    /// contract is never silently recast as an acknowledgement.
+    private static func supportedAcknowledgementStatuses(_ operation: [String: Any]) -> Set<Int>? {
+        guard let responses = operation["responses"] as? [String: Any] else { return nil }
+        var statuses: Set<Int> = []
+        for (key, raw) in responses {
+            guard let status = Int(key), (200...299).contains(status) else { continue }
+            guard key == String(status), let response = raw as? [String: Any],
+                  Set(response.keys).isSubset(of: ["description", "content"]),
+                  response["description"] is String,
+                  response["content"] == nil || (response["content"] as? [String: Any])?.isEmpty == true else { return nil }
+            statuses.insert(status)
+        }
+        return statuses.isEmpty ? nil : statuses
+    }
+
     private static func supportsPlainTextResponse(
         _ operation: [String: Any]
     ) -> Bool {
@@ -3269,52 +3322,8 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
         _ property:
             [String: Any]
     ) -> [String: Any]? {
-        let allowedKeys:
-            Set<String> = [
-                "type",
-                "enum",
-                "title",
-                "description",
-            ]
-
-        guard
-            Set(property.keys)
-                .isSubset(
-                    of:
-                        allowedKeys
-                ),
-            property["type"]
-                as? String == "string"
-        else {
-            return nil
-        }
-
-        var normalized:
-            [String: Any] = [
-                "type":
-                    "string"
-            ]
-
-        if let rawEnum =
-            property["enum"]
-        {
-            guard
-                let values =
-                    rawEnum as? [String],
-                !values.isEmpty,
-                Set(values).count
-                    == values.count
-            else {
-                return nil
-            }
-
-            normalized[
-                "enum"
-            ] =
-                values
-        }
-
-        return normalized
+        guard (try? CapabilitySchema.stringContract(property)) != nil else { return nil }
+        return property.filter { ["type", "enum", "pattern", "minLength", "maxLength"].contains($0.key) }
     }
 
     /// A branch can be discarded from a oneOf string narrowing only when
@@ -3425,56 +3434,9 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 return nil
             }
 
-            let allowedPropertyKeys:
-                Set<String> = [
-                    "type",
-                    "enum",
-                    "title",
-                    "description",
-                ]
+            guard let stringSchema = try? CapabilitySchema.stringContract(raw) else { return nil }
+            properties[key] = JSONStringProperty(schema: stringSchema, raw: raw)
 
-            guard
-                Set(raw.keys)
-                    .isSubset(
-                        of:
-                            allowedPropertyKeys
-                    ),
-                raw["type"]
-                    as? String
-                    == "string"
-            else {
-                return nil
-            }
-
-            let allowedValues:
-                Set<String>?
-
-            if let rawEnum =
-                raw["enum"]
-            {
-                guard
-                    let values =
-                        rawEnum
-                            as? [String],
-                    !values.isEmpty,
-                    Set(values).count
-                        == values.count
-                else {
-                    return nil
-                }
-
-                allowedValues =
-                    Set(values)
-            } else {
-                allowedValues =
-                    nil
-            }
-
-            properties[key] =
-                JSONStringProperty(
-                    allowedValues:
-                        allowedValues
-                )
         }
 
         guard
@@ -3541,58 +3503,9 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
             return nil
         }
 
-        var rawProperties:
-            [String: Any] = [:]
-
-        for (
-            name,
-            property
-        ) in pathSchema.properties {
-            var raw:
-                [String: Any] = [
-                    "type":
-                        "string"
-                ]
-
-            if let allowed =
-                property.allowedValues
-            {
-                raw[
-                    "enum"
-                ] =
-                    allowed.sorted()
-            }
-
-            rawProperties[
-                name
-            ] =
-                raw
-        }
-
-        for (
-            name,
-            property
-        ) in requestSchema.properties {
-            var raw:
-                [String: Any] = [
-                    "type":
-                        "string"
-                ]
-
-            if let allowed =
-                property.allowedValues
-            {
-                raw[
-                    "enum"
-                ] =
-                    allowed.sorted()
-            }
-
-            rawProperties[
-                name
-            ] =
-                raw
-        }
+        var rawProperties: [String: Any] = [:]
+        for (name, property) in pathSchema.properties { rawProperties[name] = property.raw }
+        for (name, property) in requestSchema.properties { rawProperties[name] = property.raw }
 
         let rawSchema:
             [String: Any] = [
@@ -3681,14 +3594,8 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 )
             }
 
-            if let allowed =
-                property.allowedValues,
-                !allowed.contains(value)
-            {
-                throw RightClickError(
-                    "Argument \(key) is not one of the declared enum values."
-                )
-            }
+            try property.schema.validate(.string(value))
+
         }
     }
 
@@ -4011,14 +3918,7 @@ public final class OpenAPIReflector: RCIRExecutionReflector, CapabilityContractR
                 )
             }
 
-            if let allowed =
-                property.allowedValues,
-                !allowed.contains(value)
-            {
-                throw RightClickError(
-                    "Response field \(key) is outside its declared enum."
-                )
-            }
+            try property.schema.validate(.string(value))
 
             canonical[key] =
                 value

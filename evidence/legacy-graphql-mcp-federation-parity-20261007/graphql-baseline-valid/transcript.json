@@ -1,0 +1,563 @@
+[
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "rightclick-canonical-proof",
+          "version": "1"
+        }
+      }
+    },
+    "response": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.2"
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list"
+    },
+    "response": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"executablePath\" : \"/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick\",\n  \"executableRealPath\" : \"/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick\",\n  \"executableSHA256\" : \"d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d\",\n  \"pid\" : 92329,\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"stdio\",\n  \"version\" : \"0.2.2\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "tools/call",
+      "params": {
+        "name": "context_providers",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"ownedProofProjection\": {\"operation\": \"context_providers\", \"successfulRead\": true, \"omitted\": \"unrelated provider inventory/count\"}}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "method": "tools/call",
+      "params": {
+        "name": "context_inspect",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity"
+        }
+      }
+    },
+    "response": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"byteCount\" : 32,\n  \"display\" : \"RIGHTCLICK legacy GraphQL parity\",\n  \"isDirectory\" : false,\n  \"kind\" : \"text\",\n  \"text\" : \"RIGHTCLICK legacy GraphQL parity\",\n  \"typeDescription\" : \"text\",\n  \"typeIdentifier\" : \"public.plain-text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity"
+        }
+      }
+    },
+    "response": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"actions\": [{\"explanation\": \"GraphQL mutation: legacyParityRecord\", \"id\": \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:4066f5198c1f154b:legacyParityRecord\", \"inputTypes\": [\"public.plain-text\"], \"invocation\": \"interactive\", \"provider\": {\"name\": \"RIGHTCLICK legacy GraphQL parity 92bc42e73df5\"}, \"requiresConfirmation\": true, \"safety\": \"unknown\", \"source\": \"system\", \"supportLevel\": \"experimental\", \"title\": \"GraphQL mutation: legacyParityRecord\"}, {\"explanation\": \"GraphQL query: legacyParityEcho\", \"id\": \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:78849364ceb7273c:legacyParityEcho\", \"inputTypes\": [\"public.plain-text\"], \"invocation\": \"interactive\", \"provider\": {\"name\": \"RIGHTCLICK legacy GraphQL parity 92bc42e73df5\"}, \"requiresConfirmation\": true, \"safety\": \"unknown\", \"source\": \"system\", \"supportLevel\": \"experimental\", \"title\": \"GraphQL query: legacyParityEcho\"}], \"contentType\": \"public.plain-text\", \"item\": \"RIGHTCLICK legacy GraphQL parity\", \"kind\": \"text\"}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "tools/call",
+      "params": {
+        "name": "context_explain",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:78849364ceb7273c:legacyParityEcho"
+        }
+      }
+    },
+    "response": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"id\" : \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:78849364ceb7273c:legacyParityEcho\",\n  \"inputs\" : [\n    \"public.plain-text\"\n  ],\n  \"invocation\" : \"interactive\",\n  \"metadata\" : {\n    \"argumentsSchema\" : \"{\\\"additionalProperties\\\":false,\\\"properties\\\":{\\\"value\\\":{\\\"description\\\":\\\"GraphQL type String!. Supply this argument as a string; RIGHTCLICK coerces it to the reflected GraphQL scalar or enum type.\\\",\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"value\\\"],\\\"type\\\":\\\"object\\\"}\",\n    \"endpointURL\" : \"http://rightclick-gql-parity-79b157088603.local:61508/graphql\",\n    \"field\" : \"legacyParityEcho\",\n    \"graphqlReturnType\" : \"String!\",\n    \"operationKind\" : \"query\",\n    \"providerIdentity\" : \"783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b\",\n    \"resultValidation\" : \"graphql_response\",\n    \"schemaSHA256\" : \"32da24e3a44e2f742aea89fae2e17dabb7e013500519571df4d3bdd5a72a1685\",\n    \"substrate\" : \"graphql\"\n  },\n  \"output\" : [\n    \"public.json\"\n  ],\n  \"provider\" : {\n    \"name\" : \"RIGHTCLICK legacy GraphQL parity 92bc42e73df5\"\n  },\n  \"reflectorID\" : \"graphql-reflector:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"unknown\",\n  \"source\" : \"system\",\n  \"supportLevel\" : \"experimental\",\n  \"title\" : \"GraphQL query: legacyParityEcho\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:78849364ceb7273c:legacyParityEcho",
+          "arguments": {
+            "value": "gql-parity-8e23ee34994d4f199c7c6260c6f2727c"
+          }
+        }
+      }
+    },
+    "response": {
+      "id": 8,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:78849364ceb7273c:legacyParityEcho\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No outcome observation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"none\"\n  },\n  \"executionId\" : \"91EDFB5C-D59B-46BB-BE59-ADBDEA3E8EE7\",\n  \"message\" : \"CONFIRMATION_REQUIRED. GraphQL query: legacyParityEcho is unknown.\",\n  \"state\" : \"awaiting_user\",\n  \"title\" : \"GraphQL query: legacyParityEcho\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 9,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:78849364ceb7273c:legacyParityEcho",
+          "arguments": {
+            "value": "gql-parity-8e23ee34994d4f199c7c6260c6f2727c"
+          },
+          "confirmed": true
+        }
+      }
+    },
+    "response": {
+      "id": 9,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:78849364ceb7273c:legacyParityEcho\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"GraphQL transport and response semantics were valid. This does not independently verify the user's intended external outcome.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_acceptance\"\n  },\n  \"executionId\" : \"5082BF8D-BAF5-4647-83FA-C3B56EDBBA06\",\n  \"message\" : \"The GraphQL provider accepted the operation and returned a valid GraphQL data object. Semantic outcome is unverified.\",\n  \"output\" : \"{\\\"rightclickResult\\\":\\\"gql-parity-8e23ee34994d4f199c7c6260c6f2727c\\\"}\",\n  \"state\" : \"accepted\",\n  \"title\" : \"GraphQL query: legacyParityEcho\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 10,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "5082BF8D-BAF5-4647-83FA-C3B56EDBBA06"
+        }
+      }
+    },
+    "response": {
+      "id": 10,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:78849364ceb7273c:legacyParityEcho\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"GraphQL transport and response semantics were valid. This does not independently verify the user's intended external outcome.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_acceptance\"\n  },\n  \"executionId\" : \"5082BF8D-BAF5-4647-83FA-C3B56EDBBA06\",\n  \"message\" : \"The GraphQL provider accepted the operation and returned a valid GraphQL data object. Semantic outcome is unverified.\",\n  \"output\" : \"{\\\"rightclickResult\\\":\\\"gql-parity-8e23ee34994d4f199c7c6260c6f2727c\\\"}\",\n  \"state\" : \"accepted\",\n  \"title\" : \"GraphQL query: legacyParityEcho\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 11,
+      "method": "tools/call",
+      "params": {
+        "name": "context_explain",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:4066f5198c1f154b:legacyParityRecord"
+        }
+      }
+    },
+    "response": {
+      "id": 11,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"id\" : \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:4066f5198c1f154b:legacyParityRecord\",\n  \"inputs\" : [\n    \"public.plain-text\"\n  ],\n  \"invocation\" : \"interactive\",\n  \"metadata\" : {\n    \"argumentsSchema\" : \"{\\\"additionalProperties\\\":false,\\\"properties\\\":{\\\"input\\\":{\\\"description\\\":\\\"GraphQL type LegacyRecordInput!. Supply this argument as a JSON-encoded string.\\\",\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"input\\\"],\\\"type\\\":\\\"object\\\"}\",\n    \"endpointURL\" : \"http://rightclick-gql-parity-79b157088603.local:61508/graphql\",\n    \"field\" : \"legacyParityRecord\",\n    \"graphqlReturnType\" : \"LegacyRecord!\",\n    \"operationKind\" : \"mutation\",\n    \"providerIdentity\" : \"783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b\",\n    \"resultValidation\" : \"graphql_response\",\n    \"schemaSHA256\" : \"32da24e3a44e2f742aea89fae2e17dabb7e013500519571df4d3bdd5a72a1685\",\n    \"substrate\" : \"graphql\"\n  },\n  \"output\" : [\n    \"public.json\"\n  ],\n  \"provider\" : {\n    \"name\" : \"RIGHTCLICK legacy GraphQL parity 92bc42e73df5\"\n  },\n  \"reflectorID\" : \"graphql-reflector:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"unknown\",\n  \"source\" : \"system\",\n  \"supportLevel\" : \"experimental\",\n  \"title\" : \"GraphQL mutation: legacyParityRecord\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 12,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:4066f5198c1f154b:legacyParityRecord",
+          "arguments": {
+            "input": "{\"label\": \"gql-parity-e8cf185e052d4dd6ad4f3541ef943cd8\"}"
+          }
+        }
+      }
+    },
+    "response": {
+      "id": 12,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:4066f5198c1f154b:legacyParityRecord\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No outcome observation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"none\"\n  },\n  \"executionId\" : \"6AA2794B-31FC-435B-866F-178F0998480D\",\n  \"message\" : \"CONFIRMATION_REQUIRED. GraphQL mutation: legacyParityRecord is unknown.\",\n  \"state\" : \"awaiting_user\",\n  \"title\" : \"GraphQL mutation: legacyParityRecord\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 13,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:4066f5198c1f154b:legacyParityRecord",
+          "arguments": {
+            "input": "{\"label\": \"gql-parity-e8cf185e052d4dd6ad4f3541ef943cd8\"}"
+          },
+          "confirmed": true
+        }
+      }
+    },
+    "response": {
+      "id": 13,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:4066f5198c1f154b:legacyParityRecord\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"GraphQL transport and response semantics were valid. This does not independently verify the user's intended external outcome.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_acceptance\"\n  },\n  \"executionId\" : \"AD925825-B701-45D1-A4A7-B368057B44D2\",\n  \"message\" : \"The GraphQL provider accepted the operation and returned a valid GraphQL data object. Semantic outcome is unverified.\",\n  \"output\" : \"{\\\"rightclickResult\\\":{\\\"__typename\\\":\\\"LegacyRecord\\\",\\\"label\\\":\\\"gql-parity-e8cf185e052d4dd6ad4f3541ef943cd8\\\"}}\",\n  \"state\" : \"accepted\",\n  \"title\" : \"GraphQL mutation: legacyParityRecord\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 14,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "AD925825-B701-45D1-A4A7-B368057B44D2"
+        }
+      }
+    },
+    "response": {
+      "id": 14,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:783c2e931a157809b30ee48516b37db83c4eefced767e7df34bca6d2325a760b:4066f5198c1f154b:legacyParityRecord\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"GraphQL transport and response semantics were valid. This does not independently verify the user's intended external outcome.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_acceptance\"\n  },\n  \"executionId\" : \"AD925825-B701-45D1-A4A7-B368057B44D2\",\n  \"message\" : \"The GraphQL provider accepted the operation and returned a valid GraphQL data object. Semantic outcome is unverified.\",\n  \"output\" : \"{\\\"rightclickResult\\\":{\\\"__typename\\\":\\\"LegacyRecord\\\",\\\"label\\\":\\\"gql-parity-e8cf185e052d4dd6ad4f3541ef943cd8\\\"}}\",\n  \"state\" : \"accepted\",\n  \"title\" : \"GraphQL mutation: legacyParityRecord\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

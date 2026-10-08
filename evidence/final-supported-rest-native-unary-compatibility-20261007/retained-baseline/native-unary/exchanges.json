@@ -1,0 +1,187 @@
+[
+  {
+    "operation": "context_runtime",
+    "response": {
+      "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+      "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+      "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+      "pid": 85228,
+      "product": "RIGHTCLICK",
+      "transport": "stdio",
+      "version": "0.2.2"
+    }
+  },
+  {
+    "operation": "context_providers",
+    "response": {
+      "providerCount": 36
+    }
+  },
+  {
+    "operation": "context_inspect",
+    "response": {
+      "byteCount": 28,
+      "display": "Native stream Core7 pressure",
+      "isDirectory": false,
+      "kind": "text",
+      "text": "Native stream Core7 pressure",
+      "typeDescription": "text",
+      "typeIdentifier": "public.plain-text"
+    }
+  },
+  {
+    "operation": "context_actions",
+    "response": {
+      "actions": []
+    }
+  },
+  {
+    "operation": "context_actions",
+    "response": {
+      "actions": []
+    }
+  },
+  {
+    "operation": "context_actions",
+    "response": {
+      "actions": []
+    }
+  },
+  {
+    "operation": "context_actions",
+    "response": {
+      "actions": []
+    }
+  },
+  {
+    "operation": "context_actions",
+    "response": {
+      "actions": [
+        {
+          "explanation": "gRPC rightclick.pressure.Streams/Echo",
+          "id": "grpc:a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552:8f88a99cf9dc3b02:rightclick.pressure.Streams.Echo",
+          "inputTypes": [
+            "public.plain-text"
+          ],
+          "invocation": "interactive",
+          "provider": {
+            "name": "RIGHTCLICK owned stream 7f65c42d6862"
+          },
+          "requiresConfirmation": true,
+          "safety": "unknown",
+          "source": "system",
+          "supportLevel": "experimental",
+          "title": "gRPC rightclick.pressure.Streams/Echo"
+        },
+        {
+          "explanation": "gRPC rightclick.pressure.Streams/Read",
+          "id": "grpc:a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552:1656c7c9590e7297:rightclick.pressure.Streams.Read",
+          "inputTypes": [
+            "public.plain-text"
+          ],
+          "invocation": "unsupported",
+          "provider": {
+            "name": "RIGHTCLICK owned stream 7f65c42d6862"
+          },
+          "requiresConfirmation": true,
+          "safety": "unknown",
+          "source": "system",
+          "supportLevel": "experimental",
+          "title": "gRPC rightclick.pressure.Streams/Read"
+        }
+      ]
+    }
+  },
+  {
+    "operation": "context_explain",
+    "response": {
+      "id": "grpc:a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552:8f88a99cf9dc3b02:rightclick.pressure.Streams.Echo",
+      "inputs": [
+        "public.plain-text"
+      ],
+      "invocation": "interactive",
+      "metadata": {
+        "argumentsSchema": "{\"additionalProperties\":false,\"properties\":{\"challenge\":{\"description\":\"protobuf string\",\"type\":\"string\"},\"count\":{\"description\":\"protobuf int32\",\"type\":\"string\"},\"expected_digest\":{\"description\":\"protobuf string\",\"type\":\"string\"},\"mode\":{\"description\":\"protobuf string\",\"type\":\"string\"}},\"required\":[],\"type\":\"object\"}",
+        "callType": "unary",
+        "descriptorSHA256": "bc30e6f198e9bfae8008065a15a038538033c5b87adcf2322ddf3a9f1eda6b04",
+        "endpoint": "grpc://rightclick-stream-b95f31764613.local:57556",
+        "method": "Echo",
+        "providerIdentity": "a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552",
+        "requestType": "rightclick.pressure.Request",
+        "responseType": "rightclick.pressure.UnaryElement",
+        "resultValidation": "protobuf_descriptor",
+        "rpcPath": "/rightclick.pressure.Streams/Echo",
+        "service": "rightclick.pressure.Streams",
+        "substrate": "grpc"
+      },
+      "output": [
+        "public.json"
+      ],
+      "provider": {
+        "name": "RIGHTCLICK owned stream 7f65c42d6862"
+      },
+      "reflectorID": "grpc-reflector:a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552",
+      "requiresConfirmation": true,
+      "safety": "unknown",
+      "source": "system",
+      "supportLevel": "experimental",
+      "title": "gRPC rightclick.pressure.Streams/Echo"
+    }
+  },
+  {
+    "operation": "context_run",
+    "response": {
+      "actionId": "grpc:a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552:8f88a99cf9dc3b02:rightclick.pressure.Streams.Echo",
+      "events": [],
+      "evidence": {
+        "boundary": "No outcome observation.",
+        "outcomeVerified": false,
+        "type": "none"
+      },
+      "executionId": "F51A2FE9-F6B4-437E-9129-DDF2CE1A4080",
+      "message": "CONFIRMATION_REQUIRED. gRPC rightclick.pressure.Streams/Echo is unknown.",
+      "state": "awaiting_user",
+      "title": "gRPC rightclick.pressure.Streams/Echo"
+    }
+  },
+  {
+    "operation": "context_run",
+    "response": {
+      "actionId": "grpc:a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552:8f88a99cf9dc3b02:rightclick.pressure.Streams.Echo",
+      "events": [
+        "gRPC unary /rightclick.pressure.Streams/Echo",
+        "provider returned OK"
+      ],
+      "evidence": {
+        "boundary": "gRPC status OK plus successful protobuf decoding establishes provider acceptance only. It does not independently verify the user's intended external outcome.",
+        "outcomeVerified": false,
+        "type": "provider_acceptance"
+      },
+      "executionId": "1BA36899-4277-438E-ACCA-E0A7DBDA24A5",
+      "message": "The gRPC provider returned OK and a protobuf response matching the reflected descriptor. Semantic outcome is unverified.",
+      "output": "{\"value\":\"parity-c9ea4760dec14877b2602e9539206949\"}",
+      "state": "accepted",
+      "title": "gRPC rightclick.pressure.Streams/Echo"
+    }
+  },
+  {
+    "operation": "context_run_status",
+    "response": {
+      "actionId": "grpc:a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552:8f88a99cf9dc3b02:rightclick.pressure.Streams.Echo",
+      "events": [
+        "gRPC unary /rightclick.pressure.Streams/Echo",
+        "provider returned OK"
+      ],
+      "evidence": {
+        "boundary": "gRPC status OK plus successful protobuf decoding establishes provider acceptance only. It does not independently verify the user's intended external outcome.",
+        "outcomeVerified": false,
+        "type": "provider_acceptance"
+      },
+      "executionId": "1BA36899-4277-438E-ACCA-E0A7DBDA24A5",
+      "message": "The gRPC provider returned OK and a protobuf response matching the reflected descriptor. Semantic outcome is unverified.",
+      "output": "{\"value\":\"parity-c9ea4760dec14877b2602e9539206949\"}",
+      "state": "accepted",
+      "title": "gRPC rightclick.pressure.Streams/Echo"
+    }
+  }
+]

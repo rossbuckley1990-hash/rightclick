@@ -1,0 +1,76 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/14] Write sources
+[4/14] Write swift-version--58304C5D6DBC2206.txt
+[6/10] Compiling RightClickCore RCIRExecutionHost.swift
+[7/10] Emitting module RightClickCore
+[7/11] Write Objects.LinkFileList
+[9/13] Emitting module RightClickCoreTests
+[10/13] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[10/14] Linking rightclick
+[11/14] Applying rightclick
+[12/14] Write Objects.LinkFileList
+[13/14] Linking rightclick-mcpPackageTests
+Build complete! (4.49s)
+Test Suite 'Selected tests' started at 2026-10-07 14:47:16.009.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 14:47:16.010.
+Test Suite 'GRPCReflectorTests' started at 2026-10-07 14:47:16.010.
+Test Case '-[RightClickCoreTests.GRPCReflectorTests testDescriptorReflectsUnaryAndStreamingMethodsWithoutGeneratedStubs]' started.
+Test Case '-[RightClickCoreTests.GRPCReflectorTests testDescriptorReflectsUnaryAndStreamingMethodsWithoutGeneratedStubs]' passed (0.100 seconds).
+Test Case '-[RightClickCoreTests.GRPCReflectorTests testStreamingMethodFailsClosedBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.GRPCReflectorTests testStreamingMethodFailsClosedBeforeTransport]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.GRPCReflectorTests testUnaryExecutionEncodesAndDecodesDynamicProtobuf]' started.
+Test Case '-[RightClickCoreTests.GRPCReflectorTests testUnaryExecutionEncodesAndDecodesDynamicProtobuf]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.GRPCReflectorTests testUnknownArgumentFailsBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.GRPCReflectorTests testUnknownArgumentFailsBeforeTransport]' passed (0.001 seconds).
+Test Suite 'GRPCReflectorTests' passed at 2026-10-07 14:47:16.115.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.104 (0.105) seconds
+Test Suite 'GraphQLReflectorTests' started at 2026-10-07 14:47:16.115.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testExecutesMutationWithJSONEncodedInputObject]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testExecutesMutationWithJSONEncodedInputObject]' passed (0.007 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testExecutesQueryWithVariablesAndSynthesizedSelection]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testExecutesQueryWithVariablesAndSynthesizedSelection]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testGraphQLErrorsFailEvenWhenPartialDataExists]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testGraphQLErrorsFailEvenWhenPartialDataExists]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testInvalidNestedEnumFailsBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testInvalidNestedEnumFailsBeforeTransport]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testMutationRequiresConfirmationBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testMutationRequiresConfirmationBeforeTransport]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testReflectsQueriesAndMutationsBehindGenericCapabilities]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testReflectsQueriesAndMutationsBehindGenericCapabilities]' passed (0.001 seconds).
+Test Suite 'GraphQLReflectorTests' passed at 2026-10-07 14:47:16.130.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.015 (0.016) seconds
+Test Suite 'RCIRStructuredObservationTests' started at 2026-10-07 14:47:16.130.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testArgumentBoundFieldsVerifyWhileAssignedMetadataRemainsInSignedBytes]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testArgumentBoundFieldsVerifyWhileAssignedMetadataRemainsInSignedBytes]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testFullObservationSchemaCannotBeDiscardedByProjection]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testFullObservationSchemaCannotBeDiscardedByProjection]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testIndependentMismatchIsVerifiedFailure]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testIndependentMismatchIsVerifiedFailure]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testObserverReceivesProviderCoordinatesAsUntrustedLocatorOnly]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testObserverReceivesProviderCoordinatesAsUntrustedLocatorOnly]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testProjectionRejectsWildcardMissingAndUnboundedContracts]' started.
+Test Case '-[RightClickCoreTests.RCIRStructuredObservationTests testProjectionRejectsWildcardMissingAndUnboundedContracts]' passed (0.000 seconds).
+Test Suite 'RCIRStructuredObservationTests' passed at 2026-10-07 14:47:16.133.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.003 (0.003) seconds
+Test Suite 'RCIRUnaryAdmissionTests' started at 2026-10-07 14:47:16.133.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt]' started.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testChangedArgumentsAtAdmissionStopLegacyUnaryTransport]' started.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testChangedArgumentsAtAdmissionStopLegacyUnaryTransport]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testCurrentHostPolicyDenialStopsLegacyUnaryTransport]' started.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testCurrentHostPolicyDenialStopsLegacyUnaryTransport]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay]' started.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay]' passed (0.002 seconds).
+Test Suite 'RCIRUnaryAdmissionTests' passed at 2026-10-07 14:47:16.140.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.006 (0.006) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 14:47:16.140.
+	 Executed 19 tests, with 0 failures (0 unexpected) in 0.129 (0.130) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 14:47:16.140.
+	 Executed 19 tests, with 0 failures (0 unexpected) in 0.129 (0.130) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
