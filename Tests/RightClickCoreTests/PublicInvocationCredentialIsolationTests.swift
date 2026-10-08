@@ -27,7 +27,7 @@ final class PublicInvocationCredentialIsolationTests: XCTestCase {
             didReceive challenge: URLAuthenticationChallenge,
             completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
             let space = challenge.protectionSpace
-            guard challenge.previousFailureCount == 0, !space.isProxy,
+            guard challenge.previousFailureCount == 0, !space.isProxy(),
                   space.authenticationMethod == NSURLAuthenticationMethodHTTPBasic,
                   space.host == expectedSpace.host, space.port == expectedSpace.port,
                   space.protocol == expectedSpace.protocol, space.realm == expectedSpace.realm,
