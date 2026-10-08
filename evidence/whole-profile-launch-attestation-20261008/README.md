@@ -1,0 +1,9 @@
+# Whole-profile launch attestation
+
+The old bridge guard matched the first physical command-looking line while the pinned tunnel client parsed the complete profile. Actual pinned-provider doctor observations showed two inputs whose main command differed from the command trusted by the old guard. The doctor never spawned an MCP command or accessed the bridge key store; its overall exit 2 came from a sandbox health-listener check.
+
+The bounded managed-profile validator now requires one supported main launch binding across the complete input. It rejects additional bindings, document and scalar decoys, and unsupported syntax before key-store access or tunnel launch. The profile generator and three original integrity test methods are unchanged. The actual existing paired profile is accepted and its profile, setup state and LaunchAgent bytes remain unchanged.
+
+The exact native test-only old-source head produced 5 PASS and 3 FAIL across 8 tests. Final source `11dc8283903f22bd0955066c5b149116284d4734` produced 9 integrity PASS and 55 related caller PASS with no skips; those 9 tests are included in the 55 unique caller cases. The files record actual source, executable and compiler-input closures, not a published-binary claim. Unicode syntax controls enforce the managed grammar; the pinned provider normalized NBSP, so those controls do not establish foreign execution.
+
+These results include the nonshipping Windows compiler-counterfactual test at their recorded native test head. Its test-only absence from a later shipping composition does not change this production source evidence and requires truthful final-head validation. Sparse evidence/media paths and dependency-cache byte limits are recorded. The installed 0.2.3 bridge controls, final combined native CI, closed source archive and eleven-substrate goal remain pending.
