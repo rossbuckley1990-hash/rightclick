@@ -17,6 +17,22 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def selected_host_context(environment):
+    # Read only these nonsecret names, without copying or enumerating credentials.
+    selected = {}
+    for name in ('SystemRoot', *CONTEXT_NAMES):
+        value = environment.get(name)
+        if value is not None:
+            selected[name] = value
+    return selected
+
+
+def unsafe_path(path):
+    path = path.absolute()  # Keep redirecting ancestor boundaries visible.
+    return any(p.is_symlink() or getattr(p, 'is_junction', lambda: False)()
+               for p in (path, *path.parents))
+
+
 def lookup(ambient, name):
     values = [value for key, value in ambient.items() if key.casefold() == name.casefold()]
     if len(set(values)) > 1:
@@ -148,11 +164,11 @@ def main(output):
             raise ValueError('source_inputs')
         report.update(reviewedSource=SOURCE, runtimeSourcesTree=SOURCES_TREE,
                       packagedInputsEqualReviewedSource=True)
-        ambient = dict(os.environ)
+        ambient = selected_host_context(os.environ)
         minimum, context, presence = profiles(ambient, tempfile.gettempdir())
         programs = host_path(lookup(ambient, 'ProgramFiles(x86)') or r'C:\Program Files (x86)')
         executable = Path(programs) / 'Microsoft Visual Studio' / 'Installer' / 'vswhere.exe'
-        if executable.is_symlink() or not executable.is_file() or executable.stat().st_size > 8 * 1024 * 1024:
+        if unsafe_path(executable) or not executable.is_file() or executable.stat().st_size > 8 * 1024 * 1024:
             raise ValueError('installed_query_binary')
         before = digest(executable.read_bytes())
         report.update(installedQuerySHA256=before,

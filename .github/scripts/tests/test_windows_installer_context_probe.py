@@ -1,13 +1,49 @@
 #!/usr/bin/env python3
 """Synthetic privacy/deadline controls; no fake native installer proof."""
 from pathlib import Path
-import json,os,sys,unittest
+import json,os,subprocess,sys,tempfile,unittest
 ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT/'.github/scripts'))
 import windows_installer_context_probe as p
 CONTROL_ENV={'SystemRoot':os.environ.get('SystemRoot',r'C:\Windows')} if os.name=='nt' else {}
 
 class ContextProbeTests(unittest.TestCase):
+    def test_only_fixed_nonsecret_parent_environment_names_are_read(self):
+        class TrackingEnvironment(dict):
+            reads=[]
+            def get(self,key):
+                self.reads.append(key)
+                return super().get(key)
+            def items(self):
+                raise AssertionError('must not enumerate ambient credentials')
+        environment=TrackingEnvironment(SystemRoot=r'C:\Windows',ProgramData=r'C:\ProgramData',
+                                        TOKEN='private-control-sentinel',PATH='private-control-sentinel')
+        selected=p.selected_host_context(environment)
+        self.assertEqual(environment.reads,['SystemRoot',*p.CONTEXT_NAMES])
+        self.assertEqual(set(selected),{'SystemRoot','ProgramData'})
+        self.assertNotIn('private-control-sentinel',json.dumps(selected))
+
+    def test_redirecting_query_binary_ancestor_is_rejected(self):
+        with tempfile.TemporaryDirectory(prefix='rightclick-context-control-') as temporary:
+            root=Path(temporary).resolve()
+            owned=root/'installed'
+            owned.mkdir()
+            executable=owned/'vswhere.exe'
+            executable.write_bytes(b'owned-binary-control')
+            alias=root/'alias'
+            if os.name=='nt':
+                result=subprocess.run(['cmd.exe','/d','/c','mklink','/J',str(alias),str(owned)],
+                                      capture_output=True,timeout=10)
+                self.assertEqual(result.returncode,0)
+            else:
+                alias.symlink_to(owned,target_is_directory=True)
+            try:
+                self.assertFalse(p.unsafe_path(executable))
+                self.assertTrue(p.unsafe_path(alias/'vswhere.exe'))
+            finally:
+                if os.name=='nt': os.rmdir(alias)
+                else: alias.unlink()
+
     def test_minimum_and_explicit_context_exclude_bearer_and_path(self):
         ambient={'SYSTEMROOT':r'C:\Windows','ProgramData':r'C:\ProgramData',
                  'ALLUSERSPROFILE':r'C:\ProgramData','ProgramFiles':r'C:\Program Files',
