@@ -20,6 +20,8 @@ public struct ProviderSummary: Codable, Sendable {
 }
 
 public struct DoctorReport: Codable, Sendable {
+    public var platform: String = RuntimePlatform.name
+    public var operatingSystemVersion: String = ProcessInfo.processInfo.operatingSystemVersionString
     public var macosVersion: String
     public var macosBuild: String
     public var sharingDiscovery: String
@@ -50,4 +52,35 @@ public struct DoctorReport: Codable, Sendable {
         self.actionExtensionCount = actionExtensionCount
         self.notes = notes
     }
+    private enum CodingKeys: String, CodingKey {
+        case platform, operatingSystemVersion, macosVersion, macosBuild
+        case sharingDiscovery, sharingExecution, sharingSupportLevel
+        case servicesDiscovery, servicesExecution, servicesSupportLevel
+        case quickActionDiscovery, quickActionExecution, quickActionSupportLevel
+        case serviceRegistrationCount, actionExtensionCount, notes
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let fields = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            macosVersion: try fields.decode(String.self, forKey: .macosVersion),
+            macosBuild: try fields.decode(String.self, forKey: .macosBuild),
+            sharingDiscovery: try fields.decode(String.self, forKey: .sharingDiscovery),
+            sharingExecution: try fields.decode(String.self, forKey: .sharingExecution),
+            sharingSupportLevel: try fields.decode(String.self, forKey: .sharingSupportLevel),
+            servicesDiscovery: try fields.decode(String.self, forKey: .servicesDiscovery),
+            servicesExecution: try fields.decode(String.self, forKey: .servicesExecution),
+            servicesSupportLevel: try fields.decode(String.self, forKey: .servicesSupportLevel),
+            quickActionDiscovery: try fields.decode(String.self, forKey: .quickActionDiscovery),
+            quickActionExecution: try fields.decode(String.self, forKey: .quickActionExecution),
+            quickActionSupportLevel: try fields.decode(String.self, forKey: .quickActionSupportLevel),
+            serviceRegistrationCount: try fields.decode(Int.self, forKey: .serviceRegistrationCount),
+            actionExtensionCount: try fields.decode(Int.self, forKey: .actionExtensionCount),
+            notes: try fields.decode([String].self, forKey: .notes))
+        // Older reports contain no portable host facts. Decoding must not fill
+        // that absence with this reader's platform or operating-system version.
+        platform = try fields.decodeIfPresent(String.self, forKey: .platform) ?? "unknown"
+        operatingSystemVersion = try fields.decodeIfPresent(String.self, forKey: .operatingSystemVersion) ?? "unknown"
+    }
+
 }
