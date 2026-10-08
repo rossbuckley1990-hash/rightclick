@@ -32,8 +32,17 @@ jobs:
           probe = Path('Sources/RightClickProbe/main.swift')
           s = probe.read_text()
           guard = '#if canImport(AppKit) && canImport(AVFoundation) && canImport(CoreGraphics)\n'
+          fallback = '''\n#else
+          @main
+          struct RightClickProbeUnsupportedPlatform {
+              static func main() {
+                  print("rightclick-probe unavailable: requires macOS AppKit/AVFoundation/CoreGraphics")
+              }
+          }
+          #endif
+          '''
           if not s.startswith(guard):
-              probe.write_text(guard + s.rstrip() + '\n#else\nprint("rightclick-probe unavailable: requires macOS AppKit/AVFoundation/CoreGraphics")\n#endif\n')
+              probe.write_text(guard + s.rstrip() + fallback)
           PY
           git diff --check
       - name: Linux test
