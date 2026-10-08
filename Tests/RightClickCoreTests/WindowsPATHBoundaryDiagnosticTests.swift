@@ -46,6 +46,19 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
         guard success else { throw RCIRError.unavailable }
     }
 
+    private func readSystemRoot() throws -> String {
+        let key = Array("SystemRoot".utf16) + [0]
+        var buffer = [WCHAR](repeating: 0, count: 4097)
+        let count = key.withUnsafeBufferPointer { name in
+            buffer.withUnsafeMutableBufferPointer { GetEnvironmentVariableW(name.baseAddress, $0.baseAddress, DWORD($0.count)) }
+        }
+        guard count > 0, count <= 4096 else { throw RCIRError.unavailable }
+        let value = String(decoding: buffer.prefix(Int(count)), as: UTF16.self)
+        guard value.utf16.elementsEqual(buffer.prefix(Int(count))),
+              TrustedHostProcessContext.isBoundedSingleSearchDirectoryPath(value) else { throw RCIRError.unavailable }
+        return value
+    }
+
     private func requireLocalDirectory(_ directory: URL) throws {
         let path = directory.path.replacingOccurrences(of: "/", with: "\\")
         guard TrustedHostProcessContext.isBoundedSingleSearchDirectoryPath(path) else { throw RCIRError.unavailable }
@@ -78,7 +91,7 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
     /// This sample changes only the omitted PATH to an explicit empty value in
     /// an otherwise fixed Foundation environment. It does not use a new BPC role.
     private func directFoundationEmptyPATH(_ executable: URL, arguments: [String]) throws -> Data {
-        let root = try XCTUnwrap(ProcessInfo.processInfo.environment["SystemRoot"])
+        let root = try readSystemRoot()
         let process = Process(), pipe = Pipe(), capture = Capture(), drained = DispatchGroup(), exited = DispatchGroup()
         process.executableURL = executable; process.arguments = arguments
         process.environment = ["SystemRoot": root, "TEMP": FileManager.default.temporaryDirectory.path,
