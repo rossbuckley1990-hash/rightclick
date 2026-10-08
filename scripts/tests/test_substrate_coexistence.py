@@ -1,5 +1,8 @@
 """Test-only helper controls and actual fixture wire protocols; no Swift/product run."""
 import importlib.util
+import contextlib
+import io
+import base64
 import json
 import os
 import pathlib
@@ -8,6 +11,7 @@ import sys
 import tempfile
 import types
 import unittest
+from unittest import mock
 import urllib.error
 import urllib.request
 
@@ -261,6 +265,102 @@ class Helpers(unittest.TestCase):
         client = types.SimpleNamespace(canonical_names={"context_run"})
         with self.assertRaises(ValueError):
             proof.call_allow_error(client, "kafka_publish", {})
+
+
+class HelperReportingEndToEnd(unittest.TestCase):
+    """Helper orchestration only: fake client/verifier, never product/crypto proof."""
+
+    def invoke_helper(self, root, expected):
+        binary, manifest, output = root / "inert-binary", root / "manifest.json", root / "output"
+        binary.write_bytes(b"helper-only-inert-binary; never executed")
+        action = {"id": "wasm:helper-only:outcome", "title": "Helper-only capability", "provider": {"name": "Inert helper fixture"}, "requiresConfirmation": False}
+        manifest.write_text(json.dumps({"schemaVersion": 1, "rows": {"wasm": {
+            "selector": {"id": action["id"]}, "requireVerified": True,
+            "readback": {"type": "returned-text", "expected": expected},
+            "verificationBoundary": "HELPER_ONLY_FAKE_CLIENT; no RIGHTCLICK execution or cryptographic verification"
+        }}}))
+        envelope = {"version": 1, "algorithm": "Ed25519", "payload": base64.b64encode(b"helper-only-invalid-receipt").decode(),
+                    "signature": base64.b64encode(bytes(64)).decode(), "publicKey": base64.b64encode(bytes(32)).decode()}
+        result = {"state": "succeeded", "executionId": "helper-execution", "output": "claimed-value", "evidence": {"outcomeVerified": True},
+                  "rcir": {"phase": "completed", "leaseConsumed": True, "outcome": "succeeded", "taskID": "helper-task", "leaseID": "helper-lease", "signedReceipt": envelope}}
+        tools = {"context_runtime", "context_inspect", "context_actions", "context_explain", "context_run", "context_run_status", "context_providers"}
+        calls = []
+        class InertClient:
+            def __init__(self, selected_binary, selected_output, _environment):
+                self.binary, self.output = selected_binary, selected_output
+                self.output.mkdir(parents=True)
+                self.transcript = []
+                self.sha256 = proof.sha(self.binary.read_bytes())
+                self.tools = [{"name": name} for name in sorted(tools)]
+                self.runtime = {"executableSHA256": self.sha256}
+                self.stderr = io.StringIO()
+                self.process = types.SimpleNamespace(poll=lambda: 0, stdin=io.StringIO(), stdout=io.StringIO())
+            def request(self, method, _arguments=None):
+                if method != "tools/list":
+                    raise AssertionError("Unexpected helper-only transport request")
+                return {"tools": self.tools}
+            def call(self, name, _arguments):
+                if name not in tools:
+                    raise AssertionError("Noncanonical helper call")
+                calls.append(name)
+                self.transcript.append({"request": {"method": "tools/call"}})
+                if name == "context_actions":
+                    return {"actions": [action]}
+                if name == "context_run":
+                    return result
+                if name == "context_run_status":
+                    raise AssertionError("Settled helper result must never retry or poll")
+                return {}
+        def inert_signer(_private, public):
+            (public / "trusted-public-key.raw").write_bytes(bytes(32))
+        # Deliberate failure edge tests reporting, not cryptographic correctness.
+        # Runtime and receipt trust have their own genuine product/security tests.
+        invalid_verifier = mock.Mock(side_effect=ValueError("helper-only invalid receipt"))
+        canonical = types.SimpleNamespace(Client=InertClient, TOOLS=tools, signer=inert_signer)
+        receipt = types.SimpleNamespace(verify=invalid_verifier)
+        def module(name, _path):
+            return canonical if name == "canonical" else receipt
+        def git(command, **_kwargs):
+            return "a" * 40 + "\n" if command[-1] == "HEAD" else ""
+        provenance = {"algorithm": "HELPER_ONLY", "sha256": "b" * 64, "fileCount": 0, "scope": "No product source/build provenance asserted"}
+        arguments = ["helper-only", str(binary), str(output), "--repository", str(root), "--manifest", str(manifest), "--require", "wasm", "--require-verified", "wasm"]
+        with mock.patch.object(sys, "argv", arguments), mock.patch.object(proof, "load_module", side_effect=module), \
+             mock.patch.object(proof.subprocess, "check_output", side_effect=git), mock.patch.object(proof, "source_content_digest", return_value=provenance), \
+             contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as finished:
+            proof.main()
+        report = json.loads((output / "results.json").read_text())
+        return report, finished.exception.code, invalid_verifier.call_count, calls
+
+    def test_contradictory_readback_cannot_leave_verified_true(self):
+        with tempfile.TemporaryDirectory(prefix="rightclick-helper-reporting-only-") as temporary:
+            report, code, receipts, calls = self.invoke_helper(pathlib.Path(temporary), "independently-expected-other-value")
+            row = report["rows"]["wasm"]
+            self.assertEqual(report["status"], "FAIL")
+            self.assertNotEqual(code, 0)
+            self.assertFalse(row["verified"])
+            self.assertTrue(row["executionNodeVerified"])
+            self.assertTrue(row["executed"])
+            self.assertEqual(row["status"], "EXECUTED_UNVERIFIED")
+            self.assertNotIn("independentObservation", row)
+            self.assertEqual(receipts, 0)
+            self.assertEqual(calls.count("context_run"), 1)
+            self.assertEqual(report["errors"][0]["stage"], "independent-verification")
+
+    def test_invalid_receipt_failure_cannot_leave_verified_true(self):
+        with tempfile.TemporaryDirectory(prefix="rightclick-helper-reporting-only-") as temporary:
+            report, code, receipts, calls = self.invoke_helper(pathlib.Path(temporary), "claimed-value")
+            row = report["rows"]["wasm"]
+            self.assertEqual(report["status"], "FAIL")
+            self.assertNotEqual(code, 0)
+            self.assertFalse(row["verified"])
+            self.assertTrue(row["executionNodeVerified"])
+            self.assertTrue(row["executed"])
+            self.assertEqual(row["status"], "EXECUTED_UNVERIFIED")
+            self.assertTrue(row["independentObservation"]["exactExpectedMatched"])
+            self.assertNotIn("receipt", row)
+            self.assertEqual(receipts, 1)
+            self.assertEqual(calls.count("context_run"), 1)
+            self.assertEqual(report["errors"][0]["stage"], "independent-verification")
 
 
 class WireFixtures(unittest.TestCase):

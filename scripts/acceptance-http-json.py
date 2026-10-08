@@ -26,7 +26,7 @@ def main():
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=True)
     report, processes = {"runKind": "NEW_RUN", "controls": {}}, []
     with tempfile.TemporaryDirectory(prefix="rightclick-http-json-acceptance-") as temporary:
-        tmp = pathlib.Path(temporary)
+        tmp = pathlib.Path(temporary).resolve()
         if args.acknowledgement_only: (tmp / "ack-response").write_text("fixture declaration has no output")
         if args.causal: (tmp / "include-invocation").write_text("host marker required")
         for name in ["observer.token", "writer.token"]:

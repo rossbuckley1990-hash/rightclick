@@ -43,6 +43,7 @@ spec = {"openapi":"3.0.3", "info":{"title":"Portable fixture", "version":"1"},
             "responses":{"200":{"description":"Returned text", "content":{"text/plain":{"schema":{"type":"string"}}}}}}}}}
 
 with tempfile.TemporaryDirectory(prefix="rightclick-portable-acceptance-") as directory:
+    directory = str(pathlib.Path(directory).resolve())
     config = pathlib.Path(directory) / "host.json"
     host = {"version":1,"revision":"portable-acceptance-1","deniedCapabilities":[]}
     def configure():

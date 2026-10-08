@@ -35,7 +35,7 @@ def main():
     process = None
 
     with tempfile.TemporaryDirectory(prefix="rightclick-preflight-") as temporary:
-        root = pathlib.Path(temporary)
+        root = pathlib.Path(temporary).resolve()
         (root / "records").mkdir()
 
         def specification(provider):

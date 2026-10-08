@@ -47,7 +47,7 @@ def main():
             return error.code, json.loads(error.read())
     controls = report["controls"] = {}
     with tempfile.TemporaryDirectory(prefix="rightclick-host-json-acceptance-") as temporary:
-        tmp = pathlib.Path(temporary); trusted = canonical.signer(tmp, out)
+        tmp = pathlib.Path(temporary).resolve(); trusted = canonical.signer(tmp, out)
         host = tmp / "host.json"
         settings = {"version": 1, "revision": "host-json-observation-1", "deniedCapabilities": [], "signingKeyFile": str(tmp / "key.raw")}
         def save(): host.write_text(json.dumps(settings)); host.chmod(0o600)

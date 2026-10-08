@@ -214,10 +214,13 @@ Signed summaries keep provider acceptance, verification and observation boundary
 separate. Returned-value checks prove returned bytes only; host-selected external
 readback proves independently observed state. A node signature authenticates the
 node's assertion, not a compromised node's honesty. Contradictory lifecycle or
-verification fields fail integrity validation. Async provider execution that
-has not finished at dispatch returns unknown; a remote status/subscription
-protocol is intentionally deferred. Link never fabricates success after a lost
-response or reruns an ambiguous consequential action.
+verification fields fail integrity validation. Deferred execution retains its
+original task identity and remains unverified until observation completes.
+Fresh authenticated STATUS requests poll that owned task with its original
+capability and verification predicate. Subscriptions and durable caller-side
+route recovery after process restart remain deferred. A lost RUN response with
+no known execution identity remains unknown; Link never fabricates success or
+reruns an ambiguous consequential action.
 
 ## Threat model and automated demonstrations
 

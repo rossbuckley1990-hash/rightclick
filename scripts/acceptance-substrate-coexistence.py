@@ -528,7 +528,7 @@ def main():
     report = {"schemaVersion": 1, "sourceHead": source_head, "sourceClean": source_clean, "sourceContent": source_content,
         "singleClient": None, "singleRuntimeProcess": None, "clientProcessCount": 0,
         "rows": {family: {"implemented": None if implemented is None else implemented[family], "compiles": compiled[family],
-            "discovered": None, "executed": None, "verified": None, "liveWithdrawalTested": None,
+            "discovered": None, "executed": None, "executionNodeVerified": None, "verified": None, "liveWithdrawalTested": None,
             "platformsTested": [], "status": "UNPROVEN"} for family in FAMILIES}, "errors": []}
     private_umask = os.umask(0o077)
     with tempfile.TemporaryDirectory(prefix="rightclick-substrate-coexistence-") as temporary:
@@ -672,16 +672,17 @@ def main():
                 bindings[family] = bound
                 native_execution = family == "macos" and not result.get("rcir") and fixture.get("readback")
                 row["executed"] = result.get("state") in {"succeeded", "accepted"} and ((result.get("rcir") or {}).get("leaseConsumed") is True or bool(native_execution))
-                row["verified"] = result.get("state") == "succeeded" and result.get("evidence", {}).get("outcomeVerified") is True
+                row["executionNodeVerified"] = result.get("state") == "succeeded" and result.get("evidence", {}).get("outcomeVerified") is True
+                # Preserve the node's assertion separately. This acceptance row
+                # cannot claim verification before observation and integrity pass.
+                row["verified"] = False
                 row.update(executionState=result.get("state"), providerAcceptanceBoundary="Execution-node accepted invocation; independent effect is a separate field",
                            verificationBoundary=fixture.get("verificationBoundary", "Supplied host-selected observer/verification"))
                 if not row["executed"]:
                     raise ValueError("Supplied " + family + " invocation did not establish execution")
+                row["status"] = "EXECUTED_UNVERIFIED"
                 if fixture.get("readback"):
                     row["independentObservation"] = independent_read(fixture["readback"], result, private, bound)
-                if fixture.get("requireVerified") or family in args.require_verified:
-                    if not row["verified"]:
-                        raise ValueError("Supplied " + family + " outcome remained unverified")
                 envelope = (result.get("rcir") or {}).get("signedReceipt")
                 if (result.get("rcir") or {}).get("leaseConsumed") is True and not envelope:
                     raise ValueError("Terminal admitted RCIR invocation lost its provisioned signed receipt")
@@ -702,6 +703,9 @@ def main():
                     if declaration["capability"] != action["id"]:
                         raise ValueError("Signed receipt authenticated another capability")
                     row["receipt"] = {"independentSignatureVerified": True, "selectedCapabilityMatched": True, "payloadSHA256": sha(payload)}
+                row["verified"] = row["executionNodeVerified"] and "independentObservation" in row
+                if (fixture.get("requireVerified") or family in args.require_verified) and not row["verified"]:
+                    raise ValueError("Supplied " + family + " outcome remained independently unverified")
                 results[family] = result
                 row["status"] = "VERIFIED" if row["verified"] else "EXECUTED_UNVERIFIED"
                 if client.request("tools/list")["tools"] != client.tools:

@@ -1,5 +1,14 @@
 # Portable fabric engineering report
 
+> Historical PR #99 report. Its source identities, native results and next-step
+> recommendations apply only to that portable-fabric candidate, not the combined
+> PR #49/#99 integration. Current reconciliation evidence and remaining gates are
+> tracked in [the reconciliation design](RECONCILIATION-DESIGN.md),
+> [the substrate contract](substrate-contract.json) and
+> [draft PR #102](https://github.com/rossbuckley1990-hash/rightclick/pull/102).
+> A real TLS Link implementation is not recommended until capability
+> reconciliation is proven.
+
 ## 1. Result
 
 RIGHTCLICK now builds and runs directly on Linux x86_64 and arm64, as well as

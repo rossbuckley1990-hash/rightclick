@@ -32,12 +32,6 @@ python3 scripts/ci/check-reconciliation-tests.py --platform "$platform" --archit
   --log "$evidence/full-tests.log" --output "$evidence/test-identity-outcomes.json"
 gate_status=$?
 set -e
-python3 - "$evidence" <<'PY'
-import json, pathlib, sys
-root = pathlib.Path(sys.argv[1])
-warnings = sorted({line.strip() for path in root.glob('*.log') for line in path.read_text(errors='replace').splitlines() if 'warning:' in line})
-(root / 'compiler-warnings.json').write_text(json.dumps({'uniqueWarningCount': len(warnings), 'warnings': warnings}, indent=2) + '\n')
-PY
 if (( test_status != 0 )); then exit "$test_status"; fi
 if (( gate_status != 0 )); then exit "$gate_status"; fi
 if [[ "$platform" == macos ]]; then
@@ -54,5 +48,12 @@ import hashlib, json, pathlib, sys
 binary = pathlib.Path(sys.argv[1])
 pathlib.Path(sys.argv[2]).write_text(json.dumps({'binarySHA256': hashlib.sha256(binary.read_bytes()).hexdigest()}, indent=2) + '\n')
 PY
+python3 - "$evidence" <<'PY'
+import json, pathlib, sys
+root = pathlib.Path(sys.argv[1])
+warnings = sorted({line.strip() for path in root.glob('*.log') for line in path.read_text(errors='replace').splitlines() if 'warning:' in line})
+(root / 'compiler-warnings.json').write_text(json.dumps({'uniqueWarningCount': len(warnings), 'warnings': warnings}, indent=2) + '\n')
+PY
+
 python3 scripts/acceptance-portable-fabric.py "$binary_directory/rightclick" 2>&1 | tee "$evidence/portable-fabric-acceptance.log"
 git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code

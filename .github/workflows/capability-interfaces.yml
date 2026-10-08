@@ -7,7 +7,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: capability-interfaces-${{ github.event.pull_request.number || github.ref }}
+  group: capability-interfaces-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 jobs:
   macos:
