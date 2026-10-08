@@ -4,6 +4,7 @@ import Darwin
 import Glibc
 #endif
 import Foundation
+import RightClickProtocol
 
 /// Durable admission, separate from advisory experience. Reservations precede
 /// effects, survive restart, and are never evicted or retried automatically.
@@ -12,6 +13,10 @@ public final class RemoteReplayLedger: @unchecked Sendable {
         let intentDigest: String
         let reservedAt: Int64
         var summary: RemoteExecutionSummary?
+        var originatingRequestID: UUID?
+        var capabilityID: String?
+        var capabilityDigest: String?
+        var retainedEvents: [RCIRExecutionEvent]?
     }
     private struct Document: Codable {
         var version = 1
@@ -105,7 +110,7 @@ public final class RemoteReplayLedger: @unchecked Sendable {
             let previous = current.entries[idempotencyKey]
             if let previous, previous.intentDigest != intent { throw RemoteLinkError.idempotencyConflict }
             current.seen.formUnion([requestKey, nonceKey]); current.lastTime = now
-            if previous == nil { current.entries[idempotencyKey] = Entry(intentDigest: intent, reservedAt: now, summary: nil) }
+            if previous == nil { current.entries[idempotencyKey] = Entry(intentDigest: intent, reservedAt: now, summary: nil, originatingRequestID: request.requestID, capabilityID: request.capabilityID, capabilityDigest: request.capabilityDigest, retainedEvents: nil) }
             if let previous {
                 return previous.summary ?? RemoteExecutionSummary(state: .unknown, policy: .evaluated,
                     providerAcceptance: .unknown, lifecycle: [.requested, .authorized, .delivered, .unknown],
@@ -115,15 +120,68 @@ public final class RemoteReplayLedger: @unchecked Sendable {
         }
     }
 
-    func complete(_ request: RemoteExecutionRequest, summary: RemoteExecutionSummary) throws {
+    func complete(_ request: RemoteExecutionRequest, summary: RemoteExecutionSummary, events: [RCIRExecutionEvent]? = nil) throws {
         try summary.validate()
         try transaction { current in
             let idempotencyKey = self.key("intent", request.callerID, request.idempotencyKey.uuidString)
             guard var entry = current.entries[idempotencyKey], entry.summary == nil,
                   entry.intentDigest == (try request.intentDigest()), summary.completedAtMilliseconds >= entry.reservedAt
             else { throw RemoteLinkError.storageUnavailable }
-            entry.summary = summary; current.entries[idempotencyKey] = entry
+            entry.summary = summary; entry.summary?.eventPage = nil
+            entry.retainedEvents = events; current.entries[idempotencyKey] = entry
         }
+    }
+
+    func hasSeenEnvelope(_ request: RemoteExecutionRequest) throws -> Bool {
+        try transaction { current in
+            current.seen.contains(self.key("request", request.callerID, request.requestID.uuidString)) ||
+            current.seen.contains(self.key("nonce", request.callerID, request.nonce.base64EncodedString()))
+        }
+    }
+
+    /// Reads only the original caller's exact admitted run. Observation never
+    /// reserves another executable intent or consumes execution authority.
+    func statusSnapshot(_ request: RemoteExecutionRequest) throws -> (RemoteExecutionSummary, [RCIRExecutionEvent]?) {
+        try transaction { current in
+            let entry = try self.boundEntry(request, in: current)
+            guard let summary = entry.summary else { throw RemoteLinkError.executionUncertain }
+            return (summary, entry.retainedEvents)
+        }
+    }
+
+    /// Live snapshots advance monotonically; terminal snapshots are immutable.
+    func updateExecution(_ request: RemoteExecutionRequest, summary: RemoteExecutionSummary,
+                         events: [RCIRExecutionEvent]? = nil) throws {
+        try summary.validate()
+        try transaction { current in
+            var entry = try self.boundEntry(request, in: current)
+            guard let previous = entry.summary, let old = previous.executionLifecycle,
+                  let next = summary.executionLifecycle,
+                  old.executionID == next.executionID, old.taskID == next.taskID,
+                  old.originatingRequestID == next.originatingRequestID,
+                  old.runtimeID == next.runtimeID, old.generation == next.generation,
+                  old.taskShape == next.taskShape else { throw RemoteLinkError.staleGeneration }
+            guard next.sequence >= old.sequence else { throw RemoteLinkError.invalidSequence }
+            if old.terminal {
+                guard try RemoteWire.encode(old) == RemoteWire.encode(next),
+                      try RemoteWire.encode(previous.result) == RemoteWire.encode(summary.result)
+                else { throw RemoteLinkError.inconsistentResult }
+                return
+            }
+            entry.summary = summary; entry.summary?.eventPage = nil
+            if let events { entry.retainedEvents = events }
+            current.entries[self.key("intent", request.callerID, request.idempotencyKey.uuidString)] = entry
+        }
+    }
+
+    private func boundEntry(_ request: RemoteExecutionRequest, in document: Document) throws -> Entry {
+        guard request.operation == .status, let query = request.status,
+              let entry = document.entries[key("intent", request.callerID, request.idempotencyKey.uuidString)],
+              entry.originatingRequestID == query.originatingRequestID,
+              entry.capabilityID == request.capabilityID, entry.capabilityDigest == request.capabilityDigest,
+              entry.summary?.executionLifecycle?.executionID == query.executionID
+        else { throw RemoteLinkError.unauthorized }
+        return entry
     }
 
     private func key(_ domain: String, _ caller: String, _ value: String) -> String {

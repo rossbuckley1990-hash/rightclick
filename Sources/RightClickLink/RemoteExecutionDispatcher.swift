@@ -12,6 +12,9 @@ public final class RemoteExecutionDispatcher {
     private let now: () -> Int64
     private let localApproval: (any RemoteLocalApproval)?
     private var grants: [String: RemoteCallerGrant]
+    private var activeExecutions: Set<String> = []
+    private var observationEnvelopes: [String: Int64] = [:]
+    private var lastObservationTime: Int64 = 0
 
     public init(engine: CapabilityEngine, identity: RemoteNodeIdentity, ledger: RemoteReplayLedger,
                 grants: [RemoteCallerGrant], enabled: Bool = false, localApproval: (any RemoteLocalApproval)? = nil,
@@ -41,6 +44,13 @@ public final class RemoteExecutionDispatcher {
         try request.validate(now: admittedAt)
         guard request.targetRuntimeID == identity.runtimeID, request.targetDeviceID == identity.deviceID else { throw RemoteLinkError.wrongRuntime }
         try authorize(request, grant: grant)
+        observationEnvelopes = observationEnvelopes.filter { $0.value > admittedAt }
+        let observationalKeys = ["request:" + request.callerID + ":" + request.requestID.uuidString,
+                                 "nonce:" + request.callerID + ":" + request.nonce.base64EncodedString()]
+        guard observationalKeys.allSatisfy({ observationEnvelopes[$0] == nil }) else { throw RemoteLinkError.replay }
+        if request.operation == .status {
+            return try statusResult(for: request, grant: grant, admittedAt: admittedAt)
+        }
         // No arbitrary target-relative file access or observer references in v1.
         // Host-owned RCIR observers still execute locally and independently.
         if request.operation != .runtime {
@@ -50,7 +60,13 @@ public final class RemoteExecutionDispatcher {
             } catch { throw RemoteLinkError.unauthorized }
         }
         if let previous = try ledger.reserve(request, now: admittedAt) {
-            return try result(for: request, summary: previous, reused: true)
+            var retained = previous
+            if let live = previous.executionLifecycle, !live.terminal {
+                var poll = request; poll.operation = .status; poll.item = ""; poll.arguments = nil; poll.verification = nil
+                poll.status = .init(originatingRequestID: UUID(uuidString: live.originatingRequestID)!, executionID: live.executionID)
+                retained = try currentStatus(for: poll, grant: grant)
+            }
+            return try result(for: request, summary: retained, reused: true)
         }
         let summary: RemoteExecutionSummary
         var enteredEngine = false
@@ -86,7 +102,15 @@ public final class RemoteExecutionDispatcher {
                         guard let current = self.grants[request.callerID], current.publicKey == grant.publicKey else { throw RemoteLinkError.unauthorized }
                         try self.authorize(request, grant: current)
                     }, allowFileInputs: false)
-                summary = Self.project(record, request: request, now: now())
+                var projected = Self.project(record, request: request, runtimeID: identity.runtimeID,
+                    exportsValues: grant.exportValueCapabilityIDs.contains(capability.id), now: now())
+                if let live = projected.executionLifecycle {
+                    let history = Self.safeEvents(record.rcirEvents ?? [], exportsValues: grant.exportValueCapabilityIDs.contains(capability.id))
+                    projected.eventPage = try rcirExecutionEventPage(history, after: 0, limit: 64,
+                        maximumBytes: 16_384, terminal: live.terminal)
+                }
+                summary = projected
+                if record.lifecycle?.terminal == false { activeExecutions.insert(record.executionId) }
             default: throw RemoteLinkError.unsupportedOperation
             }
         } catch {
@@ -98,12 +122,15 @@ public final class RemoteExecutionDispatcher {
                 error: (error as? RemoteLinkError) ?? .executionUncertain, completedAtMilliseconds: max(now(), admittedAt))
         }
         try summary.validate()
-        try ledger.complete(request, summary: summary)
+        let events = summary.executionLifecycle.flatMap { ExecutionStore.shared.get($0.executionID)?.rcirEvents }.map {
+            Self.safeEvents($0, exportsValues: grant.exportValueCapabilityIDs.contains(request.capabilityID ?? ""))
+        }
+        try ledger.complete(request, summary: summary, events: events)
         return try result(for: request, summary: summary, reused: false)
     }
     private func authorize(_ request: RemoteExecutionRequest, grant: RemoteCallerGrant) throws {
         guard grant.operations.contains(request.operation),
-              request.operation != .run || request.capabilityID.map(grant.capabilityIDs.contains) == true else { throw RemoteLinkError.unauthorized }
+              (request.operation != .run && request.operation != .status) || request.capabilityID.map(grant.capabilityIDs.contains) == true else { throw RemoteLinkError.unauthorized }
     }
     private func result(for request: RemoteExecutionRequest, summary: RemoteExecutionSummary, reused: Bool) throws -> Data {
         try summary.validate()
@@ -113,12 +140,96 @@ public final class RemoteExecutionDispatcher {
             reused: reused, summary: summary)
         return try SignedRemoteMessage.seal(result, domain: RemoteWire.resultDomain, signer: identity)
     }
+    private func statusResult(for request: RemoteExecutionRequest, grant: RemoteCallerGrant, admittedAt: Int64) throws -> Data {
+        // Cache applies only to nonconsequential observations. Expired envelopes
+        // can never validate again; consequential journal entries never expire.
+        guard admittedAt >= lastObservationTime else { throw RemoteLinkError.clockRollback }
+        observationEnvelopes = observationEnvelopes.filter { $0.value > admittedAt }
+        let keys = ["request:" + request.callerID + ":" + request.requestID.uuidString,
+                    "nonce:" + request.callerID + ":" + request.nonce.base64EncodedString()]
+        guard keys.allSatisfy({ observationEnvelopes[$0] == nil }), try !ledger.hasSeenEnvelope(request) else { throw RemoteLinkError.replay }
+        guard observationEnvelopes.count + 2 <= 2048 else { throw RemoteLinkError.limitExceeded }
+        let summary = try currentStatus(for: request, grant: grant)
+        for key in keys { observationEnvelopes[key] = request.expiresAtMilliseconds }
+        lastObservationTime = admittedAt
+        return try result(for: request, summary: summary, reused: true)
+    }
+
+    private func currentStatus(for request: RemoteExecutionRequest, grant: RemoteCallerGrant) throws -> RemoteExecutionSummary {
+        guard let query = request.status else { throw RemoteLinkError.malformed }
+        let (retained, retainedEvents) = try ledger.statusSnapshot(request)
+        guard let previous = retained.executionLifecycle else { throw RemoteLinkError.unavailable }
+        if previous.terminal {
+            var snapshot = retained
+            snapshot.eventPage = try rcirExecutionEventPage(retainedEvents ?? [], after: query.cursor,
+                limit: query.limit, maximumBytes: query.maximumBytes, terminal: true)
+            // Unknown restart evidence can have a previous sequence but no page.
+            if retainedEvents == nil, previous.sequence != 0 { throw RemoteLinkError.unavailable }
+            return snapshot
+        }
+        let snapshot: RemoteExecutionSummary
+        var events: [RCIRExecutionEvent]? = nil
+        if activeExecutions.contains(query.executionID) {
+            let record = engine.executionStatus(query.executionID)
+            guard let current = record.lifecycle, current.taskID == previous.taskID,
+                  current.generation == previous.generation else { throw RemoteLinkError.staleGeneration }
+            var projected = Self.project(record, request: request, runtimeID: identity.runtimeID,
+                exportsValues: grant.exportValueCapabilityIDs.contains(request.capabilityID ?? ""), now: now())
+            events = record.rcirEvents.map { Self.safeEvents($0, exportsValues: grant.exportValueCapabilityIDs.contains(request.capabilityID ?? "")) }
+            projected.eventPage = try rcirExecutionEventPage(events ?? [], after: query.cursor, limit: query.limit,
+                maximumBytes: query.maximumBytes, terminal: current.terminal)
+            snapshot = projected
+        } else {
+            // The host process lost live ownership. Preserve binding and refuse
+            // redispatch; a surviving reservation is not evidence of completion.
+            var unknown = retained; unknown.state = .unknown; unknown.providerAcceptance = .unknown
+            unknown.verification = .unverified; unknown.observationBoundary = .none; unknown.result = nil
+            unknown.error = .executionUncertain
+            unknown.executionLifecycle = .init(executionID: previous.executionID,
+                originatingRequestID: previous.originatingRequestID, runtimeID: previous.runtimeID,
+                taskID: previous.taskID, generation: previous.generation, taskShape: previous.taskShape,
+                phase: .unknown, semanticOutcome: .unknown, sequence: previous.sequence, terminal: true,
+                providerAcceptance: .unknown, verification: .unverified, observationBoundary: .none)
+            let history = retainedEvents ?? []
+            guard Int64(history.count) == previous.sequence else { throw RemoteLinkError.storageUnavailable }
+            unknown.eventPage = try rcirExecutionEventPage(history, after: query.cursor, limit: query.limit,
+                maximumBytes: query.maximumBytes, terminal: true)
+            snapshot = unknown; events = history
+        }
+        try ledger.updateExecution(request, summary: snapshot, events: events)
+        if snapshot.executionLifecycle?.terminal == true { activeExecutions.remove(query.executionID) }
+        return snapshot
+    }
+
+    private static func safeEvents(_ events: [RCIRExecutionEvent], exportsValues: Bool) -> [RCIRExecutionEvent] {
+        events.map { .init(sequence: $0.sequence, time: $0.time, kind: $0.kind, value: exportsValues ? $0.value : .null) }
+    }
+
     static func contractDigest(_ capability: Capability) throws -> String {
         RemoteWire.digest(try CapabilityDispatchContract.canonicalData(capability))
     }
-    private static func project(_ record: ExecutionRecord, request: RemoteExecutionRequest, now: Int64) -> RemoteExecutionSummary {
+    private static func project(_ record: ExecutionRecord, request: RemoteExecutionRequest, runtimeID: String, exportsValues: Bool, now: Int64) -> RemoteExecutionSummary {
         var summary = RemoteExecutionSummary(state: record.state, policy: .evaluated,
             evidenceExecutionID: record.executionId, lifecycle: [.requested, .authorized, .delivered, .executing], completedAtMilliseconds: now)
+        if let live = record.lifecycle {
+            summary.executionLifecycle = ExecutionLifecycle(version: live.version, executionID: live.executionID,
+                originatingRequestID: request.status?.originatingRequestID.uuidString ?? request.requestID.uuidString,
+                runtimeID: runtimeID, taskID: live.taskID, generation: live.generation, taskShape: live.taskShape,
+                phase: live.phase, semanticOutcome: live.semanticOutcome, sequence: live.sequence, terminal: live.terminal,
+                providerAcceptance: live.providerAcceptance, verification: live.verification,
+                observationBoundary: live.observationBoundary, evidenceID: live.evidenceID,
+                receiptAvailable: live.receiptAvailable, signedReceiptAvailable: live.signedReceiptAvailable)
+            summary.providerAcceptance = RemoteProviderAcceptance(rawValue: live.providerAcceptance.rawValue)!
+            summary.verification = live.verification; summary.observationBoundary = live.observationBoundary
+            if let page = record.rcirEventPage {
+                summary.eventPage = .init(events: safeEvents(page.events, exportsValues: exportsValues),
+                    nextCursor: page.nextCursor, hasMore: page.hasMore, terminal: page.terminal)
+            }
+            summary.result = exportsValues ? record.result : nil
+            if live.providerAcceptance == .accepted { summary.lifecycle.append(.providerAccepted) }
+            if live.terminal { summary.lifecycle.append(live.verification == .verifiedSuccess ? .verified : .unverified) }
+            return summary
+        }
         switch record.state {
         case .awaitingUser:
             summary.policy = .confirmationRequired; summary.lifecycle.append(.awaitingUser)

@@ -32,6 +32,16 @@ public final class RemoteLinkClient {
     public let target: RemoteNodeIdentityReference
     private let transport: any RemoteLinkTransport
     private let now: () -> Int64
+    private struct ObservedExecution {
+        let idempotencyKey: UUID
+        let capabilityID: String?
+        let capabilityDigest: String?
+        var lifecycle: ExecutionLifecycle
+        var events: [Int64: String] = [:]
+        var resultDigest: String?
+    }
+    private let observationLock = NSLock()
+    private var observations: [String: ObservedExecution] = [:]
     public init(identity: RemoteNodeIdentity, trustedRuntimeKey: Data, transport: any RemoteLinkTransport,
                 now: @escaping () -> Int64 = { Int64(Date().timeIntervalSince1970 * 1000) }) throws {
         self.identity = identity; self.target = try .init(publicKey: trustedRuntimeKey)
@@ -49,14 +59,55 @@ public final class RemoteLinkClient {
             operation: operation, capabilityID: capabilityID, capabilityDigest: capabilityDigest,
             item: item, arguments: arguments, verification: verification)
     }
+    public func makeStatusRequest(for original: RemoteExecutionRequest, executionID: String,
+        originatingRequestID: UUID? = nil, cursor: Int64 = 0, limit: Int = 64,
+        maximumBytes: Int = 16_384) -> RemoteExecutionRequest {
+        var request = makeRequest(operation: .status, capabilityID: original.capabilityID,
+            capabilityDigest: original.capabilityDigest, idempotencyKey: original.idempotencyKey)
+        request.status = .init(originatingRequestID: originatingRequestID ?? original.requestID,
+            executionID: executionID, cursor: cursor, limit: limit, maximumBytes: maximumBytes)
+        return request
+    }
     public func send(_ request: RemoteExecutionRequest) async throws -> RemoteExecutionResult {
         guard request.targetRuntimeID == target.runtimeID, request.targetDeviceID == target.deviceID,
               request.callerID == RemoteWire.digest(identity.publicKey) else { throw RemoteLinkError.wrongRuntime }
         try request.validate(now: now())
         let bytes = try SignedRemoteMessage.request(request, signer: identity)
         let response = try await transport.exchange(bytes, targetRuntimeID: target.runtimeID)
-        return try SignedRemoteMessage.verifiedResult(response, for: bytes, trustedRuntimeKey: target.publicKey)
+        let result = try SignedRemoteMessage.verifiedResult(response, for: bytes, trustedRuntimeKey: target.publicKey)
+        try observe(result.summary, for: request)
+        return result
     }
+    private func observe(_ summary: RemoteExecutionSummary, for request: RemoteExecutionRequest) throws {
+        guard let live = summary.executionLifecycle else { return }
+        guard live.runtimeID == target.runtimeID else { throw RemoteLinkError.wrongRuntime }
+        observationLock.lock(); defer { observationLock.unlock() }
+        guard observations.count < 1024 || observations[live.executionID] != nil else { throw RemoteLinkError.limitExceeded }
+        let previous = observations[live.executionID]
+        var seen = previous ?? ObservedExecution(idempotencyKey: request.idempotencyKey,
+            capabilityID: request.capabilityID, capabilityDigest: request.capabilityDigest, lifecycle: live)
+        guard seen.idempotencyKey == request.idempotencyKey, seen.capabilityID == request.capabilityID,
+              seen.capabilityDigest == request.capabilityDigest, seen.lifecycle.executionID == live.executionID,
+              seen.lifecycle.originatingRequestID == live.originatingRequestID,
+              seen.lifecycle.taskID == live.taskID, seen.lifecycle.generation == live.generation,
+              seen.lifecycle.runtimeID == live.runtimeID, seen.lifecycle.taskShape == live.taskShape
+        else { throw RemoteLinkError.staleGeneration }
+        guard live.sequence >= seen.lifecycle.sequence else { throw RemoteLinkError.invalidSequence }
+        if previous?.lifecycle.terminal == true {
+            guard try RemoteWire.encode(seen.lifecycle) == RemoteWire.encode(live),
+                  seen.resultDigest == (try summary.result.map({ RemoteWire.digest(try $0.canonicalData()) }))
+            else { throw RemoteLinkError.inconsistentResult }
+        }
+        for event in summary.eventPage?.events ?? [] {
+            let digest = RemoteWire.digest(try event.canonicalData())
+            guard seen.events[event.sequence] == nil || seen.events[event.sequence] == digest else { throw RemoteLinkError.invalidSequence }
+            seen.events[event.sequence] = digest
+        }
+        seen.lifecycle = live
+        seen.resultDigest = try summary.result.map { RemoteWire.digest(try $0.canonicalData()) }
+        observations[live.executionID] = seen
+    }
+
 }
 
 public struct RemoteNodeIdentityReference {
