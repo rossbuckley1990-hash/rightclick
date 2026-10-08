@@ -21,7 +21,8 @@ private func environmentJournalDigest(_ value: Data) -> String {
 /// Missing history, replacement, unsafe permissions or corrupt data denies work.
 public final class EnvironmentJournal<State: Codable>: @unchecked Sendable {
     private struct Document: Codable { let version: Int; let identity: String; var state: State }
-    private let lock = NSLock()
+    private let lock = NSRecursiveLock()
+    private var effectDepth = 0
     private let directory: URL
     private let directoryFD: Int32
     private let parentFD: Int32
@@ -88,11 +89,35 @@ public final class EnvironmentJournal<State: Codable>: @unchecked Sendable {
     }
     deinit { close(lockFD); close(directoryFD); close(parentFD) }
 
+    /// Holds the same protected, process-shared lock across durable reservation,
+    /// final authority checks, provider dispatch and observation. Another broker
+    /// cannot revoke/destroy a reserved resource in the dispatch gap. A crashed
+    /// process releases the OS lock while its flushed intent remains recoverable.
+    public func lockEffects() throws {
+        lock.lock()
+        do {
+            if effectDepth == 0 {
+                guard flock(lockFD, LOCK_EX | LOCK_NB) == 0 else { throw EnvironmentJournalError.storageUnavailable }
+                do { try validateLocation(); _ = try load() }
+                catch { _ = flock(lockFD, LOCK_UN); throw error }
+            }
+            effectDepth += 1
+        } catch { lock.unlock(); throw error }
+    }
+    public func unlockEffects() {
+        precondition(effectDepth > 0)
+        effectDepth -= 1
+        if effectDepth == 0 { _ = flock(lockFD, LOCK_UN) }
+        lock.unlock()
+    }
 
     public func transaction<T>(_ body: (inout State) throws -> T) throws -> T {
         lock.lock(); defer { lock.unlock() }
-        guard flock(lockFD, LOCK_EX | LOCK_NB) == 0 else { throw EnvironmentJournalError.storageUnavailable }
-        defer { _ = flock(lockFD, LOCK_UN) }
+        let ownsFileLock = effectDepth == 0
+        if ownsFileLock {
+            guard flock(lockFD, LOCK_EX | LOCK_NB) == 0 else { throw EnvironmentJournalError.storageUnavailable }
+        }
+        defer { if ownsFileLock { _ = flock(lockFD, LOCK_UN) } }
         try validateLocation()
         let marker = openat(directoryFD, "environment.initialized", O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
         guard marker >= 0 else { throw EnvironmentJournalError.storageUnavailable }

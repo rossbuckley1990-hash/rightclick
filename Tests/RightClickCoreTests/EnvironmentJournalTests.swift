@@ -19,6 +19,42 @@ final class EnvironmentJournalTests: XCTestCase {
         try second.transaction { $0.executions.append("two") }
         XCTAssertEqual(try first.snapshot().executions, ["one", "two"])
     }
+    func testSharedEffectLockSurvivesNestedTransactionsAndBlocksOtherBrokers() throws {
+        let path = try location()
+        let first = try EnvironmentJournal(directory: path, identity: "parent", initial: State())
+        let second = try EnvironmentJournal(directory: path, identity: "parent", initial: State())
+        try first.lockEffects()
+        try first.transaction { $0.executions.append("intent-before-effect") }
+        XCTAssertThrowsError(try second.lockEffects())
+        XCTAssertThrowsError(try second.transaction { $0.executions.append("racing-destroy") })
+        try first.lockEffects()
+        XCTAssertEqual(try first.snapshot().executions, ["intent-before-effect"])
+        first.unlockEffects()
+        XCTAssertThrowsError(try second.snapshot()) // Nested snapshot did not unlock the outer flock.
+        first.unlockEffects()
+        try second.lockEffects()
+        try second.transaction { $0.executions.append("safe-after-effect") }
+        second.unlockEffects()
+        XCTAssertEqual(try first.snapshot().executions, ["intent-before-effect", "safe-after-effect"])
+    }
+    func testEffectLockIsVisibleToAnotherProcessAfterNestedPersistence() throws {
+        let path = try location()
+        let journal = try EnvironmentJournal(directory: path, identity: "parent", initial: State())
+        func childExit() throws -> Int32 {
+            let process = Process()
+            process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
+            process.arguments = ["python3", "-c", "import os,fcntl,sys; f=os.open(sys.argv[1],os.O_RDWR|os.O_NOFOLLOW);\ntry: fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB)\nexcept BlockingIOError: sys.exit(3)\nsys.exit(0)", path.appendingPathComponent("environment.lock").path]
+            process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
+            try process.run(); process.waitUntilExit(); return process.terminationStatus
+        }
+        try journal.lockEffects()
+        try journal.transaction { $0.executions.append("durable") }
+        XCTAssertEqual(try childExit(), 3)
+        _ = try journal.snapshot()
+        XCTAssertEqual(try childExit(), 3)
+        journal.unlockEffects()
+        XCTAssertEqual(try childExit(), 0)
+    }
     func testThrowingTransactionDoesNotCommitOrDispatch() throws {
         let journal = try EnvironmentJournal(directory: location(), identity: "parent", initial: State())
         XCTAssertThrowsError(try journal.transaction { state in
