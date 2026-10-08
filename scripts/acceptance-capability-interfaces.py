@@ -15,6 +15,7 @@ import selectors
 import shutil
 import subprocess
 import time
+import tempfile
 import uuid
 
 from cryptography.hazmat.primitives import serialization
@@ -26,12 +27,13 @@ parser.add_argument("evidence", type=pathlib.Path)
 parser.add_argument("--component", type=pathlib.Path, required=True)
 parser.add_argument("--runtime", type=pathlib.Path, required=True)
 parser.add_argument("--tools", type=pathlib.Path, required=True)
-parser.add_argument("--mcp-effects", type=pathlib.Path, default=pathlib.Path("/private/tmp/rightclick-descriptor-mcp-effects"))
+parser.add_argument("--mcp-effects", type=pathlib.Path, required=True)
 args = parser.parse_args()
 root = pathlib.Path(__file__).resolve().parent.parent
 evidence = args.evidence.resolve(); evidence.mkdir(parents=True, exist_ok=True)
-lab = pathlib.Path("/private/tmp") / ("rightclick-interface-acceptance-" + uuid.uuid4().hex)
-lab.mkdir(mode=0o700)
+lab_directory = tempfile.TemporaryDirectory(prefix="rightclick-interface-acceptance-")
+lab = pathlib.Path(lab_directory.name)
+lab.chmod(0o700)
 component = lab / "fingerprint.component.wasm"; shutil.copyfile(args.component, component)
 unseen = lab / "unseen.component.wasm"
 trap = lab / "trap.component.wasm"
@@ -186,7 +188,10 @@ try:
     (evidence / "results.json").write_text(json.dumps(result, indent=2))
     print("PASS: genuine MCP/WASM acquisition, invocation, independent outcomes, signed receipts, policy denial and live graph mutation; seven operations unchanged.")
 finally:
-    (evidence / "transcript.json").write_text(json.dumps(transcript, indent=2))
-    process.terminate(); process.wait(timeout=5)
-    key.unlink(missing_ok=True)
-    args.mcp_effects.joinpath("malformed-descriptor").unlink(missing_ok=True)
+    try:
+        (evidence / "transcript.json").write_text(json.dumps(transcript, indent=2))
+        process.terminate(); process.wait(timeout=5)
+        key.unlink(missing_ok=True)
+        args.mcp_effects.joinpath("malformed-descriptor").unlink(missing_ok=True)
+    finally:
+        lab_directory.cleanup()

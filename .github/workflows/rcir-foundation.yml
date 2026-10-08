@@ -2,16 +2,24 @@ name: RCIR foundation (not universal runtime acceptance)
 on:
   pull_request:
     paths:
-      - 'Sources/RightClickProtocol/CapabilityABI.swift'
+      - 'Sources/RightClickProtocol/**'
+      - 'Package.swift'
+      - 'Package.resolved'
       - 'Sources/RightClickProtocol/RCIR*.swift'
+      - 'Sources/RightClickProviders/RCIR*.swift'
+      - 'Sources/RightClickCore/**'
       - 'Tests/RightClickCoreTests/RCIR*Tests.swift'
       - 'scripts/test-rcir.sh'
       - '.github/workflows/rcir-foundation.yml'
   push:
     branches: [main]
     paths:
-      - 'Sources/RightClickProtocol/CapabilityABI.swift'
+      - 'Sources/RightClickProtocol/**'
+      - 'Package.swift'
+      - 'Package.resolved'
       - 'Sources/RightClickProtocol/RCIR*.swift'
+      - 'Sources/RightClickProviders/RCIR*.swift'
+      - 'Sources/RightClickCore/**'
       - 'Tests/RightClickCoreTests/RCIR*Tests.swift'
       - 'scripts/test-rcir.sh'
       - '.github/workflows/rcir-foundation.yml'
@@ -28,10 +36,14 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: bash scripts/test-rcir.sh
   apple-cryptography:
     runs-on: macos-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: bash scripts/test-rcir.sh

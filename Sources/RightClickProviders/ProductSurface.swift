@@ -7,7 +7,7 @@ import Crypto
 import Foundation
 
 public enum RightClickVersion {
-    public static let current = "0.2.2"
+    public static let current = "0.2.3"
 }
 
 /// Versioned substrate-independent agent contract. Profiles are advertised by

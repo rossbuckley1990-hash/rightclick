@@ -35,7 +35,8 @@ def source_candidates(path: str) -> list[str]:
     filename = pathlib.Path(path).name
     moved_name = "MacOSCapabilityReflectors.swift" if filename == "CapabilityReflector.swift" else filename
     return [path, "Sources/RightClickProtocol/" + filename,
-            "Sources/RightClickProviders/" + filename, "Sources/RightClickMacOS/" + moved_name]
+            "Sources/RightClickProviders/" + filename, "Sources/RightClickMacOS/" + moved_name,
+            "Sources/RightClickLinux/" + filename]
 
 # Stable kind IDs. Detection uses durable source fingerprints so a renamed
 # helper file cannot silently drop a substrate from the bottle contract.
@@ -187,7 +188,65 @@ KIND_RULES: list[dict[str, object]] = [
         "any_files": ["Sources/RightClickCore/OAuthOIDCAuthority.swift"],
         "any_patterns": [r"OAuthOIDCAuthority|OIDC"],
     },
+    {
+        "id": "artifact.resolver.mcp",
+        "title": "Acquired MCP tool/schema capability resolver",
+        "any_files": ["Sources/RightClickCore/MCPCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"MCPCapabilityArtifactResolver"],
+        "composition_patterns": [r"MCPCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "artifact.resolver.wasm",
+        "title": "Actual component-model WIT capability resolver",
+        "any_files": ["Sources/RightClickCore/WASMCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"WASMCapabilityArtifactResolver"],
+        "composition_patterns": [r"WASMCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "artifact.resolver.kafka",
+        "title": "Acquired Kafka topic metadata capability resolver",
+        "any_files": ["Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"KafkaCapabilityArtifactResolver"],
+        "composition_patterns": [r"KafkaCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "source.a2a.configured",
+        "title": "Configured A2A agent-card source",
+        "any_files": ["Sources/RightClickCore/A2AReflector.swift"],
+        "any_patterns": [r"ConfiguredA2ASource"],
+        "composition_patterns": [r"ConfiguredA2ASource\.fromEnvironment\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityRuntimeDefaults.swift"],
+    },
+    {
+        "id": "artifact.resolver.kubernetes",
+        "title": "Kubernetes discovered-resource capability resolver",
+        "any_files": ["Sources/RightClickCore/KubernetesCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"KubernetesCapabilityArtifactResolver"],
+        "composition_patterns": [r"KubernetesCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "artifact.resolver.dbus",
+        "title": "Linux D-Bus introspection capability resolver",
+        "any_files": ["Sources/RightClickCore/DBusCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"DBusCapabilityArtifactResolver"],
+        "composition_patterns": [r"DBusCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift",
+                              "Sources/RightClickCore/CapabilityRuntimeDefaults.swift"],
+    },
+    {
+        "id": "source.dbus.session",
+        "title": "Linux D-Bus session discovery source",
+        "any_files": ["Sources/RightClickCore/DBusSessionSource.swift"],
+        "any_patterns": [r"DBusSessionSource"],
+        "composition_patterns": [r"DBusSessionSource\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityRuntimeDefaults.swift"],
+    },
 ]
+
 
 
 def read_text(path: pathlib.Path) -> str:
@@ -219,8 +278,9 @@ def inventory_tree(root: pathlib.Path) -> dict[str, object]:
         composition_hit = True
         composition_patterns = list(rule.get("composition_patterns", []))  # type: ignore[arg-type]
         composition_files = [
-            root / pathlib.Path(p)
+            root / pathlib.Path(candidate)
             for p in rule.get("composition_files", [])  # type: ignore[arg-type]
+            for candidate in source_candidates(p)
         ]
         if composition_patterns:
             if composition_files:

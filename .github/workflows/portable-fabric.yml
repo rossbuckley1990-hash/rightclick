@@ -2,13 +2,15 @@ name: Portable fabric
 on:
   pull_request:
   push:
-    branches: [feature/portable-fabric-foundation]
+    branches: [main, feature/portable-fabric-foundation]
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
   group: portable-fabric-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+env:
+  RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
 jobs:
   macos:
     name: macOS arm64 regression
@@ -16,22 +18,39 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      - name: Native platform and complete regression suite
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Native platform and source
         run: |
           set -euo pipefail
           test "$(uname -m)" = arm64
-          swift --version | tee macos-toolchain.txt
-          swift test --force-resolved-versions --jobs 4 2>&1 | tee macos-tests.log
-          python3 scripts/acceptance-portable-fabric.py .build/debug/rightclick 2>&1 | tee macos-acceptance.log
+          python3 scripts/record-ci-source.py evidence/portable-fabric
+      - name: Extracted native and generic modules
+        run: |
+          set -euo pipefail
+          for target in RightClickProtocol RightClickMacOSHost RightClickProviders RightClickMacOS RightClickCore RightClickLink RightClickMCP; do
+            swift build --target "$target" --force-resolved-versions --jobs 4 2>&1 | tee "evidence/portable-fabric/$target-build.log"
+          done
+      - name: Complete native regression suite
+        run: |
+          set -euo pipefail
+          swift test --force-resolved-versions --jobs 4 2>&1 | tee evidence/portable-fabric/tests.log
+          swift test list --skip-build > evidence/portable-fabric/discovered-tests.txt
+          python3 scripts/acceptance-portable-fabric.py .build/debug/rightclick 2>&1 | tee evidence/portable-fabric/acceptance.log
+          python3 scripts/record-ci-source.py evidence/portable-fabric/after
+      - name: Release product identity
+        run: |
+          set -euo pipefail
+          swift build -c release --product rightclick --force-resolved-versions --jobs 4 2>&1 | tee evidence/portable-fabric/release-build.log
+          .build/release/rightclick version > evidence/portable-fabric/cli-version.txt
+          shasum -a 256 .build/release/rightclick > evidence/portable-fabric/binary-sha256.txt
           git diff --exit-code -- Package.resolved
       - name: Preserve evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: macos-fabric-${{ github.sha }}
-          path: |
-            macos-*.txt
-            macos-*.log
+          name: macos-fabric-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/portable-fabric/
           if-no-files-found: error
   linux:
     name: Linux ${{ matrix.arch }}
@@ -51,44 +70,42 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: apt-get update && apt-get install -y python3 ca-certificates
       - name: Source and native platform
         run: |
           set -euo pipefail
           test "$(uname -m)" = '${{ matrix.arch }}'
-          git -c safe.directory="$GITHUB_WORKSPACE" rev-parse HEAD > linux-source.txt
-          uname -a > linux-platform.txt
-          swift --version > linux-toolchain.txt
-          sha256sum Package.resolved > linux-lockfile-sha256.txt
-          swift package describe --type json > linux-package.json
+          python3 scripts/record-ci-source.py evidence/portable-fabric
+          swift package describe --type json > evidence/portable-fabric/package-description.json
       - name: Extracted modules
         run: |
           set -euo pipefail
-          swift build --target RightClickProtocol --force-resolved-versions --jobs 4 2>&1 | tee linux-protocol-build.log
-          swift build --target RightClickCore --force-resolved-versions --jobs 4 2>&1 | tee linux-core-build.log
-          swift build --target RightClickMCP --force-resolved-versions --jobs 4 2>&1 | tee linux-mcp-build.log
+          for target in RightClickProtocol RightClickHostFiles RightClickProviders RightClickLinux RightClickCore RightClickLink RightClickMCP; do
+            swift build --target "$target" --force-resolved-versions --jobs 4 2>&1 | tee "evidence/portable-fabric/$target-build.log"
+          done
       - name: Full available suite
         run: |
           set -euo pipefail
-          swift test --force-resolved-versions --jobs 4 2>&1 | tee linux-tests.log
+          swift test --force-resolved-versions --jobs 4 2>&1 | tee evidence/portable-fabric/tests.log
+          swift test list --skip-build > evidence/portable-fabric/discovered-tests.txt
+          python3 scripts/record-ci-source.py evidence/portable-fabric/after
       - name: Release and package integrity
         run: |
           set -euo pipefail
-          swift build -c release --product rightclick --force-resolved-versions --jobs 4 2>&1 | tee linux-release-build.log
-          .build/release/rightclick version > linux-cli-version.txt
-          sha256sum .build/release/rightclick > linux-binary-sha256.txt
+          swift build -c release --product rightclick --force-resolved-versions --jobs 4 2>&1 | tee evidence/portable-fabric/release-build.log
+          .build/release/rightclick version > evidence/portable-fabric/cli-version.txt
+          sha256sum .build/release/rightclick > evidence/portable-fabric/binary-sha256.txt
           git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code -- Package.resolved
       - name: Portable MCP and provider demonstration
         run: |
           set -euo pipefail
-          python3 scripts/acceptance-portable-fabric.py .build/release/rightclick 2>&1 | tee linux-acceptance.log
+          python3 scripts/acceptance-portable-fabric.py .build/release/rightclick 2>&1 | tee evidence/portable-fabric/acceptance.log
       - name: Preserve evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
-          name: linux-fabric-${{ matrix.arch }}-${{ github.sha }}
-          path: |
-            linux-*.txt
-            linux-*.json
-            linux-*.log
+          name: linux-fabric-${{ matrix.arch }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/portable-fabric/
           if-no-files-found: error

@@ -7,7 +7,7 @@ WORK="$(mktemp -d "${TMPDIR:-/tmp}/rightclick-rcir.XXXXXXXX")"
 trap 'rm -rf -- "$WORK"' EXIT
 mkdir -p "$WORK/Sources/RightClickCore" "$WORK/Tests/RightClickCoreTests"
 for name in CapabilityABI RCIR RCIRSignedReceipt RCIRAuthority; do
-    cp "$ROOT/Sources/RightClickProtocol/$name.swift" "$WORK/Sources/RightClickProtocol/"
+    cp "$ROOT/Sources/RightClickProtocol/$name.swift" "$WORK/Sources/RightClickCore/"
 done
 for name in RCIRTests RCIRBoundaryTests RCIRIntegrationTests RCIRInvocationIsolationTests RCIRUnitCompletionTests RCIRAuthorityTests; do
     sed '/@testable import RightClickProtocol/d; /@testable import RightClickProviders/d; /@testable import RightClickMacOS/d' "$ROOT/Tests/RightClickCoreTests/$name.swift" > "$WORK/Tests/RightClickCoreTests/$name.swift"

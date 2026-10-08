@@ -15,24 +15,88 @@ permissions:
 concurrency:
   group: rcir-production-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+env:
+  RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
 jobs:
   production:
     runs-on: macos-26
-    timeout-minutes: 25
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record exact candidate source
+        run: python3 scripts/record-ci-source.py evidence/rcir-production
       - name: Actual engine and real HTTP effect controls
         run: |
-          mkdir -p /tmp/rcir-evidence
-          RCIR_DISPATCH_EVIDENCE=/tmp/rcir-evidence/native-effects swift test --force-resolved-versions --filter RCIRProductionDispatchTests
+          mkdir -p evidence/rcir-production
+          RCIR_DISPATCH_EVIDENCE=evidence/rcir-production/native-effects RCIR_AUTHORITY_EVIDENCE=evidence/rcir-production/authority swift test --force-resolved-versions --jobs 4 --filter 'RCIRProductionDispatchTests|RCIRAuthorityDispatchTests'
       - name: Real OpenAPI through exactly seven public operations
-        run: python3 scripts/acceptance-rcir-openapi.py .build/debug/rightclick /tmp/rcir-evidence/public-mcp
+        run: python3 scripts/acceptance-rcir-openapi.py .build/debug/rightclick evidence/rcir-production/public-mcp
+      - name: Independently check signed claims and provider effect correlation
+        run: |
+          python3 -m venv "$RUNNER_TEMP/rcir-receipt-verifier"
+          "$RUNNER_TEMP/rcir-receipt-verifier/bin/python" -m pip install cryptography==50.0.1
+          RIGHTCLICK_AUTHORITY_RECEIPT_EVIDENCE=evidence/rcir-production/authority "$RUNNER_TEMP/rcir-receipt-verifier/bin/python" -m unittest discover -s Tests -p 'test_rcir*receipt_verifier.py' -v
+          "$RUNNER_TEMP/rcir-receipt-verifier/bin/python" scripts/acceptance-rcir-signed-evidence.py --public evidence/rcir-production/public-mcp --native evidence/rcir-production/native-effects --output evidence/rcir-production/independent-signed-claims
       - name: Actual live schema drift and reacquisition without reconnecting
-        run: python3 scripts/acceptance-rcir-openapi-freshness.py .build/debug/rightclick /tmp/rcir-evidence/live-schema
+        run: python3 scripts/acceptance-rcir-openapi-freshness.py .build/debug/rightclick evidence/rcir-production/live-schema
+      - name: Confirm source inputs remained unchanged
+        run: python3 scripts/record-ci-source.py evidence/rcir-production/after
       - name: Preserve new-run transcripts, effects and signed receipts
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
         with:
           name: rcir-production-${{ github.event.pull_request.head.sha || github.sha }}
-          path: /tmp/rcir-evidence
+          path: evidence/rcir-production
+          if-no-files-found: error
+  production-linux:
+    name: RCIR production Linux ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    container: swift:6.3.3-noble
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Native platform and receipt prerequisites
+        run: |
+          test "$(uname -m)" = '${{ matrix.arch }}'
+          apt-get update
+          apt-get install -y --no-install-recommends python3 python3-venv openssl ca-certificates
+      - name: Record exact candidate source
+        run: python3 scripts/record-ci-source.py evidence/rcir-production
+      - name: Actual engine and real HTTP effect controls
+        run: |
+          mkdir -p evidence/rcir-production
+          RCIR_DISPATCH_EVIDENCE=evidence/rcir-production/native-effects RCIR_AUTHORITY_EVIDENCE=evidence/rcir-production/authority swift test --force-resolved-versions --jobs 4 --filter 'RCIRProductionDispatchTests|RCIRAuthorityDispatchTests'
+      - name: Real OpenAPI through exactly seven public operations
+        run: python3 scripts/acceptance-rcir-openapi.py .build/debug/rightclick evidence/rcir-production/public-mcp
+      - name: Independently check signed claims and provider effect correlation
+        run: |
+          python3 -m venv "$RUNNER_TEMP/rcir-receipt-verifier"
+          "$RUNNER_TEMP/rcir-receipt-verifier/bin/python" -m pip install cryptography==50.0.1
+          RIGHTCLICK_AUTHORITY_RECEIPT_EVIDENCE=evidence/rcir-production/authority "$RUNNER_TEMP/rcir-receipt-verifier/bin/python" -m unittest discover -s Tests -p 'test_rcir*receipt_verifier.py' -v
+          "$RUNNER_TEMP/rcir-receipt-verifier/bin/python" scripts/acceptance-rcir-signed-evidence.py --public evidence/rcir-production/public-mcp --native evidence/rcir-production/native-effects --output evidence/rcir-production/independent-signed-claims
+      - name: Actual live schema drift and reacquisition without reconnecting
+        run: python3 scripts/acceptance-rcir-openapi-freshness.py .build/debug/rightclick evidence/rcir-production/live-schema
+      - name: Confirm source inputs remained unchanged
+        run: python3 scripts/record-ci-source.py evidence/rcir-production/after
+      - name: Preserve new-run transcripts, effects and signed receipts
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: rcir-production-linux-${{ matrix.arch }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/rcir-production
           if-no-files-found: error

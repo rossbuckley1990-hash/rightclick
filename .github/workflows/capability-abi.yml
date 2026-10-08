@@ -2,14 +2,18 @@ name: Capability ABI portable tests
 on:
   pull_request:
     paths:
-      - 'Sources/RightClickProtocol/CapabilityABI.swift'
+      - 'Sources/RightClickProtocol/**'
+      - 'Package.swift'
+      - 'Package.resolved'
       - 'Tests/RightClickCoreTests/CapabilityABI*Tests.swift'
       - 'scripts/test-capability-abi.sh'
       - '.github/workflows/capability-abi.yml'
   push:
     branches: [main]
     paths:
-      - 'Sources/RightClickProtocol/CapabilityABI.swift'
+      - 'Sources/RightClickProtocol/**'
+      - 'Package.swift'
+      - 'Package.resolved'
       - 'Tests/RightClickCoreTests/CapabilityABI*Tests.swift'
       - 'scripts/test-capability-abi.sh'
       - '.github/workflows/capability-abi.yml'
@@ -25,5 +29,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Validate exact portable ABI source in Swift 5 mode
         run: bash scripts/test-capability-abi.sh
