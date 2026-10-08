@@ -1,0 +1,216 @@
+name: Self-Assembling Kubernetes WASM A2A Experiment
+
+on:
+  push:
+    branches:
+      - experiment/self-assembling-k8s-wasm-a2a
+    paths:
+      - .github/workflows/self-assembling-fabric.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fabric:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      EXP_DIR: experiments/self-assembling-fabric
+      EVIDENCE_DIR: experiments/self-assembling-fabric/evidence
+
+    steps:
+      - name: Checkout isolated branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Prepare evidence directory
+        run: |
+          mkdir -p "$EVIDENCE_DIR"
+          echo "run_id=${{ github.run_id }}" > "$EVIDENCE_DIR/full-experiment.log"
+          echo "ref=${{ github.ref }}" >> "$EVIDENCE_DIR/full-experiment.log"
+          echo "sha=${{ github.sha }}" >> "$EVIDENCE_DIR/full-experiment.log"
+
+      - name: Build deterministic WASM capsule and Wasmtime executor
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y wabt jq
+          wat2wasm "$EXP_DIR/compute.wat" -o "$EXP_DIR/capsule.wasm"
+          WASM_SHA=$(sha256sum "$EXP_DIR/capsule.wasm" | awk '{print $1}')
+          WASM_SIZE=$(stat -c%s "$EXP_DIR/capsule.wasm")
+          echo "WASM_SHA=$WASM_SHA" >> "$GITHUB_ENV"
+          docker build -t rc-wasm-executor:local -f "$EXP_DIR/Dockerfile.executor" "$EXP_DIR"
+          WASMTIME_VERSION=$(docker run --rm --entrypoint python rc-wasm-executor:local -c "import importlib.metadata; print(importlib.metadata.version('wasmtime'))")
+          echo "WASMTIME_VERSION=$WASMTIME_VERSION" >> "$GITHUB_ENV"
+          jq -n             --arg sha256 "$WASM_SHA"             --argjson bytes "$WASM_SIZE"             --arg runtime "wasmtime-python"             --arg runtime_version "$WASMTIME_VERSION"             '{sha256:$sha256,bytes:$bytes,runtime:$runtime,runtime_version:$runtime_version,source:"compute.wat",function:"sum_squares"}'             > "$EVIDENCE_DIR/wasm_manifest.json"
+
+      - name: Bootstrap real ephemeral Kubernetes cluster
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSLo kind https://kind.sigs.k8s.io/dl/v0.27.0/kind-linux-amd64
+          chmod +x kind
+          sudo mv kind /usr/local/bin/kind
+          kind create cluster --name rc-fabric --wait 120s
+          kind load docker-image rc-wasm-executor:local --name rc-fabric
+          KIND_VERSION=$(kind version | tr -d '\n')
+          DOCKER_VERSION=$(docker --version | tr -d '\n')
+          KUBE_JSON=$(kubectl version -o json)
+          jq -n             --arg kind "$KIND_VERSION"             --arg docker "$DOCKER_VERSION"             --arg wasmtime "$WASMTIME_VERSION"             --argjson kubernetes "$KUBE_JSON"             '{kind:$kind,docker:$docker,wasmtime:$wasmtime,kubernetes:$kubernetes,substrate:"GitHub-hosted Ubuntu runner + kind"}'             > "$EVIDENCE_DIR/environment.json"
+          kubectl get nodes -o wide | tee -a "$EVIDENCE_DIR/full-experiment.log"
+
+      - name: Deploy three discoverable A2A-style agents
+        shell: bash
+        run: |
+          set -euo pipefail
+          kubectl create namespace rc-fabric
+          kubectl -n rc-fabric create configmap fabric-code             --from-file=agent.py="$EXP_DIR/agent.py"             --from-file=coordinator.py="$EXP_DIR/coordinator.py"
+          sed "s/__MODULE_SHA__/$WASM_SHA/g" "$EXP_DIR/k8s.yaml" | kubectl apply -f -
+          kubectl -n rc-fabric rollout status deployment/agent-a --timeout=120s
+          kubectl -n rc-fabric rollout status deployment/agent-b --timeout=120s
+          kubectl -n rc-fabric rollout status deployment/agent-c --timeout=120s
+          kubectl -n rc-fabric get deployments,services,pods -o wide | tee -a "$EVIDENCE_DIR/full-experiment.log"
+
+      - name: Run negotiated computation with forced worker death
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/coordinator-job.yaml <<EOF
+          apiVersion: batch/v1
+          kind: Job
+          metadata:
+            name: coordinator
+            namespace: rc-fabric
+            labels:
+              experiment: self-assembling
+          spec:
+            backoffLimit: 0
+            template:
+              metadata:
+                labels:
+                  experiment: self-assembling
+                  app: coordinator
+              spec:
+                serviceAccountName: fabric-agent
+                restartPolicy: Never
+                containers:
+                - name: coordinator
+                  image: python:3.12-slim
+                  command: ["python","/app/coordinator.py"]
+                  env:
+                  - name: MODULE_SHA
+                    value: "$WASM_SHA"
+                  - name: NAMESPACE
+                    value: rc-fabric
+                  volumeMounts:
+                  - name: code
+                    mountPath: /app
+                volumes:
+                - name: code
+                  configMap:
+                    name: fabric-code
+          EOF
+          kubectl apply -f /tmp/coordinator-job.yaml
+          if ! kubectl -n rc-fabric wait --for=condition=complete job/coordinator --timeout=240s; then
+            kubectl -n rc-fabric logs job/coordinator | tee -a "$EVIDENCE_DIR/full-experiment.log" || true
+            kubectl -n rc-fabric describe job/coordinator | tee -a "$EVIDENCE_DIR/full-experiment.log" || true
+            exit 1
+          fi
+          kubectl -n rc-fabric logs job/coordinator | tee -a "$EVIDENCE_DIR/full-experiment.log"
+          EVIDENCE_B64=$(grep '^EVIDENCE_B64=' "$EVIDENCE_DIR/full-experiment.log" | tail -1 | cut -d= -f2-)
+          test -n "$EVIDENCE_B64"
+          printf '%s' "$EVIDENCE_B64" | base64 -d > "$EVIDENCE_DIR/evidence.json"
+
+      - name: Independently verify and preserve execution evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          kubectl -n rc-fabric get jobs,pods -o wide > "$EVIDENCE_DIR/kubernetes_jobs.txt"
+          kubectl -n rc-fabric get events --sort-by=.metadata.creationTimestamp >> "$EVIDENCE_DIR/kubernetes_jobs.txt" || true
+
+          jq '.agent_cards' "$EVIDENCE_DIR/evidence.json" > "$EVIDENCE_DIR/agent_cards.json"
+          jq '.execution_graph' "$EVIDENCE_DIR/evidence.json" > "$EVIDENCE_DIR/execution_graph.json"
+          jq -c '.events[]' "$EVIDENCE_DIR/evidence.json" > "$EVIDENCE_DIR/task_events.jsonl"
+          jq '.failure_injection' "$EVIDENCE_DIR/evidence.json" > "$EVIDENCE_DIR/failure_injection.json"
+          jq '.negotiations' "$EVIDENCE_DIR/evidence.json" > "$EVIDENCE_DIR/negotiations.json"
+          jq '.protocol' "$EVIDENCE_DIR/evidence.json" > "$EVIDENCE_DIR/protocol.json"
+
+          N=$(jq -r '.final_verification.n' "$EVIDENCE_DIR/evidence.json")
+          OBSERVED=$(jq -r '.final_verification.observed' "$EVIDENCE_DIR/evidence.json")
+          EXPECTED=$(( N * (N + 1) * (2 * N + 1) / 6 ))
+          RECOVERED=$(jq -r '.failure_injection.recovered' "$EVIDENCE_DIR/evidence.json")
+          A2A_HTTP=$(jq -r '.protocol.a2a_http' "$EVIDENCE_DIR/evidence.json")
+          WASM_COUNT=$(jq '[.results[] | select(.runtime=="wasmtime-python")] | length' "$EVIDENCE_DIR/evidence.json")
+          POST_202=$(jq '[.http_transactions[] | select(.method=="POST" and .status==202)] | length' "$EVIDENCE_DIR/evidence.json")
+          MATERIALIZED=$(jq '[.execution_graph.edges[] | select(.kind=="materializes")] | length' "$EVIDENCE_DIR/evidence.json")
+          INTERRUPTED=$(jq '[.events[] | select(.event=="interrupted")] | length' "$EVIDENCE_DIR/evidence.json")
+          REASSIGNED=$(jq '[.events[] | select(.event=="reassigned")] | length' "$EVIDENCE_DIR/evidence.json")
+          RESULT_SHA=$(printf '%s' "$OBSERVED" | sha256sum | awk '{print $1}')
+          EXPECTED_SHA=$(printf '%s' "$EXPECTED" | sha256sum | awk '{print $1}')
+
+          VERIFIED=false
+          if [ "$OBSERVED" = "$EXPECTED" ]              && [ "$RECOVERED" = "true" ]              && [ "$A2A_HTTP" = "true" ]              && [ "$WASM_COUNT" -eq 4 ]              && [ "$POST_202" -ge 5 ]              && [ "$MATERIALIZED" -ge 5 ]              && [ "$INTERRUPTED" -ge 1 ]              && [ "$REASSIGNED" -ge 1 ]; then
+            VERIFIED=true
+          fi
+
+          jq -n             --argjson expected "$EXPECTED"             --argjson observed "$OBSERVED"             --arg expected_sha256 "$EXPECTED_SHA"             --arg observed_sha256 "$RESULT_SHA"             --arg wasm_sha256 "$WASM_SHA"             --argjson recovered "$RECOVERED"             --argjson a2a_http "$A2A_HTTP"             --argjson wasm_executions "$WASM_COUNT"             --argjson accepted_http_tasks "$POST_202"             --argjson materialized_jobs "$MATERIALIZED"             --argjson interrupted_events "$INTERRUPTED"             --argjson reassigned_events "$REASSIGNED"             --argjson VERIFIED "$VERIFIED"             '{expected:$expected,observed:$observed,expected_sha256:$expected_sha256,observed_sha256:$observed_sha256,wasm_sha256:$wasm_sha256,recovered:$recovered,a2a_http:$a2a_http,wasm_executions:$wasm_executions,accepted_http_tasks:$accepted_http_tasks,materialized_jobs:$materialized_jobs,interrupted_events:$interrupted_events,reassigned_events:$reassigned_events,VERIFIED:$VERIFIED,oracle:"closed-form sum-of-squares formula executed outside the WASM executors"}'             > "$EVIDENCE_DIR/final_verification.json"
+
+          echo "RESULT_VERIFIED=$VERIFIED" >> "$GITHUB_ENV"
+          echo "OBSERVED=$OBSERVED" >> "$GITHUB_ENV"
+          echo "EXPECTED=$EXPECTED" >> "$GITHUB_ENV"
+          echo "RECOVERED=$RECOVERED" >> "$GITHUB_ENV"
+          echo "A2A_HTTP=$A2A_HTTP" >> "$GITHUB_ENV"
+
+          cat > "$EXP_DIR/README.md" <<EOF
+          # Self-Assembling Compute Fabric Experiment
+
+          This experiment tests the statement: **computation is a negotiated capability, not a deployed service**.
+
+          Persistent components are generic A2A-style agents, Kubernetes, and a content-addressed WASM capsule. A coordinator discovers live Agent Cards over HTTP, chooses capacity dynamically, delegates shards, and each selected agent materializes a one-shot Kubernetes Job that executes the WASM capsule under Wasmtime.
+
+          The run deliberately destroys one agent pod and its accepted executor Job. The same logical shard is then negotiated onto a different agent using the identical WASM SHA-256. The aggregate is independently checked against a closed-form sum-of-squares oracle.
+
+          This uses a minimal A2A-style HTTP surface for the experiment and **does not claim full A2A standards conformance**. See evidence/protocol.json.
+
+          Final gate: VERIFIED=$VERIFIED
+          EOF
+
+          test "$VERIFIED" = "true"
+
+      - name: Tear down ephemeral computation
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          mkdir -p "$EVIDENCE_DIR"
+          JOBS_AFTER="unknown"
+          NS_PRESENT="unknown"
+          CLUSTER_PRESENT="unknown"
+          if kind get clusters 2>/dev/null | grep -qx rc-fabric; then
+            kubectl -n rc-fabric delete jobs -l experiment=self-assembling --wait=true --ignore-not-found
+            JOBS_AFTER=$(kubectl -n rc-fabric get jobs -l experiment=self-assembling -o name 2>/dev/null | wc -l | tr -d ' ')
+            kubectl delete namespace rc-fabric --wait=true --ignore-not-found
+            if kubectl get namespace rc-fabric >/dev/null 2>&1; then NS_PRESENT=true; else NS_PRESENT=false; fi
+            kind delete cluster --name rc-fabric | tee -a "$EVIDENCE_DIR/full-experiment.log"
+            if kind get clusters 2>/dev/null | grep -qx rc-fabric; then CLUSTER_PRESENT=true; else CLUSTER_PRESENT=false; fi
+          fi
+          jq -n             --arg jobs_remaining "$JOBS_AFTER"             --arg namespace_present "$NS_PRESENT"             --arg cluster_present "$CLUSTER_PRESENT"             '{ephemeral_jobs_remaining:$jobs_remaining,namespace_present_after_cleanup:$namespace_present,kind_cluster_present_after_cleanup:$cluster_present}'             > "$EVIDENCE_DIR/cleanup.json"
+
+      - name: Commit durable evidence to isolated branch
+        if: always()
+        shell: bash
+        run: |
+          set -e
+          mkdir -p "$EVIDENCE_DIR"
+          git config user.name "RIGHTCLICK Experiment"
+          git config user.email "rightclick-experiment@users.noreply.github.com"
+          git add "$EVIDENCE_DIR" "$EXP_DIR/README.md" 2>/dev/null || git add "$EVIDENCE_DIR"
+          if git diff --cached --quiet; then
+            echo "No evidence changes to commit."
+            exit 0
+          fi
+          MSG="EXPERIMENT_RESULT VERIFIED=${RESULT_VERIFIED:-unknown} OBSERVED=${OBSERVED:-unknown} EXPECTED=${EXPECTED:-unknown} RECOVERED=${RECOVERED:-unknown} A2A_HTTP=${A2A_HTTP:-unknown} WASM_SHA=${WASM_SHA:-unknown}"
+          git commit -m "$MSG"
+          git push origin HEAD:"$GITHUB_REF_NAME"
