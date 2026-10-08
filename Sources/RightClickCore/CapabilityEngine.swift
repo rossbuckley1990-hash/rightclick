@@ -12,6 +12,7 @@ public final class CapabilityEngine {
     }
     public let runtimeEnvironment: RuntimeEnvironment
     private let rcirHost: RCIRExecutionHost
+    private var statusReflectors: [String: any CapabilityExecutionStatusReflector] = [:]
     private let experience: CapabilityExperience?
     private let fixedReflectors:
         [any CapabilityReflector]
@@ -287,6 +288,10 @@ public final class CapabilityEngine {
 
         ExecutionStore.shared.put(initial)
 
+        if let statusOwner = reflector as? any CapabilityExecutionStatusReflector {
+            statusReflectors[executionId] = statusOwner
+        }
+
         let startedRecord: ExecutionRecord
 
         if let admitted = reflector as? any RCIRExecutionReflector {
@@ -327,6 +332,7 @@ public final class CapabilityEngine {
         }
 
         ExecutionStore.shared.put(started)
+        started = ExecutionStore.shared.get(executionId) ?? started
 
         if reflector.completionWaitSeconds > 0,
            Thread.isMainThread,
@@ -556,6 +562,10 @@ public final class CapabilityEngine {
 
         ExecutionStore.shared.put(initial)
 
+        if let statusOwner = reflector as? any CapabilityExecutionStatusReflector {
+            statusReflectors[executionId] = statusOwner
+        }
+
         var providerRecord: ExecutionRecord
 
         try admissionCheck?()
@@ -603,6 +613,7 @@ public final class CapabilityEngine {
         ExecutionStore.shared.put(
             providerRecord
         )
+        providerRecord = ExecutionStore.shared.get(executionId) ?? providerRecord
 
         // Asynchronous reflectors remain started. Verification
         // cannot adjudicate an outcome that has not reached an
@@ -664,17 +675,21 @@ public final class CapabilityEngine {
                 ),
             message: result.message,
             output: result.output,
+            result: providerRecord.result,
             events: providerRecord.events,
             evidence: result.evidence,
             verification:
                 result.verification,
-            rcir: result.rcir
+            rcir: result.rcir,
+            rcirEvents: providerRecord.rcirEvents,
+            rcirEventPage: providerRecord.rcirEventPage,
+            lifecycle: providerRecord.lifecycle
         )
 
         ExecutionStore.shared.put(final)
         experience?.observe(capability: capability, executionID: executionId, result: result)
 
-        return final
+        return ExecutionStore.shared.get(executionId) ?? final
     }
 
     private func reflector(
@@ -845,9 +860,13 @@ public final class CapabilityEngine {
             title: record.title,
             message: record.message,
             output: record.output,
+            result: record.result,
             evidence: record.evidence,
             verification: record.verification,
-            rcir: record.rcir
+            rcir: record.rcir,
+            rcirEvents: record.rcirEvents,
+            rcirEventPage: record.rcirEventPage,
+            lifecycle: record.lifecycle
         )
     }
 
@@ -871,7 +890,8 @@ public final class CapabilityEngine {
                 spec: spec,
                 item: item,
                 before: before,
-                returnedText: providerResult.output
+                returnedText: providerResult.output,
+                returnedResult: providerResult.result
             )
 
         var result = providerResult
@@ -924,12 +944,63 @@ public final class CapabilityEngine {
     }
 
     public func executionStatus(_ executionId: String) -> ExecutionRecord {
-        ExecutionStore.shared.get(executionId) ?? ExecutionRecord(
+        let live = rcirHost.activeExecutionStatus(executionID: executionId)
+        let stored = ExecutionStore.shared.get(executionId)
+        if stored?.lifecycle?.terminal == true { return stored! }
+        return live ?? stored ?? ExecutionRecord(
             executionId: executionId,
             actionId: "",
             state: .unknown,
             message: "No execution with that id."
         )
+    }
+
+    /// The same bounded history applies to local and routed execution.
+    public func executionStatus(_ executionId: String, cursor: Int64, limit: Int,
+                                maximumBytes: Int = 262_144) throws -> ExecutionRecord {
+        guard cursor >= 0 else { throw RCIRError.invalidSequence }
+        guard (1...256).contains(limit), (1...262_144).contains(maximumBytes) else { throw RCIRError.invalidLimit }
+        let live = rcirHost.activeExecutionStatus(executionID: executionId)
+        var record = executionStatus(executionId)
+        if record.lifecycle?.terminal != true, let live { record = live }
+        // Re-read terminal storage after the live lookup: publication can race
+        // either lookup, but retained history is installed before live removal.
+        if let terminal = ExecutionStore.shared.get(executionId), terminal.lifecycle?.terminal == true {
+            record = terminal
+        }
+        if let page = try ExecutionStore.shared.rcirEventPage(executionId: executionId,
+            after: cursor, limit: limit, maximumBytes: maximumBytes) {
+            record.rcirEventPage = page
+        } else if let page = try rcirHost.activeEventPage(executionID: executionId,
+            after: cursor, limit: limit, maximumBytes: maximumBytes) {
+            record.rcirEventPage = page
+        } else if cursor != 0 {
+            record.rcirEventPage = nil
+        }
+        // Event history is exposed only through the bounded page in status.
+        record.rcirEvents = nil
+        return record
+    }
+
+    /// Captured before dispatch, so later discovery cannot change execution's owner.
+    public func executionStatusReflector(_ executionId: String) -> (any CapabilityExecutionStatusReflector)? {
+        withExclusiveAccess { statusReflectors[executionId] }
+    }
+
+    /// Transport waits happen outside the engine lock and never redispatch.
+    public func refreshedExecutionStatus(_ executionId: String, cursor: Int64 = 0,
+        limit: Int = 64, maximumBytes: Int = 262_144) async throws -> ExecutionRecord {
+        guard cursor >= 0 else { throw RCIRError.invalidSequence }
+        guard (1...256).contains(limit), (1...262_144).contains(maximumBytes) else { throw RCIRError.invalidLimit }
+        if let owner = executionStatusReflector(executionId),
+           let refreshed = try await owner.executionStatus(executionID: executionId, cursor: cursor,
+               limit: limit, maximumBytes: maximumBytes) {
+            ExecutionStore.shared.put(refreshed)
+            return refreshed
+        }
+        return try withExclusiveAccess {
+            try executionStatus(executionId, cursor: cursor, limit: limit, maximumBytes: maximumBytes)
+        }
     }
 
     public func providers() -> [ProviderSummary] {
