@@ -5,6 +5,9 @@ import Glibc
 #endif
 import Foundation
 import RightClickHostFiles
+#if os(Windows)
+import WinSDK
+#endif
 
 /// Generic host-selected executable boundary. Arguments are passed directly,
 /// never through a shell. Discovery data cannot select an executable or grant
@@ -62,7 +65,18 @@ enum BoundedCapabilityProcess {
 #else
         process.environment = ["PATH": "/usr/bin:/bin", "HOME": FileManager.default.temporaryDirectory.path]
 #endif
-        let pipe = Pipe(); process.standardOutput = pipe; process.standardError = FileHandle.nullDevice
+        let pipe = Pipe(); process.standardOutput = pipe
+#if os(Windows)
+        // The explicit FileHandle branch preserves child inheritance, unlike
+        // Foundation's nullDevice special case on the measured Windows host.
+        outcome = .admissionOrLaunchFailure
+        guard let stderr = FileHandle(forWritingAtPath: "\\\\.\\NUL") else { throw RCIRError.unavailable }
+        defer { try? stderr.close() }
+        guard GetFileType(stderr._handle) == FILE_TYPE_CHAR else { throw RCIRError.unavailable }
+        process.standardError = stderr
+#else
+        process.standardError = FileHandle.nullDevice
+#endif
         let inputPipe = input.map { _ in Pipe() }
         if let inputPipe {
             process.standardInput = inputPipe
