@@ -25,6 +25,7 @@ public final class InMemoryEnvironmentProvider: EnvironmentProvider {
         public var bootstrapAcceptedWithoutRuntime = false
         public var deleteAcceptedStillPresent = false
         public var suppressChallengeEffect = false
+        public var partitionAfterChallengeAcceptanceOnce = false
         public var reportedChallengeOverride: String?
         public var observedChallengeOverride: String?
         public var runtimeManifestOverride: EnvironmentRuntimeManifest?
@@ -158,6 +159,10 @@ public final class InMemoryEnvironmentProvider: EnvironmentProvider {
             if !faults.suppressChallengeEffect { resource.observedChallenges[executionID] = challenge }
             resources[handle.correlationID] = resource
             events.append("challenge:" + handle.environmentID + ":" + executionID)
+        }
+        if faults.partitionAfterChallengeAcceptanceOnce {
+            faults.partitionAfterChallengeAcceptanceOnce = false
+            faults.partitioned = true
         }
         return try acceptance(resourceID: resource.resourceID)
     }
