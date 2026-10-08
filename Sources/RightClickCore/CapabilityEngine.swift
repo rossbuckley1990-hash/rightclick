@@ -814,7 +814,8 @@ public final class CapabilityEngine {
                 boundary:
                     "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
                 outcomeVerified:
-                    matched
+                    matched,
+                observationBoundary: .returnedValue
             )
 
         result.message =
@@ -896,6 +897,13 @@ public final class CapabilityEngine {
 
         var result = providerResult
         result.verification = verification
+        let evaluated = verification.predicates.filter(\.evaluated)
+        let observationBoundary: OutcomeObservationBoundary = evaluated.isEmpty ? .none :
+            evaluated.contains { $0.predicate.type != .textEquals && $0.predicate.type != .resultPathEquals }
+                ? .externalState : .returnedValue
+        let boundary = observationBoundary == .returnedValue
+            ? "Evaluated caller-declared postconditions against provider-returned text or typed result bytes. Only the returned value was observed."
+            : "Evaluated caller-declared postconditions against independent host observations and any requested returned values after invocation."
 
         switch verification.status {
         case .verifiedSuccess:
@@ -905,9 +913,9 @@ public final class CapabilityEngine {
 
             result.evidence = OutcomeEvidence(
                 type: "generic_postcondition",
-                boundary:
-                    "Evaluated provider-independent caller-declared postconditions against observable state after invocation.",
-                outcomeVerified: true
+                boundary: boundary,
+                outcomeVerified: true,
+                observationBoundary: observationBoundary
             )
 
         case .verifiedFailure:
@@ -917,9 +925,9 @@ public final class CapabilityEngine {
 
             result.evidence = OutcomeEvidence(
                 type: "generic_postcondition",
-                boundary:
-                    "Evaluated provider-independent caller-declared postconditions against observable state after invocation. The intended outcome was not established.",
-                outcomeVerified: false
+                boundary: boundary + " The intended outcome was not established.",
+                outcomeVerified: false,
+                observationBoundary: observationBoundary
             )
 
         case .unverified:
