@@ -336,6 +336,10 @@ enum RightClickAuthorityCLI {
     private static func readSecretFromInput()
         -> String?
     {
+#if os(Windows)
+        // No terminal echo suppression adapter is available; abstain.
+        return nil
+#else
         let descriptor =
             fileno(
                 stdin
@@ -422,6 +426,7 @@ enum RightClickAuthorityCLI {
             strippingNewline:
                 true
         )
+#endif
     }
 
     private static let usage =

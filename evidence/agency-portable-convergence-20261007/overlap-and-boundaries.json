@@ -1,0 +1,49 @@
+{
+  "currentMain": "1c3d8c91be5b419e3e4af882972dba025fad2794",
+  "candidate": "19cd9f5",
+  "portablePR51": "c201420095aa4ac0bb775a019d8b65e844f6245d",
+  "portablePR37": "a41c2775ac3ba00b05773af3fe428357cc0b7fca",
+  "sharedAncestor": "05ace2fec149c62c7cfb24f41fafde863b377ff5",
+  "strategy": "Converge PR51 host portability into existing RCIR engine; preserve PR37 delivery gates independently, no second core",
+  "conflicts": [
+    "Sources/RightClickCore/CapabilityEngine.swift",
+    "Sources/RightClickCore/RCIRExecutionHost.swift",
+    "Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift"
+  ],
+  "portableBoundaries": [
+    "Host-guard AppKit, native Services, Bonjour and onboarding",
+    "Cross-platform hashing and Ed25519 via Swift Crypto",
+    "RuntimePlatform storage paths/content classification",
+    "One portable MCP stdio/HTTP transport",
+    "Protected-reference backend preserving POSIX no-follow/owner/mode constraints and equivalent Windows owner/DACL/handle checks",
+    "Immutable execution snapshots through same host file abstraction"
+  ],
+  "mustPreserve": [
+    "Engine invocation isolation and capacity refusal before dispatch",
+    "Live capability snapshot invalidation and contract refresh",
+    "Typed host-selected JSON observation with independently scoped credential reference",
+    "A2A deferred ownership/policy revalidation",
+    "Signed observation/projection/semantic outcome",
+    "Provider-specific transports hidden beneath common RCIR admission",
+    "No added model-facing provider tools"
+  ],
+  "remainingRED": [
+    "Native Windows protected config/key/observer references",
+    "Windows genuine gRPC transport (PR51 explicitly excludes it)",
+    "Linux and Windows combined candidate full build/tests/real capability discovery",
+    "Platform-independent new substrate files still import Darwin/CryptoKit",
+    "Real unary+streaming acceptance across complete matrix"
+  ],
+  "PR37ReusableDelivery": [
+    "scripts/portable-delivery.py",
+    "scripts/portable_common.py",
+    "scripts/portable_bundle.py",
+    "scripts/portable_acceptance.py",
+    "scripts/portable-clean-linux.py",
+    "Tests/Packaging/test_portable_delivery.py"
+  ],
+  "CIObserved": {
+    "PR37": "Linux executable build passed; test target missing Bonjour descriptors; Windows SDK AsyncBytes/bytes unresolved; macOS passed",
+    "PR51": "Native Linux failed (details pending whole workflow completion); RCIR production test compilation failed nonescaping enqueue Swift exclusivity; native Windows/macOS still active"
+  }
+}

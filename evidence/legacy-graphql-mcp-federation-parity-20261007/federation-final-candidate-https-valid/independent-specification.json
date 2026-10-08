@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "RIGHTCLICK Federation Remote Proof Provider",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/rossbuckley1990-hash/rightclick/{ref}/fixtures/federation-proof/result.txt": {
+      "get": {
+        "operationId": "readFederationProof",
+        "summary": "Read federation proof",
+        "parameters": [
+          {
+            "name": "ref",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exact federation proof text",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

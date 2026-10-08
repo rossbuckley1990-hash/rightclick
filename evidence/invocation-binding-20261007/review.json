@@ -1,0 +1,33 @@
+{
+  "sourceBase": "dfb3f133ea5a17b2d1ff8249d0e8269caf687ea6",
+  "priorFindings": {
+    "SEC001": "Resolved in current source: every completed-unverified observer attempt rechecks session policy/provider and authority; revocation preserves known unverified completion.",
+    "SEC002": "Resolved in current source: atomic session reservations, bounded live sessions, expired/finished reaping.",
+    "SEC003": "Resolved in host-owner boundary: bounded no-follow single-descriptor byte capture and private read-only lifetime-managed executable/component/credential snapshots; compromised owner/kernel not covered.",
+    "SEC004": "Resolved in source: global ExecutionStore count/encoded-byte/terminal-age bounds and explicit unverified compaction.",
+    "SEC005": "Root 0bdc800 diff independently reviewed: run and begin catches retire nonterminal thrown-callback records to unknown/unverified; original error preserved; terminal record not overwritten."
+  },
+  "causalFinding": {
+    "severity": "P1",
+    "substrates": [
+      "Kafka",
+      "Kubernetes"
+    ],
+    "genericDeficiency": "Independent matching state could be prior state, because provider coordinates/desired values alone did not bind to current invocation.",
+    "reusablePrimitive": "RCIRInvocationBinding plus canonical optional verification path; verifier compares full observed marker with its own host-generated task UUID, in addition to exact desired field projection.",
+    "thinProviderLayer": {
+      "Kafka": "fixed rightclick.invocation header at publish; exactly one bounded canonical marker independently consumed",
+      "Kubernetes": "fixed rightclick.io/invocation metadata annotation at create; normalized independent GET includes marker"
+    },
+    "redEvidence": "Frozen v2 tests on unchanged dfb source: fresh control passes; old observation falsely succeeds for both transports, 6 expected assertion failures, 0 unexpected.",
+    "greenEvidence": "Same frozen v2 tests on modified production Core source: 3 tests pass, 0 failures.",
+    "reuse": "Other effectful transports can carry a fixed host marker and select its full-observation path without another AI tool."
+  },
+  "limitations": [
+    "Controlled fixtures never contact a real broker or cluster. Genuine issuer-scoped Kafka/Kubernetes current-build proof remains RED until rerun by root.",
+    "Seven-operation self-use executes actual historical binary hash; independently verified source-to-binary binding not established for this resumed evidence.",
+    "No executable procedural-memory recipe was invoked; existing ledger is advisory design experience.",
+    "This bounded review is not universal security certification; eleven-substrate acceptance remains RED."
+  ],
+  "regressionEvidence": "green-regressions-v2.log: 31 tests, 5 explicit genuine-provider skips, 0 failures; includes signed full mismatched observation, own task marker, bounded invalid path/identity, existing authority/policy/input/artifact tests."
+}

@@ -1,0 +1,420 @@
+[
+  {
+    "request": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "method": "initialize",
+      "params": {
+        "capabilities": {
+          "experimental": {
+            "codex/auth-change": {}
+          }
+        },
+        "clientInfo": {
+          "name": "rightclick-defensive-review",
+          "version": "1"
+        },
+        "protocolVersion": "2025-06-18"
+      }
+    },
+    "response": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-06-18",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.2"
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "arguments": {},
+        "name": "context_runtime"
+      }
+    },
+    "response": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"executablePath\" : \"/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/.build/arm64-apple-macosx/debug/rightclick\",\n  \"executableRealPath\" : \"/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/.build/arm64-apple-macosx/debug/rightclick\",\n  \"executableSHA256\" : \"f6ff30c7aba72a9fdd1666416abf73eeecb22783bfa5490d747c563a4e08616d\",\n  \"pid\" : 44549,\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"stdio\",\n  \"version\" : \"0.2.2\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "arguments": {},
+        "name": "context_providers"
+      }
+    },
+    "response": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "[\n  {\n    \"capabilityTitles\" : [\n      \"Ask Claude\"\n    ],\n    \"name\" : \"/Users/ross/Library/Services/Claude - ask.workflow\",\n    \"source\" : \"service\"\n  },\n  {\n    \"capabilityTitles\" : [\n      \"New Claude Code Session Here\"\n    ],\n    \"name\" : \"/Users/ross/Library/Services/Claude - codeHere.workflow\",\n    \"source\" : \"service\"\n  },\n  {\n    \"capabilityTitles\" : [\n      \"Send to Claude\"\n    ],\n    \"name\" : \"/Users/ross/Library/Services/Claude - send.workflow\",\n    \"source\" : \"service\"\n  },\n  {\n    \"capabilityTitles\" : [\n      \"RIGHTCLICK PROBE - Make Evidence Copy\"\n    ],\n    \"name\" : \"/Users/ross/Library/Services/RIGHTCLICK PROBE - Make Evidence Copy.workflow\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.flyingmeat.Acorn8\",\n    \"capabilityTitles\" : [\n      \"Open Image in Acorn\"\n    ],\n    \"name\" : \"Acorn\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.services.addToiTunesAsSpokenTrack\",\n    \"capabilityTitles\" : [\n      \"Add to Music as a Spoken Track\"\n    ],\n    \"name\" : \"Add to Music as a Spoken Track\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.Automator\",\n    \"capabilityTitles\" : [\n      \"Create Service\",\n      \"Create Workflow\"\n    ],\n    \"name\" : \"Automator\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.barebones.bbedit\",\n    \"capabilityTitles\" : [\n      \"BBEdit/Append Selection to BBEdit Scratchpad\",\n      \"BBEdit/Compare Using BBEdit\",\n      \"BBEdit/New BBEdit Document with Selection\",\n      \"BBEdit/New Note in BBEdit\",\n      \"BBEdit/Open File in BBEdit\",\n      \"BBEdit/Search Here in BBEdit\"\n    ],\n    \"name\" : \"BBEdit\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.BluetoothFileExchange\",\n    \"capabilityTitles\" : [\n      \"Send File To Bluetooth Device\"\n    ],\n    \"name\" : \"Bluetooth File Exchange\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.ChineseTextConverterService\",\n    \"capabilityTitles\" : [\n      \"Convert Text from Simplified to Traditional Chinese\",\n      \"Convert Text from Traditional to Simplified Chinese\",\n      \"Convert Text to Full Width\",\n      \"Convert Text to Half Width\"\n    ],\n    \"name\" : \"ChineseTextConverterService\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.coteditor.CotEditor\",\n    \"capabilityTitles\" : [\n      \"New CotEditor Window Containing Selection\",\n      \"Open in CotEditor\"\n    ],\n    \"name\" : \"CotEditor\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"ch.sudo.cyberduck\",\n    \"capabilityTitles\" : [\n      \"Cyberduck/Upload with Cyberduck\"\n    ],\n    \"name\" : \"Cyberduck\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.Dictionary\",\n    \"capabilityTitles\" : [\n      \"Look Up in Dictionary\"\n    ],\n    \"name\" : \"Dictionary\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.QuickTime.service.encodeSelectedAudioFiles\",\n    \"capabilityTitles\" : [\n      \"Encode Selected Audio Files\"\n    ],\n    \"name\" : \"Encode Selected Audio Files\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.services.encodeSelectedVideoFiles\",\n    \"capabilityTitles\" : [\n      \"Encode Selected Video Files\"\n    ],\n    \"name\" : \"Encode Selected Video Files\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.FileMerge\",\n    \"capabilityTitles\" : [\n      \"FileMerge/Compare Files\",\n      \"FileMerge/Compare To Main\"\n    ],\n    \"name\" : \"FileMerge\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.finder\",\n    \"capabilityTitles\" : [\n      \"Finder/Open\",\n      \"Finder/Reveal\",\n      \"Finder/Show Info\"\n    ],\n    \"name\" : \"Finder\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.FolderActionsSetup\",\n    \"capabilityTitles\" : [\n      \"Folder Actions Setup\"\n    ],\n    \"name\" : \"Folder Actions Setup\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.lemkesoft.graphicconverter12\",\n    \"capabilityTitles\" : [\n      \"Convert to JPEG (Quality 75%) using GraphicConverter\",\n      \"Convert to JPEG (Quality 85%) using GraphicConverter\",\n      \"Create Icon and Preview using GraphicConverter\",\n      \"Open using GraphicConverter\",\n      \"Remove Extended Attributes (Xattr) using GraphicConverter\",\n      \"Remove Metadata using GraphicConverter\",\n      \"Remove Resourcefork using GraphicConverter\",\n      \"Rename using GraphicConverter\u2026\",\n      \"Rotate JPEG lossless depending on Exif using GraphicConverter\",\n      \"Set File Date to Exif Date using GraphicConverter\",\n      \"Set default XMP using GraphicConverter\",\n      \"Show in Browser using GraphicConverter\",\n      \"Show random in Slide Show using GraphicConverter\",\n      \"Show sorted in Slide Show using GraphicConverter\"\n    ],\n    \"name\" : \"GraphicConverter 12\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"net.pornel.ImageOptim\",\n    \"capabilityTitles\" : [\n      \"ImageOptimize\"\n    ],\n    \"name\" : \"ImageOptim\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"net.pornel.ImageOptimizeExtension\",\n    \"capabilityTitles\" : [\n      \"ImageOptimize\"\n    ],\n    \"name\" : \"ImageOptimize\",\n    \"source\" : \"action_extension\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.dt.Instruments\",\n    \"capabilityTitles\" : [\n      \"Activity Monitor\",\n      \"Allocations & Leaks\",\n      \"File Activity\",\n      \"System Trace\"\n    ],\n    \"name\" : \"Instruments\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.aone.keka\",\n    \"capabilityTitles\" : [\n      \"Keka/Compress using Keka\",\n      \"Keka/Extract using Keka\",\n      \"Keka/Send to Keka\"\n    ],\n    \"name\" : \"Keka\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"org.vim.MacVim\",\n    \"capabilityTitles\" : [\n      \"MacVim/New MacVim Buffer Here\",\n      \"MacVim/New MacVim Buffer With Selection\"\n    ],\n    \"name\" : \"MacVim\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.mail\",\n    \"capabilityTitles\" : [\n      \"Mail/New Email To Address\",\n      \"Mail/New Email With Selection\"\n    ],\n    \"name\" : \"Mail\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.MarkupUI.Markup\",\n    \"capabilityTitles\" : [\n      \"Markup\"\n    ],\n    \"name\" : \"Markup\",\n    \"source\" : \"action_extension\"\n  },\n  {\n    \"bundleIdentifier\" : \"dev.zcode.app.finder-open-workflow\",\n    \"capabilityTitles\" : [\n      \"Open in ZCode\"\n    ],\n    \"name\" : \"Open in ZCode\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.Preview\",\n    \"capabilityTitles\" : [\n      \"Preview/Open images\"\n    ],\n    \"name\" : \"Preview\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"org.R-project.R\",\n    \"capabilityTitles\" : [\n      \"R/R \u2013 Open selection\",\n      \"R/R \u2013 Run selection in Console\"\n    ],\n    \"name\" : \"R\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.ScriptEditor2\",\n    \"capabilityTitles\" : [\n      \"Script Editor/Get Result of AppleScript\",\n      \"Script Editor/Make New AppleScript\",\n      \"Script Editor/Run as AppleScript\"\n    ],\n    \"name\" : \"Script Editor\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.services.setDesktopPicture\",\n    \"capabilityTitles\" : [\n      \"Set Desktop Picture\"\n    ],\n    \"name\" : \"Set Desktop Picture\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.services.showMap\",\n    \"capabilityTitles\" : [\n      \"Show Map\"\n    ],\n    \"name\" : \"Show Map\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.speech.SpeechService\",\n    \"capabilityTitles\" : [\n      \"Speech/Start Speaking Text\",\n      \"Speech/Stop Speaking\"\n    ],\n    \"name\" : \"Speech Service\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.SpotlightService\",\n    \"capabilityTitles\" : [\n      \"SEARCH_WITH_SPOTLIGHT\"\n    ],\n    \"name\" : \"SpotlightService\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.Stickies\",\n    \"capabilityTitles\" : [\n      \"Make Sticky\"\n    ],\n    \"name\" : \"Stickies\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.SummaryService\",\n    \"capabilityTitles\" : [\n      \"Summarize\"\n    ],\n    \"name\" : \"Summary Service\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.systemuiserver\",\n    \"capabilityTitles\" : [\n      \"Open URL\"\n    ],\n    \"name\" : \"SystemUIServer\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.Terminal\",\n    \"capabilityTitles\" : [\n      \"New Terminal Tab at Folder\",\n      \"New Terminal at Folder\",\n      \"Open man Page in Terminal\",\n      \"Search man Page Index in Terminal\"\n    ],\n    \"name\" : \"Terminal\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.TextEdit\",\n    \"capabilityTitles\" : [\n      \"New TextEdit Window Containing Selection\",\n      \"Open Selected File in TextEdit\"\n    ],\n    \"name\" : \"TextEdit\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.apple.dt.Xcode\",\n    \"capabilityTitles\" : [\n      \"Find in Xcode\",\n      \"Open Quickly in Xcode\"\n    ],\n    \"name\" : \"Xcode\",\n    \"source\" : \"service\"\n  },\n  {\n    \"bundleIdentifier\" : \"com.yojam.app\",\n    \"capabilityTitles\" : [\n      \"Open in Yojam\"\n    ],\n    \"name\" : \"Yojam\",\n    \"source\" : \"service\"\n  }\n]",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "method": "tools/list"
+    },
+    "response": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "arguments": {
+          "item": "RIGHTCLICK defensive review"
+        },
+        "name": "context_inspect"
+      }
+    },
+    "response": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"byteCount\" : 27,\n  \"display\" : \"RIGHTCLICK defensive review\",\n  \"isDirectory\" : false,\n  \"kind\" : \"text\",\n  \"text\" : \"RIGHTCLICK defensive review\",\n  \"typeIdentifier\" : \"public.plain-text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "arguments": {
+          "item": "https://example.com/rightclick-defensive-review"
+        },
+        "name": "context_actions"
+      }
+    },
+    "response": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actions\" : [\n    {\n      \"explanation\" : \"macOS Service \u201cAdd to Music as a Spoken Track\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.services.addToiTunesAsSpokenTrack:runWorkflowAsService\",\n      \"inputTypes\" : [\n        \"public.utf8-plain-text\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.services.addToiTunesAsSpokenTrack\",\n        \"name\" : \"Add to Music as a Spoken Track\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Add to Music as a Spoken Track\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cBBEdit/Append Selection to BBEdit Scratchpad\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.barebones.bbedit:appendToScratchpadService\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"public.utf8-plain-text\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.barebones.bbedit\",\n        \"name\" : \"BBEdit\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"BBEdit/Append Selection to BBEdit Scratchpad\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cBBEdit/New BBEdit Document with Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.barebones.bbedit:openSelectionService\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"public.plain-text\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.barebones.bbedit\",\n        \"name\" : \"BBEdit\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"BBEdit/New BBEdit Document with Selection\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cBBEdit/New Note in BBEdit\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.barebones.bbedit:newNoteWithSelectionService\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"public.plain-text\",\n        \"public.utf8-plain-text\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.barebones.bbedit\",\n        \"name\" : \"BBEdit\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"BBEdit/New Note in BBEdit\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cConvert Text to Full Width\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.ChineseTextConverterService:convertTextToFullWidth\",\n      \"inputTypes\" : [\n        \"public.rtf\",\n        \"public.utf8-plain-text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.ChineseTextConverterService\",\n        \"name\" : \"ChineseTextConverterService\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Convert Text to Full Width\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cConvert Text to Half Width\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.ChineseTextConverterService:convertTextToHalfWidth\",\n      \"inputTypes\" : [\n        \"public.rtf\",\n        \"public.utf8-plain-text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.ChineseTextConverterService\",\n        \"name\" : \"ChineseTextConverterService\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Convert Text to Half Width\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cCreate Service\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.Automator:makeNewServiceWithPasteboard\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"NSFilenamesPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.Automator\",\n        \"name\" : \"Automator\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Create Service\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cCreate Workflow\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.Automator:makeNewWorkflowServiceWithPasteboard\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"NSFilenamesPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.Automator\",\n        \"name\" : \"Automator\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Create Workflow\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cFind in Xcode\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.dt.Xcode:batchFind\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.dt.Xcode\",\n        \"name\" : \"Xcode\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Find in Xcode\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cFinder/Open\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.finder:open\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"NSFilenamesPboardType\",\n        \"NSURLPboardType\",\n        \"NSMultipleTextSelectionPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.finder\",\n        \"name\" : \"Finder\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Finder/Open\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cFinder/Reveal\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.finder:reveal\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"NSFilenamesPboardType\",\n        \"NSURLPboardType\",\n        \"NSMultipleTextSelectionPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.finder\",\n        \"name\" : \"Finder\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Finder/Reveal\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cFinder/Show Info\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.finder:showInfo\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"NSFilenamesPboardType\",\n        \"NSURLPboardType\",\n        \"NSMultipleTextSelectionPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.finder\",\n        \"name\" : \"Finder\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Finder/Show Info\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cLook Up in Dictionary\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.Dictionary:doLookupService\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.Dictionary\",\n        \"name\" : \"Dictionary\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Look Up in Dictionary\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cMacVim/New MacVim Buffer With Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:org.vim.MacVim:openSelection\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"public.utf8-plain-text\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"org.vim.MacVim\",\n        \"name\" : \"MacVim\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"MacVim/New MacVim Buffer With Selection\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cMail/New Email To Address\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.mail:mailTo\",\n      \"inputTypes\" : [\n        \"NSPasteboardTypeString\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.mail\",\n        \"name\" : \"Mail\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"external_share\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Mail/New Email To Address\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cMail/New Email With Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.mail:mailSelection\",\n      \"inputTypes\" : [\n        \"NSPasteboardTypeRTFD\",\n        \"NSPasteboardTypeRTF\",\n        \"NSPasteboardTypeString\",\n        \"Apple Web Archive pasteboard type\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.mail\",\n        \"name\" : \"Mail\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"external_share\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Mail/New Email With Selection\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cMake Sticky\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.Stickies:makeStickyFromTextService\",\n      \"inputTypes\" : [\n        \"public.plain-text\",\n        \"public.rtf\",\n        \"com.apple.flat-rtfd\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.Stickies\",\n        \"name\" : \"Stickies\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Make Sticky\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cNew CotEditor Window Containing Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.coteditor.CotEditor:openSelection\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.coteditor.CotEditor\",\n        \"name\" : \"CotEditor\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"New CotEditor Window Containing Selection\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cNew TextEdit Window Containing Selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.TextEdit:openSelection\",\n      \"inputTypes\" : [\n        \"com.apple.flat-rtfd\",\n        \"public.rtf\",\n        \"public.plain-text\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.TextEdit\",\n        \"name\" : \"TextEdit\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"New TextEdit Window Containing Selection\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cOpen in Yojam\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.yojam.app:openURLViaService\",\n      \"inputTypes\" : [\n        \"public.url\",\n        \"public.rtf\",\n        \"public.utf8-plain-text\",\n        \"NSStringPboardType\",\n        \"public.plain-text\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.yojam.app\",\n        \"name\" : \"Yojam\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Open in Yojam\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cOpen man Page in Terminal\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.Terminal:openManPage\",\n      \"inputTypes\" : [\n        \"public.plain-text\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.Terminal\",\n        \"name\" : \"Terminal\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Open man Page in Terminal\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cOpen Quickly in Xcode\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.dt.Xcode:openQuickly\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.dt.Xcode\",\n        \"name\" : \"Xcode\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Open Quickly in Xcode\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cOpen URL\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.systemuiserver:openURL\",\n      \"inputTypes\" : [\n        \"NSURLPboardType\",\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.systemuiserver\",\n        \"name\" : \"SystemUIServer\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Open URL\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cR/R \u2013 Open selection\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:org.R-project.R:doPerformServiceOpenRScript\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"org.R-project.R\",\n        \"name\" : \"R\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"R/R \u2013 Open selection\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cR/R \u2013 Run selection in Console\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:org.R-project.R:doPerformServiceRunInConsole\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\",\n        \"NSURLPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"org.R-project.R\",\n        \"name\" : \"R\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"R/R \u2013 Run selection in Console\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cScript Editor/Get Result of AppleScript\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.ScriptEditor2:runAsAppleScript\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"unsupported\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.ScriptEditor2\",\n        \"name\" : \"Script Editor\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"code_execution\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Script Editor/Get Result of AppleScript\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cScript Editor/Make New AppleScript\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.ScriptEditor2:makeNewAppleScript\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.ScriptEditor2\",\n        \"name\" : \"Script Editor\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"code_execution\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Script Editor/Make New AppleScript\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cSearch man Page Index in Terminal\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.Terminal:searchManPages\",\n      \"inputTypes\" : [\n        \"public.plain-text\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.Terminal\",\n        \"name\" : \"Terminal\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Search man Page Index in Terminal\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cSEARCH_WITH_SPOTLIGHT\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.SpotlightService:doSearchWithSpotlight\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.SpotlightService\",\n        \"name\" : \"SpotlightService\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"SEARCH_WITH_SPOTLIGHT\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cSpeech/Start Speaking Text\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.speech.SpeechService:doSpeakSelectedText\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.speech.SpeechService\",\n        \"name\" : \"Speech Service\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Speech/Start Speaking Text\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cSpeech/Stop Speaking\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.speech.SpeechService:doStopSpeaking\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.speech.SpeechService\",\n        \"name\" : \"Speech Service\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Speech/Stop Speaking\"\n    },\n    {\n      \"explanation\" : \"macOS Service \u201cSummarize\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.\",\n      \"id\" : \"service:com.apple.SummaryService:doSummarization\",\n      \"inputTypes\" : [\n        \"NSStringPboardType\"\n      ],\n      \"invocation\" : \"interactive\",\n      \"provider\" : {\n        \"bundleIdentifier\" : \"com.apple.SummaryService\",\n        \"name\" : \"Summary Service\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"unknown\",\n      \"source\" : \"service\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Summarize\"\n    }\n  ],\n  \"contentType\" : \"public.url\",\n  \"item\" : \"https://example.com/rightclick-defensive-review\",\n  \"kind\" : \"web_url\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "arguments": {
+          "actionId": "service:com.apple.services.addToiTunesAsSpokenTrack:runWorkflowAsService",
+          "item": "https://example.com/rightclick-defensive-review"
+        },
+        "name": "context_explain"
+      }
+    },
+    "response": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"id\" : \"service:com.apple.services.addToiTunesAsSpokenTrack:runWorkflowAsService\",\n  \"inputs\" : [\n    \"public.utf8-plain-text\"\n  ],\n  \"invocation\" : \"interactive\",\n  \"metadata\" : {\n    \"bundlePath\" : \"/System/Library/Services/Add to Music as a Spoken Track.workflow\",\n    \"discoverySource\" : \"NSServices Info.plist\",\n    \"message\" : \"runWorkflowAsService\"\n  },\n  \"output\" : [\n\n  ],\n  \"provider\" : {\n    \"bundleIdentifier\" : \"com.apple.services.addToiTunesAsSpokenTrack\",\n    \"name\" : \"Add to Music as a Spoken Track\"\n  },\n  \"reflectorID\" : \"macos.service\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"unknown\",\n  \"source\" : \"service\",\n  \"supportLevel\" : \"public_supported\",\n  \"title\" : \"Add to Music as a Spoken Track\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "id": 8,
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "arguments": {
+          "actionId": "service:com.apple.services.addToiTunesAsSpokenTrack:runWorkflowAsService",
+          "confirmed": false,
+          "item": "https://example.com/rightclick-defensive-review"
+        },
+        "name": "context_run"
+      }
+    },
+    "response": {
+      "id": 8,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"service:com.apple.services.addToiTunesAsSpokenTrack:runWorkflowAsService\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No outcome observation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"none\"\n  },\n  \"executionId\" : \"F919AE45-C12C-44AA-AE96-CAB61894D238\",\n  \"message\" : \"CONFIRMATION_REQUIRED. Add to Music as a Spoken Track is unknown.\",\n  \"state\" : \"awaiting_user\",\n  \"title\" : \"Add to Music as a Spoken Track\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "id": 9,
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "arguments": {
+          "executionId": "F919AE45-C12C-44AA-AE96-CAB61894D238"
+        },
+        "name": "context_run_status"
+      }
+    },
+    "response": {
+      "id": 9,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"service:com.apple.services.addToiTunesAsSpokenTrack:runWorkflowAsService\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No outcome observation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"none\"\n  },\n  \"executionId\" : \"F919AE45-C12C-44AA-AE96-CAB61894D238\",\n  \"message\" : \"CONFIRMATION_REQUIRED. Add to Music as a Spoken Track is unknown.\",\n  \"state\" : \"awaiting_user\",\n  \"title\" : \"Add to Music as a Spoken Track\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

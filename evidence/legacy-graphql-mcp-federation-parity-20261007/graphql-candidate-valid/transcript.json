@@ -1,0 +1,567 @@
+[
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "rightclick-canonical-proof",
+          "version": "1"
+        }
+      }
+    },
+    "response": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.3"
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list"
+    },
+    "response": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "contractSHA256": {
+                  "description": "Optional exact declaration fingerprint returned by context_actions/context_explain. Rejects changed contracts; it grants no authority. Omission retains legacy fresh resolution without a caller-held pin.",
+                  "type": "string"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"executablePath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableRealPath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableSHA256\" : \"c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12\",\n  \"pid\" : 92681,\n  \"platform\" : \"macOS\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"stdio\",\n  \"version\" : \"0.2.3\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "tools/call",
+      "params": {
+        "name": "context_providers",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"ownedProofProjection\": {\"operation\": \"context_providers\", \"successfulRead\": true, \"omitted\": \"unrelated provider inventory/count\"}}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "method": "tools/call",
+      "params": {
+        "name": "context_inspect",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity"
+        }
+      }
+    },
+    "response": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"byteCount\" : 32,\n  \"display\" : \"RIGHTCLICK legacy GraphQL parity\",\n  \"isDirectory\" : false,\n  \"kind\" : \"text\",\n  \"text\" : \"RIGHTCLICK legacy GraphQL parity\",\n  \"typeDescription\" : \"Plain text\",\n  \"typeIdentifier\" : \"public.plain-text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity"
+        }
+      }
+    },
+    "response": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"actions\": [{\"contractSHA256\": \"5177902d4378e5f89ae0ceeba17a20a265edd17dbbf495e930593192b9e00044\", \"explanation\": \"GraphQL mutation: legacyParityRecord\", \"id\": \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:4066f5198c1f154b:legacyParityRecord\", \"inputTypes\": [\"public.plain-text\"], \"invocation\": \"interactive\", \"provider\": {\"name\": \"RIGHTCLICK legacy GraphQL parity 048b94ec6f81\"}, \"requiresConfirmation\": true, \"safety\": \"unknown\", \"source\": \"system\", \"supportLevel\": \"experimental\", \"title\": \"GraphQL mutation: legacyParityRecord\"}, {\"contractSHA256\": \"e4af8aa5b561655730e9d1e9c9aa0c5e8498ada96318e112af9af783f339c43f\", \"explanation\": \"GraphQL query: legacyParityEcho\", \"id\": \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:78849364ceb7273c:legacyParityEcho\", \"inputTypes\": [\"public.plain-text\"], \"invocation\": \"interactive\", \"provider\": {\"name\": \"RIGHTCLICK legacy GraphQL parity 048b94ec6f81\"}, \"requiresConfirmation\": true, \"safety\": \"unknown\", \"source\": \"system\", \"supportLevel\": \"experimental\", \"title\": \"GraphQL query: legacyParityEcho\"}], \"contentType\": \"public.plain-text\", \"item\": \"RIGHTCLICK legacy GraphQL parity\", \"kind\": \"text\"}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "tools/call",
+      "params": {
+        "name": "context_explain",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:78849364ceb7273c:legacyParityEcho"
+        }
+      }
+    },
+    "response": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"contractSHA256\" : \"e4af8aa5b561655730e9d1e9c9aa0c5e8498ada96318e112af9af783f339c43f\",\n  \"effectAssessment\" : {\n    \"basis\" : \"graphql_operation_declaration\",\n    \"dataSensitivity\" : \"unknown\",\n    \"executionBoundary\" : \"network_endpoint\",\n    \"grantsAuthority\" : false,\n    \"stateAccess\" : \"declared_read\",\n    \"verified\" : false\n  },\n  \"id\" : \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:78849364ceb7273c:legacyParityEcho\",\n  \"inputs\" : [\n    \"public.plain-text\"\n  ],\n  \"invocation\" : \"interactive\",\n  \"metadata\" : {\n    \"argumentsSchema\" : \"{\\\"additionalProperties\\\":false,\\\"properties\\\":{\\\"value\\\":{\\\"description\\\":\\\"GraphQL type String!. Supply this argument as a string; RIGHTCLICK coerces it to the reflected GraphQL scalar or enum type.\\\",\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"value\\\"],\\\"type\\\":\\\"object\\\"}\",\n    \"endpointURL\" : \"http://rightclick-gql-parity-ab584ada73c8.local:61575/graphql\",\n    \"field\" : \"legacyParityEcho\",\n    \"graphqlReturnType\" : \"String!\",\n    \"operationKind\" : \"query\",\n    \"providerIdentity\" : \"100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab\",\n    \"resultValidation\" : \"graphql_response\",\n    \"schemaSHA256\" : \"32da24e3a44e2f742aea89fae2e17dabb7e013500519571df4d3bdd5a72a1685\",\n    \"substrate\" : \"graphql\"\n  },\n  \"output\" : [\n    \"public.json\"\n  ],\n  \"provider\" : {\n    \"name\" : \"RIGHTCLICK legacy GraphQL parity 048b94ec6f81\"\n  },\n  \"reflectorID\" : \"graphql-reflector:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"unknown\",\n  \"source\" : \"system\",\n  \"supportLevel\" : \"experimental\",\n  \"title\" : \"GraphQL query: legacyParityEcho\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:78849364ceb7273c:legacyParityEcho",
+          "arguments": {
+            "value": "gql-parity-0ed1588c45714525aeedc0fd39b557fb"
+          }
+        }
+      }
+    },
+    "response": {
+      "id": 8,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:78849364ceb7273c:legacyParityEcho\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No outcome observation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"none\"\n  },\n  \"executionId\" : \"249E5402-FF69-4B61-94E4-A115E7FFF0D6\",\n  \"message\" : \"CONFIRMATION_REQUIRED. GraphQL query: legacyParityEcho is unknown.\",\n  \"state\" : \"awaiting_user\",\n  \"title\" : \"GraphQL query: legacyParityEcho\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 9,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:78849364ceb7273c:legacyParityEcho",
+          "arguments": {
+            "value": "gql-parity-0ed1588c45714525aeedc0fd39b557fb"
+          },
+          "confirmed": true
+        }
+      }
+    },
+    "response": {
+      "id": 9,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:78849364ceb7273c:legacyParityEcho\",\n  \"events\" : [\n    \"RCIR admitted generation=1\",\n    \"RCIR consumed lease=D5035700-4391-441B-A690-20909E981D96\",\n    \"RCIR task=3DB32656-0A4E-4AEC-8084-58642EE6F4DA outcome=unverified\",\n    \"Durable invocation journal is not enabled; this execution has volatile history.\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"GraphQL transport and response semantics were valid. This does not independently verify the user's intended external outcome.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_acceptance\"\n  },\n  \"executionId\" : \"74160660-6FA5-4AE9-9529-9CCCF92E2276\",\n  \"message\" : \"The GraphQL provider accepted the operation and returned a valid GraphQL data object. Semantic outcome is unverified.\",\n  \"output\" : \"{\\\"rightclickResult\\\":\\\"gql-parity-0ed1588c45714525aeedc0fd39b557fb\\\"}\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"D5035700-4391-441B-A690-20909E981D96\",\n    \"observationBoundary\" : \"No host observer configured; provider completion is unverified.\",\n    \"outcome\" : \"unverified\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxNDA3MzY4NzMxczY6ZXZlbnRzYTE6eDE1ODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTQwNzMzODc4OXM1OnZhbHVlczY2OnsicmlnaHRjbGlja1Jlc3VsdCI6ImdxbC1wYXJpdHktMGVkMTU4OGM0NTcxNDUyNWFlZWRjMGZkMzliNTU3ZmIifXMxMDpmaW5pc2hlZEF0aTEzOjE3OTE0MDczMzg3ODlzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxNDA3MzM4Nzg5czEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OkQ1MDM1NzAwLTQzOTEtNDQxQi1BNjkwLTIwOTA5RTk4MUQ5NnMxMTpvYnNlcnZhdGlvbm5zMTA6b2JzZXJ2ZWRBdG5zNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NDkyNDpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4Nzc6UklHSFRDTElDSy1WQUxVRS0xAG8xOnM1OnZhbHVlczQzOmdxbC1wYXJpdHktMGVkMTU4OGM0NTcxNDUyNWFlZWRjMGZkMzliNTU3ZmJzNzpiaW5kaW5neDM5OTg6UklHSFRDTElDSy1SQ0lSLUJJTkRJTkctMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czg6Y29udHJhY3R4MjA2OTpSSUdIVENMSUNLLVJDSVItQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czM6YWJpeDE2ODA6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4OTk6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czU6dmFsdWVzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM1OnZhbHVlczEwOmNhcGFiaWxpdHlzMTA2OmdyYXBocWw6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYjo3ODg0OTM2NGNlYjcyNzNjOmxlZ2FjeVBhcml0eUVjaG9zMTE6ZGVjbGFyYXRpb25vNDpzMTA6Y2FwYWJpbGl0eW8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMyNDg6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsidmFsdWUiOnsiZGVzY3JpcHRpb24iOiJHcmFwaFFMIHR5cGUgU3RyaW5nIS4gU3VwcGx5IHRoaXMgYXJndW1lbnQgYXMgYSBzdHJpbmc7IFJJR0hUQ0xJQ0sgY29lcmNlcyBpdCB0byB0aGUgcmVmbGVjdGVkIEdyYXBoUUwgc2NhbGFyIG9yIGVudW0gdHlwZS4iLCJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJ2YWx1ZSJdLCJ0eXBlIjoib2JqZWN0In1zMTE6ZW5kcG9pbnRVUkxzNjE6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbHM1OmZpZWxkczE2OmxlZ2FjeVBhcml0eUVjaG9zMTc6Z3JhcGhxbFJldHVyblR5cGVzNzpTdHJpbmchczEzOm9wZXJhdGlvbktpbmRzNTpxdWVyeXMxNjpwcm92aWRlcklkZW50aXR5czY0OjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzMTY6cmVzdWx0VmFsaWRhdGlvbnMxNjpncmFwaHFsX3Jlc3BvbnNlczEyOnNjaGVtYVNIQTI1NnM2NDozMmRhMjRlM2E0NGUyZjc0MmFlYTg5ZmFlMmUxN2RhYmI3ZTAxMzUwMDUxOTU3MWRmNGQzYmRkNWE3MmExNjg1czk6c3Vic3RyYXRlczc6Z3JhcGhxbHM3Om91dHB1dHNhMTpzMTE6cHVibGljLmpzb25zMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczQ1OlJJR0hUQ0xJQ0sgbGVnYWN5IEdyYXBoUUwgcGFyaXR5IDA0OGI5NGVjNmY4MXMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTI6ZXhwZXJpbWVudGFsczU6dGl0bGVzMzE6R3JhcGhRTCBxdWVyeTogbGVnYWN5UGFyaXR5RWNob3MxNDpleHBlY3RlZE91dHB1dG5zMTI6dmVyaWZpY2F0aW9ubnMxODp3aXJlUmVwcmVzZW50YXRpb25zNjg6Y29tcGlsZXItdmFsaWRhdGVkIGxlZ2FjeSBzdHJpbmcgYXJndW1lbnRzOyBzZXJpYWxpemVkIHJldHVybmVkIHRleHRzODpwcm92aWRlcnM2NDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczk6cmVmbGVjdG9yczgyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMxNjg6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbCNncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6Nzg4NDkzNjRjZWI3MjczYzpsZWdhY3lQYXJpdHlFY2hvczQ6dGFza281OnMxMTpjYW5jZWxsYWJsZWIwczc6ZWxlbWVudG5zODptYXhCeXRlc2k2OjI2MjE0NHM5Om1heEV2ZW50c2kzOjI1NnM1OnNoYXBlczU6dW5hcnlzMTI6dmVyaWZpY2F0aW9ubnM5OmRpc2NvdmVyeXgxNzE4OlJJR0hUQ0xJQ0stUkNJUi1HUkFQSC1ERUNMQVJBVElPTi0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMzphYml4MTUzMzpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3g5OTpSSUdIVENMSUNLLVZBTFVFLTEAbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMTpzNTp2YWx1ZXM2OnN0cmluZ3M4OnJlcXVpcmVkYTE6czU6dmFsdWVzMTA6Y2FwYWJpbGl0eXMxMDY6Z3JhcGhxbDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiOjc4ODQ5MzY0Y2ViNzI3M2M6bGVnYWN5UGFyaXR5RWNob3MxMTpkZWNsYXJhdGlvbm8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMyNDg6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsidmFsdWUiOnsiZGVzY3JpcHRpb24iOiJHcmFwaFFMIHR5cGUgU3RyaW5nIS4gU3VwcGx5IHRoaXMgYXJndW1lbnQgYXMgYSBzdHJpbmc7IFJJR0hUQ0xJQ0sgY29lcmNlcyBpdCB0byB0aGUgcmVmbGVjdGVkIEdyYXBoUUwgc2NhbGFyIG9yIGVudW0gdHlwZS4iLCJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJ2YWx1ZSJdLCJ0eXBlIjoib2JqZWN0In1zMTE6ZW5kcG9pbnRVUkxzNjE6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbHM1OmZpZWxkczE2OmxlZ2FjeVBhcml0eUVjaG9zMTc6Z3JhcGhxbFJldHVyblR5cGVzNzpTdHJpbmchczEzOm9wZXJhdGlvbktpbmRzNTpxdWVyeXMxNjpwcm92aWRlcklkZW50aXR5czY0OjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzMTY6cmVzdWx0VmFsaWRhdGlvbnMxNjpncmFwaHFsX3Jlc3BvbnNlczEyOnNjaGVtYVNIQTI1NnM2NDozMmRhMjRlM2E0NGUyZjc0MmFlYTg5ZmFlMmUxN2RhYmI3ZTAxMzUwMDUxOTU3MWRmNGQzYmRkNWE3MmExNjg1czk6c3Vic3RyYXRlczc6Z3JhcGhxbHM3Om91dHB1dHNhMTpzMTE6cHVibGljLmpzb25zMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczQ1OlJJR0hUQ0xJQ0sgbGVnYWN5IEdyYXBoUUwgcGFyaXR5IDA0OGI5NGVjNmY4MXMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTI6ZXhwZXJpbWVudGFsczU6dGl0bGVzMzE6R3JhcGhRTCBxdWVyeTogbGVnYWN5UGFyaXR5RWNob3M4OnByb3ZpZGVyczY0OjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzOTpyZWZsZWN0b3JzODI6Z3JhcGhxbC1yZWZsZWN0b3I6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYnM2OnJlc3VsdHgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczc6dmVyc2lvbmkxOjFzNzplZmZlY3RzYTE6czc6ZXhlY3V0ZXM0OnRhc2tvNTpzMTE6Y2FuY2VsbGFibGViMHM3OmVsZW1lbnRuczg6bWF4Qnl0ZXNpNjoyNjIxNDRzOTptYXhFdmVudHNpMzoyNTZzNTpzaGFwZXM1OnVuYXJ5czEwOmdlbmVyYXRpb25pMToxczk6cHJpbmNpcGFsczk0OmxvY2FsLW93bmVyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzOTpleHBpcmVzQXRpMTM6MTc5MTQwNzM2ODczMXM4Omlzc3VlZEF0aTEzOjE3OTE0MDczMzg3MzFzNjpwb2xpY3l4NDgwOlJJR0hUQ0xJQ0stUkNJUi1QT0xJQ1ktMQBSSUdIVENMSUNLLVZBTFVFLTEAbzM6czEwOnByaW5jaXBhbHNhMTpzOTQ6bG9jYWwtb3duZXI6Z3JhcGhxbC1yZWZsZWN0b3I6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYnM4OnJldmlzaW9uczg1OmxvY2FsLWNvbmZpcm1hdGlvbi0xOjYzYzU5ZWM2YzQ2MTdhNmNhOGU4MjU0ZjAwNzA1NDkzYzE5MjNiNmZkYzFkZDY3NmU3YzVjOWZjMDViYjBmNTdzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNzpleGVjdXRlczg6cmVzb3VyY2VzMTY4Omh0dHA6Ly9yaWdodGNsaWNrLWdxbC1wYXJpdHktYWI1ODRhZGE3M2M4LmxvY2FsOjYxNTc1L2dyYXBocWwjZ3JhcGhxbDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiOjc4ODQ5MzY0Y2ViNzI3M2M6bGVnYWN5UGFyaXR5RWNob3M2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMxNjg6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbCNncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6Nzg4NDkzNjRjZWI3MjczYzpsZWdhY3lQYXJpdHlFY2hvczE1OnNlbWFudGljT3V0Y29tZXMxMDp1bnZlcmlmaWVkczk6c3RhcnRlZEF0aTEzOjE3OTE0MDczMzg3MzFzNjp0YXNrSURzMzY6M0RCMzI2NTYtMEE0RS00QUVDLTgwODQtNTg2NDJFRTZGNERB\",\n    \"taskID\" : \"3DB32656-0A4E-4AEC-8084-58642EE6F4DA\",\n    \"version\" : 1\n  },\n  \"state\" : \"accepted\",\n  \"title\" : \"GraphQL query: legacyParityEcho\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 10,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "74160660-6FA5-4AE9-9529-9CCCF92E2276"
+        }
+      }
+    },
+    "response": {
+      "id": 10,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:78849364ceb7273c:legacyParityEcho\",\n  \"events\" : [\n    \"RCIR admitted generation=1\",\n    \"RCIR consumed lease=D5035700-4391-441B-A690-20909E981D96\",\n    \"RCIR task=3DB32656-0A4E-4AEC-8084-58642EE6F4DA outcome=unverified\",\n    \"Durable invocation journal is not enabled; this execution has volatile history.\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"GraphQL transport and response semantics were valid. This does not independently verify the user's intended external outcome.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_acceptance\"\n  },\n  \"executionId\" : \"74160660-6FA5-4AE9-9529-9CCCF92E2276\",\n  \"message\" : \"The GraphQL provider accepted the operation and returned a valid GraphQL data object. Semantic outcome is unverified.\",\n  \"output\" : \"{\\\"rightclickResult\\\":\\\"gql-parity-0ed1588c45714525aeedc0fd39b557fb\\\"}\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"D5035700-4391-441B-A690-20909E981D96\",\n    \"observationBoundary\" : \"No host observer configured; provider completion is unverified.\",\n    \"outcome\" : \"unverified\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxNDA3MzY4NzMxczY6ZXZlbnRzYTE6eDE1ODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTQwNzMzODc4OXM1OnZhbHVlczY2OnsicmlnaHRjbGlja1Jlc3VsdCI6ImdxbC1wYXJpdHktMGVkMTU4OGM0NTcxNDUyNWFlZWRjMGZkMzliNTU3ZmIifXMxMDpmaW5pc2hlZEF0aTEzOjE3OTE0MDczMzg3ODlzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxNDA3MzM4Nzg5czEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OkQ1MDM1NzAwLTQzOTEtNDQxQi1BNjkwLTIwOTA5RTk4MUQ5NnMxMTpvYnNlcnZhdGlvbm5zMTA6b2JzZXJ2ZWRBdG5zNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NDkyNDpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4Nzc6UklHSFRDTElDSy1WQUxVRS0xAG8xOnM1OnZhbHVlczQzOmdxbC1wYXJpdHktMGVkMTU4OGM0NTcxNDUyNWFlZWRjMGZkMzliNTU3ZmJzNzpiaW5kaW5neDM5OTg6UklHSFRDTElDSy1SQ0lSLUJJTkRJTkctMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czg6Y29udHJhY3R4MjA2OTpSSUdIVENMSUNLLVJDSVItQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czM6YWJpeDE2ODA6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4OTk6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czU6dmFsdWVzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM1OnZhbHVlczEwOmNhcGFiaWxpdHlzMTA2OmdyYXBocWw6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYjo3ODg0OTM2NGNlYjcyNzNjOmxlZ2FjeVBhcml0eUVjaG9zMTE6ZGVjbGFyYXRpb25vNDpzMTA6Y2FwYWJpbGl0eW8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMyNDg6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsidmFsdWUiOnsiZGVzY3JpcHRpb24iOiJHcmFwaFFMIHR5cGUgU3RyaW5nIS4gU3VwcGx5IHRoaXMgYXJndW1lbnQgYXMgYSBzdHJpbmc7IFJJR0hUQ0xJQ0sgY29lcmNlcyBpdCB0byB0aGUgcmVmbGVjdGVkIEdyYXBoUUwgc2NhbGFyIG9yIGVudW0gdHlwZS4iLCJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJ2YWx1ZSJdLCJ0eXBlIjoib2JqZWN0In1zMTE6ZW5kcG9pbnRVUkxzNjE6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbHM1OmZpZWxkczE2OmxlZ2FjeVBhcml0eUVjaG9zMTc6Z3JhcGhxbFJldHVyblR5cGVzNzpTdHJpbmchczEzOm9wZXJhdGlvbktpbmRzNTpxdWVyeXMxNjpwcm92aWRlcklkZW50aXR5czY0OjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzMTY6cmVzdWx0VmFsaWRhdGlvbnMxNjpncmFwaHFsX3Jlc3BvbnNlczEyOnNjaGVtYVNIQTI1NnM2NDozMmRhMjRlM2E0NGUyZjc0MmFlYTg5ZmFlMmUxN2RhYmI3ZTAxMzUwMDUxOTU3MWRmNGQzYmRkNWE3MmExNjg1czk6c3Vic3RyYXRlczc6Z3JhcGhxbHM3Om91dHB1dHNhMTpzMTE6cHVibGljLmpzb25zMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczQ1OlJJR0hUQ0xJQ0sgbGVnYWN5IEdyYXBoUUwgcGFyaXR5IDA0OGI5NGVjNmY4MXMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTI6ZXhwZXJpbWVudGFsczU6dGl0bGVzMzE6R3JhcGhRTCBxdWVyeTogbGVnYWN5UGFyaXR5RWNob3MxNDpleHBlY3RlZE91dHB1dG5zMTI6dmVyaWZpY2F0aW9ubnMxODp3aXJlUmVwcmVzZW50YXRpb25zNjg6Y29tcGlsZXItdmFsaWRhdGVkIGxlZ2FjeSBzdHJpbmcgYXJndW1lbnRzOyBzZXJpYWxpemVkIHJldHVybmVkIHRleHRzODpwcm92aWRlcnM2NDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczk6cmVmbGVjdG9yczgyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMxNjg6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbCNncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6Nzg4NDkzNjRjZWI3MjczYzpsZWdhY3lQYXJpdHlFY2hvczQ6dGFza281OnMxMTpjYW5jZWxsYWJsZWIwczc6ZWxlbWVudG5zODptYXhCeXRlc2k2OjI2MjE0NHM5Om1heEV2ZW50c2kzOjI1NnM1OnNoYXBlczU6dW5hcnlzMTI6dmVyaWZpY2F0aW9ubnM5OmRpc2NvdmVyeXgxNzE4OlJJR0hUQ0xJQ0stUkNJUi1HUkFQSC1ERUNMQVJBVElPTi0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMzphYml4MTUzMzpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3g5OTpSSUdIVENMSUNLLVZBTFVFLTEAbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMTpzNTp2YWx1ZXM2OnN0cmluZ3M4OnJlcXVpcmVkYTE6czU6dmFsdWVzMTA6Y2FwYWJpbGl0eXMxMDY6Z3JhcGhxbDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiOjc4ODQ5MzY0Y2ViNzI3M2M6bGVnYWN5UGFyaXR5RWNob3MxMTpkZWNsYXJhdGlvbm8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMyNDg6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsidmFsdWUiOnsiZGVzY3JpcHRpb24iOiJHcmFwaFFMIHR5cGUgU3RyaW5nIS4gU3VwcGx5IHRoaXMgYXJndW1lbnQgYXMgYSBzdHJpbmc7IFJJR0hUQ0xJQ0sgY29lcmNlcyBpdCB0byB0aGUgcmVmbGVjdGVkIEdyYXBoUUwgc2NhbGFyIG9yIGVudW0gdHlwZS4iLCJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJ2YWx1ZSJdLCJ0eXBlIjoib2JqZWN0In1zMTE6ZW5kcG9pbnRVUkxzNjE6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbHM1OmZpZWxkczE2OmxlZ2FjeVBhcml0eUVjaG9zMTc6Z3JhcGhxbFJldHVyblR5cGVzNzpTdHJpbmchczEzOm9wZXJhdGlvbktpbmRzNTpxdWVyeXMxNjpwcm92aWRlcklkZW50aXR5czY0OjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzMTY6cmVzdWx0VmFsaWRhdGlvbnMxNjpncmFwaHFsX3Jlc3BvbnNlczEyOnNjaGVtYVNIQTI1NnM2NDozMmRhMjRlM2E0NGUyZjc0MmFlYTg5ZmFlMmUxN2RhYmI3ZTAxMzUwMDUxOTU3MWRmNGQzYmRkNWE3MmExNjg1czk6c3Vic3RyYXRlczc6Z3JhcGhxbHM3Om91dHB1dHNhMTpzMTE6cHVibGljLmpzb25zMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczQ1OlJJR0hUQ0xJQ0sgbGVnYWN5IEdyYXBoUUwgcGFyaXR5IDA0OGI5NGVjNmY4MXMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTI6ZXhwZXJpbWVudGFsczU6dGl0bGVzMzE6R3JhcGhRTCBxdWVyeTogbGVnYWN5UGFyaXR5RWNob3M4OnByb3ZpZGVyczY0OjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzOTpyZWZsZWN0b3JzODI6Z3JhcGhxbC1yZWZsZWN0b3I6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYnM2OnJlc3VsdHgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczc6dmVyc2lvbmkxOjFzNzplZmZlY3RzYTE6czc6ZXhlY3V0ZXM0OnRhc2tvNTpzMTE6Y2FuY2VsbGFibGViMHM3OmVsZW1lbnRuczg6bWF4Qnl0ZXNpNjoyNjIxNDRzOTptYXhFdmVudHNpMzoyNTZzNTpzaGFwZXM1OnVuYXJ5czEwOmdlbmVyYXRpb25pMToxczk6cHJpbmNpcGFsczk0OmxvY2FsLW93bmVyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzOTpleHBpcmVzQXRpMTM6MTc5MTQwNzM2ODczMXM4Omlzc3VlZEF0aTEzOjE3OTE0MDczMzg3MzFzNjpwb2xpY3l4NDgwOlJJR0hUQ0xJQ0stUkNJUi1QT0xJQ1ktMQBSSUdIVENMSUNLLVZBTFVFLTEAbzM6czEwOnByaW5jaXBhbHNhMTpzOTQ6bG9jYWwtb3duZXI6Z3JhcGhxbC1yZWZsZWN0b3I6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYnM4OnJldmlzaW9uczg1OmxvY2FsLWNvbmZpcm1hdGlvbi0xOjYzYzU5ZWM2YzQ2MTdhNmNhOGU4MjU0ZjAwNzA1NDkzYzE5MjNiNmZkYzFkZDY3NmU3YzVjOWZjMDViYjBmNTdzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNzpleGVjdXRlczg6cmVzb3VyY2VzMTY4Omh0dHA6Ly9yaWdodGNsaWNrLWdxbC1wYXJpdHktYWI1ODRhZGE3M2M4LmxvY2FsOjYxNTc1L2dyYXBocWwjZ3JhcGhxbDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiOjc4ODQ5MzY0Y2ViNzI3M2M6bGVnYWN5UGFyaXR5RWNob3M2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMxNjg6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbCNncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6Nzg4NDkzNjRjZWI3MjczYzpsZWdhY3lQYXJpdHlFY2hvczE1OnNlbWFudGljT3V0Y29tZXMxMDp1bnZlcmlmaWVkczk6c3RhcnRlZEF0aTEzOjE3OTE0MDczMzg3MzFzNjp0YXNrSURzMzY6M0RCMzI2NTYtMEE0RS00QUVDLTgwODQtNTg2NDJFRTZGNERB\",\n    \"taskID\" : \"3DB32656-0A4E-4AEC-8084-58642EE6F4DA\",\n    \"version\" : 1\n  },\n  \"state\" : \"accepted\",\n  \"title\" : \"GraphQL query: legacyParityEcho\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 11,
+      "method": "tools/call",
+      "params": {
+        "name": "context_explain",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:4066f5198c1f154b:legacyParityRecord"
+        }
+      }
+    },
+    "response": {
+      "id": 11,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"contractSHA256\" : \"5177902d4378e5f89ae0ceeba17a20a265edd17dbbf495e930593192b9e00044\",\n  \"effectAssessment\" : {\n    \"basis\" : \"graphql_operation_declaration\",\n    \"dataSensitivity\" : \"unknown\",\n    \"executionBoundary\" : \"network_endpoint\",\n    \"grantsAuthority\" : false,\n    \"stateAccess\" : \"may_write\",\n    \"verified\" : false\n  },\n  \"id\" : \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:4066f5198c1f154b:legacyParityRecord\",\n  \"inputs\" : [\n    \"public.plain-text\"\n  ],\n  \"invocation\" : \"interactive\",\n  \"metadata\" : {\n    \"argumentsSchema\" : \"{\\\"additionalProperties\\\":false,\\\"properties\\\":{\\\"input\\\":{\\\"description\\\":\\\"GraphQL type LegacyRecordInput!. Supply this argument as a JSON-encoded string.\\\",\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"input\\\"],\\\"type\\\":\\\"object\\\"}\",\n    \"endpointURL\" : \"http://rightclick-gql-parity-ab584ada73c8.local:61575/graphql\",\n    \"field\" : \"legacyParityRecord\",\n    \"graphqlReturnType\" : \"LegacyRecord!\",\n    \"operationKind\" : \"mutation\",\n    \"providerIdentity\" : \"100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab\",\n    \"resultValidation\" : \"graphql_response\",\n    \"schemaSHA256\" : \"32da24e3a44e2f742aea89fae2e17dabb7e013500519571df4d3bdd5a72a1685\",\n    \"substrate\" : \"graphql\"\n  },\n  \"output\" : [\n    \"public.json\"\n  ],\n  \"provider\" : {\n    \"name\" : \"RIGHTCLICK legacy GraphQL parity 048b94ec6f81\"\n  },\n  \"reflectorID\" : \"graphql-reflector:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"unknown\",\n  \"source\" : \"system\",\n  \"supportLevel\" : \"experimental\",\n  \"title\" : \"GraphQL mutation: legacyParityRecord\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 12,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:4066f5198c1f154b:legacyParityRecord",
+          "arguments": {
+            "input": "{\"label\": \"gql-parity-1f0477b4c92c47d6a5924920cf73f04a\"}"
+          }
+        }
+      }
+    },
+    "response": {
+      "id": 12,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:4066f5198c1f154b:legacyParityRecord\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No outcome observation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"none\"\n  },\n  \"executionId\" : \"A5C4DBB3-4835-4D66-A10B-E903CF20CB15\",\n  \"message\" : \"CONFIRMATION_REQUIRED. GraphQL mutation: legacyParityRecord is unknown.\",\n  \"state\" : \"awaiting_user\",\n  \"title\" : \"GraphQL mutation: legacyParityRecord\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 13,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK legacy GraphQL parity",
+          "actionId": "graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:4066f5198c1f154b:legacyParityRecord",
+          "arguments": {
+            "input": "{\"label\": \"gql-parity-1f0477b4c92c47d6a5924920cf73f04a\"}"
+          },
+          "confirmed": true
+        }
+      }
+    },
+    "response": {
+      "id": 13,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:4066f5198c1f154b:legacyParityRecord\",\n  \"events\" : [\n    \"RCIR admitted generation=2\",\n    \"RCIR consumed lease=3AC9518C-907F-4146-B67E-8AC8EE3BD4BE\",\n    \"RCIR task=C7F5BFB8-2E42-458A-A227-6BABADE80965 outcome=unverified\",\n    \"Durable invocation journal is not enabled; this execution has volatile history.\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"GraphQL transport and response semantics were valid. This does not independently verify the user's intended external outcome.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_acceptance\"\n  },\n  \"executionId\" : \"07F159AA-D80D-4D11-8CE0-C3B0DED2F3F8\",\n  \"message\" : \"The GraphQL provider accepted the operation and returned a valid GraphQL data object. Semantic outcome is unverified.\",\n  \"output\" : \"{\\\"rightclickResult\\\":{\\\"__typename\\\":\\\"LegacyRecord\\\",\\\"label\\\":\\\"gql-parity-1f0477b4c92c47d6a5924920cf73f04a\\\"}}\",\n  \"rcir\" : {\n    \"generation\" : 2,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"3AC9518C-907F-4146-B67E-8AC8EE3BD4BE\",\n    \"observationBoundary\" : \"No host observer configured; provider completion is unverified.\",\n    \"outcome\" : \"unverified\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxNDA3MzcxOTE3czY6ZXZlbnRzYTE6eDE5NzpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTQwNzM0MTk3M3M1OnZhbHVlczEwNDp7InJpZ2h0Y2xpY2tSZXN1bHQiOnsiX190eXBlbmFtZSI6IkxlZ2FjeVJlY29yZCIsImxhYmVsIjoiZ3FsLXBhcml0eS0xZjA0NzdiNGM5MmM0N2Q2YTU5MjQ5MjBjZjczZjA0YSJ9fXMxMDpmaW5pc2hlZEF0aTEzOjE3OTE0MDczNDE5NzNzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxNDA3MzQxOTczczEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OjNBQzk1MThDLTkwN0YtNDE0Ni1CNjdFLThBQzhFRTNCRDRCRXMxMTpvYnNlcnZhdGlvbm5zMTA6b2JzZXJ2ZWRBdG5zNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NDg5MzpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4OTA6UklHSFRDTElDSy1WQUxVRS0xAG8xOnM1OmlucHV0czU2OnsibGFiZWwiOiAiZ3FsLXBhcml0eS0xZjA0NzdiNGM5MmM0N2Q2YTU5MjQ5MjBjZjczZjA0YSJ9czc6YmluZGluZ3gzOTUwOlJJR0hUQ0xJQ0stUkNJUi1CSU5ESU5HLTEAUklHSFRDTElDSy1WQUxVRS0xAG80OnM4OmNvbnRyYWN0eDIwNDY6UklHSFRDTElDSy1SQ0lSLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG80OnMzOmFiaXgxNjU1OlJJR0hUQ0xJQ0stQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzc6czk6YXJndW1lbnRzeDk5OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8xOnM1OmlucHV0czY6c3RyaW5nczg6cmVxdWlyZWRhMTpzNTppbnB1dHMxMDpjYXBhYmlsaXR5czEwODpncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6NDA2NmY1MTk4YzFmMTU0YjpsZWdhY3lQYXJpdHlSZWNvcmRzMTE6ZGVjbGFyYXRpb25vNDpzMTA6Y2FwYWJpbGl0eW8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMyMDQ6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsiaW5wdXQiOnsiZGVzY3JpcHRpb24iOiJHcmFwaFFMIHR5cGUgTGVnYWN5UmVjb3JkSW5wdXQhLiBTdXBwbHkgdGhpcyBhcmd1bWVudCBhcyBhIEpTT04tZW5jb2RlZCBzdHJpbmcuIiwidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsiaW5wdXQiXSwidHlwZSI6Im9iamVjdCJ9czExOmVuZHBvaW50VVJMczYxOmh0dHA6Ly9yaWdodGNsaWNrLWdxbC1wYXJpdHktYWI1ODRhZGE3M2M4LmxvY2FsOjYxNTc1L2dyYXBocWxzNTpmaWVsZHMxODpsZWdhY3lQYXJpdHlSZWNvcmRzMTc6Z3JhcGhxbFJldHVyblR5cGVzMTM6TGVnYWN5UmVjb3JkIXMxMzpvcGVyYXRpb25LaW5kczg6bXV0YXRpb25zMTY6cHJvdmlkZXJJZGVudGl0eXM2NDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczE2OnJlc3VsdFZhbGlkYXRpb25zMTY6Z3JhcGhxbF9yZXNwb25zZXMxMjpzY2hlbWFTSEEyNTZzNjQ6MzJkYTI0ZTNhNDRlMmY3NDJhZWE4OWZhZTJlMTdkYWJiN2UwMTM1MDA1MTk1NzFkZjRkM2JkZDVhNzJhMTY4NXM5OnN1YnN0cmF0ZXM3OmdyYXBocWxzNzpvdXRwdXRzYTE6czExOnB1YmxpYy5qc29uczE2OnByb3ZpZGVyQnVuZGxlSURuczEyOnByb3ZpZGVyTmFtZXM0NTpSSUdIVENMSUNLIGxlZ2FjeSBHcmFwaFFMIHBhcml0eSAwNDhiOTRlYzZmODFzMjA6cmVxdWlyZXNDb25maXJtYXRpb25iMXM2OnNhZmV0eXM3OnVua25vd25zNjpzb3VyY2VzNjpzeXN0ZW1zMTI6c3VwcG9ydExldmVsczEyOmV4cGVyaW1lbnRhbHM1OnRpdGxlczM2OkdyYXBoUUwgbXV0YXRpb246IGxlZ2FjeVBhcml0eVJlY29yZHMxNDpleHBlY3RlZE91dHB1dG5zMTI6dmVyaWZpY2F0aW9ubnMxODp3aXJlUmVwcmVzZW50YXRpb25zNjg6Y29tcGlsZXItdmFsaWRhdGVkIGxlZ2FjeSBzdHJpbmcgYXJndW1lbnRzOyBzZXJpYWxpemVkIHJldHVybmVkIHRleHRzODpwcm92aWRlcnM2NDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczk6cmVmbGVjdG9yczgyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMxNzA6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbCNncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6NDA2NmY1MTk4YzFmMTU0YjpsZWdhY3lQYXJpdHlSZWNvcmRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25uczk6ZGlzY292ZXJ5eDE2OTM6UklHSFRDTElDSy1SQ0lSLUdSQVBILURFQ0xBUkFUSU9OLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMzOmFiaXgxNTA4OlJJR0hUQ0xJQ0stQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzc6czk6YXJndW1lbnRzeDk5OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8xOnM1OmlucHV0czY6c3RyaW5nczg6cmVxdWlyZWRhMTpzNTppbnB1dHMxMDpjYXBhYmlsaXR5czEwODpncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6NDA2NmY1MTk4YzFmMTU0YjpsZWdhY3lQYXJpdHlSZWNvcmRzMTE6ZGVjbGFyYXRpb25vMTE6czY6aW5wdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czEwOmludm9jYXRpb25zMTE6aW50ZXJhY3RpdmVzODptZXRhZGF0YW85OnMxNTphcmd1bWVudHNTY2hlbWFzMjA0OnsiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlLCJwcm9wZXJ0aWVzIjp7ImlucHV0Ijp7ImRlc2NyaXB0aW9uIjoiR3JhcGhRTCB0eXBlIExlZ2FjeVJlY29yZElucHV0IS4gU3VwcGx5IHRoaXMgYXJndW1lbnQgYXMgYSBKU09OLWVuY29kZWQgc3RyaW5nLiIsInR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbImlucHV0Il0sInR5cGUiOiJvYmplY3QifXMxMTplbmRwb2ludFVSTHM2MTpodHRwOi8vcmlnaHRjbGljay1ncWwtcGFyaXR5LWFiNTg0YWRhNzNjOC5sb2NhbDo2MTU3NS9ncmFwaHFsczU6ZmllbGRzMTg6bGVnYWN5UGFyaXR5UmVjb3JkczE3OmdyYXBocWxSZXR1cm5UeXBlczEzOkxlZ2FjeVJlY29yZCFzMTM6b3BlcmF0aW9uS2luZHM4Om11dGF0aW9uczE2OnByb3ZpZGVySWRlbnRpdHlzNjQ6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYnMxNjpyZXN1bHRWYWxpZGF0aW9uczE2OmdyYXBocWxfcmVzcG9uc2VzMTI6c2NoZW1hU0hBMjU2czY0OjMyZGEyNGUzYTQ0ZTJmNzQyYWVhODlmYWUyZTE3ZGFiYjdlMDEzNTAwNTE5NTcxZGY0ZDNiZGQ1YTcyYTE2ODVzOTpzdWJzdHJhdGVzNzpncmFwaHFsczc6b3V0cHV0c2ExOnMxMTpwdWJsaWMuanNvbnMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzNDU6UklHSFRDTElDSyBsZWdhY3kgR3JhcGhRTCBwYXJpdHkgMDQ4Yjk0ZWM2ZjgxczIwOnJlcXVpcmVzQ29uZmlybWF0aW9uYjFzNjpzYWZldHlzNzp1bmtub3duczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxMjpleHBlcmltZW50YWxzNTp0aXRsZXMzNjpHcmFwaFFMIG11dGF0aW9uOiBsZWdhY3lQYXJpdHlSZWNvcmRzODpwcm92aWRlcnM2NDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczk6cmVmbGVjdG9yczgyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOnM3OmV4ZWN1dGVzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMDpnZW5lcmF0aW9uaTE6MnM5OnByaW5jaXBhbHM5NDpsb2NhbC1vd25lcjpncmFwaHFsLXJlZmxlY3RvcjoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczk6ZXhwaXJlc0F0aTEzOjE3OTE0MDczNzE5MTdzODppc3N1ZWRBdGkxMzoxNzkxNDA3MzQxOTE3czY6cG9saWN5eDQ4MjpSSUdIVENMSUNLLVJDSVItUE9MSUNZLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMxMDpwcmluY2lwYWxzYTE6czk0OmxvY2FsLW93bmVyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzODpyZXZpc2lvbnM4NTpsb2NhbC1jb25maXJtYXRpb24tMTo2M2M1OWVjNmM0NjE3YTZjYThlODI1NGYwMDcwNTQ5M2MxOTIzYjZmZGMxZGQ2NzZlN2M1YzlmYzA1YmIwZjU3czY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czc6ZXhlY3V0ZXM4OnJlc291cmNlczE3MDpodHRwOi8vcmlnaHRjbGljay1ncWwtcGFyaXR5LWFiNTg0YWRhNzNjOC5sb2NhbDo2MTU3NS9ncmFwaHFsI2dyYXBocWw6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYjo0MDY2ZjUxOThjMWYxNTRiOmxlZ2FjeVBhcml0eVJlY29yZHM2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMxNzA6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbCNncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6NDA2NmY1MTk4YzFmMTU0YjpsZWdhY3lQYXJpdHlSZWNvcmRzMTU6c2VtYW50aWNPdXRjb21lczEwOnVudmVyaWZpZWRzOTpzdGFydGVkQXRpMTM6MTc5MTQwNzM0MTkxN3M2OnRhc2tJRHMzNjpDN0Y1QkZCOC0yRTQyLTQ1OEEtQTIyNy02QkFCQURFODA5NjU=\",\n    \"taskID\" : \"C7F5BFB8-2E42-458A-A227-6BABADE80965\",\n    \"version\" : 1\n  },\n  \"state\" : \"accepted\",\n  \"title\" : \"GraphQL mutation: legacyParityRecord\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 14,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "07F159AA-D80D-4D11-8CE0-C3B0DED2F3F8"
+        }
+      }
+    },
+    "response": {
+      "id": 14,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"graphql:100e3bacb7a2302dd2ad17a75aff5152e7039b966b110dcd36800877c1e6b2ab:4066f5198c1f154b:legacyParityRecord\",\n  \"events\" : [\n    \"RCIR admitted generation=2\",\n    \"RCIR consumed lease=3AC9518C-907F-4146-B67E-8AC8EE3BD4BE\",\n    \"RCIR task=C7F5BFB8-2E42-458A-A227-6BABADE80965 outcome=unverified\",\n    \"Durable invocation journal is not enabled; this execution has volatile history.\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"GraphQL transport and response semantics were valid. This does not independently verify the user's intended external outcome.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_acceptance\"\n  },\n  \"executionId\" : \"07F159AA-D80D-4D11-8CE0-C3B0DED2F3F8\",\n  \"message\" : \"The GraphQL provider accepted the operation and returned a valid GraphQL data object. Semantic outcome is unverified.\",\n  \"output\" : \"{\\\"rightclickResult\\\":{\\\"__typename\\\":\\\"LegacyRecord\\\",\\\"label\\\":\\\"gql-parity-1f0477b4c92c47d6a5924920cf73f04a\\\"}}\",\n  \"rcir\" : {\n    \"generation\" : 2,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"3AC9518C-907F-4146-B67E-8AC8EE3BD4BE\",\n    \"observationBoundary\" : \"No host observer configured; provider completion is unverified.\",\n    \"outcome\" : \"unverified\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxNDA3MzcxOTE3czY6ZXZlbnRzYTE6eDE5NzpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTQwNzM0MTk3M3M1OnZhbHVlczEwNDp7InJpZ2h0Y2xpY2tSZXN1bHQiOnsiX190eXBlbmFtZSI6IkxlZ2FjeVJlY29yZCIsImxhYmVsIjoiZ3FsLXBhcml0eS0xZjA0NzdiNGM5MmM0N2Q2YTU5MjQ5MjBjZjczZjA0YSJ9fXMxMDpmaW5pc2hlZEF0aTEzOjE3OTE0MDczNDE5NzNzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxNDA3MzQxOTczczEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OjNBQzk1MThDLTkwN0YtNDE0Ni1CNjdFLThBQzhFRTNCRDRCRXMxMTpvYnNlcnZhdGlvbm5zMTA6b2JzZXJ2ZWRBdG5zNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NDg5MzpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4OTA6UklHSFRDTElDSy1WQUxVRS0xAG8xOnM1OmlucHV0czU2OnsibGFiZWwiOiAiZ3FsLXBhcml0eS0xZjA0NzdiNGM5MmM0N2Q2YTU5MjQ5MjBjZjczZjA0YSJ9czc6YmluZGluZ3gzOTUwOlJJR0hUQ0xJQ0stUkNJUi1CSU5ESU5HLTEAUklHSFRDTElDSy1WQUxVRS0xAG80OnM4OmNvbnRyYWN0eDIwNDY6UklHSFRDTElDSy1SQ0lSLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG80OnMzOmFiaXgxNjU1OlJJR0hUQ0xJQ0stQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzc6czk6YXJndW1lbnRzeDk5OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8xOnM1OmlucHV0czY6c3RyaW5nczg6cmVxdWlyZWRhMTpzNTppbnB1dHMxMDpjYXBhYmlsaXR5czEwODpncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6NDA2NmY1MTk4YzFmMTU0YjpsZWdhY3lQYXJpdHlSZWNvcmRzMTE6ZGVjbGFyYXRpb25vNDpzMTA6Y2FwYWJpbGl0eW8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMyMDQ6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsiaW5wdXQiOnsiZGVzY3JpcHRpb24iOiJHcmFwaFFMIHR5cGUgTGVnYWN5UmVjb3JkSW5wdXQhLiBTdXBwbHkgdGhpcyBhcmd1bWVudCBhcyBhIEpTT04tZW5jb2RlZCBzdHJpbmcuIiwidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsiaW5wdXQiXSwidHlwZSI6Im9iamVjdCJ9czExOmVuZHBvaW50VVJMczYxOmh0dHA6Ly9yaWdodGNsaWNrLWdxbC1wYXJpdHktYWI1ODRhZGE3M2M4LmxvY2FsOjYxNTc1L2dyYXBocWxzNTpmaWVsZHMxODpsZWdhY3lQYXJpdHlSZWNvcmRzMTc6Z3JhcGhxbFJldHVyblR5cGVzMTM6TGVnYWN5UmVjb3JkIXMxMzpvcGVyYXRpb25LaW5kczg6bXV0YXRpb25zMTY6cHJvdmlkZXJJZGVudGl0eXM2NDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczE2OnJlc3VsdFZhbGlkYXRpb25zMTY6Z3JhcGhxbF9yZXNwb25zZXMxMjpzY2hlbWFTSEEyNTZzNjQ6MzJkYTI0ZTNhNDRlMmY3NDJhZWE4OWZhZTJlMTdkYWJiN2UwMTM1MDA1MTk1NzFkZjRkM2JkZDVhNzJhMTY4NXM5OnN1YnN0cmF0ZXM3OmdyYXBocWxzNzpvdXRwdXRzYTE6czExOnB1YmxpYy5qc29uczE2OnByb3ZpZGVyQnVuZGxlSURuczEyOnByb3ZpZGVyTmFtZXM0NTpSSUdIVENMSUNLIGxlZ2FjeSBHcmFwaFFMIHBhcml0eSAwNDhiOTRlYzZmODFzMjA6cmVxdWlyZXNDb25maXJtYXRpb25iMXM2OnNhZmV0eXM3OnVua25vd25zNjpzb3VyY2VzNjpzeXN0ZW1zMTI6c3VwcG9ydExldmVsczEyOmV4cGVyaW1lbnRhbHM1OnRpdGxlczM2OkdyYXBoUUwgbXV0YXRpb246IGxlZ2FjeVBhcml0eVJlY29yZHMxNDpleHBlY3RlZE91dHB1dG5zMTI6dmVyaWZpY2F0aW9ubnMxODp3aXJlUmVwcmVzZW50YXRpb25zNjg6Y29tcGlsZXItdmFsaWRhdGVkIGxlZ2FjeSBzdHJpbmcgYXJndW1lbnRzOyBzZXJpYWxpemVkIHJldHVybmVkIHRleHRzODpwcm92aWRlcnM2NDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczk6cmVmbGVjdG9yczgyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMxNzA6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbCNncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6NDA2NmY1MTk4YzFmMTU0YjpsZWdhY3lQYXJpdHlSZWNvcmRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25uczk6ZGlzY292ZXJ5eDE2OTM6UklHSFRDTElDSy1SQ0lSLUdSQVBILURFQ0xBUkFUSU9OLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMzOmFiaXgxNTA4OlJJR0hUQ0xJQ0stQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzc6czk6YXJndW1lbnRzeDk5OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8xOnM1OmlucHV0czY6c3RyaW5nczg6cmVxdWlyZWRhMTpzNTppbnB1dHMxMDpjYXBhYmlsaXR5czEwODpncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6NDA2NmY1MTk4YzFmMTU0YjpsZWdhY3lQYXJpdHlSZWNvcmRzMTE6ZGVjbGFyYXRpb25vMTE6czY6aW5wdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czEwOmludm9jYXRpb25zMTE6aW50ZXJhY3RpdmVzODptZXRhZGF0YW85OnMxNTphcmd1bWVudHNTY2hlbWFzMjA0OnsiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlLCJwcm9wZXJ0aWVzIjp7ImlucHV0Ijp7ImRlc2NyaXB0aW9uIjoiR3JhcGhRTCB0eXBlIExlZ2FjeVJlY29yZElucHV0IS4gU3VwcGx5IHRoaXMgYXJndW1lbnQgYXMgYSBKU09OLWVuY29kZWQgc3RyaW5nLiIsInR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbImlucHV0Il0sInR5cGUiOiJvYmplY3QifXMxMTplbmRwb2ludFVSTHM2MTpodHRwOi8vcmlnaHRjbGljay1ncWwtcGFyaXR5LWFiNTg0YWRhNzNjOC5sb2NhbDo2MTU3NS9ncmFwaHFsczU6ZmllbGRzMTg6bGVnYWN5UGFyaXR5UmVjb3JkczE3OmdyYXBocWxSZXR1cm5UeXBlczEzOkxlZ2FjeVJlY29yZCFzMTM6b3BlcmF0aW9uS2luZHM4Om11dGF0aW9uczE2OnByb3ZpZGVySWRlbnRpdHlzNjQ6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYnMxNjpyZXN1bHRWYWxpZGF0aW9uczE2OmdyYXBocWxfcmVzcG9uc2VzMTI6c2NoZW1hU0hBMjU2czY0OjMyZGEyNGUzYTQ0ZTJmNzQyYWVhODlmYWUyZTE3ZGFiYjdlMDEzNTAwNTE5NTcxZGY0ZDNiZGQ1YTcyYTE2ODVzOTpzdWJzdHJhdGVzNzpncmFwaHFsczc6b3V0cHV0c2ExOnMxMTpwdWJsaWMuanNvbnMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzNDU6UklHSFRDTElDSyBsZWdhY3kgR3JhcGhRTCBwYXJpdHkgMDQ4Yjk0ZWM2ZjgxczIwOnJlcXVpcmVzQ29uZmlybWF0aW9uYjFzNjpzYWZldHlzNzp1bmtub3duczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxMjpleHBlcmltZW50YWxzNTp0aXRsZXMzNjpHcmFwaFFMIG11dGF0aW9uOiBsZWdhY3lQYXJpdHlSZWNvcmRzODpwcm92aWRlcnM2NDoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczk6cmVmbGVjdG9yczgyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOnM3OmV4ZWN1dGVzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMDpnZW5lcmF0aW9uaTE6MnM5OnByaW5jaXBhbHM5NDpsb2NhbC1vd25lcjpncmFwaHFsLXJlZmxlY3RvcjoxMDBlM2JhY2I3YTIzMDJkZDJhZDE3YTc1YWZmNTE1MmU3MDM5Yjk2NmIxMTBkY2QzNjgwMDg3N2MxZTZiMmFiczk6ZXhwaXJlc0F0aTEzOjE3OTE0MDczNzE5MTdzODppc3N1ZWRBdGkxMzoxNzkxNDA3MzQxOTE3czY6cG9saWN5eDQ4MjpSSUdIVENMSUNLLVJDSVItUE9MSUNZLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMxMDpwcmluY2lwYWxzYTE6czk0OmxvY2FsLW93bmVyOmdyYXBocWwtcmVmbGVjdG9yOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWJzODpyZXZpc2lvbnM4NTpsb2NhbC1jb25maXJtYXRpb24tMTo2M2M1OWVjNmM0NjE3YTZjYThlODI1NGYwMDcwNTQ5M2MxOTIzYjZmZGMxZGQ2NzZlN2M1YzlmYzA1YmIwZjU3czY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czc6ZXhlY3V0ZXM4OnJlc291cmNlczE3MDpodHRwOi8vcmlnaHRjbGljay1ncWwtcGFyaXR5LWFiNTg0YWRhNzNjOC5sb2NhbDo2MTU3NS9ncmFwaHFsI2dyYXBocWw6MTAwZTNiYWNiN2EyMzAyZGQyYWQxN2E3NWFmZjUxNTJlNzAzOWI5NjZiMTEwZGNkMzY4MDA4NzdjMWU2YjJhYjo0MDY2ZjUxOThjMWYxNTRiOmxlZ2FjeVBhcml0eVJlY29yZHM2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMxNzA6aHR0cDovL3JpZ2h0Y2xpY2stZ3FsLXBhcml0eS1hYjU4NGFkYTczYzgubG9jYWw6NjE1NzUvZ3JhcGhxbCNncmFwaHFsOjEwMGUzYmFjYjdhMjMwMmRkMmFkMTdhNzVhZmY1MTUyZTcwMzliOTY2YjExMGRjZDM2ODAwODc3YzFlNmIyYWI6NDA2NmY1MTk4YzFmMTU0YjpsZWdhY3lQYXJpdHlSZWNvcmRzMTU6c2VtYW50aWNPdXRjb21lczEwOnVudmVyaWZpZWRzOTpzdGFydGVkQXRpMTM6MTc5MTQwNzM0MTkxN3M2OnRhc2tJRHMzNjpDN0Y1QkZCOC0yRTQyLTQ1OEEtQTIyNy02QkFCQURFODA5NjU=\",\n    \"taskID\" : \"C7F5BFB8-2E42-458A-A227-6BABADE80965\",\n    \"version\" : 1\n  },\n  \"state\" : \"accepted\",\n  \"title\" : \"GraphQL mutation: legacyParityRecord\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

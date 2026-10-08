@@ -1,0 +1,42 @@
+Building for debugging...
+[0/7] /private/tmp/rightclick-delivery-readiness-crlf-native-controls-20261008/baseline-package/.build/arm64-apple-macosx/debug/ReadinessControlPackageTests.derived/runner.swift
+[1/7] Write sources
+[4/7] Write swift-version--58304C5D6DBC2206.txt
+[6/9] Emitting module Fixture
+[7/9] Compiling Fixture NativeHTTPFixture.swift
+[8/11] Emitting module FixtureTests
+[9/11] Compiling FixtureTests NativeFixtureReadinessTests.swift
+[10/13] Emitting module ReadinessControlPackageTests
+[11/13] Compiling ReadinessControlPackageTests runner.swift
+[11/13] Write Objects.LinkFileList
+[12/13] Linking ReadinessControlPackageTests
+Build complete! (10.32s)
+Test Suite 'All tests' started at 2026-10-08 00:59:40.703.
+Test Suite 'ReadinessControlPackageTests.xctest' started at 2026-10-08 00:59:40.704.
+Test Suite 'NativeFixtureReadinessTests' started at 2026-10-08 00:59:40.704.
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testEmptyExistingMarkerWaitsForCompleteDecimalPort]' started.
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testEmptyExistingMarkerWaitsForCompleteDecimalPort]' passed (0.157 seconds).
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testEmptyMarkerFailsWithinUnchangedBoundInsteadOfInventingReadiness]' started.
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testEmptyMarkerFailsWithinUnchangedBoundInsteadOfInventingReadiness]' passed (0.172 seconds).
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testExitedChildCannotPublishReadiness]' started.
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testExitedChildCannotPublishReadiness]' passed (0.071 seconds).
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation]' started.
+/private/tmp/rightclick-delivery-readiness-crlf-native-controls-20261008/baseline-package/Tests/FixtureTests/NativeFixtureReadinessTests.swift:73: error: -[FixtureTests.NativeFixtureReadinessTests testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation] : XCTAssertEqual failed: threw error "invalidPortBeforeDeadline"
+/private/tmp/rightclick-delivery-readiness-crlf-native-controls-20261008/baseline-package/Tests/FixtureTests/NativeFixtureReadinessTests.swift:73: error: -[FixtureTests.NativeFixtureReadinessTests testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation] : XCTAssertEqual failed: threw error "invalidPortBeforeDeadline"
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation]' failed (6.335 seconds).
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted]' started.
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted]' passed (0.104 seconds).
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr]' started.
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr]' passed (0.363 seconds).
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testZeroOversizedAndNonDecimalMarkersCannotBecomePorts]' started.
+Test Case '-[FixtureTests.NativeFixtureReadinessTests testZeroOversizedAndNonDecimalMarkersCannotBecomePorts]' passed (1.345 seconds).
+Test Suite 'NativeFixtureReadinessTests' failed at 2026-10-08 00:59:49.252.
+	 Executed 7 tests, with 2 failures (2 unexpected) in 8.547 (8.548) seconds
+Test Suite 'ReadinessControlPackageTests.xctest' failed at 2026-10-08 00:59:49.252.
+	 Executed 7 tests, with 2 failures (2 unexpected) in 8.547 (8.548) seconds
+Test Suite 'All tests' failed at 2026-10-08 00:59:49.252.
+	 Executed 7 tests, with 2 failures (2 unexpected) in 8.547 (8.548) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

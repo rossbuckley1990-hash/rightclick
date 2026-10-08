@@ -1,0 +1,164 @@
+name: Portable runtime
+on:
+  push:
+    branches: [main, codex/portable-runtime]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: portable-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - run: apt-get update && apt-get install -y python3 ca-certificates
+      - name: Native Linux provenance and integrated tests
+        timeout-minutes: 40
+        shell: bash
+        run: |
+          set -o pipefail
+          git -c safe.directory="$GITHUB_WORKSPACE" rev-parse HEAD | tee portable-source.txt
+          swift --version | tee portable-toolchain.txt
+          swift test --force-resolved-versions 2>&1 | tee linux-tests.log
+      - name: Native Linux release build
+        timeout-minutes: 35
+        shell: bash
+        run: |
+          set -o pipefail
+          swift build -c release --product rightclick --force-resolved-versions 2>&1 | tee linux-build.log
+          sha256sum .build/release/rightclick | tee linux-binary-sha256.txt
+      - name: Real Linux provider through seven operations
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 scripts/acceptance-portable.py .build/release/rightclick 2>&1 | tee linux-acceptance.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-linux-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            portable-source.txt
+            portable-toolchain.txt
+            linux-*.log
+            linux-binary-sha256.txt
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+        with:
+          swift-version: swift-6.2-release
+          swift-build: 6.2-RELEASE
+      - name: Preserve original Windows interpreter availability
+        run: |
+          $pathNames = @(Get-ChildItem Env: | Where-Object { $_.Name -ieq 'PATH' } | ForEach-Object { $_.Name })
+          $python = Get-Command python.exe -ErrorAction SilentlyContinue
+          @{ pathEnvironmentNames = $pathNames; pythonCommandPresent = ($null -ne $python) } |
+            ConvertTo-Json -Compress | Tee-Object -FilePath windows-python-before-setup.log
+      - name: Provision the native Python fixture interpreter
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Native protected policy, signing and observer references
+        timeout-minutes: 45
+        run: |
+          git rev-parse HEAD | Out-File -Encoding utf8 portable-source.txt
+          swift --version | Out-File -Encoding utf8 portable-toolchain.txt
+          @'
+          #if canImport(FoundationXML)
+          import FoundationXML
+          print("FoundationXML=available")
+          #else
+          print("FoundationXML=unavailable")
+          #endif
+          '@ | Set-Content -Encoding utf8 portable-module-probe.swift
+          swiftc portable-module-probe.swift -o portable-module-probe.exe 2>&1 | Tee-Object -FilePath portable-module-availability.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & .\portable-module-probe.exe 2>&1 | Tee-Object -FilePath portable-module-availability.log -Append
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          swift test --force-resolved-versions --filter HostProtectedReferenceTests 2>&1 | Tee-Object -FilePath windows-protected-files.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Native full-suite discovery diagnostic
+        timeout-minutes: 5
+        run: |
+          swift test list --skip-build 2>&1 | Tee-Object -FilePath windows-test-discovery.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Native integrated tests
+        timeout-minutes: 25
+        run: |
+          $phase = @{ source = (git rev-parse HEAD); phase = 'integrated-tests'; state = 'STARTED'; startedUTC = (Get-Date).ToUniversalTime().ToString('o') }
+          $phase | ConvertTo-Json | Set-Content -Encoding utf8 windows-integrated-phase.json
+          swift test --force-resolved-versions 2>&1 | Tee-Object -FilePath windows-tests.log
+          $testExit = $LASTEXITCODE
+          $phase.state = 'COMPLETED'
+          $phase.exitCode = $testExit
+          $phase.completedUTC = (Get-Date).ToUniversalTime().ToString('o')
+          $phase | ConvertTo-Json | Set-Content -Encoding utf8 windows-integrated-phase.json
+          exit $testExit
+      - name: Native release build
+        timeout-minutes: 45
+        run: |
+          swift build -c release --product rightclick --force-resolved-versions 2>&1 | Tee-Object -FilePath windows-build.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-FileHash .build/release/rightclick.exe -Algorithm SHA256 | Format-List | Out-File windows-binary-sha256.txt
+      - name: Real provider through seven operations
+        timeout-minutes: 5
+        run: |
+          python scripts/acceptance-portable.py .build/release/rightclick.exe 2>&1 | Tee-Object -FilePath windows-acceptance.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-windows-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            portable-source.txt
+            portable-toolchain.txt
+            portable-module-availability.log
+            windows-*.log
+            windows-integrated-phase.json
+            windows-binary-sha256.txt
+  macos:
+    runs-on: macos-26
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Native macOS provenance and integrated tests
+        timeout-minutes: 35
+        run: |
+          set -o pipefail
+          git rev-parse HEAD | tee portable-source.txt
+          swift --version | tee portable-toolchain.txt
+          swift test --force-resolved-versions 2>&1 | tee macos-tests.log
+      - name: Native macOS release build
+        timeout-minutes: 35
+        run: |
+          set -o pipefail
+          scripts/build-cli.sh 2>&1 | tee macos-build.log
+          shasum -a 256 .build/release/rightclick | tee macos-binary-sha256.txt
+      - name: Real macOS provider through seven operations
+        timeout-minutes: 5
+        run: |
+          set -o pipefail
+          python3 scripts/acceptance-portable.py .build/release/rightclick 2>&1 | tee macos-acceptance.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: native-macos-evidence-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            portable-source.txt
+            portable-toolchain.txt
+            macos-*.log
+            macos-binary-sha256.txt

@@ -1,5 +1,10 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+#if canImport(Security)
 import Security
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -206,6 +211,8 @@ final class OpenAPIAuthorityTests:
     private func deleteBearerToken(
         account: String
     ) {
+#if canImport(Security)
+
         let query:
             [String: Any] = [
                 kSecClass as String:
@@ -221,7 +228,11 @@ final class OpenAPIAuthorityTests:
         SecItemDelete(
             query as CFDictionary
         )
-    }
+
+#else
+
+#endif
+}
 
     private func deleteBearerToken(
         origin: String,
@@ -243,6 +254,8 @@ final class OpenAPIAuthorityTests:
         origin: String,
         schemeName: String
     ) throws {
+#if canImport(Security)
+
         let account =
             authorityAccount(
                 origin:
@@ -298,7 +311,11 @@ final class OpenAPIAuthorityTests:
         keychainAccounts.append(
             account
         )
-    }
+
+#else
+        throw XCTSkip("Native Keychain credential tests require macOS")
+#endif
+}
 
     private func specification(
         securitySchemes:
@@ -1149,15 +1166,25 @@ final class OpenAPIAuthorityTests:
                 ]
             )
 
-        XCTAssertTrue(
-            try engine
+        let inherited = try XCTUnwrap(
+            engine
                 .capabilities(
                     for:
                         "Create a secure record"
                 )
                 .capabilities
-                .isEmpty
+                .first
         )
+        XCTAssertEqual(inherited.metadata["authorityRequired"], "true")
+        XCTAssertEqual(inherited.metadata["authorityScheme"], "BearerAuth")
+        deleteBearerToken(origin: "https://provider.example", schemeName: "BearerAuth")
+        var transportCalled = false
+        StubURLProtocol.handler = { _ in transportCalled = true; throw RightClickError("Missing inherited authority must not start transport") }
+        let denied = try engine.begin(id: inherited.id, item: "Create a secure record", confirmed: true,
+            arguments: ["title": "Isolated inheritance proof", "priority": "low"])
+        XCTAssertFalse(transportCalled)
+        XCTAssertFalse(denied.evidence.outcomeVerified)
+        XCTAssertEqual(denied.evidence.type, "authority_unavailable")
     }
 
     func testExplicitEmptyOperationSecurityOverridesRootSecurityAsPublic()

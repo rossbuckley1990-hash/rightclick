@@ -1,0 +1,85 @@
+{
+  "binarySHA256": "6554b2fb6a737dedb25fc9c0c3ba7b2e7f83e0225c7d16f2dae8c745a161cf54",
+  "harnessSHA256": "9328eccdd043711308beaefad1ee98252bf7a1f6f8f1c7df42e1c96e2621e5dd",
+  "status": "GREEN_FOR_CRASH_IDENTITY_BOUNDARY",
+  "scope": "Real A2A process + native MCP crash/restart, synthetic disposable effect",
+  "beforeRuntime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/proof/rightclick",
+    "executableRealPath": "/proof/rightclick",
+    "executableSHA256": "6554b2fb6a737dedb25fc9c0c3ba7b2e7f83e0225c7d16f2dae8c745a161cf54",
+    "pid": 11,
+    "platform": "Linux",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "executionID": "02E7F649-D4AC-40D0-8E94-5CDA56619D56",
+  "taskID": "6B9FC809-F0BA-49EA-84A0-DDAC23DD0657",
+  "independentEffectMatched": true,
+  "afterRuntime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/proof/rightclick",
+    "executableRealPath": "/proof/rightclick",
+    "executableSHA256": "6554b2fb6a737dedb25fc9c0c3ba7b2e7f83e0225c7d16f2dae8c745a161cf54",
+    "pid": 33,
+    "platform": "Linux",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "recoveredStatus": {
+    "actionId": "",
+    "events": [
+      "task=6B9FC809-F0BA-49EA-84A0-DDAC23DD0657",
+      "lease=9B6AA0B5-2467-4BB7-9181-71AE106105EC",
+      "generation=1",
+      "requestSHA256=3b0d53ac5dcc6b2a43c293648bbb655602e2680b18e65ef47929fbeb30baf475",
+      "lastDurablePhase=accepted",
+      "lastDurableState=started",
+      "lastDurableOutcome=unverified",
+      "receiptSHA256=unavailable"
+    ],
+    "evidence": {
+      "boundary": "Durable identity/status summary, not a signed receipt or current independent observation. No authority, remote polling or mutation replay is restored.",
+      "outcomeVerified": false,
+      "type": "rcir_recovered_journal"
+    },
+    "executionId": "02E7F649-D4AC-40D0-8E94-5CDA56619D56",
+    "message": "Invocation survived restart without a live execution session. Its external outcome is unknown. Do not retry blindly.",
+    "state": "unknown"
+  },
+  "providerMutations": 1,
+  "automaticRemotePolls": 0,
+  "journalPayloadAbsent": true,
+  "toolCount": 7,
+  "providerSpecificToolsAdded": 0
+}

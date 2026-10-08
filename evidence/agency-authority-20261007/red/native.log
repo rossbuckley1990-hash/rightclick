@@ -1,0 +1,34 @@
+Building for debugging...
+[0/7] /private/tmp/rightclick-authority-red-20261007/.build/arm64-apple-macosx/debug/AuthorityRedPackageTests.derived/runner.swift
+[1/7] Write sources
+[4/7] Write swift-version--58304C5D6DBC2206.txt
+[6/11] Compiling RightClickCore RCIRSignedReceipt.swift
+[7/11] Compiling RightClickCore RCIR.swift
+[8/11] Compiling RightClickCore CapabilityABI.swift
+[9/11] Emitting module RightClickCore
+[10/13] Emitting module RightClickCoreTests
+[11/13] Compiling RightClickCoreTests LegacyAuthorityGapTests.swift
+[12/15] Emitting module AuthorityRedPackageTests
+[13/15] Compiling AuthorityRedPackageTests runner.swift
+[13/15] Write Objects.LinkFileList
+[14/15] Linking AuthorityRedPackageTests
+Build complete! (7.89s)
+Test Suite 'All tests' started at 2026-10-07 15:58:12.519.
+Test Suite 'AuthorityRedPackageTests.xctest' started at 2026-10-07 15:58:12.520.
+Test Suite 'LegacyAuthorityGapTests' started at 2026-10-07 15:58:12.520.
+Test Case '-[RightClickCoreTests.LegacyAuthorityGapTests testChildrenMustShareOneParentInvocationBudget]' started.
+/private/tmp/rightclick-authority-red-20261007/Tests/RightClickCoreTests/LegacyAuthorityGapTests.swift:33: error: -[RightClickCoreTests.LegacyAuthorityGapTests testChildrenMustShareOneParentInvocationBudget] : XCTAssertEqual failed: ("2") is not equal to ("1") - Two child invocations exceeded the intended one-use parent budget
+Test Case '-[RightClickCoreTests.LegacyAuthorityGapTests testChildrenMustShareOneParentInvocationBudget]' failed (0.080 seconds).
+Test Case '-[RightClickCoreTests.LegacyAuthorityGapTests testCopiedLeaseMustNotAuthorizeAnotherAgent]' started.
+/private/tmp/rightclick-authority-red-20261007/Tests/RightClickCoreTests/LegacyAuthorityGapTests.swift:21: error: -[RightClickCoreTests.LegacyAuthorityGapTests testCopiedLeaseMustNotAuthorizeAnotherAgent] : XCTAssertEqual failed: ("1") is not equal to ("0") - Copied lease admitted; invoking subject/audience are not represented
+Test Case '-[RightClickCoreTests.LegacyAuthorityGapTests testCopiedLeaseMustNotAuthorizeAnotherAgent]' failed (0.000 seconds).
+Test Suite 'LegacyAuthorityGapTests' failed at 2026-10-07 15:58:12.600.
+	 Executed 2 tests, with 2 failures (0 unexpected) in 0.080 (0.080) seconds
+Test Suite 'AuthorityRedPackageTests.xctest' failed at 2026-10-07 15:58:12.600.
+	 Executed 2 tests, with 2 failures (0 unexpected) in 0.080 (0.081) seconds
+Test Suite 'All tests' failed at 2026-10-07 15:58:12.600.
+	 Executed 2 tests, with 2 failures (0 unexpected) in 0.080 (0.081) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

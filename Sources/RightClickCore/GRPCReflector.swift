@@ -1,10 +1,14 @@
 #if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import Foundation
 import SwiftProtobuf
 
 public final class GRPCReflector:
-    CapabilityReflector
+    RCIRExecutionReflector
 {
     public typealias UnaryInvoker =
         (
@@ -192,6 +196,8 @@ public final class GRPCReflector:
     private let invoker:
         UnaryInvoker
 
+    private let usesDefaultInvoker: Bool
+
     public let id:
         String
 
@@ -289,6 +295,7 @@ public final class GRPCReflector:
                     }
             )
 
+        self.usesDefaultInvoker = invoker == nil
         self.invoker =
             invoker
             ?? {
@@ -493,6 +500,31 @@ public final class GRPCReflector:
     ) throws
         -> ExecutionRecord
     {
+        try performBegin(capability: capability, item: item, executionID: executionID,
+                         arguments: arguments, admitStart: nil)
+    }
+
+    public func admittedBegin(capability: Capability, admissionOwner: Capability, item: ContentItem,
+                              executionID: String, arguments: CapabilityArguments?, verification: VerificationSpec?,
+                              expectedOutput: String?, host: RCIRExecutionHost, revalidate: @escaping () -> Bool) throws -> ExecutionRecord {
+        guard let method = methodByCapabilityID[capability.id], method.supported,
+              let target = URL(string: endpoint.identity) else { throw RCIRError.unsupportedTaskShape }
+        return try RCIRUnaryInvocation.execute(capability: capability, owner: admissionOwner, item: item,
+            executionID: executionID, arguments: arguments, names: method.request.fields.map(\.name),
+            required: method.request.fields.filter(\.required).map(\.name), target: target,
+            verification: verification, expectedOutput: expectedOutput, host: host, available: { true }, revalidate: revalidate,
+            invoke: { admit in
+                try withoutActuallyEscaping(admit) { gate in
+                    try self.performBegin(capability: capability, item: item, executionID: executionID,
+                                          arguments: arguments, admitStart: gate)
+                }
+            })
+    }
+
+    private func performBegin(capability: Capability, item: ContentItem, executionID: String,
+                              arguments: CapabilityArguments?,
+                              admitStart: ((_ start: () -> Void) throws -> Void)?) throws -> ExecutionRecord
+    {
         guard
             let method =
                 methodByCapabilityID[
@@ -653,13 +685,23 @@ public final class GRPCReflector:
             Data
 
         do {
-            response =
-                try invoker(
+            if usesDefaultInvoker, let admitStart {
+                response = try GRPCReflectionTransport.invokeUnary(endpoint: endpoint,
+                    path: method.path, request: request, admitStart: admitStart)
+            } else if let admitStart {
+                var captured: Result<Data, Error>?
+                try admitStart { captured = Result { try self.invoker(self.endpoint, method.path, request) } }
+                guard let captured else { throw RCIRError.unavailable }
+                response = try captured.get()
+            } else {
+                response = try invoker(
                     endpoint,
                     method.path,
                     request
                 )
+            }
         } catch {
+            if admitStart != nil { throw error }
             return ExecutionRecord(
                 executionId:
                     executionID,

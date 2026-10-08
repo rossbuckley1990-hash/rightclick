@@ -1,0 +1,376 @@
+{
+  "CoreTools": [
+    "context_actions",
+    "context_explain",
+    "context_inspect",
+    "context_providers",
+    "context_run",
+    "context_run_status",
+    "context_runtime"
+  ],
+  "cases": [
+    {
+      "action": {
+        "explanation": "Valid JSON",
+        "id": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:65908fa7eeb1a8d9:Valid%20JSON",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private response compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Valid JSON"
+      },
+      "actualRequests": [
+        {
+          "actualWrite": true,
+          "authorizationAbsent": true,
+          "body": "{\"priority\":\"high\",\"value\":\"safe-response\"}",
+          "method": "POST",
+          "path": "/valid",
+          "taskID": null
+        }
+      ],
+      "independentSignedTaskCorrelation": false,
+      "record": {
+        "actionId": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:65908fa7eeb1a8d9:Valid%20JSON",
+        "events": [
+          "HTTP POST http://127.0.0.1:59727/valid",
+          "provider returned 200"
+        ],
+        "evidence": {
+          "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+          "outcomeVerified": false,
+          "type": "provider_returned_text"
+        },
+        "executionId": "707E424A-E2D6-4B08-B8BE-DB96D2A72B41",
+        "message": "HTTP provider returned 200; semantic outcome is unverified.",
+        "output": "{\"value\":\"safe-response\"}",
+        "state": "accepted",
+        "title": "Valid JSON"
+      },
+      "statusMatches": true,
+      "title": "Valid JSON"
+    },
+    {
+      "action": {
+        "explanation": "Cleared bearer requirement",
+        "id": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:803b22cfad1e723b:Cleared%20bearer%20requirement",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private response compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Cleared bearer requirement"
+      },
+      "actualRequests": [
+        {
+          "actualWrite": true,
+          "authorizationAbsent": true,
+          "body": "{\"priority\":\"low\",\"value\":\"cleared-authority\"}",
+          "method": "POST",
+          "path": "/cleared",
+          "taskID": null
+        }
+      ],
+      "independentSignedTaskCorrelation": false,
+      "record": {
+        "actionId": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:803b22cfad1e723b:Cleared%20bearer%20requirement",
+        "events": [
+          "HTTP POST http://127.0.0.1:59727/cleared",
+          "provider returned 200"
+        ],
+        "evidence": {
+          "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+          "outcomeVerified": false,
+          "type": "provider_returned_text"
+        },
+        "executionId": "B74A3611-24BE-4877-99B3-06CFA0BF08C2",
+        "message": "HTTP provider returned 200; semantic outcome is unverified.",
+        "output": "{\"value\":\"cleared-authority\"}",
+        "state": "accepted",
+        "title": "Cleared bearer requirement"
+      },
+      "statusMatches": true,
+      "title": "Cleared bearer requirement"
+    },
+    {
+      "action": {
+        "explanation": "Valid JSON",
+        "id": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:65908fa7eeb1a8d9:Valid%20JSON",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private response compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Valid JSON"
+      },
+      "actualRequests": [],
+      "independentSignedTaskCorrelation": false,
+      "record": {
+        "actionId": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:65908fa7eeb1a8d9:Valid%20JSON",
+        "events": [],
+        "evidence": {
+          "boundary": "RIGHTCLICK rejected structured arguments before provider transport because they did not satisfy the reflected closed JSON object schema.",
+          "outcomeVerified": false,
+          "type": "input_contract_failure"
+        },
+        "executionId": "2F039BED-2CA8-438B-A632-8C4F51D664EB",
+        "message": "Structured capability arguments failed schema validation: Argument priority is not one of the declared enum values.",
+        "state": "failed",
+        "title": "Valid JSON"
+      },
+      "statusMatches": true,
+      "title": "Invalid enum"
+    },
+    {
+      "action": {
+        "explanation": "Valid JSON",
+        "id": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:65908fa7eeb1a8d9:Valid%20JSON",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private response compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Valid JSON"
+      },
+      "actualRequests": [],
+      "independentSignedTaskCorrelation": false,
+      "record": {
+        "actionId": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:65908fa7eeb1a8d9:Valid%20JSON",
+        "events": [],
+        "evidence": {
+          "boundary": "RIGHTCLICK rejected structured arguments before provider transport because they did not satisfy the reflected closed JSON object schema.",
+          "outcomeVerified": false,
+          "type": "input_contract_failure"
+        },
+        "executionId": "B236A1BD-C190-45C0-B018-EC2FD8EA7780",
+        "message": "Structured capability arguments failed schema validation: Missing required arguments: value",
+        "state": "failed",
+        "title": "Valid JSON"
+      },
+      "statusMatches": true,
+      "title": "Missing field"
+    },
+    {
+      "action": null,
+      "actualRequests": [],
+      "catalogueTitles": [
+        "Cleared bearer requirement",
+        "HTTP unavailable",
+        "Malformed response",
+        "Missing bearer requirement",
+        "Valid JSON",
+        "Wrong response type"
+      ],
+      "discoveryStatus": "absent",
+      "independentSignedTaskCorrelation": false,
+      "noInvocationAttempted": true,
+      "record": null,
+      "statusMatches": false,
+      "title": "GET query unsupported"
+    },
+    {
+      "action": {
+        "explanation": "Missing bearer requirement",
+        "id": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:e78fd58860c572db:Missing%20bearer%20requirement",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private response compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Missing bearer requirement"
+      },
+      "actualRequests": [],
+      "independentSignedTaskCorrelation": false,
+      "record": {
+        "actionId": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:e78fd58860c572db:Missing%20bearer%20requirement",
+        "events": [],
+        "evidence": {
+          "boundary": "RIGHTCLICK found no credential for the exact reflected authority origin and security scheme. No provider transport occurred.",
+          "outcomeVerified": false,
+          "type": "authority_unavailable"
+        },
+        "executionId": "BFC86BA4-DCD4-48A1-A96E-856FA353AB73",
+        "message": "Required provider authority is unavailable.",
+        "state": "unavailable",
+        "title": "Missing bearer requirement"
+      },
+      "statusMatches": true,
+      "title": "Missing bearer requirement"
+    },
+    {
+      "action": {
+        "explanation": "Malformed response",
+        "id": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:53f118e1888b798e:Malformed%20response",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private response compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Malformed response"
+      },
+      "actualRequests": [
+        {
+          "actualWrite": true,
+          "authorizationAbsent": true,
+          "body": "{\"priority\":\"high\",\"value\":\"safe-malformed\"}",
+          "method": "POST",
+          "path": "/malformed",
+          "taskID": null
+        }
+      ],
+      "independentSignedTaskCorrelation": false,
+      "record": {
+        "actionId": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:53f118e1888b798e:Malformed%20response",
+        "events": [],
+        "evidence": {
+          "boundary": "The provider returned 2xx, but its application/json body did not satisfy the reflected closed JSON object schema.",
+          "outcomeVerified": false,
+          "type": "provider_contract_failure"
+        },
+        "executionId": "A7C0F82C-ACED-4123-909D-37FB5C9AAEC6",
+        "message": "The OpenAPI provider response failed the reflected JSON schema: Error Domain=NSCocoaErrorDomain Code=3840 \"Unexpected end of file during JSON parse. around line 1, column 0.\" UserInfo={NSDebugDescription=Unexpected end of file during JSON parse. around line 1, column 0., NSJSONSerializationErrorIndex=0}",
+        "state": "failed",
+        "title": "Malformed response"
+      },
+      "statusMatches": true,
+      "title": "Malformed response"
+    },
+    {
+      "action": {
+        "explanation": "Wrong response type",
+        "id": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:e2ef91110275a9b5:Wrong%20response%20type",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private response compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Wrong response type"
+      },
+      "actualRequests": [
+        {
+          "actualWrite": true,
+          "authorizationAbsent": true,
+          "body": "{\"priority\":\"low\",\"value\":\"safe-type\"}",
+          "method": "POST",
+          "path": "/wrongtype",
+          "taskID": null
+        }
+      ],
+      "independentSignedTaskCorrelation": false,
+      "record": {
+        "actionId": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:e2ef91110275a9b5:Wrong%20response%20type",
+        "events": [],
+        "evidence": {
+          "boundary": "The provider returned 2xx, but its application/json body did not satisfy the reflected closed JSON object schema.",
+          "outcomeVerified": false,
+          "type": "provider_contract_failure"
+        },
+        "executionId": "C0E14A0B-34B1-4C7F-85FA-7092DF49CF63",
+        "message": "The OpenAPI provider response failed the reflected JSON schema: Response field value is not a declared string.",
+        "state": "failed",
+        "title": "Wrong response type"
+      },
+      "statusMatches": true,
+      "title": "Wrong response type"
+    },
+    {
+      "action": {
+        "explanation": "HTTP unavailable",
+        "id": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:ee1e6fb55def0149:HTTP%20unavailable",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private response compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "HTTP unavailable"
+      },
+      "actualRequests": [
+        {
+          "actualWrite": false,
+          "authorizationAbsent": true,
+          "body": "{\"priority\":\"low\",\"value\":\"safe-http-error\"}",
+          "method": "POST",
+          "path": "/unavailable",
+          "taskID": null
+        }
+      ],
+      "independentSignedTaskCorrelation": false,
+      "record": {
+        "actionId": "openapi:70f55b17ff568653b3ebcfef635de9055ce5b0d8632ee2a5d53350d8d0155e24:ee1e6fb55def0149:HTTP%20unavailable",
+        "events": [],
+        "evidence": {
+          "boundary": "The provider returned a non-2xx HTTP status code.",
+          "outcomeVerified": false,
+          "type": "provider_rejection"
+        },
+        "executionId": "DF1A9EED-5F31-4FC8-8CCB-7A4D077FCB0C",
+        "message": "The OpenAPI provider returned HTTP 503.",
+        "state": "rejected",
+        "title": "HTTP unavailable"
+      },
+      "statusMatches": true,
+      "title": "HTTP unavailable"
+    }
+  ],
+  "label": "baseline",
+  "runtime": {
+    "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "pid": 89836,
+    "product": "RIGHTCLICK",
+    "transport": "http",
+    "version": "0.2.2"
+  },
+  "transport": "http",
+  "wrongAndMissingHTTPBearerDenied": true
+}

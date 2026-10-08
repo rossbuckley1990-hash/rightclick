@@ -1,0 +1,120 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: 'rightclick-universal-async': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/14] Write sources
+[4/14] Write swift-version--58304C5D6DBC2206.txt
+[6/11] Compiling RightClickCore RCIRDeferredExecution.swift
+[7/11] Compiling RightClickCore RCIRExecutionHost.swift
+[8/11] Emitting module RightClickCore
+[9/19] Compiling RightClickCore CapabilityEngine.swift
+[10/19] Compiling RightClickCore OpenAPIReflector.swift
+[11/19] Compiling RightClickCore ConfiguredOpenAPISource.swift
+[12/19] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+[13/19] Compiling RightClickCore BonjourOpenAPISource.swift
+[14/19] Compiling RightClickCore CapabilityArtifactResolver.swift
+[15/19] Compiling RightClickCore A2AReflector.swift
+[16/19] Compiling RightClickCore ARDRegistrySource.swift
+[16/25] Write Objects.LinkFileList
+[18/25] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+[19/25] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[20/25] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+[21/25] Emitting module RightClickCoreTests
+[22/25] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+[22/26] Linking rightclick
+[23/26] Applying rightclick
+[24/26] Write Objects.LinkFileList
+[25/26] Linking rightclick-mcpPackageTests
+Build complete! (12.69s)
+Test Suite 'Selected tests' started at 2026-10-07 14:17:24.675.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 14:17:24.676.
+Test Suite 'A2ARealLifecycleTests' started at 2026-10-07 14:17:24.676.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testAcceptedAndCompletedTaskWithMismatchedEffectFailsWithSignedReceipt]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testAcceptedAndCompletedTaskWithMismatchedEffectFailsWithSignedReceipt]' passed (0.769 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation]' passed (0.727 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testCompletedWithoutIndependentEffectRemainsUnverified]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testCompletedWithoutIndependentEffectRemainsUnverified]' passed (0.726 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testDeadlineIsUnknownWithoutRetryingOrFabricatingCompletion]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testDeadlineIsUnknownWithoutRetryingOrFabricatingCompletion]' passed (0.196 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testGenuineDelegationObservesEffectAndSignsTerminalReceipt]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testGenuineDelegationObservesEffectAndSignsTerminalReceipt]' passed (0.736 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testPolicyAndConfirmationDenialsHaveZeroDelegatedEffects]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testPolicyAndConfirmationDenialsHaveZeroDelegatedEffects]' passed (0.180 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testPolicyRevocationDuringTaskCannotBeSilentlyIgnored]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testPolicyRevocationDuringTaskCannotBeSilentlyIgnored]' passed (0.207 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testProviderDisappearingMidTaskIsSignedUnknownWithoutReplay]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testProviderDisappearingMidTaskIsSignedUnknownWithoutReplay]' passed (0.209 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testRemoteTaskFailureCannotBecomeSemanticSuccess]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testRemoteTaskFailureCannotBecomeSemanticSuccess]' passed (0.731 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testUnpinnedIndependentObserverFailsBeforeDispatch]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testUnpinnedIndependentObserverFailsBeforeDispatch]' passed (0.177 seconds).
+Test Suite 'A2ARealLifecycleTests' passed at 2026-10-07 14:17:29.336.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 4.659 (4.660) seconds
+Test Suite 'RCIRDeferredCapacityTests' started at 2026-10-07 14:17:29.336.
+Test Case '-[RightClickCoreTests.RCIRDeferredCapacityTests testExpiredPendingTasksAreReceiptedAndReapedBeforeNewAdmission]' started.
+Test Case '-[RightClickCoreTests.RCIRDeferredCapacityTests testExpiredPendingTasksAreReceiptedAndReapedBeforeNewAdmission]' passed (0.156 seconds).
+Test Case '-[RightClickCoreTests.RCIRDeferredCapacityTests testInFlightReservationsCannotOverrunTheBoundedSessionCapacity]' started.
+Test Case '-[RightClickCoreTests.RCIRDeferredCapacityTests testInFlightReservationsCannotOverrunTheBoundedSessionCapacity]' passed (0.144 seconds).
+Test Suite 'RCIRDeferredCapacityTests' passed at 2026-10-07 14:17:29.636.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.300 (0.301) seconds
+Test Suite 'RCIRDeferredProductionTests' started at 2026-10-07 14:17:29.636.
+Test Case '-[RightClickCoreTests.RCIRDeferredProductionTests testAcceptedRemoteTaskRemainsPendingUntilLaterObservation]' started.
+Test Case '-[RightClickCoreTests.RCIRDeferredProductionTests testAcceptedRemoteTaskRemainsPendingUntilLaterObservation]' passed (0.123 seconds).
+Test Suite 'RCIRDeferredProductionTests' passed at 2026-10-07 14:17:29.759.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.123 (0.123) seconds
+Test Suite 'RCIRProductionDispatchTests' started at 2026-10-07 14:17:29.759.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCallerPostconditionCannotBeSilentlyIgnoredByHostObserver]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCallerPostconditionCannotBeSilentlyIgnoredByHostObserver]' passed (0.114 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' passed (0.109 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' passed (0.112 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' passed (0.109 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCrossOriginObserverBlocksBeforeAnyEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCrossOriginObserverBlocksBeforeAnyEffect]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' passed (0.124 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration]' passed (0.115 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testInvalidSignerBlocksBeforeAnyEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testInvalidSignerBlocksBeforeAnyEffect]' passed (0.109 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' passed (0.113 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' passed (0.112 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAfterDispatchPreservesUnknownWithoutRetry]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAfterDispatchPreservesUnknownWithoutRetry]' passed (0.111 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAtTransportAdmissionProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAtTransportAdmissionProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' passed (0.113 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' passed (0.115 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' passed (0.112 seconds).
+Test Suite 'RCIRProductionDispatchTests' passed at 2026-10-07 14:17:32.002.
+	 Executed 20 tests, with 0 failures (0 unexpected) in 2.241 (2.242) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 14:17:32.002.
+	 Executed 33 tests, with 0 failures (0 unexpected) in 7.323 (7.326) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 14:17:32.002.
+	 Executed 33 tests, with 0 failures (0 unexpected) in 7.323 (7.326) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

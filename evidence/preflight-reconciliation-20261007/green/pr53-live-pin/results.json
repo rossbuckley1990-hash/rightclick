@@ -1,0 +1,140 @@
+{
+  "baseline": "2dd7bd2fafbbaa994812d1bc904730b74aa74816",
+  "binarySHA256": "6c5b1e3dbdeef200e5bc24181f94c492963e7ccfeb1b3cd691f86287458d7995",
+  "controls": {
+    "exactly_seven_operations": {
+      "result": "PASS",
+      "detail": null
+    },
+    "actions_and_explain_exact_independent_hash": {
+      "result": "PASS",
+      "detail": null
+    },
+    "fresh_pin_admitted_once": {
+      "result": "PASS",
+      "detail": null
+    },
+    "status_preserves_execution": {
+      "result": "PASS",
+      "detail": null
+    },
+    "malformed_pin_0_zero_provider_requests": {
+      "result": "PASS",
+      "detail": {
+        "providerRequestDelta": 0,
+        "effectDelta": 0
+      }
+    },
+    "malformed_pin_1_zero_provider_requests": {
+      "result": "PASS",
+      "detail": {
+        "providerRequestDelta": 0,
+        "effectDelta": 0
+      }
+    },
+    "malformed_pin_2_zero_provider_requests": {
+      "result": "PASS",
+      "detail": {
+        "providerRequestDelta": 0,
+        "effectDelta": 0
+      }
+    },
+    "malformed_pin_3_zero_provider_requests": {
+      "result": "PASS",
+      "detail": {
+        "providerRequestDelta": 0,
+        "effectDelta": 0
+      }
+    },
+    "malformed_pin_4_zero_provider_requests": {
+      "result": "PASS",
+      "detail": {
+        "providerRequestDelta": 0,
+        "effectDelta": 0
+      }
+    },
+    "malformed_pin_5_zero_provider_requests": {
+      "result": "PASS",
+      "detail": {
+        "providerRequestDelta": 0,
+        "effectDelta": 0
+      }
+    },
+    "malformed_pin_6_zero_provider_requests": {
+      "result": "PASS",
+      "detail": {
+        "providerRequestDelta": 0,
+        "effectDelta": 0
+      }
+    },
+    "malformed_pin_7_zero_provider_requests": {
+      "result": "PASS",
+      "detail": {
+        "providerRequestDelta": 0,
+        "effectDelta": 0
+      }
+    },
+    "same_id_real_schema_drift": {
+      "result": "PASS",
+      "detail": null
+    },
+    "caller_held_stale_contract_zero_effect": {
+      "result": "PASS",
+      "detail": {
+        "state": "unavailable",
+        "effectDelta": 0
+      }
+    },
+    "rediscovered_contract_admitted_once": {
+      "result": "PASS",
+      "detail": null
+    },
+    "title_alias_same_pin": {
+      "result": "PASS",
+      "detail": null
+    },
+    "title_alias_cannot_bypass_stale_pin": {
+      "result": "PASS",
+      "detail": null
+    },
+    "legacy_unpinned_fresh_resolution_retained": {
+      "result": "PASS",
+      "detail": null
+    },
+    "second_catalog_exact_pin": {
+      "result": "PASS",
+      "detail": null
+    },
+    "tool_catalog_unchanged_during_drift": {
+      "result": "PASS",
+      "detail": null
+    }
+  },
+  "boundary": "Controlled provider / real production MCP transport; not restricted fresh-AI eleven-world acceptance.",
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-preflight-recovery-20261007/.build/arm64-apple-macosx/debug/rightclick",
+    "executableRealPath": "/tmp/rightclick-preflight-recovery-20261007/.build/arm64-apple-macosx/debug/rightclick",
+    "executableSHA256": "6c5b1e3dbdeef200e5bc24181f94c492963e7ccfeb1b3cd691f86287458d7995",
+    "pid": 55243,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "result": "PASS"
+}

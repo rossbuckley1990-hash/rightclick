@@ -1,0 +1,50 @@
+{
+  "audit": "PASS",
+  "checkedAtUTC": "2026-10-07T20:55:29.529853+00:00",
+  "sourceRefs": {
+    "stable0.2.2": "7a935fea719601492fe05beba1a4223c283eb350",
+    "releaseCandidate": "bd5ed53f02c5cf76fc35796e665ef2c076296dd2"
+  },
+  "sourceMappingScope": "Release source ref provided by root; binaries independently SHA256 matched to public attestation. No independent binary rebuild is claimed.",
+  "defaultEndpointAcquisition": {
+    "baseline": {
+      "exactAnnouncedHostAndPortMatched": true,
+      "ownedServiceNameMatched": true,
+      "endpoint": "grpc://rightclick-stream-b95f31764613.local:57556"
+    },
+    "candidate": {
+      "exactAnnouncedHostAndPortMatched": true,
+      "ownedServiceNameMatched": true,
+      "endpoint": "grpc://rightclick-stream-d3c0991b28b0.local:57543"
+    }
+  },
+  "legacyResultFieldsAndTypesPreserved": true,
+  "legacyAcceptedStateEvidenceMessageAndTitleEqual": true,
+  "legacyEventsPreservedAsExactPrefix": true,
+  "candidateAppendedEvents": [
+    "RCIR admitted generation=1",
+    "RCIR consumed lease=AEA7665A-AC90-470A-9B33-FD31A9682359",
+    "RCIR task=5283F6C4-D972-483C-B6B1-0D185EE6163B outcome=unverified",
+    "Durable invocation journal is not enabled; this execution has volatile history."
+  ],
+  "candidateAdditiveResultField": "rcir",
+  "candidateCompletionClaim": "completed/unverified, consistent with accepted and outcomeVerified=false",
+  "BonjourSourceChange": "macOS compilation guard only; initializer and browsing/auth gates unchanged",
+  "WireCodecSourceEqual": true,
+  "unarySourceChange": "host RCIR admission gate; default valid configuration succeeds in the actual public control",
+  "sourcePatch": "/private/tmp/rightclick-unary-compatibility-independent-20261007/stable-vs-bd5-unary-source.patch",
+  "harnessConfiguration": "regression-unary removes RIGHTCLICK_RCIR_CONFIG for both; source snapshot retained",
+  "exclusions": [
+    "new stream features or fixes",
+    "issuer authentication or authority proof",
+    "fresh restricted AI proof",
+    "all eleven substrates",
+    "published or installed candidate availability",
+    "every legacy capability or platform"
+  ],
+  "preservedNonRuntimeFailures": [
+    "earlier action metadata filter timeout",
+    "first candidate incomplete host-config rejection"
+  ],
+  "publicationByThisReviewer": "NONE"
+}

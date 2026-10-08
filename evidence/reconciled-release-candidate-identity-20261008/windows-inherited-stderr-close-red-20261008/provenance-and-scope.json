@@ -1,0 +1,72 @@
+{
+  "actualControls": [
+    {
+      "boundedReturn": false,
+      "closeReaderMilliseconds": 4000,
+      "descendantHoldSeconds": 5,
+      "descendantSpawnedMarkerObserved": true,
+      "elapsedMilliseconds": 5062.000000000012,
+      "groupCompletedBeforeClose": false,
+      "parentCompleted": true,
+      "parentExitCode": 0,
+      "path": "output-drain-deadline",
+      "rawChildBytesPersisted": false,
+      "stdoutBytes": 1
+    },
+    {
+      "boundedReturn": false,
+      "closeReaderMilliseconds": 4483.99999999998,
+      "descendantHoldSeconds": 5,
+      "descendantSpawnedMarkerObserved": true,
+      "elapsedMilliseconds": 5046.999999999969,
+      "groupCompletedBeforeClose": false,
+      "parentCompleted": false,
+      "parentExitCode": 15,
+      "path": "deadline",
+      "rawChildBytesPersisted": false,
+      "stdoutBytes": 1
+    }
+  ],
+  "artifact": {
+    "digest": "sha256:4fc58945d3908b5bd7264fa7e1f5ea27ae660f5aa13d3cbd94906040cd4c1000",
+    "expired": false,
+    "id": 11520017077,
+    "name": "windows-stderr-paired-control-70a464c79e6e78104d60e8115f84252cf5a25483",
+    "size_in_bytes": 5737
+  },
+  "binarySHA256": "b017cd1a1f74af3004e833905cbfe256546ca611622ade91b21f9d827d0000db",
+  "conclusion": "failure",
+  "fullProductTestsRun": false,
+  "headSHA": "70a464c79e6e78104d60e8115f84252cf5a25483",
+  "jobID": 113081506637,
+  "originalSwiftPMTimeoutCause": "UNKNOWN",
+  "physicalCheckoutSHA": "70a464c79e6e78104d60e8115f84252cf5a25483",
+  "productSourceChanged": false,
+  "proposedRepairAccepted": false,
+  "remainingRED": [
+    "Bounded Windows stderr discard with no inherited-writer close block",
+    "Full revised native Windows tests and real provider acceptance",
+    "Final combined source package and exact-head platform gates",
+    "Public release/tag/bottle/formula writes held"
+  ],
+  "repository": "rossbuckley1990-hash/rightclick",
+  "runAttempt": 1,
+  "runID": 37706342739,
+  "runURL": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37706342739",
+  "sourcePins": {
+    ".github/scripts/windows_stderr_cleanup_probe.swift": {
+      "bytes": 5907,
+      "sha256": "4036dfd02a6fd3a237e3d6bc655356543f69ee74e70d684f63ac2f79ad523ff7"
+    },
+    ".github/scripts/windows_test_supervisor.py": {
+      "bytes": 16233,
+      "sha256": "f6201b803ad380753cb4d441d558d6c7a123df542f0b3e3f00866c5a0d1a9d36"
+    },
+    ".github/workflows/windows-discarded-stderr-probe.yml": {
+      "bytes": 3238,
+      "sha256": "dacab7f7f6e7a0aef89a502b6340f081924c41e5814f61c9bd5869dfdb0a705a"
+    }
+  },
+  "supervisorElapsedSeconds": 10.172,
+  "workflowPath": ".github/workflows/windows-discarded-stderr-probe.yml"
+}

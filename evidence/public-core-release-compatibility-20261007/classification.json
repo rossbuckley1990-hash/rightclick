@@ -1,0 +1,46 @@
+{
+  "declaredSupportedCalls": {
+    "details": "Exact body, path, result, accepted/unverified semantics and status retained across installed0.2.2 and source6642; public seven-tool catalogue in both transports.",
+    "pairs": 8,
+    "result": "PRESERVED",
+    "shapes": [
+      "text/plain body",
+      "closed application/json body with enum",
+      "encoded string path with Unicode and spaces",
+      "combined path and closed JSON body"
+    ]
+  },
+  "inheritedMissingFunction": [
+    "Published installed0.2.2 does not produce OpenAPI RCIR receipts or task-ID correlation on these public calls, and does not advertise contractSHA256. Candidate adds those controls.",
+    "Optional query/header/cookie parameters may be omitted for these JSON operations; requesting them as additional body arguments fails in both. Actual parameter transport support is not proved.",
+    "Missing provider bearer and HTTP-origin bearer still abstain; no provider credential was provisioned in this comparison.",
+    "Public authenticated subject/audience binding and issuer downscoping remain frozen RED."
+  ],
+  "introducedBehaviorChanges": [
+    {
+      "baseline": "accepted and ignored undeclared extra argument; one actual request",
+      "candidate": "rejected undeclared argument; zero actual requests",
+      "classification": "New closed-input enforcement; valid declared text input is preserved. No restoration proposed.",
+      "operation": "text/plain request-body",
+      "transport": "stdio"
+    },
+    {
+      "baseline": "accepted and ignored undeclared extra argument; one actual request",
+      "candidate": "rejected undeclared argument; zero actual requests",
+      "classification": "New closed-input enforcement; valid declared text input is preserved. No restoration proposed.",
+      "operation": "text/plain request-body",
+      "transport": "http"
+    }
+  ],
+  "newControls": {
+    "independentlyPinnedSignedReceiptsAndActualTaskCorrelation": 14,
+    "mainCaseMatchingPinsAccepted": 8,
+    "mainCaseWrongPinsDeniedWithoutEffects": 8
+  },
+  "productionChanges": "None in this audit/compatibility commit. Existing credential-return6642 guard intact. No common engine/host/server edits.",
+  "scopeLimits": [
+    "Live credential-backed product TLS/public session compatibility without fixture bridge.",
+    "All provider substrates/all OS release acceptance.",
+    "Issuer downscope, caller-specific policy or individual AI principal."
+  ]
+}

@@ -1,0 +1,415 @@
+[
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 11,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "existing-federation-parity",
+          "version": "1"
+        }
+      }
+    },
+    "response": {
+      "id": 11,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.3"
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 12,
+      "method": "tools/list"
+    },
+    "response": {
+      "id": 12,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "contractSHA256": {
+                  "description": "Optional exact declaration fingerprint returned by context_actions/context_explain. Rejects changed contracts; it grants no authority. Omission retains legacy fresh resolution without a caller-held pin.",
+                  "type": "string"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 13,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 13,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"executablePath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableRealPath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableSHA256\" : \"c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12\",\n  \"pid\" : 95908,\n  \"platform\" : \"macOS\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"http\",\n  \"version\" : \"0.2.3\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 14,
+      "method": "tools/call",
+      "params": {
+        "name": "context_providers",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 14,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"ownedProofProjection\": {\"operation\": \"context_providers\", \"successfulRead\": true, \"omitted\": \"unrelated provider inventory/count\"}}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 15,
+      "method": "tools/call",
+      "params": {
+        "name": "context_inspect",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity"
+        }
+      }
+    },
+    "response": {
+      "id": 15,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"byteCount\" : 37,\n  \"display\" : \"RIGHTCLICK existing federation parity\",\n  \"isDirectory\" : false,\n  \"kind\" : \"text\",\n  \"text\" : \"RIGHTCLICK existing federation parity\",\n  \"typeDescription\" : \"Plain text\",\n  \"typeIdentifier\" : \"public.plain-text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 16,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity"
+        }
+      }
+    },
+    "response": {
+      "id": 16,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"actions\": [], \"contentType\": \"public.plain-text\", \"item\": \"RIGHTCLICK existing federation parity\", \"kind\": \"text\"}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 17,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity"
+        }
+      }
+    },
+    "response": {
+      "id": 17,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"actions\": [{\"contractSHA256\": \"acfc051bd0fa02a3936d55cb702da1ba6dc7061c7986c34d694cca3b2085417c\", \"explanation\": \"Read federation proof\", \"id\": \"openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\", \"inputTypes\": [\"public.plain-text\"], \"invocation\": \"interactive\", \"provider\": {\"name\": \"RIGHTCLICK Federation Remote Proof Provider\"}, \"requiresConfirmation\": true, \"safety\": \"unknown\", \"source\": \"system\", \"supportLevel\": \"experimental\", \"title\": \"Read federation proof\"}], \"contentType\": \"public.plain-text\", \"item\": \"RIGHTCLICK existing federation parity\", \"kind\": \"text\"}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 25,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity"
+        }
+      }
+    },
+    "response": {
+      "id": 25,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"actions\": [], \"contentType\": \"public.plain-text\", \"item\": \"RIGHTCLICK existing federation parity\", \"kind\": \"text\"}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 29,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 29,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"executablePath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableRealPath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableSHA256\" : \"c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12\",\n  \"pid\" : 95908,\n  \"platform\" : \"macOS\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"http\",\n  \"version\" : \"0.2.3\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "receipt": "success",
+    "expectedOutcome": "succeeded",
+    "exitCode": 0,
+    "stdout": "{\n  \"signature\": \"VALID\",\n  \"algorithm\": \"Ed25519\",\n  \"trustedKeyMatched\": true,\n  \"payloadBytes\": 6920,\n  \"signedClaims\": {\n    \"taskID\": \"313EB5D4-C917-4D8D-80B9-D35CC0B3C5D2\",\n    \"leaseID\": \"767B4664-8575-406B-BFA9-EFF7F034B200\",\n    \"providerGeneration\": 1,\n    \"phase\": \"completed\",\n    \"semanticOutcome\": \"succeeded\",\n    \"scopeCount\": 1,\n    \"effects\": [\n      \"execute\"\n    ]\n  },\n  \"semanticClaim\": \"SIGNED_RUNTIME_ASSERTION\",\n  \"externalTruth\": \"NOT_ESTABLISHED_BY_SIGNATURE_ALONE\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "receipt": "failure",
+    "expectedOutcome": "failed",
+    "exitCode": 0,
+    "stdout": "{\n  \"signature\": \"VALID\",\n  \"algorithm\": \"Ed25519\",\n  \"trustedKeyMatched\": true,\n  \"payloadBytes\": 6902,\n  \"signedClaims\": {\n    \"taskID\": \"924B21EE-0CD2-416E-BCCD-4C4C26FDA1DB\",\n    \"leaseID\": \"9C37BBE8-3BA8-44A4-A824-454C3528926C\",\n    \"providerGeneration\": 1,\n    \"phase\": \"completed\",\n    \"semanticOutcome\": \"failed\",\n    \"scopeCount\": 1,\n    \"effects\": [\n      \"execute\"\n    ]\n  },\n  \"semanticClaim\": \"SIGNED_RUNTIME_ASSERTION\",\n  \"externalTruth\": \"NOT_ESTABLISHED_BY_SIGNATURE_ALONE\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "receipt": "unverified",
+    "expectedOutcome": "unverified",
+    "exitCode": 0,
+    "stdout": "{\n  \"signature\": \"VALID\",\n  \"algorithm\": \"Ed25519\",\n  \"trustedKeyMatched\": true,\n  \"payloadBytes\": 5566,\n  \"signedClaims\": {\n    \"taskID\": \"C9354C2A-E0B6-483F-AA37-7AC8931C0108\",\n    \"leaseID\": \"D7B3E080-0727-4CB7-9BBC-7FAB22CAE57E\",\n    \"providerGeneration\": 1,\n    \"phase\": \"completed\",\n    \"semanticOutcome\": \"unverified\",\n    \"scopeCount\": 1,\n    \"effects\": [\n      \"execute\"\n    ]\n  },\n  \"semanticClaim\": \"SIGNED_RUNTIME_ASSERTION\",\n  \"externalTruth\": \"NOT_ESTABLISHED_BY_SIGNATURE_ALONE\"\n}\n",
+    "stderr": ""
+  }
+]

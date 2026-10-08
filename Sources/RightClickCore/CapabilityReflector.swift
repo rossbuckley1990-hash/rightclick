@@ -1,4 +1,3 @@
-import AppKit
 import Foundation
 
 /// A substrate reflector converts provider-specific capability contracts into
@@ -101,13 +100,21 @@ enum CapabilityReflectorID {
 
 enum CapabilityReflectorDefaults {
     static func all() -> [any CapabilityReflector] {
-        [
+#if os(macOS)
+        return [
             MacOSServiceReflector(),
             MacOSSharingReflector(),
             MacOSActionExtensionReflector(),
         ]
+#else
+        return []
+#endif
     }
 }
+
+#if os(macOS)
+import AppKit
+import Darwin
 
 private final class MacOSServiceReflector: CapabilityReflector {
     let id = CapabilityReflectorID.macOSService
@@ -295,6 +302,8 @@ private final class MacOSActionExtensionReflector:
         )
     }
 }
+
+#endif
 
 private func reflectorExecutionState(
     for status: RunStatus

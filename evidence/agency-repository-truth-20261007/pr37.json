@@ -1,0 +1,80 @@
+{
+  "number": 37,
+  "title": "feat(runtime): portable shared Core/MCP with Linux and Windows host adapters",
+  "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/37",
+  "headRefName": "feature/portable-runtime-001",
+  "headRefOid": "a41c2775ac3ba00b05773af3fe428357cc0b7fca",
+  "baseRefName": "main",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-07T12:18:28Z",
+      "conclusion": "FAILURE",
+      "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929644/job/112787329487",
+      "name": "prepare",
+      "startedAt": "2026-10-07T12:17:28Z",
+      "status": "COMPLETED",
+      "workflowName": "Final portable guard repair and validation"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-07T12:23:51Z",
+      "conclusion": "FAILURE",
+      "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929622/job/112787905983",
+      "name": "Native linux candidate",
+      "startedAt": "2026-10-07T12:18:57Z",
+      "status": "COMPLETED",
+      "workflowName": "Portable runtime"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-07T12:31:06Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929622/job/112787906519",
+      "name": "Native macos candidate",
+      "startedAt": "2026-10-07T12:19:03Z",
+      "status": "COMPLETED",
+      "workflowName": "Portable runtime"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-07T12:29:39Z",
+      "conclusion": "FAILURE",
+      "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929622/job/112787905898",
+      "name": "Native windows candidate",
+      "startedAt": "2026-10-07T12:18:57Z",
+      "status": "COMPLETED",
+      "workflowName": "Portable runtime"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-07T12:18:29Z",
+      "conclusion": "SKIPPED",
+      "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929644/job/112787745280",
+      "name": "Native ${{ matrix.id }} candidate",
+      "startedAt": "2026-10-07T12:18:29Z",
+      "status": "COMPLETED",
+      "workflowName": "Final portable guard repair and validation"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-07T12:31:06Z",
+      "conclusion": "SKIPPED",
+      "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929622/job/112792822003",
+      "name": "clean-linux",
+      "startedAt": "2026-10-07T12:31:07Z",
+      "status": "COMPLETED",
+      "workflowName": "Portable runtime"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-07T12:18:29Z",
+      "conclusion": "SKIPPED",
+      "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929644/job/112787746458",
+      "name": "clean-linux",
+      "startedAt": "2026-10-07T12:18:29Z",
+      "status": "COMPLETED",
+      "workflowName": "Final portable guard repair and validation"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "build": "PASS",
+  "archiveSHA256": "d2d42b8f24d9bfda18e7f2b2e36ee529db4a33c7bf763b8e83f3fca139974741",
+  "archiveMemberCount": 442,
+  "initialGitAndBuildDirectoriesAbsent": true,
+  "compiledProductAndModuleOutputsRebuilt": true,
+  "dependencySourcesReused": true,
+  "sourceClosureSHA256": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+  "builtBinaryVersion": "0.2.3",
+  "builtBinarySHA256": "4f6cfc934be6fbca548d2a6ced7c7a2b8f7e27fdc39868eeec6e0a6eef67aa39",
+  "buildTimeSeconds": 90.26,
+  "trackedScriptClosureCount": 76,
+  "trackedScriptBytesAndExecutableModesMatch": true,
+  "substrateKindCatalogueEntries": 21,
+  "substrateKindCatalogueIsNotLiveAcceptance": true,
+  "extraction": {
+    "archiveSHA256": "d2d42b8f24d9bfda18e7f2b2e36ee529db4a33c7bf763b8e83f3fca139974741",
+    "members": 442,
+    "initialGitAbsent": true,
+    "initialBuildAbsent": true,
+    "SourcesByteEqualToFrozenRelease": true,
+    "frozenReleaseSHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+    "cacheReuse": "Dependency source checkouts/repositories only from the failed a02 extraction. All compiled product/module outputs were removed after detecting absolute module-cache paths; no compiled product cache is reused in the final build.",
+    "discardedOwnedBuildOutputs": [
+      ".lock",
+      "plugin-tools.yaml",
+      "release.yaml",
+      "build.db",
+      "arm64-apple-macosx"
+    ]
+  },
+  "binaryProvenanceBoundary": "A separate source build of the same product source, not the frozen 23d9 release bytes. Both binaries are independently hashed.",
+  "canonicalMCPAcceptance": {
+    "result": "PASS",
+    "transports": [
+      "stdio",
+      "authenticated loopback HTTP"
+    ],
+    "catalogueExactlySeven": true,
+    "invokedOperations": [
+      "context_runtime",
+      "context_inspect",
+      "context_actions",
+      "context_run",
+      "context_run_status"
+    ],
+    "uninvokedCanonicalOperationsInThisCheck": [
+      "context_explain",
+      "context_providers"
+    ],
+    "runtimeIdentityVerified": true,
+    "actualNativeFullWidthText": "ＲｉｇｈｔＣｌｉｃｋ",
+    "confirmationGated": true,
+    "retainedStateOutputEvidenceMatch": true,
+    "malformedHTTPFramingRejected": true,
+    "missingAndInvalidHTTPBearer401": true,
+    "returnedTextPostconditionOnly": true
+  },
+  "retryHistory": [
+    {
+      "result": "RED",
+      "cause": "Disk exhausted while compiling a prior a02 archive; source build failure log retained."
+    },
+    {
+      "result": "RED",
+      "cause": "Restricted default cache path then SwiftPM child compiler sandbox permissions."
+    },
+    {
+      "result": "RED",
+      "cause": "Relocated precompiled module cache contained absolute old extraction path."
+    },
+    {
+      "result": "GREEN",
+      "cause": "Rebuilt all disposable compiled outputs with task-local module cache and normal reviewed process permissions; only dependency source checkouts/repositories reused."
+    }
+  ],
+  "preservedLocalLogHashes": {
+    "/private/tmp/rightclick-final-source-build-a02f67ef-20261007.log": "68a46a9342ebfa675ec3f8ac0c7ab2ae6fec31697becbbe2352d8ba06e27ceb4",
+    "/private/tmp/rightclick-final-source-build-d2d42b8f-20261007.log": "cbdb55c65ed3458dea2d5fbf94c493ba3abce00bb3dd9d21b87acb304afeab40",
+    "/private/tmp/rightclick-final-source-build-d2d42b8f-cache-local-20261007.log": "cfe29a7dc8d3bcbe47de849c24aaf2929364dfc60f45ad6a9fdbc0c9a1f1bd35",
+    "/private/tmp/rightclick-final-source-build-d2d42b8f-reviewed-20261007.log": "7239838167f9f857b6debed10bcf76e2e16aca35338eabdee7d3b0e30a61d78e",
+    "/private/tmp/rightclick-final-source-build-d2d42b8f-clean-products-20261007.log": "11c7b8e58de70e5960aa339946a98a7dc25966ec6f9a7f725608d6a6c7f8cc78"
+  },
+  "notClaimed": [
+    "Release publication",
+    "Public tap alignment",
+    "Fresh Homebrew bottle installation",
+    "Windows/Linux native platform acceptance",
+    "All eleven substrates",
+    "Fresh restricted AI or individual-principal authority"
+  ]
+}
