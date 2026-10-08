@@ -4,6 +4,8 @@ import Foundation
 /// A command-looking line inside a scalar, another document or another binding
 /// must never stand in for the command the tunnel client will actually launch.
 enum RightClickChatGPTBridgeProfile {
+    private static let syntaxSpace = CharacterSet(charactersIn: " ")
+
     private struct Line {
         let indent: Int
         let sequenceEntry: Bool
@@ -18,7 +20,7 @@ enum RightClickChatGPTBridgeProfile {
         var lines: [Line] = []
         for physical in physicalLines {
             let line = physical.hasSuffix("\r") ? String(physical.dropLast()) : physical
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            let trimmed = line.trimmingCharacters(in: syntaxSpace)
             if trimmed.isEmpty || trimmed.hasPrefix("#") { continue }
             guard let parsed = parse(line) else { return nil }
             lines.append(parsed)
@@ -81,7 +83,7 @@ enum RightClickChatGPTBridgeProfile {
         if sequence { body = String(body.dropFirst(2)) }
         guard let colon = body.firstIndex(of: ":") else { return nil }
         let key = String(body[..<colon])
-        let tail = String(body[body.index(after: colon)...]).trimmingCharacters(in: .whitespaces)
+        let tail = String(body[body.index(after: colon)...]).trimmingCharacters(in: syntaxSpace)
         if tail.isEmpty || tail.hasPrefix("#") {
             return Line(indent: indent, sequenceEntry: sequence, key: key, value: nil)
         }
@@ -108,7 +110,7 @@ enum RightClickChatGPTBridgeProfile {
             else { return nil }
             return String(text[range].dropFirst().dropLast()).replacingOccurrences(of: "''", with: "'")
         }
-        let value = text.components(separatedBy: " #")[0].trimmingCharacters(in: .whitespaces)
+        let value = text.components(separatedBy: " #")[0].trimmingCharacters(in: syntaxSpace)
         guard value.range(of: #"^[A-Za-z0-9_./:-]+(?: [A-Za-z0-9_./:-]+)*$"#,
                           options: .regularExpression) != nil else { return nil }
         return value

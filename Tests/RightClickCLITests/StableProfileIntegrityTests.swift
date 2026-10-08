@@ -385,4 +385,26 @@ final class StableProfileIntegrityTests:
             XCTAssertEqual(result.expectedCommand, "\(stable.path) mcp")
         }
     }
+
+    func testUnicodeSpacingCannotBeNormalizedIntoTrustedPlainScalars() throws {
+        try environment { _, layout, stable, profile in
+            for (channel, command) in [
+                ("main\u{00A0}", "\(stable.path) mcp"),
+                ("main", "\(stable.path) mcp\u{00A0}"),
+                ("main\u{2003}", "\(stable.path) mcp"),
+                ("main", "\(stable.path) mcp\u{2003}")
+            ] {
+                let text = """
+                config_version: 1
+                mcp:
+                  commands:
+                    - channel: \(channel)
+                      command: \(command)
+                """
+                try text.write(to: profile, atomically: true, encoding: .utf8)
+                XCTAssertThrowsError(try RightClickBridgeRuntime.attestStableProfile(
+                    profileFile: profile, invokedExecutable: stable.path, layouts: [layout]))
+            }
+        }
+    }
 }
