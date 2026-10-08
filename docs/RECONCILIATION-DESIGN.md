@@ -99,6 +99,11 @@ when recommending merge.
   native NetService discovery remains in MacOS and shares the same revocable
   acquisition token implementation. Linux's legacy source name is a descriptor
   acquisition alias, never a claim of native Bonjour browsing.
+* PR49's portable `setup` registration preview and `refresh` command are retained
+  additively in PortableMain. Its non-Mac `authority` command retains an explicit
+  unavailable storage boundary. It does not manage environment credentials or
+  introduce plaintext persistence; Mac authority commands retain their existing
+  Keychain implementation.
 
 ## Independent adversarial corrections
 

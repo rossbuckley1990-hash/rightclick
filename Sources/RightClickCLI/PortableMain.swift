@@ -17,6 +17,21 @@ struct RightClickPortableMain {
         let rest = Array(args.dropFirst())
         if command == "mcp" || command == "serve" { return RightClickMCPMain.run(rest) }
         if command == "provider" { return RightClickProviderCLI.run(rest) }
+        if command == "setup" {
+            struct Registration: Encodable { let command: String; let args: [String] }
+            print(RightClickJSON.encode(["mcpServers": ["rightclick": Registration(
+                command: RightClickRuntime.executablePath(), args: ["mcp"])]]))
+            return 0
+        }
+        if command == "refresh" {
+            RightClickMCPRuntime.makeEngine(startBrowsing: false).refresh()
+            print("Refreshed available host registrations. The next query scans providers again.")
+            return 0
+        }
+        if command == "authority" {
+            FileHandle.standardError.write(Data("Authority storage is unavailable on this host. Provider execution uses explicit origin-bound environment authority.\n".utf8))
+            return 2
+        }
         if command == "version" || command == "--version" { print(RightClickVersion.current); return 0 }
         if ["help", "--help", "-h"].contains(command) {
             print("""
@@ -31,6 +46,9 @@ struct RightClickPortableMain {
               rightclick status EXECUTION_ID --json
               rightclick providers --json
               rightclick provider ...                Configured provider registry
+              rightclick setup                       Print an MCP registration preview
+              rightclick refresh                     Refresh available host registrations
+              rightclick authority ...               Unavailable persistent store on this host
 
             Native desktop capabilities require their host adapter. Headless hosts
             use portable providers and explicit origin-bound environment authority.
