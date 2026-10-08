@@ -40,8 +40,9 @@ final class NativeFixtureReadinessTests: XCTestCase {
     }
 
     func testZeroOversizedAndNonDecimalMarkersCannotBecomePorts() throws {
-        for value in ["0", "65536", "12345suffix", "-1", "12345\nextra"] {
-            try fixture("import pathlib,sys,time; pathlib.Path(sys.argv[1]).write_text(" + String(reflecting: value) + "); time.sleep(3)") { marker, process in
+        for value in ["0", "65536", "12345suffix", "-1", "12345\nextra",
+                      "65535\r", "65535\r\r\n", "65535\r\nextra"] {
+            try fixture("import pathlib,sys,time; pathlib.Path(sys.argv[1]).write_bytes(" + String(reflecting: value) + ".encode('ascii')); time.sleep(3)") { marker, process in
                 XCTAssertThrowsError(try NativeHTTPFixture.waitForPort(marker, process: process, timeout: 0.1))
             }
         }
@@ -61,6 +62,16 @@ final class NativeFixtureReadinessTests: XCTestCase {
     func testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted() throws {
         try fixture("import pathlib,sys,time; pathlib.Path(sys.argv[1]).write_text('65535\\n'); time.sleep(3)") { marker, process in
             XCTAssertEqual(try NativeHTTPFixture.waitForPort(marker, process: process), 65535)
+        }
+    }
+
+    func testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation() throws {
+        for value in ["1\n", "65535\n", "1\r\n", "65535\r\n"] {
+            try fixture("import pathlib,sys,time; pathlib.Path(sys.argv[1]).write_bytes(" +
+                        String(reflecting: value) + ".encode('ascii')); time.sleep(3)") { marker, process in
+                let expected: UInt16 = value.hasPrefix("65535") ? 65535 : 1
+                XCTAssertEqual(try NativeHTTPFixture.waitForPort(marker, process: process), expected)
+            }
         }
     }
 

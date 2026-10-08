@@ -62,14 +62,13 @@ final class RCIRAuthorityDispatchTests: XCTestCase {
         if let out = ProcessInfo.processInfo.environment["RCIR_AUTHORITY_EVIDENCE"] {
             let target = URL(fileURLWithPath:out); try FileManager.default.createDirectory(at:target,withIntermediateDirectories:true)
             let name = name.replacingOccurrences(of:"/",with:"_")
-            let rows = try JSONSerialization.data(withJSONObject:["test":name,"effects":effects()],options:[.prettyPrinted,.sortedKeys])
+            let rows = try JSONSerialization.data(withJSONObject:["test":name,"effects":try effects()],options:[.prettyPrinted,.sortedKeys])
             try rows.write(to:target.appendingPathComponent(name+".json"))
         }
         if let directory { try NativeHTTPFixture.remove(directory) }
     }
-    private func effects() -> [[String:Any]] {
-        let rows = (try? String(contentsOf:directory.appendingPathComponent("effects.jsonl"),encoding:.utf8)) ?? ""
-        return rows.split(separator:"\n").map { try! JSONSerialization.jsonObject(with:Data($0.utf8)) as! [String:Any] }
+    private func effects() throws -> [[String: Any]] {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent("effects.jsonl"))
     }
     private func invoke(_ grant: RCIRAuthorityGrant? = nil, authenticatedContext: (() throws -> RCIRAuthorityContext)? = nil) throws -> ExecutionRecord {
         let attachment = RCIRHostAuthority(grant:grant ?? childGrant,authenticatedContext:authenticatedContext ?? { try self.context() })
@@ -87,7 +86,7 @@ final class RCIRAuthorityDispatchTests: XCTestCase {
     }
     func testLegalChildProducesIndependentlyObservedSignedEffect() throws {
         let result = try invoke()
-        XCTAssertEqual(result.state,.succeeded,result.message); XCTAssertEqual(effects().count,1)
+        XCTAssertEqual(result.state,.succeeded,result.message); XCTAssertEqual(try effects().count,1)
         XCTAssertEqual(result.rcir?.outcome,"succeeded"); XCTAssertEqual(result.rcir?.leaseConsumed,true)
         let envelope = try XCTUnwrap(result.rcir?.signedReceipt)
         let signed = try RCIRSignedReceipt(payload:Data(base64Encoded:envelope.payload)!,signature:Data(base64Encoded:envelope.signature)!,publicKey:Data(base64Encoded:envelope.publicKey)!)
@@ -104,35 +103,35 @@ final class RCIRAuthorityDispatchTests: XCTestCase {
     }
     func testWrongSubjectAtFinalGateProducesZeroActualHTTPRequests() throws {
         host.beforeConsume = { _ in self.subject = "agent:mallory" }
-        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(effects().isEmpty)
+        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(try effects().isEmpty)
     }
     func testWrongAudienceAtFinalGateProducesZeroActualHTTPRequests() throws {
         host.beforeConsume = { _ in self.audience = "runtime:other" }
-        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(effects().isEmpty)
+        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(try effects().isEmpty)
     }
     func testAncestorRevocationAtFinalGateProducesZeroActualHTTPRequests() throws {
         host.beforeConsume = { _ in try self.host.admission.revokeAuthority(self.rootGrant) }
-        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(effects().isEmpty)
+        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(try effects().isEmpty)
     }
     func testPolicyRevocationAtFinalGateProducesZeroActualHTTPRequests() throws {
         host.beforeConsume = { _ in self.config.deniedCapabilities = [self.capability.id] }
-        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(effects().isEmpty)
+        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(try effects().isEmpty)
     }
     func testCredentialScopeWithdrawalAtFinalGateProducesZeroActualHTTPRequests() throws {
         host.beforeConsume = { _ in self.credentialScopes = [] }
-        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(effects().isEmpty)
+        XCTAssertEqual(try invoke().state,.rejected); XCTAssertTrue(try effects().isEmpty)
     }
     func testSiblingAndParentCannotExceedSharedBudget() throws {
         let sibling = try host.admission.attenuate(rootGrant,request:request(subject:"agent:carol",limit:1,depth:0,expiry:2000),authenticated:context("agent:alice"),now:clock)
         XCTAssertEqual(try invoke().state,.succeeded)
         subject = "agent:carol"; XCTAssertEqual(try invoke(sibling).state,.rejected)
         subject = "agent:alice"; XCTAssertEqual(try invoke(rootGrant).state,.rejected)
-        XCTAssertEqual(effects().count,1)
+        XCTAssertEqual(try effects().count,1)
     }
     func testAuthenticatedContextErrorsCannotLeakCredentialMaterial() throws {
         let sentinel = "DISPOSABLE_AUTHORITY_SECRET_SENTINEL"
         let result = try invoke(authenticatedContext:{ throw RightClickError(sentinel) })
-        XCTAssertEqual(result.state,.rejected); XCTAssertTrue(effects().isEmpty)
+        XCTAssertEqual(result.state,.rejected); XCTAssertTrue(try effects().isEmpty)
         let encoded = try JSONEncoder().encode(result)
         let leaked = String(decoding:encoded,as:UTF8.self).contains(sentinel)
         if let out = ProcessInfo.processInfo.environment["RCIR_AUTHORITY_EVIDENCE"] {
@@ -149,7 +148,7 @@ final class RCIRAuthorityDispatchTests: XCTestCase {
             try self.host.admission.revokeAuthority(self.rootGrant)
         }
         let result = try invoke()
-        XCTAssertEqual(effects().count,1); XCTAssertEqual(result.state,.unknown)
+        XCTAssertEqual(try effects().count,1); XCTAssertEqual(result.state,.unknown)
         XCTAssertEqual(result.rcir?.outcome,"unknown"); XCTAssertNotNil(result.rcir?.signedReceipt)
     }
 }

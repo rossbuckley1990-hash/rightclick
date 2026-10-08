@@ -78,8 +78,8 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
         return try engine.begin(id: capability.id, item: item, confirmed: true, arguments: arguments, expectedOutput: expected ? digest : nil)
     }
 
-    private func effectCount() -> Int {
-        ((try? String(contentsOf: directory.appendingPathComponent("effects.jsonl"), encoding: .utf8)) ?? "").split(separator: "\n").count
+    private func effectCount() throws -> Int {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent("effects.jsonl")).count
     }
 
     private func preserve(_ record: ExecutionRecord, label: String) throws {
@@ -107,7 +107,7 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
         XCTAssertNil(record.output)
         XCTAssertEqual(capability.output, [])
         XCTAssertEqual(capability.metadata["resultValidation"], "no_declared_output")
-        XCTAssertEqual(effectCount(), 1)
+        XCTAssertEqual(try effectCount(), 1)
         XCTAssertNotNil(record.rcir?.signedReceipt)
         try preserve(record, label: "unverified")
     }
@@ -115,7 +115,7 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
     func testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt() throws {
         try configure(); let record = try invoke()
         XCTAssertEqual(record.state, .succeeded, record.message); XCTAssertEqual(record.rcir?.outcome, "succeeded")
-        XCTAssertTrue(record.evidence.outcomeVerified); XCTAssertNil(record.output); XCTAssertEqual(effectCount(), 1)
+        XCTAssertTrue(record.evidence.outcomeVerified); XCTAssertNil(record.output); XCTAssertEqual(try effectCount(), 1)
         let envelope = try XCTUnwrap(record.rcir?.signedReceipt)
         let payload = try XCTUnwrap(Data(base64Encoded: envelope.payload))
         let publicKey = try Curve25519.Signing.PublicKey(rawRepresentation: Data(base64Encoded: envelope.publicKey)!)
@@ -129,7 +129,7 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
     func testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition() throws {
         let record = try invoke()
         XCTAssertEqual(record.state, .accepted); XCTAssertEqual(record.rcir?.outcome, "unverified")
-        XCTAssertFalse(record.evidence.outcomeVerified); XCTAssertEqual(effectCount(), 1)
+        XCTAssertFalse(record.evidence.outcomeVerified); XCTAssertEqual(try effectCount(), 1)
     }
 
     func testWrongOrMissingExternalEffectNeverBecomesSuccess() throws {
@@ -139,7 +139,7 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
         try preserve(mismatch, label: "failure")
         let missing = try invoke("missing")
         XCTAssertEqual(missing.state, .accepted); XCTAssertEqual(missing.rcir?.outcome, "unverified")
-        XCTAssertEqual(effectCount(), 2)
+        XCTAssertEqual(try effectCount(), 2)
     }
 
     func testUndeclared2xxStatusRemainsUnknownDespiteActualEffect() throws {
@@ -147,7 +147,7 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
         try Data("200".utf8).write(to: directory.appendingPathComponent("ack-status"))
         let record = try invoke()
         XCTAssertEqual(record.state, .unknown); XCTAssertEqual(record.rcir?.outcome, "unknown")
-        XCTAssertFalse(record.evidence.outcomeVerified); XCTAssertEqual(effectCount(), 1)
+        XCTAssertFalse(record.evidence.outcomeVerified); XCTAssertEqual(try effectCount(), 1)
         XCTAssertNil(record.output)
     }
 
@@ -155,9 +155,9 @@ final class OpenAPIAcknowledgementTests: XCTestCase {
         let action = try XCTUnwrap(capability)
         let arguments = ["id": UUID().uuidString, "value": "never dispatched"]
         let gated = try engine.begin(id: action.id, item: item, confirmed: false, arguments: arguments)
-        XCTAssertEqual(gated.state, .awaitingUser); XCTAssertEqual(effectCount(), 0)
+        XCTAssertEqual(gated.state, .awaitingUser); XCTAssertEqual(try effectCount(), 0)
         config.deniedCapabilities = [action.id]
         let denied = try engine.begin(id: action.id, item: item, confirmed: true, arguments: arguments)
-        XCTAssertEqual(denied.state, .rejected); XCTAssertEqual(effectCount(), 0)
+        XCTAssertEqual(denied.state, .rejected); XCTAssertEqual(try effectCount(), 0)
     }
 }

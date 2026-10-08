@@ -3,6 +3,21 @@ import XCTest
 @testable import RightClickCore
 
 final class BoundedCapabilityProcessDiagnosticTests: XCTestCase {
+    func testDiscardedStderrBeyondPipeCapacityCannotBlockOrEnterDiagnostics() throws {
+        let secret = "discarded-stderr-canary-" + UUID().uuidString
+        var reports: [BoundedCapabilityProcess.Diagnostic] = []
+        let bytes = try BoundedCapabilityProcess.run(executable: NativeHTTPFixture.python(),
+            arguments: ["-c", "import sys; payload=sys.argv[1].encode()*32768; assert sys.stderr.buffer.write(payload)==len(payload); sys.stderr.flush(); sys.stdout.buffer.write(b'exact-bounded-output'); sys.stdout.buffer.flush()", secret],
+            timeout: 5, maximumBytes: 64, diagnostic: { reports.append($0) })
+        XCTAssertEqual(bytes, Data("exact-bounded-output".utf8))
+        XCTAssertEqual(reports.count, 1)
+        let report = try XCTUnwrap(reports.first)
+        XCTAssertEqual(report.outcome, .completed); XCTAssertEqual(report.terminationStatus, 0)
+        XCTAssertEqual(report.stdoutBytes, bytes.count)
+        let encoded = String(decoding: try JSONEncoder().encode(report), as: UTF8.self)
+        XCTAssertFalse(encoded.contains(secret)); XCTAssertFalse(encoded.contains("discarded-stderr-canary"))
+    }
+
     func testTerminalMeasurementsContainNoArgumentsInputOutputOrErrorBytes() throws {
         let secret = "must-never-appear-in-diagnostic-" + UUID().uuidString
         var reports: [BoundedCapabilityProcess.Diagnostic] = []

@@ -17,6 +17,15 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record exact candidate source
+        env:
+          RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$RIGHTCLICK_CI_SOURCE"
+          git rev-parse HEAD
+          git rev-parse HEAD:Sources
       - run: swift test --force-resolved-versions
       - run: scripts/build-cli.sh
       - run: python3 scripts/acceptance-setup.py "$PWD/.build/release/rightclick"
@@ -40,6 +49,8 @@ jobs:
     runs-on: macos-26
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Fail closed when checkout substrates drift from published bottle
         run: python3 scripts/detect-bottle-alignment.py --compare --json
 
@@ -50,6 +61,8 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Toolchain
         run: swift --version
       - name: G13 portable parser contract
@@ -63,6 +76,8 @@ jobs:
     container: swift:6.2
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Build portable ARD product only
         run: swift build --product rightclick-ard-probe --force-resolved-versions
       - name: G17 portable ARD acquisition

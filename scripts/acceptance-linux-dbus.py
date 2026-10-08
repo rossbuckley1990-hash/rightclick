@@ -131,6 +131,11 @@ def main():
             def invoke(confirmed=True, current=challenge, expected=digest, enabled='["boolean",true]'):
                 return client.call("context_run", {"item": item, "actionId": capability["id"], "confirmed": confirmed,
                     "arguments": {"challenge": current, "value": value, "enabled": enabled}, "expectedOutput": expected})
+            def observation_for(task_id):
+                rows = [json.loads(line) for line in (root / "observer-state" / "observations.jsonl").read_text().splitlines()]
+                matching = [row for row in rows if row.get("requestInvocation") == task_id]
+                assert len(matching) == 1, "Expected one independently journaled observation for this task"
+                return matching[0]
             assert invoke(False)["state"] == "awaiting_user" and not (root / "records" / challenge).exists()
             settings["deniedCapabilities"] = [capability["id"]]; save()
             assert invoke()["state"] == "rejected" and not (root / "records" / challenge).exists()
@@ -141,6 +146,7 @@ def main():
             assert wrong.get("isError") and not (root / "records" / wrong_challenge).exists()
             result = invoke()
             assert result["state"] == "succeeded" and result["rcir"]["outcome"] == "succeeded", result
+            assert observation_for(result["rcir"]["taskID"])["invocation"] == result["rcir"]["taskID"]
             raw = canonical.verify(result, root / "writer-state", out, trusted)
             for marker in [challenge, digest, "1100", "1101", "Linux"]: assert marker.encode() in raw
             status = client.call("context_run_status", {"executionId": result["executionId"]})
@@ -158,6 +164,9 @@ def main():
             assert noop["state"] != "succeeded" and noop["rcir"]["outcome"] != "succeeded"
             replay = invoke()
             assert replay["state"] != "succeeded" and replay["rcir"]["outcome"] != "succeeded"
+            replay_observation = observation_for(replay["rcir"]["taskID"])
+            assert replay_observation["invocation"] == result["rcir"]["taskID"]
+            assert replay_observation["invocation"] != replay_observation["requestInvocation"]
             (root / "no-effect").unlink()
             (root / "release-name").touch(); wait(root / "state" / "service-released")
             still_callable = bus_call("Introspect", interface="org.freedesktop.DBus.Introspectable", destination=original_owner)
@@ -173,6 +182,7 @@ def main():
             assert fresh["metadata"]["descriptorSHA256"] != explanation["metadata"]["descriptorSHA256"]
             restored_result = invoke(current=uuid.uuid4().hex)
             assert restored_result["state"] == "succeeded", restored_result
+            assert observation_for(restored_result["rcir"]["taskID"])["invocation"] == restored_result["rcir"]["taskID"]
             assert client.request("tools/list")["tools"] == client.tools
             report.update(status="SCOPED_NATIVE_LINUX_DBUS_GREEN", restoredOwner=new_owner, toolCountBefore=7, toolCountAfter=7, providerSpecificToolsAdded=0)
             report["controls"]["ownerWithdrawalRestoration"] = "PASS — ReleaseName withdraws capabilities while old unique connection remains callable; new unique owner changes descriptor binding; fresh invocation succeeds"

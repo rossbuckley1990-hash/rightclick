@@ -69,9 +69,8 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         for _ in 0..<400 where !FileManager.default.fileExists(atPath:file.path) { Thread.sleep(forTimeInterval:0.01) }
         return try XCTUnwrap(FileManager.default.fileExists(atPath:file.path) ? file : nil)
     }
-    private func rows(_ name: String) -> [[String: Any]] {
-        let data = (try? String(contentsOf:directory.appendingPathComponent(name),encoding:.utf8)) ?? ""
-        return data.split(separator:"\n").compactMap { try? JSONSerialization.jsonObject(with:Data($0.utf8)) as? [String: Any] }
+    private func rows(_ name: String) throws -> [[String: Any]] {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent(name))
     }
     private func provisionKey() throws -> Data {
         let key = Curve25519.Signing.PrivateKey()
@@ -156,9 +155,9 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
     }
     private func independentlyObserved(_ final: ExecutionRecord, count: Int) throws {
         XCTAssertEqual(final.state,.succeeded); XCTAssertTrue(final.evidence.outcomeVerified)
-        XCTAssertEqual(rows("requests.jsonl").count,count); XCTAssertEqual(rows("effects.jsonl").count,count)
-        XCTAssertEqual(rows("observations.jsonl").count,count)
-        XCTAssertEqual(rows("observations.jsonl").last?["invocation"] as? String,final.rcir?.taskID)
+        XCTAssertEqual(try rows("requests.jsonl").count,count); XCTAssertEqual(try rows("effects.jsonl").count,count)
+        XCTAssertEqual(try rows("observations.jsonl").count,count)
+        XCTAssertEqual(try rows("observations.jsonl").last?["invocation"] as? String,final.rcir?.taskID)
     }
     private func acceptedByPolicy(_ final: ExecutionRecord) throws -> Bool {
         guard final.rcir?.signedReceipt != nil else {
@@ -189,7 +188,7 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
     }
     func testRevokedPolicyAfterAdmissionWithholdsSignatureAndRetainsRealTruth() throws {
         let before = try RCIRHostConfiguration.protectedRead(keyFile.path,maximum:32)
-        let initial = try begin(); XCTAssertEqual(initial.state,.started); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        let initial = try begin(); XCTAssertEqual(initial.state,.started); XCTAssertTrue(try rows("effects.jsonl").isEmpty)
         try revokeOriginal(); try release(); let final = finish(initial)
         try independentlyObserved(final,count:1)
         let unchanged = try RCIRHostConfiguration.protectedRead(keyFile.path,maximum:32) == before
@@ -210,11 +209,11 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         // rejection fails, instead of ending at a return-code assertion.
         if initial.state == .started { try release(); _ = finish(initial) }
         summary["privateKeyUnchanged"] = try RCIRHostConfiguration.protectedRead(keyFile.path,maximum:32) == before
-        summary["requests"] = rows("requests.jsonl").count; summary["effects"] = rows("effects.jsonl").count
+        summary["requests"] = try rows("requests.jsonl").count; summary["effects"] = try rows("effects.jsonl").count
         if let final = records.last { summary["currentPolicyAccepted"] = try acceptedByPolicy(final) }
         XCTAssertEqual(initial.state,.rejected,"Missing production issuer-policy admission seam")
-        XCTAssertTrue(rows("requests.jsonl").isEmpty,"Revoked configured signing authority must fail before dispatch")
-        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertTrue(try rows("requests.jsonl").isEmpty,"Revoked configured signing authority must fail before dispatch")
+        XCTAssertTrue(try rows("effects.jsonl").isEmpty)
     }
     func testLegalHostKeyRotationControlUsesFreshTrustedKey() throws {
         let first = try begin(); try release(); let old = finish(first); try independentlyObserved(old,count:1)
@@ -241,8 +240,8 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         try privateWrite(oldPolicy,to:policyFile)
         let replay = try begin()
         XCTAssertEqual(replay.state,.rejected)
-        XCTAssertEqual(rows("requests.jsonl").count,1)
-        XCTAssertEqual(rows("effects.jsonl").count,1)
+        XCTAssertEqual(try rows("requests.jsonl").count,1)
+        XCTAssertEqual(try rows("effects.jsonl").count,1)
         summary["restoredOldPolicyDenied"] = replay.state == .rejected
     }
 
@@ -259,7 +258,7 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         try privateWrite(Data(#"{"version":1,"version":1}"#.utf8),to:policyFile)
         let initial = try begin()
         XCTAssertEqual(initial.state,.rejected)
-        XCTAssertTrue(rows("requests.jsonl").isEmpty); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertTrue(try rows("requests.jsonl").isEmpty); XCTAssertTrue(try rows("effects.jsonl").isEmpty)
     }
 
     func testActuallyExpiredKeyBeforeAdmissionHasZeroProviderEffects() throws {
@@ -268,7 +267,7 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         try persistPolicy()
         let initial = try begin()
         XCTAssertEqual(initial.state,.rejected)
-        XCTAssertTrue(rows("requests.jsonl").isEmpty); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertTrue(try rows("requests.jsonl").isEmpty); XCTAssertTrue(try rows("effects.jsonl").isEmpty)
     }
 
     func testActualClockExpiryAfterHeldAdmissionWithholdsSignature() throws {
@@ -309,12 +308,12 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         if initial.state == .started { try release(); _ = finish(initial) }
         summary["revokedDuringFinalAdmissionRefresh"] = revoked
         summary["configurationReadsAfterBoundary"] = reads
-        summary["requests"] = rows("requests.jsonl").count
-        summary["effects"] = rows("effects.jsonl").count
+        summary["requests"] = try rows("requests.jsonl").count
+        summary["effects"] = try rows("effects.jsonl").count
         XCTAssertTrue(revoked,"The actual final-admission callback must exercise policy withdrawal")
         XCTAssertEqual(initial.state,.rejected)
-        XCTAssertTrue(rows("requests.jsonl").isEmpty)
-        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertTrue(try rows("requests.jsonl").isEmpty)
+        XCTAssertTrue(try rows("effects.jsonl").isEmpty)
     }
 
     func testConsumptionCallbackRevokesPolicyBeforeFinalAdmissionHasZeroEffects() throws {
@@ -328,12 +327,12 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         let initial = try begin()
         if initial.state == .started { try release(); _ = finish(initial) }
         summary["revokedDuringConsumptionCallback"] = revoked
-        summary["requests"] = rows("requests.jsonl").count
-        summary["effects"] = rows("effects.jsonl").count
+        summary["requests"] = try rows("requests.jsonl").count
+        summary["effects"] = try rows("effects.jsonl").count
         XCTAssertTrue(revoked)
         XCTAssertEqual(initial.state,.rejected)
-        XCTAssertTrue(rows("requests.jsonl").isEmpty)
-        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertTrue(try rows("requests.jsonl").isEmpty)
+        XCTAssertTrue(try rows("effects.jsonl").isEmpty)
     }
 
     func testActualLeaseExpiryDuringProtectedSigningValidationHasZeroEffects() throws {
@@ -366,16 +365,16 @@ final class RCIRProductionReceiptTrustTests: XCTestCase {
         // Release any genuinely admitted provider work and retain its effect.
         try release()
         if initial.state == .started { _ = finish(initial) }
-        for _ in 0..<100 where !rows("requests.jsonl").isEmpty && rows("effects.jsonl").isEmpty {
+        for _ in 0..<100 where try !rows("requests.jsonl").isEmpty && rows("effects.jsonl").isEmpty {
             Thread.sleep(forTimeInterval:0.01)
         }
         summary["actualHostClockReachedLeaseExpiry"] = waited
         summary["leaseExpiresAt"] = try XCTUnwrap(expiry)
-        summary["requests"] = rows("requests.jsonl").count
-        summary["effects"] = rows("effects.jsonl").count
+        summary["requests"] = try rows("requests.jsonl").count
+        summary["effects"] = try rows("effects.jsonl").count
         XCTAssertTrue(waited)
         XCTAssertEqual(initial.state,.rejected)
-        XCTAssertTrue(rows("requests.jsonl").isEmpty)
-        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertTrue(try rows("requests.jsonl").isEmpty)
+        XCTAssertTrue(try rows("effects.jsonl").isEmpty)
     }
 }

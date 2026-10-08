@@ -1,0 +1,154 @@
+{
+  "status": "CANDIDATE_FIXTURE_REPAIR_NATIVE_WINDOWS_GREEN_PENDING",
+  "baseCandidate": "2992218e6d0361d033f151e50755f4e9a87bbb7d",
+  "scope": "Seven assigned native Windows failures only; no runtime source changes, no skip overrides, no publication. No private raw output copied.",
+  "ledger": [
+    {
+      "boundary": "NativeBoundedHTTPTests.testNativeCompletionReleasesWaiterAndReturnsExactCap",
+      "observedRED": {
+        "state": "FAILED_NATIVE_WINDOWS",
+        "identity": {
+          "diagnosticHead": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+          "releaseSource": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+          "SourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+          "nativeXCTestSHA256": "39af77a965388b6af4a3369e59e9d2cba86b9f8f3e4c7e82dd86907c9acf5c54",
+          "privateRawLogSHA256": "90448d64ea2cda2c5295c93427d1abf9bc5ec43daa05154b1acf93cb7bcb4f67",
+          "privateRawLogBytes": 145209,
+          "rawCopied": false,
+          "rawDetails": "No assertion output, credentials, user inventory or raw diagnostics copied; original bytes remain private."
+        },
+        "scope": "Actual loopback exchange assertions precede the journal assertion failure."
+      },
+      "diagnosis": "Fixture byte framing mismatch: Python Windows text writes CRLF; Swift Character LF split/raw LF equality does not admit the native journal framing. No native HTTP transport failure established by these two journal assertions.",
+      "repair": "Root-owned FixtureLineFraming records(in:) parses byte LF boundaries; this test asserts exact request payload records, including three /ok records and redirect-only dispatch.",
+      "crossSubstrateBenefit": "One portable fixture evidence framing rule supports owned HTTP journals and native substrate observation collectors without weakening transport bounds or redirect denial.",
+      "remainingProof": "Native Windows rerun required; local syntax/source review is not Windows GREEN."
+    },
+    {
+      "boundary": "NativeBoundedHTTPTests.testRedirectNeverReachesNewTarget",
+      "observedRED": {
+        "state": "FAILED_NATIVE_WINDOWS",
+        "identity": {
+          "diagnosticHead": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+          "releaseSource": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+          "SourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+          "nativeXCTestSHA256": "39af77a965388b6af4a3369e59e9d2cba86b9f8f3e4c7e82dd86907c9acf5c54",
+          "privateRawLogSHA256": "90448d64ea2cda2c5295c93427d1abf9bc5ec43daa05154b1acf93cb7bcb4f67",
+          "privateRawLogBytes": 145209,
+          "rawCopied": false,
+          "rawDetails": "No assertion output, credentials, user inventory or raw diagnostics copied; original bytes remain private."
+        },
+        "scope": "Actual loopback exchange assertions precede the journal assertion failure."
+      },
+      "diagnosis": "Fixture byte framing mismatch: Python Windows text writes CRLF; Swift Character LF split/raw LF equality does not admit the native journal framing. No native HTTP transport failure established by these two journal assertions.",
+      "repair": "Root-owned FixtureLineFraming records(in:) parses byte LF boundaries; this test asserts exact request payload records, including three /ok records and redirect-only dispatch.",
+      "crossSubstrateBenefit": "One portable fixture evidence framing rule supports owned HTTP journals and native substrate observation collectors without weakening transport bounds or redirect denial.",
+      "remainingProof": "Native Windows rerun required; local syntax/source review is not Windows GREEN."
+    },
+    {
+      "boundary": "OpenAPIAcknowledgementTests.testWrongOrMissingExternalEffectNeverBecomesSuccess",
+      "observedRED": {
+        "state": "FAILED_NATIVE_WINDOWS",
+        "identity": {
+          "diagnosticHead": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+          "releaseSource": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+          "SourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+          "nativeXCTestSHA256": "39af77a965388b6af4a3369e59e9d2cba86b9f8f3e4c7e82dd86907c9acf5c54",
+          "privateRawLogSHA256": "90448d64ea2cda2c5295c93427d1abf9bc5ec43daa05154b1acf93cb7bcb4f67",
+          "privateRawLogBytes": 145209,
+          "rawCopied": false,
+          "rawDetails": "No assertion output, credentials, user inventory or raw diagnostics copied; original bytes remain private."
+        },
+        "scope": "Mismatch failed and missing effect remained accepted/unverified; failure at two-effect journal count."
+      },
+      "diagnosis": "The same CRLF Character framing mismatch combines two JSONL records into one String element. The observed runtime outcome assertions did not fail.",
+      "repair": "Strict root-owned FixtureLineFraming objects(in:) decodes complete Data records; errors propagate instead of being silently counted as zero. All existing ACK outcome, confirmation, denial and effect-count assertions retained.",
+      "crossSubstrateBenefit": "Portable strict JSONL evidence admission prevents malformed or multi-record journals from hiding errors or fabricating expected effect counts for any collector.",
+      "remainingProof": "Native Windows rerun required; independent external truth and signature claims retain their original test scopes."
+    },
+    {
+      "boundary": "CapabilityExperienceTests.testOnlyFingerprintsAndOutcomesPersistNotUserData",
+      "observedRED": {
+        "state": "FAILED_NATIVE_WINDOWS",
+        "identity": {
+          "diagnosticHead": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+          "releaseSource": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+          "SourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+          "nativeXCTestSHA256": "39af77a965388b6af4a3369e59e9d2cba86b9f8f3e4c7e82dd86907c9acf5c54",
+          "privateRawLogSHA256": "90448d64ea2cda2c5295c93427d1abf9bc5ec43daa05154b1acf93cb7bcb4f67",
+          "privateRawLogBytes": 145209,
+          "rawCopied": false,
+          "rawDetails": "No assertion output, credentials, user inventory or raw diagnostics copied; original bytes remain private."
+        },
+        "scope": "The disk-ledger initializer throws before recording or inspecting private inputs."
+      },
+      "diagnosis": "Unsupported host storage adapter: the production Windows branch explicitly rejects disk-backed experience storage. This is existing fail-closed behavior, not evidence of a newly introduced privacy regression.",
+      "repair": "On Windows assert unsafeStorage and no created directory/file, then exercise supported memory ledger. On every platform require one actual entry, correct fingerprint/outcome, exact four serialized keys and no private input/output/message/observation/namespace/provider prose. POSIX disk persistence assertions remain.",
+      "crossSubstrateBenefit": "Payload-free advisory learning is checked without upgrading history to authority or verification, and unsupported host storage continues to abstain.",
+      "remainingProof": "Native Windows abstention/memory-privacy rerun required; Windows disk persistence remains unsupported."
+    },
+    {
+      "boundary": "InvocationBindingTests.testFreshMarkersVerifyForBothTransports",
+      "observedRED": {
+        "state": "FAILED_NATIVE_WINDOWS",
+        "identity": {
+          "diagnosticHead": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+          "releaseSource": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+          "SourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+          "nativeXCTestSHA256": "39af77a965388b6af4a3369e59e9d2cba86b9f8f3e4c7e82dd86907c9acf5c54",
+          "privateRawLogSHA256": "90448d64ea2cda2c5295c93427d1abf9bc5ec43daa05154b1acf93cb7bcb4f67",
+          "privateRawLogBytes": 145209,
+          "rawCopied": false,
+          "rawDetails": "No assertion output, credentials, user inventory or raw diagnostics copied; original bytes remain private."
+        },
+        "scope": "Throws unavailable before marker outcome assertions; concrete failing setup stage not yet measured."
+      },
+      "diagnosis": "UNKNOWN setup phase. Controlled Windows fixture uses NativeHTTPFixture.pythonClient and BoundedCapabilityProcess for installed-toolchain native client provisioning. Shared process/helper owner investigation is pending; this does not establish a transport causality regression.",
+      "repair": "Keep exact fresh/stale marker assertions; coordinate root-owned provisioning helper and authority-owned process/snapshot primitives before making changes.",
+      "crossSubstrateBenefit": "A correct bounded host-selected process primitive supports acquired Kafka, Kubernetes and other native executable substrates with exact authority/marker boundaries.",
+      "remainingProof": "Meaningful setup diagnostics and actual native Windows fresh/stale marker rerun required. These controlled clients do not prove genuine live Kafka/Kubernetes acceptance."
+    },
+    {
+      "boundary": "InvocationBindingTests.testMatchingStaleKafkaRecordCannotVerifyCurrentAppend",
+      "observedRED": {
+        "state": "FAILED_NATIVE_WINDOWS",
+        "identity": {
+          "diagnosticHead": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+          "releaseSource": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+          "SourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+          "nativeXCTestSHA256": "39af77a965388b6af4a3369e59e9d2cba86b9f8f3e4c7e82dd86907c9acf5c54",
+          "privateRawLogSHA256": "90448d64ea2cda2c5295c93427d1abf9bc5ec43daa05154b1acf93cb7bcb4f67",
+          "privateRawLogBytes": 145209,
+          "rawCopied": false,
+          "rawDetails": "No assertion output, credentials, user inventory or raw diagnostics copied; original bytes remain private."
+        },
+        "scope": "Throws unavailable before marker outcome assertions; concrete failing setup stage not yet measured."
+      },
+      "diagnosis": "UNKNOWN setup phase. Controlled Windows fixture uses NativeHTTPFixture.pythonClient and BoundedCapabilityProcess for installed-toolchain native client provisioning. Shared process/helper owner investigation is pending; this does not establish a transport causality regression.",
+      "repair": "Keep exact fresh/stale marker assertions; coordinate root-owned provisioning helper and authority-owned process/snapshot primitives before making changes.",
+      "crossSubstrateBenefit": "A correct bounded host-selected process primitive supports acquired Kafka, Kubernetes and other native executable substrates with exact authority/marker boundaries.",
+      "remainingProof": "Meaningful setup diagnostics and actual native Windows fresh/stale marker rerun required. These controlled clients do not prove genuine live Kafka/Kubernetes acceptance."
+    },
+    {
+      "boundary": "InvocationBindingTests.testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate",
+      "observedRED": {
+        "state": "FAILED_NATIVE_WINDOWS",
+        "identity": {
+          "diagnosticHead": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+          "releaseSource": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+          "SourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+          "nativeXCTestSHA256": "39af77a965388b6af4a3369e59e9d2cba86b9f8f3e4c7e82dd86907c9acf5c54",
+          "privateRawLogSHA256": "90448d64ea2cda2c5295c93427d1abf9bc5ec43daa05154b1acf93cb7bcb4f67",
+          "privateRawLogBytes": 145209,
+          "rawCopied": false,
+          "rawDetails": "No assertion output, credentials, user inventory or raw diagnostics copied; original bytes remain private."
+        },
+        "scope": "Throws unavailable before marker outcome assertions; concrete failing setup stage not yet measured."
+      },
+      "diagnosis": "UNKNOWN setup phase. Controlled Windows fixture uses NativeHTTPFixture.pythonClient and BoundedCapabilityProcess for installed-toolchain native client provisioning. Shared process/helper owner investigation is pending; this does not establish a transport causality regression.",
+      "repair": "Keep exact fresh/stale marker assertions; coordinate root-owned provisioning helper and authority-owned process/snapshot primitives before making changes.",
+      "crossSubstrateBenefit": "A correct bounded host-selected process primitive supports acquired Kafka, Kubernetes and other native executable substrates with exact authority/marker boundaries.",
+      "remainingProof": "Meaningful setup diagnostics and actual native Windows fresh/stale marker rerun required. These controlled clients do not prove genuine live Kafka/Kubernetes acceptance."
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+name: RIGHTCLICK Alien Relay
+
+on:
+  push:
+    branches:
+      - experiment/alien-relay-20261007
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  alien-relay:
+    name: Remote Ubuntu adaptive multimodal round-trip proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out experiment branch
+        uses: actions/checkout@v4
+
+      - name: Acquire learned clients
+        shell: bash
+        run: |
+          set -e
+          python3 -m venv alien-venv
+          alien-venv/bin/python -m pip install --disable-pip-version-check --no-input gradio pillow huggingface_hub >gradio-install.log 2>&1
+
+      - name: Observer regressions and compilation (fail closed)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p alien-proof
+          python3 -m py_compile experiments/alien-relay/observer.py experiments/alien-relay/generation6.py experiments/alien-relay/generation7_extension.py
+          python3 -m unittest discover -v -s experiments/alien-relay/tests -p 'test_*.py' 2>&1 | tee alien-proof/observer-tests.log
+
+      - name: Run checked-in immutable Generation 6
+        shell: bash
+        run: |
+          set -euo pipefail
+          alien-venv/bin/python -m pip freeze >alien-proof/pip-freeze.txt
+          alien-venv/bin/python experiments/alien-relay/generation6.py
+
+      - name: Execute clean bounded Generation 7 (no source rewrite)
+        shell: bash
+        run: |
+          set -euo pipefail
+          alien-venv/bin/python experiments/alien-relay/generation7_extension.py
+
+      - name: Hash remote evidence for independent readback
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p alien-proof
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, time
+          root = Path("alien-proof")
+          files = sorted(p for p in root.rglob("*") if p.is_file() and p.name != "sha256-manifest.json")
+          digest = {str(p.relative_to(root)): {"sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"bytes":p.stat().st_size} for p in files}
+          (root/"sha256-manifest.json").write_text(json.dumps({
+              "schema":"rightclick.alien-evidence/v1",
+              "observed_utc":time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime()),
+              "run_id":os.getenv("GITHUB_RUN_ID"),
+              "commit_sha":os.getenv("GITHUB_SHA"),
+              "runner_os":os.getenv("RUNNER_OS"),
+              "files":digest
+          },indent=2,sort_keys=True))
+          PY
+
+      - name: Upload proof artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rightclick-alien-proof-${{ github.run_id }}
+          path: alien-proof/
+          if-no-files-found: error
+          retention-days: 7

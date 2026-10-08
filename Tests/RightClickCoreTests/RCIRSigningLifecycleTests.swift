@@ -79,21 +79,20 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         if let directory { try? NativeHTTPFixture.remove(directory) }
         engine = nil; host = nil
     }
-    private func rows(_ filename: String) -> [[String: Any]] {
-        let text = (try? String(contentsOf: directory.appendingPathComponent(filename), encoding: .utf8)) ?? ""
-        return text.split(separator: "\n").compactMap { try? JSONSerialization.jsonObject(with: Data($0.utf8)) as? [String: Any] }
+    private func rows(_ filename: String) throws -> [[String: Any]] {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent(filename))
     }
     private func begin(priorEffects: Int = 0) throws -> ExecutionRecord {
         let message = String(data: try JSONSerialization.data(withJSONObject: ["challenge": UUID().uuidString, "value": "signer-lifecycle"], options: [.sortedKeys]), encoding: .utf8)!
         let initial = try engine.begin(id: capability.id, item: "signing lifecycle proof", confirmed: true, arguments: ["message": message])
         records.append(initial); XCTAssertEqual(initial.state, .started)
-        XCTAssertEqual(rows("effects.jsonl").count, priorEffects)
+        XCTAssertEqual(try rows("effects.jsonl").count, priorEffects)
         return initial
     }
     private func releaseEffect() throws {
         try Data().write(to: directory.appendingPathComponent("release"))
         try waitFor(directory.appendingPathComponent("effects.jsonl"))
-        XCTAssertEqual(rows("effects.jsonl").count, 1, "A real external effect is required before evaluating evidence")
+        XCTAssertEqual(try rows("effects.jsonl").count, 1, "A real external effect is required before evaluating evidence")
     }
     private func finish(_ initial: ExecutionRecord) -> ExecutionRecord {
         var final = initial
@@ -114,13 +113,13 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         XCTAssertTrue(final.rcir?.signedReceipt == nil, "Withdrawn or replaced provisioned signer must not issue a retained old-key signature")
         XCTAssertNotNil(final.rcir?.receipt, "Unsigned terminal truth remains available")
         XCTAssertTrue(final.events.contains(RCIRReceiptEmission.withheldEvent))
-        XCTAssertEqual(rows("requests.jsonl").count, 1, "Signing failure must never replay a mutation")
-        XCTAssertEqual(rows("effects.jsonl").count, 1)
+        XCTAssertEqual(try rows("requests.jsonl").count, 1, "Signing failure must never replay a mutation")
+        XCTAssertEqual(try rows("effects.jsonl").count, 1)
     }
     func testUnchangedProvisionedSignerSignsGenuineEffect() throws {
         let initial = try begin(); try releaseEffect(); let final = finish(initial)
         XCTAssertEqual(final.state, .succeeded); XCTAssertTrue(final.evidence.outcomeVerified)
-        XCTAssertEqual(rows("observations.jsonl").count, 1); try signature(final, trustedKey: publicKey)
+        XCTAssertEqual(try rows("observations.jsonl").count, 1); try signature(final, trustedKey: publicKey)
     }
     func testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect() throws {
         let initial = try begin(); try NativeHTTPFixture.release(keyFile); try FileManager.default.removeItem(at: keyFile)
@@ -139,7 +138,7 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         config.signingKeyFile = replacement.path
         try releaseEffect(); let final = finish(initial)
         XCTAssertEqual(final.state, .unknown); XCTAssertEqual(final.rcir?.outcome, "unknown")
-        XCTAssertFalse(final.evidence.outcomeVerified); XCTAssertTrue(rows("observations.jsonl").isEmpty)
+        XCTAssertFalse(final.evidence.outcomeVerified); XCTAssertTrue(try rows("observations.jsonl").isEmpty)
         XCTAssertTrue(FileManager.default.fileExists(atPath: keyFile.path), "Old bytes still exist; current host reference is the boundary")
         try unsigned(final)
     }
@@ -156,7 +155,7 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         try releaseEffect(); let old = finish(initial); try unsigned(old)
         let fresh = try begin(priorEffects: 1); let final = finish(fresh)
         XCTAssertEqual(final.state, .succeeded); XCTAssertTrue(final.evidence.outcomeVerified)
-        XCTAssertEqual(rows("requests.jsonl").count, 2); XCTAssertEqual(rows("effects.jsonl").count, 2)
+        XCTAssertEqual(try rows("requests.jsonl").count, 2); XCTAssertEqual(try rows("effects.jsonl").count, 2)
         XCTAssertNotEqual(final.rcir?.taskID, old.rcir?.taskID)
         try signature(final, trustedKey: XCTUnwrap(freshPublicKey))
     }
@@ -171,7 +170,7 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         let denied = try engine.begin(id: capability.id, item: "signing lifecycle proof", confirmed: true, arguments: ["message": message])
         records.append(denied)
         XCTAssertEqual(denied.state, .rejected); XCTAssertNil(denied.rcir)
-        XCTAssertTrue(rows("requests.jsonl").isEmpty); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertTrue(try rows("requests.jsonl").isEmpty); XCTAssertTrue(try rows("effects.jsonl").isEmpty)
     }
     private final class SingleSource: CapabilityReflectorSource {
         let id = "test.signing-lifecycle-unary"
@@ -218,8 +217,8 @@ final class RCIRSigningLifecycleTests: XCTestCase {
         XCTAssertTrue(final.events.contains(RCIRReceiptEmission.withheldEvent))
         let effects = try Data(contentsOf:rest.appendingPathComponent("effects.jsonl"))
         try effects.write(to:directory.appendingPathComponent("unary-effects.jsonl"))
-        XCTAssertEqual(rows("unary-effects.jsonl").count, 1)
-        XCTAssertEqual(rows("unary-effects.jsonl").first?["taskID"] as? String, final.rcir?.taskID)
-        XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertEqual(try rows("unary-effects.jsonl").count, 1)
+        XCTAssertEqual(try rows("unary-effects.jsonl").first?["taskID"] as? String, final.rcir?.taskID)
+        XCTAssertTrue(try rows("effects.jsonl").isEmpty)
     }
 }

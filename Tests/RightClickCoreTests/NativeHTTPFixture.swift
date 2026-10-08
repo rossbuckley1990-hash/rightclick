@@ -95,8 +95,13 @@ enum NativeHTTPFixture {
             guard process.isRunning else { throw ReadinessError.exitedBeforeReadiness }
             if let handle = try? FileHandle(forReadingFrom: file) {
                 defer { try? handle.close() }
-                if let bytes = try? handle.read(upToCount: 7) {
-                    let digits = bytes.last == 10 ? bytes.dropLast() : bytes[...]
+                // Five decimal digits plus CRLF is the longest valid marker.
+                // Read one more byte so a valid prefix cannot hide trailing data.
+                if let bytes = try? handle.read(upToCount: 8) {
+                    let digits: Data.SubSequence
+                    if bytes.suffix(2).elementsEqual([13, 10]) { digits = bytes.dropLast(2) }
+                    else if bytes.last == 10 { digits = bytes.dropLast() }
+                    else { digits = bytes[...] }
                     if !digits.isEmpty, digits.count <= 5,
                        digits.allSatisfy({ (48...57).contains($0) }),
                        let port = UInt16(String(decoding: digits, as: UTF8.self)), port > 0 {

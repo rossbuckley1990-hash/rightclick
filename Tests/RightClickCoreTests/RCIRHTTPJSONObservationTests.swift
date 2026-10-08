@@ -60,16 +60,15 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
         if let output = ProcessInfo.processInfo.environment["RIGHTCLICK_HTTP_JSON_EVIDENCE"] {
             let out = URL(fileURLWithPath: output); try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
             let label = name.replacingOccurrences(of: "/", with: "_")
-            let data = try JSONSerialization.data(withJSONObject: ["test": name, "contract": legacy ? "legacy-raw-text" : "structured-projection", "effects": rows("effects.jsonl"), "observations": rows("observations.jsonl"), "redirectTrap": rows("trap.jsonl")], options: [.prettyPrinted, .sortedKeys])
+            let data = try JSONSerialization.data(withJSONObject: ["test": name, "contract": legacy ? "legacy-raw-text" : "structured-projection", "effects": try rows("effects.jsonl"), "observations": try rows("observations.jsonl"), "redirectTrap": try rows("trap.jsonl")], options: [.prettyPrinted, .sortedKeys])
             try data.write(to: out.appendingPathComponent(label + ".json"))
         }
         for process in processes where process.isRunning { process.terminate(); process.waitUntilExit() }
         processes.removeAll(); if let directory { try? NativeHTTPFixture.remove(directory) }
         engine = nil; host = nil
     }
-    private func rows(_ filename: String) -> [[String: Any]] {
-        let text = (try? String(contentsOf: directory.appendingPathComponent(filename), encoding: .utf8)) ?? ""
-        return text.split(separator: "\n").map { try! JSONSerialization.jsonObject(with: Data($0.utf8)) as! [String: Any] }
+    private func rows(_ filename: String) throws -> [[String: Any]] {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent(filename))
     }
     private func configure(reference: URL? = nil, path: String = "/observations/{id}", pin: URL? = nil) throws {
         if legacy {
@@ -106,18 +105,18 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
         let receipt = try XCTUnwrap(Data(base64Encoded: XCTUnwrap(result.rcir?.receipt)))
         XCTAssertNotNil(receipt.range(of: Data("fixture-readonly".utf8)))
         XCTAssertNotNil(receipt.range(of: Data("independent-file-sha256".utf8)))
-        XCTAssertEqual(rows("effects.jsonl").count, 1); XCTAssertEqual(rows("observations.jsonl").count, 1)
+        XCTAssertEqual(try rows("effects.jsonl").count, 1); XCTAssertEqual(try rows("observations.jsonl").count, 1)
     }
     func testWriterCredentialCannotActAsReadonlyObserver() throws {
         try configure(reference: writer)
         let result = try invoke()
         XCTAssertEqual(result.state, .accepted, result.message); XCTAssertEqual(result.rcir?.outcome, "unverified", result.message)
-        XCTAssertEqual(rows("observations.jsonl").first?["credentialRole"] as? String, "none-or-wrong")
+        XCTAssertEqual(try rows("observations.jsonl").first?["credentialRole"] as? String, "none-or-wrong")
     }
     func testRedirectNeverSendsObserverCredentialToAnotherOrigin() throws {
         let result = try invoke("redirect")
         XCTAssertEqual(result.state, .accepted, result.message); XCTAssertEqual(result.rcir?.outcome, "unverified", result.message)
-        XCTAssertEqual(rows("observations.jsonl").count, 1); XCTAssertTrue(rows("trap.jsonl").isEmpty)
+        XCTAssertEqual(try rows("observations.jsonl").count, 1); XCTAssertTrue(try rows("trap.jsonl").isEmpty)
     }
     func testAmbientCookiesCannotEnterObservationOrPersistResponseCookie() throws {
         let cookie = try XCTUnwrap(HTTPCookie(properties: [.domain: "127.0.0.1", .path: "/", .name: "rightclick-ambient-" + UUID().uuidString, .value: "unrelated-authority"]))
@@ -125,7 +124,7 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
         defer { HTTPCookieStorage.shared.deleteCookie(cookie) }
         let result = try invoke()
         XCTAssertEqual(result.state, .succeeded)
-        XCTAssertEqual(rows("observations.jsonl").first?["cookiePresent"] as? Bool, false)
+        XCTAssertEqual(try rows("observations.jsonl").first?["cookiePresent"] as? Bool, false)
         XCTAssertFalse((HTTPCookieStorage.shared.cookies ?? []).contains { $0.name == "rightclick-injected" })
     }
     func testDefaultCredentialStorageCannotSupplyObserverAuthority() throws {
@@ -137,19 +136,19 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
         try configure(reference: writer)
         let result = try invoke()
         XCTAssertEqual(result.rcir?.outcome, "unverified")
-        XCTAssertFalse(rows("observations.jsonl").isEmpty)
-        XCTAssertTrue(rows("observations.jsonl").allSatisfy { $0["authorizationKind"] as? String == "Bearer" })
-        XCTAssertFalse(rows("observations.jsonl").contains { $0["authorizationKind"] as? String == "Basic" })
+        XCTAssertFalse(try rows("observations.jsonl").isEmpty)
+        XCTAssertTrue(try rows("observations.jsonl").allSatisfy { $0["authorizationKind"] as? String == "Bearer" })
+        XCTAssertFalse(try rows("observations.jsonl").contains { $0["authorizationKind"] as? String == "Basic" })
     }
     func testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation() throws {
         let original = try XCTUnwrap(config.observers?[capability.id])
         let missing = try engine.begin(id: capability.id, item: item, confirmed: true, arguments: ["id": "never-dispatched", "value": "actual"])
-        XCTAssertEqual(missing.state, .rejected); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        XCTAssertEqual(missing.state, .rejected); XCTAssertTrue(try rows("effects.jsonl").isEmpty)
         var malformed = original
         malformed.jsonObservation = .init(schemaJSON: original.jsonObservation!.schemaJSON,
             fields: ["challenge": .init(path: ["challenge"], argument: "id", expectedOutput: true)])
         config.observers = [capability.id: malformed]
-        let ambiguous = try invoke(); XCTAssertEqual(ambiguous.state, .rejected); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        let ambiguous = try invoke(); XCTAssertEqual(ambiguous.state, .rejected); XCTAssertTrue(try rows("effects.jsonl").isEmpty)
     }
     func testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed() throws {
         XCTAssertEqual(try invoke(value: "mismatch").rcir?.outcome, "failed")
@@ -158,10 +157,10 @@ final class RCIRHTTPJSONObservationTests: XCTestCase {
     }
     func testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead() throws {
         try configure(pin: provider)
-        let denied = try invoke(); XCTAssertEqual(denied.state, .rejected); XCTAssertTrue(rows("effects.jsonl").isEmpty)
+        let denied = try invoke(); XCTAssertEqual(denied.state, .rejected); XCTAssertTrue(try rows("effects.jsonl").isEmpty)
         try configure()
         host.beforeConsume = { _ in try NativeHTTPFixture.release(self.reader); try FileManager.default.removeItem(at: self.reader) }
         let unverified = try invoke(); XCTAssertEqual(unverified.rcir?.outcome, "unverified")
-        XCTAssertTrue(rows("observations.jsonl").isEmpty)
+        XCTAssertTrue(try rows("observations.jsonl").isEmpty)
     }
 }

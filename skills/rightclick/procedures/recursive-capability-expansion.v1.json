@@ -1,0 +1,115 @@
+{
+  "id": "recursive-capability-expansion",
+  "invariants": {
+    "aiFacingOperations": 7,
+    "authorityMayBroaden": false,
+    "boundedRecursion": true,
+    "confirmationPerConsequentialHop": true,
+    "failedGenerationsArePreserved": true,
+    "inventMissingCapabilities": false,
+    "providerAcceptanceIsSemanticSuccess": false
+  },
+  "maxDepth": 4,
+  "maxGenerationsPerHop": 3,
+  "origin": {
+    "experiment": "Alien Relay",
+    "generation1": "full Linux build correctly produced semantic_success=false because macOS AppKit prevented portability",
+    "generation2": "portable rightclick-ard-probe built on remote Ubuntu and returned a verified live Hugging Face ARD discovery result"
+  },
+  "purpose": "Turn an observed capability into a bounded, evidence-preserving cross-environment discovery loop without changing RIGHTCLICK's seven-operation AI interface.",
+  "requiredEvidencePerHop": [
+    "runtime_attestation",
+    "provider_or_reflector_identity",
+    "immutable_remote_reference",
+    "execution_or_task_identity",
+    "observer_or_readback",
+    "semantic_verdict",
+    "evidence_digest",
+    "adaptation_reason_if_any"
+  ],
+  "schema": "rightclick.procedure/v1",
+  "states": [
+    "attest",
+    "discover",
+    "constrain",
+    "execute",
+    "verify",
+    "diagnose",
+    "adapt",
+    "retry",
+    "recurse",
+    "receipt",
+    "stop"
+  ],
+  "stopConditions": [
+    "no_safe_novel_route",
+    "user_boundary_reached",
+    "depth_budget_exhausted",
+    "generation_budget_exhausted",
+    "authority_cannot_be_safely_resolved"
+  ],
+  "title": "Recursive Capability Expansion",
+  "transitions": [
+    {
+      "from": "attest",
+      "to": "discover",
+      "when": "runtime_attested"
+    },
+    {
+      "from": "discover",
+      "to": "constrain",
+      "when": "applicable_capability_found"
+    },
+    {
+      "from": "constrain",
+      "to": "execute",
+      "when": "authority_and_confirmation_satisfied"
+    },
+    {
+      "from": "execute",
+      "to": "verify",
+      "when": "provider_returns_or_task_reaches_observable_boundary"
+    },
+    {
+      "from": "verify",
+      "to": "receipt",
+      "when": "semantic_success"
+    },
+    {
+      "from": "verify",
+      "to": "diagnose",
+      "when": "semantic_failed_unknown_or_unverified"
+    },
+    {
+      "from": "diagnose",
+      "to": "adapt",
+      "when": "falsifiable_cause_identified"
+    },
+    {
+      "from": "adapt",
+      "to": "retry",
+      "when": "safe_alternative_capability_or_substrate_found"
+    },
+    {
+      "from": "retry",
+      "to": "verify",
+      "when": "new_generation_executed"
+    },
+    {
+      "from": "receipt",
+      "to": "recurse",
+      "when": "new_remote_environment_or_capability_artifact_observed_and_depth_remaining"
+    },
+    {
+      "from": "recurse",
+      "to": "discover",
+      "when": "next_context_selected"
+    },
+    {
+      "from": "receipt",
+      "to": "stop",
+      "when": "no_safe_novel_route_or_budget_exhausted"
+    }
+  ],
+  "version": 1
+}

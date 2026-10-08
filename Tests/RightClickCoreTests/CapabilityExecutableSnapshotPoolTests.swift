@@ -9,10 +9,23 @@ final class CapabilityExecutableSnapshotPoolTests: XCTestCase {
         defer { try? NativeHTTPFixture.remove(directory) }
         try body(directory)
     }
+    private func executableBytes(_ value: String = "host-selected-executable") throws -> Data {
+#if os(Windows)
+        // Windows checks the executable format, not just the filename. Preserve
+        // a real host-selected PE and vary an appended canary outside its image.
+        let interpreter = try NativeHTTPFixture.python()
+        guard FileManager.default.isExecutableFile(atPath: interpreter.path) else { throw RCIRError.unavailable }
+        var bytes = try CapabilityArtifactSnapshot.read(source: interpreter, maximum: 1_048_576)
+        bytes.append(Data(value.utf8))
+        return bytes
+#else
+        return Data(value.utf8)
+#endif
+    }
     private func executable(_ directory: URL, _ name: String = "host.exe", value: String = "host-selected-executable") throws -> URL {
         let file = directory.appendingPathComponent(name)
 #if os(Windows)
-        try NativeHTTPFixture.writePrivate(Data(value.utf8), to: file)
+        try NativeHTTPFixture.writePrivate(executableBytes(value), to: file)
 #else
         try Data(value.utf8).write(to: file)
         try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: file.path)
@@ -22,47 +35,59 @@ final class CapabilityExecutableSnapshotPoolTests: XCTestCase {
     func testReusesExactPrivateIncarnationWhileReadingCurrentByteIdentity() throws {
         try fixture { directory in
             let source = try executable(directory)
+            let bytes = try Data(contentsOf: source), maximum = bytes.count
             let pool = CapabilityExecutableSnapshotPool()
-            let one = try pool.acquire(executable: source, maximum: 64)
-            let two = try pool.acquire(executable: source, maximum: 64)
+            let one = try pool.acquire(executable: source, maximum: maximum)
+            let two = try pool.acquire(executable: source, maximum: maximum)
             XCTAssertTrue(one === two); XCTAssertNotEqual(one.file, source)
-            XCTAssertEqual(try Data(contentsOf: one.file), Data("host-selected-executable".utf8))
+            XCTAssertEqual(try Data(contentsOf: one.file), bytes)
             let timestamp = try FileManager.default.attributesOfItem(atPath: source.path)[.modificationDate]
-            try NativeHTTPFixture.replacePrivate(Data("HOST-selected-executable".utf8), at: source)
+            try NativeHTTPFixture.replacePrivate(self.executableBytes("HOST-selected-executable"), at: source)
             if let timestamp { try FileManager.default.setAttributes([.modificationDate: timestamp], ofItemAtPath: source.path) }
-            let changed = try pool.acquire(executable: source, maximum: 64)
+            XCTAssertTrue(FileManager.default.isExecutableFile(atPath: source.path))
+            let changed = try pool.acquire(executable: source, maximum: maximum)
             XCTAssertFalse(one === changed); XCTAssertNotEqual(one.sha256, changed.sha256)
             XCTAssertFalse(one.sourceStillMatches())
-            XCTAssertEqual(try Data(contentsOf: one.file), Data("host-selected-executable".utf8))
+            XCTAssertEqual(try Data(contentsOf: one.file), bytes)
+#if os(Windows)
+            let invalid = directory.appendingPathComponent("not-a-native-executable.exe")
+            try NativeHTTPFixture.writePrivate(Data("arbitrary-text-is-not-a-PE".utf8), to: invalid)
+            XCTAssertFalse(FileManager.default.isExecutableFile(atPath: invalid.path))
+            XCTAssertThrowsError(try pool.acquire(executable: invalid, maximum: maximum)) {
+                XCTAssertEqual($0 as? RCIRError, .unavailable)
+            }
+#endif
         }
     }
     func testSourceWithdrawalAndRestorationCannotReturnWithdrawnCacheEntry() throws {
         try fixture { directory in
             let source = try executable(directory)
             let pool = CapabilityExecutableSnapshotPool()
-            let original = try pool.acquire(executable: source, maximum: 64)
+            let maximum = try Data(contentsOf: source).count
+            let original = try pool.acquire(executable: source, maximum: maximum)
             try NativeHTTPFixture.release(source)
             try FileManager.default.removeItem(at: source)
-            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: 64))
+            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: maximum))
             XCTAssertEqual(pool.retainedBudget.entries, 0); XCTAssertFalse(original.sourceStillMatches())
             _ = try executable(directory)
-            let restored = try pool.acquire(executable: source, maximum: 64)
+            let restored = try pool.acquire(executable: source, maximum: maximum)
             XCTAssertFalse(original === restored); XCTAssertEqual(original.sha256, restored.sha256)
         }
     }
     func testReturnRaceRechecksWholeBytesAndDoesNotEvictConcurrentNewIncarnation() throws {
         try fixture { directory in
             let source = try executable(directory), pool = CapabilityExecutableSnapshotPool()
-            let original = try pool.acquire(executable: source, maximum: 64)
+            let maximum = try Data(contentsOf: source).count
+            let original = try pool.acquire(executable: source, maximum: maximum)
             var replacement: CapabilityArtifactSnapshot?
-            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: 64, beforeReturn: {
-                try! NativeHTTPFixture.replacePrivate(Data("other-executable-bytes".utf8), at: source)
-                replacement = try! pool.acquire(executable: source, maximum: 64)
+            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: maximum, beforeReturn: {
+                try! NativeHTTPFixture.replacePrivate(self.executableBytes("other-executable-bytes"), at: source)
+                replacement = try! pool.acquire(executable: source, maximum: maximum)
             })) { XCTAssertEqual($0 as? RCIRError, .unavailable) }
-            let current = try pool.acquire(executable: source, maximum: 64)
+            let current = try pool.acquire(executable: source, maximum: maximum)
             XCTAssertTrue(current === replacement); XCTAssertFalse(current === original)
             XCTAssertEqual(pool.retainedBudget.entries, 1)
-            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: 64, beforeReturn: {
+            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: maximum, beforeReturn: {
                 try! NativeHTTPFixture.release(source)
                 try! FileManager.default.removeItem(at: source)
             })) { XCTAssertEqual($0 as? RCIRError, .unavailable) }
@@ -72,25 +97,27 @@ final class CapabilityExecutableSnapshotPoolTests: XCTestCase {
     func testEntryByteAndAbsoluteRetentionBudgetsDoNotGrowOnReuse() throws {
         try fixture { directory in
             var now: TimeInterval = 0
-            let pool = CapabilityExecutableSnapshotPool(maximumEntries: 2, maximumBytes: 48, retention: 1, clock: { now })
             let a = try executable(directory, "a.exe"), b = try executable(directory, "b.exe"), c = try executable(directory, "c.exe")
-            let first = try pool.acquire(executable: a, maximum: 64)
-            _ = try pool.acquire(executable: b, maximum: 64)
-            now = 0.5; XCTAssertTrue(first === (try pool.acquire(executable: a, maximum: 64)))
-            _ = try pool.acquire(executable: c, maximum: 64)
-            XCTAssertLessThanOrEqual(pool.retainedBudget.entries, 2); XCTAssertLessThanOrEqual(pool.retainedBudget.bytes, 48)
-            now = 1.1; XCTAssertFalse(first === (try pool.acquire(executable: a, maximum: 64)))
+            let maximum = try Data(contentsOf: a).count, budget = maximum * 2
+            let pool = CapabilityExecutableSnapshotPool(maximumEntries: 2, maximumBytes: budget, retention: 1, clock: { now })
+            let first = try pool.acquire(executable: a, maximum: maximum)
+            _ = try pool.acquire(executable: b, maximum: maximum)
+            now = 0.5; XCTAssertTrue(first === (try pool.acquire(executable: a, maximum: maximum)))
+            _ = try pool.acquire(executable: c, maximum: maximum)
+            XCTAssertLessThanOrEqual(pool.retainedBudget.entries, 2); XCTAssertLessThanOrEqual(pool.retainedBudget.bytes, budget)
+            now = 1.1; XCTAssertFalse(first === (try pool.acquire(executable: a, maximum: maximum)))
             XCTAssertLessThanOrEqual(pool.retainedBudget.entries, 2)
             XCTAssertThrowsError(try pool.acquire(executable: a, maximum: 4))
-            XCTAssertThrowsError(try CapabilityExecutableSnapshotPool(maximumEntries: 0).acquire(executable: a, maximum: 64))
-            XCTAssertThrowsError(try CapabilityExecutableSnapshotPool(retention: .infinity).acquire(executable: a, maximum: 64))
+            XCTAssertThrowsError(try CapabilityExecutableSnapshotPool(maximumEntries: 0).acquire(executable: a, maximum: maximum))
+            XCTAssertThrowsError(try CapabilityExecutableSnapshotPool(retention: .infinity).acquire(executable: a, maximum: maximum))
         }
     }
     func testIdleRetentionCleanupReleasesOnlyThePoolReference() throws {
         try fixture { directory in
             let source = try executable(directory)
+            let maximum = try Data(contentsOf: source).count
             let pool = CapabilityExecutableSnapshotPool(retention: 0.02)
-            let active = try pool.acquire(executable: source, maximum: 64)
+            let active = try pool.acquire(executable: source, maximum: maximum)
             let deadline = ProcessInfo.processInfo.systemUptime + 1
             while pool.retainedBudget.entries > 0, ProcessInfo.processInfo.systemUptime < deadline {
                 Thread.sleep(forTimeInterval: 0.005)
@@ -160,11 +187,12 @@ final class CapabilityExecutableSnapshotPoolTests: XCTestCase {
     func testNonExecutableSecretReferenceAndPermissionWithdrawalFailClosed() throws {
         try fixture { directory in
             let source = try executable(directory), pool = CapabilityExecutableSnapshotPool()
-            _ = try pool.acquire(executable: source, maximum: 64)
+            let maximum = try Data(contentsOf: source).count
+            _ = try pool.acquire(executable: source, maximum: maximum)
             try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: source.path)
-            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: 64))
+            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: maximum))
             XCTAssertEqual(pool.retainedBudget.entries, 0)
-            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: 64, beforeReturn: {}))
+            XCTAssertThrowsError(try pool.acquire(executable: source, maximum: maximum, beforeReturn: {}))
         }
     }
 #endif

@@ -1,0 +1,614 @@
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for production...
+[2/468] Write sources
+[12/468] Copying PrivacyInfo.xcprivacy
+[13/468] Write sources
+[13/468] Copying PrivacyInfo.xcprivacy
+[18/468] Write sources
+[39/468] Compiling CNIOWASI CNIOWASI.c
+[39/468] Compiling CNIOWindows WSAStartup.c
+[41/468] Compiling CNIOWindows shim.c
+[42/468] Write swift-version--58304C5D6DBC2206.txt
+[43/468] Compiling CNIOOpenBSD shim.c
+[44/468] Compiling CNIOLinux liburing_shims.c
+[45/468] Compiling CNIOLinux shim.c
+[46/468] Compiling CSystem shims.c
+[47/471] Compiling RightClickHostFiles HostFiles.c
+[48/471] Compiling _AtomicsShims.c
+[49/471] Compiling CNIOPosix event_loop_id.c
+[50/472] Compiling CNIOLLHTTP c_nio_http.c
+[52/476] Compiling _NIOBase64 Base64.swift
+[52/476] Compiling CNIOLLHTTP c_nio_llhttp.c
+[53/478] Compiling RightClickProbePrivate RCPrivateExtensionProbe.m
+[54/478] Compiling CNIOLLHTTP c_nio_api.c
+[56/479] Compiling InternalCollectionsUtilities BorrowingIteratorProtocol+Equality.swift
+[56/479] Compiling CNIOFreeBSD shim.c
+[58/480] Compiling _NIODataStructures Heap.swift
+[59/480] Compiling SpanPreview InputSpan.swift
+[59/480] Compiling CNIODarwin shim.c
+[60/480] Compiling CNIOBoringSSLShims shims.c
+[61/480] Compiling fiat_p256_adx_sqr.S
+[62/481] Compiling fiat_p256_adx_mul.S
+[63/481] Compiling fiat_curve25519_adx_square.S
+[64/481] Compiling fiat_curve25519_adx_mul.S
+[65/481] Compiling tls_record.cc
+[67/481] Compiling RightClickARD ARD.swift
+[68/481] Compiling Logging MultiplexLogHandler.swift
+[69/481] Compiling Crypto AES-GCM.swift
+[69/482] Compiling tls_method.cc
+[70/482] Compiling tls13_enc.cc
+[71/482] Compiling tls13_server.cc
+[72/482] Compiling tls13_client.cc
+[74/482] Compiling RightClickARDProbe main.swift
+[74/482] Compiling t1_enc.cc
+[74/482] Write Objects.LinkFileList
+[76/482] Compiling tls13_both.cc
+[78/482] Compiling EventSource AsyncEventsSequence.swift
+[78/482] Linking rightclick-ard-probe
+[79/482] Compiling ssl_versions.cc
+[80/482] Compiling ssl_x509.cc
+[82/482] Compiling RightClickMarker main.swift
+[82/482] Compiling ssl_transcript.cc
+[82/482] Write Objects.LinkFileList
+[84/482] Compiling ssl_stat.cc
+[86/482] Compiling DequeModule Deque+Codable.swift
+[86/482] Linking rightclick-marker
+[87/482] Compiling ssl_privkey.cc
+[88/482] Compiling ssl_session.cc
+[89/482] Compiling ssl_file.cc
+[90/482] Compiling ssl_key_share.cc
+[91/482] Compiling ssl_credential.cc
+[92/482] Compiling ssl_lib.cc
+[93/482] Compiling ssl_buffer.cc
+[94/482] Compiling ssl_cipher.cc
+[95/482] Compiling ssl_cert.cc
+[96/482] Compiling ssl_aead_ctx.cc
+[97/482] Compiling ssl_asn1.cc
+[98/482] Compiling s3_pkt.cc
+[100/482] Compiling SystemPackage Errno.swift
+[100/482] Compiling s3_lib.cc
+[101/482] Compiling s3_both.cc
+[102/483] Compiling handshake.cc
+[103/483] Compiling handoff.cc
+[104/483] Compiling handshake_server.cc
+[105/483] Compiling handshake_client.cc
+[106/483] Compiling dtls_record.cc
+[107/483] Compiling dtls_method.cc
+[108/483] Compiling encrypted_client_hello.cc
+[109/483] Compiling extensions.cc
+[110/483] Compiling md5-x86_64-linux.S
+[111/483] Compiling md5-x86_64-apple.S
+[112/483] Compiling md5-586-linux.S
+[113/483] Compiling d1_srtp.cc
+[114/483] Compiling md5-586-apple.S
+[115/483] Compiling chacha20_poly1305_x86_64-linux.S
+[116/483] Compiling chacha20_poly1305_x86_64-apple.S
+[117/483] Compiling d1_pkt.cc
+[118/483] Compiling chacha20_poly1305_armv8-win.S
+[119/483] Compiling chacha20_poly1305_armv8-linux.S
+[120/483] Compiling chacha20_poly1305_armv8-apple.S
+[121/483] Compiling chacha-x86_64-linux.S
+[122/483] Compiling chacha-x86_64-apple.S
+[123/483] Compiling d1_lib.cc
+[124/483] Compiling chacha-x86-linux.S
+[124/483] Compiling chacha-x86-apple.S
+[126/483] Compiling chacha-armv8-win.S
+[127/483] Compiling chacha-armv8-linux.S
+[128/483] Compiling chacha-armv4-linux.S
+[129/483] Compiling aes128gcmsiv-x86_64-linux.S
+[130/483] Compiling aes128gcmsiv-x86_64-apple.S
+[131/483] Compiling chacha-armv8-apple.S
+[132/483] Compiling err_data.cc
+[133/483] Compiling x86_64-mont5-linux.S
+[134/483] Compiling x86_64-mont-linux.S
+[135/483] Compiling x86_64-mont5-apple.S
+[136/483] Compiling x86_64-mont-apple.S
+[137/483] Compiling x86-mont-linux.S
+[138/483] Compiling x86-mont-apple.S
+[139/483] Compiling vpaes-x86_64-linux.S
+[140/483] Compiling vpaes-x86_64-apple.S
+[141/483] Compiling vpaes-x86-linux.S
+[142/483] Compiling vpaes-x86-apple.S
+[143/483] Compiling vpaes-armv8-win.S
+[144/483] Compiling vpaes-armv8-linux.S
+[144/483] Compiling bio_ssl.cc
+[146/483] Compiling vpaes-armv8-apple.S
+[147/483] Compiling vpaes-armv7-linux.S
+[148/483] Compiling sha512-x86_64-linux.S
+[149/483] Compiling sha512-x86_64-apple.S
+[150/483] Compiling sha512-armv8-linux.S
+[151/483] Compiling sha512-armv8-win.S
+[152/483] Compiling sha512-armv4-linux.S
+[152/483] Compiling sha512-armv8-apple.S
+[154/483] Compiling sha512-586-linux.S
+[155/483] Compiling sha512-586-apple.S
+[156/483] Compiling sha256-x86_64-linux.S
+[157/483] Compiling sha256-x86_64-apple.S
+[158/483] Compiling sha256-armv8-linux.S
+[159/483] Compiling sha256-armv8-win.S
+[160/483] Compiling sha256-armv4-linux.S
+[161/483] Compiling sha256-armv8-apple.S
+[162/483] Compiling sha256-586-apple.S
+[163/483] Compiling sha256-586-linux.S
+[164/483] Compiling sha1-x86_64-linux.S
+[165/483] Compiling sha1-x86_64-apple.S
+[166/483] Compiling sha1-armv8-win.S
+[167/483] Compiling sha1-armv8-linux.S
+[168/483] Compiling sha1-armv4-large-linux.S
+[169/483] Compiling sha1-586-apple.S
+[170/483] Compiling sha1-armv8-apple.S
+[171/483] Compiling sha1-586-linux.S
+[172/483] Compiling rsaz-avx2-linux.S
+[173/483] Compiling rsaz-avx2-apple.S
+[174/483] Compiling rdrand-x86_64-apple.S
+[175/483] Compiling rdrand-x86_64-linux.S
+[176/483] Compiling p256_beeu-x86_64-asm-linux.S
+[177/483] Compiling p256_beeu-x86_64-asm-apple.S
+[178/483] Compiling p256_beeu-armv8-asm-win.S
+[179/483] Compiling p256_beeu-armv8-asm-linux.S
+[180/483] Compiling p256_beeu-armv8-asm-apple.S
+[181/483] Compiling p256-x86_64-asm-linux.S
+[182/483] Compiling p256-armv8-asm-win.S
+[183/483] Compiling p256-x86_64-asm-apple.S
+[184/483] Compiling p256-armv8-asm-linux.S
+[185/483] Compiling ghashv8-armv8-win.S
+[186/483] Compiling ghashv8-armv8-linux.S
+[187/483] Compiling p256-armv8-asm-apple.S
+[188/483] Compiling ghashv8-armv7-linux.S
+[189/483] Compiling ghashv8-armv8-apple.S
+[190/483] Compiling ghash-x86_64-linux.S
+[191/483] Compiling ghash-x86_64-apple.S
+[192/483] Compiling ghash-x86-linux.S
+[193/483] Compiling ghash-x86-apple.S
+[194/483] Compiling ghash-ssse3-x86_64-linux.S
+[195/483] Compiling ghash-ssse3-x86_64-apple.S
+[196/483] Compiling ghash-ssse3-x86-linux.S
+[197/483] Compiling ghash-neon-armv8-win.S
+[198/483] Compiling ghash-ssse3-x86-apple.S
+[199/483] Compiling ghash-neon-armv8-linux.S
+[200/483] Compiling ghash-armv4-linux.S
+[201/483] Compiling ghash-neon-armv8-apple.S
+[202/483] Compiling co-586-linux.S
+[203/483] Compiling bsaes-armv7-linux.S
+[204/483] Compiling co-586-apple.S
+[204/483] Compiling bn-armv8-win.S
+[206/483] Compiling bn-armv8-linux.S
+[207/483] Compiling bn-armv8-apple.S
+[208/483] Compiling bn-586-apple.S
+[209/483] Compiling bn-586-linux.S
+[210/483] Compiling armv8-mont-win.S
+[210/483] Compiling armv8-mont-linux.S
+[212/483] Compiling armv4-mont-linux.S
+[213/483] Compiling armv8-mont-apple.S
+[214/483] Compiling aesv8-gcm-armv8-win.S
+[215/483] Compiling aesv8-armv8-linux.S
+[216/483] Compiling aesv8-armv8-win.S
+[217/483] Compiling aesv8-gcm-armv8-linux.S
+[218/483] Compiling aesv8-gcm-armv8-apple.S
+[219/483] Compiling aesv8-armv8-apple.S
+[220/483] Compiling aesni-x86_64-linux.S
+[221/483] Compiling aesv8-armv7-linux.S
+[221/483] Compiling aesni-x86_64-apple.S
+[223/483] Compiling aesni-x86-apple.S
+[223/483] Compiling aesni-x86-linux.S
+[225/483] Compiling aesni-gcm-x86_64-linux.S
+[226/483] Compiling aesni-gcm-x86_64-apple.S
+[227/483] Compiling d1_both.cc
+[227/483] Compiling aes-gcm-avx2-x86_64-apple.S
+[229/483] Compiling aes-gcm-avx10-x86_64-linux.S
+[230/483] Compiling aes-gcm-avx10-x86_64-apple.S
+[231/483] Compiling aes-gcm-avx2-x86_64-linux.S
+[232/483] Compiling x_req.cc
+[233/483] Compiling x_val.cc
+[234/483] Compiling x_sig.cc
+[235/483] Compiling x_x509a.cc
+[236/483] Compiling x_x509.cc
+[237/483] Compiling x_spki.cc
+[238/483] Compiling x_pubkey.cc
+[239/483] Compiling x_exten.cc
+[240/483] Compiling x_crl.cc
+[241/483] Compiling x_name.cc
+[242/483] Compiling x_algor.cc
+[243/483] Compiling x_attrib.cc
+[244/483] Compiling x_all.cc
+[245/483] Compiling x509spki.cc
+[246/483] Compiling x509rset.cc
+[247/483] Compiling x509cset.cc
+[248/483] Compiling x509name.cc
+[249/483] Compiling x509_v3.cc
+[250/483] Compiling x509_vpm.cc
+[251/483] Compiling x509_txt.cc
+[252/483] Compiling x509_vfy.cc
+[253/483] Compiling x509_trs.cc
+[254/483] Compiling x509_set.cc
+[255/483] Compiling x509_req.cc
+[256/483] Compiling x509_obj.cc
+[257/483] Compiling x509_lu.cc
+[258/483] Compiling x509_ext.cc
+[259/483] Compiling x509_def.cc
+[260/483] Compiling x509_d2.cc
+[261/483] Compiling x509_att.cc
+[262/483] Compiling x509_cmp.cc
+[263/483] Compiling v3_skey.cc
+[264/483] Compiling x509.cc
+[265/483] Compiling v3_purp.cc
+[266/483] Compiling v3_utl.cc
+[267/483] Compiling v3_prn.cc
+[268/483] Compiling v3_pmaps.cc
+[269/483] Compiling v3_pcons.cc
+[270/483] Compiling v3_ocsp.cc
+[271/483] Compiling v3_ncons.cc
+[272/483] Compiling v3_lib.cc
+[273/483] Compiling v3_int.cc
+[274/483] Compiling v3_info.cc
+[275/483] Compiling v3_ia5.cc
+[276/483] Compiling v3_genn.cc
+[277/483] Compiling v3_extku.cc
+[278/483] Compiling v3_enum.cc
+[279/483] Compiling v3_crld.cc
+[280/483] Compiling v3_cpols.cc
+[281/483] Compiling v3_conf.cc
+[282/483] Compiling v3_bcons.cc
+[283/483] Compiling v3_bitst.cc
+[284/483] Compiling v3_akeya.cc
+[285/483] Compiling v3_alt.cc
+[286/483] Compiling v3_akey.cc
+[287/483] Compiling t_x509a.cc
+[288/483] Compiling t_x509.cc
+[289/483] Compiling t_crl.cc
+[290/483] Compiling t_req.cc
+[291/483] Compiling rsa_pss.cc
+[292/483] Compiling i2d_pr.cc
+[293/483] Compiling policy.cc
+[294/483] Compiling name_print.cc
+[295/483] Compiling by_file.cc
+[296/483] Compiling algorithm.cc
+[297/483] Compiling by_dir.cc
+[298/483] Compiling a_verify.cc
+[299/483] Compiling asn1_gen.cc
+[300/483] Compiling a_digest.cc
+[301/483] Compiling thread_pthread.cc
+[302/483] Compiling a_sign.cc
+[303/483] Compiling thread_win.cc
+[304/483] Compiling trust_token.cc
+[305/483] Compiling thread_none.cc
+[306/483] Compiling voprf.cc
+[307/483] Compiling thread.cc
+[308/483] Compiling stack.cc
+[309/483] Compiling pmbtoken.cc
+[310/483] Compiling slhdsa.cc
+[311/483] Compiling spake2plus.cc
+[312/483] Compiling siphash.cc
+[313/483] Compiling sha512.cc
+[314/483] Compiling sha256.cc
+[315/483] Compiling sha1.cc
+[316/483] Compiling rsa_print.cc
+[317/483] Compiling rsa_extra.cc
+[318/483] Compiling refcount.cc
+[319/483] Compiling rc4.cc
+[320/483] Compiling rsa_crypt.cc
+[321/483] Compiling rsa_asn1.cc
+[322/483] Compiling windows.cc
+[323/483] Compiling urandom.cc
+[324/483] Compiling trusty.cc
+[325/483] Compiling passive.cc
+[326/483] Compiling rand.cc
+[327/483] Compiling ios.cc
+[328/483] Compiling getentropy.cc
+[329/483] Compiling forkunsafe.cc
+[330/483] Compiling poly1305_arm_asm.S
+[331/483] Compiling deterministic.cc
+[332/483] Compiling fork_detect.cc
+[333/483] Compiling poly1305_vec.cc
+[334/483] Compiling poly1305_arm.cc
+[335/483] Compiling pool.cc
+[336/483] Compiling poly1305.cc
+[337/483] Compiling p5_pbev2.cc
+[337/483] Compiling pkcs8.cc
+[338/483] Compiling pkcs7.cc
+[340/483] Compiling pkcs7_x509.cc
+[341/483] Compiling pkcs8_x509.cc
+[342/483] Compiling pem_xaux.cc
+[343/483] Compiling pem_x509.cc
+[344/483] Compiling pem_pkey.cc
+[345/483] Compiling pem_oth.cc
+[346/483] Compiling pem_pk8.cc
+[347/483] Compiling pem_lib.cc
+[348/483] Compiling obj_xref.cc
+[349/483] Compiling pem_info.cc
+[350/483] Compiling pem_all.cc
+[351/483] Compiling mldsa.cc
+[352/483] Compiling mlkem.cc
+[353/483] Compiling md4.cc
+[354/483] Compiling obj.cc
+[355/483] Compiling mem.cc
+[356/483] Compiling md5.cc
+[357/483] Compiling poly_rq_mul.S
+[358/483] Compiling fips_shared_support.cc
+[359/483] Compiling lhash.cc
+[360/483] Compiling ex_data.cc
+[361/483] Compiling sign.cc
+[362/483] Compiling scrypt.cc
+[363/483] Compiling kyber.cc
+[364/483] Compiling hpke.cc
+[365/483] Compiling pbkdf.cc
+[366/483] Compiling print.cc
+[367/483] Compiling hrss.cc
+[368/483] Compiling p_x25519.cc
+[369/483] Compiling p_rsa_asn1.cc
+[370/483] Compiling p_x25519_asn1.cc
+[371/483] Compiling p_rsa.cc
+[372/483] Compiling p_ed25519.cc
+[373/483] Compiling p_hkdf.cc
+[374/483] Compiling p_ed25519_asn1.cc
+[375/483] Compiling p_ec.cc
+[377/483] Compiling RightClickProbe main.swift
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:231:27: warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 229 |     KnownShareName(name: .useAsDesktopPicture, status: "PUBLIC_SUPPORTED"),
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnFacebook' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:232:27: warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 230 |     KnownShareName(name: .cloudSharing, status: "PUBLIC_SUPPORTED"),
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTwitter' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:233:27: warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 231 |     KnownShareName(name: .postOnFacebook, status: "PUBLIC_DEPRECATED"),
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnSinaWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:234:27: warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 232 |     KnownShareName(name: .postOnTwitter, status: "PUBLIC_DEPRECATED"),
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnTencentWeibo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:235:27: warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 233 |     KnownShareName(name: .postOnSinaWeibo, status: "PUBLIC_DEPRECATED"),
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postOnLinkedIn' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:236:27: warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 234 |     KnownShareName(name: .postOnTencentWeibo, status: "PUBLIC_DEPRECATED"),
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postImageOnFlickr' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:237:27: warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 235 |     KnownShareName(name: .postOnLinkedIn, status: "PUBLIC_DEPRECATED"),
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnVimeo' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:238:27: warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 236 |     KnownShareName(name: .postImageOnFlickr, status: "PUBLIC_DEPRECATED"),
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnYouku' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+ 240 | ]
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:239:27: warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 237 |     KnownShareName(name: .postVideoOnVimeo, status: "PUBLIC_DEPRECATED"),
+ 238 |     KnownShareName(name: .postVideoOnYouku, status: "PUBLIC_DEPRECATED"),
+ 239 |     KnownShareName(name: .postVideoOnTudou, status: "PUBLIC_DEPRECATED"),
+     |                           `- warning: 'postVideoOnTudou' was deprecated in macOS 10.14: This service is no longer included with the system. [#DeprecatedDeclaration]
+ 240 | ]
+ 241 | 
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:582:30: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 580 |         var errors: [String] = []
+ 581 |         let deprecated = safeShares {
+ 582 |             NSSharingService.sharingServices(forItems: items).map {
+     |                              `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 583 |                 record(for: $0, items: items, sourceAPI: "NSSharingService.sharingServices(forItems:) PUBLIC_DEPRECATED")
+ 584 |             }
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickProbe/main.swift:748:39: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 746 | func executeHarmlessShare(fixtures: FixtureSet) -> SharingExecution {
+ 747 |     let items: [Any] = [fixtures.webURL as NSURL]
+ 748 |     let discovered = NSSharingService.sharingServices(forItems: items)
+     |                                       `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 749 |     let titles = discovered.map(\.title)
+ 750 |     let readingListName = NSSharingService.Name.addToSafariReadingList
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[377/483] Compiling p_ec_asn1.cc
+[378/483] Write Objects.LinkFileList
+[379/483] Compiling evp_ctx.cc
+[380/483] Compiling p_dh_asn1.cc
+[381/483] Compiling p_dh.cc
+[382/483] Compiling p_dsa_asn1.cc
+[383/483] Compiling evp.cc
+[384/483] Compiling err.cc
+[385/483] Compiling evp_asn1.cc
+[386/483] Compiling engine.cc
+[387/483] Compiling ecdh.cc
+[388/483] Compiling ecdsa_asn1.cc
+[389/483] Compiling ec_derive.cc
+[390/483] Compiling hash_to_curve.cc
+[391/483] Linking rightclick-probe
+[392/483] Compiling dsa_asn1.cc
+[393/483] Compiling ec_asn1.cc
+[394/483] Compiling params.cc
+[395/483] Compiling dsa.cc
+[396/483] Compiling dh_asn1.cc
+[397/483] Compiling x25519-asm-arm.S
+[398/483] Compiling digest_extra.cc
+[399/483] Compiling curve25519_64_adx.cc
+[400/483] Compiling cpu_intel.cc
+[401/483] Compiling crypto.cc
+[402/483] Compiling spake25519.cc
+[403/483] Compiling cpu_arm_linux.cc
+[404/483] Compiling des.cc
+[405/483] Compiling cpu_arm_freebsd.cc
+[406/483] Compiling cpu_aarch64_sysreg.cc
+[407/483] Compiling cpu_aarch64_win.cc
+[408/483] Compiling cpu_aarch64_openbsd.cc
+[409/483] Compiling cpu_aarch64_linux.cc
+[410/483] Compiling cpu_aarch64_fuchsia.cc
+[411/483] Compiling cpu_aarch64_apple.cc
+[412/483] Compiling get_cipher.cc
+[413/483] Compiling curve25519.cc
+[414/483] Compiling conf.cc
+[415/483] Compiling e_tls.cc
+[416/483] Compiling e_rc4.cc
+[417/483] Compiling tls_cbc.cc
+[418/483] Compiling e_null.cc
+[419/483] Compiling e_des.cc
+[420/483] Compiling e_rc2.cc
+[421/483] Compiling e_chacha20poly1305.cc
+[422/483] Compiling e_aesgcmsiv.cc
+[423/483] Compiling derive_key.cc
+[424/483] Compiling e_aesctrhmac.cc
+[425/483] Compiling chacha.cc
+[426/483] Compiling unicode.cc
+[427/483] Compiling ber.cc
+[428/483] Compiling asn1_compat.cc
+[429/483] Compiling buf.cc
+[430/483] Compiling cbb.cc
+[431/483] Compiling cbs.cc
+[432/483] Compiling printf.cc
+[433/483] Compiling socket_helper.cc
+[434/483] Compiling bn_asn1.cc
+[435/483] Compiling socket.cc
+[436/483] Compiling blake2.cc
+[437/483] Compiling convert.cc
+[438/483] Compiling pair.cc
+[439/483] Compiling errno.cc
+[440/483] Compiling hexdump.cc
+[441/483] Compiling fd.cc
+[442/483] Compiling file.cc
+[443/483] Compiling bio_mem.cc
+[444/483] Compiling connect.cc
+[445/483] Compiling bio.cc
+[446/483] Compiling tasn_typ.cc
+[447/483] Compiling base64.cc
+[448/483] Compiling tasn_new.cc
+[449/483] Compiling tasn_fre.cc
+[450/483] Compiling tasn_enc.cc
+[451/483] Compiling tasn_utl.cc
+[452/483] Compiling asn_pack.cc
+[453/483] Compiling f_string.cc
+[454/483] Compiling tasn_dec.cc
+[455/483] Compiling f_int.cc
+[456/483] Compiling posix_time.cc
+[457/483] Compiling asn1_par.cc
+[458/483] Compiling asn1_lib.cc
+[459/483] Compiling a_octet.cc
+[460/483] Compiling a_type.cc
+[461/483] Compiling a_utctm.cc
+[462/483] Compiling a_strnid.cc
+[463/483] Compiling a_time.cc
+[464/483] Compiling a_strex.cc
+[465/483] Compiling a_object.cc
+[466/483] Compiling a_i2d_fp.cc
+[467/483] Compiling a_dup.cc
+[468/483] Compiling a_mbstr.cc
+[469/483] Compiling a_gentm.cc
+[470/483] Compiling a_d2i_fp.cc
+[471/483] Write sources
+[472/483] Compiling a_int.cc
+[473/483] Compiling CGRPCZlib empty.c
+[474/484] Compiling a_bool.cc
+[475/484] Compiling a_bitstr.cc
+[476/484] Compiling c-nioatomics.c
+[477/484] Compiling c-atomics.c
+[479/485] Compiling NIOConcurrencyHelpers NIOAtomic.swift
+[480/485] Compiling Atomics OptionalRawRepresentable.swift
+[480/486] Compiling bcm.cc
+[482/486] Compiling MCP OAuthAuthorizationCodeFlow.swift
+[483/486] Compiling SwiftProtobuf AnyMessageStorage.swift
+[484/486] Compiling NIOCore AddressedEnvelope.swift
+[485/489] Compiling NIOFoundationEssentialsCompat ByteBuffer-foundation.swift
+[486/489] Compiling NIOEmbedded AsyncTestingChannel.swift
+[487/489] Compiling NIOPosix BSDSocketAPICommon.swift
+[488/490] Compiling NIO Exports.swift
+[489/493] Compiling NIOFoundationCompat Exports.swift
+[490/493] Compiling NIOTLS ApplicationProtocolNegotiationHandler.swift
+[491/495] Compiling NIOTransportServices AcceptHandler.swift
+[492/495] Compiling NIOHTTP1 ByteCollectionUtils.swift
+[493/497] Compiling NIOSSL AndroidCABundle.swift
+[494/497] Compiling NIOExtras DebugInboundEventsHandler.swift
+[495/497] Compiling NIOHPACK DynamicHeaderTable.swift
+[496/498] Compiling NIOHTTP2 ConnectionStateMachine.swift
+[497/499] Compiling GRPC Array+BoundsCheck.swift
+[498/500] Compiling RightClickCore A2AReflector.swift
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift:17:13: warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+ 15 |         let succeeded: Bool
+ 16 |         let process: BoundedCapabilityProcess.Diagnostic?
+ 17 |         let recordedAtUptime = ProcessInfo.processInfo.systemUptime
+    |             |- warning: immutable property will not be decoded because it is declared with an initial value which cannot be overwritten
+    |             |- note: set the initial value via the initializer or explicitly define a CodingKeys enum including a 'recordedAtUptime' case to silence this warning
+    |             `- note: make the property mutable instead
+ 18 |     }
+ 19 |     public let kind = "kafka"
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickCore/SharingCatalog.swift:26:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 24 |         let items = pasteboardItems(for: item)
+ 25 |         guard !items.isEmpty else { return [] }
+ 26 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 27 |         return services.compactMap { service in
+ 28 |             guard service.canPerform(withItems: items) else { return nil }
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickCore/SharingCatalog.swift:37:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 35 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 36 |         let items = pasteboardItems(for: item)
+ 37 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 38 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 39 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[499/501] Compiling RightClickMCP Federation.swift
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |                 transport: transport
+317 |             )
+318 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/private/tmp/rightclick-root-fresh-f984-source-20261008/rightclick-0.2.3/Sources/RightClickMCP/Server.swift:320:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+318 |             return .init(content: [.text(text)], isError: false)
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+321 |         }
+322 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[500/502] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[500/502] Write Objects.LinkFileList
+[501/502] Linking rightclick
+Build complete! (121.74s)

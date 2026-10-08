@@ -116,16 +116,15 @@ final class OpenAPICredentialEchoTests: XCTestCase {
             let out = URL(fileURLWithPath: path)
             try FileManager.default.createDirectory(at: out, withIntermediateDirectories: true)
             let evidence = try JSONSerialization.data(withJSONObject: ["test": name, "diagnostics": diagnostics,
-                "effects": effects()], options: [.prettyPrinted, .sortedKeys])
+                "effects": try effects()], options: [.prettyPrinted, .sortedKeys])
             try evidence.write(to: out.appendingPathComponent(name + ".json"))
         }
         if let directory { try NativeHTTPFixture.remove(directory) }
         Bridge.loopback = nil
         Bridge.certificate = nil
     }
-    private func effects() -> [[String: Any]] {
-        let text = (try? String(contentsOf: directory.appendingPathComponent("effects.jsonl"), encoding: .utf8)) ?? ""
-        return text.split(separator: "\n").map { try! JSONSerialization.jsonObject(with: Data($0.utf8)) as! [String: Any] }
+    private func effects() throws -> [[String: Any]] {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent("effects.jsonl"))
     }
     private func invoke(_ mode: String) throws -> ExecutionRecord {
         let property: [String: Any] = ["type": "string"]
@@ -146,18 +145,18 @@ final class OpenAPICredentialEchoTests: XCTestCase {
     }
     func testCredentialEchoCannotReachModelRecordEventsOrSignedReceipt() throws {
         for mode in ["raw", "bearer", "base64", "base64_unpadded", "base64url", "hex", "upperhex", "json_escape"] {
-            let before = effects().count
+            let before = try effects().count
             let record = try invoke(mode)
             let encoded = try JSONEncoder().encode(record)
             let payload = record.rcir?.signedReceipt.flatMap { Data(base64Encoded: $0.payload) } ?? Data()
             let material = try CapabilitySensitiveMaterial([Data(token.utf8)])
             let recordClean = (try? material.requireAbsent(in: .bytes(encoded))) != nil
             let receiptClean = (try? material.requireAbsent(in: .bytes(payload))) != nil
-            diagnostics.append(["mode": mode, "actualRequests": effects().count - before, "recordClean": recordClean,
+            diagnostics.append(["mode": mode, "actualRequests": try effects().count - before, "recordClean": recordClean,
                 "receiptClean": receiptClean, "outcome": record.rcir?.outcome ?? "missing",
                 "outputWithheld": record.output == nil,
                 "recordSHA256": SHA256.hash(data: encoded).map { String(format: "%02x", $0) }.joined()])
-            XCTAssertEqual(effects().count - before, 1)
+            XCTAssertEqual(try effects().count - before, 1)
             XCTAssertTrue(recordClean, "Credential echo reached model-visible record for " + mode)
             XCTAssertTrue(receiptClean, "Credential echo reached signed task evidence for " + mode)
             XCTAssertTrue(record.output == nil, "Contaminated provider output must be withheld for " + mode)
@@ -180,7 +179,7 @@ final class OpenAPICredentialEchoTests: XCTestCase {
         let record = try invoke("benign")
         XCTAssertEqual(record.state, .accepted, record.message)
         XCTAssertEqual(record.output, "{\"value\":\"disposable-result\"}")
-        XCTAssertEqual(effects().count, 1)
+        XCTAssertEqual(try effects().count, 1)
         let envelope = try XCTUnwrap(record.rcir?.signedReceipt)
         let receipt = try RCIRSignedReceipt(payload: Data(base64Encoded: envelope.payload)!,
             signature: Data(base64Encoded: envelope.signature)!, publicKey: Data(base64Encoded: envelope.publicKey)!)

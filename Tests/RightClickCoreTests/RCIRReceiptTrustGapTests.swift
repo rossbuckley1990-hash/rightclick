@@ -35,9 +35,8 @@ final class RCIRReceiptTrustGapTests: XCTestCase {
         for _ in 0..<400 where !FileManager.default.fileExists(atPath:path.path) { Thread.sleep(forTimeInterval:0.01) }
         return try String(contentsOf:path, encoding:.utf8)
     }
-    private func rows(_ name: String) -> [[String: Any]] {
-        let text = (try? String(contentsOf:directory.appendingPathComponent(name), encoding:.utf8)) ?? ""
-        return text.split(separator:"\n").compactMap { try? JSONSerialization.jsonObject(with:Data($0.utf8)) as? [String: Any] }
+    private func rows(_ name: String) throws -> [[String: Any]] {
+        try FixtureLineFraming.objects(at: directory.appendingPathComponent(name))
     }
     private func provision() throws -> Data {
         let file = directory.appendingPathComponent("signer.raw")
@@ -58,9 +57,9 @@ final class RCIRReceiptTrustGapTests: XCTestCase {
             Thread.sleep(forTimeInterval:0.02)
         }
         XCTAssertEqual(final.state,.succeeded); XCTAssertTrue(final.evidence.outcomeVerified)
-        XCTAssertEqual(rows("requests.jsonl").count,ordinal); XCTAssertEqual(rows("effects.jsonl").count,ordinal)
-        XCTAssertEqual(rows("observations.jsonl").count,ordinal)
-        XCTAssertEqual(rows("observations.jsonl").last?["invocation"] as? String,final.rcir?.taskID)
+        XCTAssertEqual(try rows("requests.jsonl").count,ordinal); XCTAssertEqual(try rows("effects.jsonl").count,ordinal)
+        XCTAssertEqual(try rows("observations.jsonl").count,ordinal)
+        XCTAssertEqual(try rows("observations.jsonl").last?["invocation"] as? String,final.rcir?.taskID)
         return final
     }
     private func signed(_ record: ExecutionRecord) throws -> RCIRSignedReceipt {
