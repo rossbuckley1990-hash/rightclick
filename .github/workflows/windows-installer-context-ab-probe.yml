@@ -1,5 +1,5 @@
 # Read-only native hypothesis test; no runtime build, provider effect or release.
-name: Windows installer context A-B-A probe
+name: Windows known host location isolation probe
 on:
   push:
     branches: ['codex/windows-installer-context-ab-probe-20261008']
@@ -35,10 +35,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -u .github/scripts/tests/test_windows_installer_context_probe.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Read-only installed query context A/B/A control
+      - name: Read-only installed query known-location isolation control
         timeout-minutes: 2
         run: |
-          python -u .github/scripts/windows_test_supervisor.py --prefix installer-context-safe/owned-probe --deadline-seconds 45 --progress -- python -u .github/scripts/windows_installer_context_probe.py --output installer-context-safe/installer-context.json
+          python -u .github/scripts/windows_test_supervisor.py --prefix installer-context-safe/owned-probe --deadline-seconds 90 --progress -- python -u .github/scripts/windows_installer_context_probe.py --output installer-context-safe/installer-context.json
           exit $LASTEXITCODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

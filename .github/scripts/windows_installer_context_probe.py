@@ -10,6 +10,9 @@ INPUTS = ['Package.swift', 'Package.resolved', 'LICENSE', 'Sources', 'Tests',
 ARGUMENTS = ['-latest', '-products', '*', '-requires',
              'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '-property', 'installationPath']
 CONTEXT_NAMES = ('ALLUSERSPROFILE', 'ProgramData', 'ProgramFiles', 'ProgramFiles(x86)')
+KNOWN_LOCATION_ROLES = {'all_user_application_data': 'ALLUSERSPROFILE',
+    'machine_application_data': 'ProgramData', 'native_program_files': 'ProgramFiles',
+    'x86_program_files': 'ProgramFiles(x86)'}
 MAX_OUTPUT = 32_768
 
 
@@ -64,6 +67,24 @@ def profiles(ambient, temporary):
     if sum(len(k) + len(v) + 2 for k, v in additional.items()) > 8192:
         raise ValueError('host_context_budget')
     return minimum, {**minimum, **additional}, presence
+
+
+def isolated_sequence(minimum, context):
+    if (set(minimum) != {'SystemRoot', 'TEMP', 'TMP'}
+            or set(context) - set(minimum) - set(CONTEXT_NAMES)):
+        raise ValueError('closed_known_location_context')
+    sequence = [('minimal_before', minimum)]
+    for role, name in KNOWN_LOCATION_ROLES.items():
+        addition = {name: context[name]} if name in context else {}
+        sequence.append(('known_location_' + role, {**minimum, **addition}))
+    return [*sequence, ('bounded_installer_context', context), ('minimal_after', minimum)]
+
+
+def valid_absolute_selection(sample):
+    flags = sample['validation']
+    return (sample['outcome'] == 'completed' and sample['exitCode'] == 0
+        and sample['outputDrainCompleted'] and not flags['empty'] and flags['isAbsolute']
+        and not any(flags[key] for key in ('containsQuote', 'containsEmbeddedLF', 'startsUTF8BOM')))
 
 
 def validation(data):
@@ -177,22 +198,23 @@ def main(output):
                       transport='PythonNativeSubprocessSameAbsoluteBinaryAndArguments',
                       productionFoundationInvocationRepaired=False)
         samples = []
-        for name, environment in [('minimal_before', minimum),
-                                  ('bounded_installer_context', context),
-                                  ('minimal_after', minimum)]:
+        for name, environment in isolated_sequence(minimum, context):
             measured = sample(executable, ARGUMENTS, environment)
             samples.append({'profile': name, **measured})
         report['samples'] = samples
         if digest(executable.read_bytes()) != before:
             raise ValueError('installed_query_binary_changed')
         report['installedQueryUnchanged'] = True
-        a, b, c = samples
+        a, b, c = samples[0], samples[-2], samples[-1]
         valid = lambda x: (x['outcome'] == 'completed' and x['exitCode'] == 0
                             and x['outputDrainCompleted'])
         report['minimalProfilesBothEmpty'] = valid(a) and valid(c) and a['validation']['empty'] and c['validation']['empty']
-        report['boundedContextReturnsAbsoluteSelection'] = (valid(b) and not b['validation']['empty']
-            and b['validation']['isAbsolute'] and not b['validation']['containsQuote']
-            and not b['validation']['containsEmbeddedLF'] and not b['validation']['startsUTF8BOM'])
+        report['boundedContextReturnsAbsoluteSelection'] = valid_absolute_selection(b)
+        report['singleKnownLocationResults'] = {
+            role: {'contextNamePresent': presence[name],
+                   'returnsAbsoluteSelection': valid_absolute_selection(samples[index + 1])}
+            for index, (role, name) in enumerate(KNOWN_LOCATION_ROLES.items())}
+        report['isolationMatrixMeasured'] = True
         report['status'] = ('ENVIRONMENT_CONTEXT_DIFFERENCE_OBSERVED' if report['minimalProfilesBothEmpty']
             and report['boundedContextReturnsAbsoluteSelection'] else 'NO_VALIDATED_CONTEXT_DIFFERENCE')
         report['scope'] = 'ReadOnlyDiagnosticNoProductionPromotionNoProviderGREEN'

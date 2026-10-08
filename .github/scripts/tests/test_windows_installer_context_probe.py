@@ -102,11 +102,34 @@ class ContextProbeTests(unittest.TestCase):
         self.assertEqual((result['outcome'],result['exitCode'],result['stdoutBytes']),('completed',0,5))
         self.assertNotIn('private-control-sentinel',json.dumps(result))
 
+    def test_single_known_location_profiles_do_not_add_other_context(self):
+        minimum={'SystemRoot':r'C:\Windows','TEMP':r'C:\Temp','TMP':r'C:\Temp'}
+        context={**minimum,**{name:r'C:\OwnedHostLocation' for name in p.CONTEXT_NAMES}}
+        sequence=p.isolated_sequence(minimum,context)
+        self.assertEqual(len(sequence),7)
+        for index,(role,name) in enumerate(p.KNOWN_LOCATION_ROLES.items()):
+            label,environment=sequence[index+1]
+            self.assertEqual(label,'known_location_'+role)
+            self.assertEqual(set(environment)-set(minimum),{name})
+            self.assertNotIn('private-control-sentinel',json.dumps(environment))
+        self.assertEqual(sequence[0][1],sequence[-1][1])
+        with self.assertRaises(ValueError):
+            p.isolated_sequence(minimum,{**context,'TOKEN':'private-control-sentinel'})
+
+    def test_incomplete_or_nonabsolute_single_selection_is_never_promoted(self):
+        valid={'outcome':'completed','exitCode':0,'outputDrainCompleted':True,
+               'validation':{'empty':False,'isAbsolute':True,'containsQuote':False,
+                             'containsEmbeddedLF':False,'startsUTF8BOM':False}}
+        self.assertTrue(p.valid_absolute_selection(valid))
+        for change in [{'outcome':'deadline'},{'exitCode':1},{'outputDrainCompleted':False}]:
+            self.assertFalse(p.valid_absolute_selection({**valid,**change}))
+        self.assertFalse(p.valid_absolute_selection({**valid,'validation':{**valid['validation'],'empty':True}}))
+
     def test_same_query_arguments_are_closed_and_workflow_owns_probe(self):
         self.assertEqual(p.ARGUMENTS,['-latest','-products','*','-requires',
             'Microsoft.VisualStudio.Component.VC.Tools.x86.x64','-property','installationPath'])
         workflow=(ROOT/'.github/workflows/windows-installer-context-ab-probe.yml').read_text()
-        self.assertIn('--deadline-seconds 45 --progress -- python -u .github/scripts/windows_installer_context_probe.py',workflow)
+        self.assertIn('--deadline-seconds 90 --progress -- python -u .github/scripts/windows_installer_context_probe.py',workflow)
         self.assertIn('installer-context-safe/installer-context.json',workflow)
         self.assertNotIn('installer-context-safe/**',workflow)
 
