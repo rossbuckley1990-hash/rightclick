@@ -1,0 +1,52 @@
+{
+  "baselineSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+  "finalSHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+  "sharedTextRows": 265,
+  "contextualDifferences": {},
+  "removedRows": [
+    {
+      "explanation": "macOS Service \u201cScript Editor/Get Result of AppleScript\u201d. NSPerformService reports whether the service was accepted. That Boolean is not a separate outcome check.",
+      "id": "service:com.apple.ScriptEditor2:runAsAppleScript",
+      "inputTypes": [
+        "NSStringPboardType"
+      ],
+      "invocation": "unsupported",
+      "provider": {
+        "bundleIdentifier": "com.apple.ScriptEditor2",
+        "name": "Script Editor"
+      },
+      "requiresConfirmation": true,
+      "safety": "code_execution",
+      "source": "service",
+      "supportLevel": "public_supported",
+      "title": "Script Editor/Get Result of AppleScript"
+    }
+  ],
+  "removedInvocationBoundary": "Invocation was unsupported in baseline despite supportLevel=public_supported for public Services metadata. Both baseline run entrypoints return unsupported before dispatch for this invocation mode. No Script Editor code execution was attempted.",
+  "baselineEngineSHA256": "b089e28adc1f1c85fa7b6033c6c43503618a3d37663d6151978cde991d0efdfb",
+  "legacyInputSchemasPreserved": {
+    "stdio": {
+      "context_runtime": [],
+      "context_inspect": [],
+      "context_actions": [],
+      "context_explain": [],
+      "context_run": [
+        "contractSHA256"
+      ],
+      "context_run_status": [],
+      "context_providers": []
+    },
+    "authenticated HTTP": {
+      "context_runtime": [],
+      "context_inspect": [],
+      "context_actions": [],
+      "context_explain": [],
+      "context_run": [
+        "contractSHA256"
+      ],
+      "context_run_status": [],
+      "context_providers": []
+    }
+  },
+  "scope": "Same-host retained actual installed0.2.2 nativeCLI text catalogue and old stdio/HTTP schemas versus fresh actual final23d92 directCore/CLI/MCP proof; no fresh baseline invocation or every-action execution claimed."
+}

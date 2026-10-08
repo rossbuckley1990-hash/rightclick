@@ -1,0 +1,114 @@
+{
+  "actualControls": [
+    {
+      "boundedReturn": true,
+      "descendantSpawnedMarkerObserved": false,
+      "deviceFileTypeCharacter": true,
+      "elapsedMilliseconds": 46.99999999979809,
+      "exactInputEcho": true,
+      "mode": "stdio",
+      "ownedDeviceCloseMilliseconds": 0,
+      "parentCompleted": true,
+      "parentExitCode": 0,
+      "rawChildBytesPersisted": false,
+      "stderrBytesWriteValidated": 20,
+      "stderrPresent": true,
+      "stdinPresent": true,
+      "stdoutBytes": 6,
+      "stdoutDrainCompleted": true
+    },
+    {
+      "boundedReturn": true,
+      "descendantSpawnedMarkerObserved": false,
+      "deviceFileTypeCharacter": true,
+      "elapsedMilliseconds": 47.000000000025466,
+      "exactInputEcho": true,
+      "mode": "large-stderr",
+      "ownedDeviceCloseMilliseconds": 0,
+      "parentCompleted": true,
+      "parentExitCode": 0,
+      "rawChildBytesPersisted": false,
+      "stderrBytesWriteValidated": 2621440,
+      "stderrPresent": true,
+      "stdinPresent": true,
+      "stdoutBytes": 6,
+      "stdoutDrainCompleted": true
+    },
+    {
+      "boundedReturn": true,
+      "descendantSpawnedMarkerObserved": true,
+      "deviceFileTypeCharacter": true,
+      "elapsedMilliseconds": 47.000000000025466,
+      "exactInputEcho": true,
+      "mode": "retained-descendant",
+      "ownedDeviceCloseMilliseconds": 0,
+      "parentCompleted": true,
+      "parentExitCode": 0,
+      "rawChildBytesPersisted": false,
+      "stderrBytesWriteValidated": 20,
+      "stderrPresent": true,
+      "stdinPresent": true,
+      "stdoutBytes": 7,
+      "stdoutDrainCompleted": true
+    },
+    {
+      "boundedReturn": true,
+      "descendantSpawnedMarkerObserved": true,
+      "deviceFileTypeCharacter": true,
+      "elapsedMilliseconds": 577.9999999999745,
+      "exactInputEcho": true,
+      "mode": "deadline-with-descendant",
+      "ownedDeviceCloseMilliseconds": 0,
+      "parentCompleted": false,
+      "parentExitCode": 15,
+      "rawChildBytesPersisted": false,
+      "stderrBytesWriteValidated": 20,
+      "stderrPresent": true,
+      "stdinPresent": true,
+      "stdoutBytes": 7,
+      "stdoutDrainCompleted": true
+    }
+  ],
+  "artifact": {
+    "digest": "sha256:52d3a8d1e5dd86cfd328383a80b14d5862086d3c1036d9c77bf46ae11dcb7814",
+    "expired": false,
+    "id": 11520670228,
+    "name": "windows-owned-null-control-931b2a6b135f3403470bf982128d8b18a4da593d",
+    "size_in_bytes": 3606
+  },
+  "binarySHA256": "a0b47f7818e64c8172aa2118ae47c741ac9d6bb0ee13365c4fc105aa234af27f",
+  "conclusion": "success",
+  "fullProductTestsRun": false,
+  "headSHA": "931b2a6b135f3403470bf982128d8b18a4da593d",
+  "jobID": 113083788112,
+  "originalSwiftPMTimeoutCause": "UNKNOWN",
+  "physicalCheckoutSHA": "931b2a6b135f3403470bf982128d8b18a4da593d",
+  "productSourceChanged": false,
+  "rejectedPipeCleanupStillRED": true,
+  "remainingRED": [
+    "Reviewed explicit-owned-valid-device BoundedCapabilityProcess production implementation",
+    "Full revised native Windows tests and real provider acceptance",
+    "Final combined source package and exact-head platform gates",
+    "Public release/tag/bottle/formula writes held"
+  ],
+  "repository": "rossbuckley1990-hash/rightclick",
+  "runAttempt": 1,
+  "runID": 37707049705,
+  "runURL": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37707049705",
+  "sourcePins": {
+    ".github/scripts/windows_owned_null_probe.swift": {
+      "bytes": 6725,
+      "sha256": "74cc69b79acaea687543a9f777e760810cd558c8baaf3c3006224da6b62bfe44"
+    },
+    ".github/scripts/windows_test_supervisor.py": {
+      "bytes": 16233,
+      "sha256": "f6201b803ad380753cb4d441d558d6c7a123df542f0b3e3f00866c5a0d1a9d36"
+    },
+    ".github/workflows/windows-owned-null-probe.yml": {
+      "bytes": 2334,
+      "sha256": "e4cb7453e052c330ff42cfca2387a6aa8972f776c4291858d3e9e634f5b22e20"
+    }
+  },
+  "supervisorElapsedSeconds": 0.828,
+  "workflowPath": ".github/workflows/windows-owned-null-probe.yml"
+}

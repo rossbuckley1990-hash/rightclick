@@ -1,0 +1,103 @@
+{
+  "actualRequests": 10,
+  "actualWrites": 8,
+  "artifacts": [
+    {
+      "SHA256": "4ebfc7dd547355df5b11b6ec897786391c1c6d31951ed9da16d45e282211aaf9",
+      "bytes": 13930,
+      "path": "baseline-session.json"
+    },
+    {
+      "SHA256": "15e9db29d8db08ebf29dcb5b69d38e0da06fbefef28a48029453775302df0724",
+      "bytes": 60,
+      "path": "baseline.stderr.log"
+    },
+    {
+      "SHA256": "5c645e2c4a5edcf1c9505a802704dc08f807b5d16cd6c4a0f07844dcf73ddec7",
+      "bytes": 7828,
+      "path": "candidate-cleared-bearer-requirement-receipt.json"
+    },
+    {
+      "SHA256": "a21782ff062ce831073c4abc4208af902062eaa00c26ca0386e8b47bc23ffbe5",
+      "bytes": 7724,
+      "path": "candidate-http-unavailable-receipt.json"
+    },
+    {
+      "SHA256": "f3ef9a7784bd26ff8c34855568d6b375f922d12954a84797f2b0657e5e9006a8",
+      "bytes": 7724,
+      "path": "candidate-malformed-response-receipt.json"
+    },
+    {
+      "SHA256": "b4820e4e4aa33a7499eb023fa72b30ef38c7f3890f48af5c19809b61e7331956",
+      "bytes": 95455,
+      "path": "candidate-session.json"
+    },
+    {
+      "SHA256": "325669da29d6c53aa0a3464a3d53bb1d125611c888c01794db32395a633326d4",
+      "bytes": 7672,
+      "path": "candidate-valid-json-receipt.json"
+    },
+    {
+      "SHA256": "a4a5f7f746679388de84c9f72a93453e3b4c314a70be1b220966781b68dba767",
+      "bytes": 7728,
+      "path": "candidate-wrong-response-type-receipt.json"
+    },
+    {
+      "SHA256": "d8f189ceb88f7eb1b058b7f231589b08708435e2b9e284a9029f6e03f3d63f44",
+      "bytes": 60,
+      "path": "candidate.stderr.log"
+    },
+    {
+      "SHA256": "988796fa4353f06326299c38cd29475b30158a7961b5f8f270de85c208ab736f",
+      "bytes": 4737,
+      "decompressedBytes": 13811,
+      "decompressedSHA256": "3d5135137cf92bd603432b93b52212204e458cdd719dbde5645a62a653c5b577",
+      "path": "executed-probe.py.gz"
+    },
+    {
+      "SHA256": "d4c99100fed185af6a9c38ef039a3834c7c71b2c8ed195f3dbfbf79e77829b4a",
+      "bytes": 3161,
+      "path": "independent-verification.log"
+    },
+    {
+      "SHA256": "8395b650b0898b44825b4d5f99ee3ba407c484861ae13d3a12bbeabd43261429",
+      "bytes": 335,
+      "decompressedBytes": 1839,
+      "decompressedSHA256": "094d3a48384d7e391cfbe1abb2db9bfd8adb25724adb16a8f0c6531d79321f9a",
+      "path": "public-comparison.log.gz"
+    },
+    {
+      "SHA256": "1348ed2bac5b671cd11265b2b9c6e8910024174b32d10c01fc35e26f4afef649",
+      "bytes": 119209,
+      "path": "summary.json"
+    },
+    {
+      "SHA256": "a3d5cf9d1bceb8161b1c65ffa493d559611b46a5e472547cb21c4841d4d6a9e5",
+      "bytes": 32,
+      "path": "trusted-public-key.raw"
+    }
+  ],
+  "baseline": {
+    "SHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "version": "0.2.2"
+  },
+  "candidate": {
+    "SHA256": "3919e7f372cbc0b8c155d04d624d9700ecbe7ac6b895ee6ba09587a56daad520",
+    "version": "0.2.3"
+  },
+  "comparisonPairs": 9,
+  "executedProbeSHA256": "3d5135137cf92bd603432b93b52212204e458cdd719dbde5645a62a653c5b577",
+  "failureBoundary": "Malformed/wrong-type responses follow actual writes; both runtimes report failed with no output. HTTP503 has one request/no fixture write; both report rejected. Candidate signed semantic outcome remains unverified, not external no-effect proof.",
+  "independentlyPinnedAndCorrelatedReceipts": 5,
+  "inheritedGaps": [
+    "GET query capability absent in both catalogues; no invocation fabricated.",
+    "Missing bearer unavailable in both; actual provider credential-backed TLS not proved.",
+    "Authenticated subject attachment and issuer downscope remain RED and on hold."
+  ],
+  "privateMaterial": "Only disposable loopback HTTP access bearer and signing private key/config in temporary env/files; never retained. Public pin and disposable request/response records retained. No user data or provider tokens.",
+  "probeExitCode": 0,
+  "productionSourceSHA": "6642bf1d2d2b29bcd2c2327c0ec159511a9ac8c4",
+  "result": "All nine prior response/discovery states and output-presence behaviors preserved; exact valid bodies/results/status preserved. Candidate signatures/RCIR/pins are added features, not old operation losses.",
+  "retainedAtUTC": "2026-10-07T21:02:52.871800+00:00",
+  "version": 1
+}

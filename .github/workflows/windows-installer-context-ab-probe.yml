@@ -1,0 +1,51 @@
+# Read-only native hypothesis test; no runtime build, provider effect or release.
+name: Windows known host location isolation probe
+on:
+  push:
+    branches: ['codex/windows-installer-context-ab-probe-20261008']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: windows-installer-context-read-only-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      # Match the measured runner's provisioning, without a source/runtime build.
+      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+        with:
+          swift-version: swift-6.2-release
+          swift-build: 6.2-RELEASE
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Native ownership, exact selection and probe negative controls
+        timeout-minutes: 3
+        run: |
+          python -u .github/scripts/tests/test_windows_test_supervisor.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -u .github/scripts/tests/test_windows_focused_fixture_diagnostic.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -u .github/scripts/tests/test_windows_installer_context_probe.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Read-only installed query known-location isolation control
+        timeout-minutes: 2
+        run: |
+          python -u .github/scripts/windows_test_supervisor.py --prefix installer-context-safe/owned-probe --deadline-seconds 90 --progress -- python -u .github/scripts/windows_installer_context_probe.py --output installer-context-safe/installer-context.json
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: windows-installer-context-read-only-${{ github.sha }}
+          path: |
+            installer-context-safe/installer-context.json
+            installer-context-safe/owned-probe-phase.json
+          if-no-files-found: error
+          retention-days: 14

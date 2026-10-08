@@ -1,0 +1,39 @@
+warning: /Users/ross/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features.
+warning: /Users/ross/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.
+warning: 'package': failed storing manifest for 'package' in cache: attempt to write a readonly database
+[0/1] Planning build
+Building for debugging...
+[0/7] /private/tmp/rightclick-line-framing-controls-20261008/build/arm64-apple-macosx/debug/FramingPackageTests.derived/runner.swift
+[1/7] Write sources
+[4/7] Write swift-version--58304C5D6DBC2206.txt
+[6/9] Compiling FramingPackageTests runner.swift
+[7/9] Emitting module FramingPackageTests
+[7/9] Write Objects.LinkFileList
+[8/9] Linking FramingPackageTests
+Build complete! (1.27s)
+Test Suite 'All tests' started at 2026-10-08 00:58:09.075.
+Test Suite 'FramingPackageTests.xctest' started at 2026-10-08 00:58:09.076.
+Test Suite 'FixtureLineFramingTests' started at 2026-10-08 00:58:09.076.
+Test Case '-[FramingTests.FixtureLineFramingTests testBareOrRepeatedCarriageReturnsAreRejected]' started.
+Test Case '-[FramingTests.FixtureLineFramingTests testBareOrRepeatedCarriageReturnsAreRejected]' passed (0.002 seconds).
+Test Case '-[FramingTests.FixtureLineFramingTests testEmptyAndUnterminatedFinalRecordAreDistinctFromBlankRecords]' started.
+Test Case '-[FramingTests.FixtureLineFramingTests testEmptyAndUnterminatedFinalRecordAreDistinctFromBlankRecords]' passed (0.000 seconds).
+Test Case '-[FramingTests.FixtureLineFramingTests testLFCRLFAndMixedRecordsPreserveEveryObject]' started.
+Test Case '-[FramingTests.FixtureLineFramingTests testLFCRLFAndMixedRecordsPreserveEveryObject]' passed (0.000 seconds).
+Test Case '-[FramingTests.FixtureLineFramingTests testMalformedJSONAndNonObjectRecordsFailWithoutPrivateBytes]' started.
+Test Case '-[FramingTests.FixtureLineFramingTests testMalformedJSONAndNonObjectRecordsFailWithoutPrivateBytes]' passed (0.001 seconds).
+Test Case '-[FramingTests.FixtureLineFramingTests testMissingJournalIsEmptyButMalformedExistingJournalFails]' started.
+Test Case '-[FramingTests.FixtureLineFramingTests testMissingJournalIsEmptyButMalformedExistingJournalFails]' passed (0.002 seconds).
+Test Case '-[FramingTests.FixtureLineFramingTests testUnicodeLineCharactersAndEscapedCRLFArePayloadNotFraming]' started.
+Test Case '-[FramingTests.FixtureLineFramingTests testUnicodeLineCharactersAndEscapedCRLFArePayloadNotFraming]' passed (0.000 seconds).
+Test Suite 'FixtureLineFramingTests' passed at 2026-10-08 00:58:09.081.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.005 (0.005) seconds
+Test Suite 'FramingPackageTests.xctest' passed at 2026-10-08 00:58:09.081.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.005 (0.005) seconds
+Test Suite 'All tests' passed at 2026-10-08 00:58:09.081.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.005 (0.006) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

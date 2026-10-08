@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "source": "6ea1d3096eb7bba55417d46e7820796bef24daff",
+  "run": 37663195354,
+  "artifact": 11501373293,
+  "artifactDigest": "f7124d186e238573a563641b6169d1e35a151a79fea72d297e8b875d52ef48b2",
+  "scope": "Actual native C backend and standalone Foundation fixture diagnostics; not native full runtime acceptance",
+  "files": [
+    {
+      "file": "source.txt",
+      "bytes": 42,
+      "sha256": "cddac40317645bdfa50163c4a13a91bb6ac4f8f2ca6ea694832b3dfd6ad62842"
+    },
+    {
+      "file": "fixture-commands.jsonl",
+      "bytes": 2377,
+      "sha256": "acb96345219c24cb5066b14c5ed4b6f353be6dae2695dfd8669acaf90e0a90ae"
+    },
+    {
+      "file": "sha256.txt",
+      "bytes": 349,
+      "sha256": "571c604d80ae3d6209b9912f96b6b7cb3140d3f672621e05811aa87984d9d7af"
+    },
+    {
+      "file": "boundary.jsonl",
+      "bytes": 2178,
+      "sha256": "6dc84f636eafc3450a6d69d0e8e22aa7e3a238f870624e2949a08a0fce39c10d"
+    },
+    {
+      "file": "fixture-sha256.txt",
+      "bytes": 366,
+      "sha256": "9ce1b9d386c8de1e59200f70fab8fa6d13c44c28351053d32308d1954d1e0fb0"
+    }
+  ],
+  "observations": {
+    "nativePrivateReadExact15Bytes": "PASS",
+    "createNewAndParentJunctionZeroEntryRefusal": "PASS",
+    "originalFoundationMklink": "RED: Invalid switch - Users",
+    "nativeSeparatorMklink": "PASS: exact synthetic marker and actual junction removal",
+    "originalNullDACLFixture": "RED: Microsoft.PowerShell.Security module could not be loaded",
+    "nullDACLBoundary": "NOT_REACHED"
+  }
+}

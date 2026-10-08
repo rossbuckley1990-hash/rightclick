@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 import UniformTypeIdentifiers
 
@@ -161,3 +162,5 @@ enum RuleApplicability: String {
     case doesNotApply
     case unknown
 }
+
+#endif

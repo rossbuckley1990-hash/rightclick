@@ -1,0 +1,54 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: 'rightclick-universal-async': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/15] Write sources
+[4/15] Write swift-version--58304C5D6DBC2206.txt
+[6/12] Compiling RightClickCore RCIRDeferredExecution.swift
+[7/12] Compiling RightClickCore RCIRExecutionHost.swift
+[8/12] Emitting module RightClickCore
+[9/18] Compiling RightClickCore ARDRegistrySource.swift
+[10/18] Compiling RightClickCore A2AReflector.swift
+[11/18] Compiling RightClickCore BonjourOpenAPISource.swift
+[12/18] Compiling RightClickCore CapabilityArtifactResolver.swift
+[13/18] Compiling RightClickCore CapabilityEngine.swift
+[14/18] Compiling RightClickCore OpenAPIReflector.swift
+[15/20] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+[16/20] Compiling RightClickCore ConfiguredOpenAPISource.swift
+[16/26] Write Objects.LinkFileList
+[18/26] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[19/26] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+[20/26] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+[21/26] Emitting module RightClickCoreTests
+[22/26] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+[22/26] Linking rightclick
+[23/26] Applying rightclick
+[24/26] Write Objects.LinkFileList
+[25/26] Linking rightclick-mcpPackageTests
+Build complete! (12.42s)
+Test Suite 'Selected tests' started at 2026-10-07 14:14:04.009.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 14:14:04.010.
+Test Suite 'RCIRDeferredCapacityTests' started at 2026-10-07 14:14:04.010.
+Test Case '-[RightClickCoreTests.RCIRDeferredCapacityTests testExpiredPendingTasksAreReceiptedAndReapedBeforeNewAdmission]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/RCIRDeferredCapacityTests.swift:43: error: -[RightClickCoreTests.RCIRDeferredCapacityTests testExpiredPendingTasksAreReceiptedAndReapedBeforeNewAdmission] : XCTAssertEqual failed: ("rejected") is not equal to ("started")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/RCIRDeferredCapacityTests.swift:44: error: -[RightClickCoreTests.RCIRDeferredCapacityTests testExpiredPendingTasksAreReceiptedAndReapedBeforeNewAdmission] : XCTUnwrap failed: expected non-nil value of type "ExecutionRecord"
+Test Case '-[RightClickCoreTests.RCIRDeferredCapacityTests testExpiredPendingTasksAreReceiptedAndReapedBeforeNewAdmission]' failed (0.340 seconds).
+Test Case '-[RightClickCoreTests.RCIRDeferredCapacityTests testInFlightReservationsCannotOverrunTheBoundedSessionCapacity]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/RCIRDeferredCapacityTests.swift:32: error: -[RightClickCoreTests.RCIRDeferredCapacityTests testInFlightReservationsCannotOverrunTheBoundedSessionCapacity] : XCTAssertEqual failed: ("256") is not equal to ("255")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/RCIRDeferredCapacityTests.swift:33: error: -[RightClickCoreTests.RCIRDeferredCapacityTests testInFlightReservationsCannotOverrunTheBoundedSessionCapacity] : XCTAssertEqual failed: ("0") is not equal to ("1")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/RCIRDeferredCapacityTests.swift:34: error: -[RightClickCoreTests.RCIRDeferredCapacityTests testInFlightReservationsCannotOverrunTheBoundedSessionCapacity] : XCTAssertEqual failed: ("257") is not equal to ("256")
+Test Case '-[RightClickCoreTests.RCIRDeferredCapacityTests testInFlightReservationsCannotOverrunTheBoundedSessionCapacity]' failed (0.116 seconds).
+Test Suite 'RCIRDeferredCapacityTests' failed at 2026-10-07 14:14:04.466.
+	 Executed 2 tests, with 5 failures (0 unexpected) in 0.456 (0.456) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 14:14:04.466.
+	 Executed 2 tests, with 5 failures (0 unexpected) in 0.456 (0.456) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 14:14:04.466.
+	 Executed 2 tests, with 5 failures (0 unexpected) in 0.456 (0.457) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

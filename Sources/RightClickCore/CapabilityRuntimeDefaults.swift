@@ -11,7 +11,12 @@ public enum CapabilityReflectorSourceDefaults {
         var sources:
             [any CapabilityReflectorSource] = [
                 ConfiguredOpenAPISource(),
-
+            ]
+#if os(Linux)
+        sources.append(DBusSessionSource())
+#endif
+#if os(macOS)
+        sources += [
                 BonjourOpenAPISource(
                     startBrowsing:
                         startBrowsing
@@ -21,6 +26,7 @@ public enum CapabilityReflectorSourceDefaults {
                         startBrowsing
                 ),
             ]
+#endif
 
         if let configuredArtifacts =
             ConfiguredCapabilityArtifactSource
@@ -30,6 +36,8 @@ public enum CapabilityReflectorSourceDefaults {
                 configuredArtifacts
             )
         }
+
+        if let a2a = ConfiguredA2ASource.fromEnvironment() { sources.append(a2a) }
 
 #if canImport(RightClickARD)
         if let ard =
@@ -42,7 +50,7 @@ public enum CapabilityReflectorSourceDefaults {
         }
 #endif
 
-#if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
+#if os(macOS) && canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
         sources.append(
             BonjourGRPCSource(
                 startBrowsing:

@@ -1,10 +1,15 @@
 # Universal runtime acceptance — work in progress
 
-The acceptance contract is the full eleven-substrate north star: a fresh agent
+The seven-operation compatibility acceptance contract remains: a fresh agent
 receives exactly `context_runtime`, `context_providers`, `context_inspect`,
 `context_actions`, `context_explain`, `context_run`, and `context_run_status`.
 Provider-specific top-level tools added must remain zero. Infrastructure readiness,
 transport acceptance, fixture tests and individual PRs do not complete this gate.
+The amended Universal Agency Runtime goal additionally requires safe authority
+attenuation, events, legal task controls and a real delegated-agent hierarchy.
+An extended versioned profile may be justified by its own RED→GREEN evidence;
+it must preserve this Core Profile. The amended gate/dependency inventory is
+in [AGENCY-RUNTIME-GATES.md](AGENCY-RUNTIME-GATES.md).
 
 ## Established baseline
 
@@ -48,6 +53,51 @@ restricted-agent run supplies the required discovery, normalization, explanation
 authority, policy, execution, applicable async/stream lifecycle, independent
 verification and receipt evidence. Historical proofs and these incremental tests
 are supporting evidence, not replacement acceptance runs.
+
+## Current main and candidate are separate evidence boundaries
+
+The audit of `main` is accurate: Mac application capabilities, REST/OpenAPI,
+GraphQL, gRPC and RIGHTCLICK federation have generic paths. Windows, a full Linux
+runtime, A2A, Kafka, Kubernetes and WASM are not direct substrate reflectors in
+audited main `0ed7d3a61ba63a36474085ec2b6f141be1b9ee3d`. Main was refreshed and
+integrated again at `7622c133d6db92424f0b959880fa09d7655daad2`; the substrate
+inventory distinction still holds. PR #45 is merged, so its discovery lifecycle
+primitive is now in main rather than solely in this candidate.
+
+The implementation candidate adds A2A task delegation, acquired MCP/component
+interfaces, Kafka records and Kubernetes ConfigMaps through common contract,
+admission, process, lifecycle and observation boundaries. Provider layers supply
+actual cards, interfaces, topic/resource declarations and wire transport. They do
+not add provider-specific AI operations or engine dispatch branches. Individual
+candidate evidence is documented in `UNIVERSAL-DESCRIPTOR-EVIDENCE.md`,
+`KAFKA-OBSERVATION-EVIDENCE.md` and `UNIVERSAL-ASYNC-PRESSURE.md`. These documents
+state the actual boundary and remaining REDs.
+
+Windows and Linux host effects pressure-test the existing OpenAPI path and a new
+shared authenticated JSON observation contract. An actual TLS Windows declaration
+exposed multiple separate REDs: a required bounded ASCII challenge pattern,
+an explicitly acknowledgement-only success response, and inherited root-level
+HTTP bearer security. Each caused omission at a different compiler boundary.
+Fixing the bounded constraint alone did not make the actual operation visible.
+The
+unchanged live declaration, native readiness and missing capability are retained
+in `evidence/universal-execution-20261007/windows-declared-pattern-red/`.
+The provider declaration must remain unchanged while reusable bounded constraint
+support, a truthful no-output result boundary and inherited bearer resolution
+are implemented and tested. The native Windows runtime and final acceptance
+remain separate REDs; Python host readiness cannot satisfy them.
+
+The strict fresh-agent catalogue is also an explicit gate. A successful MCP
+`tools/list` with seven entries does not establish that the AI has only those
+tools: engineering probes found additional client built-ins. No final restricted
+AI success is claimed until its actual model-visible catalogue contains precisely
+the canonical seven and the same live session completes all eleven substrates.
+The client isolation pressure test has now captured a real outgoing catalogue
+with exactly seven operations (20→14→8→7); a separate fresh AI used the same
+isolation settings and performed actual discovery. The catalogue capture used
+a local inference fixture, while the actual discovery used native authentication
+and the official model provider. This proves the client boundary and real
+discovery, not full G13/G17 or direct interception of the production AI request.
 
 ## DISCOVERY-LIFECYCLE-001: RED → GREEN
 

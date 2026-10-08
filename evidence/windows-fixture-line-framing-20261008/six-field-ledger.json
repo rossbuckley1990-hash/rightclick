@@ -1,0 +1,55 @@
+{
+  "changedFiles": [
+    "Tests/RightClickCoreTests/A2ARealLifecycleTests.swift",
+    "Tests/RightClickCoreTests/FixtureLineFraming.swift",
+    "Tests/RightClickCoreTests/FixtureLineFramingTests.swift",
+    "Tests/RightClickCoreTests/OpenAPICredentialEchoTests.swift",
+    "Tests/RightClickCoreTests/RCIRAuthorityDispatchTests.swift",
+    "Tests/RightClickCoreTests/RCIRHTTPJSONCausalityTests.swift",
+    "Tests/RightClickCoreTests/RCIRHTTPJSONObservationTests.swift",
+    "Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift",
+    "Tests/RightClickCoreTests/RCIRProductionReceiptTrustTests.swift",
+    "Tests/RightClickCoreTests/RCIRReceiptTrustGapTests.swift",
+    "Tests/RightClickCoreTests/RCIRSigningLifecycleTests.swift"
+  ],
+  "existingAdopterTestNamesRetained": 88,
+  "genericRuntimeDeficiency": "No production runtime framing defect demonstrated by this failure. The generic regression/evidence fixture reader splits Swift Characters, combines CRLF-separated records, and force-tries or silently drops JSON decoding",
+  "makesOtherSubstrateEasier": "The same reader is reused for A2A delegated task/effect/observer journals, HTTP/OpenAPI effects, signed receipt lifecycle and authority/trust controls; no provider-specific AI operation is introduced",
+  "newMeaningfulTestNames": [
+    "testLFCRLFAndMixedRecordsPreserveEveryObject",
+    "testEmptyAndUnterminatedFinalRecordAreDistinctFromBlankRecords",
+    "testBareOrRepeatedCarriageReturnsAreRejected",
+    "testMalformedJSONAndNonObjectRecordsFailWithoutPrivateBytes",
+    "testUnicodeLineCharactersAndEscapedCRLFArePayloadNotFraming",
+    "testMissingJournalIsEmptyButMalformedExistingJournalFails"
+  ],
+  "parentCommit": "2992218e6d0361d033f151e50755f4e9a87bbb7d",
+  "productReleaseOrAllElevenSubstrateAcceptance": "NOT_DEMONSTRATED",
+  "repairCommit": "79aeccb62a8845fe4ded608520adfb54612a16ad",
+  "reusablePrimitive": "Test-only FixtureLineFraming: byte LF/CRLF framing, strict JSON object decoding, stable data-free errors, genuine absent-journal handling, propagated read/parse failures",
+  "runtimeSourcesChanged": false,
+  "substrateExposingFailure": "Actual native Windows hosted CI executing the full discovered XCTest executable; Python journals write CRLF",
+  "testEvidenceTurningRedGreen": {
+    "actualNativeRED": {
+      "diagnosticHead": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+      "fatalCase": "RCIRHTTPJSONCausalityTests.testObserverCannotReflectProtectedCredentialIntoMetadataOrReceipt",
+      "fatalLine": 93,
+      "jobID": 113070045244,
+      "naturalNativeExitCode": 3221225501,
+      "rawPrivateOutputSHA256": "90448d64ea2cda2c5295c93427d1abf9bc5ec43daa05154b1acf93cb7bcb4f67",
+      "runID": 37702810868,
+      "sourceHead": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+      "sourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8"
+    },
+    "completeIntegratedAdopterSuites": "PENDING",
+    "localByteReproduction": "red-green.json",
+    "localMeaningfulControls": {
+      "failures": 0,
+      "log": "local-framing-tests.log",
+      "skipped": 0,
+      "tests": 6
+    },
+    "nativeWindowsGreen": "NOT_YET_DEMONSTRATED"
+  },
+  "thinnestProviderSpecificLayer": "None. Existing provider fixture journals retain their native bytes and the shared test/evidence reader handles them"
+}

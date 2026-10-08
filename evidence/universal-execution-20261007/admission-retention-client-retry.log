@@ -1,0 +1,230 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: 'rightclick-universal': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/16] Write sources
+[4/16] Write swift-version--58304C5D6DBC2206.txt
+[6/13] Compiling RightClickCore KafkaCapabilityArtifactResolver.swift
+[7/14] Emitting module RightClickCore
+[8/14] Compiling RightClickCore CapabilityArtifactResolver.swift
+[9/14] Compiling RightClickCore RCIRExecutionHost.swift
+[10/29] Compiling RightClickCore RCIRUnaryInvocation.swift
+[11/29] Compiling RightClickCore SharingCatalog.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickCore/SharingCatalog.swift:25:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 23 |         let items = pasteboardItems(for: item)
+ 24 |         guard !items.isEmpty else { return [] }
+ 25 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 26 |         return services.compactMap { service in
+ 27 |             guard service.canPerform(withItems: items) else { return nil }
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickCore/SharingCatalog.swift:36:41: warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 34 |     static func launch(executionId: String, capabilityID: String, item: ContentItem) {
+ 35 |         let items = pasteboardItems(for: item)
+ 36 |         let services = NSSharingService.sharingServices(forItems: items)
+    |                                         `- warning: 'sharingServices(forItems:)' was deprecated in macOS 13.0: Use -[NSSharingServicePicker standardShareMenuItem] instead. [#DeprecatedDeclaration]
+ 37 |         ExecutionLog.write("\(executionId) discovered services: \(services.map(\.title).joined(separator: ", "))")
+ 38 |         guard pthread_main_np() != 0 else {
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[12/29] Compiling RightClickCore CapabilityExperience.swift
+[13/29] Compiling RightClickCore CapabilityInterface.swift
+[14/29] Compiling RightClickCore ServiceOutcome.swift
+[15/29] Compiling RightClickCore CapabilityReflector.swift
+[16/29] Compiling RightClickCore GRPCReflector.swift
+[17/29] Compiling RightClickCore RCIRDeferredExecution.swift
+[18/29] Compiling RightClickCore ServiceCatalog.swift
+[19/29] Compiling RightClickCore Capability.swift
+[20/29] Compiling RightClickCore CapabilityEngine.swift
+[21/29] Compiling RightClickCore A2AReflector.swift
+[22/29] Compiling RightClickCore ARDRegistrySource.swift
+[23/29] Compiling RightClickCore GraphQLReflector.swift
+[24/29] Compiling RightClickCore OpenAPIReflector.swift
+[25/93] Compiling RightClickMCP Federation.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickMCP/Federation.swift:962:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 960 |                     .data(
+ 961 |                         for:
+ 962 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     )
+ 964 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[26/93] Compiling RightClickMCP ModernMCPStdioTransport.swift
+[27/93] Emitting module RightClickMCP
+[28/93] Compiling RightClickMCP Server.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickMCP/Server.swift:295:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+293 |                 transport: transport
+294 |             )
+295 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+296 |         } catch {
+297 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickMCP/Server.swift:297:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+295 |             return .init(content: [.text(text)], isError: false)
+296 |         } catch {
+297 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+298 |         }
+299 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[29/93] Compiling RightClickMCP HTTPListener.swift
+[30/115] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+[31/115] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+[32/115] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+[33/115] Compiling RightClickCoreTests OpenAPIAuthorityManagementTests.swift
+[34/115] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+[35/115] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+[36/121] Compiling RightClickCLI LocalOnboarding.swift
+[37/121] Compiling RightClickCLI NativeRegistrationBackend.swift
+[38/121] Compiling RightClickCLI ChatGPTOnboardingTransaction.swift
+[39/121] Compiling RightClickCLI ClaudeClientAdapter.swift
+[40/121] Compiling RightClickCLI ChatGPTLiveAttestation.swift
+[41/121] Compiling RightClickCLI ChatGPTOnboarding.swift
+[42/121] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[43/121] Emitting module RightClickMCPTests
+[44/121] Compiling RightClickMCPTests FederationTests.swift
+[45/121] Emitting module RightClickCoreTests
+[46/121] Compiling RightClickCLI ChatGPTBridge.swift
+[47/121] Compiling RightClickCLI ChatGPTBridgeInstaller.swift
+[48/121] Compiling RightClickCLI ProviderConfigurationCLI.swift
+[49/121] Compiling RightClickCLI Setup.swift
+[50/121] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[51/121] Compiling RightClickCLI BridgeRuntime.swift
+[52/121] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+[53/121] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+[54/121] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+[55/121] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+[56/121] Compiling RightClickCoreTests MOAT004G5ExternalBearerAuthorityTests.swift
+[57/121] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+[58/121] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+[59/121] Compiling RightClickCoreTests ARDAcquisitionGateTests.swift
+[60/121] Compiling RightClickCoreTests AcquisitionTests.swift
+[61/121] Compiling RightClickCoreTests BonjourGRPCSourceTests.swift
+[62/121] Compiling RightClickCoreTests BonjourOpenAPISourceTests.swift
+[63/121] Compiling RightClickCoreTests BonjourRealLifecycleAcceptanceTests.swift
+[64/121] Compiling RightClickCoreTests CapabilityABIAdapterTests.swift
+[65/121] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+[66/121] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+[67/121] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+[68/121] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[69/121] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+[70/121] Compiling RightClickCoreTests RCIRTests.swift
+[71/121] Compiling RightClickCLI OnboardingEngine.swift
+[72/121] Compiling RightClickCLI OpenAIPluginSetup.swift
+[73/121] Compiling RightClickCLI SetupAllTransaction.swift
+[74/121] Compiling RightClickCLI SetupState.swift
+[85/121] Emitting module RightClickCLI
+[88/121] Compiling RightClickCLI ClientRegistry.swift
+[89/121] Compiling RightClickCLI CodexClientAdapter.swift
+[90/123] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+[91/123] Compiling RightClickCoreTests ServiceContextTests.swift
+[92/123] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[93/123] Compiling RightClickCoreTests SharingExecutionTests.swift
+[94/123] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+[95/123] Compiling RightClickCoreTests VerificationIntegrationTests.swift
+[96/123] Compiling RightClickCLI main.swift
+[97/123] Compiling RightClickCoreTests CapabilityABITests.swift
+[98/123] Compiling RightClickCoreTests CapabilityAcquisitionLifecycleTests.swift
+[99/123] Compiling RightClickCoreTests CapabilityArtifactResolverTests.swift
+[100/123] Compiling RightClickCoreTests CapabilityExperienceLedgerTests.swift
+[101/123] Compiling RightClickCoreTests CapabilityExperienceTests.swift
+[102/123] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[109/123] Compiling RightClickCLI StableEntrypoint.swift
+[110/123] Compiling RightClickCoreTests ExecutionRetentionTests.swift
+[111/123] Compiling RightClickCoreTests GRPCRealProviderAcceptanceTests.swift
+[112/123] Compiling RightClickCoreTests GRPCReflectionTransportTests.swift
+[113/123] Compiling RightClickCoreTests GRPCReflectorTests.swift
+[114/123] Compiling RightClickCoreTests GraphQLReflectorTests.swift
+[115/123] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+[116/123] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+[118/123] Write Objects.LinkFileList
+[119/123] Linking rightclick
+[120/123] Applying rightclick
+[122/143] Emitting module RightClickCLITests
+[123/145] Compiling RightClickCLITests ClaudeConfigDirTruthTests.swift
+[124/145] Compiling RightClickCLITests ClaudeOnboardingRedTests.swift
+[125/145] Compiling RightClickCLITests SetupTests.swift
+[126/145] Compiling RightClickCLITests StableEntrypointTests.swift
+[127/145] Compiling RightClickCLITests AuthorityConfigurationCLITests.swift
+[128/145] Compiling RightClickCLITests BridgeRuntimeTests.swift
+[129/145] Compiling RightClickCLITests ChatGPTBridgeInstallerTests.swift
+[130/145] Compiling RightClickCLITests StableProfileIntegrityTests.swift
+[131/145] Compiling RightClickCLITests StableUpgradeReconciliationTests.swift
+[132/145] Compiling RightClickCLITests SetupAllTransactionRedTests.swift
+[133/145] Compiling RightClickCLITests SetupStateTests.swift
+[134/145] Compiling RightClickCLITests OnboardingEngineTests.swift
+[135/145] Compiling RightClickCLITests ProviderConfigurationCLITests.swift
+[136/145] Compiling RightClickCLITests ClientRegistryRedTests.swift
+[137/145] Compiling RightClickCLITests CodexOnboardingRedTests.swift
+[138/145] Compiling RightClickCLITests ChatGPTBridgeTests.swift
+[139/145] Compiling RightClickCLITests ChatGPTLiveAttestationTests.swift
+[140/145] Compiling RightClickCLITests ChatGPTOnboardingTests.swift
+[141/145] Compiling RightClickCLITests ChatGPTOnboardingTransactionTests.swift
+[142/145] Compiling RightClickCLITests LocalOnboardingTests.swift
+[143/145] Compiling RightClickCLITests NativeMutationLeaseRedTests.swift
+[143/145] Write Objects.LinkFileList
+[144/145] Linking rightclick-mcpPackageTests
+Build complete! (29.04s)
+Test Suite 'Selected tests' started at 2026-10-07 14:59:25.243.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 14:59:25.244.
+Test Suite 'ExecutionCapacityAdmissionTests' started at 2026-10-07 14:59:25.244.
+Test Case '-[RightClickCoreTests.ExecutionCapacityAdmissionTests testFullActiveHistoryRefusesBothEngineEntryPointsBeforeProviderStart]' started.
+Test Case '-[RightClickCoreTests.ExecutionCapacityAdmissionTests testFullActiveHistoryRefusesBothEngineEntryPointsBeforeProviderStart]' passed (1.109 seconds).
+Test Suite 'ExecutionCapacityAdmissionTests' passed at 2026-10-07 14:59:26.353.
+	 Executed 1 test, with 0 failures (0 unexpected) in 1.109 (1.109) seconds
+Test Suite 'ExecutionRetentionTests' started at 2026-10-07 14:59:26.353.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testActualLargeEvidenceAndRecordFloodRespectIndependentBounds]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testActualLargeEvidenceAndRecordFloodRespectIndependentBounds]' passed (0.043 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testByteCapacityRefusalPreservesEveryExistingActiveReservation]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testByteCapacityRefusalPreservesEveryExistingActiveReservation]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testBytePressureEvictsOldestTerminalAndReadsNeverRefreshOrder]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testBytePressureEvictsOldestTerminalAndReadsNeverRefreshOrder]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testCompactedRCIRAcceptedTaskRetainsPendingOwnershipUntilTerminalSnapshot]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testCompactedRCIRAcceptedTaskRetainsPendingOwnershipUntilTerminalSnapshot]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testConcurrentUpdatesKeepSynchronizedAccountingAndActiveCallbacks]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testConcurrentUpdatesKeepSynchronizedAccountingAndActiveCallbacks]' passed (0.071 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testLargeActualSignedReceiptCompactionRetainsDigestWithoutInventingReceipt]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testLargeActualSignedReceiptCompactionRetainsDigestWithoutInventingReceipt]' passed (0.006 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testMonotonicExpiryIgnoresRegressionAndUpdatesReadsDoNotExtendTTL]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testMonotonicExpiryIgnoresRegressionAndUpdatesReadsDoNotExtendTTL]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testStartedReservationsSurviveExpiryAndFloodThenReleaseAtTerminalCallback]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testStartedReservationsSurviveExpiryAndFloodThenReleaseAtTerminalCallback]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testUnconfirmedAwaitingUserDoesNotReserveActiveCapacity]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testUnconfirmedAwaitingUserDoesNotReserveActiveCapacity]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testUpdateReaccountsLargeAndShrinkingOutputsAndCannotMoveIdentity]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testUpdateReaccountsLargeAndShrinkingOutputsAndCannotMoveIdentity]' passed (0.002 seconds).
+Test Suite 'ExecutionRetentionTests' passed at 2026-10-07 14:59:26.483.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.129 (0.130) seconds
+Test Suite 'MCPInitializationCompatibilityTests' started at 2026-10-07 14:59:26.483.
+Test Case '-[RightClickMCPTests.MCPInitializationCompatibilityTests testOtherMessagesAndMalformedCapabilityShapesAreNotRewritten]' started.
+Test Case '-[RightClickMCPTests.MCPInitializationCompatibilityTests testOtherMessagesAndMalformedCapabilityShapesAreNotRewritten]' passed (0.000 seconds).
+Test Case '-[RightClickMCPTests.MCPInitializationCompatibilityTests testRealClientObjectExtensionDoesNotPreventSupportedHandshake]' started.
+Test Case '-[RightClickMCPTests.MCPInitializationCompatibilityTests testRealClientObjectExtensionDoesNotPreventSupportedHandshake]' passed (0.001 seconds).
+Test Suite 'MCPInitializationCompatibilityTests' passed at 2026-10-07 14:59:26.484.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'RCIRUnaryAdmissionTests' started at 2026-10-07 14:59:26.484.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt]' started.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt]' passed (0.008 seconds).
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testChangedArgumentsAtAdmissionStopLegacyUnaryTransport]' started.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testChangedArgumentsAtAdmissionStopLegacyUnaryTransport]' passed (0.005 seconds).
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testCurrentHostPolicyDenialStopsLegacyUnaryTransport]' started.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testCurrentHostPolicyDenialStopsLegacyUnaryTransport]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay]' started.
+Test Case '-[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay]' passed (0.006 seconds).
+Test Suite 'RCIRUnaryAdmissionTests' passed at 2026-10-07 14:59:26.506.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.021 (0.021) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 14:59:26.506.
+	 Executed 17 tests, with 0 failures (0 unexpected) in 1.260 (1.262) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 14:59:26.506.
+	 Executed 17 tests, with 0 failures (0 unexpected) in 1.260 (1.262) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

@@ -17,7 +17,7 @@ import MCP
 actor ModernMCPStdioTransport: Transport {
     private static let modernProtocolVersion = "2026-07-28"
 
-    private let base: StdioTransport
+    private let base: PortableStdioTransport
 
     public nonisolated let logger: Logger
 
@@ -28,7 +28,7 @@ actor ModernMCPStdioTransport: Transport {
     /// need MCP 2026-07-28 completion metadata.
     private var pendingModernRequests: [String: String] = [:]
 
-    init(base: StdioTransport = StdioTransport()) {
+    init(base: PortableStdioTransport = PortableStdioTransport()) {
         self.base = base
         self.logger = base.logger
 
@@ -99,7 +99,23 @@ actor ModernMCPStdioTransport: Transport {
             pendingModernRequests[key] = method ?? ""
         }
 
-        continuation.yield(data)
+        continuation.yield(Self.sdkCompatibleMessage(data))
+    }
+
+    /// The pinned SDK decodes experimental client capabilities as string values.
+    /// MCP clients may validly offer object-valued extensions. RIGHTCLICK does
+    /// not implement or advertise these extensions, so ignore their advertisement
+    /// at this SDK boundary while preserving all supported lifecycle fields.
+    static func sdkCompatibleMessage(_ data: Data) -> Data {
+        guard var object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              object["method"] as? String == "initialize",
+              var params = object["params"] as? [String: Any],
+              var capabilities = params["capabilities"] as? [String: Any],
+              capabilities["experimental"] is [String: Any] else { return data }
+        capabilities.removeValue(forKey: "experimental")
+        params["capabilities"] = capabilities
+        object["params"] = params
+        return (try? JSONSerialization.data(withJSONObject: object, options: [.sortedKeys])) ?? data
     }
 
     private func decorateOutgoing(_ data: Data) -> Data {
@@ -182,7 +198,7 @@ actor ModernMCPStdioTransport: Transport {
                 "ttlMs": 0,
                 "cacheScope": "private",
                 "instructions":
-                    "RIGHTCLICK discovers and safely invokes capabilities exposed by software installed on this Mac.",
+                    "RIGHTCLICK discovers and safely invokes capabilities exposed by software and services available on this host.",
             ],
         ]
 

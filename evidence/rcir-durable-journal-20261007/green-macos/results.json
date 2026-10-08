@@ -1,0 +1,85 @@
+{
+  "binarySHA256": "d1be10b65ad00fb13267f8461de3f76dce14f13df25b1b751e42064be9af8388",
+  "harnessSHA256": "9328eccdd043711308beaefad1ee98252bf7a1f6f8f1c7df42e1c96e2621e5dd",
+  "status": "GREEN_FOR_CRASH_IDENTITY_BOUNDARY",
+  "scope": "Real A2A process + native MCP crash/restart, synthetic disposable effect",
+  "beforeRuntime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-journal-proof-macos-0af186e/rightclick",
+    "executableRealPath": "/tmp/rightclick-journal-proof-macos-0af186e/rightclick",
+    "executableSHA256": "d1be10b65ad00fb13267f8461de3f76dce14f13df25b1b751e42064be9af8388",
+    "pid": 42050,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "executionID": "155929D1-8A63-4902-8653-D7DC82682BD7",
+  "taskID": "1FE5A177-1ACE-40F7-8C19-4FEC3929134E",
+  "independentEffectMatched": true,
+  "afterRuntime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-journal-proof-macos-0af186e/rightclick",
+    "executableRealPath": "/tmp/rightclick-journal-proof-macos-0af186e/rightclick",
+    "executableSHA256": "d1be10b65ad00fb13267f8461de3f76dce14f13df25b1b751e42064be9af8388",
+    "pid": 42480,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "recoveredStatus": {
+    "actionId": "",
+    "events": [
+      "task=1FE5A177-1ACE-40F7-8C19-4FEC3929134E",
+      "lease=CE8CF07A-0A6E-44DD-983C-C3F2B22A86B9",
+      "generation=1",
+      "requestSHA256=01dfafb81f4799e2710d3cce418e5f6b3b5f295b1962e0588d476e642eedd327",
+      "lastDurablePhase=accepted",
+      "lastDurableState=started",
+      "lastDurableOutcome=unverified",
+      "receiptSHA256=unavailable"
+    ],
+    "evidence": {
+      "boundary": "Durable identity/status summary, not a signed receipt or current independent observation. No authority, remote polling or mutation replay is restored.",
+      "outcomeVerified": false,
+      "type": "rcir_recovered_journal"
+    },
+    "executionId": "155929D1-8A63-4902-8653-D7DC82682BD7",
+    "message": "Invocation survived restart without a live execution session. Its external outcome is unknown. Do not retry blindly.",
+    "state": "unknown"
+  },
+  "providerMutations": 1,
+  "automaticRemotePolls": 0,
+  "journalPayloadAbsent": true,
+  "toolCount": 7,
+  "providerSpecificToolsAdded": 0
+}

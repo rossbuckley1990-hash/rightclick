@@ -1,0 +1,43 @@
+{
+  "baseline": "bd5ed53f02c5cf76fc35796e665ef2c076296dd2",
+  "sourceHashes": {
+    "Tests/RightClickCoreTests/NativeBoundedHTTPTests.swift": "bfbd0ff557297f20b0411203d6de8457b450310a119009b67825deefe8fa67a5",
+    "Tests/RightClickCoreTests/NativeFixtureReadinessTests.swift": "a0d08222ff870979a5a8ae4c571870c9f813001aeb3cb0de656303f24aa9d157",
+    "Tests/RightClickCoreTests/NativeHTTPFixture.swift": "05de4df590d5633dbcfdc5ef6170ae666b21522e3c764654df1696516be3177c",
+    "Tests/RightClickCoreTests/OpenAPIAcknowledgementTests.swift": "7ab5b04cc49e2b70a391439f013a8c212fa0303709ce0b3d0ae09f51e16efccb",
+    "Tests/RightClickCoreTests/RCIRDeferredProductionTests.swift": "4048b187575e9f17d0279d54138067fa606238d0bd9eaa7a89c9d9850eabc5ff",
+    "Tests/RightClickCoreTests/RCIRHTTPJSONCausalityTests.swift": "4a1e9947848166018c83f8af5109fa303692b08c3f279b2397d0484931b28997",
+    "Tests/RightClickCoreTests/RCIRHTTPJSONObservationTests.swift": "b4aa9b6743ffb4aad06724b6700da57f4936be8d2fe785bcae4c2f7dc0b83972",
+    "scripts/a2a-proof-agent.py": "44238b372cde1d119f5ba53e66ec41426c1e7a8197b9d797b20d184537553e52",
+    "scripts/a2a-proof-observer.py": "ecdfc9cb46b41957f0e6f1d568a3edbe99fcd9577c8974338f36befc15c24421",
+    "scripts/acceptance-portable.py": "3bec3b2a3547468227dda3304bd6224d2033d6b636f6c6175303288788fb977f",
+    "scripts/fixture_http.py": "28177755838fe74c4fa7b59de89f0e235147f243257748d20da0f32138206b8d",
+    "scripts/native-http-transport-fixture.py": "7076fa2a19a1c7108ff1fb967251e8e9dd33520b6a9d131a8c548299cf62c1c9",
+    "scripts/proof-discovery-provider.py": "0781c6eb5791e15df9040e17de27f6658be71955242bdc25823602966ca324f2",
+    "scripts/rcir-dispatch-test-provider.py": "aede64d8ea707527ce6e9f7fd6e6eadf6abcade6e564aeb6752d64f27de0c7cf",
+    "scripts/rcir-http-json-fixture.py": "6afb2cdd89420f795d85aa5a16f82c0db139928b37bec78d980a6fb4ca504fcc"
+  },
+  "losslessRawLogs": {
+    "frozen-empty-marker.log": {
+      "bytes": 5101,
+      "sha256": "9b72ad5f6f4ad01d75d4cb16377579f2c9a30fd5bfb818eeb65d781aeefb573e",
+      "losslessGzip": "frozen-empty-marker.log.gz"
+    },
+    "native-focused-final.log": {
+      "bytes": 17702,
+      "sha256": "5fc907cf9e23c6001208213fb8e459dd0100a22a5d75c172e393cbb8e1144de0",
+      "losslessGzip": "native-focused-final.log.gz"
+    },
+    "native-full-final.log": {
+      "bytes": 287198,
+      "sha256": "470079ee9d7766112774469836a3bda2c5c802dbecd3b370ec67fde5dfe34551",
+      "losslessGzip": "native-full-final.log.gz"
+    }
+  },
+  "finalNativeResult": {
+    "tests": 959,
+    "existingSkips": 35,
+    "failures": 0
+  },
+  "scope": "Disposable fixture and regression gate repair; production Sources tree unchanged."
+}

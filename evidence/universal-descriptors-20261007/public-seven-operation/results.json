@@ -1,0 +1,203 @@
+{
+  "runtime": {
+    "executablePath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/.build/arm64-apple-macosx/debug/rightclick",
+    "executableRealPath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/.build/arm64-apple-macosx/debug/rightclick",
+    "executableSHA256": "85c1e45ffacd8ca5ab8649c6ab8195ebfc60e4a78bb303845e975f411263d921",
+    "pid": 91018,
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "substrates": [
+    "MCP",
+    "WASM"
+  ],
+  "toolCountBefore": 7,
+  "toolCountAfter": 7,
+  "providerSpecificToolsAdded": 0,
+  "acceptedRemainsUnverified": true,
+  "mcpIndependentFilesystemVerification": "/private/tmp/rightclick-descriptor-mcp-effects/b693f7de6cd21ad00d4541324518d6d226305f7cdf1dd593360228c9fe3e1c07.txt",
+  "wasmIndependentAlgorithm": "FNV-1a32 over exact UTF-8 challenge; separate Python calculation",
+  "wasmChallenge": "RIGHTCLICK:4ce2d86c022e47fd9e5de21d99f9bebf",
+  "wasmExpected": 76448517,
+  "wasmActual": "76448517",
+  "malformedDescriptorRemoved": true,
+  "offlineComponentRemoved": true,
+  "unseenComponentDiscoveredLive": true,
+  "policyDenialNoEffect": true,
+  "receiptReports": {
+    "mcp-accepted": {
+      "signature": "VALID",
+      "algorithm": "Ed25519",
+      "trustedKeyMatched": true,
+      "payloadBytes": 5424,
+      "signedClaims": {
+        "taskID": "9DD077ED-5B4F-474E-B9FC-921A4C76BD3F",
+        "leaseID": "B8E2ACC5-1AE1-4F9A-BDED-1BA66EC24C14",
+        "providerGeneration": 1,
+        "phase": "completed",
+        "semanticOutcome": "unverified",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ]
+      },
+      "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+      "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+    },
+    "mcp-verified": {
+      "signature": "VALID",
+      "algorithm": "Ed25519",
+      "trustedKeyMatched": true,
+      "payloadBytes": 5684,
+      "signedClaims": {
+        "taskID": "8BD7898D-7AF0-41E0-B643-D3C31541D384",
+        "leaseID": "ABFA55D7-B8B7-462D-A319-218528570D97",
+        "providerGeneration": 1,
+        "phase": "completed",
+        "semanticOutcome": "succeeded",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ]
+      },
+      "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+      "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+    },
+    "wasm-verified": {
+      "signature": "VALID",
+      "algorithm": "Ed25519",
+      "trustedKeyMatched": true,
+      "payloadBytes": 6124,
+      "signedClaims": {
+        "taskID": "0806C1B8-403D-4CFA-B43D-F23B493CC29D",
+        "leaseID": "D9E835B6-11F8-478A-9AEC-21D9087AAF6E",
+        "providerGeneration": 2,
+        "phase": "completed",
+        "semanticOutcome": "succeeded",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ]
+      },
+      "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+      "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+    },
+    "wasm-mismatch": {
+      "signature": "VALID",
+      "algorithm": "Ed25519",
+      "trustedKeyMatched": true,
+      "payloadBytes": 6121,
+      "signedClaims": {
+        "taskID": "3245EA99-2F18-4A53-A241-3EC80F4B4BCC",
+        "leaseID": "AA6C5031-5A37-4857-B3C9-246D802D1ED0",
+        "providerGeneration": 2,
+        "phase": "completed",
+        "semanticOutcome": "failed",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ]
+      },
+      "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+      "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+    },
+    "wasm-trap": {
+      "signature": "VALID",
+      "algorithm": "Ed25519",
+      "trustedKeyMatched": true,
+      "payloadBytes": 5682,
+      "signedClaims": {
+        "taskID": "4ED0A85E-640A-4DBF-869D-E935EFD25D3F",
+        "leaseID": "42EEDB64-8438-48BD-A6C8-C0FA486D4B13",
+        "providerGeneration": 3,
+        "phase": "unknown",
+        "semanticOutcome": "unknown",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ]
+      },
+      "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+      "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+    }
+  },
+  "wasmTrapFailsClosed": true,
+  "wasmTrapBoundary": "Consumed process invocation failed; generic host conservatively reports unknown, never success.",
+  "capabilityEvidence": {
+    "mcp": {
+      "id": "mcp:controlled-mcp:record_challenge",
+      "inputs": [
+        "text"
+      ],
+      "invocation": "direct",
+      "metadata": {
+        "argumentNames": "challenge",
+        "argumentSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzOTpjaGFsbGVuZ2U=",
+        "authorityScheme": "none",
+        "descriptorSHA256": "d0e5f247a5facee85f8192fed20dd5ec668555b9db66da0aea9ffd62bbdba815",
+        "descriptorSource": "http://127.0.0.1:19143/mcp",
+        "executionMode": "unary",
+        "interfaceKind": "mcp",
+        "operationName": "record_challenge",
+        "protocolVersion": "2025-11-25",
+        "providerIdentity": "controlled-mcp",
+        "requiredArguments": "challenge",
+        "resultSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzOTpjaGFsbGVuZ2U=",
+        "transport": "mcp-streamable-http-json",
+        "verificationBoundary": "Provider completion is unverified until the host establishes a postcondition."
+      },
+      "output": [
+        "typed_value"
+      ],
+      "provider": {
+        "name": "controlled-mcp"
+      },
+      "reflectorID": "mcp:controlled-mcp",
+      "requiresConfirmation": true,
+      "safety": "unknown",
+      "source": "system",
+      "supportLevel": "public_supported",
+      "title": "Record disposable challenge"
+    },
+    "wasm": {
+      "id": "wasm:controlled-wasm:challenge-fingerprint",
+      "inputs": [
+        "text"
+      ],
+      "invocation": "direct",
+      "metadata": {
+        "acquisitionRuntimeSHA256": "ff29dc363d36c390ff0ef0f889f1234ef5f236590042a4b9c688de24e6a646de",
+        "argumentNames": "challenge",
+        "argumentSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czk6Y2hhbGxlbmdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzOTpjaGFsbGVuZ2U=",
+        "authorityScope": "exact component/export; no host filesystem, network or environment imports",
+        "componentSHA256": "3ce3cf75344c86535a4a5cb699fb1e887de82f1757c30db80f06ce881f43c166",
+        "descriptorSHA256": "eaed5b89dfb16823f49015838988e4815e3400338993aef9b6ddc09710c9a954",
+        "descriptorSource": "file:///private/tmp/rightclick-interface-acceptance-155fc7a5583145a49d05034ca52bba79/fingerprint.component.wasm",
+        "executionMode": "unary",
+        "hostImports": "none",
+        "interfaceKind": "wasm",
+        "operationName": "challenge-fingerprint",
+        "providerIdentity": "controlled-wasm",
+        "requiredArguments": "challenge",
+        "resultSchema": "UklHSFRDTElDSy1WQUxVRS0xAHM3OmludGVnZXI=",
+        "runtimeExecutable": "/private/tmp/rightclick-wasm-toolchain/wasmtime-v49.0.2-aarch64-macos/wasmtime",
+        "runtimeSHA256": "4408e44af098f7581366b0396088924d7e181720b9309574b4c30bac1c86b6dc",
+        "verificationBoundary": "Provider completion is unverified until the host establishes a postcondition."
+      },
+      "output": [
+        "typed_value"
+      ],
+      "provider": {
+        "name": "controlled-wasm"
+      },
+      "reflectorID": "wasm:controlled-wasm",
+      "requiresConfirmation": true,
+      "safety": "unknown",
+      "source": "system",
+      "supportLevel": "public_supported",
+      "title": "challenge-fingerprint"
+    }
+  },
+  "boundary": "Real MCP/WASM seven-operation transcript proof. Final fresh-AI eleven-substrate acceptance remains a separate required gate."
+}

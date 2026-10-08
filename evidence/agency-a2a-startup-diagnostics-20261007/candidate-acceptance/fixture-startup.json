@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "maximumStartupSeconds": 10,
+  "sameInterpreter": true,
+  "pythonVersion": [
+    3,
+    12,
+    14
+  ],
+  "privateStderr": "SEPARATE_OWNER_ONLY_DIRECTORY",
+  "children": [
+    {
+      "label": "agent",
+      "readiness": "ready",
+      "readinessElapsedMilliseconds": 198,
+      "lifetimeMilliseconds": 88119,
+      "exitAtReadiness": null,
+      "cleanup": "already_exited",
+      "finalReturnCode": -15,
+      "stderrBytes": 0,
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrRetainedBytes": 0,
+      "stderrTruncated": false,
+      "privateRawStderrPersisted": true
+    },
+    {
+      "label": "observer",
+      "readiness": "ready",
+      "readinessElapsedMilliseconds": 180,
+      "lifetimeMilliseconds": 88100,
+      "exitAtReadiness": null,
+      "cleanup": "already_exited",
+      "finalReturnCode": -15,
+      "stderrBytes": 0,
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrRetainedBytes": 0,
+      "stderrTruncated": false,
+      "privateRawStderrPersisted": true
+    }
+  ]
+}
