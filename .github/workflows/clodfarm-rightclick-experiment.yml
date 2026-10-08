@@ -1,0 +1,70 @@
+name: Clodfarm RIGHTCLICK Experiment
+
+on:
+  push:
+    branches:
+      - feature/clodfarm-rightclick-experiment
+    paths:
+      - 'experiments/clodfarm-rightclick/**'
+      - '.github/workflows/clodfarm-rightclick-experiment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  interoperability:
+    runs-on: macos-14
+    timeout-minutes: 20
+    steps:
+      - name: Checkout RIGHTCLICK experiment branch
+        uses: actions/checkout@v4
+
+      - name: Clone current Clodfarm
+        run: |
+          git clone --depth=1 https://github.com/matank001/clodfarm.git /tmp/clodfarm
+          git -C /tmp/clodfarm rev-parse HEAD | tee clodfarm-head.txt
+
+      - name: Verify Clodfarm MCP integration markers
+        run: |
+          set -euxo pipefail
+          test -f /tmp/clodfarm/hooks/mcp.py
+          grep -R -n --exclude-dir=.git -E '(/mcp|mcp__clodfarm__|hooks/mcp.py)' /tmp/clodfarm | head -80 | tee clodfarm-mcp-markers.txt
+          test -s clodfarm-mcp-markers.txt
+
+      - name: Build RIGHTCLICK
+        run: swift build
+
+      - name: Run Clodfarm-style MCP probe
+        run: |
+          python3 experiments/clodfarm-rightclick/mcp_probe.py .build/debug/rightclick | tee rightclick-clodfarm-evidence.txt
+          grep '^TOOLS ' rightclick-clodfarm-evidence.txt
+          grep '^RUNTIME ' rightclick-clodfarm-evidence.txt
+          grep '^PROVIDERS ' rightclick-clodfarm-evidence.txt
+
+      - name: Run RIGHTCLICK tests
+        run: swift test
+
+      - name: Summarize evidence
+        if: always()
+        run: |
+          {
+            echo '## Clodfarm x RIGHTCLICK experiment'
+            echo
+            echo 'Clodfarm HEAD:'
+            cat clodfarm-head.txt 2>/dev/null || true
+            echo
+            echo 'RIGHTCLICK evidence:'
+            sed -n '1,120p' rightclick-clodfarm-evidence.txt 2>/dev/null || true
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload experiment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clodfarm-rightclick-evidence
+          path: |
+            clodfarm-head.txt
+            clodfarm-mcp-markers.txt
+            rightclick-clodfarm-evidence.txt
+          if-no-files-found: warn
