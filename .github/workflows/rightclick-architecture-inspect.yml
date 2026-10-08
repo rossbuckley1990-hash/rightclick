@@ -1,0 +1,58 @@
+name: RIGHTCLICK architecture inspection
+
+on:
+  push:
+    branches:
+      - rightclick-readonly-web-provider
+
+permissions:
+  contents: write
+
+jobs:
+  inspect:
+    if: ${{ !startsWith(github.event.head_commit.message, 'RIGHTCLICK_INSPECT') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build bounded architecture report
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os,re
+          roots=["Sources","Tests"]
+          extra=["Package.swift","README.md","SECURITY.md"]
+          keywords=re.compile(r"(OpenAPI|provider|reflect|registry|URLSession|HTTP|network|capabilit|authority|credential|origin|redirect|verify|resultValidation)",re.I)
+          rows=[]
+          paths=[]
+          for root in roots:
+              if os.path.isdir(root):
+                  for dp,_,fs in os.walk(root):
+                      for f in fs:
+                          if f.endswith((".swift",".md",".json",".yml",".yaml")):
+                              paths.append(os.path.join(dp,f))
+          paths += [p for p in extra if os.path.isfile(p)]
+          for p in paths:
+              try:
+                  lines=open(p,encoding="utf-8",errors="replace").read().splitlines()
+              except Exception:
+                  continue
+              hits=[(i+1,l[:220]) for i,l in enumerate(lines) if keywords.search(l)]
+              if hits:
+                  rows.append((len(hits),p,hits[:30]))
+          rows.sort(reverse=True)
+          out=["RIGHTCLICK_INSPECT","branch=rightclick-readonly-web-provider","candidate_files="+str(len(rows))]
+          for score,p,hits in rows[:24]:
+              out.append(f"FILE {p} HITS {score}")
+              out.extend(f"{n}: {line}" for n,line in hits)
+          text="\n".join(out)
+          open("/tmp/rightclick-report.txt","w").write(text[:14000])
+          PY
+      - name: Commit evidence only
+        shell: bash
+        run: |
+          git config user.name "rightclick-evidence"
+          git config user.email "rightclick-evidence@users.noreply.github.com"
+          git commit --allow-empty -F /tmp/rightclick-report.txt
+          git push origin HEAD:rightclick-readonly-web-provider
