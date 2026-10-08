@@ -46,9 +46,9 @@ final class TrustedHostProcessContextTests: XCTestCase {
         let okay = name.withUnsafeBufferPointer { key -> Bool in
             if let value {
                 let wide = Array(value.utf16) + [0]
-                return wide.withUnsafeBufferPointer { SetEnvironmentVariableW(key.baseAddress, $0.baseAddress) != 0 }
+                return wide.withUnsafeBufferPointer { SetEnvironmentVariableW(key.baseAddress, $0.baseAddress) }
             }
-            return SetEnvironmentVariableW(key.baseAddress, nil) != 0
+            return SetEnvironmentVariableW(key.baseAddress, nil)
         }
         guard okay else { throw RCIRError.unavailable }
     }
