@@ -1,0 +1,4096 @@
+{
+  "schema": "rightclick.authenticated-native-artifact-case-closure.v1",
+  "head": "053b6202df504ff1a33682a39f2e72a959f65983",
+  "sourceTree": "9716cb182db859368f47b603137189d3b257ca43",
+  "runID": 37770595695,
+  "jobID": 113288937564,
+  "jobConclusion": "success",
+  "artifactID": 11547629736,
+  "artifactZIPBytes": 60925,
+  "artifactZIPSHA256": "72b4dfdcc2efd8146c748733de2139df7f649ec7d51fe694a730834ae3bb362b",
+  "payloads": [
+    {
+      "path": "macos-acceptance.log",
+      "bytes": 299,
+      "sha256": "6fd0f67b8e7360c471cf7633de3bab026061f5691fac5f9da8034c4098cda591"
+    },
+    {
+      "path": "macos-binary-sha256.txt",
+      "bytes": 92,
+      "sha256": "11c28f5cdac3cf79e753178d59238ef9404809d9de3a83842e6a4d148f105464"
+    },
+    {
+      "path": "macos-build.log",
+      "bytes": 37115,
+      "sha256": "8e97afc0c276460fd8806183f328d6cce9aab9f2e45243a3ad12ed2731315d41"
+    },
+    {
+      "path": "macos-tests.log",
+      "bytes": 457653,
+      "sha256": "8fdf004f461fc1562dc523a86364231d585ee16fccf854b8d4fd773187ba552d"
+    },
+    {
+      "path": "portable-source.txt",
+      "bytes": 41,
+      "sha256": "7ffa145579f7f8b27d5584006ac34d234ffdfbcec06ef7d4eb98b0f4a6ba52fe"
+    },
+    {
+      "path": "portable-toolchain.txt",
+      "bytes": 98,
+      "sha256": "b674f79b747370a1c05ae7cec551fffe557816c6c807f35f39f933ecbcca80d7"
+    }
+  ],
+  "uniqueStarts": 996,
+  "uniqueFinishes": 996,
+  "caseStates": {
+    "passed": 958,
+    "skipped": 38
+  },
+  "cases": [
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testAcceptedAndCompletedTaskWithMismatchedEffectFailsWithSignedReceipt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testCompletedWithoutIndependentEffectRemainsUnverified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testDeadlineIsUnknownWithoutRetryingOrFabricatingCompletion]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testGenuineDelegationObservesEffectAndSignsTerminalReceipt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testPolicyAndConfirmationDenialsHaveZeroDelegatedEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testPolicyRevocationDuringTaskCannotBeSilentlyIgnored]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testProviderDisappearingMidTaskIsSignedUnknownWithoutReplay]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testRemoteTaskFailureCannotBecomeSemanticSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.A2ARealLifecycleTests testUnpinnedIndependentObserverFailsBeforeDispatch]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ARDAcquisitionGateTests testG13ARDSearchResponseBecomesOpenAPIAcquisitionCandidate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ARDAcquisitionGateTests testG14CapabilityIsAbsentBeforeARDAndAppearsAfterDiscovery]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ARDAcquisitionGateTests testG15ExecutesARDAcquiredCapabilityThroughCapabilityEngine]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ARDAcquisitionGateTests testG16IndependentReadBackVerifiesDurableState]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickARDTests.ARDPortableTests testAmbiguousOpenAPIServerBindingAbstains]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickARDTests.ARDPortableTests testG13DecodesHfDiscoverSearchResponseShape]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickARDTests.ARDPortableTests testG13ExtractsSupportedOpenAPICandidate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickARDTests.ARDPortableTests testSearchRequestMatchesARDEnvelope]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickARDTests.ARDPortableTests testSearchResponseRequiresExactlyOneValueOrReference]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testDeclaredTextRepresentationsRoundTripOnThePasteboard]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testDirectoryAndURLClassification]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testDuplicateIDsCollapse]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testFinancialRequiresConfirmation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testImageServiceDoesNotApplyToPlainText]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testMalformedPathIsAnError]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testProofURLPayloadRoundTrip]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testServiceAppearsAndDisappearsWithTheBundle]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testStaleServiceIDFails]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testTextPasteboardTypesFollowDeclaredSendTypes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testUnknownRequiresConfirmation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testWebURLPayloadAbstainsForFileURLOnly]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredPlainTextType]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.AcquisitionTests testWebURLPayloadUsesDeclaredURLType]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.AuthorityConfigurationCLITests testCredentialCommandLineFlagsAreRejectedBeforeInput]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.AuthorityConfigurationCLITests testInvalidOriginAndSchemeFailBeforeCredentialRead]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.AuthorityConfigurationCLITests testSetStatusDeleteRoundTripNeverDisclosesCredential]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.AuthorityConfigurationCLITests testStatusIsBoundToExactOriginAndScheme]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourGRPCSourceTests testMalformedSchemeAbstainsWithoutReflection]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourGRPCSourceTests testResolvedAdvertisementCreatesAndRemovesGRPCReflector]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourGRPCSourceTests testUnsupportedAuthorityAdvertisementFailsClosedBeforeReflection]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourOpenAPISourceTests testAbsoluteBonjourDNSNameCanonicalizesTerminalRootDot]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourOpenAPISourceTests testEndpointReplacementChangesCapabilityIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourOpenAPISourceTests testMalformedMetadataAbstainsWithoutFetching]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourOpenAPISourceTests testMultipleTerminalRootDotsAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourOpenAPISourceTests testRemovalMakesStaleCapabilityUnavailable]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourOpenAPISourceTests testResolvedAdvertisementCreatesDynamicOpenAPIReflector]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourOpenAPISourceTests testTXTMetadataCannotRedirectToExternalHost]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BonjourRealLifecycleAcceptanceTests testRealDNSServiceDiscoveryLifecycle]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.BoundedCapabilityProcessDiagnosticTests testDeniedStartReportsNoLaunchAndProducesNoRealEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BoundedCapabilityProcessDiagnosticTests testDiagnosticSeparatesRealDeadlineExitAndInvalidInputWithoutChangingErrors]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BoundedCapabilityProcessDiagnosticTests testDiscardedStderrBeyondPipeCapacityCannotBlockOrEnterDiagnostics]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.BoundedCapabilityProcessDiagnosticTests testTerminalMeasurementsContainNoArgumentsInputOutputOrErrorBytes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.BridgeRuntimeTests testBundledCandidateTracksStableHomebrewPrefix]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.BridgeRuntimeTests testBundledTunnelClientIsPreferredOverStoredRuntime]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.BridgeRuntimeTests testChildConfigurationKeepsSecretOutOfArguments]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.BridgeRuntimeTests testForwardTerminationStopsRunningChild]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.BridgeRuntimeTests testRuntimeAPIKeyValidation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.BridgeRuntimeTests testTunnelClientResolutionDoesNotAcceptNonExecutableFile]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.BridgeRuntimeTests testTunnelClientResolutionPrefersExplicitOverride]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CallerContractPinTests testAdvisoryExperienceAndComputedPinAreExcludedButPolicyBytesBind]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CallerContractPinTests testAliasAndFreshPinShareTheExactDeclaration]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CallerContractPinTests testConflictingTitleCannotChooseAnotherContractWithTheSamePin]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CallerContractPinTests testExactUTF8PolicyBytesBindAndMetadataOrderingDoesNot]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CallerContractPinTests testMalformedCorePinsFailBeforeDiscovery]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CallerContractPinTests testMatchingPinDoesNotGrantConfirmationAndLegacyCallsRemainUnpinned]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CallerContractPinTests testProviderFingerprintCannotSpoofEngineAndAdvisoryDriftDoesNotInvalidateRun]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CallerContractPinTests testReviewedContractDriftBeforeInvocationCannotDispatch]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIAdapterTests testChangesInAuthorityOrPolicyMetadataChangeFingerprint]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIAdapterTests testGenericAdapterPreservesDeclarationsAndDoesNotMutateCapability]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIAdapterTests testSHA256MatchesCanonicalBytesAndHasNoSignatureSemantics]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIAdapterTests testUnownedCapabilitiesCannotAcquireAnABIIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIBoundaryTests testDeterministicGeneratedRoundTrips]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIBoundaryTests testLimitsCannotBeRaisedAboveReviewedCeilings]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIBoundaryTests testNestedCodableWrapperCannotBypassValueValidation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIBoundaryTests testResultSchemaIsBoundIntoContract]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIBoundaryTests testSchemaDoesNotAcceptUnicodeEquivalentButDifferentKeyBytes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIBoundaryTests testSchemaRequiredKeysMustMatchExactUTF8]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABIBoundaryTests testVeryDeepSchemaAndVeryWideValuesReject]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testAllValueKindsRoundTripWithoutCoercion]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testArrayOrderAndOriginalUTF8Matter]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testCanonicalByteLimitIncludesHeaderAndFraming]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testCanonicalGoldenVectors]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testClosedObjectSchemaValidatesNestedValues]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testClosedSchemaRejectsUnknownMissingAndWrongTypes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testContractAndValueCanonicalDomainsAreDifferent]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testContractBindsIdentitySchemaAndDeclaration]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testDepthLimitIsExact]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testDuplicateObjectKeysRejectedRatherThanOverwritten]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testEnumsAndInvalidSchemaDeclarationsFailClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testInvalidContractIdentityRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testInvalidLimitsFailClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testLargeIntegerWireDoesNotUseFloatingPoint]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testLegacyAdapterNeverStringifiesRicherValues]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testLegacyStringsRoundTripAndNilIsPreserved]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testLengthFramingPreventsConcatenationAmbiguity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testNodeLimitCountsKeysAndValues]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testNonfiniteNumbersRejectedEverywhere]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testNullableAndOptionalAreDifferent]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testObjectInsertionOrderDoesNotMatter]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testSchemaSetOrderIsCanonical]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testStrictWireRejectsUnknownTrailingOrMalformedValues]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testTypesAndSignedZeroHaveDifferentCanonicalBytes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testUnknownArgumentSchemaIsNotUnrestricted]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityABITests testWireByteLimitIsCheckedBeforeParsing]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityAcquisitionLifecycleTests testRealProviderWithdrawalAndChangedReappearanceWithUnchangedConfiguration]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityAcquisitionLifecycleTests testUnchangedConfigurationDoesNotRetainWithdrawnProviderForever]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testAbsentSchemaDelegatesToReflector]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testAbsentSchemaDoesNotInventRequiredArguments]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testAdditionalPropertiesSchemaDelegated]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testAdditionalPropertiesTrueAcceptsExtra]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testArgumentValuesAreNeverEchoedInError]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testClosedRequiredNameOutsidePropertiesRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testCompleteEnvelopePasses]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testEmptyEnvelopeDoesNotAssertTransportWillAcceptNil]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testInvalidPropertiesRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testInvalidRequiredRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testMalformedJSONRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testMissingRequiredArgumentsDetectedBeforeApproval]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testNestedValueValidationRemainsWithSubstrate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testNonObjectSchemaRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testNumericZeroIsNotBooleanFalse]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testOpenRequiredNameOutsidePropertiesIsLegal]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testOversizedSchemaRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testPartialArgumentsFail]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testRequiredDuplicateRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testRequiredNamesComparedAsBytes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArgumentPreflightTests testUnexpectedArgumentsFail]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testConfiguredSourceCachesResolvedSnapshotWithinRefreshWindow]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testConfiguredSourceComposesDifferentSubstratesIntoOneEngine]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testConfiguredSourceDropsAmbiguousDuplicateReflectorIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testDefaultRegistryAdvertisesGenericSubstrates]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testDuplicateConfiguredDescriptorIDsFailClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testDuplicateResolverKindFailsClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testPlainGRPCIsLoopbackOnly]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testPlainHTTPIsLoopbackOnly]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testRegistryAcceptsOpaqueARDURNIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityArtifactResolverTests testRegistryRoutesByNormalizedKind]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testAssessDoesNotModifyContractOrConfirmation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testAssessmentRoundTrips]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testCodeExecutionRiskIsNotDowngraded]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testDELETEUsesMethodNotMarketingTitle]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testDestructiveRiskIsNotDowngradedByGET]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testExternalShareRiskPreserved]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testGETIsDeclaredReadNotVerifiedSafety]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testGraphQLMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testGraphQLQuery]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testGRPCGetNameDoesNotProveRead]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testNativeProviderCannotClaimHTTPReadThroughMetadata]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testPOSTNamedGetStillMayWrite]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testProviderFlagsNeverGrantAuthority]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityEffectAssessmentTests testUnknownMethodDoesNotBecomeRead]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExecutableSnapshotPoolTests testEntryByteAndAbsoluteRetentionBudgetsDoNotGrowOnReuse]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExecutableSnapshotPoolTests testIdleRetentionCleanupReleasesOnlyThePoolReference]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExecutableSnapshotPoolTests testNonExecutableSecretReferenceAndPermissionWithdrawalFailClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExecutableSnapshotPoolTests testPooledExecutableReplacementAtFinalRCIRGateBlocksActualChildEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExecutableSnapshotPoolTests testReturnRaceRechecksWholeBytesAndDoesNotEvictConcurrentNewIncarnation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExecutableSnapshotPoolTests testReusesExactPrivateIncarnationWhileReadingCurrentByteIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExecutableSnapshotPoolTests testSourceWithdrawalAndRestorationCannotReturnWithdrawnCacheEntry]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testAcceptanceRemainsUnverified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testCapacityEvictsOldestAndPreservesNewest]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testCorruptDataIsRejectedNotSilentlyOverwritten]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testDuplicateExecutionIsNotDoubleCounted]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testEmptyLedgerHasNoLearnedEvidence]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testExecutionCannotBeReboundToChangedContract]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testExpiryDoesNotRefreshOnReadOrRepeatedCallback]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testForgetAllPersists]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testFutureDatedEvidenceIsNotReusedAfterClockRollback]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testHardLinkedFileIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testHeldProcessLockFailsPromptlyInsteadOfHanging]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testInvalidKeysAndBoundsAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testLateAcceptanceDoesNotEraseFailure]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testLateAcceptanceDoesNotEraseVerification]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testOversizedDataIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testPersistedSchemaHasOnlyAllowlistedFields]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testPersistenceSurvivesNewInstance]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testPrivateFilePermissions]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testSymlinkDataAndLockFilesAreRejectedWithoutChangingTarget]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testSymlinkDirectoryIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testTwoInstancesDoNotOverwriteEachOthersEvidence]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testUnknownVersionAndDuplicateExecutionIDsAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testUnsafeDirectoryPermissionsAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceLedgerTests testVerificationReplacesAcceptanceRatherThanAddingSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testContractKeyChangesWithAuthoritySchemaRouteAndPolicy]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testDisabledExperienceDoesNotAddHints]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testEmptyFailedOrUnevaluatedPredicatesNeverTeachVerifiedSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testGatedAndMismatchedResultsAreNotRecorded]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testNamespaceSeparatesExperience]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testNoCapabilitiesAreResurrectedByRecall]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testOnlyFingerprintsAndOutcomesPersistNotUserData]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testProviderCannotForgeExperienceMetadata]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testProviderExperienceKeysCannotBlockFreshDispatchOrForgeHints]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testRemovalSchemaDriftAndRevokedAuthorityRemainEnforced]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testRepeatedRunAndBeginRemainUsableWithAdvisoryHistory]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testRuntimeBeginLearnsVerifiedPredicatesButNextRunIsNotVerifiedByHistory]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testRuntimeRunLearnsAcceptanceWithoutSkippingConfirmation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testRuntimeRunLearnsGenericVerification]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExperienceTests testVerifiedBooleanAloneNeverTeachesVerifiedSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExplanationCompatibilityTests testExistingCapabilityDecoderStillWorks]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExplanationCompatibilityTests testExplanationKeepsOriginalFlatFields]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityExplanationCompatibilityTests testRawContractEncodingContainsNoPresentationAssessment]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorAbstainsForOfflineTool]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testDuplicateInterfaceNamesFailClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testImporterRejectsUnsupportedConstraintsAndOpenObjects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testRealWASMComponentWhenProvisioned]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityInterfaceTests testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityReflectorSourceTests testDynamicSourceStillUsesReflectorOwnershipForExecution]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityReflectorSourceTests testDynamicSourceUsesExistingGenericVerifier]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityReflectorSourceTests testSameEngineGainsAndLosesDynamicReflector]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityRuntimeDefaultsTests testDefaultSourceRegistryContainsDynamicProtocolSources]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityRuntimeDefaultsTests testRuntimeDefaultsConsumeLiveSuppliedSource]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testAmbiguousTitleIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testCaseIsNotSilentlyChanged]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testChangesToAuthorityMetadataAreConflicts]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testComputedPinsAndReservedExperienceCannotCreateConflicts]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testConfirmationDriftCreatesConflict]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testConflictAcrossReflectorOwnersIsQuarantined]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testConflictCannotBeHiddenBehindDifferentTitle]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testConflictingIDCannotBeSelectedDirectly]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testDictionaryInsertionOrderDoesNotCreateConflict]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testEmptyIdentityAndSelectorAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testExactID]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testExactIDWinsOverSpoofedTitleRegardlessOfOrder]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testIdenticalDuplicateRemainsAvailable]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testLaterRepeatDoesNotHealConflictingID]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testRemovalDoesNotResurrectPriorCapability]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testTitleMatchingIsByteExact]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testUnicodeEquivalentIDsRemainByteDistinct]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testUnicodeEquivalentMetadataBytesDoNotCollapse]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testUniqueTitleRetainsCompatibility]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testUnrelatedCapabilitiesSurviveAConflict]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySelectionTests testUnsupportedAndExecutableSameTitleRequiresExactID]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySnapshotBoundaryTests testConcurrentObserversShareOneAcquisition]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySnapshotBoundaryTests testEngineRefreshInvalidatesGenericSourcesWithoutNewOperations]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySnapshotBoundaryTests testExpiryWithdrawsProviderAndAllowsChangedReappearance]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySnapshotBoundaryTests testHostCannotRaiseSnapshotLifetimeAboveFiveMinutes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySnapshotBoundaryTests testInvalidationCannotBeOverwrittenByAnInFlightAcquisition]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySnapshotBoundaryTests testInvalidTimesAndLifetimesNeverCreateImmortalSnapshots]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilitySnapshotBoundaryTests testRegressedClockCannotExtendOldSnapshot]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testActualChallengeDeclarationAcceptsExactBoundsAndCharacterSet]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testChangingBoundOrCharacterSetChangesContractIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testEquivalentCharacterClassesAndEnumOrderHaveCanonicalIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testLengthUsesUnicodeScalarsRatherThanGraphemesOrBytes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testMalformedLengthsAndEmptyIntersectionAbstain]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testNestedImportKeepsRequiredClosedObjectAndStringConstraint]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testOpenAPIOmitsUnsupportedPatternRatherThanErasingIt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testOpenAPIPreservesActualProviderPatternInDiscoveredContract]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testOpenAPIRejectsInvalidValueBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testPatternLengthAndEnumAreIntersectedWithoutWidening]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testUnsupportedRegexGrammarAndUnboundedRepetitionAbstain]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityStringConstraintTests testZeroAndExactQuantifierRemainExact]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityTypedCoreBoundaryTests testAdapterPreservesLiteralStringsAndExactIntegerBits]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityTypedCoreBoundaryTests testAdapterRejectsCoercionUnknownFieldsWrongTagsAndInvalidNumbers]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityTypedCoreBoundaryTests testArrayRetainsTypedElementsAndRejectsDepthLimit]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.CapabilityTypedCoreBoundaryTests testDeclaredBooleanCanReachCommonHostWithExactTaggedCoreValue]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeInstallerTests testActivationFailsClosedWhenBootstrapFails]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeInstallerTests testActivationUsesExpectedLaunchctlSequence]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeInstallerTests testBridgeStatusReportsLoadedService]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeInstallerTests testBridgeStatusReportsStoppedService]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeInstallerTests testDeactivateBootsOutLoadedBridge]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeInstallerTests testPrepareRejectsOldTunnelClient]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeInstallerTests testPrepareRequiresStoredRuntimeKey]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeInstallerTests testPrepareWritesProfileLaunchAgentAndBridgeState]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeTests testBridgeFilesAreDeterministicAndPrivate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeTests testBridgeWritingCreatesRuntimeDirectories]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeTests testInvalidTunnelIDsAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeTests testLaunchAgentUsesStableRightClickEntryPoint]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeTests testProfileMatchesOpenAIStdioTunnelShape]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTBridgeTests testTunnelClientMinimumVersionGate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTLiveAttestationTests testConflictingRightClickMCPChildFailsClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTLiveAttestationTests testExpectedMCPWithAuxiliaryCodexChildPasses]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTLiveAttestationTests testMissingExpectedRightClickMCPFailsClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTLiveAttestationTests testNonRunningMCPHealthFails]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTLiveAttestationTests testNotObservedMCPHealthWithRunningChildPasses]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTLiveAttestationTests testNotReadyTunnelFailsHealthAttestation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testDriftWithoutYesRequiresConsent]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testFullyAlignedPlanReportsAligned]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testLaunchAgentArgumentsParse]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testLaunchAgentDriftIsDetected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testMissingKeyIsReported]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testMissingStateRequiresPairing]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testNonDryRunDoesNotModifyAnything]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testOptionsAcceptPreview]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testProfileCommandParsesGeneratedProfile]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testProfileDriftIsDetected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testStoppedBridgeIsNotAligned]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTests testUnknownOptionFails]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTransactionTests testActivationFailureRestoresExactOwnedFiles]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTransactionTests testAttestationFailureRestoresExactOwnedFiles]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ChatGPTOnboardingTransactionTests testSuccessfulMigrationUpdatesAllOwnedFiles]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClaudeConfigDirTruthTests testClaudeConfigurationSurfaceHonorsClaudeConfigDirOverride]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeConflictingRegistrationFailsClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeDisconnectRefusesConflictingRegistration]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeDisconnectUsesNativeUserScopeRemove]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeDryRunUsesNativeInspectionAndNeverMutates]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeExactExistingRegistrationIsIdempotent]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeNonInteractiveRequiresConsentWithoutNativeMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClaudeOnboardingRedTests testClaudeYesUsesFrozenNativeUserScopeBackendAndVerifiesConnection]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClaudeOnboardingRedTests testOptionsAcceptClaudeAsSecondClient]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClientRegistryRedTests testAdaptersOwnClientSpecificPresentationInsteadOfLocalRouter]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClientRegistryRedTests testAllCurrentlySupportedExplicitClientIDsRemainAccepted]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClientRegistryRedTests testLocalOnboardingDelegatesClientCatalogAndRoutingToRegistry]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClientRegistryRedTests testRegistrySourceOwnsExistingAdaptersInStableOrder]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ClientRegistryRedTests testUnknownClientStillFailsClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.CodexOnboardingRedTests testCodexConflictingCommandFailsClosedBeforeNativeAdd]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.CodexOnboardingRedTests testCodexDisconnectRefusesConflictingRegistration]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.CodexOnboardingRedTests testCodexDisconnectUsesNativeGlobalRemove]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.CodexOnboardingRedTests testCodexDryRunUsesNativeInspectionAndNeverMutates]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.CodexOnboardingRedTests testCodexExactExistingRegistrationIsIdempotent]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.CodexOnboardingRedTests testCodexNonInteractiveRequiresConsentWithoutMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.CodexOnboardingRedTests testCodexSameCommandDifferentArgsAlsoFailsClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.CodexOnboardingRedTests testCodexYesUsesNativeGlobalBackendWithoutFalseConnectionClaim]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.CodexOnboardingRedTests testOptionsAcceptCodexAsThirdClient]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ConfiguredOpenAPISourceTests testCredentialLikeUnknownFieldFailsClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ConfiguredOpenAPISourceTests testDuplicateProviderIDsFailClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ConfiguredOpenAPISourceTests testLongLivedEngineObservesConfiguredAddReplaceAndRemove]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ConfiguredOpenAPISourceTests testMalformedConfigurationRemovesPreviouslyVisibleReflector]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ConfiguredOpenAPISourceTests testRegistryRejectsNonHTTPSAndCredentialBearingURLs]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ConfiguredOpenAPISourceTests testRegistryWriteIsDeterministicAndPrivate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ConfiguredOpenAPISourceTests testUnchangedConfigurationDoesNotRefetchSpecification]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DBusRuntimeTests testBusRestartCannotReuseAnOldUniqueOwnerAndDeclaration]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DBusRuntimeTests testNativeIntrospectionPreservesBooleanArrayOrderAndUnit]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DBusRuntimeTests testNativeUnitCompletionIsAcceptedAndNeverInventsJSONNullOutput]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DBusRuntimeTests testTrustedMarkerIsHiddenAndReplacedOnlyByAdmittedTaskIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DBusRuntimeTests testUnknownNativeTypesAndNoReplyAnnotationsAbstain]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DBusRuntimeTests testWithdrawalReplacementAndChangedTypedMetadataInvalidateOldReflector]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DBusRuntimeTests testXMLRejectsEntitiesMalformedNamesDuplicateMethodsAndDeepTrees]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testChangedAuthorityOriginIsNotDispatched]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testChangedEndpointIsNotDispatched]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testChangedInvocationOrProviderIsNotDispatched]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testChangedSchemaOrMethodIsNotDispatched]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testConfirmationStillStopsBeforeRevalidationOrDispatch]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testConflictingDuplicateCannotHideBehindFirstMatch]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testDelegatedVerificationCannotBypassBinding]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testDistinctUnicodeAuthorityBytesAreNotConflated]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testEngineAssignedOwnershipStillWinsOverProviderMetadata]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testEquivalentRecreatedReflectorRemainsUsable]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testFailedRevalidationIsNotDispatched]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testIdenticalDuplicateDoesNotBreakExistingProviders]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testMetadataKeyOrderDoesNotInvalidateContract]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testSafetyEscalationCannotInheritUnconfirmedRead]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.DispatchContractBindingTests testWithdrawnCapabilityIsNotDispatched]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.EngineTests testAcceptedServiceInvocationDoesNotEstablishSemanticSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.EngineTests testExplicitReturnedTextPostconditionVerifiesOnlyReturnedText]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.EngineTests testExternalShareIsGated]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.EngineTests testFixturesDifferentiateSharingAndQuickActions]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.EngineTests testFullWidthServiceRoundTrip]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.EngineTests testMarkupIsDiscoveredButNotInvokable]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionCapacityAdmissionTests testFullActiveHistoryRefusesBothEngineEntryPointsBeforeProviderStart]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testAmbiguousTitleNeverDispatchesThroughBegin]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testAmbiguousTitleNeverDispatchesThroughRun]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testConflictingIdentityRemovedFromGraph]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testDescribeRejectsAmbiguousTitle]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testDuplicateReflectorOwnerCannotRouteToFirstProvider]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testExactIDCannotBeShadowedByTitle]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testExactIDWithPinWinsOverSpoofedTitleAndPinCannotDisambiguateAlias]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testExactUTF8ReflectorOwnersAndIDsRouteIndependently]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testExistingDispatchDriftGuardIsPreserved]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testIdenticalDeclarationRepeatsKeepSingleOwnedDispatch]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testMissingArgumentsFailBeforeBeginConfirmationAndRemainQueryable]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testMissingArgumentsFailBeforeRunConfirmation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testQuarantinedIDCannotFallThroughToAnotherProvidersTitle]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testRemovedCapabilityStaysUnavailableInSameEngine]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testUnadvertisedCustomEnvelopeRetainsReflectorValidation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testUnexpectedArgumentsNeverReachConfirmedProvider]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testUnsupportedRemainsUnsupportedWithoutInvocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testValidConfirmedEnvelopeRemainsAcceptedNotVerified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionPreflightIntegrationTests testValidEnvelopeStillNeedsConfirmation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testActualLargeEvidenceAndRecordFloodRespectIndependentBounds]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testByteCapacityRefusalPreservesEveryExistingActiveReservation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testBytePressureEvictsOldestTerminalAndReadsNeverRefreshOrder]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testCompactedRCIRAcceptedTaskRetainsPendingOwnershipUntilTerminalSnapshot]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testConcurrentUpdatesKeepSynchronizedAccountingAndActiveCallbacks]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testLargeActualSignedReceiptCompactionRetainsDigestWithoutInventingReceipt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testMonotonicExpiryIgnoresRegressionAndUpdatesReadsDoNotExtendTTL]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testStartedReservationsSurviveExpiryAndFloodThenReleaseAtTerminalCallback]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testUnconfirmedAwaitingUserDoesNotReserveActiveCapacity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ExecutionRetentionTests testUpdateReaccountsLargeAndShrinkingOutputsAndCannotMoveIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.FederationTests testExplicitVerificationRunsAtRemoteBoundary]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.FederationTests testFederatedCapabilityAppearsAndDisappearsLive]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.FederationTests testFederationDoesNotReexportFederatedCapability]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.FederationTests testIncompleteRemoteVerificationIsDowngraded]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.FederationTests testLoopbackIPPeersCanonicalizeToLocalhostForTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.FederationTests testModelFacingToolSurfaceRemainsSevenGenericOperations]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.FederationTests testNonRightClickPeerContributesNoCapabilities]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.FederationTests testPeerConfigurationFailsClosedOutsideLoopback]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.FixtureLineFramingTests testBareOrRepeatedCarriageReturnsAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.FixtureLineFramingTests testEmptyAndUnterminatedFinalRecordAreDistinctFromBlankRecords]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.FixtureLineFramingTests testLFCRLFAndMixedRecordsPreserveEveryObject]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.FixtureLineFramingTests testMalformedJSONAndNonObjectRecordsFailWithoutPrivateBytes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.FixtureLineFramingTests testMissingJournalIsEmptyButMalformedExistingJournalFails]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.FixtureLineFramingTests testUnicodeLineCharactersAndEscapedCRLFArePayloadNotFraming]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCRealProviderAcceptanceTests testRealServerReflectionDiscoversProviderCapabilities]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCReflectionTransportTests testFileDescriptorResponseReturnsRawDescriptorBytes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCReflectionTransportTests testListServicesResponseParsesStandardReflectionEnvelope]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCReflectionTransportTests testReflectionRequestsUseStandardWireFieldNumbers]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCReflectorTests testDescriptorReflectsUnaryAndStreamingMethodsWithoutGeneratedStubs]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCReflectorTests testStreamingMethodFailsClosedBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCReflectorTests testUnaryExecutionEncodesAndDecodesDynamicProtobuf]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCReflectorTests testUnknownArgumentFailsBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCWireCodecBoundsTests testEveryOverflowingTenthByteIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCWireCodecBoundsTests testFullWidthVarintsRemainValid]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCWireCodecBoundsTests testLengthsLargerThanHostIntegerAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCWireCodecBoundsTests testMaximumRepresentableLengthIsRejectedWithoutArithmeticTrap]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCWireCodecBoundsTests testTruncatedLengthAndPayloadAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GRPCWireCodecBoundsTests testValidFieldsPreserveFollowingWireData]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GraphQLReflectorTests testExecutesMutationWithJSONEncodedInputObject]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GraphQLReflectorTests testExecutesQueryWithVariablesAndSynthesizedSelection]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GraphQLReflectorTests testGraphQLErrorsFailEvenWhenPartialDataExists]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GraphQLReflectorTests testInvalidNestedEnumFailsBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GraphQLReflectorTests testMutationRequiresConfirmationBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.GraphQLReflectorTests testReflectsQueriesAndMutationsBehindGenericCapabilities]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.HostProtectedReferenceTests testBroaderNativeReadAuthorityIsDenied]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.HostProtectedReferenceTests testConfiguredPolicySigningAndObserverReferencesUseOneProtectedBackend]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.HostProtectedReferenceTests testDirectoriesAndOversizedFilesNeverBecomeReferences]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.HostProtectedReferenceTests testPrivateSnapshotRetainsExactBytesWhenSelectedSourceChanges]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.InvocationBindingTests testFreshMarkersVerifyForBothTransports]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.InvocationBindingTests testRelativeHostClientPathFailsBeforeNativeDispatch]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.KafkaAcquisitionStabilityTests testRealMetadataReadinessAndByteBindingCostWithoutConcurrentLoad]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.KafkaAcquisitionStabilityTests testRealMetadataReadinessDuringBoundedConcurrentMetadataLoad]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.KafkaAcquisitionStabilityTests testRealReadinessDuringBoundedConcurrentFreshAcquisition]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.KafkaAcquisitionStabilityTests testRealReadinessDuringFiveFreshClients]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.KafkaCapabilityTests testObserverCannotReuseWriterPrincipalAndCredentials]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.KafkaCapabilityTests testRealScopedKafkaHasUnverifiedACKThenIndependentArgumentBoundConsumerReceipt]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.KubernetesCapabilityArtifactTests testCredentialPluginsAndTLSBypassAreRejectedBeforeAcquisition]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.KubernetesCapabilityArtifactTests testProviderDescriptorCannotSelectExecutableCredentialOrNamespace]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.KubernetesCapabilityArtifactTests testRealNamespaceResourceIsVerifiedThroughIndependentGETIdentity]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testAdditionalRightclickSettingsAreNotSilentlyDropped]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testBridgeIsOnlyExplicitAndCannotMixModes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testChangesAfterPreviewAreNotOverwritten]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testConcurrentInstallerLockPreventsWrite]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testCreateHasExpectedStdioEntryAndPrivatePermissions]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testDanglingSymlinkIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testDeclineAndEOFDoNotChangeConfig]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testDetectsOnlySupportedClientLocations]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testDifferentRightclickEntryNeverOverwrittenOrRemoved]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testDirectoryAtConfigPathIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testDisconnectAbsentConfigIsNoOp]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testDisconnectRemovesOnlyMatchingEntryAndKeepsLaterEdits]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testDryRunDoesNotWritePromptOrProbe]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testDuplicateJSONKeysAreRejectedWithoutLosingData]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testEquivalentLegacyEntryIsPreservedByteForByte]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testFileAppearingAfterPreviewIsNotOverwritten]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testHardLinkedConfigIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testHelpNeverProbesOrWrites]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testInteractiveYesAppliesOnlyAfterPrompt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testInvalidRootAndMalformedJSONArePreserved]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testInvalidServerContainersArePreserved]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testJSONNeverPromptsEvenWithTerminal]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testLocalSetupIgnoresSavedBridgeAndOtherClientFiles]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testMergePreservesOtherServersAndRootFieldsWithPrivateExactBackup]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testNestedJSONEscapesAndArraysAreAccepted]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testNewPlanDoesNotCreateDirectories]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testNoClientAndMissingExecutableDoNotWrite]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testNonInteractiveNeedsExplicitConsent]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testOptionsAcceptExplicitLocalPlan]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testOptionsRejectUnknownOrIncompleteArguments]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testOversizedConfigIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testProbeFailurePreventsConfigWrite]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testRejectsUnsafeExecutablePaths]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testSecondRunIsByteIdenticalWithoutAnotherBackup]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testSuccessDoesNotClaimClientConnectionOrOutcomeAndDoesNotLeakConfigSecrets]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testSymlinkDirectoryIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.LocalOnboardingTests testSymlinkFileIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.MCPInitializationCompatibilityTests testOtherMessagesAndMalformedCapabilityShapesAreNotRewritten]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickMCPTests.MCPInitializationCompatibilityTests testRealClientObjectExtensionDoesNotPreventSupportedHandshake]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G1AcquisitionTests testExactFrozenGitHubSpecificationLoadsThroughOpenAPISpecificBound]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G1AcquisitionTests testFrozenBoundsRemainExplicit]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G1AcquisitionTests testGenericDefaultLoaderStillRejectsOneByteOverOneMiB]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G1AcquisitionTests testOpenAPISpecificationLoaderAcceptsFrozenGitHubSize]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G1AcquisitionTests testOpenAPISpecificationLoaderRejectsOneByteOverSixteenMiB]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G1AcquisitionTests testOpenAPISpecificationLoaderRejectsRedirectResponse]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G2SplitOriginTests testAbsoluteHTTPSModeLoadsSpecificationFromIndependentOriginAndReflectsBaseOrigin]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G2SplitOriginTests testAbsoluteModeRequiresBothSpecificationAndBaseURLs]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G2SplitOriginTests testAbsoluteModeRequiresHTTPS]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G2SplitOriginTests testDeclaredLiteralServerMustMatchAdvertisedExecutionBase]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G2SplitOriginTests testExactFrozenGitHubContractAcceptsSplitOriginButTargetRemainsOutsideG2]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G2SplitOriginTests testLegacyRelativeAdvertisementModeRemainsSupported]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G2SplitOriginTests testLiteralServerAndExecutionBaseCanonicalizeBeforeComparison]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G2SplitOriginTests testMixedLegacyAndAbsoluteAdvertisementModesAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G2SplitOriginTests testServerVariablesRemainUnsupported]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G3ZeroArgumentGETTests testAbsentOperationParametersReflectsZeroArgumentGETWithoutArgumentsSchema]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G3ZeroArgumentGETTests testExistingRequiredStringPathGETRemainsSupported]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G3ZeroArgumentGETTests testExplicitEmptyOperationParametersAlsoReflectZeroArgumentGET]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G3ZeroArgumentGETTests testFrozenGitHubAuthenticatedUserStillDoesNotReflectUntilG4]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G3ZeroArgumentGETTests testGETWithRequestBodyDoesNotBecomeZeroArgumentGET]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G3ZeroArgumentGETTests testPathLevelParametersDoNotBecomeZeroArgumentGET]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G3ZeroArgumentGETTests testQueryParameterGETDoesNotBecomeZeroArgumentGET]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G3ZeroArgumentGETTests testZeroArgumentGETExecutesWithoutBodyOrContentType]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G3ZeroArgumentGETTests testZeroArgumentGETRejectsUnexpectedArgumentsBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G4JSONSyntaxFallbackTests testFrozenGitHubUserReflectsForFirstTimeButHasNoExternalAuthorityYet]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G4JSONSyntaxFallbackTests testGETWithoutDeclaredJSONSchemaStillAbstains]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G4JSONSyntaxFallbackTests testMutatingOperationWithUnsupportedJSONResponseUsesSyntaxOnlyMetadata]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G4JSONSyntaxFallbackTests testStrongClosedResponseSchemaRemainsPreferred]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G4JSONSyntaxFallbackTests testSyntaxOnlyGETAcceptsAndCanonicalizesValidJSON]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G4JSONSyntaxFallbackTests testSyntaxOnlyGETRejectsInvalidJSON]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G4JSONSyntaxFallbackTests testSyntaxOnlyGETStillRequiresApplicationJSONContentType]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G4JSONSyntaxFallbackTests testUnsupportedDeclaredJSONSchemaReflectsGETWithSyntaxOnlyMetadata]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testChangingExternalAuthoritySchemeChangesCapabilityIdentity]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testContractDeclaredBearerTakesPrecedenceOverExternalFallback]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testCredentialForDifferentOriginIsNotUsed]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testExplicitEmptyOperationSecurityRemainsPublic]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testExplicitEmptyRootSecurityRemainsPublic]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testExternalBearerMetadataBindsToExecutionOriginWithoutSecret]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testExternalBearerUsesExistingOriginBoundKeychainStore]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testFrozenGitHubUserCarriesGenericExternalBearerAuthority]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testInvalidExternalAuthoritySchemeMetadataIsRejectedBeforeFetch]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testMissingExternalBearerFailsBeforeProviderTransport]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G5ExternalBearerAuthorityTests testUnsupportedDeclaredSecurityStillAbstains]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G6RealGitHubAuthenticatedCompatibilityTests testFrozenOfficialContractDiscoversExactAuthenticatedUserCapability]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT004G6RealGitHubAuthenticatedCompatibilityTests testRealAuthenticatedGitHubUserMatchesIndependentControl]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G1PathAndJSONBodyTests testCombinedContractRejectsUnknownArgumentBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G1PathAndJSONBodyTests testPathAndBodyNameCollisionAbstains]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G1PathAndJSONBodyTests testPathAndJSONBodyPartitionsArgumentsBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G1PathAndJSONBodyTests testPathAndJSONBodyReflectOneCombinedClosedArgumentSchema]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G2MultiplePathArgumentsTests testDuplicatePathParameterNamesAbstain]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G2MultiplePathArgumentsTests testMissingOneRequiredPathArgumentFailsBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G2MultiplePathArgumentsTests testMultiplePathArgumentsReflectInCombinedSchema]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G2MultiplePathArgumentsTests testMultiplePathArgumentsSubstituteAndPartition]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G3GitHubRequestSchemaTests testFrozenGitHubRequestSchemaReflectsThroughSafeNarrowing]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G3GitHubRequestSchemaTests testNarrowedSchemaRetainsRequiredTitleAndOptionalBody]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G3GitHubRequestSchemaTests testTitleOneOfIsSafelyNarrowedToString]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G3GitHubRequestSchemaTests testUnsupportedOptionalProviderFieldIsRejectedBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G4MutationJSONResponseFallbackTests testMalformed201JSONFailsProviderContract]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G4MutationJSONResponseFallbackTests testRealMutationResponseReflectsWithJSONSyntaxFallback]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G4MutationJSONResponseFallbackTests testValidRealStyle201JSONIsAcceptedButUnverified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G5FullFrozenGitHubContractTests testFullContractExposesExactClosedArguments]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G5FullFrozenGitHubContractTests testFullContractUsesOriginBoundExternalAuthority]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G5FullFrozenGitHubContractTests testFullContractUsesUnverifiedJSONSyntaxResponseFallback]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G5FullFrozenGitHubContractTests testFullFrozenOfficialContractDiscoversIssuesCreate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G6MultiSegmentPathTests testDeclaredMultiSegmentPathPreservesHierarchyButOrdinaryArgumentsDoNot]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G6MultiSegmentPathTests testDeclaredMultiSegmentPathReflectsAsOrdinaryClosedStringArgument]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G6MultiSegmentPathTests testFullFrozenGitHubContractDiscoversCreateOrUpdateContents]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G6MultiSegmentPathTests testMalformedMultiSegmentExtensionAbstains]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G6MultiSegmentPathTests testMultiSegmentPathTraversalAndEmptySegmentsFailBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.MOAT005G6MultiSegmentPathTests testUndeclaredMultiSegmentPathKeepsSlashEncodedAsData]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeBoundedHTTPTests testDeadlineCancelsNativeExchangeWithinBound]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeBoundedHTTPTests testDeclaredAndChunkedOversizeNeverReturnAnAdmittedPrefix]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeBoundedHTTPTests testNativeCompletionReleasesWaiterAndReturnsExactCap]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeBoundedHTTPTests testNativeErrorAndPrematureConnectionCloseRemainFailures]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeBoundedHTTPTests testRedirectNeverReachesNewTarget]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testEmptyExistingMarkerWaitsForCompleteDecimalPort]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testEmptyMarkerFailsWithinUnchangedBoundInsteadOfInventingReadiness]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testExitedChildCannotPublishReadiness]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testZeroOversizedAndNonDecimalMarkersCannotBecomePorts]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.NativeMutationLeaseRedTests testConfigureFailsClosedIfAbsentPlanDriftsToConflictBeforeApply]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.NativeMutationLeaseRedTests testConfigureFreshlyInspectsImmediatelyBeforeNativeAdd]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.NativeMutationLeaseRedTests testDisconnectFailsClosedIfExactPlanDriftsToConflictBeforeApply]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.NativeMutationLeaseRedTests testDisconnectFreshlyInspectsImmediatelyBeforeNativeRemove]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeBoundaryTests testComplexUnicodeAcrossLanguageFamilies]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeBoundaryTests testExistingCorrectOutputAndEchoStayUntouched]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeBoundaryTests testFullWidthResultWithCorrectUnicodeIsNotMutated]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeBoundaryTests testLegitimateTransformedLiteralPreservesObservedUTF8AndUTF16]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeBoundaryTests testLiteralOutputCannotSatisfyReinterpretedPostcondition]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeBoundaryTests testNonRepairableBytesAndNormalAsciiAreUntouched]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeBoundaryTests testObservedMojibakeVectorsAreRepairedExactly]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeBoundaryTests testUnrelatedProviderCannotBeModified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeLiveAcceptanceTests testInstalledFullWidthServiceTransformsASCIIWithoutCorruption]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeLiveAcceptanceTests testInstalledHalfWidthServicePreservesLiteralUTF8LookingText]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.NativeServiceUnicodeLiveAcceptanceTests testInstalledHalfWidthServicePreservesNonASCIIText]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.NetworkOriginAuthorityTests testInvocationRedirectCannotEscapeDiscoveredOrigin]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.NetworkOriginAuthorityTests testSpecificationRedirectCannotEscapeDiscoveredOrigin]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.OAuthOIDCAuthorityTests testAuthorizationURLUsesPKCES256AndNeverVerifier]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OAuthOIDCAuthorityTests testBindingIsExactAcrossIssuerResourceClientAndScopes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OAuthOIDCAuthorityTests testKeychainRoundTripIsBoundToExactAuthorityLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OAuthOIDCAuthorityTests testLoopbackRedirectAndSecretValidationFailClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OAuthOIDCAuthorityTests testMetadataDiscoveryURLsPreserveIssuerPathSemantics]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OAuthOIDCAuthorityTests testMetadataRequiresExactIssuerHTTPSAndS256]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OAuthOIDCAuthorityTests testRFC7636S256Vector]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OAuthOIDCAuthorityTests testTokenBundleScopeAndExpiryLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.OnboardingEngineTests testClientStateVocabularySeparatesConfigurationConnectionAndAttestation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.OnboardingEngineTests testDisconnectRemovesOnlyOwnedEntryAfterIndependentEdits]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.OnboardingEngineTests testGenericEngineFailsClosedOnConflictingOwnedEntry]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.OnboardingEngineTests testGenericEngineUsesAdapterAndPreservesUnrelatedConfiguration]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.OnboardingEngineTests testPostWriteFailureRemovesConfigurationCreatedFromNothing]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.OnboardingEngineTests testPostWriteVerificationFailureRestoresExactOriginal]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementHasNoTypedOutputAndRemainsUnverified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcknowledgementTests testConfirmationAndCurrentHostPolicyStopAcknowledgementMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcknowledgementTests testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcknowledgementTests testUndeclared2xxStatusRemainsUnknownDespiteActualEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcknowledgementTests testWrongOrMissingExternalEffectNeverBecomesSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcquisitionBoundsTests testSmallSpecificationIsAccepted]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcquisitionBoundsTests testSpecificationAcquisitionHasFiveSecondDeadline]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcquisitionBoundsTests testSpecificationExactlyAtByteLimitIsAccepted]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAcquisitionBoundsTests testSpecificationOneByteOverLegacyGenericLimitIsAcceptedByOpenAPISource]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityManagementTests testAuthorityDeleteIsScopedToExactOriginAndScheme]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityManagementTests testAuthorityManagementRequiresCredentialFreeHTTPSOrigin]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityManagementTests testManagementStoreWritesTheExactAccountExecutionReads]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityDoesNotCrossOrigin]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityTests testBearerAuthorityIsInjectedFromOriginBoundKeychainWithoutSecretDisclosure]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityTests testBearerSecurityRequirementReflectsGenericAuthorityMetadataWithoutSecret]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityTests testExplicitEmptyOperationSecurityOverridesRootSecurityAsPublic]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityTests testMissingBearerAuthorityFailsBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityTests testRootLevelSecurityIsNotSilentlyIgnored]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIAuthorityTests testUnsupportedSecurityRequirementsAbstainRatherThanGuessing]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPICredentialEchoTests testBenignCredentialBackedResultStillAcceptedWithSignedEvidence]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPICredentialEchoTests testCredentialEchoCannotReachModelRecordEventsOrSignedReceipt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIRealProviderAcceptanceTests testRealLocalhostProviderThroughUniversalRuntime]",
+      "state": "skipped"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testCapabilityIdentityBindsEndpointAndSpecification]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testExistingVerifierCanVerifyOpenAPIResult]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testExistingVerifierRejectsWrongOpenAPIResult]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testGETPathParameterArgumentsFailClosedBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testGETPathParameterUsesGenericArgumentsPercentEncodesAndSendsNoBody]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testGETUnsupportedParameterShapesAbstainRatherThanGuessing]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testGETWithRequiredStringPathParameterReflectsGenericArgumentSchema]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testHTTPAcceptanceIsNotSemanticSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testMissingOperationIDAbstains]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testStructuredJSONObjectArgumentsFailClosedBeforeTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testStructuredJSONObjectOperationUsesGenericArgumentsAndReturnsCanonicalJSON]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testSupportedStructuredJSONObjectOperationReflectsGenericArgumentSchema]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testUnknownOpenAPISpecReflectsTextOperation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OpenAPIReflectorTests testUnsupportedSchemaAbstainsRatherThanGuessing]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OutcomeVerifierTests testAnyFalseRequiredPredicateMakesWholeOutcomeFail]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OutcomeVerifierTests testExactReturnedTextCanVerifySuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OutcomeVerifierTests testMetadataValueStillPresentIsVerifiedFailure]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OutcomeVerifierTests testNoPostconditionsCannotBecomeSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OutcomeVerifierTests testVerificationSpecRoundTripsThroughJSON]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.OutcomeVerifierTests testXattrRemovalAndUnchangedBytesVerifySuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testActionExtensionIsNotInvokable]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testCodeExecutionRequiresConfirmationEvenWithTextOutput]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testContentClassification]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testDedupeQuarantinesConflictingIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testDestructiveRequiresConfirmation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testExternalShareRequiresConfirmation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testSecurityChangeRequiresConfirmationEvenWithTextOutput]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testServiceIdentifierPrefersMessage]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testSharingIdentifierFallsBackToTitleSlug]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testSharingIdentifierUsesPublicName]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testTextTransformContractStillRequiresConfirmation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PolicyTests testUntrustedTextReturnContractCannotGrantReadOnlyPermission]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PortableRuntimeTests testFilesAndUnknownExtensionsAreConservative]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PortableRuntimeTests testHostStorageDoesNotAcceptRelativeEnvironmentPaths]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PortableRuntimeTests testNativeCatalogIsAbsentOnOtherHosts]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PortableRuntimeTests testNativeJSONBooleanIdentityCannotBecomeNumericLength]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PortableRuntimeTests testPKCEUsesPortableCryptographicRandomness]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PortableRuntimeTests testStableTextAndURLClassification]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.PortableRuntimeTests testUnavailableSecureStorageAbstains]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ProductSurfaceRuntimeTests testRuntimeIdentityReportsExactExecutableBytes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ProviderConfigurationCLITests testProviderAddListAndRemoveRoundTrip]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.ProviderConfigurationCLITests testProviderCLIRejectsCredentialOptionAndHTTPURL]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityDispatchTests testAncestorRevocationAtFinalGateProducesZeroActualHTTPRequests]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityDispatchTests testAuthenticatedContextErrorsCannotLeakCredentialMaterial]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityDispatchTests testCredentialScopeWithdrawalAtFinalGateProducesZeroActualHTTPRequests]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityDispatchTests testLegalChildProducesIndependentlyObservedSignedEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityDispatchTests testPolicyRevocationAtFinalGateProducesZeroActualHTTPRequests]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityDispatchTests testRevocationAfterEffectWithholdsObservationAndSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityDispatchTests testSiblingAndParentCannotExceedSharedBudget]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongAudienceAtFinalGateProducesZeroActualHTTPRequests]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongSubjectAtFinalGateProducesZeroActualHTTPRequests]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testAudienceScopesEffectsAndTaskShapesCannotWiden]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testAuthorityAggregateByteBudgetFailsClosedAndExpiredRecordsReap]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testChildAndAncestorRevocationRejectPreparedLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testChildrenAndParentShareInvocationBudget]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testChildRevocationDoesNotRevokeSibling]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testClockRollbackAndInvalidLimitsFailClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testConcurrentFreshChildLeasesStartOnlyOnce]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testCopiedLeaseWrongSubjectDoesNotStart]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testCredentialReferenceAggregateBudgetAndRevocationReleaseSpace]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testCredentialReferencesAreHandlesAndCannotWiden]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testExactUTF8IdentitiesAndScopes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testExpiryInvocationCountAndDownstreamDepthCannotWiden]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testGrantSubstitutionAndCrossLedgerHandleRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testLegacyScopeEntryPointCannotConsumeGrantLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testOneUseLeaseReplayRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testOnlyAuthenticatedParentMayAttenuate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testOutstandingLeaseByteBudgetFailsClosedAndExpiredRecordsReap]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testPolicyDenialDoesNotConsumeAuthority]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testProviderAndCapabilityCannotWiden]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testProviderDescriptionCannotGrantAuthorityOrCredentialReferences]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testProviderRemovalAndRestorationRequireNewGrant]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testReceiptRequestBindsCompleteAuthorityAncestry]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testResourceAndEffectMustMatchAtIssue]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testRevokedCredentialReferenceRejectsPreparedGrantLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testRootAndChildExpiryBoundEveryLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testUnicodeEquivalentSubjectAndAudienceDoNotAuthenticate]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testWrongArgumentConstraintCannotBeIssuedOrWidened]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testWrongArgumentsAtConsumeDoNotDebitBudget]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRAuthorityTests testWrongAudienceDoesNotStart]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRBoundaryTests testConcurrentConsumptionHasOneWinner]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRBoundaryTests testFailedProviderResultStillDoesNotVerifyAnExternalFailure]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRBoundaryTests testInvalidObservationCannotSetSemanticSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRBoundaryTests testRejectedArgumentsDoNotSpendAnOtherwiseValidLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRBoundaryTests testTaskCannotPredateLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRDeferredCapacityTests testExpiredPendingTasksAreReceiptedAndReapedBeforeNewAdmission]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRDeferredCapacityTests testInFlightReservationsCannotOverrunTheBoundedSessionCapacity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRDeferredProductionTests testAcceptedRemoteTaskRemainsPendingUntilLaterObservation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testFreshIndependentMarkerMatchesHostTaskAndProducesSignedSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testInvalidCausalBindingPathsRejectBeforeActualMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testMissingIndependentMarkerRemainsSignedUnverified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testNoOpAcknowledgementAndOldMatchingArtifactCannotVerifyCurrentMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testObserverCannotReflectProtectedCredentialIntoMetadataOrReceipt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testStateOnlyPredicateDoesNotClaimCurrentMutationCausality]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONObservationTests testDefaultCredentialStorageCannotSupplyObserverAuthority]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRedirectNeverSendsObserverCredentialToAnotherOrigin]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHTTPJSONObservationTests testWriterCredentialCannotActAsReadonlyObserver]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHostReceiptTrustConfigurationTests testMalformedTypesAndOverLimitConfigurationReject]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHostReceiptTrustConfigurationTests testRawDuplicateReferencesAndEscapedAliasesReject]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRHostReceiptTrustConfigurationTests testReceiptPolicyIsAnOptionalClosedHostReference]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testBackendSignatureRejectionIsNotIgnored]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testEmbeddedKeyCannotEstablishTrust]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testEmptyTerminalPageIsDistinguishableFromLiveIdle]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testEnvelopeRejectsNonReceiptPayload]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testEnvelopeRejectsWrongSignatureAndKeyLengths]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testEventPagesHaveBoundedStableCursors]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testObserverReceivesExactArgumentsAndBinding]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testPagesRejectInvalidCursorsAndLimits]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testRealCryptoKitSignatureAndPinnedKey]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testRealCryptoKitSignatureDetectsPayloadTampering]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testUnsignedFixtureIsExplicitlyNotCryptographicEvidence]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRIntegrationTests testWireTransportPreservesExactPayload]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationBindingTests testInvocationBindingRejectsNoncanonicalIdentityAndUnboundedOrWildcardPaths]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationBindingTests testMatchingOldMarkerIsRetainedInSignedFailureInsteadOfVerifyingCurrentInvocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationBindingTests testOnlyHostTaskIdentityCanVerifyMatchingObservation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationIsolationTests testCompilerCannotMixProviderIdentityOrArgumentTypes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationIsolationTests testDiscoveryDriftInvalidatesOutstandingInvocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationIsolationTests testEffectKindDriftInvalidatesOutstandingInvocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationIsolationTests testInvocationDoesNotTurnUnknownEffectsIntoAuthority]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationIsolationTests testPrincipalReplacementInvalidatesOutstandingInvocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationIsolationTests testResourcesAndPostconditionsAreBoundToIndependentLeases]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationIsolationTests testTaskBudgetDriftInvalidatesOutstandingInvocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationIsolationTests testWithdrawalAndReappearanceCannotReviveOldLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testAbandonedStagingSnapshotIsBoundedAndOnlySafePrivateFilesAreRemoved]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testChecksumValidContradictorySuccessClaimsAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testConcurrentWriterLockDeniesWithoutWaitingAndIndependentWritersKeepBothIdentities]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testCorruptAndSignatureFreeUnknownFieldHistoryNeverFallsBackToEmpty]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testDarwinExtendedACLDoesNotBypassPrivateModeBits]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testDisabledJournalExplicitlyReportsVolatileExecution]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testDuplicateIdentityCannotReserveOrChangeTerminalHistory]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testGroupReadableHistoryHardLinksAndNonprivateDirectoriesAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testJournalFailureRejectsBeforeActualProviderStartAndFreshContractAfterIntentStillWins]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testMissingInitializedSnapshotFailsClosedAcrossExistingAndRestartedHandles]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testMissingOrReplacedMarkerAndDoubleHistoryLossCannotResetAnInitializedHandle]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testPostEffectCheckpointFailurePreservesKnownEvidenceAndRestartRemainsUnknown]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testRecoveredSuccessWithoutArchivedProofIsHistoricalAndUnverified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testReopenUnfinishedIntentPreservesExactIdentityAndUnknownWithoutAuthority]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testReplacingLockedPathDuringCommitRejectsLostWriterAuthority]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testSubstitutedOrLinkedStagingFileCannotBecomeCommittedHistory]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testSymlinkedDirectoryParentAndHistoryAreRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testTerminalRetentionExpiresAndCannotExceedByteBudget]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testTerminalSummaryHasReceiptDigestAndNoPrivatePayloadOrCapabilityText]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testTerminalUnknownMutationIdentitySurvivesCapacityAndTTL]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testTicketCannotCheckpointAnotherTaskOrExecution]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRInvocationJournalTests testUnfinishedIdentityIsNotEvictedForCapacityOrTerminalTTL]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRNoOutputTests testExactUnchangedWindowsDeclarationAcquiresAcknowledgementCapability]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRNoOutputTests testInheritedSecurityUsesStrictSchemeResolutionAndOperationOverrides]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRNoOutputTests testUnknownOrUndeclaredOutputCannotBeRecategorizedAsAcknowledgement]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testActualArtifactSchemaDriftRejectsOldInvocationAndReacquires]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testActualContractDisappearanceDeniesEffectsAndRecoversNewLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceAfterDispatchPreservesUnknown]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testBoundedLargeArgumentIsNotDuplicatedIntoContract]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testCallerPostconditionCannotBeSilentlyIgnoredByHostObserver]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testCredentialFreeObserverCannotInheritInvocationCookie]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testCrossOriginObserverBlocksBeforeAnyEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testInvalidSignerBlocksBeforeAnyEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testJournalIntentPolicyRevocationDeniesActualHTTPBeforeEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testLostResponseRetainsSignedUnknownAndDoesNotRetry]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testObserverTraversalAndDoubleEncodingCannotDispatch]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAfterDispatchPreservesUnknownWithoutRetry]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAtTransportAdmissionProducesZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActiveIssuerControlProducesOneTrustedObservedEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActualClockExpiryAfterHeldAdmissionWithholdsSignature]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActualLeaseExpiryDuringProtectedSigningValidationHasZeroEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActuallyExpiredKeyBeforeAdmissionHasZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testConfigurationRefreshRevokesPolicyBeforeFinalAdmissionHasZeroEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testConsumptionCallbackRevokesPolicyBeforeFinalAdmissionHasZeroEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testDeletedPolicyAfterAdmissionPreservesObservedUnsignedTruth]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testLegalHostKeyRotationControlUsesFreshTrustedKey]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testMalformedPolicyBeforeAdmissionHasZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testPreRevokedPolicyDeniesAdmissionWithZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testRestoredOlderPolicyCannotResurrectObservedRevocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProductionReceiptTrustTests testRevokedPolicyAfterAdmissionWithholdsSignatureAndRetainsRealTruth]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testCanonicalPublicLocatorAndDuplicateRecordBounds]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testClosedSchemaMissingFieldsAndUnsupportedVersionDeny]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testDeletedWeakenedAndMalformedSourceDenyWithStaticErrors]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testIdentityIntervalsFreshnessAndRawSyntaxBounds]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testIntegerBooleanAndNullKindsRemainDistinct]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testLegalProtectedPolicyMintsInspectableUnforgeableKeyRevision]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testPolicyIdentityPreventsCrossLoaderTokenReuse]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testProtectedFileRollbackCannotResurrectRevocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testRawDuplicatesAndEscapedAliasesCannotDisappearDuringParsing]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testRealSigningCallbackRevocationWithholdsUsableAuthorization]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testRejectedMultiKeyUpdateIsTransactionalAndDoesNotChangeEarlierKey]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testSourceWithdrawalThenLegalRestorationRecoversWithoutLosingHistory]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedReceiptTrustTests testUnrelatedAdditionPreservesTokenButRetirementChangesKeyRevision]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRProvisionedSignerTests testWithdrawalAtPostSignatureBoundaryReturnsNoSignature]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustGapTests testActualLegalRotationReceiptsRequireExplicitIssuerLifecyclePolicy]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustReconciliationTests testEarlierRetirementInvalidatesOnlyAffectedToken]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustReconciliationTests testInvalidLaterRecordDoesNotCommitEarlierCandidateRevocationOrAddition]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustReconciliationTests testIssuerFreshnessAndDuplicateRecordsCannotMutateRetainedPolicy]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustReconciliationTests testKeyIDsLocatorsAndOriginalIntervalsCannotBeReassignedOrWidened]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustReconciliationTests testRetiredAndRevokedTombstonesCannotBeOmittedOrRestored]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustReconciliationTests testSharedRawValidatorRejectsHostReferenceDuplicatesAndAllowsOrdinaryJSONKinds]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustReconciliationTests testSigningAuthorizationUsesHalfOpenIntervalAndMonotonicClock]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustReconciliationTests testUnchangedReorderedSnapshotAndUnrelatedAdditionPreserveKeyRevision]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustStructureTests testActualDeadlineUnknownMayBeLaterThanDeadline]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustStructureTests testActualTaskReceiptExtractionPreservesUnverifiedAndUnknown]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustStructureTests testTrustProvisioningRejectsAmbiguousOrUnboundedRecords]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustStructureTests testUntrustedFramingDepthCollectionAndByteLimitsFailClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testActualCryptographicCallbackExpiryCannotAccept]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testActualCryptographicCallbackRetirementCannotAccept]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testActualCryptographicCallbackRevocationCannotAccept]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testBackendErrorIsStaticAndDoesNotExposeSyntheticContext]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testBoundedExplicitRecordsAndIrreversibleRetirement]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testClockRollbackCannotResurrectExpiredLiveKey]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testHistoricalRetirementAndExpiryRequireDeclaredInterval]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testIssuerMatchingUsesExactUTF8AndTaskLeaseOutcomeAreBound]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testLegalReceiptReturnsExplicitIssuerKeyAndClaimsWithoutChangingWire]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testLiveFreshnessAndFutureAssertionsFailHistoricalIsExplicit]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testRevocationRejectsBothModesIncludingBackdatedReceipt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testSignatureValidMalformedCanonicalAndUnknownFieldsReject]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRReceiptTrustTests testUntrustedLocatorAndTamperingRejectBeforeClaimsAcceptance]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRSigningLifecycleTests testFreshInvocationAfterRotationUsesNewProvisionedKey]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRSigningLifecycleTests testKeyWithdrawalAtAdmissionBoundaryHasZeroProviderEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRSigningLifecycleTests testSamePathKeyRotationDoesNotSignWithRetainedOldKey]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRSigningLifecycleTests testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRSigningLifecycleTests testUnaryHTTPAfterKeyWithdrawalRetainsActualEffectAndUnsignedTruth]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRSigningLifecycleTests testUnchangedProvisionedSignerSignsGenuineEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRStructuredObservationTests testArgumentBoundFieldsVerifyWhileAssignedMetadataRemainsInSignedBytes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRStructuredObservationTests testExistingUnaryEvidenceInitializerDoesNotRequireTaskEvents]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRStructuredObservationTests testFullObservationSchemaCannotBeDiscardedByProjection]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRStructuredObservationTests testIndependentMismatchIsVerifiedFailure]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRStructuredObservationTests testObserverReceivesProviderCoordinatesAsUntrustedLocatorOnly]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRStructuredObservationTests testProjectionRejectsWildcardMissingAndUnboundedContracts]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testAcceptanceAndCompletionAreNotSemanticSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testArgumentTamperingRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testBufferOverflowNeverSilentlyDropsEvents]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testByteBudgetEnforcedBeforeMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testCancellationRequestIsNotAcknowledgement]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testCannotIssueFinalReceiptForRunningTask]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testChangedContractInvalidatesLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testClockRegressionRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testContractBindsEffects]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testContractBindsTaskShape]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testContractBindsVerification]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testContractRejectsUnboundedStream]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testDeadlineProducesUnknownNotSuccessOrRetry]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testExistingABIStillDistinguishesIntegerNumberAndString]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testExternalMismatchIsSemanticFailure]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testIncorrectTypedArgumentsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testInvalidScopeFailsClosed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testLeaseCannotCrossAdmissionInstances]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testLeaseConsumesOnce]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testLeaseExpiryBoundary]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testLeaseInvalidTimesAndTTLRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testLeastAuthorityIsExactRequiredSubset]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testMissingAuthorityRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testMissingVerificationContractCannotSucceed]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testObserverTransportFailureDoesNotBecomeSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testOnlyBoundIndependentObserverCanVerify]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testPolicyChangeAndAuthorityRevocationRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testPolicyDenyOverridesAuthority]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testPrincipalBoundToSnapshot]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testProviderLossDuringWorkIsUnknown]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testPureOperationNeedsNoAuthority]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testReappearanceCannotResurrectOldLease]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testReceiptBindsObservedOutcomeAndHasDomainSeparator]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testRemovedProviderDisappearsAndOldBindingRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testResultShapeCheckedWithoutPromotion]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testSamePublicationDoesNotInvalidateBinding]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testScopesUseExactUTF8]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testStreamElementAndUnaryChunkValidation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testStreamSequenceReplayAndGapRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testTaskDeadlineMustBeFiniteAndForward]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testTerminalTaskCannotBeReopened]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testUnknownArgumentSchemaRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testUnknownEffectsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testUnsupportedCancellationRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testUnsupportedClientAndDuplexStreamsAbstain]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRTests testVerifierCannotRunBeforeProviderCompletion]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRUnaryAdmissionTests testAcceptedLegacyUnaryConsumesOneLeaseAndRetainsUnverifiedReceipt]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRUnaryAdmissionTests testChangedArgumentsAtAdmissionStopLegacyUnaryTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRUnaryAdmissionTests testCurrentHostPolicyDenialStopsLegacyUnaryTransport]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRUnaryAdmissionTests testLostUnaryResponsePreservesUnknownWithoutReplay]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRUnitCompletionTests testNoOutputCompletionCannotBypassDeclaredOrUnknownOutput]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRUnitCompletionTests testNoOutputCompletionCarriesNoProviderValueAndRemainsUnverified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRUnitCompletionTests testNoOutputHasCanonicalIdentityDistinctFromJSONNull]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RCIRUnitCompletionTests testOnlyIndependentObserverCanPromoteNoOutputOutcome]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RuntimeIdentityCompatibilityTests testActualInstalledCoreRuntimeIdentityRemainsDecodable]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.RuntimeIdentityCompatibilityTests testCurrentRuntimeAdvertisesOnlyTheExistingCoreProfile]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceContextTests testApplicationContextUsesActualHostAndDoesNotInventSelectionLanguage]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceContextTests testBundlelessWorkflowPathsPreventSharedMessageIdentityCollision]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceContextTests testContextDictionariesAreANDAndArrayIsOR]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceContextTests testDuplicateMenuNamesCannotChooseTheWrongProvider]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceContextTests testFilePathContextEncodesPathRatherThanReadingFileContents]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceContextTests testFilePathRequirementDoesNotApplyToOrdinaryTextOrWebURL]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceContextTests testUndeclaredEncodingsCannotBecomeApplicableThroughSubstringMatching]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceContextTests testUnknownAndMalformedContextAbstain]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceOutcomeTests testChangedCounterWithoutDeclaredOutputIsNotVerification]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceOutcomeTests testEchoedInputWithChangedCounterIsNotSemanticProof]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceOutcomeTests testExactPostconditionChecksEmptyUnicodeAndWhitespaceWithoutNormalization]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceOutcomeTests testRejectionAndDeadlineCannotSucceedOrLeakEchoedInput]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceOutcomeTests testReturnedOutputWithoutPostconditionIsNotSemanticSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceOutcomeTests testUnchangedInputIsNotReturnedOrVerified]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceRTFUnicodeTests testDeclaredRTFPasteboardUsesUnicodeEncoder]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceRTFUnicodeTests testPlainTextRepresentationRemainsUnchanged]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceRTFUnicodeTests testRTFMetacharactersAreNotInterpretedAsInstructions]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceRTFUnicodeTests testSeededMixedUnicodeRoundTrips]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceRTFUnicodeTests testSupplementaryScalarsUseSignedSurrogateEscapes]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceRTFUnicodeTests testUnicodeRoundTripThroughRTFEncoder]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.ServiceRTFUnicodeTests testUnicodeURLUsesSameRTFEncoder]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllApplyFailureRollsBackEarlierClientsExactly]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllConfiguresEveryDetectedClientAfterOneProbe]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllDryRunPreflightsEveryDetectedClientWithoutMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllOptionIsExplicitAndMutuallyExclusiveWithClient]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllPreflightConflictMutatesNothing]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupAllTransactionRedTests testSetupAllRequiresOneConsentBeforeAnyMutation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupStateTests testMalformedExistingStateIsNeverOverwritten]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupStateTests testMCPContractContainsCurrentSevenTools]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupStateTests testReconcilePreservesChatGPTBridgeIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupStateTests testSetupStateRoundTripsExactly]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupStateTests testSetupStateWriteIsDeterministic]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testAbsentConfigurationIsCreated]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testEveryFailedStagePreventsSuccessfulExit]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testExplicitChatGPTTunnelIDIsSelected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testExplicitServeTokenOverridesStoredToken]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testExplicitTunnelIDOverridesStoredIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testInvalidRootAndMalformedJSONRemainByteIdentical]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testInvalidServerContainersRemainByteIdentical]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testLongVersionFlagIsAccepted]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testOpenAIPluginPreservesMarketplaceAndIsIdempotent]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testOpenAIPluginUsesCurrentPersonalMarketplaceLayout]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testStoredChatGPTTunnelIDIsReused]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testUnrelatedValuesAndOnlyOwnedEntryArePreserved]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.SetupTests testWriteFailureIsReported]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.SharingExecutionTests testDeadlineDoesNotOverrideATerminalCallback]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.SharingExecutionTests testDeadlineWithoutCallbackIsUnknown]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.SharingExecutionTests testDidFailToShareItemsFails]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.SharingExecutionTests testDidShareItemsReportsAcceptanceWithoutIndependentOutcome]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.SharingExecutionTests testPerformReturnWithoutCallbackStaysStarted]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.SharingExecutionTests testWillShareItemsDoesNotFailTheExecution]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableEntrypointTests testCurrentCellarBinaryCollapsesToStableBin]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableEntrypointTests testDevelopmentBuildIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableEntrypointTests testStableBinResolvesToItself]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableEntrypointTests testStableSHAChangesWhenHomebrewRetargetsSymlink]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableEntrypointTests testStableSymlinkCannotPointOutsideCellar]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableEntrypointTests testStaleCellarBinaryIsRejectedAfterUpgrade]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableProfileIntegrityTests testDevelopmentRedirectIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableProfileIntegrityTests testMissingProfileCommandIsRejected]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableProfileIntegrityTests testStableProfileCommandIsAccepted]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableUpgradeReconciliationTests testCurrentStateIsByteIdenticalNoOp]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableUpgradeReconciliationTests testForeignStateIsNeverHijacked]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableUpgradeReconciliationTests testMissingStateIsNeverCreated]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCLITests.StableUpgradeReconciliationTests testUpgradeReconcilesSHAAndPreservesTunnelIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.TrustedHostProcessContextTests testIsolatedContextPreservesBaselineAndHasStableOpaqueIdentity]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.TrustedHostProcessContextTests testLocalPathValidationRejectsUnboundedAmbiguousAndRemoteInputs]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.TrustedHostProcessContextTests testUnavailableHostLocationCannotExpandNonWindowsEnvironment]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.UniversalReflectorContractTests testEngineRoutesByReflectorOwnershipNotCapabilitySource]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.UniversalReflectorContractTests testGenericVerificationRemainsAboveReflectorBoundary]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.UniversalReflectorContractTests testRemovingReflectorRemovesCapability]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.VerificationIntegrationTests testBeginStoresGenericVerificationInExecutionRecord]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.VerificationIntegrationTests testNoVerificationSpecPreservesAcceptedUnverifiedBehaviour]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.VerificationIntegrationTests testRunCanReportVerifiedSemanticFailureAfterAcceptedInvocation]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.VerificationIntegrationTests testRunPromotesAcceptedInvocationToVerifiedSuccess]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.VerificationIntegrationTests testVerificationReceiptIsMachineReadableJSON]",
+      "state": "passed"
+    },
+    {
+      "name": "-[RightClickCoreTests.VerificationIntegrationTests testVerificationSpecTimeoutRoundTripsThroughJSON]",
+      "state": "passed"
+    }
+  ],
+  "outerSummaries": [
+    "Executed 3 tests, with 0 failures (0 unexpected) in 0.012 (0.012) seconds",
+    "Executed 6 tests, with 0 failures (0 unexpected) in 27.640 (27.642) seconds",
+    "Executed 996 tests, with 38 tests skipped and 0 failures (0 unexpected) in 286.016 (286.220) seconds",
+    "Executed 996 tests, with 38 tests skipped and 0 failures (0 unexpected) in 286.016 (286.223) seconds"
+  ],
+  "steps": [
+    {
+      "name": "Set up job",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+      "conclusion": "success"
+    },
+    {
+      "name": "Native macOS provenance and integrated tests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Native macOS release build",
+      "conclusion": "success"
+    },
+    {
+      "name": "Real macOS provider through seven operations",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "conclusion": "success"
+    }
+  ],
+  "sameHeadPrimaryMacComparison": {
+    "all996NamesSame": true,
+    "changes": [
+      {
+        "name": "-[RightClickCoreTests.NativeFixtureReadinessTests testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr]",
+        "primaryMac": "failed",
+        "portableMac": "passed"
+      }
+    ],
+    "interpretation": "The unrepaired timing case passes in this separate same-source job. The primary Mac RED remains genuine; only the controlled delay and reviewed1d4 native proof establish the repair."
+  },
+  "reportedReleaseBinarySHA256": "61bcf8ebae4e7cde23d754489294e20a19a0e046b90809d37eec6682a52a2bd5",
+  "harnessAcceptanceLog": [
+    "stdio: PASS (seven operations, runtime provenance, real provider invocation, confirmation and argument gates, unverified acceptance, retained status)",
+    "http: PASS (seven operations, runtime provenance, real provider invocation, confirmation and argument gates, unverified acceptance, retained status)"
+  ],
+  "limitations": [
+    "Artifact does not contain actual binary bytes, compilation snapshots or raw RPC/effect receipts.",
+    "Harness-scoped local REST/provider acceptance is not a fresh installation or independent external authority/effect proof.",
+    "This proves the prior053b source job, not the later1d4 repair/final composition."
+  ]
+}
