@@ -1,0 +1,53 @@
+name: Windows owned NUL device control
+on:
+  push:
+    branches: ['codex/windows-owned-nul-probe-*']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: windows-owned-nul-probe-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: compnerd/gha-setup-swift@bbae8ce86bac5a3449f3992b3d88bc4ca25f2057
+        with:
+          swift-version: swift-6.2-release
+          swift-build: 6.2-RELEASE
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Native supervisor controls
+        timeout-minutes: 2
+        run: |
+          python -u .github/scripts/tests/test_windows_test_supervisor.py 2>&1 | Tee-Object -FilePath windows-supervisor-self-checks.log
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Compile native fixed-device control
+        timeout-minutes: 2
+        run: |
+          git rev-parse HEAD | Out-File -Encoding utf8 windows-null-source.txt
+          swift --version | Out-File -Encoding utf8 windows-null-toolchain.txt
+          swiftc .github/scripts/windows_owned_null_probe.swift -o windows-owned-null-probe.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-FileHash windows-owned-null-probe.exe -Algorithm SHA256 | Format-List | Out-File windows-null-binary-sha256.txt
+      - name: Actual valid device, exact stdio, large stderr and inherited closure
+        timeout-minutes: 2
+        run: |
+          $python = (Get-Command python.exe).Source
+          python -u .github/scripts/windows_test_supervisor.py --prefix windows-owned-null --progress --deadline-seconds 20 --heartbeat-seconds 0.2 -- .\windows-owned-null-probe.exe $python
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: windows-owned-null-control-${{ github.sha }}
+          path: |
+            windows-supervisor-self-checks.log
+            windows-null-*.txt
+            windows-owned-null-probe.json
+            windows-owned-null-phase.json
+            windows-owned-null-events.jsonl
+            windows-owned-null-output.log
