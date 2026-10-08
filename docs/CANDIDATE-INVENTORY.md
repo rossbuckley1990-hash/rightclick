@@ -78,7 +78,7 @@ All measured Linux provider failures then stopped before test execution because
 current host from `RuntimePlatform.name`; it adds no serialized field or remote
 host attestation. Both focused RCIR jobs exposed a synthetic source-copy gate that
 omitted the real execution host. The repaired gate preserves all six classes and
-105 existing assertions through the actual package graph. A native Mac command
+105 existing test methods through the actual package graph. A native Mac command
 using the exclusively loaned existing scratch passed all 105 cases; this is not
 the literal disposable-script run, fresh Linux CI or complete product acceptance.
 The b407 Mac A2A proof independently retained exactly seven operation definitions,
