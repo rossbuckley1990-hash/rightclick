@@ -10,9 +10,8 @@ import XCTest
 
 final class ProductSurfaceRuntimeTests: XCTestCase {
     func testRuntimeIdentityReportsExactExecutableBytes() throws {
-        let file = NativeHTTPFixture.temporaryDirectory
+        let file = NativeHTTPFixture.temporaryDirectory.standardizedFileURL
             .appendingPathComponent("rightclick-runtime-\(UUID().uuidString)")
-            .standardizedFileURL
 
         let bytes = Data("RIGHTCLICK runtime proof\n".utf8)
         try bytes.write(to: file)
