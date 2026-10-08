@@ -33,8 +33,8 @@ final class NativeBoundedHTTPTests: XCTestCase {
     }
     func testNativeCompletionReleasesWaiterAndReturnsExactCap() throws {
         for _ in 0..<3 { XCTAssertEqual(try exchange("/ok"), Data(repeating: 120, count: 64)) }
-        let requests = try String(contentsOf: directory.appendingPathComponent("requests.log"), encoding: .utf8)
-        XCTAssertEqual(requests.split(separator: "\n").count, 3)
+        let requests = try FixtureLineFraming.records(in: Data(contentsOf: directory.appendingPathComponent("requests.log")))
+        XCTAssertEqual(requests, Array(repeating: Data("/ok".utf8), count: 3))
     }
     func testNativeErrorAndPrematureConnectionCloseRemainFailures() throws {
         XCTAssertThrowsError(try exchange("/error"))
@@ -46,8 +46,8 @@ final class NativeBoundedHTTPTests: XCTestCase {
     }
     func testRedirectNeverReachesNewTarget() throws {
         XCTAssertThrowsError(try exchange("/redirect"))
-        let requests = try String(contentsOf: directory.appendingPathComponent("requests.log"), encoding: .utf8)
-        XCTAssertEqual(requests, "/redirect\n")
+        let requests = try FixtureLineFraming.records(in: Data(contentsOf: directory.appendingPathComponent("requests.log")))
+        XCTAssertEqual(requests, [Data("/redirect".utf8)])
     }
     func testDeadlineCancelsNativeExchangeWithinBound() throws {
         let start = Date()
