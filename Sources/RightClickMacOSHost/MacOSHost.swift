@@ -16,6 +16,21 @@ public struct MacOSHost: PlatformHost {
     public var plainTextDescription: String? { UTType.plainText.localizedDescription }
     public var urlDescription: String? { UTType.url.localizedDescription }
     public func prepareApplication() {
+        if Thread.isMainThread {
+            Self.prepareApplicationOnMainThread()
+            return
+        }
+        // AppKit binds its application event queue on first access. Portable
+        // engine construction may originate on a worker, but native preparation
+        // must complete on the actual main queue before the host is used.
+        let prepared = DispatchSemaphore(value: 0)
+        DispatchQueue.main.async {
+            Self.prepareApplicationOnMainThread()
+            prepared.signal()
+        }
+        prepared.wait()
+    }
+    private static func prepareApplicationOnMainThread() {
         let app = NSApplication.shared
         if app.activationPolicy() == .prohibited { app.setActivationPolicy(.accessory) }
     }
