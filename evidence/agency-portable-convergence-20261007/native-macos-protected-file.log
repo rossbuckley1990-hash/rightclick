@@ -1,0 +1,35 @@
+warning: 'rightclick-agency-portable': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/14] Write sources
+[3/14] Write swift-version--58304C5D6DBC2206.txt
+[5/8] Compiling RightClickCoreTests HostProtectedReferenceTests.swift
+[6/8] Emitting module RightClickCoreTests
+[6/8] Write Objects.LinkFileList
+[7/8] Linking rightclick-mcpPackageTests
+Build complete! (10.77s)
+Test Suite 'Selected tests' started at 2026-10-07 16:08:02.237.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 16:08:02.238.
+Test Suite 'HostProtectedReferenceTests' started at 2026-10-07 16:08:02.238.
+Test Case '-[RightClickCoreTests.HostProtectedReferenceTests testBroaderNativeReadAuthorityIsDenied]' started.
+Test Case '-[RightClickCoreTests.HostProtectedReferenceTests testBroaderNativeReadAuthorityIsDenied]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.HostProtectedReferenceTests testConfiguredPolicySigningAndObserverReferencesUseOneProtectedBackend]' started.
+Test Case '-[RightClickCoreTests.HostProtectedReferenceTests testConfiguredPolicySigningAndObserverReferencesUseOneProtectedBackend]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.HostProtectedReferenceTests testDirectoriesAndOversizedFilesNeverBecomeReferences]' started.
+Test Case '-[RightClickCoreTests.HostProtectedReferenceTests testDirectoriesAndOversizedFilesNeverBecomeReferences]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.HostProtectedReferenceTests testPrivateSnapshotRetainsExactBytesWhenSelectedSourceChanges]' started.
+Test Case '-[RightClickCoreTests.HostProtectedReferenceTests testPrivateSnapshotRetainsExactBytesWhenSelectedSourceChanges]' passed (0.001 seconds).
+Test Suite 'HostProtectedReferenceTests' passed at 2026-10-07 16:08:02.242.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.005 (0.005) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 16:08:02.242.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.005 (0.005) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 16:08:02.243.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.005 (0.005) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

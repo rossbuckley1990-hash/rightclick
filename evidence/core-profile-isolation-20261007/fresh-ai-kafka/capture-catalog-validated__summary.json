@@ -1,0 +1,48 @@
+{
+  "runtime": {
+    "executablePath": "/tmp/rightclick-seven-effects-20261007/rightclick",
+    "executableRealPath": "/tmp/rightclick-seven-effects-20261007/rightclick",
+    "executableSHA256": "3c6fd8d48c381646d7da41f0864d853735d9489cbec7b21e2dbfa3c1191d2bd2",
+    "pid": 85096,
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "model": "gpt-6.1-sol",
+  "threadID": "01a116f2-943e-7b00-aa27-cac714fbfc15",
+  "dynamicToolsDeclared": [
+    "context_runtime",
+    "context_inspect",
+    "context_actions",
+    "context_explain",
+    "context_run",
+    "context_run_status",
+    "context_providers"
+  ],
+  "actualAIInference": false,
+  "actualAIToolCalls": [],
+  "terminal": {
+    "threadId": "01a116f2-943e-7b00-aa27-cac714fbfc15",
+    "turn": {
+      "id": "01a116f2-947e-7281-b819-1cf9f7a13058",
+      "items": [],
+      "itemsView": "notLoaded",
+      "status": "failed",
+      "error": {
+        "message": "{\"error\": {\"message\": \"Local catalogue capture complete; no inference\", \"type\": \"invalid_request_error\", \"code\": \"capture_complete\"}}",
+        "codexErrorInfo": "other",
+        "additionalDetails": null,
+        "misalignment": null
+      },
+      "startedAt": 1791386358,
+      "completedAt": 1791386359,
+      "durationMs": 571
+    }
+  },
+  "mockInferenceRequests": 1,
+  "modelCatalogSHA256": "908cfb0bce25b9ea6d97800c5a392ce3a81d2e4bdad0e9c135cfabe537f0c4ef",
+  "dynamicToolsSHA256": "63972eb6a12b3a0211820728d81bd3e219f6986892234eed9b9df79e4e7377ee",
+  "promptSHA256": "51235ee7f7f57b4b7e7058578264c65358f648fad3e61bdacea428a24cada43d",
+  "status": "PENDING catalogue analysis",
+  "clientExecutableSHA256": "4d210f7c5a18fd0386434df23b5bdbb8c0e7257d3e8a2b30b0769c8bbe99a878"
+}

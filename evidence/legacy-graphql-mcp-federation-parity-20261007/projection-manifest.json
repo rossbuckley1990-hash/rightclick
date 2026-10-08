@@ -1,0 +1,1730 @@
+{
+  "scope": "Lossless to the retained owned proof, with explicit omission of unrelated provider counts.",
+  "rawMeaning": "Raw private hashes identify the exact privately retained collection artifacts. context_actions was filtered at collection to owned capability rows and context_providers was reduced to a total; these artifacts are not complete original wire payloads.",
+  "preserved": [
+    "all owned capability rows and contracts",
+    "seven operation requests and success envelopes",
+    "all invocation/status records and receipt values exactly",
+    "native journals and independently read owned effect files"
+  ],
+  "omitted": "Only context_providers providerCount in retained transcript content; full unrelated inventory was never retained here.",
+  "receipts": "No signature verification or outcome promotion claimed; all receipt strings unchanged.",
+  "privateOriginals": "Retained privately outside Git; no bearer or private key included in selected artifacts.",
+  "files": [
+    {
+      "file": "audit_legacy_results.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/audit_legacy_results.py",
+      "rawPrivate": {
+        "sha256": "6fcc3352c7eab55a1fd82352650e2b6af20e8d1cc0c9c1d9ae044c302d940e1d",
+        "bytes": 12609
+      },
+      "ownedProof": {
+        "sha256": "6fcc3352c7eab55a1fd82352650e2b6af20e8d1cc0c9c1d9ae044c302d940e1d",
+        "bytes": 12609
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "audit_published_evidence.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/audit_published_evidence.py",
+      "rawPrivate": {
+        "sha256": "7cd91a721dc95ec0408cff0ac81b0962183c6248896a9768bfce8e4a634317cd",
+        "bytes": 14364
+      },
+      "ownedProof": {
+        "sha256": "7cd91a721dc95ec0408cff0ac81b0962183c6248896a9768bfce8e4a634317cd",
+        "bytes": 14364
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "bd5-vs-final-focused-scope.patch",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/bd5-vs-final-focused-scope.patch",
+      "rawPrivate": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "ownedProof": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "build_evidence_projection.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/build_evidence_projection.py",
+      "rawPrivate": {
+        "sha256": "1cba1d9a676bd33fe2bed949d6c30731b4082a458475f0638437775c98605de8",
+        "bytes": 6142
+      },
+      "ownedProof": {
+        "sha256": "1cba1d9a676bd33fe2bed949d6c30731b4082a458475f0638437775c98605de8",
+        "bytes": 6142
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/independent-source.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/independent-source.txt",
+      "rawPrivate": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "ownedProof": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/independent-specification.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/independent-specification.json",
+      "rawPrivate": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "ownedProof": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/listener-a.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/listener-a.txt",
+      "rawPrivate": {
+        "sha256": "b5f7924f8fb1cd92b01a060b2dce4198df1c62cbbe879246818ab50e3a72dbb5",
+        "bytes": 27
+      },
+      "ownedProof": {
+        "sha256": "b5f7924f8fb1cd92b01a060b2dce4198df1c62cbbe879246818ab50e3a72dbb5",
+        "bytes": 27
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/listener-b.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/listener-b.txt",
+      "rawPrivate": {
+        "sha256": "1f44bf9dcf94a9f7dde9b50f28e34a76ea5e911e4eeba19406065ba9e0ea7ed6",
+        "bytes": 27
+      },
+      "ownedProof": {
+        "sha256": "1f44bf9dcf94a9f7dde9b50f28e34a76ea5e911e4eeba19406065ba9e0ea7ed6",
+        "bytes": 27
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/openapi.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/openapi.json",
+      "rawPrivate": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "ownedProof": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/provider-source.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/provider-source.txt",
+      "rawPrivate": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "ownedProof": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/results.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/results.json",
+      "rawPrivate": {
+        "sha256": "8f9819c5f326fe385b682700d895abeb2427165cf66f1ec1f61a117be070b5c3",
+        "bytes": 26712
+      },
+      "ownedProof": {
+        "sha256": "8f9819c5f326fe385b682700d895abeb2427165cf66f1ec1f61a117be070b5c3",
+        "bytes": 26712
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/runtime-a.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/runtime-a.stderr.log",
+      "rawPrivate": {
+        "sha256": "56239513dc5e0a07fd0e00c488b0b546322d81c8fe97669234fe8e376fcb03de",
+        "bytes": 60
+      },
+      "ownedProof": {
+        "sha256": "56239513dc5e0a07fd0e00c488b0b546322d81c8fe97669234fe8e376fcb03de",
+        "bytes": 60
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/runtime-b.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/runtime-b.stderr.log",
+      "rawPrivate": {
+        "sha256": "c37732d8d8491399390d92266c19fe330f0c4f626e0f0952527a939094c3acbf",
+        "bytes": 60
+      },
+      "ownedProof": {
+        "sha256": "c37732d8d8491399390d92266c19fe330f0c4f626e0f0952527a939094c3acbf",
+        "bytes": 60
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-https-valid/transcript-a.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/transcript-a.json",
+      "rawPrivate": {
+        "sha256": "dd43edb1b876130220d4034667d7bce87c6b21374919cb344866c011c3d6ab23",
+        "bytes": 26279
+      },
+      "ownedProof": {
+        "sha256": "cf874fe96600ed34a37d5c1b9e6ea06936be6d48ee997fc17564442782d52c1c",
+        "bytes": 26401
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "federation-baseline-https-valid/transcript-b.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-https-valid/transcript-b.json",
+      "rawPrivate": {
+        "sha256": "768fbfaef80504f28baa80c3ebd9ba84dafc8d8a06d012132d65665511b50504",
+        "bytes": 14068
+      },
+      "ownedProof": {
+        "sha256": "5ed91550289ab261019af4d0cdbb7581c1b6b37a9043066b8eb1c8234add0579",
+        "bytes": 14190
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "federation-baseline-valid/classification.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/classification.json",
+      "rawPrivate": {
+        "sha256": "532bc42bf8e6613a68565a3dab8b23d6df8423dc6bee14e5012a22d924f9c654",
+        "bytes": 444
+      },
+      "ownedProof": {
+        "sha256": "532bc42bf8e6613a68565a3dab8b23d6df8423dc6bee14e5012a22d924f9c654",
+        "bytes": 444
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-valid/listener-a.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/listener-a.txt",
+      "rawPrivate": {
+        "sha256": "8ac530d6d3aa6401a0b4cb082986a091d59fb133fdf82a2b4366379de0f81092",
+        "bytes": 27
+      },
+      "ownedProof": {
+        "sha256": "8ac530d6d3aa6401a0b4cb082986a091d59fb133fdf82a2b4366379de0f81092",
+        "bytes": 27
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-valid/listener-b.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/listener-b.txt",
+      "rawPrivate": {
+        "sha256": "a1b3524b28759fae9f4a73e698cbea43410450120ae96f057f8fc7a1ea4f0884",
+        "bytes": 27
+      },
+      "ownedProof": {
+        "sha256": "a1b3524b28759fae9f4a73e698cbea43410450120ae96f057f8fc7a1ea4f0884",
+        "bytes": 27
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-valid/openapi.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/openapi.json",
+      "rawPrivate": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "ownedProof": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-valid/provider-source.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/provider-source.txt",
+      "rawPrivate": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "ownedProof": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-valid/results.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/results.json",
+      "rawPrivate": {
+        "sha256": "4eed57f21378fc272ff3c84c1ca0bef6cb43c6cafc773d6ce058ff55e940253c",
+        "bytes": 1205
+      },
+      "ownedProof": {
+        "sha256": "4eed57f21378fc272ff3c84c1ca0bef6cb43c6cafc773d6ce058ff55e940253c",
+        "bytes": 1205
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-valid/runtime-a.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/runtime-a.stderr.log",
+      "rawPrivate": {
+        "sha256": "c21fa8333d603466bf0c52e0bf8bfc8b7fec4800954cecf41ce99e8fbdb45dd5",
+        "bytes": 60
+      },
+      "ownedProof": {
+        "sha256": "c21fa8333d603466bf0c52e0bf8bfc8b7fec4800954cecf41ce99e8fbdb45dd5",
+        "bytes": 60
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-valid/runtime-b.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/runtime-b.stderr.log",
+      "rawPrivate": {
+        "sha256": "9259ae20af8ef6d68a88edabc9a582cfe40e10b9c40db17514402e2e1bdda0ee",
+        "bytes": 60
+      },
+      "ownedProof": {
+        "sha256": "9259ae20af8ef6d68a88edabc9a582cfe40e10b9c40db17514402e2e1bdda0ee",
+        "bytes": 60
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-baseline-valid/transcript-a.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/transcript-a.json",
+      "rawPrivate": {
+        "sha256": "73d8ce8c690231220977969845acde0dfda722ab3045232eb018b09eaaf334b8",
+        "bytes": 11584
+      },
+      "ownedProof": {
+        "sha256": "f4d716508122c248c4ffebc30507d38d3789d03f7d6258faaf49718974ad0ed0",
+        "bytes": 11706
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "federation-baseline-valid/transcript-b.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-baseline-valid/transcript-b.json",
+      "rawPrivate": {
+        "sha256": "79c884433dbce093cc217bf3500ca82a273ad80aeb4ef2236fd1bdbd74d4f944",
+        "bytes": 11596
+      },
+      "ownedProof": {
+        "sha256": "5fc1e8a1a09a2fda1f486e1cf036f668717d35e9307380ade0ec163f0e8dd35f",
+        "bytes": 11718
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "federation-candidate-https-valid/independent-source.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/independent-source.txt",
+      "rawPrivate": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "ownedProof": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-candidate-https-valid/independent-specification.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/independent-specification.json",
+      "rawPrivate": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "ownedProof": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-candidate-https-valid/listener-a.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/listener-a.txt",
+      "rawPrivate": {
+        "sha256": "d13fe8cbb24dcc474de2d456c85ba1e48191c3e034010750b95f840afacf998f",
+        "bytes": 28
+      },
+      "ownedProof": {
+        "sha256": "d13fe8cbb24dcc474de2d456c85ba1e48191c3e034010750b95f840afacf998f",
+        "bytes": 28
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-candidate-https-valid/listener-b.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/listener-b.txt",
+      "rawPrivate": {
+        "sha256": "21781ccc9f8a1e6777a4bb764f1221772527df35c6addb4a92c9ae8d939c8a21",
+        "bytes": 28
+      },
+      "ownedProof": {
+        "sha256": "21781ccc9f8a1e6777a4bb764f1221772527df35c6addb4a92c9ae8d939c8a21",
+        "bytes": 28
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-candidate-https-valid/openapi.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/openapi.json",
+      "rawPrivate": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "ownedProof": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-candidate-https-valid/provider-source.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/provider-source.txt",
+      "rawPrivate": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "ownedProof": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-candidate-https-valid/results.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/results.json",
+      "rawPrivate": {
+        "sha256": "b2c99d938eded9a6310422d94c8066c086919ba4e54e6da4b34fcb4fc5b6af19",
+        "bytes": 69596
+      },
+      "ownedProof": {
+        "sha256": "b2c99d938eded9a6310422d94c8066c086919ba4e54e6da4b34fcb4fc5b6af19",
+        "bytes": 69596
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-candidate-https-valid/runtime-a.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/runtime-a.stderr.log",
+      "rawPrivate": {
+        "sha256": "f0d3542c8101c007fc112940ee0f1d76fdfd2776ab1bf2982b58749a35502c59",
+        "bytes": 60
+      },
+      "ownedProof": {
+        "sha256": "f0d3542c8101c007fc112940ee0f1d76fdfd2776ab1bf2982b58749a35502c59",
+        "bytes": 60
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-candidate-https-valid/runtime-b.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/runtime-b.stderr.log",
+      "rawPrivate": {
+        "sha256": "3af9ac2b9356a3ae36a423505f1785987e0b72c0240fb41f8b57aebec25b2268",
+        "bytes": 60
+      },
+      "ownedProof": {
+        "sha256": "3af9ac2b9356a3ae36a423505f1785987e0b72c0240fb41f8b57aebec25b2268",
+        "bytes": 60
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-candidate-https-valid/transcript-a.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/transcript-a.json",
+      "rawPrivate": {
+        "sha256": "b5697c3c2e89e94a4cf8b881ce42b73c259c585c292bbbb1257e7360ddb2d7e7",
+        "bytes": 68955
+      },
+      "ownedProof": {
+        "sha256": "59ea42d3656d0abb93c815e5806023909943573b94f57c61da7330410a6e0b85",
+        "bytes": 69077
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "federation-candidate-https-valid/transcript-b.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-candidate-https-valid/transcript-b.json",
+      "rawPrivate": {
+        "sha256": "2ee7a1e198f55b8ffa6146917ee9b118892fc91fbee2c3d7146c770647ce6e0f",
+        "bytes": 15193
+      },
+      "ownedProof": {
+        "sha256": "cf4988b297f0c3897fe328c90e80d3fd4f77f30b3b52c131212a738aced85ca5",
+        "bytes": 15315
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "federation-final-candidate-https-valid/independent-source.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/independent-source.txt",
+      "rawPrivate": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "ownedProof": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-final-candidate-https-valid/independent-specification.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/independent-specification.json",
+      "rawPrivate": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "ownedProof": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-final-candidate-https-valid/listener-a.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/listener-a.txt",
+      "rawPrivate": {
+        "sha256": "aaeae1a91bb47afa8e13bba94b7a9bd37b541879d0f63f20900d78f35c13a97a",
+        "bytes": 27
+      },
+      "ownedProof": {
+        "sha256": "aaeae1a91bb47afa8e13bba94b7a9bd37b541879d0f63f20900d78f35c13a97a",
+        "bytes": 27
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-final-candidate-https-valid/listener-b.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/listener-b.txt",
+      "rawPrivate": {
+        "sha256": "e84506966c7ac677481e7265f8df341c6fc0834105decb8cf8188f2a3cf1a849",
+        "bytes": 27
+      },
+      "ownedProof": {
+        "sha256": "e84506966c7ac677481e7265f8df341c6fc0834105decb8cf8188f2a3cf1a849",
+        "bytes": 27
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-final-candidate-https-valid/openapi.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/openapi.json",
+      "rawPrivate": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "ownedProof": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-final-candidate-https-valid/provider-source.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/provider-source.txt",
+      "rawPrivate": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "ownedProof": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-final-candidate-https-valid/results.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/results.json",
+      "rawPrivate": {
+        "sha256": "f04a915ed3e96b3266aab6b934ea550bab51d9fd95d254610cb71a1aefb5ad87",
+        "bytes": 69709
+      },
+      "ownedProof": {
+        "sha256": "f04a915ed3e96b3266aab6b934ea550bab51d9fd95d254610cb71a1aefb5ad87",
+        "bytes": 69709
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-final-candidate-https-valid/runtime-a.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/runtime-a.stderr.log",
+      "rawPrivate": {
+        "sha256": "91737e6c90eee926f9bd21085955f487f68573c0504f4e23549a5be4c314f007",
+        "bytes": 60
+      },
+      "ownedProof": {
+        "sha256": "91737e6c90eee926f9bd21085955f487f68573c0504f4e23549a5be4c314f007",
+        "bytes": 60
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-final-candidate-https-valid/runtime-b.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/runtime-b.stderr.log",
+      "rawPrivate": {
+        "sha256": "258d9ab466decadb84d9493ff8d6f365a9b519c9a12e71e535584e53d7d9abe0",
+        "bytes": 60
+      },
+      "ownedProof": {
+        "sha256": "258d9ab466decadb84d9493ff8d6f365a9b519c9a12e71e535584e53d7d9abe0",
+        "bytes": 60
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation-final-candidate-https-valid/transcript-a.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/transcript-a.json",
+      "rawPrivate": {
+        "sha256": "8138cf959760d3284714f3491507df909c7c4a4656921ef409dc2decb1201d05",
+        "bytes": 69045
+      },
+      "ownedProof": {
+        "sha256": "bcf6cc5427dcc23435637f65ca69448e292998a0573a4f1b5f5c62de8ff10f16",
+        "bytes": 69167
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "federation-final-candidate-https-valid/transcript-b.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation-final-candidate-https-valid/transcript-b.json",
+      "rawPrivate": {
+        "sha256": "ccb1de491f06c24570b0368a9b35d633c1bc682dc1df878e1a438527cd481b64",
+        "bytes": 15283
+      },
+      "ownedProof": {
+        "sha256": "01e38849ac11f8cf2b5e63c03c64782bacab3b41191fb10aba56bda765b3e1d3",
+        "bytes": 15405
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "federation_legacy_parity.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation_legacy_parity.py",
+      "rawPrivate": {
+        "sha256": "e06e35ab203a0169d0866d011ba36af23d5418ad2e628c26eb43f5e86da293b3",
+        "bytes": 16344
+      },
+      "ownedProof": {
+        "sha256": "e06e35ab203a0169d0866d011ba36af23d5418ad2e628c26eb43f5e86da293b3",
+        "bytes": 16344
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "federation_legacy_parity_initial.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/federation_legacy_parity_initial.py",
+      "rawPrivate": {
+        "sha256": "4b1518b2a7652fbb5c3ae48d17b17bcf9bc67d6b98cd00ff6d9ad2c5288a4a53",
+        "bytes": 15635
+      },
+      "ownedProof": {
+        "sha256": "4b1518b2a7652fbb5c3ae48d17b17bcf9bc67d6b98cd00ff6d9ad2c5288a4a53",
+        "bytes": 15635
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "final-candidate-private-manifest.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/final-candidate-private-manifest.json",
+      "rawPrivate": {
+        "sha256": "a47e7dcf07d3b353ba49550254f4482d2ce5e383c285148adae4d59c618a855c",
+        "bytes": 8582
+      },
+      "ownedProof": {
+        "sha256": "a47e7dcf07d3b353ba49550254f4482d2ce5e383c285148adae4d59c618a855c",
+        "bytes": 8582
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "final-evidence-manifest.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/final-evidence-manifest.json",
+      "rawPrivate": {
+        "sha256": "2cbe041da34debb0bfc3c2432d394f5ddc252f4845ebeb05e2fbfeb1dc562d51",
+        "bytes": 22161
+      },
+      "ownedProof": {
+        "sha256": "2cbe041da34debb0bfc3c2432d394f5ddc252f4845ebeb05e2fbfeb1dc562d51",
+        "bytes": 22161
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "final-release-review.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/final-release-review.json",
+      "rawPrivate": {
+        "sha256": "bf163945c49f13157032dc3726444775246cf0668149cba5784ccc644f4bbca9",
+        "bytes": 4480
+      },
+      "ownedProof": {
+        "sha256": "bf163945c49f13157032dc3726444775246cf0668149cba5784ccc644f4bbca9",
+        "bytes": 4480
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/advertisement.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/advertisement.log",
+      "rawPrivate": {
+        "sha256": "e3c6ad35a5a40d19339b87084133838aec469fcf9c358d5370971af9c4893ca3",
+        "bytes": 538
+      },
+      "ownedProof": {
+        "sha256": "e3c6ad35a5a40d19339b87084133838aec469fcf9c358d5370971af9c4893ca3",
+        "bytes": 538
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/advertisement.stderr",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/advertisement.stderr",
+      "rawPrivate": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "ownedProof": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/classification.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/classification.json",
+      "rawPrivate": {
+        "sha256": "f5db78dbdd14c0bc31fab53f9ce63f801ced02b40e5ffd9f2f4da76d4bb8f47e",
+        "bytes": 435
+      },
+      "ownedProof": {
+        "sha256": "f5db78dbdd14c0bc31fab53f9ce63f801ced02b40e5ffd9f2f4da76d4bb8f47e",
+        "bytes": 435
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/effect-b3ec1617c592eaacfcf494341aa160ae0b92027bd0f997da54a9b77c4d636206.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/effect-b3ec1617c592eaacfcf494341aa160ae0b92027bd0f997da54a9b77c4d636206.json",
+      "rawPrivate": {
+        "sha256": "f3fecc4c95a1ea093b5ab22e6a3d7261e19264640bf021b04b9e3fe038fbaa4a",
+        "bytes": 56
+      },
+      "ownedProof": {
+        "sha256": "f3fecc4c95a1ea093b5ab22e6a3d7261e19264640bf021b04b9e3fe038fbaa4a",
+        "bytes": 56
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/effects.jsonl",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/effects.jsonl",
+      "rawPrivate": {
+        "sha256": "b9cd8337883b4fe6420c20f2f24a6e4c7f39e3d305fdbe7e64e76588104a0d25",
+        "bytes": 343
+      },
+      "ownedProof": {
+        "sha256": "b9cd8337883b4fe6420c20f2f24a6e4c7f39e3d305fdbe7e64e76588104a0d25",
+        "bytes": 343
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/mcp.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/mcp.stderr.log",
+      "rawPrivate": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "ownedProof": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/provider-port",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/provider-port",
+      "rawPrivate": {
+        "sha256": "e68f07a3ec2a227e1122f249233365973d85ebaff5801619e3102ef2051e56f4",
+        "bytes": 5
+      },
+      "ownedProof": {
+        "sha256": "e68f07a3ec2a227e1122f249233365973d85ebaff5801619e3102ef2051e56f4",
+        "bytes": 5
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/provider-requests.jsonl",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/provider-requests.jsonl",
+      "rawPrivate": {
+        "sha256": "a5b62b2d98def37300ae28952471292318beccf82d8172203e5d79f5ac54504a",
+        "bytes": 37491
+      },
+      "ownedProof": {
+        "sha256": "a5b62b2d98def37300ae28952471292318beccf82d8172203e5d79f5ac54504a",
+        "bytes": 37491
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/results.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/results.json",
+      "rawPrivate": {
+        "sha256": "e8110bd6a09eb301e12d212d6883763d3e3bad41cb87385b67a97ced6c67c87a",
+        "bytes": 8140
+      },
+      "ownedProof": {
+        "sha256": "e8110bd6a09eb301e12d212d6883763d3e3bad41cb87385b67a97ced6c67c87a",
+        "bytes": 8140
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/schema.graphql",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/schema.graphql",
+      "rawPrivate": {
+        "sha256": "c5fbcc1f21df7a0eac10c69882df74e4c500ebb08731528f76b5a3a1d269a79d",
+        "bytes": 216
+      },
+      "ownedProof": {
+        "sha256": "c5fbcc1f21df7a0eac10c69882df74e4c500ebb08731528f76b5a3a1d269a79d",
+        "bytes": 216
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline/transcript.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline/transcript.json",
+      "rawPrivate": {
+        "sha256": "036f2aafc8a2bc273ef8bc444d33e4f69ca56a61c7b0a9efa7f895d94af6be44",
+        "bytes": 23654
+      },
+      "ownedProof": {
+        "sha256": "9ee57ade824457e41f53f0d17ee235e579219709f1721545a021e5315ab3b2ae",
+        "bytes": 23777
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "graphql-baseline-valid/advertisement.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/advertisement.log",
+      "rawPrivate": {
+        "sha256": "9fed536e41f5ca409853c22f49c8b13afa22458238daf64384616d7ff9151199",
+        "bytes": 538
+      },
+      "ownedProof": {
+        "sha256": "9fed536e41f5ca409853c22f49c8b13afa22458238daf64384616d7ff9151199",
+        "bytes": 538
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline-valid/advertisement.stderr",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/advertisement.stderr",
+      "rawPrivate": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "ownedProof": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline-valid/effect-06f4ffb319f151aa8d769407a0705c033e5b623c51b26a09f8e34b03537ccf72.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/effect-06f4ffb319f151aa8d769407a0705c033e5b623c51b26a09f8e34b03537ccf72.json",
+      "rawPrivate": {
+        "sha256": "b85ea5bf440a3bb0ce5c08c938cc566077a569cef123bda1f5cc1cf28b971a5d",
+        "bytes": 56
+      },
+      "ownedProof": {
+        "sha256": "b85ea5bf440a3bb0ce5c08c938cc566077a569cef123bda1f5cc1cf28b971a5d",
+        "bytes": 56
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline-valid/effects.jsonl",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/effects.jsonl",
+      "rawPrivate": {
+        "sha256": "7b4563908a93f7666f3cd2e24904200542f33102e7e7894502fde0f22d92d747",
+        "bytes": 348
+      },
+      "ownedProof": {
+        "sha256": "7b4563908a93f7666f3cd2e24904200542f33102e7e7894502fde0f22d92d747",
+        "bytes": 348
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline-valid/mcp.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/mcp.stderr.log",
+      "rawPrivate": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "ownedProof": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline-valid/provider-port",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/provider-port",
+      "rawPrivate": {
+        "sha256": "75ad59a063a91e90b0aef80f00e37b2aa79fe8748e8b088cbb2009f79d3d27b9",
+        "bytes": 5
+      },
+      "ownedProof": {
+        "sha256": "75ad59a063a91e90b0aef80f00e37b2aa79fe8748e8b088cbb2009f79d3d27b9",
+        "bytes": 5
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline-valid/provider-requests.jsonl",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/provider-requests.jsonl",
+      "rawPrivate": {
+        "sha256": "06384c2f7309016e8b29a1300d08460c90e2ceb282a408d5bf12dc6e912f8486",
+        "bytes": 37492
+      },
+      "ownedProof": {
+        "sha256": "06384c2f7309016e8b29a1300d08460c90e2ceb282a408d5bf12dc6e912f8486",
+        "bytes": 37492
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline-valid/results.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/results.json",
+      "rawPrivate": {
+        "sha256": "e1cf07e0cfcd53c6dda612fa14a2b09e94094822a65eed3ef99b95f0f5973a30",
+        "bytes": 17640
+      },
+      "ownedProof": {
+        "sha256": "e1cf07e0cfcd53c6dda612fa14a2b09e94094822a65eed3ef99b95f0f5973a30",
+        "bytes": 17640
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline-valid/schema.graphql",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/schema.graphql",
+      "rawPrivate": {
+        "sha256": "c5fbcc1f21df7a0eac10c69882df74e4c500ebb08731528f76b5a3a1d269a79d",
+        "bytes": 216
+      },
+      "ownedProof": {
+        "sha256": "c5fbcc1f21df7a0eac10c69882df74e4c500ebb08731528f76b5a3a1d269a79d",
+        "bytes": 216
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-baseline-valid/transcript.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-baseline-valid/transcript.json",
+      "rawPrivate": {
+        "sha256": "fce48348ee144c5c9fb1b1bd32bff2b6651364a8839a1309b3e710a756b93f61",
+        "bytes": 24997
+      },
+      "ownedProof": {
+        "sha256": "6f968ebe290a36a01f970b7a11fa8757542ae7238ac97a45d73a342e93853685",
+        "bytes": 25120
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "graphql-candidate-valid/advertisement.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/advertisement.log",
+      "rawPrivate": {
+        "sha256": "d307e7adeebed5d65f93efce44444cd56357e1ee5acded7ff8d2d986237d053a",
+        "bytes": 538
+      },
+      "ownedProof": {
+        "sha256": "d307e7adeebed5d65f93efce44444cd56357e1ee5acded7ff8d2d986237d053a",
+        "bytes": 538
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-candidate-valid/advertisement.stderr",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/advertisement.stderr",
+      "rawPrivate": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "ownedProof": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-candidate-valid/effect-2ad0fae61798e958974bda89df2cfe18d241dea2b5155c9373df10a3e33c6a67.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/effect-2ad0fae61798e958974bda89df2cfe18d241dea2b5155c9373df10a3e33c6a67.json",
+      "rawPrivate": {
+        "sha256": "33d9331b6a0fd4a973b2a00f7ef8a2166506df234f5e9627452ce97154925f5a",
+        "bytes": 56
+      },
+      "ownedProof": {
+        "sha256": "33d9331b6a0fd4a973b2a00f7ef8a2166506df234f5e9627452ce97154925f5a",
+        "bytes": 56
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-candidate-valid/effects.jsonl",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/effects.jsonl",
+      "rawPrivate": {
+        "sha256": "bd9bae7839881e2df164f12873d750c5db97ed0ac390e030f8d4d4887b503c0f",
+        "bytes": 349
+      },
+      "ownedProof": {
+        "sha256": "bd9bae7839881e2df164f12873d750c5db97ed0ac390e030f8d4d4887b503c0f",
+        "bytes": 349
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-candidate-valid/mcp.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/mcp.stderr.log",
+      "rawPrivate": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "ownedProof": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-candidate-valid/provider-port",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/provider-port",
+      "rawPrivate": {
+        "sha256": "1529f328eab86254c321a2ef5353e187653c31c2e777bb5c2b46e58f074bfe40",
+        "bytes": 5
+      },
+      "ownedProof": {
+        "sha256": "1529f328eab86254c321a2ef5353e187653c31c2e777bb5c2b46e58f074bfe40",
+        "bytes": 5
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-candidate-valid/provider-requests.jsonl",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/provider-requests.jsonl",
+      "rawPrivate": {
+        "sha256": "31b5c57dfb56a107cc7b0174fabed3507ab59e6dc983bc54cdaed11d949e5e80",
+        "bytes": 37493
+      },
+      "ownedProof": {
+        "sha256": "31b5c57dfb56a107cc7b0174fabed3507ab59e6dc983bc54cdaed11d949e5e80",
+        "bytes": 37493
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-candidate-valid/results.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/results.json",
+      "rawPrivate": {
+        "sha256": "2d0d87e57855bc229d2e0653f4dbab329a81d19cc4b74b48d6ef3dc8e897129d",
+        "bytes": 51571
+      },
+      "ownedProof": {
+        "sha256": "2d0d87e57855bc229d2e0653f4dbab329a81d19cc4b74b48d6ef3dc8e897129d",
+        "bytes": 51571
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-candidate-valid/schema.graphql",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/schema.graphql",
+      "rawPrivate": {
+        "sha256": "c5fbcc1f21df7a0eac10c69882df74e4c500ebb08731528f76b5a3a1d269a79d",
+        "bytes": 216
+      },
+      "ownedProof": {
+        "sha256": "c5fbcc1f21df7a0eac10c69882df74e4c500ebb08731528f76b5a3a1d269a79d",
+        "bytes": 216
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-candidate-valid/transcript.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-candidate-valid/transcript.json",
+      "rawPrivate": {
+        "sha256": "0232ddc91be71c56446449163d46da5c6356c8a4299a1d45bbc2f6c7a55519fa",
+        "bytes": 58800
+      },
+      "ownedProof": {
+        "sha256": "06bacd0811706bfa59198b40599e8a712f446c9dbbb6dd38fac7780a297b3e02",
+        "bytes": 58923
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "graphql-final-candidate-valid/advertisement.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/advertisement.log",
+      "rawPrivate": {
+        "sha256": "a7394c2f942c5b81591214e7ad7990afbb8a0840a6a04701928475a73ac3accc",
+        "bytes": 538
+      },
+      "ownedProof": {
+        "sha256": "a7394c2f942c5b81591214e7ad7990afbb8a0840a6a04701928475a73ac3accc",
+        "bytes": 538
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-final-candidate-valid/advertisement.stderr",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/advertisement.stderr",
+      "rawPrivate": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "ownedProof": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-final-candidate-valid/effect-c5adc7cc035061c88614a3e4bbf983152076a54037c529537b2e276da6f2afee.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/effect-c5adc7cc035061c88614a3e4bbf983152076a54037c529537b2e276da6f2afee.json",
+      "rawPrivate": {
+        "sha256": "3ac1db1db63aa3982ce89cf5ed463c3d84d2c126c150bbd7e0d2f59faaf22327",
+        "bytes": 56
+      },
+      "ownedProof": {
+        "sha256": "3ac1db1db63aa3982ce89cf5ed463c3d84d2c126c150bbd7e0d2f59faaf22327",
+        "bytes": 56
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-final-candidate-valid/effects.jsonl",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/effects.jsonl",
+      "rawPrivate": {
+        "sha256": "957834259c69611854d22f72da06e7aaca8239302119239a0db5b633ca33d36a",
+        "bytes": 355
+      },
+      "ownedProof": {
+        "sha256": "957834259c69611854d22f72da06e7aaca8239302119239a0db5b633ca33d36a",
+        "bytes": 355
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-final-candidate-valid/mcp.stderr.log",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/mcp.stderr.log",
+      "rawPrivate": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "ownedProof": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-final-candidate-valid/provider-port",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/provider-port",
+      "rawPrivate": {
+        "sha256": "bff5a2235ed2cac574e830c4371c551946a8c5e06798ea43bf14b2601be08cc7",
+        "bytes": 5
+      },
+      "ownedProof": {
+        "sha256": "bff5a2235ed2cac574e830c4371c551946a8c5e06798ea43bf14b2601be08cc7",
+        "bytes": 5
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-final-candidate-valid/provider-requests.jsonl",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/provider-requests.jsonl",
+      "rawPrivate": {
+        "sha256": "8d3bbcdc2b330c1bbdb43519bb26cb32e8d99852adbfb4df123a5c54ce007630",
+        "bytes": 61829
+      },
+      "ownedProof": {
+        "sha256": "8d3bbcdc2b330c1bbdb43519bb26cb32e8d99852adbfb4df123a5c54ce007630",
+        "bytes": 61829
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-final-candidate-valid/results.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/results.json",
+      "rawPrivate": {
+        "sha256": "209b56d4a169309fe28291a4a97941893d150315b783082786e6685352421d1e",
+        "bytes": 51622
+      },
+      "ownedProof": {
+        "sha256": "209b56d4a169309fe28291a4a97941893d150315b783082786e6685352421d1e",
+        "bytes": 51622
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-final-candidate-valid/schema.graphql",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/schema.graphql",
+      "rawPrivate": {
+        "sha256": "c5fbcc1f21df7a0eac10c69882df74e4c500ebb08731528f76b5a3a1d269a79d",
+        "bytes": 216
+      },
+      "ownedProof": {
+        "sha256": "c5fbcc1f21df7a0eac10c69882df74e4c500ebb08731528f76b5a3a1d269a79d",
+        "bytes": 216
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql-final-candidate-valid/transcript.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql-final-candidate-valid/transcript.json",
+      "rawPrivate": {
+        "sha256": "f52853e29161caa8b55ca8854af2a838ebca75a3bbc0ea87ca0e0920ff92c85e",
+        "bytes": 58845
+      },
+      "ownedProof": {
+        "sha256": "435c1e58d3dad474a996dd108d9f665f753a833f57ef078105727fbbe0688a01",
+        "bytes": 58968
+      },
+      "projection": [
+        {
+          "exchangeIndex": 3,
+          "operation": "context_providers",
+          "rule": "omit previously retained providerCount; preserve outer success envelope/request"
+        }
+      ]
+    },
+    {
+      "file": "graphql_legacy_parity.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql_legacy_parity.py",
+      "rawPrivate": {
+        "sha256": "dcefda6a71aaf2b12d0798abf449eaf18385acbbbfb50e50f7617688312325b2",
+        "bytes": 11023
+      },
+      "ownedProof": {
+        "sha256": "dcefda6a71aaf2b12d0798abf449eaf18385acbbbfb50e50f7617688312325b2",
+        "bytes": 11023
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "graphql_legacy_parity_initial.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/graphql_legacy_parity_initial.py",
+      "rawPrivate": {
+        "sha256": "5637b0ca248110d9a1258baef7ae03c77f6f0557c0c51c0f5eb34363970acf39",
+        "bytes": 10993
+      },
+      "ownedProof": {
+        "sha256": "5637b0ca248110d9a1258baef7ae03c77f6f0557c0c51c0f5eb34363970acf39",
+        "bytes": 10993
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "independent-final-audit.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/independent-final-audit.json",
+      "rawPrivate": {
+        "sha256": "00a82bbe82851a1ba2b19d714ca56fd6daf56ab9debda2d92609693c30f81ae8",
+        "bytes": 9197
+      },
+      "ownedProof": {
+        "sha256": "00a82bbe82851a1ba2b19d714ca56fd6daf56ab9debda2d92609693c30f81ae8",
+        "bytes": 9197
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "independent-published-audit.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/independent-published-audit.json",
+      "rawPrivate": {
+        "sha256": "7f890c7a44507205bb71f76fd5959c70b82f19ac584d497beafc7513cdc82568",
+        "bytes": 15219
+      },
+      "ownedProof": {
+        "sha256": "7f890c7a44507205bb71f76fd5959c70b82f19ac584d497beafc7513cdc82568",
+        "bytes": 15219
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "independent-release-final-audit.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/independent-release-final-audit.json",
+      "rawPrivate": {
+        "sha256": "c3b2a6791270e1c9fcae7d154ba58f6f85ae55e5cbb9c79bfb5db298edd55ef5",
+        "bytes": 15087
+      },
+      "ownedProof": {
+        "sha256": "c3b2a6791270e1c9fcae7d154ba58f6f85ae55e5cbb9c79bfb5db298edd55ef5",
+        "bytes": 15087
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "review-summary.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/review-summary.json",
+      "rawPrivate": {
+        "sha256": "c77ac1264f64f7cf1f553c6c15c950f276b70f75ace0889f128cff616f0536af",
+        "bytes": 2693
+      },
+      "ownedProof": {
+        "sha256": "c77ac1264f64f7cf1f553c6c15c950f276b70f75ace0889f128cff616f0536af",
+        "bytes": 2693
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "rightclick-self-use.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/rightclick-self-use.json",
+      "rawPrivate": {
+        "sha256": "dfc87e5020d1f1d9e7e01a16b934f7d15e037f1128b64c9ade93486c538f2aa8",
+        "bytes": 545
+      },
+      "ownedProof": {
+        "sha256": "dfc87e5020d1f1d9e7e01a16b934f7d15e037f1128b64c9ade93486c538f2aa8",
+        "bytes": 545
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/finalRelease/Sources/RightClickCore/BonjourGraphQLSource.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/finalRelease/Sources/RightClickCore/BonjourGraphQLSource.swift",
+      "rawPrivate": {
+        "sha256": "940b20fd5bb63fa07adb56923c91470f42cde9533a2498ffac9abe073eff1415",
+        "bytes": 22011
+      },
+      "ownedProof": {
+        "sha256": "940b20fd5bb63fa07adb56923c91470f42cde9533a2498ffac9abe073eff1415",
+        "bytes": 22011
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/finalRelease/Sources/RightClickCore/GraphQLHTTP.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/finalRelease/Sources/RightClickCore/GraphQLHTTP.swift",
+      "rawPrivate": {
+        "sha256": "1283c0594298e7f084d3cfd2dace43257749b3af10992ad170c31b77eed40a77",
+        "bytes": 13666
+      },
+      "ownedProof": {
+        "sha256": "1283c0594298e7f084d3cfd2dace43257749b3af10992ad170c31b77eed40a77",
+        "bytes": 13666
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/finalRelease/Sources/RightClickCore/GraphQLReflector.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/finalRelease/Sources/RightClickCore/GraphQLReflector.swift",
+      "rawPrivate": {
+        "sha256": "b3211c7ef3d1674d75af97e0d21f3e59082dd6637d28039207f3cc9cf9c1e09e",
+        "bytes": 63583
+      },
+      "ownedProof": {
+        "sha256": "b3211c7ef3d1674d75af97e0d21f3e59082dd6637d28039207f3cc9cf9c1e09e",
+        "bytes": 63583
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/finalRelease/Sources/RightClickMCP/Federation.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/finalRelease/Sources/RightClickMCP/Federation.swift",
+      "rawPrivate": {
+        "sha256": "691d1461fc4a96ed8b8660818b334c423640d49734a4cd30252936b0c6271e55",
+        "bytes": 28421
+      },
+      "ownedProof": {
+        "sha256": "691d1461fc4a96ed8b8660818b334c423640d49734a4cd30252936b0c6271e55",
+        "bytes": 28421
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/finalRelease/Sources/RightClickMCP/HTTPListener.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/finalRelease/Sources/RightClickMCP/HTTPListener.swift",
+      "rawPrivate": {
+        "sha256": "250b0d1d0790c8c9d991563a69a40494c21a658fdf34ab5ce6fb5f3dd231526a",
+        "bytes": 5971
+      },
+      "ownedProof": {
+        "sha256": "250b0d1d0790c8c9d991563a69a40494c21a658fdf34ab5ce6fb5f3dd231526a",
+        "bytes": 5971
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/finalRelease/Sources/RightClickMCP/Server.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/finalRelease/Sources/RightClickMCP/Server.swift",
+      "rawPrivate": {
+        "sha256": "35a22b27cb5c5b34eb25433e4de816a3b2d161d8f5ee848d751606ad7baf5172",
+        "bytes": 22847
+      },
+      "ownedProof": {
+        "sha256": "35a22b27cb5c5b34eb25433e4de816a3b2d161d8f5ee848d751606ad7baf5172",
+        "bytes": 22847
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/fixtures/federation-proof/openapi.json",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/fixtures/federation-proof/openapi.json",
+      "rawPrivate": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "ownedProof": {
+        "sha256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+        "bytes": 846
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/fixtures/federation-proof/result.txt",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/fixtures/federation-proof/result.txt",
+      "rawPrivate": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "ownedProof": {
+        "sha256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+        "bytes": 36
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/releaseCandidate/Sources/RightClickCore/BonjourGraphQLSource.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickCore/BonjourGraphQLSource.swift",
+      "rawPrivate": {
+        "sha256": "940b20fd5bb63fa07adb56923c91470f42cde9533a2498ffac9abe073eff1415",
+        "bytes": 22011
+      },
+      "ownedProof": {
+        "sha256": "940b20fd5bb63fa07adb56923c91470f42cde9533a2498ffac9abe073eff1415",
+        "bytes": 22011
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/releaseCandidate/Sources/RightClickCore/GraphQLHTTP.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickCore/GraphQLHTTP.swift",
+      "rawPrivate": {
+        "sha256": "1283c0594298e7f084d3cfd2dace43257749b3af10992ad170c31b77eed40a77",
+        "bytes": 13666
+      },
+      "ownedProof": {
+        "sha256": "1283c0594298e7f084d3cfd2dace43257749b3af10992ad170c31b77eed40a77",
+        "bytes": 13666
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/releaseCandidate/Sources/RightClickCore/GraphQLReflector.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickCore/GraphQLReflector.swift",
+      "rawPrivate": {
+        "sha256": "b3211c7ef3d1674d75af97e0d21f3e59082dd6637d28039207f3cc9cf9c1e09e",
+        "bytes": 63583
+      },
+      "ownedProof": {
+        "sha256": "b3211c7ef3d1674d75af97e0d21f3e59082dd6637d28039207f3cc9cf9c1e09e",
+        "bytes": 63583
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/releaseCandidate/Sources/RightClickMCP/Federation.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickMCP/Federation.swift",
+      "rawPrivate": {
+        "sha256": "691d1461fc4a96ed8b8660818b334c423640d49734a4cd30252936b0c6271e55",
+        "bytes": 28421
+      },
+      "ownedProof": {
+        "sha256": "691d1461fc4a96ed8b8660818b334c423640d49734a4cd30252936b0c6271e55",
+        "bytes": 28421
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/releaseCandidate/Sources/RightClickMCP/HTTPListener.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickMCP/HTTPListener.swift",
+      "rawPrivate": {
+        "sha256": "250b0d1d0790c8c9d991563a69a40494c21a658fdf34ab5ce6fb5f3dd231526a",
+        "bytes": 5971
+      },
+      "ownedProof": {
+        "sha256": "250b0d1d0790c8c9d991563a69a40494c21a658fdf34ab5ce6fb5f3dd231526a",
+        "bytes": 5971
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/releaseCandidate/Sources/RightClickMCP/Server.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickMCP/Server.swift",
+      "rawPrivate": {
+        "sha256": "35a22b27cb5c5b34eb25433e4de816a3b2d161d8f5ee848d751606ad7baf5172",
+        "bytes": 22847
+      },
+      "ownedProof": {
+        "sha256": "35a22b27cb5c5b34eb25433e4de816a3b2d161d8f5ee848d751606ad7baf5172",
+        "bytes": 22847
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/scripts/acceptance-federation.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/scripts/acceptance-federation.py",
+      "rawPrivate": {
+        "sha256": "2ea80922052ac166620ff7c4caa96210c5b4b7eeac19607bd5dd8c936dcb3f3c",
+        "bytes": 11699
+      },
+      "ownedProof": {
+        "sha256": "2ea80922052ac166620ff7c4caa96210c5b4b7eeac19607bd5dd8c936dcb3f3c",
+        "bytes": 11699
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/scripts/canonical-mcp-proof-client.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/scripts/canonical-mcp-proof-client.py",
+      "rawPrivate": {
+        "sha256": "adbd95214211cbfd9bce5aaab098fe15e199a122105685ddea516c4ae78f6470",
+        "bytes": 4539
+      },
+      "ownedProof": {
+        "sha256": "adbd95214211cbfd9bce5aaab098fe15e199a122105685ddea516c4ae78f6470",
+        "bytes": 4539
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/stable0.2.2/Sources/RightClickCore/BonjourGraphQLSource.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickCore/BonjourGraphQLSource.swift",
+      "rawPrivate": {
+        "sha256": "83f426a411066e701bef86eedecc8365a03a5de9ba3eac43b9045f502ec1931c",
+        "bytes": 21989
+      },
+      "ownedProof": {
+        "sha256": "83f426a411066e701bef86eedecc8365a03a5de9ba3eac43b9045f502ec1931c",
+        "bytes": 21989
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/stable0.2.2/Sources/RightClickCore/GraphQLHTTP.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickCore/GraphQLHTTP.swift",
+      "rawPrivate": {
+        "sha256": "617eb7ed97788f8e5a7edff09b1c735c54d1067e0e5c41c272e0e33de4b15cbb",
+        "bytes": 13239
+      },
+      "ownedProof": {
+        "sha256": "617eb7ed97788f8e5a7edff09b1c735c54d1067e0e5c41c272e0e33de4b15cbb",
+        "bytes": 13239
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/stable0.2.2/Sources/RightClickCore/GraphQLReflector.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickCore/GraphQLReflector.swift",
+      "rawPrivate": {
+        "sha256": "c3df26e7826d82084962f7b36beac7b5a1839b707d14b5c64a450deb7afe6c11",
+        "bytes": 61488
+      },
+      "ownedProof": {
+        "sha256": "c3df26e7826d82084962f7b36beac7b5a1839b707d14b5c64a450deb7afe6c11",
+        "bytes": 61488
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/stable0.2.2/Sources/RightClickMCP/Federation.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickMCP/Federation.swift",
+      "rawPrivate": {
+        "sha256": "9d8e98d88fa1a8a37577fb5861f45622c04ee4ed892622e2818d06cf3b1d97d0",
+        "bytes": 28350
+      },
+      "ownedProof": {
+        "sha256": "9d8e98d88fa1a8a37577fb5861f45622c04ee4ed892622e2818d06cf3b1d97d0",
+        "bytes": 28350
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/stable0.2.2/Sources/RightClickMCP/HTTPListener.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickMCP/HTTPListener.swift",
+      "rawPrivate": {
+        "sha256": "9335ccecc284050a0a9ca2928edcfb053706177330054577316743fbbcd13088",
+        "bytes": 8721
+      },
+      "ownedProof": {
+        "sha256": "9335ccecc284050a0a9ca2928edcfb053706177330054577316743fbbcd13088",
+        "bytes": 8721
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "source-snapshots/stable0.2.2/Sources/RightClickMCP/Server.swift",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickMCP/Server.swift",
+      "rawPrivate": {
+        "sha256": "f507ac5721a5d54b796f0f95eed68153d05ab0b91652bdae32425e34f3e0b88e",
+        "bytes": 21734
+      },
+      "ownedProof": {
+        "sha256": "f507ac5721a5d54b796f0f95eed68153d05ab0b91652bdae32425e34f3e0b88e",
+        "bytes": 21734
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "stable-vs-bd5-graphql-mcp-federation-source.patch",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/stable-vs-bd5-graphql-mcp-federation-source.patch",
+      "rawPrivate": {
+        "sha256": "902c72da192ef086bd82ce8fe663c44baa1e89ee31bdfbc238c2600bc8feedd7",
+        "bytes": 25670
+      },
+      "ownedProof": {
+        "sha256": "902c72da192ef086bd82ce8fe663c44baa1e89ee31bdfbc238c2600bc8feedd7",
+        "bytes": 25670
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "stable-vs-final-focused-scope.patch",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/stable-vs-final-focused-scope.patch",
+      "rawPrivate": {
+        "sha256": "902c72da192ef086bd82ce8fe663c44baa1e89ee31bdfbc238c2600bc8feedd7",
+        "bytes": 25670
+      },
+      "ownedProof": {
+        "sha256": "902c72da192ef086bd82ce8fe663c44baa1e89ee31bdfbc238c2600bc8feedd7",
+        "bytes": 25670
+      },
+      "projection": "byte-for-byte"
+    },
+    {
+      "file": "verify_owned_projection.py",
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/verify_owned_projection.py",
+      "rawPrivate": {
+        "sha256": "d4c56be7159db034f47fe17d668cd19749c48350b8430e61e3b375b4b0f6d4ed",
+        "bytes": 4748
+      },
+      "ownedProof": {
+        "sha256": "d4c56be7159db034f47fe17d668cd19749c48350b8430e61e3b375b4b0f6d4ed",
+        "bytes": 4748
+      },
+      "projection": "byte-for-byte"
+    }
+  ],
+  "omittedReferenceBodies": [
+    {
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/acceptance-graphql-typed-reference.py",
+      "rawPrivate": {
+        "sha256": "70062394a2f88a80d95b1aecca473f3a2f9f02424ab2939240a0f060e2eaf11f",
+        "bytes": 18705
+      },
+      "reason": "reference source extends beyond this owned proof; hash retained without unrelated body"
+    },
+    {
+      "privatePath": "/private/tmp/rightclick-graphql-mcp-federation-parity-independent-20261007/source-snapshots/prior-independent-catalogue-checker.py",
+      "rawPrivate": {
+        "sha256": "63f126404730b50ed2dbc5d6aa449bbb8cd70b26ac3645e4d458474399434366",
+        "bytes": 10073
+      },
+      "reason": "reference source extends beyond this owned proof; hash retained without unrelated body"
+    }
+  ]
+}

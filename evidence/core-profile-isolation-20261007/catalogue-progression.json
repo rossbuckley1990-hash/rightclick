@@ -1,0 +1,346 @@
+[
+  {
+    "run": "capture-red20",
+    "toolCount": 20,
+    "model": "gpt-6.1-sol",
+    "modelFacingTools": [
+      {
+        "namespace": "functions",
+        "name": "list_mcp_resources"
+      },
+      {
+        "namespace": "functions",
+        "name": "list_mcp_resource_templates"
+      },
+      {
+        "namespace": "functions",
+        "name": "read_mcp_resource"
+      },
+      {
+        "namespace": "functions",
+        "name": "request_user_input"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_runtime"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_inspect"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_actions"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_explain"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run_status"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_providers"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "followup_task"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "interrupt_agent"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "list_agents"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "send_message"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "spawn_agent"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "wait_agent"
+      },
+      {
+        "namespace": "mcp__node_repl",
+        "name": "js"
+      },
+      {
+        "namespace": "mcp__node_repl",
+        "name": "js_add_node_module_dir"
+      },
+      {
+        "namespace": "mcp__node_repl",
+        "name": "js_reset"
+      }
+    ],
+    "requestCatalogueSHA256": "ab0a2c7d7b5aa0a76c5a58e1aaea8b578f6b3a941c71d157b104857322de6f4d",
+    "inferencePerformed": false,
+    "status": "RED"
+  },
+  {
+    "run": "capture-red14",
+    "toolCount": 14,
+    "model": "gpt-6.1-sol",
+    "modelFacingTools": [
+      {
+        "namespace": "functions",
+        "name": "request_user_input"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_runtime"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_inspect"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_actions"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_explain"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run_status"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_providers"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "followup_task"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "interrupt_agent"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "list_agents"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "send_message"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "spawn_agent"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "wait_agent"
+      }
+    ],
+    "requestCatalogueSHA256": "ff3f0a20025b3048e8b8129bdc41b8d7faba2399d8e9129ae1f9ca59bebf7d96",
+    "inferencePerformed": false,
+    "status": "RED"
+  },
+  {
+    "run": "capture-red14-no-attachment",
+    "toolCount": 14,
+    "model": "gpt-6.1-sol",
+    "modelFacingTools": [
+      {
+        "namespace": "functions",
+        "name": "request_user_input"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_runtime"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_inspect"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_actions"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_explain"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run_status"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_providers"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "followup_task"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "interrupt_agent"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "list_agents"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "send_message"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "spawn_agent"
+      },
+      {
+        "namespace": "collaboration",
+        "name": "wait_agent"
+      }
+    ],
+    "requestCatalogueSHA256": "561ab6d70f8f5bc17b7fbba09552935c042c71639bf0243aaec1bf64f5c2c3ce",
+    "inferencePerformed": false,
+    "status": "RED"
+  },
+  {
+    "run": "capture-red8",
+    "toolCount": 8,
+    "model": "gpt-6.1-sol",
+    "modelFacingTools": [
+      {
+        "namespace": "functions",
+        "name": "request_user_input"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_runtime"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_inspect"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_actions"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_explain"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run_status"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_providers"
+      }
+    ],
+    "requestCatalogueSHA256": "653b68394de7a41b062b1ce2d5e5f380b4d4ee1ffd9cd55e09b631f02340bb63",
+    "inferencePerformed": false,
+    "status": "RED"
+  },
+  {
+    "run": "capture-red8-default-mode",
+    "toolCount": 8,
+    "model": "gpt-6.1-sol",
+    "modelFacingTools": [
+      {
+        "namespace": "functions",
+        "name": "request_user_input"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_runtime"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_inspect"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_actions"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_explain"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run_status"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_providers"
+      }
+    ],
+    "requestCatalogueSHA256": "ec3da6dec744ca6f0b035bfc363110ace300abc2d4d2a3061ae83e2d909c621b",
+    "inferencePerformed": false,
+    "status": "RED"
+  },
+  {
+    "run": "capture-thread-tool-config",
+    "toolCount": 7,
+    "model": "gpt-6.1-sol",
+    "modelFacingTools": [
+      {
+        "namespace": "functions",
+        "name": "context_runtime"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_inspect"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_actions"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_explain"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_run_status"
+      },
+      {
+        "namespace": "functions",
+        "name": "context_providers"
+      }
+    ],
+    "requestCatalogueSHA256": "a50a1cf5142e17e88d91884a96f36b783daa889e1ab00eecd0b738a537b308a5",
+    "inferencePerformed": false,
+    "status": "GREEN"
+  }
+]

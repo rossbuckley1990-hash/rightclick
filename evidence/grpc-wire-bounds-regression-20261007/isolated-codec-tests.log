@@ -1,0 +1,16 @@
+executed=6,failures=0
+Test Suite 'GRPCWireCodecBoundsTests' started at 2026-10-07 22:06:08.526.
+Test Case '-[main.GRPCWireCodecBoundsTests testEveryOverflowingTenthByteIsRejected]' started.
+Test Case '-[main.GRPCWireCodecBoundsTests testEveryOverflowingTenthByteIsRejected]' passed (0.004 seconds).
+Test Case '-[main.GRPCWireCodecBoundsTests testFullWidthVarintsRemainValid]' started.
+Test Case '-[main.GRPCWireCodecBoundsTests testFullWidthVarintsRemainValid]' passed (0.000 seconds).
+Test Case '-[main.GRPCWireCodecBoundsTests testLengthsLargerThanHostIntegerAreRejected]' started.
+Test Case '-[main.GRPCWireCodecBoundsTests testLengthsLargerThanHostIntegerAreRejected]' passed (0.000 seconds).
+Test Case '-[main.GRPCWireCodecBoundsTests testMaximumRepresentableLengthIsRejectedWithoutArithmeticTrap]' started.
+Test Case '-[main.GRPCWireCodecBoundsTests testMaximumRepresentableLengthIsRejectedWithoutArithmeticTrap]' passed (0.000 seconds).
+Test Case '-[main.GRPCWireCodecBoundsTests testTruncatedLengthAndPayloadAreRejected]' started.
+Test Case '-[main.GRPCWireCodecBoundsTests testTruncatedLengthAndPayloadAreRejected]' passed (0.000 seconds).
+Test Case '-[main.GRPCWireCodecBoundsTests testValidFieldsPreserveFollowingWireData]' started.
+Test Case '-[main.GRPCWireCodecBoundsTests testValidFieldsPreserveFollowingWireData]' passed (0.004 seconds).
+Test Suite 'GRPCWireCodecBoundsTests' passed at 2026-10-07 22:06:08.536.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.008 (0.009) seconds

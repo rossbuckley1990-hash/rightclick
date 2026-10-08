@@ -1,0 +1,92 @@
+[
+  {
+    "number": 11,
+    "title": "Separate portable runtime support from the Homebrew distribution adapter",
+    "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/pull/11",
+    "headRefName": "codex/portable-distribution",
+    "headRefOid": "91fa90f975008dc3ed03f6549a04b806786790bc",
+    "mergeStateStatus": "CLEAN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T14:31:27Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37637380733/job/112847039180",
+        "name": "distribution-invariants",
+        "startedAt": "2026-10-07T14:31:20Z",
+        "status": "COMPLETED",
+        "workflowName": "RIGHTCLICK distribution guard"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T14:33:54Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37637380644/job/112847039439",
+        "name": "test-bot (macos-26)",
+        "startedAt": "2026-10-07T14:31:53Z",
+        "status": "COMPLETED",
+        "workflowName": "brew test-bot"
+      }
+    ]
+  },
+  {
+    "number": 9,
+    "title": "Require independently pinned executable identity during package acceptance",
+    "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/pull/9",
+    "headRefName": "feature/rcir-artifact-pin-20261007",
+    "headRefOid": "374d157b9e45280637481c07432a35bad500518c",
+    "mergeStateStatus": "CLEAN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T12:26:52Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37621010690/job/112790994476",
+        "name": "unit",
+        "startedAt": "2026-10-07T12:26:37Z",
+        "status": "COMPLETED",
+        "workflowName": "Seven-operation probe tests (fixtures only)"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T12:28:56Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37621010695/job/112790989910",
+        "name": "test-bot (macos-26)",
+        "startedAt": "2026-10-07T12:26:43Z",
+        "status": "COMPLETED",
+        "workflowName": "brew test-bot"
+      }
+    ]
+  },
+  {
+    "number": 6,
+    "title": "docs: beautiful, evidence-led RIGHTCLICK installation and release guide",
+    "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/pull/6",
+    "headRefName": "docs/verified-adoption-20261007",
+    "headRefOid": "198b4046f22c7d22357e5c6c2907cd413d4f52ae",
+    "mergeStateStatus": "CLEAN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T10:00:16Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37604430551/job/112736362873",
+        "name": "distribution-invariants",
+        "startedAt": "2026-10-07T10:00:09Z",
+        "status": "COMPLETED",
+        "workflowName": "RIGHTCLICK distribution guard"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T10:02:48Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37604430720/job/112736362752",
+        "name": "test-bot (macos-26)",
+        "startedAt": "2026-10-07T10:00:15Z",
+        "status": "COMPLETED",
+        "workflowName": "brew test-bot"
+      }
+    ]
+  }
+]

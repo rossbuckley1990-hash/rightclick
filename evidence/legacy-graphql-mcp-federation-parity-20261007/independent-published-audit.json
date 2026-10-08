@@ -1,0 +1,378 @@
+{
+  "audit": "PASS_TESTED_LEGACY_GRAPHQL_MCP_FEDERATION_PARITY",
+  "results": {
+    "graphql-baseline": {
+      "audit": "PASS",
+      "runtime": {
+        "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+        "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+        "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+        "pid": 92329,
+        "product": "RIGHTCLICK",
+        "transport": "stdio",
+        "version": "0.2.2"
+      },
+      "nativeOperations": 2,
+      "nativeMutations": 1,
+      "results": [
+        {
+          "title": "GraphQL query: legacyParityEcho",
+          "state": "accepted",
+          "nativeCallCount": 1,
+          "challenge": "gql-parity-8e23ee34994d4f199c7c6260c6f2727c",
+          "retainedFullResultEqual": true,
+          "returnedJSONMatchesNative": true,
+          "independentFileEffect": null
+        },
+        {
+          "title": "GraphQL mutation: legacyParityRecord",
+          "state": "accepted",
+          "nativeCallCount": 1,
+          "challenge": "gql-parity-e8cf185e052d4dd6ad4f3541ef943cd8",
+          "retainedFullResultEqual": true,
+          "returnedJSONMatchesNative": true,
+          "independentFileEffect": {
+            "file": "/private/tmp/rightclick-legacy-parity-evidence-handoff-20261007/evidence/legacy-graphql-mcp-federation-parity-20261007/graphql-baseline-valid/effect-06f4ffb319f151aa8d769407a0705c033e5b623c51b26a09f8e34b03537ccf72.json",
+            "sha256": "b85ea5bf440a3bb0ce5c08c938cc566077a569cef123bda1f5cc1cf28b971a5d"
+          }
+        }
+      ],
+      "credentialPropagation": false,
+      "gatingZeroDispatchScope": "synchronous live harness count assertions retained in source; offline journal verifies total actual calls",
+      "externalTruth": "independent mutation file only; query echo and runtime acceptance are not external state proof"
+    },
+    "federation-baseline": {
+      "audit": "PASS",
+      "runtimes": [
+        {
+          "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+          "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+          "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+          "pid": 94427,
+          "product": "RIGHTCLICK",
+          "transport": "http",
+          "version": "0.2.2"
+        },
+        {
+          "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+          "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+          "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+          "pid": 94426,
+          "product": "RIGHTCLICK",
+          "transport": "http",
+          "version": "0.2.2"
+        }
+      ],
+      "federatedOrigin": "federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof",
+      "confirmation": "awaiting_user",
+      "acceptedState": "accepted/unverified",
+      "returnedTextPostcondition": "succeeded/VERIFIED_SUCCESS",
+      "retainedAfterWithdrawal": true,
+      "liveAppearanceWithdrawalWithoutRestart": true,
+      "HTTPMissingIncorrectCredentials": "four live 401 controls",
+      "independentSourceSHA256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+      "externalTruth": "separate immutable HTTPS source-byte correspondence only; VERIFIED_SUCCESS compares provider-returned text; upstream call count/headers not independently observed"
+    },
+    "graphql-candidate": {
+      "audit": "PASS",
+      "runtime": {
+        "agentABIProfiles": [
+          {
+            "id": "core",
+            "operations": [
+              "context_runtime",
+              "context_providers",
+              "context_inspect",
+              "context_actions",
+              "context_explain",
+              "context_run",
+              "context_run_status"
+            ],
+            "version": 1
+          }
+        ],
+        "executablePath": "/tmp/rightclick-parity-candidate-c61f0cb2",
+        "executableRealPath": "/tmp/rightclick-parity-candidate-c61f0cb2",
+        "executableSHA256": "c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12",
+        "pid": 92681,
+        "platform": "macOS",
+        "product": "RIGHTCLICK",
+        "transport": "stdio",
+        "version": "0.2.3"
+      },
+      "nativeOperations": 2,
+      "nativeMutations": 1,
+      "results": [
+        {
+          "title": "GraphQL query: legacyParityEcho",
+          "state": "accepted",
+          "nativeCallCount": 1,
+          "challenge": "gql-parity-0ed1588c45714525aeedc0fd39b557fb",
+          "retainedFullResultEqual": true,
+          "returnedJSONMatchesNative": true,
+          "independentFileEffect": null
+        },
+        {
+          "title": "GraphQL mutation: legacyParityRecord",
+          "state": "accepted",
+          "nativeCallCount": 1,
+          "challenge": "gql-parity-1f0477b4c92c47d6a5924920cf73f04a",
+          "retainedFullResultEqual": true,
+          "returnedJSONMatchesNative": true,
+          "independentFileEffect": {
+            "file": "/private/tmp/rightclick-legacy-parity-evidence-handoff-20261007/evidence/legacy-graphql-mcp-federation-parity-20261007/graphql-candidate-valid/effect-2ad0fae61798e958974bda89df2cfe18d241dea2b5155c9373df10a3e33c6a67.json",
+            "sha256": "33d9331b6a0fd4a973b2a00f7ef8a2166506df234f5e9627452ce97154925f5a"
+          }
+        }
+      ],
+      "credentialPropagation": false,
+      "gatingZeroDispatchScope": "synchronous live harness count assertions retained in source; offline journal verifies total actual calls",
+      "externalTruth": "independent mutation file only; query echo and runtime acceptance are not external state proof"
+    },
+    "federation-candidate": {
+      "audit": "PASS",
+      "runtimes": [
+        {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "executablePath": "/tmp/rightclick-parity-candidate-c61f0cb2",
+          "executableRealPath": "/tmp/rightclick-parity-candidate-c61f0cb2",
+          "executableSHA256": "c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12",
+          "pid": 95909,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "transport": "http",
+          "version": "0.2.3"
+        },
+        {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "executablePath": "/tmp/rightclick-parity-candidate-c61f0cb2",
+          "executableRealPath": "/tmp/rightclick-parity-candidate-c61f0cb2",
+          "executableSHA256": "c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12",
+          "pid": 95908,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "transport": "http",
+          "version": "0.2.3"
+        }
+      ],
+      "federatedOrigin": "federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof",
+      "confirmation": "awaiting_user",
+      "acceptedState": "accepted/unverified",
+      "returnedTextPostcondition": "succeeded/VERIFIED_SUCCESS",
+      "retainedAfterWithdrawal": true,
+      "liveAppearanceWithdrawalWithoutRestart": true,
+      "HTTPMissingIncorrectCredentials": "four live 401 controls",
+      "independentSourceSHA256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+      "externalTruth": "separate immutable HTTPS source-byte correspondence only; VERIFIED_SUCCESS compares provider-returned text; upstream call count/headers not independently observed"
+    },
+    "graphql-final-candidate": {
+      "audit": "PASS",
+      "runtime": {
+        "agentABIProfiles": [
+          {
+            "id": "core",
+            "operations": [
+              "context_runtime",
+              "context_providers",
+              "context_inspect",
+              "context_actions",
+              "context_explain",
+              "context_run",
+              "context_run_status"
+            ],
+            "version": 1
+          }
+        ],
+        "executablePath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+        "executableRealPath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+        "executableSHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+        "pid": 7748,
+        "platform": "macOS",
+        "product": "RIGHTCLICK",
+        "transport": "stdio",
+        "version": "0.2.3"
+      },
+      "nativeOperations": 2,
+      "nativeMutations": 1,
+      "results": [
+        {
+          "title": "GraphQL query: legacyParityEcho",
+          "state": "accepted",
+          "nativeCallCount": 1,
+          "challenge": "gql-parity-db82cccc322f41a3b5b8d5cbd32eba93",
+          "retainedFullResultEqual": true,
+          "returnedJSONMatchesNative": true,
+          "independentFileEffect": null
+        },
+        {
+          "title": "GraphQL mutation: legacyParityRecord",
+          "state": "accepted",
+          "nativeCallCount": 1,
+          "challenge": "gql-parity-8f0629522be24288b16fb0f0e96c4bd5",
+          "retainedFullResultEqual": true,
+          "returnedJSONMatchesNative": true,
+          "independentFileEffect": {
+            "file": "/private/tmp/rightclick-legacy-parity-evidence-handoff-20261007/evidence/legacy-graphql-mcp-federation-parity-20261007/graphql-final-candidate-valid/effect-c5adc7cc035061c88614a3e4bbf983152076a54037c529537b2e276da6f2afee.json",
+            "sha256": "3ac1db1db63aa3982ce89cf5ed463c3d84d2c126c150bbd7e0d2f59faaf22327"
+          }
+        }
+      ],
+      "credentialPropagation": false,
+      "gatingZeroDispatchScope": "synchronous live harness count assertions retained in source; offline journal verifies total actual calls",
+      "externalTruth": "independent mutation file only; query echo and runtime acceptance are not external state proof"
+    },
+    "federation-final-candidate": {
+      "audit": "PASS",
+      "runtimes": [
+        {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "executablePath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+          "executableRealPath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+          "executableSHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+          "pid": 7743,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "transport": "http",
+          "version": "0.2.3"
+        },
+        {
+          "agentABIProfiles": [
+            {
+              "id": "core",
+              "operations": [
+                "context_runtime",
+                "context_providers",
+                "context_inspect",
+                "context_actions",
+                "context_explain",
+                "context_run",
+                "context_run_status"
+              ],
+              "version": 1
+            }
+          ],
+          "executablePath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+          "executableRealPath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+          "executableSHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+          "pid": 7742,
+          "platform": "macOS",
+          "product": "RIGHTCLICK",
+          "transport": "http",
+          "version": "0.2.3"
+        }
+      ],
+      "federatedOrigin": "federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof",
+      "confirmation": "awaiting_user",
+      "acceptedState": "accepted/unverified",
+      "returnedTextPostcondition": "succeeded/VERIFIED_SUCCESS",
+      "retainedAfterWithdrawal": true,
+      "liveAppearanceWithdrawalWithoutRestart": true,
+      "HTTPMissingIncorrectCredentials": "four live 401 controls",
+      "independentSourceSHA256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+      "externalTruth": "separate immutable HTTPS source-byte correspondence only; VERIFIED_SUCCESS compares provider-returned text; upstream call count/headers not independently observed"
+    }
+  },
+  "comparisonsWithStable0.2.2": {
+    "candidate": {
+      "graphqlCatalogueCompatibility": {
+        "audit": "PASS",
+        "canonicalNamesAndOrderEqual": true,
+        "legacyPropertiesAndRequiredFieldsEqual": true,
+        "differences": [
+          {
+            "tool": "context_run",
+            "change": "optional contractSHA256 string property only"
+          }
+        ]
+      },
+      "httpFederationCatalogueCompatibility": {
+        "audit": "PASS",
+        "canonicalNamesAndOrderEqual": true,
+        "legacyPropertiesAndRequiredFieldsEqual": true,
+        "differences": [
+          {
+            "tool": "context_run",
+            "change": "optional contractSHA256 string property only"
+          }
+        ]
+      }
+    },
+    "final-candidate": {
+      "graphqlCatalogueCompatibility": {
+        "audit": "PASS",
+        "canonicalNamesAndOrderEqual": true,
+        "legacyPropertiesAndRequiredFieldsEqual": true,
+        "differences": [
+          {
+            "tool": "context_run",
+            "change": "optional contractSHA256 string property only"
+          }
+        ]
+      },
+      "httpFederationCatalogueCompatibility": {
+        "audit": "PASS",
+        "canonicalNamesAndOrderEqual": true,
+        "legacyPropertiesAndRequiredFieldsEqual": true,
+        "differences": [
+          {
+            "tool": "context_run",
+            "change": "optional contractSHA256 string property only"
+          }
+        ]
+      }
+    }
+  },
+  "verificationScope": "offline comparison of frozen artifacts; no signature verification, binary rebuild or fresh external action",
+  "legacyGraphQLReflectedContractEqual": true,
+  "exclusions": [
+    "new MCP descriptor substrate",
+    "new typed/stream features",
+    "issuer authority or downscoping",
+    "fresh restricted AI",
+    "all eleven substrates",
+    "every protocol version/capability/platform",
+    "shipping"
+  ]
+}

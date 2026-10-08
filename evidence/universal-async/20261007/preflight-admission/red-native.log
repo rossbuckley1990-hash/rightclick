@@ -1,0 +1,39 @@
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/13] Write sources
+[3/13] Write swift-version--58304C5D6DBC2206.txt
+[5/7] Emitting module RightClickCoreTests
+[6/7] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[6/8] Write Objects.LinkFileList
+[7/8] Linking rightclick-mcpPackageTests
+Build complete! (2.72s)
+Test Suite 'Selected tests' started at 2026-10-07 14:38:55.542.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 14:38:55.543.
+Test Suite 'CapabilityInterfaceTests' started at 2026-10-07 14:38:55.543.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:97: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertEqual failed: ("Optional(true)") is not equal to ("Optional(false)")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:100: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertFalse failed
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:97: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertEqual failed: ("Optional(true)") is not equal to ("Optional(false)")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:98: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertEqual failed: ("Optional("succeeded")") is not equal to ("Optional("unverified")")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:99: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertFalse failed
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:100: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertFalse failed
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:101: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertEqual failed: ("succeeded") is not equal to ("unknown")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:102: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertEqual failed: ("1") is not equal to ("0")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:97: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertEqual failed: ("Optional(true)") is not equal to ("Optional(false)")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:98: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertEqual failed: ("Optional("succeeded")") is not equal to ("Optional("unverified")")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:99: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertFalse failed
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:100: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertFalse failed
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:101: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertEqual failed: ("succeeded") is not equal to ("unknown")
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:102: error: -[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess] : XCTAssertEqual failed: ("1") is not equal to ("0")
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess]' failed (0.240 seconds).
+Test Suite 'CapabilityInterfaceTests' failed at 2026-10-07 14:38:55.783.
+	 Executed 1 test, with 14 failures (0 unexpected) in 0.240 (0.240) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' failed at 2026-10-07 14:38:55.783.
+	 Executed 1 test, with 14 failures (0 unexpected) in 0.240 (0.240) seconds
+Test Suite 'Selected tests' failed at 2026-10-07 14:38:55.783.
+	 Executed 1 test, with 14 failures (0 unexpected) in 0.240 (0.241) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

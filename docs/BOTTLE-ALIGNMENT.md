@@ -28,7 +28,7 @@ python3 scripts/detect-bottle-alignment.py --compare --bottle dist/rightclick-0.
 python3 scripts/detect-bottle-alignment.py --compare --bottle v0.2.1
 ```
 
-CI runs `--compare` on macOS so substrate drift fails closed.
+CI runs `--compare` in a separate macOS check so public substrate drift fails closed. Candidate tests independently require alignment with their local deterministic source archive. The candidate may be tagged only after its complete native/source/provider/package gates pass; its PR remains unmerged until the published asset, reviewed tap, matching bottle, fresh installation and public alignment pass. See [RELEASE.md](RELEASE.md) for this staging order.
 
 ## Kind catalogue
 

@@ -1,0 +1,530 @@
+{
+  "sourceHEAD": "b819d4e28d47e8c2c100e85a0751452ccf6da654",
+  "remoteMain": "33fc2c33f70445e47104c4e8abc0d91987ec2b4e",
+  "binarySHA256": "9d4b1fa21b6f3a4e6eef43b72a0b0aa2d507aa0cd0236bba781fcad4bcd9f46d",
+  "sources": [
+    {
+      "path": "Package.swift",
+      "sha256": "9c5cb61e7088911eae476014e0487e782f4f313f0316b86fb78f99940cb56b69",
+      "bytes": 6085
+    },
+    {
+      "path": "Sources/RightClickARD/ARD.swift",
+      "sha256": "e07e7282644ca1ccb6b037e470e5af911bdb8c5219307dd1b2932d9b4e941617",
+      "bytes": 10901
+    },
+    {
+      "path": "Sources/RightClickARDProbe/main.swift",
+      "sha256": "f3e076b296e943a162806fdb9ff9d67d0055ac16de9268161c0c3ee9c1b9b5f5",
+      "bytes": 7661
+    },
+    {
+      "path": "Sources/RightClickCLI/AuthorityConfigurationCLI.swift",
+      "sha256": "ca3931efbd1269f789389ad39d599a234688f31006d0f6ac6e3d9fe6aa48c1fc",
+      "bytes": 10999
+    },
+    {
+      "path": "Sources/RightClickCLI/BridgeRuntime.swift",
+      "sha256": "cfd779e0d573da96128d8653c58b763cc3236424590d2f66c8e0e6fb3fa845a7",
+      "bytes": 31047
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTBridge.swift",
+      "sha256": "04fed3e8c527d0378b62b62503d038ad2ed3bccd5558d5b40a136677204e7f73",
+      "bytes": 9703
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTBridgeInstaller.swift",
+      "sha256": "85626ccc5625b4e09d955555be24ff716cc87788649bbef9630cfed735fb081a",
+      "bytes": 12238
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTLiveAttestation.swift",
+      "sha256": "d5a77ab154365a8a3d6a9693030f7531b04cb8a6635488cef753209346e1aa72",
+      "bytes": 15842
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTOnboarding.swift",
+      "sha256": "73e5e8bdce180891e1eabccce7bd0b0e1c539f18ce2371de6253db8992080d23",
+      "bytes": 16486
+    },
+    {
+      "path": "Sources/RightClickCLI/ChatGPTOnboardingTransaction.swift",
+      "sha256": "98d3e8b4952d6939cee9a32d1f5b67a5dbf85ab6bdc8580625a11d63e92cd01c",
+      "bytes": 13173
+    },
+    {
+      "path": "Sources/RightClickCLI/ClaudeClientAdapter.swift",
+      "sha256": "f6307f188878256c9ab9aeefb237c1a39fc9c126abb6c16a678b567b3b04bfc9",
+      "bytes": 6221
+    },
+    {
+      "path": "Sources/RightClickCLI/ClientRegistry.swift",
+      "sha256": "af59cd64f15689f80b332ca1140420e7fde27f547db60de6d6f07feac5a9a057",
+      "bytes": 809
+    },
+    {
+      "path": "Sources/RightClickCLI/CodexClientAdapter.swift",
+      "sha256": "19480c7b9021651d9589938dcccb013197b10b4a9f995ee1db743dcc6bf7a9ad",
+      "bytes": 8049
+    },
+    {
+      "path": "Sources/RightClickCLI/LocalOnboarding.swift",
+      "sha256": "9cd4f792ce97134ca5bb5a4bde3983e6c2c2932503fa9ae2497d3a98e7762df6",
+      "bytes": 28971
+    },
+    {
+      "path": "Sources/RightClickCLI/NativeRegistrationBackend.swift",
+      "sha256": "a3535d9f8aab12411133aae5257502979a1934f20f9545ef119219be05e49222",
+      "bytes": 15085
+    },
+    {
+      "path": "Sources/RightClickCLI/OnboardingEngine.swift",
+      "sha256": "fa8329c7264555d708e3a5640c581a4a62b993016bf296eadb14ec27ba0275fd",
+      "bytes": 22673
+    },
+    {
+      "path": "Sources/RightClickCLI/OpenAIPluginSetup.swift",
+      "sha256": "742d751248116beb1f1a9371b1fe5097a2cfd6b2b4ae37d439c71c27206a307e",
+      "bytes": 8471
+    },
+    {
+      "path": "Sources/RightClickCLI/ProviderConfigurationCLI.swift",
+      "sha256": "bc4ff123105e391486cf5d58ee0ca164a2381dc24944d26ddebc4b7747deb3bb",
+      "bytes": 10731
+    },
+    {
+      "path": "Sources/RightClickCLI/Setup.swift",
+      "sha256": "4879d2844bd80eaabb4e4c177603d0d8cd37cb448a1980bdd065841b2bb32a04",
+      "bytes": 14804
+    },
+    {
+      "path": "Sources/RightClickCLI/SetupAllTransaction.swift",
+      "sha256": "4cfcc4e73a971bbd19fe5d66ae487e568f6226457955298017dba34bbcfc67b8",
+      "bytes": 5492
+    },
+    {
+      "path": "Sources/RightClickCLI/SetupState.swift",
+      "sha256": "d8fc3f4741e12e32174a3a08b077fadb50c9257d9b8bd3c601a8955151977266",
+      "bytes": 6757
+    },
+    {
+      "path": "Sources/RightClickCLI/StableEntrypoint.swift",
+      "sha256": "3f019cf8e18f81d9cda2b14e37b1134945e9bcb4de0b7d6bc4048fa4efa4c068",
+      "bytes": 4034
+    },
+    {
+      "path": "Sources/RightClickCLI/main.swift",
+      "sha256": "2265bc507a934d17ffdf4d44b6e6303bfbcc9c27194de1248774ecc6389b9c71",
+      "bytes": 14335
+    },
+    {
+      "path": "Sources/RightClickCore/A2AReflector.swift",
+      "sha256": "c357822fd0e900f6aadc80285fad980b5f736d9e62ab539e1026b399aaac2e21",
+      "bytes": 11788
+    },
+    {
+      "path": "Sources/RightClickCore/ARDRegistrySource.swift",
+      "sha256": "ff392711946bc7dc90837b787de79179741a1a06c6acfb644b67449a600ee288",
+      "bytes": 20798
+    },
+    {
+      "path": "Sources/RightClickCore/ActionExtensionCatalog.swift",
+      "sha256": "04dedc4abda3512dd7cc847174973348f3b1a73180b135cd303bd5686feddbed",
+      "bytes": 7858
+    },
+    {
+      "path": "Sources/RightClickCore/BonjourGRPCSource.swift",
+      "sha256": "b348a26a0ff03e155eeab1739895ae0e8c28908264973f9d9feacdb576fd0d4b",
+      "bytes": 14597
+    },
+    {
+      "path": "Sources/RightClickCore/BonjourGraphQLSource.swift",
+      "sha256": "940b20fd5bb63fa07adb56923c91470f42cde9533a2498ffac9abe073eff1415",
+      "bytes": 22011
+    },
+    {
+      "path": "Sources/RightClickCore/BonjourOpenAPISource.swift",
+      "sha256": "6c02e1350ecc88bde68e32f58cb19332bf294e79458a01c3402015e6191973c4",
+      "bytes": 19555
+    },
+    {
+      "path": "Sources/RightClickCore/BoundedCapabilityProcess.swift",
+      "sha256": "d0ddd4401cc070365f69e1c3868148578fc9bcb25e6aebbf222f788a96c4df51",
+      "bytes": 5267
+    },
+    {
+      "path": "Sources/RightClickCore/BundleScan.swift",
+      "sha256": "b188140b91dfd98cda035a1da54fcb7bb9427fcd57e4f2e485906a1ce13e38ac",
+      "bytes": 4571
+    },
+    {
+      "path": "Sources/RightClickCore/Capability.swift",
+      "sha256": "cc973e96b984c506acf4d532a83226d304ac0736d78388dfb9d8de6209eee0fd",
+      "bytes": 18328
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityABI.swift",
+      "sha256": "de98d9495c316cc4a8a73ed7d313bc73baf8cbded0f30ddcd11bd8ba1410368a",
+      "bytes": 21547
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityABIAdapter.swift",
+      "sha256": "1f767384f537fa349e0b31bf8d8a62d1fac916da9f9a3d8cbcb0f859ab2fb50a",
+      "bytes": 2761
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityArgumentPreflight.swift",
+      "sha256": "19a8e2a5a61a929a36160c222d391e72e74d670b27a4c2e3ba7c20ce422f7051",
+      "bytes": 3525
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityArtifactResolver.swift",
+      "sha256": "bc57a4ccf6e013f8f8dca04c64b5f99f86fde6ff8c9e70d9574b65fdd58c24c7",
+      "bytes": 25249
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityArtifactSnapshot.swift",
+      "sha256": "b08b0e1a879b6251a5ecea93a9f5f793b5b6ae54adde99a1f3c2147a89c057df",
+      "bytes": 5801
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityCoreArgumentEncoding.swift",
+      "sha256": "3519820b5ebeb3d6710bb076e674bdb24ea9f3198e0ab6d81706f4fbecd2ee88",
+      "bytes": 1288
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityEffectAssessment.swift",
+      "sha256": "480e244412793e70514128bab4d8573244a624902410ee37c6728a3ca14761b1",
+      "bytes": 3514
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityEngine.swift",
+      "sha256": "e53d703fa0b8c7ccd5df47fa8536f8477d1ab91f417d948b7739f37c744dae0b",
+      "bytes": 39659
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityExperience.swift",
+      "sha256": "73dfbe12605e956e109513f49639529d0698c6d6a0c38b5b5146a1903583da0c",
+      "bytes": 5395
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityExperienceLedger.swift",
+      "sha256": "69bc0d7c19d29ddb1f1adc3f079cadba6144b9ae01c443cb1f8f493a699eb6c4",
+      "bytes": 9916
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityInterface.swift",
+      "sha256": "157f0edc0d84bc392b7aca6956008802b25aed99887f3f6dd044b91120af77a0",
+      "bytes": 13356
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityProtectedReference.swift",
+      "sha256": "52e32f1882e89da73280d5d104fc822a00ba6a0ae10520272fe07523bd752b34",
+      "bytes": 708
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityReflector.swift",
+      "sha256": "d8b01038448cdd43e7807de58ba1b1602b33e059f65836003e420d726b14625c",
+      "bytes": 9457
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityReflectorSource.swift",
+      "sha256": "784f3eab45d5ae7ddfc567639640fdc67e95972d485847ac532aaa3795e38a64",
+      "bytes": 1312
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilityRuntimeDefaults.swift",
+      "sha256": "d4c22102faea2e6a6826c727bc96a36d9c6c74e1cad04f56b0e00d44662ed028",
+      "bytes": 2694
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilitySelection.swift",
+      "sha256": "99dc9e3a11ef31e6ca57026a0b180879c32a932ed3cb2152324daea4625dbecc",
+      "bytes": 3862
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilitySensitiveMaterial.swift",
+      "sha256": "dc25e83533eaf7609827de558145de19e95b59e1e96f81411782ef6ae433e7e9",
+      "bytes": 1942
+    },
+    {
+      "path": "Sources/RightClickCore/CapabilitySnapshotFreshness.swift",
+      "sha256": "791683a0844e2adc2baf5d4e2b8b44b5494348509232ed452419fd0643523019",
+      "bytes": 950
+    },
+    {
+      "path": "Sources/RightClickCore/ConfiguredOpenAPISource.swift",
+      "sha256": "51722991806115317ed061f78fcec18d782cc9e9cb334b175aa16d8c06615d94",
+      "bytes": 27619
+    },
+    {
+      "path": "Sources/RightClickCore/ContentItem.swift",
+      "sha256": "f9631387fe8369b699ff2a8d8d6a2d1a3744a6bb0ba4e0059e8d180bcd87530b",
+      "bytes": 5356
+    },
+    {
+      "path": "Sources/RightClickCore/DBusCapabilityArtifactResolver.swift",
+      "sha256": "070b97058390b2181737c399f4eb19a0505942936f0a3bd0fa3c3d2032c7ab6f",
+      "bytes": 14430
+    },
+    {
+      "path": "Sources/RightClickCore/DBusIntrospection.swift",
+      "sha256": "f0b367d519373d6d3ef097c5f6efe039450efa5233b9b7822ec4ceb342e8e83f",
+      "bytes": 11266
+    },
+    {
+      "path": "Sources/RightClickCore/DBusSessionSource.swift",
+      "sha256": "6766b08926366f6c07a4e4e82b4766ee1e7476f522235fef5ad41f90a6b900c0",
+      "bytes": 2040
+    },
+    {
+      "path": "Sources/RightClickCore/GRPCReflectionTransport.swift",
+      "sha256": "22e90e7c32cf2ea201fdb3a6327cc23966cf10d88c5d484fdb49fa0973c3c523",
+      "bytes": 22529
+    },
+    {
+      "path": "Sources/RightClickCore/GRPCReflector.swift",
+      "sha256": "5a247a94a05f4143b73d021218ed2c20cfb623ee03af5e0128454b0d8974af3d",
+      "bytes": 60146
+    },
+    {
+      "path": "Sources/RightClickCore/GRPCWireCodec.swift",
+      "sha256": "09a3bf2620ff85beb881adf4c95dc07218ebdf41ab3808bd920b9031572dd0cd",
+      "bytes": 7280
+    },
+    {
+      "path": "Sources/RightClickCore/GraphQLHTTP.swift",
+      "sha256": "1283c0594298e7f084d3cfd2dace43257749b3af10992ad170c31b77eed40a77",
+      "bytes": 13666
+    },
+    {
+      "path": "Sources/RightClickCore/GraphQLReflector.swift",
+      "sha256": "b3211c7ef3d1674d75af97e0d21f3e59082dd6637d28039207f3cc9cf9c1e09e",
+      "bytes": 63583
+    },
+    {
+      "path": "Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift",
+      "sha256": "2b70054d0f04c1875a3b12c099fef1c595925fc38b830139ae5f4f71d5bb38de",
+      "bytes": 13837
+    },
+    {
+      "path": "Sources/RightClickCore/KubernetesCapabilityArtifactResolver.swift",
+      "sha256": "b8579411e9b43e02afa4cd2eb7e931ec90aba764d4647c3cd50845a4d4164bfd",
+      "bytes": 17525
+    },
+    {
+      "path": "Sources/RightClickCore/MCPCapabilityArtifactResolver.swift",
+      "sha256": "29bf0a67db3f1520d81510567dcf5e769373e89bbc789ff87a9b66c9febf46e4",
+      "bytes": 8543
+    },
+    {
+      "path": "Sources/RightClickCore/OAuthOIDCAuthority.swift",
+      "sha256": "94cd6348817cb002f40ff90ce87c1e5444a27bc0ff1fb8d2841dfb8f8838ed6a",
+      "bytes": 21346
+    },
+    {
+      "path": "Sources/RightClickCore/OpenAPIAuthority.swift",
+      "sha256": "18371da862d8170d8e6d0debd92de207ab5d4483e3e292534f29a6160dc980ea",
+      "bytes": 11017
+    },
+    {
+      "path": "Sources/RightClickCore/OpenAPIReflector.swift",
+      "sha256": "506155f0b45701044553bc7f96170b582e21cfe4c9bf70c1e873c4a7a9dfe038",
+      "bytes": 113609
+    },
+    {
+      "path": "Sources/RightClickCore/OriginPinnedHTTP.swift",
+      "sha256": "dc95771515189e0642fa5f9986a5b7816b5e098872b496968f1eda6341d15e22",
+      "bytes": 15679
+    },
+    {
+      "path": "Sources/RightClickCore/OutcomeVerifier.swift",
+      "sha256": "8b8918706e865c58f5c55729518ee81f45593e3ad9ab0b87c4965c086e4d75fa",
+      "bytes": 23400
+    },
+    {
+      "path": "Sources/RightClickCore/ProductSurface.swift",
+      "sha256": "0dc8240685887b37a087c74549f355faf4f0a0d40fbb5a0bbd7feb7a5e831267",
+      "bytes": 8493
+    },
+    {
+      "path": "Sources/RightClickCore/RCIR.swift",
+      "sha256": "05bcf76000f59ea24b6cd8b5dbbc130d8f812bdef19b0fd57837ff5f0ab16563",
+      "bytes": 40394
+    },
+    {
+      "path": "Sources/RightClickCore/RCIRAuthority.swift",
+      "sha256": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70",
+      "bytes": 13808
+    },
+    {
+      "path": "Sources/RightClickCore/RCIRDeferredExecution.swift",
+      "sha256": "062130fbc6e30428c71e345b05534cbe9f2e6be649e7cc5fcc78d59f1bf410d7",
+      "bytes": 6972
+    },
+    {
+      "path": "Sources/RightClickCore/RCIRExecutionHost.swift",
+      "sha256": "a36d84d7629adf080114e3df19c1421b9ef255c4245486d572217834cfd87c9e",
+      "bytes": 32647
+    },
+    {
+      "path": "Sources/RightClickCore/RCIRHTTPObservation.swift",
+      "sha256": "ad38ba58c6b648c8aa39f9f90146280f718c7f64c3fd27af065c2a07b1c32244",
+      "bytes": 7819
+    },
+    {
+      "path": "Sources/RightClickCore/RCIRHostObservation.swift",
+      "sha256": "be56bfd1885773fae17bb4c04041c8110055f18ecc6fad3d425c4ca3c6ed7209",
+      "bytes": 622
+    },
+    {
+      "path": "Sources/RightClickCore/RCIRProvisionedSigner.swift",
+      "sha256": "2b8485de4d0c6f694c9c88952c3ab8f1fd324fcca1a612ce44d69281595764d9",
+      "bytes": 1684
+    },
+    {
+      "path": "Sources/RightClickCore/RCIRSignedReceipt.swift",
+      "sha256": "5322e7aa3ee7dc6244c2006fba8090152da6ae568903f0710fbe988c3a552f6b",
+      "bytes": 4238
+    },
+    {
+      "path": "Sources/RightClickCore/RCIRUnaryInvocation.swift",
+      "sha256": "61a0e854818a24e956eff2f26380d47d7f8f6f0a8856353896c2c55b96206c67",
+      "bytes": 3646
+    },
+    {
+      "path": "Sources/RightClickCore/RuntimePlatform.swift",
+      "sha256": "47485af96b9c80de5d0aa95750da8abf09d7e76ee4fe4799ae71c69323818036",
+      "bytes": 3426
+    },
+    {
+      "path": "Sources/RightClickCore/SafetyPolicy.swift",
+      "sha256": "396ef2d7410b3c4e76190a6d8b857d3264fad3e23658f032a48ab1e39f5f8e7f",
+      "bytes": 2528
+    },
+    {
+      "path": "Sources/RightClickCore/ServiceCatalog.swift",
+      "sha256": "330d7071805abdbfa3f29deace863f8ade861d1e24c8d375ebf3f6f29ae7344e",
+      "bytes": 20093
+    },
+    {
+      "path": "Sources/RightClickCore/ServiceContext.swift",
+      "sha256": "744901505ecb5d8cdf52a9af6cace595303d0ba163acef0ac77c3da99ad7f865",
+      "bytes": 4193
+    },
+    {
+      "path": "Sources/RightClickCore/ServiceOutcome.swift",
+      "sha256": "457413ac2012a8d0facf878b2404a280587cb83f02143a9d2e42d07bdca2a1d9",
+      "bytes": 2708
+    },
+    {
+      "path": "Sources/RightClickCore/SharingCatalog.swift",
+      "sha256": "2f49444150bb339f597ff10b7e6ec2e7d4c46c3adcdcaec9a66c0c7b591d945d",
+      "bytes": 10116
+    },
+    {
+      "path": "Sources/RightClickCore/SharingExecutionModel.swift",
+      "sha256": "cf96729ee6822b7a9473b16df9839eb4a0c77cd70b795a03eab8a82fa41c8d83",
+      "bytes": 3275
+    },
+    {
+      "path": "Sources/RightClickCore/WASMCapabilityArtifactResolver.swift",
+      "sha256": "1c7d87fd966fcd25c49966b3fad5887eb498dd513f35ca82a017b40efabb2e5f",
+      "bytes": 7057
+    },
+    {
+      "path": "Sources/RightClickHostFiles/HostFiles.c",
+      "sha256": "b3d86e0e05accc95518596b4ae06b89242e2dd11ef7f273fa4487064c577da73",
+      "bytes": 18943
+    },
+    {
+      "path": "Sources/RightClickHostFiles/include/RightClickHostFiles.h",
+      "sha256": "0cd58ab9b5fba5f46692491521e0848dd1827213b2038f13f11feb37bd5f7ef3",
+      "bytes": 934
+    },
+    {
+      "path": "Sources/RightClickMCP/Federation.swift",
+      "sha256": "691d1461fc4a96ed8b8660818b334c423640d49734a4cd30252936b0c6271e55",
+      "bytes": 28421
+    },
+    {
+      "path": "Sources/RightClickMCP/HTTPListener.swift",
+      "sha256": "250b0d1d0790c8c9d991563a69a40494c21a658fdf34ab5ce6fb5f3dd231526a",
+      "bytes": 5971
+    },
+    {
+      "path": "Sources/RightClickMCP/ModernMCPStdioTransport.swift",
+      "sha256": "2d872111ff19ed8b67d2e42cafdf8241f773ba4c1934df417e1a1e3ec0a6b193",
+      "bytes": 7751
+    },
+    {
+      "path": "Sources/RightClickMCP/PortableStdioTransport.swift",
+      "sha256": "6b9099cfcbd821beb7a5355f8462674529b97e555f0044974fd43e97e057e933",
+      "bytes": 2781
+    },
+    {
+      "path": "Sources/RightClickMCP/Server.swift",
+      "sha256": "6e99ad2bdad18c889f63f8d1749bfbb0c494e441918c59d1be1df499bfc75960",
+      "bytes": 22820
+    },
+    {
+      "path": "Sources/RightClickMarker/main.swift",
+      "sha256": "25f8ff11c81bfee9d54c2c4d80c8925007eb3df0b5ee71a1d702ceca9fa8e892",
+      "bytes": 923
+    },
+    {
+      "path": "Sources/RightClickProbe/main.swift",
+      "sha256": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a",
+      "bytes": 62851
+    },
+    {
+      "path": "Sources/RightClickProbePrivate/RCPrivateExtensionProbe.m",
+      "sha256": "945cf0b4ff819def05f2fa45e447616cc6e907373c8a30eec3f41ede05ea8a62",
+      "bytes": 3502
+    },
+    {
+      "path": "Sources/RightClickProbePrivate/include/RCPrivateExtensionProbe.h",
+      "sha256": "b6302734f921c9876304f72f0e20776ebaf455432382581602776121d38584a7",
+      "bytes": 647
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityArgumentPreflightTests.swift",
+      "sha256": "80678ddd1d3940bd503eaaba591779790f1f687d1e6da9e9749a6891bc5985bb",
+      "bytes": 3764
+    },
+    {
+      "path": "Tests/RightClickCoreTests/ExecutionPreflightIntegrationTests.swift",
+      "sha256": "a4a6d407466ee33ce547dfe197728b9370a029b6e03204027dd93868e0b7d155",
+      "bytes": 7177
+    },
+    {
+      "path": "Tests/RightClickCoreTests/SemanticPreflightFixtures.swift",
+      "sha256": "ff60f7705cdfc6471288c3e376a117ac8432a2d2150e311d7acae9e44c86b602",
+      "bytes": 906
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilitySelectionTests.swift",
+      "sha256": "35fa9fb8821723a12b76fd3b756ac6a585c035e02678ae6721193ef3ddad69a1",
+      "bytes": 5429
+    },
+    {
+      "path": "Tests/RightClickCoreTests/CapabilityEffectAssessmentTests.swift",
+      "sha256": "f1ef2dfbcdd8ae618a506b30dcd565a19f403af2f8f9ac502952ff974a5ba487",
+      "bytes": 4852
+    },
+    {
+      "path": "scripts/acceptance-semantic-preflight.py",
+      "sha256": "8c311d3b206f70313e7850543ed89e7deb69f6ae7bd273907d2bb9a1a55132df",
+      "bytes": 14532
+    },
+    {
+      "path": "scripts/acceptance_contract_pin_import.py",
+      "sha256": "4c01cc4cbd65474b4b3b608a1345daea8918c3ed35ad7d5de3dc0d858373acac",
+      "bytes": 367
+    }
+  ],
+  "redTestsExecuted": 111,
+  "redAssertionFailures": 16,
+  "scope": "Fresh recovered PR49+PR53 source; helper candidates transplanted, Engine/Server not integrated. Selection/argument-first RED. Original mirrored pre-loss raw log is missing, surviving original command records are separate."
+}

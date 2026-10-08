@@ -1,0 +1,83 @@
+name: v0.2.3 exact-head validation
+
+on:
+  push:
+    branches:
+      - validation/v0.2.3-exact-head-20261008
+    paths:
+      - .github/workflows/v023-exact-head-validation.yml
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    name: Exact-head macOS
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: d063fa35f8507adec9ea0c584f7fb96fd9822c3e
+          fetch-depth: 0
+      - name: Assert exact candidate
+        run: test "$(git rev-parse HEAD)" = "d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+      - name: Swift tests
+        run: swift test
+      - name: Release build
+        run: swift build -c release
+      - name: Cleanup policy regressions
+        run: python3 scripts/ci/queue_cleanup_policy.py --self-test
+      - name: Working tree remains clean
+        run: git diff --exit-code
+
+  linux:
+    name: Exact-head Linux
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: d063fa35f8507adec9ea0c584f7fb96fd9822c3e
+          fetch-depth: 0
+      - name: Assert exact candidate
+        run: test "$(git rev-parse HEAD)" = "d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+      - name: Swift tests
+        run: swift test
+      - name: Release build
+        run: swift build -c release
+      - name: Cleanup policy regressions
+        run: python3 scripts/ci/queue_cleanup_policy.py --self-test
+      - name: Working tree remains clean
+        run: git diff --exit-code
+
+  evidence:
+    name: Publish durable validation evidence
+    if: always()
+    needs: [macos, linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: validation/v0.2.3-exact-head-20261008
+          fetch-depth: 0
+      - name: Record result
+        env:
+          MACOS_RESULT: ${{ needs.macos.result }}
+          LINUX_RESULT: ${{ needs.linux.result }}
+        run: |
+          set -euo pipefail
+          mkdir -p validation-results
+          result=FAIL
+          if [ "$MACOS_RESULT" = "success" ] && [ "$LINUX_RESULT" = "success" ]; then result=PASS; fi
+          cat > validation-results/v0.2.3-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt <<EOF
+          candidate=d063fa35f8507adec9ea0c584f7fb96fd9822c3e
+          macos=$MACOS_RESULT
+          linux=$LINUX_RESULT
+          result=$result
+          EOF
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add validation-results/v0.2.3-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt
+          git commit -m "validation(v0.2.3): $result exact head d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+          git push origin HEAD:validation/v0.2.3-exact-head-20261008

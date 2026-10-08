@@ -1,0 +1,314 @@
+warning: 'rightclick-universal': found 4 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/InstalledRuntime022Identity.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/16] Write sources
+[4/16] Write swift-version--58304C5D6DBC2206.txt
+[6/13] Emitting module RightClickCore
+[7/13] Compiling RightClickCore RCIRDeferredExecution.swift
+[8/13] Compiling RightClickCore RCIRExecutionHost.swift
+[9/15] Compiling RightClickCore RCIRProvisionedSigner.swift
+[10/15] Compiling RightClickCore RCIRSignedReceipt.swift
+[11/40] Emitting module RightClickMCP
+[12/40] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[13/40] Compiling RightClickCoreTests ARDAcquisitionGateTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[14/42] Emitting module RightClickCoreTests
+[15/62] Compiling RightClickMCP ModernMCPStdioTransport.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |                 transport: transport
+317 |             )
+318 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickMCP/Server.swift:320:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+318 |             return .init(content: [.text(text)], isError: false)
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+321 |         }
+322 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[16/62] Compiling RightClickMCP Server.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |                 transport: transport
+317 |             )
+318 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Sources/RightClickMCP/Server.swift:320:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+318 |             return .init(content: [.text(text)], isError: false)
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+321 |         }
+322 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[17/64] Emitting module RightClickMCPTests
+[18/64] Compiling RightClickMCPTests FederationTests.swift
+[19/65] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[20/75] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[21/75] Compiling RightClickCLI BridgeRuntime.swift
+[22/75] Compiling RightClickCLI ChatGPTBridge.swift
+[23/75] Compiling RightClickCLI ChatGPTBridgeInstaller.swift
+[24/75] Compiling RightClickCLI ChatGPTLiveAttestation.swift
+[25/75] Compiling RightClickCLI ChatGPTOnboarding.swift
+[26/75] Compiling RightClickCLI ChatGPTOnboardingTransaction.swift
+[27/75] Compiling RightClickCLI ClientRegistry.swift
+[28/75] Compiling RightClickCLI CodexClientAdapter.swift
+[29/75] Compiling RightClickCoreTests CapabilityAcquisitionLifecycleTests.swift
+[30/75] Compiling RightClickCoreTests CapabilityArtifactResolverTests.swift
+[31/75] Compiling RightClickCoreTests CapabilityExperienceLedgerTests.swift
+[32/75] Compiling RightClickCoreTests CapabilityExperienceTests.swift
+[33/75] Compiling RightClickCoreTests CapabilityInterfaceTests.swift
+[34/75] Compiling RightClickCoreTests CapabilityReflectorSourceTests.swift
+[35/75] Compiling RightClickCoreTests CapabilityRuntimeDefaultsTests.swift
+[36/75] Compiling RightClickCoreTests CapabilitySnapshotBoundaryTests.swift
+[37/75] Compiling RightClickCoreTests CapabilityStringConstraintTests.swift
+[38/75] Compiling RightClickCoreTests ConfiguredOpenAPISourceTests.swift
+[39/75] Compiling RightClickCoreTests DispatchContractBindingTests.swift
+[40/75] Compiling RightClickCoreTests EngineTests.swift
+[41/95] Compiling RightClickCoreTests ExecutionCapacityAdmissionTests.swift
+[42/95] Compiling RightClickCoreTests ExecutionRetentionTests.swift
+[43/95] Compiling RightClickCoreTests GRPCRealProviderAcceptanceTests.swift
+[44/95] Compiling RightClickCoreTests GRPCReflectionTransportTests.swift
+[45/95] Compiling RightClickCoreTests GRPCReflectorTests.swift
+[46/95] Compiling RightClickCoreTests GraphQLReflectorTests.swift
+[47/95] Compiling RightClickCoreTests HostProtectedReferenceTests.swift
+[48/95] Compiling RightClickCoreTests InvocationBindingTests.swift
+[49/95] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+[50/95] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+[51/95] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+[52/95] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+[53/95] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+[54/95] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+[55/95] Compiling RightClickCoreTests MOAT004G5ExternalBearerAuthorityTests.swift
+[56/95] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+[57/95] Compiling RightClickCoreTests MOAT005G1PathAndJSONBodyTests.swift
+[58/95] Compiling RightClickCoreTests MOAT005G2MultiplePathArgumentsTests.swift
+[59/95] Compiling RightClickCoreTests MOAT005G3GitHubRequestSchemaTests.swift
+[60/95] Compiling RightClickCoreTests MOAT005G4MutationJSONResponseFallbackTests.swift
+[61/115] Emitting module RightClickCLI
+[71/124] Compiling RightClickCoreTests MOAT005G5FullFrozenGitHubContractTests.swift
+[72/124] Compiling RightClickCoreTests MOAT005G6MultiSegmentPathTests.swift
+[73/124] Compiling RightClickCoreTests NativeBoundedHTTPTests.swift
+[74/124] Compiling RightClickCoreTests NativeHTTPFixture.swift
+[75/124] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+[76/124] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+[77/124] Compiling RightClickCoreTests OpenAPIAcknowledgementTests.swift
+[78/124] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+[79/124] Compiling RightClickCoreTests OpenAPIAuthorityManagementTests.swift
+[80/124] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+[81/124] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+[82/124] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+[83/124] Compiling RightClickCoreTests OutcomeVerifierTests.swift
+[84/124] Compiling RightClickCoreTests PolicyTests.swift
+[85/124] Compiling RightClickCoreTests PortableRuntimeTests.swift
+[86/124] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+[87/124] Compiling RightClickCoreTests RCIRAuthorityDispatchTests.swift
+[88/124] Compiling RightClickCoreTests RCIRAuthorityTests.swift
+[89/124] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+[90/124] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+[91/124] Compiling RightClickCLI LocalOnboarding.swift
+[92/124] Compiling RightClickCLI NativeRegistrationBackend.swift
+[93/124] Compiling RightClickCLI OnboardingEngine.swift
+[94/124] Compiling RightClickCLI OpenAIPluginSetup.swift
+[95/124] Compiling RightClickCLI ProviderConfigurationCLI.swift
+[96/124] Compiling RightClickCLI Setup.swift
+[97/124] Compiling RightClickCLI SetupState.swift
+[98/124] Compiling RightClickCLI StableEntrypoint.swift
+[99/124] Compiling RightClickCLI main.swift
+[99/124] Write Objects.LinkFileList
+[101/124] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+[102/124] Compiling RightClickCoreTests RCIRHTTPJSONCausalityTests.swift
+[103/124] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+[104/124] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+[105/124] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+[106/124] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+[107/124] Compiling RightClickCoreTests RCIRNoOutputTests.swift
+[108/124] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[109/124] Compiling RightClickCoreTests RCIRProvisionedSignerTests.swift
+[110/124] Compiling RightClickCoreTests RCIRSigningLifecycleTests.swift
+[111/124] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+[112/124] Compiling RightClickCoreTests RCIRTests.swift
+[113/124] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+[114/124] Compiling RightClickCoreTests RCIRUnitCompletionTests.swift
+[115/124] Compiling RightClickCoreTests RuntimeIdentityCompatibilityTests.swift
+[116/124] Compiling RightClickCoreTests ServiceContextTests.swift
+[117/124] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[118/124] Compiling RightClickCoreTests SharingExecutionTests.swift
+[119/124] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+[120/124] Compiling RightClickCoreTests VerificationIntegrationTests.swift
+[120/124] Linking rightclick
+[121/124] Applying rightclick
+[123/136] Compiling RightClickCLITests AuthorityConfigurationCLITests.swift
+[124/136] Compiling RightClickCLITests BridgeRuntimeTests.swift
+[125/136] Compiling RightClickCLITests ChatGPTBridgeInstallerTests.swift
+[126/136] Compiling RightClickCLITests ChatGPTBridgeTests.swift
+[127/136] Compiling RightClickCLITests ChatGPTLiveAttestationTests.swift
+[128/136] Compiling RightClickCLITests ChatGPTOnboardingTests.swift
+[129/136] Compiling RightClickCLITests ChatGPTOnboardingTransactionTests.swift
+[130/136] Compiling RightClickCLITests ClaudeConfigDirTruthTests.swift
+[131/136] Compiling RightClickCLITests ClaudeOnboardingRedTests.swift
+[132/136] Compiling RightClickCLITests ClientRegistryRedTests.swift
+[133/136] Compiling RightClickCLITests CodexOnboardingRedTests.swift
+[134/136] Emitting module RightClickCLITests
+[135/146] Compiling RightClickCLITests LocalOnboardingTests.swift
+[136/146] Compiling RightClickCLITests NativeMutationLeaseRedTests.swift
+[137/146] Compiling RightClickCLITests OnboardingEngineTests.swift
+[138/146] Compiling RightClickCLITests ProviderConfigurationCLITests.swift
+[139/146] Compiling RightClickCLITests SetupAllTransactionRedTests.swift
+[140/146] Compiling RightClickCLITests SetupStateTests.swift
+[141/146] Compiling RightClickCLITests SetupTests.swift
+[142/146] Compiling RightClickCLITests StableEntrypointTests.swift
+[143/146] Compiling RightClickCLITests StableProfileIntegrityTests.swift
+[144/146] Compiling RightClickCLITests StableUpgradeReconciliationTests.swift
+[144/146] Write Objects.LinkFileList
+[145/146] Linking rightclick-mcpPackageTests
+Build complete! (16.64s)
+Test Suite 'Selected tests' started at 2026-10-07 17:32:37.628.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 17:32:37.629.
+Test Suite 'RCIRAuthorityDispatchTests' started at 2026-10-07 17:32:37.629.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testAncestorRevocationAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testAncestorRevocationAtFinalGateProducesZeroActualHTTPRequests]' passed (0.163 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testAuthenticatedContextErrorsCannotLeakCredentialMaterial]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testAuthenticatedContextErrorsCannotLeakCredentialMaterial]' passed (0.117 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testCredentialScopeWithdrawalAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testCredentialScopeWithdrawalAtFinalGateProducesZeroActualHTTPRequests]' passed (0.120 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testLegalChildProducesIndependentlyObservedSignedEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testLegalChildProducesIndependentlyObservedSignedEffect]' passed (0.141 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testPolicyRevocationAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testPolicyRevocationAtFinalGateProducesZeroActualHTTPRequests]' passed (0.120 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testRevocationAfterEffectWithholdsObservationAndSuccess]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testRevocationAfterEffectWithholdsObservationAndSuccess]' passed (0.121 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testSiblingAndParentCannotExceedSharedBudget]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testSiblingAndParentCannotExceedSharedBudget]' passed (0.121 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongAudienceAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongAudienceAtFinalGateProducesZeroActualHTTPRequests]' passed (0.119 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongSubjectAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongSubjectAtFinalGateProducesZeroActualHTTPRequests]' passed (0.117 seconds).
+Test Suite 'RCIRAuthorityDispatchTests' passed at 2026-10-07 17:32:38.770.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 1.140 (1.140) seconds
+Test Suite 'RCIRDeferredProductionTests' started at 2026-10-07 17:32:38.770.
+Test Case '-[RightClickCoreTests.RCIRDeferredProductionTests testAcceptedRemoteTaskRemainsPendingUntilLaterObservation]' started.
+Test Case '-[RightClickCoreTests.RCIRDeferredProductionTests testAcceptedRemoteTaskRemainsPendingUntilLaterObservation]' passed (0.121 seconds).
+Test Suite 'RCIRDeferredProductionTests' passed at 2026-10-07 17:32:38.891.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.121 (0.121) seconds
+Test Suite 'RCIRProductionDispatchTests' started at 2026-10-07 17:32:38.891.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualArtifactSchemaDriftRejectsOldInvocationAndReacquires]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualArtifactSchemaDriftRejectsOldInvocationAndReacquires]' passed (0.188 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualContractDisappearanceDeniesEffectsAndRecoversNewLease]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualContractDisappearanceDeniesEffectsAndRecoversNewLease]' passed (0.121 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry]' passed (0.115 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceAfterDispatchPreservesUnknown]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceAfterDispatchPreservesUnknown]' passed (0.112 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery]' passed (0.114 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBoundedLargeArgumentIsNotDuplicatedIntoContract]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBoundedLargeArgumentIsNotDuplicatedIntoContract]' passed (0.116 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCallerPostconditionCannotBeSilentlyIgnoredByHostObserver]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCallerPostconditionCannotBeSilentlyIgnoredByHostObserver]' passed (0.113 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' passed (0.122 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' passed (0.109 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCredentialFreeObserverCannotInheritInvocationCookie]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCredentialFreeObserverCannotInheritInvocationCookie]' passed (0.114 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCrossOriginObserverBlocksBeforeAnyEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCrossOriginObserverBlocksBeforeAnyEffect]' passed (0.121 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' passed (0.122 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' passed (0.121 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration]' passed (0.126 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testInvalidSignerBlocksBeforeAnyEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testInvalidSignerBlocksBeforeAnyEffect]' passed (0.121 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testLostResponseRetainsSignedUnknownAndDoesNotRetry]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testLostResponseRetainsSignedUnknownAndDoesNotRetry]' passed (0.125 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' passed (0.126 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' passed (0.122 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testObserverTraversalAndDoubleEncodingCannotDispatch]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testObserverTraversalAndDoubleEncodingCannotDispatch]' passed (0.112 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' passed (0.123 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAfterDispatchPreservesUnknownWithoutRetry]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAfterDispatchPreservesUnknownWithoutRetry]' passed (0.123 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAtTransportAdmissionProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAtTransportAdmissionProducesZeroProviderEffects]' passed (0.111 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' passed (0.122 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' passed (0.113 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' passed (0.120 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' passed (0.126 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' passed (0.113 seconds).
+Test Suite 'RCIRProductionDispatchTests' passed at 2026-10-07 17:32:42.495.
+	 Executed 30 tests, with 0 failures (0 unexpected) in 3.602 (3.604) seconds
+Test Suite 'RCIRSigningLifecycleTests' started at 2026-10-07 17:32:42.495.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testFreshInvocationAfterRotationUsesNewProvisionedKey]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testFreshInvocationAfterRotationUsesNewProvisionedKey]' passed (1.276 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testKeyWithdrawalAtAdmissionBoundaryHasZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testKeyWithdrawalAtAdmissionBoundaryHasZeroProviderEffects]' passed (0.194 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testSamePathKeyRotationDoesNotSignWithRetainedOldKey]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testSamePathKeyRotationDoesNotSignWithRetainedOldKey]' passed (0.721 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature]' passed (0.736 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testUnaryHTTPAfterKeyWithdrawalRetainsActualEffectAndUnsignedTruth]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testUnaryHTTPAfterKeyWithdrawalRetainsActualEffectAndUnsignedTruth]' passed (0.313 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testUnchangedProvisionedSignerSignsGenuineEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testUnchangedProvisionedSignerSignsGenuineEffect]' passed (0.757 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown]' passed (0.756 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect]' passed (0.740 seconds).
+Test Suite 'RCIRSigningLifecycleTests' passed at 2026-10-07 17:32:47.988.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 5.493 (5.494) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 17:32:47.989.
+	 Executed 48 tests, with 0 failures (0 unexpected) in 10.355 (10.359) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 17:32:47.989.
+	 Executed 48 tests, with 0 failures (0 unexpected) in 10.355 (10.361) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

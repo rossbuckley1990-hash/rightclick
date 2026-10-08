@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public struct CapabilityArtifactDescriptor:
     Codable,
@@ -273,7 +276,14 @@ public enum CapabilityArtifactResolverDefaults {
             [any CapabilityArtifactResolver] = [
                 OpenAPICapabilityArtifactResolver(),
                 GraphQLCapabilityArtifactResolver(),
+                MCPCapabilityArtifactResolver(),
+                WASMCapabilityArtifactResolver(),
+                KafkaCapabilityArtifactResolver(),
+                KubernetesCapabilityArtifactResolver(),
             ]
+#if os(Linux)
+        result.append(DBusCapabilityArtifactResolver())
+#endif
 
 #if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
         result.append(

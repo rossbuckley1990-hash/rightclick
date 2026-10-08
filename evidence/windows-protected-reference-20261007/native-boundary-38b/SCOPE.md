@@ -1,0 +1,1 @@
+Exact native Windows backend at38b27e45e9f566588b398ace20ca3ed07a529da3 passed actual ownership/path/hardening/protected-read/collision/junction-zero-target/readonly-release controls. The original collision read asserted length; a subsequent focused fixture patch additionally asserts exact15bytes. Full native Swift/runtime/release acceptance remains pending.

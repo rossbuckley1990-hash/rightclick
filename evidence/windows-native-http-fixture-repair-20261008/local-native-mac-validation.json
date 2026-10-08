@@ -1,0 +1,42 @@
+{
+  "status": "PASS_SCOPED_NATIVE_MAC_TESTS_WINDOWS_PENDING",
+  "platform": "macOS arm64",
+  "baseCandidate": "2992218e6d0361d033f151e50755f4e9a87bbb7d",
+  "ownedAdopterCommit": "e292db5bd2e3f6f66319d1e807e4998654fa6e7f",
+  "appliedRootFramingCommit": "79aeccb62a8845fe4ded608520adfb54612a16ad",
+  "rootSourceMatchFiles": 11,
+  "helperSHA256": "04e232fe4b3443d8178dd9b3e6513bf375419bbabb3c0e577ad7866f8d663e53",
+  "productSourcesUnchanged": true,
+  "privateLogSHA256": "b9f8e125aacc8de81c3efa278f9e20e07946b765fea80cfb479eca05b5f4137d",
+  "privateLogBytes": 40407,
+  "testExecutableSHA256": "cb96524bb5d2f2a250a8df2cf72aa19aaf502c966af40a921a86caa1f70cb973",
+  "executedTests": 127,
+  "uniqueStartedTests": 127,
+  "uniqueFinishedTests": 127,
+  "startFinishExactlyOnce": true,
+  "skips": 0,
+  "failures": 0,
+  "elapsedSeconds": 73.085,
+  "scope": "Actual selected native Mac controlled tests validate byte-framed HTTP/ACK collectors and all migrated observer, causality, receipt, authority, A2A and dispatch helpers. Controlled Kafka/Kubernetes invocation tests do not prove genuine broker/cluster acceptance.",
+  "remainingRED": [
+    "Native Windows rerun",
+    "Unknown invocation-binding Windows provisioning failure stage",
+    "Unsupported Windows disk-backed experience ledger",
+    "Full portable release acceptance",
+    "All eleven substrates"
+  ],
+  "privateDataProjection": "Only counters, source/hash identities and scope exported. Raw test log, assertions, private fixture values, transcripts, receipts and credentials not copied.",
+  "priorLocalAttempts": [
+    {
+      "scope": "Manifest/module-cache and nested sandbox setup failures; no test run"
+    },
+    {
+      "privateLogSHA256": "8a6e79ce2cef0eb796699e80c874f534e76438e952a17352e42c883d24c0e9a8",
+      "scope": "Disk-full build failure before tests"
+    },
+    {
+      "privateLogSHA256": "3b773acc2a26c99679fa68a6947061ecdc8ce30a6bf582d7a3d512cb229407d1",
+      "scope": "15 experience tests passed; 11 controlled HTTP fixture setups failed in managed sandbox before their assertions"
+    }
+  ]
+}

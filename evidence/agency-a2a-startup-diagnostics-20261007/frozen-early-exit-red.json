@@ -1,0 +1,20 @@
+{
+  "frozenAcceptScriptSHA": "e09f0179f738189fb30b87c652a5433fba648054",
+  "faultFixture": "ACTUAL_EARLY_EXIT_7",
+  "harnessFailure": "TIMEOUT_LAB_STARTUP",
+  "elapsedMilliseconds": 10019,
+  "childrenAtFailure": [
+    {
+      "label": "a2a-proof-agent.py",
+      "returnCode": 7,
+      "alive": false
+    },
+    {
+      "label": "a2a-proof-observer.py",
+      "returnCode": null,
+      "alive": true
+    }
+  ],
+  "CIOriginalCause": "UNPROVEN",
+  "semanticAcceptanceAssertions": "UNCHANGED_AND_NOT_REACHED"
+}

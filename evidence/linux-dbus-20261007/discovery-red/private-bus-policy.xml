@@ -1,0 +1,9 @@
+<!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-Bus Bus Configuration 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+<busconfig><type>session</type><listen>unix:path=/tmp/rightclick-dbus-private-9donkgg_/bus</listen><auth>EXTERNAL</auth>
+<policy context="default"><allow user="*"/><deny own="*"/><deny send_destination="*"/><allow receive_sender="*"/><allow send_requested_reply="true"/>
+<allow send_destination="org.freedesktop.DBus"/><allow send_interface="org.freedesktop.DBus.Introspectable"/></policy>
+<policy user="root"><allow own="*"/><allow send_destination="*"/></policy>
+<policy user="rcservice"><allow own="org.rightclick.Pressure"/></policy>
+<policy user="rcwriter"><allow send_destination="org.rightclick.Pressure" send_interface="org.rightclick.Pressure" send_member="Store"/><allow send_destination="org.rightclick.Pressure" send_interface="org.rightclick.Pressure" send_member="EchoTags"/><allow send_destination="org.rightclick.Pressure" send_interface="org.rightclick.Pressure" send_member="Acknowledge"/></policy>
+<policy user="rcobserver"><allow send_destination="org.rightclick.Pressure" send_interface="org.rightclick.Pressure" send_member="GetProof"/></policy>
+</busconfig>

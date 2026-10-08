@@ -1,0 +1,73 @@
+{
+  "independentAudit": "PASS",
+  "receipts": [
+    {
+      "case": "success",
+      "signature": "VALID",
+      "outcome": "succeeded",
+      "taskAndBoundMessage": "MATCHED",
+      "separateEffectObservation": "MATCHED",
+      "signedClaims": {
+        "taskID": "39F62116-9D7A-4FFE-8632-27E18E10183A",
+        "leaseID": "E0B22F53-3A1D-42E5-8F56-249055C64051",
+        "providerGeneration": 1,
+        "phase": "completed",
+        "semanticOutcome": "succeeded",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ],
+        "startedAt": 1791400988550,
+        "deadline": 1791401018550,
+        "finishedAt": 1791400989596,
+        "lastObservationTime": 1791400990132
+      }
+    },
+    {
+      "case": "mismatch",
+      "signature": "VALID",
+      "outcome": "failed",
+      "taskAndBoundMessage": "MATCHED",
+      "separateEffectObservation": "MATCHED",
+      "signedClaims": {
+        "taskID": "B87003D6-2923-46E0-9119-D632A5CAAC18",
+        "leaseID": "35CCB26B-D19E-4A35-930A-DFE0D4803EA0",
+        "providerGeneration": 1,
+        "phase": "completed",
+        "semanticOutcome": "failed",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ],
+        "startedAt": 1791400999962,
+        "deadline": 1791401029962,
+        "finishedAt": 1791401000805,
+        "lastObservationTime": 1791401000953
+      }
+    },
+    {
+      "case": "missing",
+      "signature": "VALID",
+      "outcome": "unverified",
+      "taskAndBoundMessage": "MATCHED",
+      "separateEffectObservation": "ABSENT_AS_EXPECTED",
+      "signedClaims": {
+        "taskID": "40BCC011-EA93-4F11-A847-74761BB680F3",
+        "leaseID": "F1DFA635-C609-4E85-AFED-51CC38FF743C",
+        "providerGeneration": 1,
+        "phase": "completed",
+        "semanticOutcome": "unverified",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ],
+        "startedAt": 1791401009473,
+        "deadline": 1791401039473,
+        "finishedAt": 1791401010031,
+        "lastObservationTime": 1791401010031
+      }
+    }
+  ],
+  "issuerDelegation": "NOT_DEMONSTRATED",
+  "fullProgramme": "RED"
+}

@@ -1,0 +1,57 @@
+{
+  "defaultSwiftTestingReleaseAndCore7": "NOT_EXECUTED",
+  "failedMethodNames": [
+    "BoundedCapabilityProcessDiagnosticTests.testDiagnosticSeparatesRealDeadlineExitAndInvalidInputWithoutChangingErrors",
+    "BoundedCapabilityProcessDiagnosticTests.testTerminalMeasurementsContainNoArgumentsInputOutputOrErrorBytes",
+    "CapabilityExecutableSnapshotPoolTests.testEntryByteAndAbsoluteRetentionBudgetsDoNotGrowOnReuse",
+    "CapabilityExecutableSnapshotPoolTests.testIdleRetentionCleanupReleasesOnlyThePoolReference",
+    "CapabilityExecutableSnapshotPoolTests.testReturnRaceRechecksWholeBytesAndDoesNotEvictConcurrentNewIncarnation",
+    "CapabilityExecutableSnapshotPoolTests.testReusesExactPrivateIncarnationWhileReadingCurrentByteIdentity",
+    "CapabilityExecutableSnapshotPoolTests.testSourceWithdrawalAndRestorationCannotReturnWithdrawnCacheEntry",
+    "CapabilityExperienceTests.testOnlyFingerprintsAndOutcomesPersistNotUserData",
+    "InvocationBindingTests.testFreshMarkersVerifyForBothTransports",
+    "InvocationBindingTests.testMatchingStaleKafkaRecordCannotVerifyCurrentAppend",
+    "InvocationBindingTests.testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate",
+    "NativeBoundedHTTPTests.testNativeCompletionReleasesWaiterAndReturnsExactCap",
+    "NativeBoundedHTTPTests.testRedirectNeverReachesNewTarget",
+    "NativeFixtureReadinessTests.testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted",
+    "OpenAPIAcknowledgementTests.testWrongOrMissingExternalEffectNeverBecomesSuccess"
+  ],
+  "fatalSite": "RCIRHTTPJSONCausalityTests.swift:93; JSON decode NSCocoaErrorDomain3840",
+  "fullXCTestSuite": "FAILURE_INCOMPLETE",
+  "headSHA": "d314ef4ba8ed9971aafefc15be9bea0d9148867b",
+  "jobID": 113070045244,
+  "observedRows": {
+    "failed": 15,
+    "passed": 452,
+    "skipped": 25,
+    "started": 493
+  },
+  "originalNormalSwiftPMTimeoutCause": "UNKNOWN",
+  "phase": {
+    "childExitCode": 3221225501,
+    "completedUTC": "2026-10-07T23:46:21.421224+00:00",
+    "deadlineSeconds": 1440,
+    "drainError": null,
+    "elapsedSeconds": 71.656,
+    "exitCode": 3221225501,
+    "heartbeatSeconds": 10,
+    "lastOutputElapsedSeconds": 71.609,
+    "outputBytes": 145209,
+    "outputDrainCompleted": true,
+    "platform": "win32",
+    "rootPID": 2008,
+    "schemaVersion": 1,
+    "startedUTC": "2026-10-07T23:45:09.767605+00:00",
+    "state": "COMPLETED"
+  },
+  "rawAssertionsArgumentsEnvironmentCredentialDataPublished": false,
+  "rawOutputBytes": 145209,
+  "rawOutputSHA256": "90448d64ea2cda2c5295c93427d1abf9bc5ec43daa05154b1acf93cb7bcb4f67",
+  "runID": 37702810868,
+  "scope": "Safe names/counters/phase only; not a full Windows result or explanation of the separate normal SwiftPM timeout",
+  "sourceBuildAndBaseline666Discovery": "PASS",
+  "startedUnfinishedMethodNames": [
+    "RCIRHTTPJSONCausalityTests.testObserverCannotReflectProtectedCredentialIntoMetadataOrReceipt"
+  ]
+}

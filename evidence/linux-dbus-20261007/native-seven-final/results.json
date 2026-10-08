@@ -1,0 +1,36 @@
+{
+  "runKind": "NEW_NATIVE_LINUX_DBUS_RUN",
+  "controls": {},
+  "principals": {
+    "writerUID": 1100,
+    "observerUID": 1101,
+    "serviceUID": 1102
+  },
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick",
+    "executableRealPath": "/work/.build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick",
+    "executableSHA256": "2ccf6b355dcd94a291c6de0a270e8a98ae15cac153cf61c66d281c4c3ffa58ea",
+    "pid": 14,
+    "platform": "Linux",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "binarySHA256": "2ccf6b355dcd94a291c6de0a270e8a98ae15cac153cf61c66d281c4c3ffa58ea",
+  "originalOwner": ":1.0"
+}

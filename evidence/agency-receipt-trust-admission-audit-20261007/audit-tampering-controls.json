@@ -1,0 +1,35 @@
+{
+  "actualBaseline": "PASS",
+  "tamperingControls": 7,
+  "results": [
+    {
+      "control": "missing_required_control",
+      "tamperedEvidenceRejected": true
+    },
+    {
+      "control": "invalid_real_receipt_signature",
+      "tamperedEvidenceRejected": true
+    },
+    {
+      "control": "wrong_out_of_band_pin",
+      "tamperedEvidenceRejected": true
+    },
+    {
+      "control": "mutually_matching_journals_swap_bound_effect",
+      "tamperedEvidenceRejected": true
+    },
+    {
+      "control": "altered_public_policy_history_digest",
+      "tamperedEvidenceRejected": true
+    },
+    {
+      "control": "unexercised_revocation_callback",
+      "tamperedEvidenceRejected": true
+    },
+    {
+      "control": "unsigned_truth_relabelled_as_signature",
+      "tamperedEvidenceRejected": true
+    }
+  ],
+  "scope": "ARTIFACT_AUDITOR_ONLY;DOES_NOT_AUTHENTICATE_UNSIGNED_JOURNALS"
+}

@@ -25,7 +25,19 @@ aesKey.fill(0);
 const connection = JSON.parse(plaintext.toString('utf8'));
 plaintext.fill(0);
 if (connection.sourceHead !== expectedSourceHead) throw new Error('Relay source commit differs from the reviewed run');
-if (Date.parse(connection.expiresAt) <= Date.now()) throw new Error('Relay authority has expired');
+// Date.parse returns NaN for absent/malformed input; NaN <= now is false.
+// Authority requires an explicit typed ISO timestamp and a finite future bound.
+const components = typeof connection.expiresAt === 'string' &&
+  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,7})?(?:Z|[+-]\d{2}:\d{2})$/.exec(connection.expiresAt);
+let expiry = NaN;
+if (components) {
+  const [year, month, day, hour, minute, second] = components.slice(1).map(Number);
+  const days = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  // JavaScript otherwise normalizes February 30/April 31 into a later day.
+  if (year >= 1 && month >= 1 && month <= 12 && day >= 1 && day <= days &&
+      hour <= 23 && minute <= 59 && second <= 59) expiry = Date.parse(connection.expiresAt);
+}
+if (!Number.isFinite(expiry) || expiry <= Date.now()) throw new Error('Relay authority expiry is invalid or expired');
 for (const field of ['writerOrigin', 'observerOrigin']) {
   const origin = new URL(connection[field]);
   if (origin.protocol !== 'https:' || !/^[a-z0-9-]+\.trycloudflare\.com$/.test(origin.hostname) ||

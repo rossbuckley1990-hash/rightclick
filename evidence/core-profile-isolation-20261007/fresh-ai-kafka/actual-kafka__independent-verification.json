@@ -1,0 +1,27 @@
+{
+  "signature": "VALID",
+  "algorithm": "Ed25519",
+  "trustedKeyMatched": true,
+  "payloadBytes": 8801,
+  "signedClaims": {
+    "taskID": "08322506-4B43-407F-8731-7095F7175206",
+    "leaseID": "F6A55DA0-4533-48DA-AB66-4834BFFB6927",
+    "providerGeneration": 1,
+    "phase": "completed",
+    "semanticOutcome": "succeeded",
+    "scopeCount": 1,
+    "effects": [
+      "publish"
+    ]
+  },
+  "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+  "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE",
+  "status": "GREEN_FOR_FRESH_AI_KAFKA_BOUNDARY",
+  "expectedConfirmedMutations": 1,
+  "observedHighWatermarkDelta": 1,
+  "confirmationFirstRunNoEffect": true,
+  "independentRecordMatchesSignedObservation": true,
+  "hostInvocationMarkerMatches": true,
+  "binarySHA256": "3c6fd8d48c381646d7da41f0864d853735d9489cbec7b21e2dbfa3c1191d2bd2",
+  "scope": "Fresh AI single-substrate production/readback/signature boundary. No final eleven-substrate/native platform/productionkey lifecycle/graph mutation claim."
+}
