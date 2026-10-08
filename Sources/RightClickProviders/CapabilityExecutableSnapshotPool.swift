@@ -57,7 +57,10 @@ final class CapabilityExecutableSnapshotPool {
             RuntimePlatform.isAbsolutePath(source.path) else { throw RCIRError.invalidLimit }
         let now = clock()
         guard now.isFinite, now >= 0 else { throw RCIRError.invalidLimit }
-        let key = source.standardizedFileURL.path
+        // Foundation's filesystem normalization can change when the same
+        // selected file disappears. Keep the requested reference stable so a
+        // failed re-acquisition removes its existing snapshot entry.
+        let key = source.path
         let snapshot: CapabilityArtifactSnapshot
         lock.lock()
         do {
