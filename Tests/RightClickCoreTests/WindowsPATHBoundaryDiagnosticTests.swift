@@ -79,7 +79,7 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
     /// an otherwise fixed Foundation environment. It does not use a new BPC role.
     private func directFoundationEmptyPATH(_ executable: URL, arguments: [String]) throws -> Data {
         let root = try XCTUnwrap(ProcessInfo.processInfo.environment["SystemRoot"])
-        let process = Process(), pipe = Pipe(), capture = Capture(), drained = DispatchGroup()
+        let process = Process(), pipe = Pipe(), capture = Capture(), drained = DispatchGroup(), exited = DispatchGroup()
         process.executableURL = executable; process.arguments = arguments
         process.environment = ["SystemRoot": root, "TEMP": FileManager.default.temporaryDirectory.path,
                                "TMP": FileManager.default.temporaryDirectory.path, "PATH": ""]
@@ -98,18 +98,26 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
             }
         }
         do { try process.run() } catch { try? pipe.fileHandleForWriting.close(); throw error }
+        exited.enter()
+        DispatchQueue.global(qos: .utility).async {
+            process.waitUntilExit()
+            exited.leave()
+        }
         let deadline = DispatchTime.now().uptimeNanoseconds + 5_000_000_000
-        while process.isRunning {
+        while exited.wait(timeout: .now()) != .success {
             if DispatchTime.now().uptimeNanoseconds >= deadline || capture.snapshot().1 {
-                process.terminate(); Thread.sleep(forTimeInterval: 0.020)
-                if process.isRunning { process.terminate() }
-                process.waitUntilExit(); try? pipe.fileHandleForWriting.close()
-                _ = drained.wait(timeout: .now() + 1)
+                let cleanupDeadline = DispatchTime.now() + 2
+                process.terminate()
+                if exited.wait(timeout: .now() + 0.020) != .success { process.terminate() }
+                let parentClosed = exited.wait(timeout: .now() + 1) == .success
+                try? pipe.fileHandleForWriting.close()
+                let drainClosed = drained.wait(timeout: cleanupDeadline) == .success
+                print("NativePATHBoundary directEmptyAborted parentClosed=\(parentClosed) stdoutClosed=\(drainClosed) executionBudgetSeconds=5 teardownBudgetSeconds=2 diagnosticOnly=true")
                 throw RCIRError.invalidLimit
             }
             Thread.sleep(forTimeInterval: 0.002)
         }
-        process.waitUntilExit(); try? pipe.fileHandleForWriting.close()
+        try? pipe.fileHandleForWriting.close()
         guard process.terminationStatus == 0, drained.wait(timeout: .now() + 1) == .success,
               !capture.snapshot().1 else { throw RCIRError.unavailable }
         return capture.snapshot().0
@@ -125,8 +133,10 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
               let units = value["units"] as? Int, (0...32_767).contains(units),
               let digest = value["sha256"] as? String,
               digest == "none" || (digest.count == 64 && digest.utf8.allSatisfy({ (48...57).contains($0) || (97...102).contains($0) })) else { throw RCIRError.unavailable }
-        guard present || (!empty && units == 0 && digest == "none"),
-              !empty || (present && units == 0), units == 0 || present else { throw RCIRError.unavailable }
+        let hexDigest = digest.count == 64 && digest.utf8.allSatisfy({ (48...57).contains($0) || (97...102).contains($0) })
+        guard (present ? hexDigest : digest == "none" && units == 0 && !empty && !system && !owned && !original),
+              empty == (present && units == 0), !system || present && !empty,
+              !owned || present && !empty, !original || present else { throw RCIRError.unavailable }
         print("NativePATHBoundary profile=\(profile) present=\(present) empty=\(empty) system32Match=\(system) ownedParentMatch=\(owned) originalParentMatch=\(original) units=\(units) sha256=\(digest) parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
     }
 
