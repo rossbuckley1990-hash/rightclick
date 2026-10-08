@@ -1,0 +1,25 @@
+{
+  "auditorSHA256": "2201761a4319e5a08b0efaad0a3443ccecbdde3d3d476a30a97d5619fbe72f14",
+  "controls": 7,
+  "PASS": 7,
+  "FAIL": 0,
+  "scope": "Synthetic closed-row parser controls only; native observation pending.",
+  "privateKeyAccess": false,
+  "rawPrivateValues": false,
+  "sourceClosureRequiredByAuditor": {
+    "head": "197638806f8f4c4cb98bfc6c83b6c5c4476389a7",
+    "source": "4b310ac7bebcd63aeb692aabf001df63da42bc47",
+    "shipping": "ca8965f275cd452d21c70ddb3b0ab0d5c5279db6",
+    "Sources": "e22a81b4e6af0672b077597768a694e6dc478e72",
+    "baselineSHA256": "f4fbbff8293926ed722320f9e40f50d841aed0de45628048604730a00b38ab26"
+  },
+  "independentChecks": [
+    "Own authenticated API ZIP digest/size/run/job/head/branch/platform.",
+    "Exact three-log manifest, owner0700/0600, bounded bytes and reconstructed plaintext USTAR hash.",
+    "CMS AuthEnvelopedData/AESGCM/OAEP-SHA256/MGF1-SHA256 from ciphertext only.",
+    "701 unique names exactly shipping700 plus new diagnostic, one actual completion.",
+    "Closed native profile flags/count/hash consistency and known emptySHA256.",
+    "Actual source-bound compilerPE/input/argv freeze, measuredrestore and natural phase0+boundeddrain."
+  ],
+  "releaseClaim": false
+}

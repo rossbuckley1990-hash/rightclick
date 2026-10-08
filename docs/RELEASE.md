@@ -1,122 +1,115 @@
-# Release procedure — v0.2.2
+# Release procedure — v0.2.3
 
-v0.2.1 is immutable and must not be replaced or retagged.
+Previously published releases and their tags are immutable. This procedure
+prepares a new v0.2.3 from the reconciled portable architecture; it does not
+declare the candidate published or the eleven-substrate goal complete.
 
-v0.2.2 is the next release line. It permanently aligns GraphQL, gRPC, federation, universal capability artifacts, ARD, and OAuth/OIDC authority onto the Homebrew bottle.
+The public Homebrew package targets Apple Silicon on macOS 14+. Native Linux
+x86_64 and arm64 source-runtime evidence is required separately. No Windows
+executable, Linux package or network Link deployment is claimed by this release.
+Windows failures and incomplete substrate acceptance remain recorded as RED.
 
-## Accepted code gate
+## Freeze the composed source
 
-Before release metadata is changed, the integrated product must pass:
+Reconcile PR99's extracted core with PR49's current provider, authority, process,
+verification, profile and regression fixes. Preserve the original execution
+engine and seven-operation Core Profile. Review the exact source, tests,
+assertions, intentional method mappings and Git ancestry before importing it
+into the publishing branch. A merge that preserves ancestry does not establish
+content preservation by itself.
 
-- `swift test`
-- `scripts/build-cli.sh`
-- relevant acceptance scripts under `scripts/`
-- `python3 scripts/detect-bottle-alignment.py --write-manifest packaging/substrate-kinds.json`
+Record the exact head and physical Git bytes/modes before and after execution.
+Require the complete native Mac suite, native Linux x86_64/arm64 suites and
+relevant production acceptance scripts against this composition. Record skips
+and failed attempts without treating historical or selected tests as a fresh
+full-suite result. Independent audits must bind fixture effects, verification,
+receipts and provider lifecycle to the tested source and actual executable.
 
-Historical evidence remains unchanged.
+Keep the published-bottle alignment gate distinct: it remains RED until the
+accepted source and matching new bottle reach the public distribution.
 
-## Prepare release source
+## Close the source package
 
-The product version is defined by `RightClickVersion.current`.
+The version is defined by `RightClickVersion.current` in
+`Sources/RightClickProviders/ProductSurface.swift`.
 
-Run:
+Run in the reviewed checkout:
 
-    swift test
-    scripts/build-cli.sh
-    python3 scripts/package-source.py
+```sh
+python3 scripts/package-source.py
+python3 scripts/detect-bottle-alignment.py --compare --bottle dist/rightclick-0.2.3-source.tar.gz --json
+```
 
-`package-source.py` creates:
+The outputs are `dist/rightclick-0.2.3-source.tar.gz`,
+`dist/SHA256SUMS-source`, the two identical generated Homebrew formulas and the
+source-kind manifest. Repeat packaging and require identical archive bytes.
+Independently compare every archive payload, mode and canonical metadata with
+the clean frozen Git inputs. The descriptor examples required by the shipped
+acceptance script are part of this closure. Private evidence, local credentials,
+build caches and untracked files must be absent.
 
-    dist/rightclick-0.2.2-source.tar.gz
-    dist/SHA256SUMS-source
-    packaging/homebrew/rightclick.rb
-    packaging/tap/Formula/rightclick.rb
-    packaging/substrate-kinds.json
+Both formulas must point to the new v0.2.3 source asset, pin its exact SHA256,
+retain the existing OpenAI tunnel-client compatibility resource and contain no
+stale bottle block. A source-kind inventory does not prove runtime acceptance.
 
-The source archive is deterministic.
+Freeze the package and exact packaged Git inputs. Repin the independent release
+reader without changing its fail-closed verification predicates, and repeat all
+21 positive and rejection controls. Keep all native and package scopes explicit.
 
-Repeating `package-source.py` with unchanged inputs must produce identical bytes.
+## Tag, audit a draft, then publish
 
-The generated formula must point to:
+Verify that `v0.2.3` does not already exist. Create an annotated tag at the
+reviewed source head and push it without moving any existing tag.
 
-    https://github.com/rossbuckley1990-hash/rightclick/releases/download/v0.2.2/rightclick-0.2.2-source.tar.gz
+Create a draft containing exactly the accepted source archive and checksum:
 
-and must pin the exact SHA256 of the prepared source archive.
+```sh
+gh release create v0.2.3 dist/rightclick-0.2.3-source.tar.gz dist/SHA256SUMS-source --draft --verify-tag --title "RIGHTCLICK 0.2.3" --notes-file docs/RELEASE_NOTES_v0.2.3.md
+```
 
-The old v0.1.0 bottle metadata is historical and must not be attached to v0.2.2.
+Before publishing, independently verify the actual tag closure, immutable-release
+setting, release ID, complete asset inventory, digest/size and asset-by-ID bytes
+against the frozen package. The release notes must state the demonstrated
+platform/provider scope and remaining RED rows.
 
-## Substrate alignment gate
+Publish that audited draft. Independently re-download both assets from their
+public URLs, verify identical bytes and re-read the tag/release inventory. Require
+the public release to be immutable. Do not replace an asset or move a tag.
 
-Before tagging, require:
+## Produce and publish the Homebrew bottle
 
-    python3 scripts/detect-bottle-alignment.py --compare --bottle dist/rightclick-0.2.2-source.tar.gz
+Update the tap source formula only after the immutable public source audit.
+Preserve both repositories' formula agreement and tunnel compatibility pin.
+The trusted tap main workflow must build and test the accepted source, produce
+the bottle and sign its provenance. Its run, attempt, source assets, formula,
+bottle digest and attestation must be independently closed before finalization.
 
-This proves the packaged asset contains every checkout substrate kind.
+Use the tap's reviewed bottle staging/finalizer procedure. Publish its exact
+validated formula and bottle through ordinary Git ancestry; do not substitute
+an old bottle, an unreviewed local binary or an unsigned handoff.
 
-After the public tap moves, require:
+## Verify a fresh installed product
 
-    python3 scripts/detect-bottle-alignment.py --compare
+From outside the development checkout, install the accepted public bottle and
+require the poured executable to match its independently accepted digest.
+Require `rightclick version`, `rightclick doctor`, Homebrew's formula test,
+setup dry-run and installed seven-operation execution/verification checks.
+Repeat the profile-redirection controls against these new installed bytes.
 
-Agents: see [BOTTLE-ALIGNMENT.md](BOTTLE-ALIGNMENT.md).
+For an already paired ChatGPT bridge, preserve the profile, LaunchAgent and
+tunnel identity. Observe the product's existing upgrade reconciliation first.
+If a verified stale service needs refresh, use only its exact owned launchd
+service after accepted installation. Attest the new connected runtime's PID,
+version and executable path/hash, and independently verify process ownership
+and mapped executable identity. A changed version string alone is insufficient.
 
-## Commit and tag
+Finally require:
 
-Do not commit or tag until the final release-candidate and source-package gates pass.
+```sh
+python3 scripts/detect-bottle-alignment.py --compare --json
+```
 
-Before tagging, verify that `v0.2.2` does not already exist.
-
-Then create the reviewed release commit and immutable tag:
-
-    git tag -a v0.2.2 -m "RIGHTCLICK 0.2.2"
-    git push origin v0.2.2
-
-Never force-move an existing release tag.
-
-## GitHub Release
-
-After the tag exists, publish the exact prepared source bytes:
-
-    gh release create v0.2.2 \
-      dist/rightclick-0.2.2-source.tar.gz \
-      dist/SHA256SUMS-source \
-      --title "RIGHTCLICK 0.2.2" \
-      --notes-file docs/RELEASE_NOTES_v0.2.2.md
-
-Download the published source asset again and require its bytes and SHA256 to match the local accepted asset before changing the public Homebrew tap.
-
-## Public Homebrew tap
-
-Only after the release asset has been independently re-downloaded and verified should the public tap formula move from v0.2.1 to v0.2.2.
-
-The formula must retain the pinned OpenAI tunnel-client compatibility resource and its licence/notice material.
-
-Run Homebrew's formula test and the project acceptance gates against the installed package.
-
-## Public installed-product acceptance
-
-From outside the development checkout, require:
-
-    brew update
-    brew upgrade rightclick
-    rightclick version
-    rightclick doctor
-    brew test rossbuckley1990-hash/tap/rightclick
-    rightclick setup chatgpt --dry-run --json
-
-The installed executable must resolve through the stable Homebrew entrypoint.
-
-For an existing paired ChatGPT bridge, require the same tunnel identity to survive the package upgrade and require live runtime attestation to point at the new installed bytes.
-
-Repeat the profile-redirection red-team against the released installed build before declaring the release complete.
-
-Finally:
-
-    python3 scripts/detect-bottle-alignment.py --compare
-
-must exit `0`.
-
-## Scope
-
-Homebrew is the primary distribution path.
-
-Developer ID signing, notarisation and standalone Apple application distribution remain separate from this release unless explicitly re-opened.
+to exit zero against the actual published bottle. Close the distribution gates
+and merge the passing, reviewed source PR only after public/install evidence
+matches the release. Developer ID signing, notarization and standalone Apple app
+distribution remain separate work.

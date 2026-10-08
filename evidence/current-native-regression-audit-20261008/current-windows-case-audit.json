@@ -1,0 +1,267 @@
+{
+  "head": "4b23f3c20d502776468097ad6b58377a4ea586e0",
+  "run": 37761827608,
+  "job": 113259844219,
+  "artifact": 11542994620,
+  "artifactZIP_SHA256": "457b069025a60e72549e5583720e430a2341dec0cc949dbc81c60693e45d8c36",
+  "fullInventoryUnique": 686,
+  "allDiscoveredCasesStartedAndFinishedExactlyOnce": true,
+  "starts": 686,
+  "finishes": 686,
+  "counts": {
+    "passed": 656,
+    "failed": 5,
+    "skipped": 25
+  },
+  "fullSummaries": [
+    {
+      "executed": 14,
+      "skipped": 2,
+      "failures": 0,
+      "seconds": 0.267
+    },
+    {
+      "executed": 4,
+      "skipped": 4,
+      "failures": 0,
+      "seconds": 0.003
+    },
+    {
+      "executed": 2,
+      "skipped": 2,
+      "failures": 0,
+      "seconds": 0.001
+    },
+    {
+      "executed": 3,
+      "skipped": 1,
+      "failures": 0,
+      "seconds": 0.02
+    },
+    {
+      "executed": 6,
+      "skipped": 1,
+      "failures": 0,
+      "seconds": 0.013
+    },
+    {
+      "executed": 9,
+      "skipped": 1,
+      "failures": 0,
+      "seconds": 0.009
+    },
+    {
+      "executed": 9,
+      "skipped": 1,
+      "failures": 0,
+      "seconds": 0.027
+    },
+    {
+      "executed": 8,
+      "skipped": 1,
+      "failures": 0,
+      "seconds": 0.038
+    },
+    {
+      "executed": 2,
+      "skipped": 2,
+      "failures": 0,
+      "seconds": 0.002
+    },
+    {
+      "executed": 2,
+      "skipped": 2,
+      "failures": 0,
+      "seconds": 0.001
+    },
+    {
+      "executed": 8,
+      "skipped": 1,
+      "failures": 0,
+      "seconds": 0.004
+    },
+    {
+      "executed": 4,
+      "skipped": 4,
+      "failures": 0,
+      "seconds": 0.002
+    },
+    {
+      "executed": 7,
+      "skipped": 2,
+      "failures": 0,
+      "seconds": 0.041
+    },
+    {
+      "executed": 1,
+      "skipped": 1,
+      "failures": 0,
+      "seconds": 0.001
+    },
+    {
+      "executed": 1,
+      "skipped": 1,
+      "failures": 1,
+      "seconds": 0.002
+    },
+    {
+      "executed": 686,
+      "skipped": 26,
+      "failures": 5,
+      "seconds": 145.214
+    },
+    {
+      "executed": 686,
+      "skipped": 26,
+      "failures": 5,
+      "seconds": 145.214
+    }
+  ],
+  "swiftTestingZeroSuiteObserved": true,
+  "failures": [
+    {
+      "test": "RightClickCoreTests.CapabilityExecutableSnapshotPoolTests/testReusesExactPrivateIncarnationWhileReadingCurrentByteIdentity",
+      "seconds": 0.068,
+      "kind": "fixedCocoaCode",
+      "cocoaCodes": [
+        257
+      ]
+    },
+    {
+      "test": "RightClickCoreTests.InvocationBindingTests/testFreshMarkersVerifyForBothTransports",
+      "seconds": 0.341,
+      "kind": "unavailable",
+      "cocoaCodes": []
+    },
+    {
+      "test": "RightClickCoreTests.InvocationBindingTests/testMatchingStaleKafkaRecordCannotVerifyCurrentAppend",
+      "seconds": 0.047,
+      "kind": "unavailable",
+      "cocoaCodes": []
+    },
+    {
+      "test": "RightClickCoreTests.InvocationBindingTests/testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate",
+      "seconds": 0.047,
+      "kind": "unavailable",
+      "cocoaCodes": []
+    },
+    {
+      "test": "RightClickCoreTests.RCIRReceiptTrustGapTests/testActualLegalRotationReceiptsRequireExplicitIssuerLifecyclePolicy",
+      "seconds": 0.002,
+      "kind": "fixedCocoaCode",
+      "cocoaCodes": [
+        513
+      ]
+    }
+  ],
+  "historicalTargetCasesOnThisCurrentSource": [
+    {
+      "test": "RightClickCoreTests.CapabilityExecutableSnapshotPoolTests/testEntryByteAndAbsoluteRetentionBudgetsDoNotGrowOnReuse",
+      "state": "passed",
+      "seconds": 0.139
+    },
+    {
+      "test": "RightClickCoreTests.CapabilityExecutableSnapshotPoolTests/testIdleRetentionCleanupReleasesOnlyThePoolReference",
+      "state": "passed",
+      "seconds": 0.084
+    },
+    {
+      "test": "RightClickCoreTests.CapabilityExecutableSnapshotPoolTests/testReturnRaceRechecksWholeBytesAndDoesNotEvictConcurrentNewIncarnation",
+      "state": "passed",
+      "seconds": 0.114
+    },
+    {
+      "test": "RightClickCoreTests.CapabilityExecutableSnapshotPoolTests/testReusesExactPrivateIncarnationWhileReadingCurrentByteIdentity",
+      "state": "failed",
+      "seconds": 0.068
+    },
+    {
+      "test": "RightClickCoreTests.CapabilityExecutableSnapshotPoolTests/testSourceWithdrawalAndRestorationCannotReturnWithdrawnCacheEntry",
+      "state": "passed",
+      "seconds": 0.072
+    },
+    {
+      "test": "RightClickCoreTests.InvocationBindingTests/testFreshMarkersVerifyForBothTransports",
+      "state": "failed",
+      "seconds": 0.341
+    },
+    {
+      "test": "RightClickCoreTests.InvocationBindingTests/testMatchingStaleKafkaRecordCannotVerifyCurrentAppend",
+      "state": "failed",
+      "seconds": 0.047
+    },
+    {
+      "test": "RightClickCoreTests.InvocationBindingTests/testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate",
+      "state": "failed",
+      "seconds": 0.047
+    },
+    {
+      "test": "RightClickCoreTests.InvocationBindingTests/testRelativeHostClientPathFailsBeforeNativeDispatch",
+      "state": "passed",
+      "seconds": 0.0
+    },
+    {
+      "test": "RightClickCoreTests.RCIRReceiptTrustGapTests/testActualLegalRotationReceiptsRequireExplicitIssuerLifecyclePolicy",
+      "state": "failed",
+      "seconds": 0.002
+    }
+  ],
+  "protectedReferencePhase": {
+    "finishes": 9,
+    "counts": {
+      "passed": 9
+    },
+    "compilerErrorsObserved": false
+  },
+  "integratedPhase": {
+    "source": "4b23f3c20d502776468097ad6b58377a4ea586e0",
+    "phase": "integrated-tests",
+    "state": "COMPLETED",
+    "exitCode": 1,
+    "startedUTC": "2026-10-08T10:25:57.8415216Z",
+    "completedUTC": "2026-10-08T10:31:04.5324422Z"
+  },
+  "inputs": {
+    "windows-tests.log": {
+      "bytes": 196137,
+      "sha256": "72f8bba9e561493907e7de474e5242693ef983ddc3e03f4c97908498878047e7"
+    },
+    "portable-toolchain.txt": {
+      "bytes": 103,
+      "sha256": "fa5f6abcb1a722939e20fac6e0f878c8e366d6fd43567690b60beaac53fc53d2"
+    },
+    "artifact.zip": {
+      "bytes": 56514,
+      "sha256": "457b069025a60e72549e5583720e430a2341dec0cc949dbc81c60693e45d8c36"
+    },
+    "windows-protected-files.log": {
+      "bytes": 119601,
+      "sha256": "7498b6477404e45a2e29ef4e73d0caa0c65583529d0d1e9eadce43de4e4b54f7"
+    },
+    "windows-python-before-setup.log": {
+      "bytes": 63,
+      "sha256": "15b146bee63ddda151c80ba1b32e2c1c97d27cb3855f02352f40807fcd77f6db"
+    },
+    "windows-test-discovery.log": {
+      "bytes": 66898,
+      "sha256": "64dae01a44be5d660fef9254babf7910635016f71d70c822977c3f871861a6ce"
+    },
+    "portable-module-availability.log": {
+      "bytes": 111,
+      "sha256": "ba9d8681c78fb6ee5c66e2b14bd4343cdf18b1e35b6ced011b12a1cfc5db045e"
+    },
+    "portable-source.txt": {
+      "bytes": 42,
+      "sha256": "47ff9e555afa77155a7c5dabcb3e066dab8487167c7909a191f5ac2fca2b547a"
+    },
+    "windows-integrated-phase.json": {
+      "bytes": 237,
+      "sha256": "f98ca97a58b0fef7ddd61e2a42ba0b526c0346e403b65ae767966158f0eead0c"
+    }
+  },
+  "limits": [
+    "This is current 4b23 evidence only; f07/c41 diagnostic repairs are not substituted.",
+    "Release build and Core seven-operation proof were skipped after integrated failure.",
+    "Receipt and field provenance require independent detailed review beyond case counts."
+  ]
+}

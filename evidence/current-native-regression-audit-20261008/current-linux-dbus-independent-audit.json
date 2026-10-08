@@ -1,0 +1,109 @@
+{
+  "verdict": "INDEPENDENT_CURRENT_NATIVE_LINUX_DBUS_SCOPED_GREEN",
+  "head": "4b23f3c20d502776468097ad6b58377a4ea586e0",
+  "sourcesTree": "274560970e827d1271379026c6cc0ff4ef63bb3e",
+  "run": 37761827522,
+  "job": 113259843549,
+  "artifact": 11542348729,
+  "apiZIP_SHA256": "0eecc21a93daa2f78dfb7f4bba2ea7a808a13f1218567e957129279ff9654873",
+  "closedPayloadCount": 21,
+  "nativePrimitiveTests": {
+    "uniqueStarted": 13,
+    "uniqueFinished": 13,
+    "passed": 13,
+    "skipped": 0,
+    "failed": 0
+  },
+  "coreOperationsExactAndStable": 7,
+  "actualBinarySHA256": "8ab90f43276eb8e35cf1058489d258b9d642287c5093c0fba54a0e7bbd940448",
+  "independentDecoderSourceSHA256": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966",
+  "cryptographyVersion": "50.0.2",
+  "separateFixtureProvisionedPublicPinSHA256": "cfadb63f6d09e2992e0c666fdd7d5081f964c692620422796233290e6f7a8c8b",
+  "uniqueSignedReceiptsVerified": [
+    {
+      "label": "6",
+      "signature": "VALID",
+      "phase": "completed",
+      "outcome": "unverified",
+      "providerGeneration": 1,
+      "scopeCount": 1,
+      "authorityEnvelopePresent": false,
+      "payloadSHA256": "1d1f259411f79ba86c41d4d5a1728a905aed69b67f4441b9e148d919c8215282"
+    },
+    {
+      "label": "11",
+      "signature": "VALID",
+      "phase": "completed",
+      "outcome": "succeeded",
+      "providerGeneration": 2,
+      "scopeCount": 1,
+      "authorityEnvelopePresent": false,
+      "payloadSHA256": "1cebbc9fa1c4511579e72c37b4719335eb9a0a378dc491b430ef6316c74cc8f5"
+    },
+    {
+      "label": "13",
+      "signature": "VALID",
+      "phase": "completed",
+      "outcome": "unverified",
+      "providerGeneration": 2,
+      "scopeCount": 1,
+      "authorityEnvelopePresent": false,
+      "payloadSHA256": "e832a96c423ab02ea8a95b906b4b042ddee863350c0edce8c3bad4550580396d"
+    },
+    {
+      "label": "14",
+      "signature": "VALID",
+      "phase": "completed",
+      "outcome": "failed",
+      "providerGeneration": 2,
+      "scopeCount": 1,
+      "authorityEnvelopePresent": false,
+      "payloadSHA256": "6bdf4445b079edfa276b9f21181052e11a1c80fd4c53255ecd2a57b354709ee4"
+    },
+    {
+      "label": "19",
+      "signature": "VALID",
+      "phase": "completed",
+      "outcome": "succeeded",
+      "providerGeneration": 3,
+      "scopeCount": 1,
+      "authorityEnvelopePresent": false,
+      "payloadSHA256": "6014feb1ced721390075012f2a350f3c3945cb23b8176a577e02676e6b31baba"
+    },
+    {
+      "label": "default-tags",
+      "signature": "VALID",
+      "phase": "completed",
+      "outcome": "succeeded",
+      "providerGeneration": 1,
+      "scopeCount": 1,
+      "authorityEnvelopePresent": false,
+      "payloadSHA256": "1324f0c2a0fc288fab314f4dec50b2987db99653c95dd7455c7c3a158ea22381"
+    }
+  ],
+  "kernelUIDBusPolicyRolesVerified": {
+    "writer": 1100,
+    "observer": 1101,
+    "service": 1102,
+    "authentication": "EXTERNAL",
+    "directOppositeRoleCalls": "AccessDenied"
+  },
+  "storeDispatchJournalRows": 4,
+  "freshIndependentlyVerifiedDurableStoreObservations": 2,
+  "oldInvocationMarkerDetectedAsFailure": true,
+  "noEffectACKUnverified": true,
+  "nativeUnitCompletionUnverifiedWithoutFabricatedValue": true,
+  "negativeConfirmationPolicyTranscriptAndNoExtraStoreDispatch": true,
+  "wrongBooleanChallengeAbsentFromDispatchJournal": true,
+  "defaultSessionTypedArrayLiteralStringsPreserved": true,
+  "withdrawalRestorationGraphAndReceiptBindingsChanged": true,
+  "limits": [
+    "Controlled genuine native Linux private D-Bus; auditor verified independently journaled observer evidence without re-running effects on that host.",
+    "Pin was separately provisioned by the proof harness; external issuer identity/key lifecycle or issuer-delegated authority envelopes are not demonstrated.",
+    "Effects.jsonl journals ingress, including no-effect calls; only two fresh matching independent observations establish durable Store effects.",
+    "Replay control rejects an old effect marker for a new task; it does not attempt reuse of one authority lease.",
+    "Confirmation/policy controls reuse the later successful challenge; final journal sequence has exactly the four admitted calls, with source assertions checking file absence at denial time. Intermediate file snapshots were not exported.",
+    "Raw stored value/record files are not exported; source-pinned observer journaling establishes readback with retained digest/challenge/invocation correlation.",
+    "No current-main installation, Windows/Kafka/Kubernetes effect or eleven-substrate goal acceptance is claimed."
+  ]
+}

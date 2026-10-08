@@ -1,0 +1,63 @@
+{
+  "head": "4b23f3c20d502776468097ad6b58377a4ea586e0",
+  "SourcesTree": "274560970e827d1271379026c6cc0ff4ef63bb3e",
+  "all674PriorNativeNamesPreserved": true,
+  "removedNames": [],
+  "additional12ActualNativeCases": [
+    {
+      "test": "RightClickCoreTests.NativeServiceUnicodeBoundaryTests/testComplexUnicodeAcrossLanguageFamilies",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.NativeServiceUnicodeBoundaryTests/testExistingCorrectOutputAndEchoStayUntouched",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.NativeServiceUnicodeBoundaryTests/testFullWidthResultWithCorrectUnicodeIsNotMutated",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.NativeServiceUnicodeBoundaryTests/testLegitimateTransformedLiteralPreservesObservedUTF8AndUTF16",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.NativeServiceUnicodeBoundaryTests/testLiteralOutputCannotSatisfyReinterpretedPostcondition",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.NativeServiceUnicodeBoundaryTests/testNonRepairableBytesAndNormalAsciiAreUntouched",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.NativeServiceUnicodeBoundaryTests/testObservedMojibakeVectorsAreRepairedExactly",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.NativeServiceUnicodeBoundaryTests/testUnrelatedProviderCannotBeModified",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.ServiceRTFUnicodeTests/testRTFMetacharactersAreNotInterpretedAsInstructions",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.ServiceRTFUnicodeTests/testSeededMixedUnicodeRoundTrips",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.ServiceRTFUnicodeTests/testSupplementaryScalarsUseSignedSurrogateEscapes",
+      "state": "passed"
+    },
+    {
+      "test": "RightClickCoreTests.ServiceRTFUnicodeTests/testUnicodeRoundTripThroughRTFEncoder",
+      "state": "passed"
+    }
+  ],
+  "allAdditional12Pass": true,
+  "BPCBytesEqualHistoricalF07": true,
+  "BPC_SHA256": "fcaab1ffab40c1f85f9e9c882f889f07f80dd3eb2f7a63b7c0f6c68061de119d",
+  "limits": [
+    "The current candidate does not gain historical fixture-repair GREEN merely because BPC bytes match.",
+    "Final native Windows release/Core7 verification remains skipped and RED."
+  ]
+}

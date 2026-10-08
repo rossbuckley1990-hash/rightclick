@@ -1,0 +1,168 @@
+{
+  "audit": "PASS",
+  "baseline": {
+    "runtime": {
+      "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+      "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+      "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+      "pid": 85228,
+      "product": "RIGHTCLICK",
+      "transport": "stdio",
+      "version": "0.2.2"
+    },
+    "independentlyHashedBinary": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "catalogueCount": 7,
+    "operationsObserved": [
+      "context_actions",
+      "context_explain",
+      "context_inspect",
+      "context_providers",
+      "context_run",
+      "context_run_status",
+      "context_runtime"
+    ],
+    "descriptorSHA256": "bc30e6f198e9bfae8008065a15a038538033c5b87adcf2322ddf3a9f1eda6b04",
+    "discoveredUnaryTitle": "gRPC rightclick.pressure.Streams/Echo",
+    "confirmedState": "accepted",
+    "nativeCallCount": 1,
+    "inputHashes": {
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/baseline-native-unary/tools.json": {
+        "sha256": "836d6b6b459dc11a15bc48aba313352ec33b7643828be5d7934ebb4b7730ed9e",
+        "bytes": 7053
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/baseline-native-unary/exchanges.json": {
+        "sha256": "8c89ac2a59d922463d51a02863da192b93aeedec3d7e82dd0c87b08b98e8da51",
+        "bytes": 6853
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/baseline-native-unary/capability.json": {
+        "sha256": "b1ac15bccc4955f558a085ac66ffa5efc051735bc1b8c275ceb2e5d0d418b2a5",
+        "bytes": 504
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/baseline-native-unary/advertisement.log": {
+        "sha256": "40a36ce06d3c524414533b43c70231e592158087258d6e5496f7a571b60d0e66",
+        "bytes": 491
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/baseline-native-unary/stream-events.jsonl": {
+        "sha256": "55a33d590b529860b6a51ac9974dd6e752427d84fcb7540d4291ffefeb64753a",
+        "bytes": 94
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/baseline-native-unary/echo-parity-c9ea4760dec14877b2602e9539206949.txt": {
+        "sha256": "145c6ef41c786b8867bbadf6edd51b5a3e80eae42277184814ad167e47d0eb9d",
+        "bytes": 39
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/baseline-native-unary/runtime-records.json": {
+        "sha256": "3532c3b415b5ec41e094840152959af579433bef4763d08a96344ac9c3248ebc",
+        "bytes": 1752
+      }
+    },
+    "audit": "PASS",
+    "nativeFileEffect": true,
+    "requestChallenge": "parity-c9ea4760dec14877b2602e9539206949",
+    "exactReturnedJSON": true,
+    "retainedFullResultEqual": true,
+    "semanticOutcomeVerified": false,
+    "nativeMarker": null,
+    "gatingTemporalScope": "awaiting_user reply plus one total call; pre-confirmation zero-call timing is a separate harness assertion",
+    "externalTruth": "exact owned file and native request correspondence; runtime acceptance alone does not establish truth"
+  },
+  "candidate": {
+    "runtime": {
+      "agentABIProfiles": [
+        {
+          "id": "core",
+          "operations": [
+            "context_runtime",
+            "context_providers",
+            "context_inspect",
+            "context_actions",
+            "context_explain",
+            "context_run",
+            "context_run_status"
+          ],
+          "version": 1
+        }
+      ],
+      "executablePath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+      "executableRealPath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+      "executableSHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+      "pid": 5199,
+      "platform": "macOS",
+      "product": "RIGHTCLICK",
+      "transport": "stdio",
+      "version": "0.2.3"
+    },
+    "independentlyHashedBinary": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+    "catalogueCount": 7,
+    "operationsObserved": [
+      "context_actions",
+      "context_explain",
+      "context_inspect",
+      "context_providers",
+      "context_run",
+      "context_run_status",
+      "context_runtime"
+    ],
+    "descriptorSHA256": "bc30e6f198e9bfae8008065a15a038538033c5b87adcf2322ddf3a9f1eda6b04",
+    "discoveredUnaryTitle": "gRPC rightclick.pressure.Streams/Echo",
+    "confirmedState": "accepted",
+    "nativeCallCount": 1,
+    "inputHashes": {
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/native-unary/tools.json": {
+        "sha256": "9035305b839de7083e57350751fb2a1487a64f85c921ca93eed2f58d8496c2d7",
+        "bytes": 7358
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/native-unary/exchanges.json": {
+        "sha256": "ec55bdedd32dc87c19180f95f0659bd419dfb0f90798bcb6205ec94992ec54f3",
+        "bytes": 25067
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/native-unary/capability.json": {
+        "sha256": "289f40e9daf62cb4214f6dabfbe46d56a6d716f4b241001b2aaf605d6f7e4fa4",
+        "bytes": 592
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/native-unary/advertisement.log": {
+        "sha256": "1ce23e6e0a4cc3588fc874f7679b9335c72eb6332d2080acbe6bab1a4fb829dd",
+        "bytes": 491
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/native-unary/stream-events.jsonl": {
+        "sha256": "0bdc11f96bd4799e17f4bcc44e93057438e64779a325125bb69d982dfa2623da",
+        "bytes": 94
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/native-unary/echo-parity-c859a41fc7d242589986d2ecbefb37fe.txt": {
+        "sha256": "cac61ddae050a6efdbb2398ecfd5cdbabe2417ff8b0f4a8d7fc14de09c1fcffc",
+        "bytes": 39
+      },
+      "/private/tmp/rightclick-authority-staged-evidence-review-20261007/native-unary/runtime-records.json": {
+        "sha256": "f409cbea744df12f3ef833840f916451d38e71121eca72839b2a909141ee48ad",
+        "bytes": 19126
+      }
+    },
+    "audit": "PASS",
+    "nativeFileEffect": true,
+    "requestChallenge": "parity-c859a41fc7d242589986d2ecbefb37fe",
+    "exactReturnedJSON": true,
+    "retainedFullResultEqual": true,
+    "semanticOutcomeVerified": false,
+    "nativeMarker": null,
+    "gatingTemporalScope": "awaiting_user reply plus one total call; pre-confirmation zero-call timing is a separate harness assertion",
+    "externalTruth": "exact owned file and native request correspondence; runtime acceptance alone does not establish truth"
+  },
+  "publicCatalogueCompatibility": {
+    "audit": "PASS",
+    "canonicalNamesAndOrderEqual": true,
+    "legacyPropertiesAndRequiredFieldsEqual": true,
+    "differences": [
+      {
+        "tool": "context_run",
+        "change": "optional contractSHA256 string property only"
+      }
+    ]
+  },
+  "unaryReflectedContractEqual": true,
+  "excluded": [
+    "new stream support",
+    "issuer authentication or authority proof",
+    "fresh restricted AI",
+    "all eleven substrates",
+    "shipping or publication"
+  ]
+}

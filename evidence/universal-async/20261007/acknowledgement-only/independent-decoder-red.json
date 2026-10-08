@@ -1,0 +1,30 @@
+{
+  "frozenSource": "9c9924859427c5629702d93617ba4078ea746cf0",
+  "frozenVerifierSHA256": "5ba8ad9dadef3553a362918e84e43f04d1d4d3e3cc0fe02f8f4007caff2b750f",
+  "results": [
+    {
+      "receipt": "success",
+      "receiptSHA256": "76861fb7cf5364950d3a279b5135facbccfa69d97472d5470c6c5b5b48b0f455",
+      "expectedOutcome": "succeeded",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "{\"signature\": \"VALID\", \"receipt\": \"MALFORMED\"}\n"
+    },
+    {
+      "receipt": "failure",
+      "receiptSHA256": "15944b1659dd780173bcf21ab66aeebd9c7d4bb5b9347f0589decd35fd6836d1",
+      "expectedOutcome": "failed",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "{\"signature\": \"VALID\", \"receipt\": \"MALFORMED\"}\n"
+    },
+    {
+      "receipt": "unverified",
+      "receiptSHA256": "222903fdc2e59630ef500167841c6f02f2b4f5ffefa3db97ffd5091ffb1a5bee",
+      "expectedOutcome": "unverified",
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "{\"signature\": \"VALID\", \"receipt\": \"MALFORMED\"}\n"
+    }
+  ]
+}

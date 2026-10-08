@@ -1,0 +1,97 @@
+{
+  "Linux": {
+    "binarySHA256": "ac10ada413f207e0ba7fbc16cd31831c764d622ed14f853ddeedfeed8a042cb2",
+    "compiler": "Swift6.2.4 swift-6.2.4-RELEASE",
+    "crashEvidence": "green-linux",
+    "dockerServer": "29.8.2",
+    "failures": 0,
+    "fullLog": "final-13d7210/linux-full-585-24skip-green.log.gz",
+    "fullTests": 585,
+    "host": "Native aarch64-unknown-linux-gnu in scoped Docker container",
+    "image": "rightclick-dbus-validation:20261007",
+    "imageID": "sha256:aeab1e2745498298dc6bfa875e82f6a223a87f9ececcde07b0438bba2bd45e26",
+    "journalControls": 21,
+    "repoDigest": null,
+    "skipped": 24
+  },
+  "frozenCandidateBaseline": "2dd7bd2fafbbaa994812d1bc904730b74aa74816",
+  "frozenHarnessSHA256": "9328eccdd043711308beaefad1ee98252bf7a1f6f8f1c7df42e1c96e2621e5dd",
+  "frozenMain": "28de3d8396fc7f144e6734eb6923cdc7219d5c5d",
+  "frozenRED": {
+    "binarySHA256": "80f5e7875f84deaeeeb04ced3f5d2d7137ad046a0a8af8a91887532253f1100a",
+    "directory": "red",
+    "originalLocalCommit": "db26a99521bfe79b91d51d014087eb20e03a24db",
+    "reason": "restart lost durable invocation identity"
+  },
+  "intermediateFailures": {
+    "Linux0af": "Full585/24skip/1failure: pre-existing nonMac default-source expectation omitted Linux D-Bus. Same platform-aware correction already upstream5349.",
+    "macOS13d": "First full797/31skip/6assertion failures in one existing JSON success observation test: no observer row and accepted/unverified result. Cause not established; runtime correctly abstained. Focused9 + serialized full797 passed with request/effect evidence. Preserved without weakening checks.",
+    "macOS75": "Full796/31skip/1assertion failure: absent observer log row in existing wrong-writer control. Preserved."
+  },
+  "macOS": {
+    "binarySHA256": "d1be10b65ad00fb13267f8461de3f76dce14f13df25b1b751e42064be9af8388",
+    "compiler": "Apple Swift6.3.3 swiftlang-6.3.3.1.3",
+    "crashEvidence": "green-macos",
+    "execution": "Final full passing run serialized after focused observer9controls; no production retry or assertion relaxation.",
+    "failures": 0,
+    "fullLog": "final-13d7210/macos-full-797-31skip-green.log.gz",
+    "fullTests": 797,
+    "host": "macOS26.4.1 build25E253 arm64",
+    "journalControls": 22,
+    "observerEvidence": "observer-full-green-13d7210",
+    "skipped": 31
+  },
+  "packageAlignment": {
+    "artifactSHA256": "a3953eb8f1be2f9123d694b90202244c94ee21971171972f8ce1d3bacf807ca5",
+    "exitCode": 1,
+    "log": "final-13d7210/package-alignment-red.log",
+    "missingKinds": [
+      "artifact.resolver.kafka",
+      "artifact.resolver.mcp",
+      "artifact.resolver.wasm"
+    ],
+    "scope": "Published artifact source taxonomy comparison only, not a byte/semantic bottle proof"
+  },
+  "recovery": {
+    "archiveFilesComparedEqual": 2734,
+    "honestRecoveryCommit": "923dfbfa277d41c07879e6294195da6d0c471e29",
+    "originalLocalImplementation": "75f556b7f1001349952cef8ae0dd090800d3ac2e",
+    "reason": "Project mirror refresh removed local worktrees and unpublished commit objects; exact tracked archive survived outside mirror.",
+    "stagingPinCommit": "0af186e1bf7cf18ae1a5ef76b10c83f8e78137fe",
+    "unavailableArtifact": "Original untracked macOS75 crash transcript was removed with the mirror; its session assertion result is superseded by retained final proofs."
+  },
+  "requiredRemainingGates": [
+    "Validated automatic/default durability on all intended hosts",
+    "Native Windows durable backend; default remains explicitly volatile",
+    "Signed receipt/independent evidence archival and trust/key lifecycle",
+    "Supervised uncertain-effect reconciliation and recovery discovery without an acknowledged executionID",
+    "Async/stream resume without authority reconstruction or replay",
+    "Power-loss validation",
+    "Every substrate route in the common host",
+    "Eleven-world fresh restricted-agent proof",
+    "Immutable release, package/bottle alignment and clean-install serving-runtime verification"
+  ],
+  "scope": "Opt-in private POSIX dispatch identity/status journal and real-process A2A crash boundary; engineering evidence, not eleven-world acceptance or released runtime readiness",
+  "sourceFilesSHA256": {
+    "Package.resolved": "05d21463a6dca3ac8fb23f81c664b0db1035564f2c9f090a22d01e4aab36fa60",
+    "Package.swift": "9c5cb61e7088911eae476014e0487e782f4f313f0316b86fb78f99940cb56b69",
+    "Sources/RightClickCore/CapabilityEngine.swift": "670ff823136a3aa80feb27c6643b27d271e48017a4829127628764c19804975b",
+    "Sources/RightClickCore/RCIRDeferredExecution.swift": "60d686e15bc3ef16d0f1e8ac693b335311420efa8325728488c0e53d57a5fca2",
+    "Sources/RightClickCore/RCIRExecutionHost.swift": "5f91704e99fd0316fb0555cc4cc0447917dc105a1a0273c37dc95b862b0c5a18",
+    "Sources/RightClickCore/RCIRInvocationJournal.swift": "5787fba26bd4fb2f60f1193d8764d8f914c87578cbcd960f6662f9abac711827",
+    "Tests/RightClickCoreTests/CapabilityRuntimeDefaultsTests.swift": "e177cb78ba94278e670351e3a647b5009d9d8e88776b6ad56ecfcc6749031672",
+    "Tests/RightClickCoreTests/RCIRInvocationJournalTests.swift": "670fd340dc1c3fea9e205a5ec810cd01d2afd265006601250f1dee93b6caa5c0",
+    "scripts/a2a-proof-agent.py": "12b5c07f1c87df359313fea2e4ab09d52c7dfe18e761cdf74f9c7753eb620ca1",
+    "scripts/acceptance-rcir-restart.py": "9328eccdd043711308beaefad1ee98252bf7a1f6f8f1c7df42e1c96e2621e5dd"
+  },
+  "upstreamDuplicateTestFix": {
+    "commit": "5349c7332359d84a18d359d701aca4e461686d2d",
+    "file": "Tests/RightClickCoreTests/CapabilityRuntimeDefaultsTests.swift",
+    "gitBlobEqual": "76722695f8c1306e4ec0bd969009438bf2db19ff",
+    "integration": "Drop the duplicate local test hunk if selecting journal commits; production runtime source unchanged0af-to13d.",
+    "localTestOnlyCommit": "13d7210be00dd8d4fde654a5b90a213c24b5a182",
+    "originalCommit": "aec0464d8912118439ac2fd7781acc09b2a8c67a"
+  },
+  "validatedSource": "13d7210be00dd8d4fde654a5b90a213c24b5a182",
+  "version": 1
+}

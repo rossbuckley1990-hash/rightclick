@@ -1,0 +1,81 @@
+{
+  "addedPortableCases": {
+    "TrustedHostProcessContextTests.testIsolatedContextPreservesBaselineAndHasStableOpaqueIdentity": "passed",
+    "TrustedHostProcessContextTests.testLocalPathValidationRejectsUnboundedAmbiguousAndRemoteInputs": "passed",
+    "TrustedHostProcessContextTests.testUnavailableHostLocationCannotExpandNonWindowsEnvironment": "passed"
+  },
+  "artifactID": 11548047867,
+  "authenticatedAPIZIP_SHA256": "fdba4a58d48f2b93e09cea813a81a9797f51a10a132cd4253a67e9761b98bb13",
+  "baseline773NamesAndAllStatesPreserved": true,
+  "caseCounts": {
+    "failed": 0,
+    "passed": 748,
+    "skipped": 28
+  },
+  "closedPayloads": {
+    "linux-acceptance.log": {
+      "bytes": 299,
+      "sha256": "6fd0f67b8e7360c471cf7633de3bab026061f5691fac5f9da8034c4098cda591"
+    },
+    "linux-binary-sha256.txt": {
+      "bytes": 92,
+      "sha256": "bb1b98c249e390aaac22eae05131b4b82c41e25e894113c2324088acb83437af"
+    },
+    "linux-build.log": {
+      "bytes": 33744,
+      "sha256": "36bffc99f81a2058676250af309b69c3388893c95e721843e49c3777b4f72159"
+    },
+    "linux-tests.log": {
+      "bytes": 389689,
+      "sha256": "4594f32214fdc8a0b0a724f1258090c0f32db6cd7efee42e4b05851bb9dcaeb2"
+    },
+    "portable-source.txt": {
+      "bytes": 41,
+      "sha256": "7ffa145579f7f8b27d5584006ac34d234ffdfbcec06ef7d4eb98b0f4a6ba52fe"
+    },
+    "portable-toolchain.txt": {
+      "bytes": 75,
+      "sha256": "c01ffead3c63e0960a3ae3e8a6e737e13fee8812d378e0e7e40a62f20c00f71a"
+    }
+  },
+  "core7Harness": {
+    "confirmationAndArgumentDenialsBeforeFixtureEffect": true,
+    "exactSeven": true,
+    "localRESTWritePerTransport": 1,
+    "rawRPCAndEffectsOrReceiptsExported": false,
+    "retainedStatusAndLeaseConsumedMatched": true,
+    "runtimeHashComparedToLaunchedBinary": true,
+    "semanticOutcomeExplicitlyUnverified": true,
+    "stdioAndHTTP": true,
+    "unauthenticatedHTTP401": true
+  },
+  "diskOrActualCompileInputSnapshotsExported": false,
+  "head": "053b6202df504ff1a33682a39f2e72a959f65983",
+  "jobConclusion": "success",
+  "jobID": 113288937825,
+  "limitations": [
+    "Authenticated source-bound native Linux tests/build plus local REST acceptance harness; no fresh installation or published asset proof",
+    "Fixture effect list does not establish independent external observation or issuer-backed least authority",
+    "Direct D-Bus receipt/role proof is a separate final053b scoped audit",
+    "Windows3 compilation failures, release binary and Core7 Windows gates remain RED",
+    "The eleven-substrate goal is not claimed complete"
+  ],
+  "overallRunConclusion": "failure",
+  "portableRTFFour": {
+    "ServiceRTFUnicodeTests.testRTFMetacharactersAreNotInterpretedAsInstructions": "passed",
+    "ServiceRTFUnicodeTests.testSeededMixedUnicodeRoundTrips": "passed",
+    "ServiceRTFUnicodeTests.testSupplementaryScalarsUseSignedSurrogateEscapes": "passed",
+    "ServiceRTFUnicodeTests.testUnicodeRoundTripThroughRTFEncoder": "passed"
+  },
+  "releaseExecutableBytesExported": false,
+  "reportedReleaseBinarySHA256": "144a11bdf73d2cbfdf4ceb1fa10bfd201d54511622071714b444542aa56758d0",
+  "reviewedSourceBoundAcceptanceScriptSHA256": "3bec3b2a3547468227dda3304bd6224d2033d6b636f6c6175303288788fb977f",
+  "runAttempt": 1,
+  "runID": 37770595695,
+  "schema": 1,
+  "siblingWindowsFailurePreserved": true,
+  "sourcesTree": "9716cb182db859368f47b603137189d3b257ca43",
+  "swiftTestingSeparateZeroTestSuite": true,
+  "uniqueStartsFinishes": 776,
+  "verdict": "PASS_SCOPED_FINAL_LINUX_SUITE_BUILD_CORE7_REST_HARNESS"
+}

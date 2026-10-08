@@ -6,6 +6,25 @@ Discovery is not approval. RIGHTCLICK reflects contracts declared by installed s
 
 ## Remote access
 
+The portable source candidate preserves the Mac listener and adds a Linux
+loopback listener. Neither binds to a public interface. Linux HTTP mode requires
+an explicitly injected `RIGHTCLICK_MCP_TOKEN`; stdio requires no listening port.
+The optional Link library is absent from normal CLI startup. It never forwards
+a public socket into localhost MCP. See [Link trust boundaries and limits](docs/PORTABLE-FABRIC.md#link-trust-boundaries).
+
+Link pins caller grants and execution-node keys locally, signs the exact bounded
+versioned request and result, binds the target and complete capability contract,
+and durably reserves nonce/request/idempotency before effects. Confirmation comes
+from a host-owned approval ticket, never from a remote `confirmed` flag. Policy,
+credentials and observation stay on the execution node. A relay acknowledgment,
+HTTP success or provider acceptance does not mean verified outcome.
+
+An interrupted request returns unavailable or unknown. There is no automatic
+cross-node fallback. A fresh authenticated retry with the same intent and
+idempotency key returns the prior safe summary or unresolved unknown, without
+invoking the provider again. Exact envelope replay is rejected. Journal loss,
+clock rollback, untrusted storage and capacity exhaustion fail closed.
+
 Streamable HTTP binds only to loopback and requires a bearer secret. Missing or invalid authentication returns 401. Requests with negative, invalid, or excessive Content-Length, unsupported transfer encoding, or an incomplete body are rejected. The small HTTP listener is intended for one user's Mac; it is not a general-purpose internet server.
 
 `rightclick serve` stores its secret in `~/Library/Application Support/RIGHTCLICK/token` with owner-only permissions and prints it at startup. Protect captured terminal output. `rightclick auth rotate` prints a replacement secret; restart serving processes afterward. The current process keeps its existing credential until restart.
@@ -20,4 +39,4 @@ Homebrew uninstall removes package files, not your Cursor configuration, logs, o
 
 ## Reporting
 
-Report security findings directly to the maintainer through your existing private contact, or use GitHub private vulnerability reporting when enabled on the public repository. Do not place credentials or sensitive payloads in public issue reports. Only 0.1.x is supported.
+Report security findings directly to the maintainer through your existing private contact, or use GitHub private vulnerability reporting when enabled on the public repository. Do not place credentials or sensitive payloads in public issue reports. Include the release version or source commit and the affected host platform.

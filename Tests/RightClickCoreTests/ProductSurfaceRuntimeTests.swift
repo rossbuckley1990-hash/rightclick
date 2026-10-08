@@ -1,10 +1,16 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
 import XCTest
 @testable import RightClickCore
 
 final class ProductSurfaceRuntimeTests: XCTestCase {
     func testRuntimeIdentityReportsExactExecutableBytes() throws {
-        let file = FileManager.default.temporaryDirectory
+        let file = NativeHTTPFixture.temporaryDirectory.standardizedFileURL
             .appendingPathComponent("rightclick-runtime-\(UUID().uuidString)")
 
         let bytes = Data("RIGHTCLICK runtime proof\n".utf8)

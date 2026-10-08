@@ -1,0 +1,195 @@
+{
+  "externalTruth": "Signature alone does not establish external truth; actual operation/effect observations come from the owned provider trace.",
+  "independentlyPinnedCorrelatedReceipts": 5,
+  "records": [
+    {
+      "actualFixtureWrite": true,
+      "actualProviderTaskID": "96036265-1EA8-4815-BEF4-8D0DE8094C95",
+      "actualRequestCount": 1,
+      "mismatchDenials": {
+        "wrong_lease": "ReceiptClaimMismatch",
+        "wrong_pin": "ValueError",
+        "wrong_task": "ReceiptClaimMismatch"
+      },
+      "retainedStatusMatches": true,
+      "runtimeState": "accepted",
+      "signedOutcome": "unverified",
+      "title": "Valid JSON",
+      "verification": {
+        "algorithm": "Ed25519",
+        "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE",
+        "payloadBytes": 5578,
+        "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+        "signature": "VALID",
+        "signedClaims": {
+          "deadline": 1791408587682,
+          "effects": [
+            "execute"
+          ],
+          "finishedAt": 1791408557688,
+          "lastObservationTime": 1791408557688,
+          "leaseID": "7897D9C8-5D05-4F86-8088-6C69B09F6A74",
+          "phase": "completed",
+          "providerGeneration": 1,
+          "scopeCount": 1,
+          "semanticOutcome": "unverified",
+          "startedAt": 1791408557682,
+          "taskID": "96036265-1EA8-4815-BEF4-8D0DE8094C95"
+        },
+        "trustedKeyMatched": true
+      }
+    },
+    {
+      "actualFixtureWrite": true,
+      "actualProviderTaskID": "0D84CFAF-A1D4-4FF3-A71C-F76E611200A9",
+      "actualRequestCount": 1,
+      "mismatchDenials": {
+        "wrong_lease": "ReceiptClaimMismatch",
+        "wrong_pin": "ValueError",
+        "wrong_task": "ReceiptClaimMismatch"
+      },
+      "retainedStatusMatches": true,
+      "runtimeState": "accepted",
+      "signedOutcome": "unverified",
+      "title": "Cleared bearer requirement",
+      "verification": {
+        "algorithm": "Ed25519",
+        "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE",
+        "payloadBytes": 5697,
+        "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+        "signature": "VALID",
+        "signedClaims": {
+          "deadline": 1791408594140,
+          "effects": [
+            "execute"
+          ],
+          "finishedAt": 1791408564147,
+          "lastObservationTime": 1791408564147,
+          "leaseID": "E6371A73-E4C7-46AB-BE7E-024724FBC8AE",
+          "phase": "completed",
+          "providerGeneration": 2,
+          "scopeCount": 1,
+          "semanticOutcome": "unverified",
+          "startedAt": 1791408564140,
+          "taskID": "0D84CFAF-A1D4-4FF3-A71C-F76E611200A9"
+        },
+        "trustedKeyMatched": true
+      }
+    },
+    {
+      "actualFixtureWrite": true,
+      "actualProviderTaskID": "446DFC56-DC5F-40F1-BE7F-5835167DC69E",
+      "actualRequestCount": 1,
+      "mismatchDenials": {
+        "wrong_lease": "ReceiptClaimMismatch",
+        "wrong_pin": "ValueError",
+        "wrong_task": "ReceiptClaimMismatch"
+      },
+      "retainedStatusMatches": true,
+      "runtimeState": "failed",
+      "signedOutcome": "unverified",
+      "title": "Malformed response",
+      "verification": {
+        "algorithm": "Ed25519",
+        "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE",
+        "payloadBytes": 5619,
+        "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+        "signature": "VALID",
+        "signedClaims": {
+          "deadline": 1791408618024,
+          "effects": [
+            "execute"
+          ],
+          "finishedAt": 1791408588029,
+          "lastObservationTime": 1791408588029,
+          "leaseID": "EDF75EE5-F542-4C3D-8F17-A04232FADD59",
+          "phase": "failed",
+          "providerGeneration": 3,
+          "scopeCount": 1,
+          "semanticOutcome": "unverified",
+          "startedAt": 1791408588024,
+          "taskID": "446DFC56-DC5F-40F1-BE7F-5835167DC69E"
+        },
+        "trustedKeyMatched": true
+      }
+    },
+    {
+      "actualFixtureWrite": true,
+      "actualProviderTaskID": "859E2120-3C2E-4202-BF9F-5A6DAB601909",
+      "actualRequestCount": 1,
+      "mismatchDenials": {
+        "wrong_lease": "ReceiptClaimMismatch",
+        "wrong_pin": "ValueError",
+        "wrong_task": "ReceiptClaimMismatch"
+      },
+      "retainedStatusMatches": true,
+      "runtimeState": "failed",
+      "signedOutcome": "unverified",
+      "title": "Wrong response type",
+      "verification": {
+        "algorithm": "Ed25519",
+        "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE",
+        "payloadBytes": 5621,
+        "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+        "signature": "VALID",
+        "signedClaims": {
+          "deadline": 1791408625348,
+          "effects": [
+            "execute"
+          ],
+          "finishedAt": 1791408595356,
+          "lastObservationTime": 1791408595356,
+          "leaseID": "8F14CC43-F3E4-4EAF-A692-D303540A1848",
+          "phase": "failed",
+          "providerGeneration": 4,
+          "scopeCount": 1,
+          "semanticOutcome": "unverified",
+          "startedAt": 1791408595348,
+          "taskID": "859E2120-3C2E-4202-BF9F-5A6DAB601909"
+        },
+        "trustedKeyMatched": true
+      }
+    },
+    {
+      "actualFixtureWrite": false,
+      "actualProviderTaskID": "04398C7F-906D-4689-8FDD-8FD31D0FD4D6",
+      "actualRequestCount": 1,
+      "mismatchDenials": {
+        "wrong_lease": "ReceiptClaimMismatch",
+        "wrong_pin": "ValueError",
+        "wrong_task": "ReceiptClaimMismatch"
+      },
+      "retainedStatusMatches": true,
+      "runtimeState": "rejected",
+      "signedOutcome": "unverified",
+      "title": "HTTP unavailable",
+      "verification": {
+        "algorithm": "Ed25519",
+        "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE",
+        "payloadBytes": 5619,
+        "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+        "signature": "VALID",
+        "signedClaims": {
+          "deadline": 1791408633764,
+          "effects": [
+            "execute"
+          ],
+          "finishedAt": 1791408603773,
+          "lastObservationTime": 1791408603773,
+          "leaseID": "57C474D5-2152-4A3F-8B9C-C795A18C4338",
+          "phase": "failed",
+          "providerGeneration": 5,
+          "scopeCount": 1,
+          "semanticOutcome": "unverified",
+          "startedAt": 1791408603764,
+          "taskID": "04398C7F-906D-4689-8FDD-8FD31D0FD4D6"
+        },
+        "trustedKeyMatched": true
+      }
+    }
+  ],
+  "status": "PASS",
+  "wrongLeaseDenials": 5,
+  "wrongPinDenials": 5,
+  "wrongTaskDenials": 5
+}

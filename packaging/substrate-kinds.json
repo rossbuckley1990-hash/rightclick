@@ -1,6 +1,10 @@
 {
   "kinds": [
     {
+      "id": "artifact.resolver.dbus",
+      "title": "Linux D-Bus introspection capability resolver"
+    },
+    {
       "id": "artifact.resolver.graphql",
       "title": "GraphQL capability artifact resolver"
     },
@@ -9,8 +13,24 @@
       "title": "gRPC capability artifact resolver"
     },
     {
+      "id": "artifact.resolver.kafka",
+      "title": "Acquired Kafka topic metadata capability resolver"
+    },
+    {
+      "id": "artifact.resolver.kubernetes",
+      "title": "Kubernetes discovered-resource capability resolver"
+    },
+    {
+      "id": "artifact.resolver.mcp",
+      "title": "Acquired MCP tool/schema capability resolver"
+    },
+    {
       "id": "artifact.resolver.openapi",
       "title": "OpenAPI capability artifact resolver"
+    },
+    {
+      "id": "artifact.resolver.wasm",
+      "title": "Actual component-model WIT capability resolver"
     },
     {
       "id": "authority.oauth_oidc",
@@ -29,12 +49,20 @@
       "title": "macOS Sharing reflector"
     },
     {
+      "id": "source.a2a.configured",
+      "title": "Configured A2A agent-card source"
+    },
+    {
       "id": "source.ard.registry",
       "title": "ARD registry source"
     },
     {
       "id": "source.capability_artifact.configured",
       "title": "Universal configured capability artifacts"
+    },
+    {
+      "id": "source.dbus.session",
+      "title": "Linux D-Bus session discovery source"
     },
     {
       "id": "source.federation.mcp",
@@ -59,5 +87,5 @@
   ],
   "product": "RIGHTCLICK",
   "schema": "rightclick.substrate-kinds.v1",
-  "version": "0.2.2"
+  "version": "0.2.3"
 }

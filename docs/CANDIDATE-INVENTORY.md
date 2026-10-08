@@ -1,3 +1,140 @@
+# Reviewer inventory: reconciled source and serving runtime
+
+A source file establishes implementation presence. A release asset, installed
+binary and an observed execution establish different facts. Record each identity
+before describing a capability as available. This inventory is not the eleven
+substrate acceptance scorecard.
+
+Reconciliation snapshot on 2026-10-08, after three exact-source CI waves exposed portable build, focused-gate and owned fixture failures; the reviewed repair candidate awaits fresh CI and public distribution gates:
+
+| Identity | Exact scope |
+| --- | --- |
+| Remote main | `381a87b53dbd0046f1acef1984587199da0e630c`; the direct A2A, Kafka, Kubernetes, WASM and D-Bus compiler files below are absent at this SHA |
+| Remote universal candidate | [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49), `0b404bf7488553bdc148d56283705d58066564b1`; the derived host diagnostic and actual-package focused RCIR repairs are published. Its Linux runs exposed three producer setup deficiencies and a Basic-auth positive-control fixture failure |
+| Remote portable candidate | [PR99](https://github.com/rossbuckley1990-hash/rightclick/pull/99), `6a18aaae3ae3a15b9f6c78f189adc695ae11585a`; extracts the existing engine into portable modules, with macOS adapters and Linux composition |
+| Reviewed repair composition | `9158b2209d134ad0243128ccb974f5050b4233b9`, Sources `7d9c25e668376e9cdd62bd58540edfc9b7548a3d`, Tests `a83775b1dca71a9e3e056bb2cd5aa41a5d548e92`; retains the frozen403 foundation, all profile/process/authority repairs and 045/b407/0b404 ancestry. The latest reviewed changes affect only three owned producer scripts and one test positive control; production source is unchanged. Fresh native and provider CI remains required |
+| Earlier composed Mac proof | `fe10f424e5584cd3e2c6a5cf1fcc9eacdb0ecc48`, Sources `6c624ad4503999360938fa0c8c083010f9fad7c0`, Tests `2371a0d45ef2f4c4d14dc555cd065b839f9d2dd2`; actual complete Mac run 1107 = 1076 PASS, 31 SKIP, zero FAIL. This is a preserved source-bound result, not a claim that the newly composed manifest/Linux/script/test bytes were tested |
+| Installed and connected stable runtime | v0.2.2, serving PID `67552`, executable SHA256 `d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d`, stdio; observed through `context_runtime` on 2026-10-08. This does not attest to candidate source |
+
+These remote and process values are snapshots. Refresh main, both PR heads,
+release/tap state and the actual connected `context_runtime` during each review.
+A version label or plugin metadata does not identify the serving executable.
+
+## Implemented acquisition in the reconciled source
+
+| Substrate | Direct source path | Composition and evidence boundary |
+| --- | --- | --- |
+| A2A | `Sources/RightClickProviders/A2AReflector.swift` | Configured agent-card discovery enters `RightClickCore/CapabilityRuntimeDefaults.swift` and the existing RCIR lifecycle. Actual 252 lifecycle/receipt proof is historical until repeated against the final composed build |
+| Kafka | `Sources/RightClickProviders/KafkaCapabilityArtifactResolver.swift` | Shared artifact resolver and bounded executable acquisition; a provisioned topic or prior test does not establish final product authority, receipts or graph mutation |
+| Kubernetes | `Sources/RightClickProviders/KubernetesCapabilityArtifactResolver.swift` | Shared discovery/compiler and independently scoped read-back; lab/RBAC readiness alone is not runtime acceptance |
+| WASM | `Sources/RightClickProviders/WASMCapabilityArtifactResolver.swift` | Shared descriptor/component boundary. The packaged `examples/universal-descriptors` fixtures must be exercised by the final native binary |
+| MCP descriptors | `Sources/RightClickProviders/MCPCapabilityArtifactResolver.swift` | Generic descriptor reflection and the same Core7 dispatcher; federation remains in `RightClickMCP` |
+| Linux D-Bus | `Sources/RightClickLinux/DBusSessionSource.swift`, `RightClickProviders/DBusIntrospection.swift`, `RightClickProviders/DBusCapabilityArtifactResolver.swift` | Linux bus acquisition compiles into the existing engine; native UID policy, separate signature verification and owner withdrawal must retain exact build scope |
+
+The existing native Mac Services/sharing, REST/OpenAPI, GraphQL and supported
+unary gRPC paths remain part of the same composition. Native Apple acquisition
+lives in `RightClickMacOS`, portable providers in `RightClickProviders`, shared
+contracts in `RightClickProtocol`, and the original engine in `RightClickCore`.
+The Link library is an embedding foundation; it does not provide a shipped
+internet relay or automated enrollment.
+
+The model-facing profile remains exactly `context_runtime`, `context_inspect`,
+`context_providers`, `context_actions`, `context_explain`, `context_run` and
+`context_run_status`. No provider-specific AI operations are added.
+
+## Proof scope before publication
+
+The previous 252/DFD candidate has a full native Mac result of 1005 tests
+(970 passed, 35 skipped, zero failed), a Linux x86_64 result of 779 tests
+(751 passed, 28 skipped, zero failed), and separate actual D-Bus, A2A and MCP/WASM
+proofs. Their source, artifacts and independent audits are retained. They do not
+attest to the reconciled source. The fresh fe10 Mac run independently passed1107
+cases (1076 passed,31 skipped,zero failed), preserving all970 previous252 passes.
+Four previously skipped native NS008 cases actually passed. The current result is
+source-bound by444 unchanged physical Git inputs and frozen executable SHA256
+`d35b4ece7ea1893142a067f96dc595162578cc749e232f18f9e1e13c9066b5b4`.
+The independent full Mac audit is SHA256
+`713504c4c5e3201476629c6c15984fcebd45392a6ab5927d012e310cf7e50961`.
+Fresh native Linux x86_64/arm64 and provider lifecycle, authority, verification
+and receipt gates remain pending. Valid-trust HTTPS bearer/redirect acceptance
+remains RED; the new invalid-certificate negative is a separate passing control.
+
+
+The first 045 CI failures are retained: native Linux builds failed before tests at
+the obsolete `CapabilityExecutableProcess(source:)` initializer label, and Swift
+6.2 ARD gates failed while type-checking the manifest. The reviewed fixes preserve
+the shared API and original product/dependency/target expressions. The protected
+reference backend correctly rejected owned fixture files beneath lexical temporary
+aliases. Four unchanged-binary controls (A2A, OpenAPI, live schema refresh and
+portable Core7) each measured fail → pass → fail when only the producer-owned
+parent was resolved before provisioning. Untrusted authority references and every
+other assertion remain unchanged. These controlled positives do not establish
+fresh native Linux, current CI or installed distribution acceptance.
+
+The b407 wave independently passed the actual Swift 6.2 Linux ARD job and the
+Swift 6.2.4 Mac ARD job; the previously failing manifest inference is repaired.
+All measured Linux provider failures then stopped before test execution because
+`DoctorReport.platform` was missing. The reviewed computed property derives the
+current host from `RuntimePlatform.name`; it adds no serialized field or remote
+host attestation. Both focused RCIR jobs exposed a synthetic source-copy gate that
+omitted the real execution host. The repaired gate preserves all six classes and
+105 existing test methods through the actual package graph. A native Mac command
+using the exclusively loaned existing scratch passed all 105 cases; this is not
+the literal disposable-script run, fresh Linux CI or complete product acceptance.
+The b407 Mac A2A proof independently retained exactly seven operation definitions,
+three delegated requests, two effect observations and twelve distinct pinned
+receipt signatures across public and native lifecycle evidence. Its failed Linux
+siblings and absent exported executable-image bytes remain explicit limitations.
+
+The 0b404 wave passed the real Swift 6.2 Linux and Swift 6.2.4 Mac ARD gates.
+Its Linux full suite executed 887 cases, with 861 passes, 25 skips and one failed
+ambient Basic-auth positive control; production credential-isolation controls
+passed. The test fixture now supplies the exact same-origin shared credential on
+its challenge delegate, preserving all original assertions and every other test method body. Its
+complete six-case Mac class passed; fresh native Linux evidence remains required.
+Both D-Bus architectures passed 13 native primitives before the first Core7
+admission failed. Only the producer's public root becomes readable 0755 so the
+runtime UID can traverse the protected-reference backend; nested writer state,
+signing key/configuration and identity controls retain their private modes.
+
+The Linux public OpenAPI launcher previously invoked macOS-only `dns-sd` after
+43 native RCIR cases passed. It now selects the existing generic configured
+artifact source on Linux, with real specification acquisition and revalidation
+over a listener bound to loopback. Mac Bonjour remains the default. The explicit
+fixture selector exercised both OpenAPI execution and live contract freshness on
+a real current-source Mac CLI; this establishes transport controls, not native
+Linux acceptance. No production discovery, TLS or authority policy is changed.
+
+Windows is not a supported v0.2.3 release host. Actual protected-reference and
+native environment-boundary controls have been run, and authority failures were
+repaired. The 252 full Windows run still had six compiler acquisition failures;
+the measured SDK dependency and remaining full-runtime/direct-reflection proofs
+remain explicit engineering work. Unsupported release scope does not turn these
+failures or the Windows goal row GREEN.
+
+Source method retention includes1127 distinct names from both PR99 and252, with
+three intentional mappings: conflicting policy identities are quarantined rather
+than resolved by first arrival; Windows SDK acquisition uses measured explicit
+bounded system search; and the former default five-second specification test
+retains its assertions with an explicitly selected five-second budget while the
+host specification default becomes a finite30seconds. Ordinary HTTP reads remain
+5seconds and invocations remain bounded by10seconds. Source mapping does not
+imply unchanged assertions or execution: the SDK mapping remains Windows source
+scope. Actual Mac case retention is separately recorded with its executed-name
+mapping. [Historical proof paths](HISTORICAL-PROOF-INDEX.md) retain their original
+source dates and do not attest to this release.
+
+The packaged kind detector inventories 21 implementation kinds. Zero missing
+kinds proves source/package alignment, not all eleven substrates or a live provider
+graph. Final source archive, immutable public assets, trusted bottle provenance,
+fresh installation, pairing preservation and a new serving PID/accepted executable
+remain release gates. Skipped or missing controls remain RED.
+
+## Historical 2026-10-07 inventory
+
+The following original snapshot is retained for comparison. Its identities,
+paths and test counts describe that earlier candidate and are not current claims.
+
 # Reviewer inventory: source, candidate and connected runtime
 
 A reflector can be implemented in an active candidate while remaining absent from main and the installed runtime. Reviewers must inspect all three identities before describing availability. This table is an implementation inventory; it is not an eleven-substrate acceptance scorecard.

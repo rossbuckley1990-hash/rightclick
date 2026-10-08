@@ -1,0 +1,52 @@
+{
+  "verdict": "INDEPENDENT_NATIVE_SINGLE_KEY_ISOLATION_DIAGNOSTIC_PASS",
+  "head": "9118efdfdfa1bafd96afb667a4880473fd575021",
+  "source": "f07db3725e185babd7abd6e55942c5e616b01eac",
+  "sourcesTree": "fd3f153c2a1e195e7766a40a1585f6526c73794a",
+  "run": 37764396368,
+  "attempt": 1,
+  "job": 113268352055,
+  "artifact": 11543572288,
+  "authenticatedAPI_ZIP_SHA256": "a478a7e2b0af4c06d8400cdf87145e34c93f1b30279021a28b65ce492d0ac87b",
+  "closedPayloads": {
+    "installer-context.json": {
+      "bytes": 5353,
+      "sha256": "e20680aedd81e1fc8c731b0d273969e461486357d5b7a0c59ae018ba0235835a"
+    },
+    "owned-probe-phase.json": {
+      "bytes": 445,
+      "sha256": "e4aff4994a583072011847e656a1f9529289f2e859a37558b749c19d863f47eb"
+    }
+  },
+  "probeSourceSHA256": "9cf91a07af79230c5d69e2daf27314092bcde1b6fafd3f6fc46972a61d47b6a9",
+  "retainedByteCounts": [
+    0,
+    0,
+    58,
+    0,
+    0,
+    58,
+    0
+  ],
+  "minimalAdditionalFixedContextKey": "ProgramData",
+  "typedRole": "machine_application_data",
+  "singleRoleAndFourKeyOutputSHA256Match": true,
+  "otherThreeSingleRolesReturnEmpty": true,
+  "sameInstalledQuerySHA256": "c54f3b7c9164ea9a0db8641e81ecdda80c2664ef5a47c4191406f848cc07c662",
+  "sameFixedArgumentsSHA256": "d859acda8bd8a61499e3f9293f94b6de4f7cceae47c9cb821d87d964ffcb1c15",
+  "naturalOwnedNativeCompletion": true,
+  "closedReportSchemaAndAllSamplePredicatesVerified": true,
+  "redGreen": {
+    "substrate": "Native Windows installed-tool discovery for controlled invocation compiler fixtures",
+    "genericDeficiency": "The existing minimal isolated host environment omits machine application data needed by this diagnostic query; actual Foundation/BPC causality remains RED.",
+    "reusablePrimitive": "Proposed bounded typed immutable trusted-host machine-application-data context",
+    "thinnestProviderLayer": "Only explicit trusted installed-tool discovery caller; no Kafka/Kubernetes integration or new AI operation",
+    "greenEvidenceRequired": "Actual BPC isolated\u2192typedProgramData\u2192isolated native before/after proof, original three invocation failures, exact current Windows full suite and relevant authority/policy controls",
+    "otherSubstrates": "Generic installed-tool acquisition can potentially reuse the role; not demonstrated."
+  },
+  "limits": [
+    "One additional key is minimal among these four reviewed keys on this runner under Python native transport; do not assume Foundation compatibility or universal host sufficiency.",
+    "Raw output/path bytes were intentionally not retained. The auditor validates authenticated source-bound hashes/counts/flags, not independently reconstructed path semantics.",
+    "Default production runtime isolation is unchanged; provider effects, fixture repair and issuer authority remain unproven."
+  ]
+}

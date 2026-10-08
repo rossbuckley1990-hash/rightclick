@@ -1,0 +1,160 @@
+name: Descriptor interface runtime proof
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: capability-interfaces-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+env:
+  RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+jobs:
+  genuine-mcp-wasm:
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record exact candidate source
+        run: python3 scripts/record-ci-source.py evidence/interface-ci
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.12'
+      - name: Provision pinned official component tooling and SDK
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/component-tools" evidence/interface-ci
+          case "$(uname -m)" in arm64|aarch64) arch=aarch64;; x86_64) arch=x86_64;; *) exit 1;; esac
+          case "$(uname -s)" in Darwin) target_os=macos;; Linux) target_os=linux;; *) exit 1;; esac
+          case "$arch-$target_os" in
+            aarch64-linux) wasmtime_sha=ca14988c6da3d92512bd9c3bad6cbd06b1f5743b6911a9e709f1a6fa30637d7f; tools_sha=6f19389a69e21c7dbd2a4e7ae72f807dc999988b48782c706c4102bad3e44487;;
+            x86_64-linux) wasmtime_sha=a4d6e9e3a5a60f527cf7793d674c48930c80c2e8977995b8a275cad3254b9322; tools_sha=ad62b2176037e93e1348cb65d6212d128ca9f097b63d155569f25215818ff7b1;;
+            aarch64-macos) wasmtime_sha=ea5a79261caa39819b863fd850879428cf90548353e1e5cf9bcbcc4e7addf2c1; tools_sha=94c4fc9baeada6e793f0d4adeca537633b5d93e9dc6bf718be2f478f4afe0296;;
+            x86_64-macos) wasmtime_sha=b24513efff6a5dbeb196e2a01097ba632a8b0ea1563ba297ada26ceb3aa067d9; tools_sha=354a84ffeede30ba11f29bc72de76875a977cf43bf1c5bdc3e91e2313e8a854b;;
+            *) exit 1;;
+          esac
+          curl --fail --location --retry 3 "https://github.com/bytecodealliance/wasmtime/releases/download/v49.0.2/wasmtime-v49.0.2-$arch-$target_os.tar.xz" -o "$RUNNER_TEMP/component-tools/wasmtime.tar.xz"
+          curl --fail --location --retry 3 "https://github.com/bytecodealliance/wasm-tools/releases/download/v1.261.0/wasm-tools-1.261.0-$arch-$target_os.tar.gz" -o "$RUNNER_TEMP/component-tools/wasm-tools.tar.gz"
+          printf '%s  %s\n%s  %s\n' "$wasmtime_sha" "$RUNNER_TEMP/component-tools/wasmtime.tar.xz" "$tools_sha" "$RUNNER_TEMP/component-tools/wasm-tools.tar.gz" > evidence/interface-ci/toolchain-sha256.txt
+          if test "$target_os" = macos; then shasum -a 256 -c evidence/interface-ci/toolchain-sha256.txt; else sha256sum -c evidence/interface-ci/toolchain-sha256.txt; fi
+          tar -xJf "$RUNNER_TEMP/component-tools/wasmtime.tar.xz" -C "$RUNNER_TEMP/component-tools"
+          tar -xzf "$RUNNER_TEMP/component-tools/wasm-tools.tar.gz" -C "$RUNNER_TEMP/component-tools"
+          echo "RIGHTCLICK_WASM_RUNTIME=$RUNNER_TEMP/component-tools/wasmtime-v49.0.2-$arch-$target_os/wasmtime" >> "$GITHUB_ENV"
+          echo "RIGHTCLICK_WASM_TOOLS=$RUNNER_TEMP/component-tools/wasm-tools-1.261.0-$arch-$target_os/wasm-tools" >> "$GITHUB_ENV"
+          python -m venv "$RUNNER_TEMP/mcp-venv"
+          "$RUNNER_TEMP/mcp-venv/bin/pip" install 'mcp==1.30.0' 'cryptography==50.0.1'
+      - name: Compile actual component and exact-source architectural tests
+        run: |
+          set -euo pipefail
+          "$RIGHTCLICK_WASM_TOOLS" parse examples/universal-descriptors/fingerprint.component.wat -o "$RUNNER_TEMP/fingerprint.component.wasm"
+          RIGHTCLICK_TEST_WASM_COMPONENT="$RUNNER_TEMP/fingerprint.component.wasm" bash scripts/test-capability-interfaces.sh 2>&1 | tee evidence/interface-ci/architectural-tests.log
+      - name: Bound execution history using exact production sources
+        run: bash scripts/test-execution-retention.sh 2>&1 | tee evidence/interface-ci/execution-retention.log
+      - name: Build candidate runtime
+        run: swift build --force-resolved-versions --product rightclick --jobs 4
+      - name: Prove the real seven-operation boundary
+        run: |
+          set -euo pipefail
+          mcp_effects="$RUNNER_TEMP/descriptor-mcp-effects"
+          "$RUNNER_TEMP/mcp-venv/bin/python" examples/universal-descriptors/mcp-proof-server.py --directory "$mcp_effects" > evidence/interface-ci/server.log 2>&1 &
+          provider_pid=$!
+          trap 'kill "$provider_pid" 2>/dev/null || true; wait "$provider_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --silent http://127.0.0.1:19143/observe/not-ready > /dev/null; then break; fi
+            sleep 1
+          done
+          "$RUNNER_TEMP/mcp-venv/bin/python" scripts/acceptance-capability-interfaces.py .build/debug/rightclick evidence/interface-ci/public \
+            --component "$RUNNER_TEMP/fingerprint.component.wasm" --runtime "$RIGHTCLICK_WASM_RUNTIME" --tools "$RIGHTCLICK_WASM_TOOLS" --mcp-effects "$mcp_effects"
+          python3 scripts/record-ci-source.py evidence/interface-ci/after
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        if: always()
+        with:
+          name: descriptor-interface-macos-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/interface-ci
+          if-no-files-found: error
+  genuine-mcp-wasm-linux:
+    name: MCP/WASM Linux ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    container: swift:6.3.3-noble
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Native platform and tooling prerequisites
+        run: |
+          test "$(uname -m)" = '${{ matrix.arch }}'
+          apt-get update
+          apt-get install -y --no-install-recommends python3 python3-venv curl xz-utils ca-certificates
+      - name: Record exact candidate source
+        run: python3 scripts/record-ci-source.py evidence/interface-ci
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.12'
+      - name: Provision pinned official component tooling and SDK
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/component-tools" evidence/interface-ci
+          case "$(uname -m)" in arm64|aarch64) arch=aarch64;; x86_64) arch=x86_64;; *) exit 1;; esac
+          case "$(uname -s)" in Darwin) target_os=macos;; Linux) target_os=linux;; *) exit 1;; esac
+          case "$arch-$target_os" in
+            aarch64-linux) wasmtime_sha=ca14988c6da3d92512bd9c3bad6cbd06b1f5743b6911a9e709f1a6fa30637d7f; tools_sha=6f19389a69e21c7dbd2a4e7ae72f807dc999988b48782c706c4102bad3e44487;;
+            x86_64-linux) wasmtime_sha=a4d6e9e3a5a60f527cf7793d674c48930c80c2e8977995b8a275cad3254b9322; tools_sha=ad62b2176037e93e1348cb65d6212d128ca9f097b63d155569f25215818ff7b1;;
+            aarch64-macos) wasmtime_sha=ea5a79261caa39819b863fd850879428cf90548353e1e5cf9bcbcc4e7addf2c1; tools_sha=94c4fc9baeada6e793f0d4adeca537633b5d93e9dc6bf718be2f478f4afe0296;;
+            x86_64-macos) wasmtime_sha=b24513efff6a5dbeb196e2a01097ba632a8b0ea1563ba297ada26ceb3aa067d9; tools_sha=354a84ffeede30ba11f29bc72de76875a977cf43bf1c5bdc3e91e2313e8a854b;;
+            *) exit 1;;
+          esac
+          curl --fail --location --retry 3 "https://github.com/bytecodealliance/wasmtime/releases/download/v49.0.2/wasmtime-v49.0.2-$arch-$target_os.tar.xz" -o "$RUNNER_TEMP/component-tools/wasmtime.tar.xz"
+          curl --fail --location --retry 3 "https://github.com/bytecodealliance/wasm-tools/releases/download/v1.261.0/wasm-tools-1.261.0-$arch-$target_os.tar.gz" -o "$RUNNER_TEMP/component-tools/wasm-tools.tar.gz"
+          printf '%s  %s\n%s  %s\n' "$wasmtime_sha" "$RUNNER_TEMP/component-tools/wasmtime.tar.xz" "$tools_sha" "$RUNNER_TEMP/component-tools/wasm-tools.tar.gz" > evidence/interface-ci/toolchain-sha256.txt
+          if test "$target_os" = macos; then shasum -a 256 -c evidence/interface-ci/toolchain-sha256.txt; else sha256sum -c evidence/interface-ci/toolchain-sha256.txt; fi
+          tar -xJf "$RUNNER_TEMP/component-tools/wasmtime.tar.xz" -C "$RUNNER_TEMP/component-tools"
+          tar -xzf "$RUNNER_TEMP/component-tools/wasm-tools.tar.gz" -C "$RUNNER_TEMP/component-tools"
+          echo "RIGHTCLICK_WASM_RUNTIME=$RUNNER_TEMP/component-tools/wasmtime-v49.0.2-$arch-$target_os/wasmtime" >> "$GITHUB_ENV"
+          echo "RIGHTCLICK_WASM_TOOLS=$RUNNER_TEMP/component-tools/wasm-tools-1.261.0-$arch-$target_os/wasm-tools" >> "$GITHUB_ENV"
+          python -m venv "$RUNNER_TEMP/mcp-venv"
+          "$RUNNER_TEMP/mcp-venv/bin/pip" install 'mcp==1.30.0' 'cryptography==50.0.1'
+      - name: Compile actual component and exact-source architectural tests
+        run: |
+          set -euo pipefail
+          "$RIGHTCLICK_WASM_TOOLS" parse examples/universal-descriptors/fingerprint.component.wat -o "$RUNNER_TEMP/fingerprint.component.wasm"
+          RIGHTCLICK_TEST_WASM_COMPONENT="$RUNNER_TEMP/fingerprint.component.wasm" bash scripts/test-capability-interfaces.sh 2>&1 | tee evidence/interface-ci/architectural-tests.log
+      - name: Bound execution history using exact production sources
+        run: bash scripts/test-execution-retention.sh 2>&1 | tee evidence/interface-ci/execution-retention.log
+      - name: Build candidate runtime
+        run: swift build --force-resolved-versions --product rightclick --jobs 4
+      - name: Prove the real seven-operation boundary
+        run: |
+          set -euo pipefail
+          mcp_effects="$RUNNER_TEMP/descriptor-mcp-effects"
+          "$RUNNER_TEMP/mcp-venv/bin/python" examples/universal-descriptors/mcp-proof-server.py --directory "$mcp_effects" > evidence/interface-ci/server.log 2>&1 &
+          provider_pid=$!
+          trap 'kill "$provider_pid" 2>/dev/null || true; wait "$provider_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --silent http://127.0.0.1:19143/observe/not-ready > /dev/null; then break; fi
+            sleep 1
+          done
+          "$RUNNER_TEMP/mcp-venv/bin/python" scripts/acceptance-capability-interfaces.py .build/debug/rightclick evidence/interface-ci/public \
+            --component "$RUNNER_TEMP/fingerprint.component.wasm" --runtime "$RIGHTCLICK_WASM_RUNTIME" --tools "$RIGHTCLICK_WASM_TOOLS" --mcp-effects "$mcp_effects"
+          python3 scripts/record-ci-source.py evidence/interface-ci/after
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        if: always()
+        with:
+          name: descriptor-interface-linux-${{ matrix.arch }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/interface-ci
+          if-no-files-found: error

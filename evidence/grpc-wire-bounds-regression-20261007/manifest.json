@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "baselineCommit": "bd5ed53f02c5cf76fc35796e665ef2c076296dd2",
+  "baselineCodecSHA256": "09a3bf2620ff85beb881adf4c95dc07218ebdf41ab3808bd920b9031572dd0cd",
+  "v022CodecSHA256": "09a3bf2620ff85beb881adf4c95dc07218ebdf41ab3808bd920b9031572dd0cd",
+  "fixedCodecSHA256": "8a64f3c757b028602f24040cb2bf35f34d281ef7c5b9290546ed38aac5057824",
+  "sourceChanges": [
+    "Sources/RightClickCore/GRPCWireCodec.swift"
+  ],
+  "scope": "Existing protobuf decoder compiled natively in isolation; six native XCTest boundary methods and independent raw golden-byte checks. No actual provider, authority, portable-platform, release or all-substrate acceptance claim.",
+  "redToGreen": {
+    "substrate": "gRPC descriptor/reflection and unary protobuf messages",
+    "genericRuntimeDeficiency": "Untrusted declared lengths overflow host arithmetic; oversized varints lose overflowing payload bits.",
+    "reusablePrimitive": "Bounded wire decoding before arithmetic, shifting or allocation.",
+    "thinnestProviderLayer": "None; repair the existing shared decoder.",
+    "testEvidence": "Exact old native length subprocess traps; old overwide-varint subprocess incorrectly accepts. Both fixed probes and their separate rerun reject. Six isolated XCTest methods pass, and independent golden-byte review preserves UInt64.max while rejecting 254 overflowing tenth bytes.",
+    "otherSubstrateBenefit": "No additional substrate benefit demonstrated. gRPC reflection and unary paths share the repaired decoder; wider reuse is an architectural possibility, not an acceptance claim."
+  },
+  "integratedPackageAcceptance": "Pending sole-publisher integrated tests and CI",
+  "toolchainSetup": "Native framework import/link setup corrected before isolated tests. Setup errors not counted as product RED.",
+  "artifacts": [
+    {
+      "path": "GRPCWireCodec-baseline.swift",
+      "bytes": 7280,
+      "SHA256": "09a3bf2620ff85beb881adf4c95dc07218ebdf41ab3808bd920b9031572dd0cd"
+    },
+    {
+      "path": "main.swift",
+      "bytes": 411,
+      "SHA256": "19198d7d621d6790c32853133e2bf5301d0070bc4c6543c8f976f9a9dba38066"
+    },
+    {
+      "path": "baseline-results.json",
+      "bytes": 609,
+      "SHA256": "01d712da57783b787f9a722c480e21df6e82e4f398e3008b2dd653cd743a1f57"
+    },
+    {
+      "path": "candidate-results.json",
+      "bytes": 642,
+      "SHA256": "806583158e1074ac0dd027cf2b3d458b0672ca8ba4fda26dda9bac0c111a9014"
+    },
+    {
+      "path": "reproduced-baseline-results.json",
+      "bytes": 609,
+      "SHA256": "01d712da57783b787f9a722c480e21df6e82e4f398e3008b2dd653cd743a1f57"
+    },
+    {
+      "path": "reproduced-candidate-results.json",
+      "bytes": 642,
+      "SHA256": "806583158e1074ac0dd027cf2b3d458b0672ca8ba4fda26dda9bac0c111a9014"
+    },
+    {
+      "path": "isolated-codec-tests.log",
+      "bytes": 1503,
+      "SHA256": "a758cc098ec19501d44cde3fc155d3ab0c0c82563d09d19a7f0077f8a46f5ac3"
+    },
+    {
+      "path": "isolated-test-scope.json",
+      "bytes": 2304,
+      "SHA256": "ff8a293123c5ea4c1af2f664eec01f0505176585530582103f575209bdb67e81"
+    },
+    {
+      "path": "independent-review.swift",
+      "bytes": 1269,
+      "SHA256": "b76850a5d508a7be2686a53bf14dbac3f1668b267078ddf09ccd76df22b49072"
+    },
+    {
+      "path": "independent-review-results.log",
+      "bytes": 117,
+      "SHA256": "9789b3f53759d5b9e3ccc1592905bed5b5180834d07672041d6aab03358794fd"
+    },
+    {
+      "path": "reproduce.py",
+      "bytes": 2346,
+      "SHA256": "abfb050f8d37d8ba5f29f6a952403355080481fcc3c5a033fe40ee364aa62dab"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1648,
+      "SHA256": "b0ac72dd7aa0eb435d20fabd4417db23ec206f4b230103ba40add9b7b5ea3fb4"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "result": "FAIL",
+  "binary": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+  "binarySHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+  "scope": "existing authenticated MCP HTTP and RIGHTCLICK federation over prior OpenAPI fixture",
+  "fixtureSpecificationSHA256": "6297396287221ade973582dffe91a37e096bc70c88f7460f8930b94d8a1acab8",
+  "fixtureTextSHA256": "5cdb0db64aefb4e1819a5a8877a0ec76b20695897c778b085b97f0ab9e785792",
+  "providerOrigin": "http://localhost:61605",
+  "expectedReadPath": "/rossbuckley1990-hash/rightclick/bd5ed53f02c5cf76fc35796e665ef2c076296dd2/fixtures/federation-proof/result.txt",
+  "exclusions": [
+    "MCP descriptor acquisition substrate",
+    "new streams or auth mechanisms",
+    "issuer authentication or downscoping",
+    "fresh restricted AI",
+    "all eleven substrates",
+    "shipping"
+  ],
+  "unexpectedFailure": {
+    "type": "CalledProcessError",
+    "message": "Command '['/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick', 'provider', 'add', '--id', 'federation-live-proof', '--spec-url', 'http://localhost:61605/openapi.json', '--base-url', 'http://localhost:61605', '--json']' returned non-zero exit status 1."
+  }
+}

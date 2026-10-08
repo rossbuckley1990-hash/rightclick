@@ -1,0 +1,83 @@
+{
+  "acceptanceScriptIdenticalToPreviouslyReviewed053bScript": true,
+  "addedPortableCases": {
+    "TrustedHostProcessContextTests.testHostAcquisitionBudgetIsFiniteAndCannotExpandOrdinaryInvocation": "passed"
+  },
+  "artifactID": 11558784137,
+  "authenticatedAPIZIP_SHA256": "599ddbd3457246c7d6f2a7bd187056170de575f00c14e08c9254611a5d98e470",
+  "baselineFinalF93777NamesAndAllStatesPreserved": true,
+  "caseCounts": {
+    "failed": 0,
+    "passed": 750,
+    "skipped": 28
+  },
+  "closedPayloads": {
+    "linux-acceptance.log": {
+      "bytes": 299,
+      "sha256": "6fd0f67b8e7360c471cf7633de3bab026061f5691fac5f9da8034c4098cda591"
+    },
+    "linux-binary-sha256.txt": {
+      "bytes": 92,
+      "sha256": "b55d9ee2c396b552cbe54ec38bdd64b45001b86c7acca7403149d6f9a55c3b5b"
+    },
+    "linux-build.log": {
+      "bytes": 33744,
+      "sha256": "0af1c5c0398385581ad3056825bfc39a15ea2dbd8b8db78bc8dc07c988e7571f"
+    },
+    "linux-tests.log": {
+      "bytes": 390946,
+      "sha256": "48e8fbe863d23fa9e9d72c432ed5b7a6d8172f32c41d4647302b81087b618280"
+    },
+    "portable-source.txt": {
+      "bytes": 41,
+      "sha256": "729e4cf239716db2425a87e01370667554ad88061cb06f6754227ccd9c387dc2"
+    },
+    "portable-toolchain.txt": {
+      "bytes": 75,
+      "sha256": "c01ffead3c63e0960a3ae3e8a6e737e13fee8812d378e0e7e40a62f20c00f71a"
+    }
+  },
+  "core7Harness": {
+    "confirmationAndArgumentDenialsBeforeFixtureEffect": true,
+    "exactSeven": true,
+    "localRESTWritePerTransport": 1,
+    "rawRPCAndEffectsOrReceiptsExported": false,
+    "retainedStatusAndLeaseConsumedMatched": true,
+    "runtimeHashComparedToLaunchedBinary": true,
+    "semanticOutcomeExplicitlyUnverified": true,
+    "stdioAndHTTP": true,
+    "unauthenticatedHTTP401": true
+  },
+  "diskOrActualCompileInputSnapshotsExported": false,
+  "head": "ca8965f275cd452d21c70ddb3b0ab0d5c5279db6",
+  "jobConclusion": "success",
+  "jobID": 113379021113,
+  "limitations": [
+    "Authenticated ca8965 source-bound native Linux tests/build and local REST acceptance harness; no fresh installation or published asset proof",
+    "Fixture effect list does not establish independent external observation or issuer-backed least authority",
+    "D-Bus receipt/role proof requires its own ca8965 artifact audit",
+    "Final ca8965 Windows has one actual environment-presence RED case; this Linux proof does not adjudicate it",
+    "A later source or test change requires a new source-bound native gate",
+    "The eleven-substrate goal is not claimed complete"
+  ],
+  "overallRunConclusionAtIndependentRead": null,
+  "overallRunStatusAtIndependentRead": "in_progress",
+  "portableRTFFour": {
+    "ServiceRTFUnicodeTests.testRTFMetacharactersAreNotInterpretedAsInstructions": "passed",
+    "ServiceRTFUnicodeTests.testSeededMixedUnicodeRoundTrips": "passed",
+    "ServiceRTFUnicodeTests.testSupplementaryScalarsUseSignedSurrogateEscapes": "passed",
+    "ServiceRTFUnicodeTests.testUnicodeRoundTripThroughRTFEncoder": "passed"
+  },
+  "releaseExecutableBytesExported": false,
+  "reportedReleaseBinarySHA256": "1ad831e2adc8266c2e9eea5796fedf62a88097b92ed27a698a2005d36199e7a1",
+  "reviewedSourceBoundAcceptanceScriptSHA256": "3bec3b2a3547468227dda3304bd6224d2033d6b636f6c6175303288788fb977f",
+  "runAttempt": 1,
+  "runID": 37797019539,
+  "schema": 1,
+  "siblingOrWholeRunSuccessInferred": false,
+  "sourcesTree": "e22a81b4e6af0672b077597768a694e6dc478e72",
+  "swiftTestingSeparateZeroTestSuite": true,
+  "testsTree": "43f41481e19ded09e8eec098ee1bc06c70a0d91f",
+  "uniqueStartsFinishes": 778,
+  "verdict": "PASS_SCOPED_CA8965_LINUX_SUITE_BUILD_CORE7_REST_HARNESS"
+}

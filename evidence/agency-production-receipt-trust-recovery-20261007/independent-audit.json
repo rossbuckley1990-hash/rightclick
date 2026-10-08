@@ -1,0 +1,81 @@
+{
+  "independentMathAndJournalAudit": "PASS",
+  "effects": 5,
+  "policyReplayClock": "SIGNED_OBSERVATION_TIME_FOR_EVIDENCE_REPLAY_ONLY",
+  "currentPolicyProvenance": "CALLER_PROVISIONED_TEST_SIDECAR",
+  "productionPolicySeam": "MISSING",
+  "overallGoal": "RED",
+  "results": [
+    {
+      "case": "testActiveIssuerControlProducesOneTrustedObservedEffect",
+      "requests": 1,
+      "effects": 1,
+      "separateObservations": 1,
+      "runtimeEmittedSignatureAfterPolicyRevocation": false,
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "providerTaskAndSeparateObserver": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": true
+        }
+      ]
+    },
+    {
+      "case": "testLegalHostKeyRotationControlUsesFreshTrustedKey",
+      "requests": 2,
+      "effects": 2,
+      "separateObservations": 2,
+      "runtimeEmittedSignatureAfterPolicyRevocation": false,
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "providerTaskAndSeparateObserver": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": null
+        },
+        {
+          "slot": 1,
+          "signature": "VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "providerTaskAndSeparateObserver": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": true
+        }
+      ]
+    },
+    {
+      "case": "testPreRevokedPolicyDeniesAdmissionWithZeroProviderEffects",
+      "requests": 1,
+      "effects": 1,
+      "separateObservations": 1,
+      "runtimeEmittedSignatureAfterPolicyRevocation": true,
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "providerTaskAndSeparateObserver": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": false
+        }
+      ]
+    },
+    {
+      "case": "testRevokedPolicyAfterAdmissionWithholdsSignatureAndRetainsRealTruth",
+      "requests": 1,
+      "effects": 1,
+      "separateObservations": 1,
+      "runtimeEmittedSignatureAfterPolicyRevocation": true,
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "providerTaskAndSeparateObserver": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": false
+        }
+      ]
+    }
+  ]
+}

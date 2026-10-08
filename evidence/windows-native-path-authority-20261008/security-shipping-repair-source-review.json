@@ -1,0 +1,56 @@
+{
+  "verdict": "CLEAR_SCOPED_CANONICAL_WINDOWS_ENVIRONMENT_SOURCE_REPAIR_NATIVE_GATES_PENDING",
+  "head": "dfd59db79387a9b754f86784c4fa111ea087c242",
+  "base": "ca8965f275cd452d21c70ddb3b0ab0d5c5279db6",
+  "SourcesTree": "0133e050845ff05e8b588f42eabe7fc1da00634d",
+  "TestsTree": "54e5954bf91c81854ede61ffd772706b3a8906cf",
+  "bundleSHA256": "d19a303e2c88f55c5a7a51dae46b4a8fa6082ef8432524b16c554c47214bd063",
+  "onlyFourChangedFiles": {
+    "Sources/RightClickCore/BoundedCapabilityProcess.swift": "c4dae342b49bfc5937081a4140715488bad80a6f173af60ee01a3aa76af707f7",
+    "Sources/RightClickCore/TrustedHostProcessContext.swift": "0d3c8663fc1b21b04d88cf34fdbdd345fb17956ce822d1958ab3082cb9531b6f",
+    "Tests/RightClickCoreTests/TrustedHostProcessContextTests.swift": "1de56e93a779ce5ebc95a403a2feefec609d2f0d5a9162b8cd6b065f4bff6385",
+    "Tests/RightClickCoreTests/WindowsPATHBoundaryTests.swift": "72a171b5ffa6668b8e37b740994cacd5e02a56f7cc0a7e02ec034c8fa98462df"
+  },
+  "sevenOtherPackagedRootsUnchanged": {
+    "Package.swift": "319438374598068a5e6a558d3730a03a9941a3bb",
+    "Package.resolved": "623693ca38dca2789515d135b875cc3054a74cfc",
+    "LICENSE": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+    "Vendor": "71b3eb1f85dec6658a091c8bb01b3baeb29bc974",
+    "fixtures": "d0b710ce0327d9d4649ea61a3d1ba0a8b3cd83fe",
+    "packaging": "817b478b167ee379c4a76f3864db234fc70a45a5",
+    "scripts": "3bae3239afd200385fcb543c43d94c076bea1643"
+  },
+  "all145UnaffectedShippingTestGitAndDiskBytesUnchanged": true,
+  "allOriginal693CompilerAndInvocationAssertionsPreserved": "Only current newly introduced PATH-presence case is strengthened to explicit emptiness; original693 predate that case. Original InvocationBinding/compiler source file bytes are unchanged.",
+  "BoundedProcessDelta": "Exactly wraps finalWindowsenvironment in canonicalizer; all other BPC implementation bytes, native NULhandle/snapshot/admission/timeouts/pipes/memory limits and nonWindows branch unchanged.",
+  "canonicalizationReview": [
+    "ASCII key grammar makes folding deterministic; duplicatecasealiases reject before launch.",
+    "EmbeddedNUL values reject before environment block serialization.",
+    "One exactPath key canonicalizes legitimate hostselectedPATH input; no host search role emits explicitemptyPath, suppressing observed Foundation fallback.",
+    "TrustedHost applying/contextidentity/isCurrent/rawUTF16/currentdirectory/reparse guards retained; no additional provider config or ambient key grants."
+  ],
+  "nativeTestReview": [
+    "Cprobe body byteidentical to the actual1976388 WindowsSDK-compiled native probe.",
+    "Same fixedchild/argv/8compilerinputs/ownedparent sentinel across isolated-search-isolated.",
+    "Isolatedrequires actualnativepresentempty/count0/SHA256empty/noSystem32/no parentcomponent; explicitsearch requires exactcurrenthostSystem32/count/digest/no parentcomponent.",
+    "Originalparentmatch nowequals originaldigest==authorizeddigest; legitimate originalempty/System32cases no longer invent falsefailure.",
+    "Restoration measured exactUTF16 Boolean, no rawvalues on mismatch.",
+    "Removed directFoundationbypass diagnostic from shipping regression; normal common BPC path is exercised."
+  ],
+  "resolvedFindings": [
+    "Unconditional originalParentMatchfalse overspecified preexisting authorizedidentical values; corrected to exactexpectedmatch.",
+    "Root requested NULvalue rejection and PythonpathEmpty projection; both implemented."
+  ],
+  "syntaxParse": "PASS_SYNTAX_ONLY_NOT_NATIVE_WINDOWS_TYPECHECK",
+  "actualPreRepairNativeAuditSHA256": "911f16640dc32509f49882d5588a20b0520ea0f5eaf145836bd48e35d44db832",
+  "nativeRepairGREEN": "PENDING_FRESH_WINDOWS_FULL_SUITE_RELEASE_CORE7_AND_NATIVE_IDENTITY_REPLAY",
+  "limits": [
+    "Before-repair nativeCcompilation11.984s used prior effective inheritedPATH; cannot prove repairedtrulyisolatedcompiler stillworks or oldPythoncold-gap closed.",
+    "No new native SDK compilation, publicrelease, installed023, issuer-backedauthority, mappedmemory or full-eleven acceptance claimed.",
+    "ProductionBPC still parent/stdout only, not owned descendantgroup closure."
+  ],
+  "privateKeyRead": false,
+  "privateEnvironmentValuesReadOrPublished": false,
+  "remoteWrites": false,
+  "sharedBuildCacheTouched": false
+}

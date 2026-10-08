@@ -1,0 +1,1 @@
+This is the unchanged historical ca896 native closure. The original manifest and every listed proof payload retain their original bytes. It does not attest the later dfd59 canonical Windows child-environment repair, whose new complete native suites are required.

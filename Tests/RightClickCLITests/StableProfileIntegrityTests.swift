@@ -298,4 +298,113 @@ final class StableProfileIntegrityTests:
             )
         }
     }
+
+    func testTrustedCommandInSecondDocumentCannotAttestForeignFirstDocument() throws {
+        try environment { root, layout, stable, profile in
+            let foreign = root.appendingPathComponent("foreign/rightclick")
+            try executable(foreign)
+            let text = """
+            config_version: 1
+            mcp:
+              commands:
+                - channel: main
+                  command: '\(foreign.path) mcp'
+            ---
+            mcp:
+              commands:
+                - channel: main
+                  command: "\(stable.path) mcp"
+            """
+            try text.write(to: profile, atomically: true, encoding: .utf8)
+            XCTAssertThrowsError(try RightClickBridgeRuntime.attestStableProfile(
+                profileFile: profile, invokedExecutable: stable.path, layouts: [layout]))
+        }
+    }
+
+    func testLiteralScalarDecoyCannotAttestForeignMCPCommand() throws {
+        try environment { root, layout, stable, profile in
+            let foreign = root.appendingPathComponent("foreign/rightclick")
+            try executable(foreign)
+            let text = """
+            config_version: 1
+            log:
+              file: |
+                command: "\(stable.path) mcp"
+            mcp:
+              commands:
+                - channel: main
+                  command: "\(foreign.path) mcp"
+            """
+            try text.write(to: profile, atomically: true, encoding: .utf8)
+            XCTAssertThrowsError(try RightClickBridgeRuntime.attestStableProfile(
+                profileFile: profile, invokedExecutable: stable.path, layouts: [layout]))
+        }
+    }
+
+    func testAdditionalForeignMCPCommandIsRejected() throws {
+        try environment { root, layout, stable, profile in
+            let foreign = root.appendingPathComponent("foreign/rightclick")
+            try executable(foreign)
+            try writeProfile(command: "\(stable.path) mcp", to: profile)
+            let additional = """
+                - channel: other
+                  command: "\(foreign.path) mcp"
+
+            """
+            let text = try String(contentsOf: profile, encoding: .utf8) + additional
+            try text.write(to: profile, atomically: true, encoding: .utf8)
+            XCTAssertThrowsError(try RightClickBridgeRuntime.attestStableProfile(
+                profileFile: profile, invokedExecutable: stable.path, layouts: [layout]))
+        }
+    }
+
+    func testGeneratedOwnedProfileWithEscapedPathsIsAccepted() throws {
+        try environment { root, layout, stable, profile in
+            let home = root.appendingPathComponent("home café \"quoted\" \\path")
+            let text = try RightClickChatGPTBridge.profileYAML(
+                tunnelID: "tunnel_00000000000000000000000000000000",
+                rightclickExecutable: stable.path, home: home)
+            try text.write(to: profile, atomically: true, encoding: .utf8)
+            let result = try RightClickBridgeRuntime.attestStableProfile(
+                profileFile: profile, invokedExecutable: stable.path, layouts: [layout])
+            XCTAssertEqual(result.expectedCommand, "\(stable.path) mcp")
+            XCTAssertEqual(result.profileSHA256, try RightClickSetupStateStore.sha256File(profile.path))
+        }
+    }
+
+    func testCanonicalProfileCommentsAndCRLFRemainAccepted() throws {
+        try environment { _, layout, stable, profile in
+            try writeProfile(command: "\(stable.path) mcp", to: profile)
+            let text = "# Owned RIGHTCLICK profile\n" +
+                (try String(contentsOf: profile, encoding: .utf8))
+                    .replacingOccurrences(of: "channel: main", with: "channel: main # main binding")
+                    .replacingOccurrences(of: "\n", with: "\r\n")
+            try text.write(to: profile, atomically: true, encoding: .utf8)
+            let result = try RightClickBridgeRuntime.attestStableProfile(
+                profileFile: profile, invokedExecutable: stable.path, layouts: [layout])
+            XCTAssertEqual(result.expectedCommand, "\(stable.path) mcp")
+        }
+    }
+
+    func testUnicodeSpacingCannotBeNormalizedIntoTrustedPlainScalars() throws {
+        try environment { _, layout, stable, profile in
+            for (channel, command) in [
+                ("main\u{00A0}", "\(stable.path) mcp"),
+                ("main", "\(stable.path) mcp\u{00A0}"),
+                ("main\u{2003}", "\(stable.path) mcp"),
+                ("main", "\(stable.path) mcp\u{2003}")
+            ] {
+                let text = """
+                config_version: 1
+                mcp:
+                  commands:
+                    - channel: \(channel)
+                      command: \(command)
+                """
+                try text.write(to: profile, atomically: true, encoding: .utf8)
+                XCTAssertThrowsError(try RightClickBridgeRuntime.attestStableProfile(
+                    profileFile: profile, invokedExecutable: stable.path, layouts: [layout]))
+            }
+        }
+    }
 }

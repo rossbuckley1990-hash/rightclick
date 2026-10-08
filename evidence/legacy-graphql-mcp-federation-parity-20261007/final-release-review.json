@@ -1,0 +1,70 @@
+{
+  "audit": "PASS_TESTED_LEGACY_GRAPHQL_MCP_FEDERATION_FINAL_RELEASE_PARITY",
+  "reviewer": "stream_verifier",
+  "checkedAtUTC": "2026-10-07T21:33:46.691533+00:00",
+  "evidenceBaseRef": "bd5ed53f02c5cf76fc35796e665ef2c076296dd2",
+  "stableSourceRef": "7a935fea719601492fe05beba1a4223c283eb350",
+  "finalSourceRef": "5ba375bcbe38dd67fdfccb659e1f77081b067e36",
+  "finalSourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+  "buildSourceRef": "1b8dc070361f2a6205698b9a69e4323828eb2a8d",
+  "sourceMappingScope": "Root-provided binary build mapping. Independently hashed launched binary and matched its runtime SHA/PID. Read-only Git verification found final and build source trees identical; no independent rebuild claimed.",
+  "finalBinary": {
+    "path": "/private/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+    "sha256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+    "bytes": 30189160
+  },
+  "comparison": "Saved immutable installed Stable0.2.2 d314 baseline versus final0.2.3 23d92; previous c61 comparison preserved separately.",
+  "sourceAudit": "Six frozen GraphQL/MCP/federation files unchanged from bd5 in final source; stable-to-final focused patch and exact snapshots retained.",
+  "publicSurface": "Actual seven canonical operations; same names/order; six exact tool shapes; optional contractSHA256 string only added to context_run.",
+  "graphQL": {
+    "scope": "Prior String! query and String! input record mutation",
+    "confirmation": "Both await user confirmation before dispatch; zero unconfirmed dispatch asserted against live native counts by frozen driver.",
+    "nativeObservation": "Exactly one journaled query and one mutation per binary; request challenges and returned native JSON match. Mutation file read independently.",
+    "finalState": "accepted/unverified; full retained status equals invocation",
+    "credentials": "No Authorization or Cookie at owned GraphQL provider"
+  },
+  "mcpFederation": {
+    "scope": "Existing authenticated loopback MCP HTTP and runtime A to B federation using immutable read-only HTTPS repository OpenAPI fixture",
+    "finalProcesses": 2,
+    "finalMissingIncorrectBearer401Controls": 4,
+    "confirmation": "awaiting_user before confirmed invocation",
+    "unverified": "confirmed acceptance stays unverified",
+    "returnedTextPostcondition": "Caller text_equals gives legacy VERIFIED_SUCCESS for provider-returned text only.",
+    "independentObservation": "Separate immutable HTTPS specification/result bytes equal repository fixture bytes; no external mutation claimed.",
+    "originAndRetention": "A advertises B origin, live appearance/withdrawal occurs without restart, successful full retained record remains after withdrawal.",
+    "upstreamNativeCallCount": "NOT_INDEPENDENTLY_OBSERVED",
+    "upstreamRequestHeaders": "NOT_INDEPENDENTLY_OBSERVED"
+  },
+  "privateEvidence": {
+    "originalManifest": {
+      "sha256": "2cbe041da34debb0bfc3c2432d394f5ddc252f4845ebeb05e2fbfeb1dc562d51",
+      "bytes": 22161
+    },
+    "all90OriginalFilesUnchanged": true,
+    "additionalFinalManifest": {
+      "sha256": "a47e7dcf07d3b353ba49550254f4482d2ce5e383c285148adae4d59c618a855c",
+      "bytes": 8582
+    },
+    "projection": "Explicit owned-proof projection retains invocation/status/receipt values and native evidence; unrelated provider totals omitted. Privately retained artifacts already filtered action rows during collection."
+  },
+  "preservedHarnessFailures": [
+    "GraphQL expectation omitted prior __typename field; actual valid native transport/effect accepted",
+    "Existing HTTPS restriction correctly rejected initial configured HTTP fixture"
+  ],
+  "proceduralMemory": "NOT_RETRIEVED",
+  "exclusions": [
+    "new typed GraphQL controls",
+    "MCP descriptor substrate",
+    "streams",
+    "held feature branches",
+    "issuer/downscoping authority proof",
+    "fresh restricted AI",
+    "all eleven substrates",
+    "every capability/protocol/platform",
+    "shipping/installed candidate availability",
+    "signature attestation as independent truth"
+  ],
+  "productionModified": false,
+  "publication": "NONE; local evidence-only commit handed to authorized delivery agent; evidence may be attached without source import or CI reset",
+  "offlineAudit": "Run python3 audit_published_evidence.py and python3 verify_owned_projection.py in this evidence directory. Both are read-only by default and do not launch providers or verify signatures."
+}

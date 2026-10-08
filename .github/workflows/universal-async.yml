@@ -1,0 +1,84 @@
+name: Universal async pressure
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: universal-async-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+env:
+  RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+jobs:
+  a2a-real-lifecycle:
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Select receipt verification backend
+        run: echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
+      - name: Record exact candidate source
+        run: python3 scripts/record-ci-source.py evidence/ci-universal-async
+      - name: Real task and adversarial pressure controls
+        env:
+          RCIR_DEFERRED_EVIDENCE: evidence/ci-universal-async/native
+        run: swift test --force-resolved-versions --jobs 4 --filter 'RCIRDeferredProductionTests|RCIRDeferredCapacityTests|A2ARealLifecycleTests|RCIRProductionDispatchTests|CapabilityInterfaceTests|RCIRStructuredObservationTests|KubernetesCapabilityArtifactTests'
+      - name: Seven-operation real A2A proof
+        run: |
+          set -euo pipefail
+          swift build --force-resolved-versions --product rightclick --jobs 4
+          python3 scripts/acceptance-a2a.py .build/debug/rightclick evidence/ci-universal-async/public-mcp
+          python3 scripts/record-ci-source.py evidence/ci-universal-async/after
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        if: always()
+        with:
+          name: universal-async-macos-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/ci-universal-async
+          if-no-files-found: error
+  a2a-linux-lifecycle:
+    name: A2A Linux ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    container: swift:6.3.3-noble
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Native platform and receipt backend
+        run: |
+          test "$(uname -m)" = '${{ matrix.arch }}'
+          apt-get update
+          apt-get install -y --no-install-recommends python3 openssl ca-certificates
+      - name: Record exact candidate source
+        run: python3 scripts/record-ci-source.py evidence/ci-universal-async
+      - name: Real task and adversarial pressure controls
+        env:
+          RCIR_DEFERRED_EVIDENCE: evidence/ci-universal-async/native
+        run: swift test --force-resolved-versions --jobs 4 --filter 'RCIRDeferredProductionTests|RCIRDeferredCapacityTests|A2ARealLifecycleTests|RCIRProductionDispatchTests|CapabilityInterfaceTests|RCIRStructuredObservationTests|KubernetesCapabilityArtifactTests'
+      - name: Seven-operation real A2A proof
+        run: |
+          set -euo pipefail
+          swift build --force-resolved-versions --product rightclick --jobs 4
+          python3 scripts/acceptance-a2a.py .build/debug/rightclick evidence/ci-universal-async/public-mcp
+          python3 scripts/record-ci-source.py evidence/ci-universal-async/after
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        if: always()
+        with:
+          name: universal-async-linux-${{ matrix.arch }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/ci-universal-async
+          if-no-files-found: error

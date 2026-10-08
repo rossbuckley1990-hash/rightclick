@@ -1,0 +1,293 @@
+{
+  "bottle": {
+    "absent_rule_ids": [],
+    "kind_ids": [
+      "artifact.resolver.dbus",
+      "artifact.resolver.graphql",
+      "artifact.resolver.grpc",
+      "artifact.resolver.kafka",
+      "artifact.resolver.kubernetes",
+      "artifact.resolver.mcp",
+      "artifact.resolver.openapi",
+      "artifact.resolver.wasm",
+      "authority.oauth_oidc",
+      "reflector.macos.action_extension",
+      "reflector.macos.service",
+      "reflector.macos.sharing",
+      "source.a2a.configured",
+      "source.ard.registry",
+      "source.capability_artifact.configured",
+      "source.dbus.session",
+      "source.federation.mcp",
+      "source.graphql.bonjour",
+      "source.grpc.bonjour",
+      "source.openapi.bonjour",
+      "source.openapi.configured"
+    ],
+    "kinds": [
+      {
+        "id": "artifact.resolver.dbus",
+        "title": "Linux D-Bus introspection capability resolver"
+      },
+      {
+        "id": "artifact.resolver.graphql",
+        "title": "GraphQL capability artifact resolver"
+      },
+      {
+        "id": "artifact.resolver.grpc",
+        "title": "gRPC capability artifact resolver"
+      },
+      {
+        "id": "artifact.resolver.kafka",
+        "title": "Acquired Kafka topic metadata capability resolver"
+      },
+      {
+        "id": "artifact.resolver.kubernetes",
+        "title": "Kubernetes discovered-resource capability resolver"
+      },
+      {
+        "id": "artifact.resolver.mcp",
+        "title": "Acquired MCP tool/schema capability resolver"
+      },
+      {
+        "id": "artifact.resolver.openapi",
+        "title": "OpenAPI capability artifact resolver"
+      },
+      {
+        "id": "artifact.resolver.wasm",
+        "title": "Actual component-model WIT capability resolver"
+      },
+      {
+        "id": "authority.oauth_oidc",
+        "title": "OAuth/OIDC authority"
+      },
+      {
+        "id": "reflector.macos.action_extension",
+        "title": "macOS Action Extension reflector"
+      },
+      {
+        "id": "reflector.macos.service",
+        "title": "macOS Services reflector"
+      },
+      {
+        "id": "reflector.macos.sharing",
+        "title": "macOS Sharing reflector"
+      },
+      {
+        "id": "source.a2a.configured",
+        "title": "Configured A2A agent-card source"
+      },
+      {
+        "id": "source.ard.registry",
+        "title": "ARD registry source"
+      },
+      {
+        "id": "source.capability_artifact.configured",
+        "title": "Universal configured capability artifacts"
+      },
+      {
+        "id": "source.dbus.session",
+        "title": "Linux D-Bus session discovery source"
+      },
+      {
+        "id": "source.federation.mcp",
+        "title": "MCP federation peer source"
+      },
+      {
+        "id": "source.graphql.bonjour",
+        "title": "Bonjour GraphQL source"
+      },
+      {
+        "id": "source.grpc.bonjour",
+        "title": "Bonjour gRPC source"
+      },
+      {
+        "id": "source.openapi.bonjour",
+        "title": "Bonjour OpenAPI source"
+      },
+      {
+        "id": "source.openapi.configured",
+        "title": "Configured OpenAPI source"
+      }
+    ],
+    "known_rule_ids": [
+      "reflector.macos.service",
+      "reflector.macos.sharing",
+      "reflector.macos.action_extension",
+      "source.openapi.bonjour",
+      "source.openapi.configured",
+      "source.graphql.bonjour",
+      "source.grpc.bonjour",
+      "source.capability_artifact.configured",
+      "source.ard.registry",
+      "source.federation.mcp",
+      "artifact.resolver.openapi",
+      "artifact.resolver.graphql",
+      "artifact.resolver.grpc",
+      "authority.oauth_oidc",
+      "artifact.resolver.mcp",
+      "artifact.resolver.wasm",
+      "artifact.resolver.kafka",
+      "source.a2a.configured",
+      "artifact.resolver.kubernetes",
+      "artifact.resolver.dbus",
+      "source.dbus.session"
+    ],
+    "root": "/var/folders/tz/y04t4d0900xdbmz96jp608180000gn/T/rightclick-bottle-align-5jv90wrt/published-source/rightclick-0.2.3",
+    "source_sha256": "f98408da81bd45ebcd526fcf9eb4995d4bd2bc471b1c58254792970e1befd054",
+    "source_url": "dist/rightclick-0.2.3-source.tar.gz",
+    "version": "0.2.3"
+  },
+  "checkout": {
+    "absent_rule_ids": [],
+    "kind_ids": [
+      "artifact.resolver.dbus",
+      "artifact.resolver.graphql",
+      "artifact.resolver.grpc",
+      "artifact.resolver.kafka",
+      "artifact.resolver.kubernetes",
+      "artifact.resolver.mcp",
+      "artifact.resolver.openapi",
+      "artifact.resolver.wasm",
+      "authority.oauth_oidc",
+      "reflector.macos.action_extension",
+      "reflector.macos.service",
+      "reflector.macos.sharing",
+      "source.a2a.configured",
+      "source.ard.registry",
+      "source.capability_artifact.configured",
+      "source.dbus.session",
+      "source.federation.mcp",
+      "source.graphql.bonjour",
+      "source.grpc.bonjour",
+      "source.openapi.bonjour",
+      "source.openapi.configured"
+    ],
+    "kinds": [
+      {
+        "id": "artifact.resolver.dbus",
+        "title": "Linux D-Bus introspection capability resolver"
+      },
+      {
+        "id": "artifact.resolver.graphql",
+        "title": "GraphQL capability artifact resolver"
+      },
+      {
+        "id": "artifact.resolver.grpc",
+        "title": "gRPC capability artifact resolver"
+      },
+      {
+        "id": "artifact.resolver.kafka",
+        "title": "Acquired Kafka topic metadata capability resolver"
+      },
+      {
+        "id": "artifact.resolver.kubernetes",
+        "title": "Kubernetes discovered-resource capability resolver"
+      },
+      {
+        "id": "artifact.resolver.mcp",
+        "title": "Acquired MCP tool/schema capability resolver"
+      },
+      {
+        "id": "artifact.resolver.openapi",
+        "title": "OpenAPI capability artifact resolver"
+      },
+      {
+        "id": "artifact.resolver.wasm",
+        "title": "Actual component-model WIT capability resolver"
+      },
+      {
+        "id": "authority.oauth_oidc",
+        "title": "OAuth/OIDC authority"
+      },
+      {
+        "id": "reflector.macos.action_extension",
+        "title": "macOS Action Extension reflector"
+      },
+      {
+        "id": "reflector.macos.service",
+        "title": "macOS Services reflector"
+      },
+      {
+        "id": "reflector.macos.sharing",
+        "title": "macOS Sharing reflector"
+      },
+      {
+        "id": "source.a2a.configured",
+        "title": "Configured A2A agent-card source"
+      },
+      {
+        "id": "source.ard.registry",
+        "title": "ARD registry source"
+      },
+      {
+        "id": "source.capability_artifact.configured",
+        "title": "Universal configured capability artifacts"
+      },
+      {
+        "id": "source.dbus.session",
+        "title": "Linux D-Bus session discovery source"
+      },
+      {
+        "id": "source.federation.mcp",
+        "title": "MCP federation peer source"
+      },
+      {
+        "id": "source.graphql.bonjour",
+        "title": "Bonjour GraphQL source"
+      },
+      {
+        "id": "source.grpc.bonjour",
+        "title": "Bonjour gRPC source"
+      },
+      {
+        "id": "source.openapi.bonjour",
+        "title": "Bonjour OpenAPI source"
+      },
+      {
+        "id": "source.openapi.configured",
+        "title": "Configured OpenAPI source"
+      }
+    ],
+    "known_rule_ids": [
+      "reflector.macos.service",
+      "reflector.macos.sharing",
+      "reflector.macos.action_extension",
+      "source.openapi.bonjour",
+      "source.openapi.configured",
+      "source.graphql.bonjour",
+      "source.grpc.bonjour",
+      "source.capability_artifact.configured",
+      "source.ard.registry",
+      "source.federation.mcp",
+      "artifact.resolver.openapi",
+      "artifact.resolver.graphql",
+      "artifact.resolver.grpc",
+      "authority.oauth_oidc",
+      "artifact.resolver.mcp",
+      "artifact.resolver.wasm",
+      "artifact.resolver.kafka",
+      "source.a2a.configured",
+      "artifact.resolver.kubernetes",
+      "artifact.resolver.dbus",
+      "source.dbus.session"
+    ],
+    "root": "/private/tmp/rightclick-patch-release-parity-20261007",
+    "version": "0.2.3"
+  },
+  "comparison": {
+    "aligned": true,
+    "alignment_path": [
+      "docs/BOTTLE-ALIGNMENT.md",
+      "docs/RELEASE.md",
+      "python3 scripts/detect-bottle-alignment.py --compare",
+      "swift test && scripts/build-cli.sh && python3 scripts/package-source.py",
+      "tag next immutable version; gh release create; update homebrew-tap Formula/rightclick.rb"
+    ],
+    "bottle_source_sha256": "f98408da81bd45ebcd526fcf9eb4995d4bd2bc471b1c58254792970e1befd054",
+    "bottle_version": "0.2.3",
+    "checkout_version": "0.2.3",
+    "extra_in_bottle": [],
+    "missing_from_bottle": []
+  }
+}

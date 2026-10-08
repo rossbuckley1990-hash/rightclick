@@ -1,0 +1,147 @@
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/13] Write sources
+[3/13] Write swift-version--58304C5D6DBC2206.txt
+[5/30] Emitting module RightClickCLI
+[6/32] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+[7/32] Compiling RightClickCoreTests OutcomeVerifierTests.swift
+[8/32] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+[9/32] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+[10/32] Compiling RightClickCLI StableEntrypoint.swift
+[11/32] Compiling RightClickCLI main.swift
+[11/33] Write Objects.LinkFileList
+[13/33] Emitting module RightClickCoreTests
+[20/33] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+[21/33] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+[22/33] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+[23/41] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+[24/41] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+[25/41] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+[26/41] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+[27/41] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+[28/41] Compiling RightClickCoreTests RCIRNoOutputTests.swift
+[29/41] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+[30/41] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+[31/41] Compiling RightClickCoreTests RCIRTests.swift
+[32/41] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+[33/41] Compiling RightClickCoreTests RCIRUnitCompletionTests.swift
+[34/41] Compiling RightClickCoreTests ServiceContextTests.swift
+[35/41] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[36/41] Compiling RightClickCoreTests SharingExecutionTests.swift
+[37/41] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+[38/41] Compiling RightClickCoreTests VerificationIntegrationTests.swift
+[38/42] Linking rightclick
+[39/42] Applying rightclick
+[41/57] Compiling RightClickCLITests AuthorityConfigurationCLITests.swift
+[42/57] Compiling RightClickCLITests BridgeRuntimeTests.swift
+[43/57] Compiling RightClickCLITests ChatGPTBridgeInstallerTests.swift
+[44/57] Compiling RightClickCLITests ChatGPTBridgeTests.swift
+[45/57] Compiling RightClickCLITests ChatGPTLiveAttestationTests.swift
+[46/57] Compiling RightClickCLITests ChatGPTOnboardingTests.swift
+[47/57] Compiling RightClickCLITests ChatGPTOnboardingTransactionTests.swift
+[48/64] Compiling RightClickCLITests ClaudeConfigDirTruthTests.swift
+[49/64] Compiling RightClickCLITests ClaudeOnboardingRedTests.swift
+[50/64] Compiling RightClickCLITests ClientRegistryRedTests.swift
+[51/64] Compiling RightClickCLITests CodexOnboardingRedTests.swift
+[52/64] Compiling RightClickCLITests LocalOnboardingTests.swift
+[53/64] Compiling RightClickCLITests NativeMutationLeaseRedTests.swift
+[54/64] Compiling RightClickCLITests OnboardingEngineTests.swift
+[55/64] Emitting module RightClickCLITests
+[56/64] Compiling RightClickCLITests ProviderConfigurationCLITests.swift
+[57/64] Compiling RightClickCLITests SetupAllTransactionRedTests.swift
+[58/64] Compiling RightClickCLITests SetupStateTests.swift
+[59/64] Compiling RightClickCLITests SetupTests.swift
+[60/64] Compiling RightClickCLITests StableEntrypointTests.swift
+[61/64] Compiling RightClickCLITests StableProfileIntegrityTests.swift
+[62/64] Compiling RightClickCLITests StableUpgradeReconciliationTests.swift
+[62/64] Write Objects.LinkFileList
+[63/64] Linking rightclick-mcpPackageTests
+Build complete! (9.08s)
+Test Suite 'Selected tests' started at 2026-10-07 16:52:15.561.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 16:52:15.563.
+Test Suite 'CapabilityInterfaceTests' started at 2026-10-07 16:52:15.563.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorAbstainsForOfflineTool]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorAbstainsForOfflineTool]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline]' passed (0.075 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorUsesBoundedStdinWithoutShellInterpolation]' passed (0.137 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testCompilerSelectedObserverReachesDefaultSharedHostAndCannotIgnoreCallerConstraint]' passed (0.006 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testDuplicateInterfaceNamesFailClosed]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testDuplicateInterfaceNamesFailClosed]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterRejectsUnsupportedConstraintsAndOpenObjects]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterRejectsUnsupportedConstraintsAndOpenObjects]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPreflightReturnCannotClaimConsumedLeaseOrSemanticSuccess]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testPrivateSnapshotDoesNotFollowSourceReplacementAndWithdrawsStaleIdentity]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testProtectedReferenceRejectsReadableAndSymlinkedCredentialFiles]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testRealWASMComponentWhenProvisioned]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:192: -[RightClickCoreTests.CapabilityInterfaceTests testRealWASMComponentWhenProvisioned] : Test skipped - Real component toolchain not provisioned; no WASM GREEN claimed by this skip.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testRealWASMComponentWhenProvisioned]' skipped (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability]' started.
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/CapabilityInterfaceTests.swift:162: -[RightClickCoreTests.CapabilityInterfaceTests testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability] : Test skipped - Real component not provisioned; no source-race GREEN claimed by this skip.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability]' skipped (0.000 seconds).
+Test Suite 'CapabilityInterfaceTests' passed at 2026-10-07 16:52:15.795.
+	 Executed 14 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.231 (0.232) seconds
+Test Suite 'CapabilityStringConstraintTests' started at 2026-10-07 16:52:15.795.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testActualChallengeDeclarationAcceptsExactBoundsAndCharacterSet]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testActualChallengeDeclarationAcceptsExactBoundsAndCharacterSet]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testChangingBoundOrCharacterSetChangesContractIdentity]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testChangingBoundOrCharacterSetChangesContractIdentity]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testEquivalentCharacterClassesAndEnumOrderHaveCanonicalIdentity]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testEquivalentCharacterClassesAndEnumOrderHaveCanonicalIdentity]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testLengthUsesUnicodeScalarsRatherThanGraphemesOrBytes]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testLengthUsesUnicodeScalarsRatherThanGraphemesOrBytes]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testMalformedLengthsAndEmptyIntersectionAbstain]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testMalformedLengthsAndEmptyIntersectionAbstain]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testNestedImportKeepsRequiredClosedObjectAndStringConstraint]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testNestedImportKeepsRequiredClosedObjectAndStringConstraint]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testOpenAPIOmitsUnsupportedPatternRatherThanErasingIt]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testOpenAPIOmitsUnsupportedPatternRatherThanErasingIt]' passed (0.005 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testOpenAPIPreservesActualProviderPatternInDiscoveredContract]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testOpenAPIPreservesActualProviderPatternInDiscoveredContract]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testOpenAPIRejectsInvalidValueBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testOpenAPIRejectsInvalidValueBeforeTransport]' passed (0.065 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testPatternLengthAndEnumAreIntersectedWithoutWidening]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testPatternLengthAndEnumAreIntersectedWithoutWidening]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testUnsupportedRegexGrammarAndUnboundedRepetitionAbstain]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testUnsupportedRegexGrammarAndUnboundedRepetitionAbstain]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testZeroAndExactQuantifierRemainExact]' started.
+Test Case '-[RightClickCoreTests.CapabilityStringConstraintTests testZeroAndExactQuantifierRemainExact]' passed (0.000 seconds).
+Test Suite 'CapabilityStringConstraintTests' passed at 2026-10-07 16:52:15.872.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.076 (0.077) seconds
+Test Suite 'PortableRuntimeTests' started at 2026-10-07 16:52:15.872.
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testFilesAndUnknownExtensionsAreConservative]' started.
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testFilesAndUnknownExtensionsAreConservative]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testHostStorageDoesNotAcceptRelativeEnvironmentPaths]' started.
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testHostStorageDoesNotAcceptRelativeEnvironmentPaths]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testNativeCatalogIsAbsentOnOtherHosts]' started.
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testNativeCatalogIsAbsentOnOtherHosts]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testNativeJSONBooleanIdentityCannotBecomeNumericLength]' started.
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testNativeJSONBooleanIdentityCannotBecomeNumericLength]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testPKCEUsesPortableCryptographicRandomness]' started.
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testPKCEUsesPortableCryptographicRandomness]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testStableTextAndURLClassification]' started.
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testStableTextAndURLClassification]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testUnavailableSecureStorageAbstains]' started.
+Test Case '-[RightClickCoreTests.PortableRuntimeTests testUnavailableSecureStorageAbstains]' passed (0.000 seconds).
+Test Suite 'PortableRuntimeTests' passed at 2026-10-07 16:52:15.876.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 16:52:15.876.
+	 Executed 33 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.311 (0.313) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 16:52:15.876.
+	 Executed 33 tests, with 2 tests skipped and 0 failures (0 unexpected) in 0.311 (0.315) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
