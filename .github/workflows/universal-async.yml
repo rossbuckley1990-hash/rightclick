@@ -1,0 +1,116 @@
+name: Reconciled real A2A and deferred lifecycle
+on:
+  pull_request:
+  push:
+    branches: [feature/reconcile-portable-v023]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: universal-async-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+jobs:
+  macos:
+    name: macOS arm64 actual A2A lifecycle
+    runs-on: macos-26
+    timeout-minutes: 75
+    defaults:
+      run:
+        shell: bash
+    env:
+      RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Select real Ed25519 receipt verification backend
+        run: echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
+      - name: Record exact candidate and native platform
+        run: python3 scripts/ci/record-reconciliation-source.py evidence/universal-async/macos/source.json --expected-arch 'arm64'
+      - name: Real task lifecycle, authority and uncertainty controls
+        env:
+          RCIR_DEFERRED_EVIDENCE: evidence/universal-async/macos/native
+        run: |
+          set -euo pipefail
+          bash scripts/ci/run-fixture-tests.sh \
+            'RCIRDeferredProductionTests|RCIRDeferredCapacityTests|A2ARealLifecycleTests|RCIRProductionDispatchTests|CapabilityInterfaceTests|RCIRStructuredObservationTests|KubernetesCapabilityArtifactTests|RemoteDeferredReconciliationTests' \
+            evidence/universal-async/macos/native-tests.log evidence/universal-async/macos/native-outcomes.json \
+            --require-class RCIRDeferredProductionTests --require-class RCIRDeferredCapacityTests \
+            --require-class A2ARealLifecycleTests --require-class RCIRProductionDispatchTests \
+            --require-class CapabilityInterfaceTests --require-class RCIRStructuredObservationTests \
+            --require-class KubernetesCapabilityArtifactTests --require-class RemoteDeferredReconciliationTests \
+            --allow-skip CapabilityInterfaceTests/testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability \
+            --allow-skip CapabilityInterfaceTests/testRealWASMComponentWhenProvisioned \
+            --allow-skip KubernetesCapabilityArtifactTests/testRealNamespaceResourceIsVerifiedThroughIndependentGETIdentity
+      - name: Actual seven-operation A2A proof
+        run: |
+          set -euo pipefail
+          swift build --force-resolved-versions --product rightclick --jobs 4 2>&1 | tee evidence/universal-async/macos/runtime-build.log
+          python3 scripts/acceptance-a2a.py .build/debug/rightclick evidence/universal-async/macos/public-mcp
+          git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code
+      - name: Preserve public evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a2a-macos-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/universal-async/macos
+          if-no-files-found: error
+  linux:
+    name: Linux ${{ matrix.arch }} actual A2A lifecycle
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    container: swift:6.3.3-noble
+    timeout-minutes: 75
+    defaults:
+      run:
+        shell: bash
+    env:
+      RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Provision native fixture prerequisites
+        run: |
+          set -euo pipefail
+          apt-get update
+          apt-get install -y --no-install-recommends python3 python3-venv openssl ca-certificates curl xz-utils
+      - name: Record exact candidate and native platform
+        run: python3 scripts/ci/record-reconciliation-source.py evidence/universal-async/linux/source.json --expected-arch '${{ matrix.arch }}'
+      - name: Real task lifecycle, authority and uncertainty controls
+        env:
+          RCIR_DEFERRED_EVIDENCE: evidence/universal-async/linux/native
+        run: |
+          set -euo pipefail
+          bash scripts/ci/run-fixture-tests.sh \
+            'RCIRDeferredProductionTests|RCIRDeferredCapacityTests|A2ARealLifecycleTests|RCIRProductionDispatchTests|CapabilityInterfaceTests|RCIRStructuredObservationTests|KubernetesCapabilityArtifactTests|RemoteDeferredReconciliationTests' \
+            evidence/universal-async/linux/native-tests.log evidence/universal-async/linux/native-outcomes.json \
+            --require-class RCIRDeferredProductionTests --require-class RCIRDeferredCapacityTests \
+            --require-class A2ARealLifecycleTests --require-class RCIRProductionDispatchTests \
+            --require-class CapabilityInterfaceTests --require-class RCIRStructuredObservationTests \
+            --require-class KubernetesCapabilityArtifactTests --require-class RemoteDeferredReconciliationTests \
+            --allow-skip CapabilityInterfaceTests/testWASMSourceReplacementCannotExecuteNewBytesUnderOldCapability \
+            --allow-skip CapabilityInterfaceTests/testRealWASMComponentWhenProvisioned \
+            --allow-skip KubernetesCapabilityArtifactTests/testRealNamespaceResourceIsVerifiedThroughIndependentGETIdentity
+      - name: Actual seven-operation A2A proof
+        run: |
+          set -euo pipefail
+          swift build --force-resolved-versions --product rightclick --jobs 4 2>&1 | tee evidence/universal-async/linux/runtime-build.log
+          python3 scripts/acceptance-a2a.py .build/debug/rightclick evidence/universal-async/linux/public-mcp
+          git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code
+      - name: Preserve public evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a2a-linux-${{ matrix.arch }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/universal-async/linux
+          if-no-files-found: error

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Disposable actual HTTP provider for native dispatch fault controls."""
 import hashlib, http.server, json, pathlib, sys
+from fixture_http import LoopbackHTTPServer
 out=pathlib.Path(sys.argv[1]); out.mkdir(parents=True,exist_ok=True)
 values={}
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -30,6 +31,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
         with (out/'effects.jsonl').open('a') as f:
             f.write(json.dumps({'path':self.path,'body':body,'taskID':self.headers.get('X-RightClick-Invocation')})+'\n')
         values[body['id']]=body['value']
+        if body['id']=='drop-response':
+            # Preserve the after-effect response-loss control without replay.
+            self.close_connection=True
+            return
         if (out/'drift-after-write').exists():
             spec=json.loads((out/'spec.json').read_text()); spec['info']['version']='2'
             (out/'spec.tmp').write_text(json.dumps(spec)); (out/'spec.tmp').replace(out/'spec.json')
@@ -39,7 +44,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_header('Set-Cookie',cookie['name']+'='+cookie['value']+'; Path=/records; SameSite=Strict')
         self.end_headers()
         self.wfile.write(json.dumps(body).encode())
-server=http.server.HTTPServer(('127.0.0.1',0),Handler)
+server=LoopbackHTTPServer(('127.0.0.1',0),Handler)
 (out/'port.tmp').write_text(str(server.server_address[1]))
 (out/'port.tmp').replace(out/'port')
 server.serve_forever()

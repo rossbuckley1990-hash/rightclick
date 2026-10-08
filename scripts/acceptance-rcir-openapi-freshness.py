@@ -47,7 +47,7 @@ def main():
     threading.Thread(target=server.serve_forever,daemon=True).start()
     port = server.server_address[1]
     with tempfile.TemporaryDirectory(prefix="rightclick-rcir-acceptance-") as tmp:
-        tmp = pathlib.Path(tmp)
+        tmp = pathlib.Path(tmp).resolve()
         # Operator provisions a disposable signer; the runtime never generates an implicit identity.
         subprocess.run(["openssl","genpkey","-algorithm","ed25519","-out",str(tmp/"key.pem")],check=True,stdout=subprocess.DEVNULL)
         der = subprocess.check_output(["openssl","pkey","-in",str(tmp/"key.pem"),"-outform","DER"])

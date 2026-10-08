@@ -15,9 +15,10 @@ OUTPUT="$(cd "$1" && pwd)"
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/rightclick-receipt.XXXXXXXX")"
 trap 'rm -rf -- "$WORK"' EXIT
 swiftc -swift-version 5 \
-    "$ROOT/Sources/RightClickCore/CapabilityABI.swift" \
-    "$ROOT/Sources/RightClickCore/RCIR.swift" \
-    "$ROOT/Sources/RightClickCore/RCIRSignedReceipt.swift" \
+    "$ROOT/Sources/RightClickProtocol/CapabilityABI.swift" \
+    "$ROOT/Sources/RightClickProtocol/RCIR.swift" \
+    "$ROOT/Sources/RightClickProtocol/RCIRAuthority.swift" \
+    "$ROOT/Sources/RightClickProtocol/RCIRSignedReceipt.swift" \
     "$ROOT/examples/rcir-receipt-fixture/main.swift" -o "$WORK/receipt-fixture"
 PYTHON_BIN="$(command -v "$PYTHON")"
 "$WORK/receipt-fixture" "$PYTHON_BIN" "$ROOT/examples/rcir-receipt-fixture/producer.py" \

@@ -21,12 +21,35 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Record exact candidate source
+        env:
+          RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          mkdir -p /tmp/rcir-evidence
+          test "$(git rev-parse HEAD)" = "$RIGHTCLICK_CI_SOURCE"
+          git rev-parse HEAD > /tmp/rcir-evidence/source-commit.txt
+          git rev-parse HEAD:Sources > /tmp/rcir-evidence/sources-tree.txt
       - name: Actual engine and real HTTP effect controls
         run: |
           mkdir -p /tmp/rcir-evidence
-          RCIR_DISPATCH_EVIDENCE=/tmp/rcir-evidence/native-effects swift test --force-resolved-versions --filter RCIRProductionDispatchTests
+          RCIR_DISPATCH_EVIDENCE=/tmp/rcir-evidence/native-effects RCIR_AUTHORITY_EVIDENCE=/tmp/rcir-evidence/authority RIGHTCLICK_ACK_HTTP_EVIDENCE=/tmp/rcir-evidence/ack-receipts swift test --force-resolved-versions --filter 'RCIRProductionDispatchTests|RCIRAuthorityDispatchTests|OpenAPIAcknowledgementTests'
       - name: Real OpenAPI through exactly seven public operations
         run: python3 scripts/acceptance-rcir-openapi.py .build/debug/rightclick /tmp/rcir-evidence/public-mcp
+      - name: Independently check signed claims and provider effect correlation
+        run: |
+          python3 -m venv /tmp/rcir-receipt-verifier
+          /tmp/rcir-receipt-verifier/bin/python -m pip install cryptography==50.0.1
+          # Extract/verify the current run's actual unverified receipt before
+          # checking all outcomes. Never copy or re-sign historical payloads.
+          /tmp/rcir-receipt-verifier/bin/python scripts/acceptance-rcir-signed-evidence.py --public /tmp/rcir-evidence/public-mcp --native /tmp/rcir-evidence/native-effects --output /tmp/rcir-evidence/independent-signed-claims
+          RIGHTCLICK_PUBLIC_RECEIPT_EVIDENCE=/tmp/rcir-evidence/public-mcp \
+          RIGHTCLICK_SIGNED_RECEIPT_EVIDENCE=/tmp/rcir-evidence/independent-signed-claims \
+          RIGHTCLICK_NATIVE_RECEIPT_EVIDENCE=/tmp/rcir-evidence/native-effects \
+          RIGHTCLICK_ACK_RECEIPT_EVIDENCE=/tmp/rcir-evidence/ack-receipts \
+          RIGHTCLICK_AUTHORITY_RECEIPT_EVIDENCE=/tmp/rcir-evidence/authority \
+            /tmp/rcir-receipt-verifier/bin/python -m unittest discover -s Tests -p 'test_rcir*receipt_verifier.py' -v
       - name: Actual live schema drift and reacquisition without reconnecting
         run: python3 scripts/acceptance-rcir-openapi-freshness.py .build/debug/rightclick /tmp/rcir-evidence/live-schema
       - name: Preserve new-run transcripts, effects and signed receipts

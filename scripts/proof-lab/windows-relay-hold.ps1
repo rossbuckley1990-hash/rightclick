@@ -14,8 +14,35 @@ try {
         Start-Sleep -Seconds 2
     }
 } finally {
-    foreach ($id in $state.processes) { Stop-Process -Id $id -Force -ErrorAction SilentlyContinue }
-    foreach ($name in $state.users) { Remove-LocalUser $name -ErrorAction SilentlyContinue }
-    if (Test-Path $base) { Remove-Item $base -Recurse -Force }
-    @{withdrawn = $true; timestamp = [DateTimeOffset]::UtcNow.ToString('o'); proofUsersRemoved = $true; privateStateRemoved = $true} | ConvertTo-Json | Set-Content evidence/windows-relay/withdrawal.json
+    $cleanupErrors = 0
+    foreach ($id in $state.processes) {
+        try { Stop-Process -Id $id -Force -ErrorAction Stop } catch { $cleanupErrors++ }
+    }
+    foreach ($name in $state.users) {
+        try { Remove-LocalUser $name -ErrorAction Stop } catch { $cleanupErrors++ }
+    }
+    try { if (Test-Path $base) { Remove-Item $base -Recurse -Force -ErrorAction Stop } } catch { $cleanupErrors++ }
+    # A successful cleanup command is only an acknowledgement. Verify absence;
+    # lookup errors are uncertainty, never evidence of successful withdrawal.
+    $processesStopped = $false
+    for ($attempt = 0; $attempt -lt 50; $attempt++) {
+        try {
+            $running = @(Get-Process -ErrorAction Stop | Where-Object { $_.Id -in $state.processes })
+            $processesStopped = $running.Count -eq 0
+        } catch { $processesStopped = $false; break }
+        if ($processesStopped) { break }
+        Start-Sleep -Milliseconds 100
+    }
+    $proofUsersRemoved = $false
+    try {
+        $users = @(Get-LocalUser -ErrorAction Stop)
+        $proofUsersRemoved = @($users | Where-Object { $_.Name -in $state.users }).Count -eq 0
+    } catch { $cleanupErrors++ }
+    $privateStateRemoved = $false
+    try { $privateStateRemoved = -not (Test-Path $base -ErrorAction Stop) } catch { $cleanupErrors++ }
+    $withdrawn = $processesStopped -and $proofUsersRemoved -and $privateStateRemoved -and $cleanupErrors -eq 0
+    @{withdrawn = $withdrawn; timestamp = [DateTimeOffset]::UtcNow.ToString('o'); processesStopped = $processesStopped;
+      proofUsersRemoved = $proofUsersRemoved; privateStateRemoved = $privateStateRemoved; cleanupErrors = $cleanupErrors} |
+        ConvertTo-Json | Set-Content evidence/windows-relay/withdrawal.json
+    if (-not $withdrawn) { throw 'Windows proof withdrawal could not be independently confirmed; consult cleanup evidence' }
 }

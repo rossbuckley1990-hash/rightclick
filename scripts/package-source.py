@@ -12,9 +12,10 @@ import json
 import pathlib
 import re
 import tarfile
+from ci.archive_inputs import tracked_archive_inputs
 
 root = pathlib.Path(__file__).resolve().parent.parent
-version = re.search(r'current = "([0-9]+\.[0-9]+\.[0-9]+)"', (root / "Sources/RightClickCore/ProductSurface.swift").read_text())[1]
+version = re.search(r'current = "([0-9]+\.[0-9]+\.[0-9]+)"', (root / "Sources/RightClickProviders/ProductSurface.swift").read_text())[1]
 output = root / "dist" / f"rightclick-{version}-source.tar.gz"
 # Durably record substrate kinds inside the immutable source asset so
 # detect-bottle-alignment.py can inventory a published bottle without guessing.
@@ -25,29 +26,27 @@ subprocess.check_call(
     cwd=str(root),
 )
 
-inputs = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests",
+inputs = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests", "Vendor",
           "fixtures", "packaging/ThirdPartyLicenses", "packaging/substrate-kinds.json",
-          "scripts/build-cli.sh", "scripts/rcir-dispatch-test-provider.py"]
-paths = []
-for name in inputs:
-    path = root / name
-    assert path.exists(), name
-    paths.append(path)
-    if path.is_dir():
-        paths.extend(path.rglob("*"))
+          "scripts/build-cli.sh", "docs/substrate-contract.json", "docs/reconciliation-baselines",
+          "examples/universal-descriptors", "examples/rcir-authority-benchmark"]
+# Git supplies allowed names/modes for every directory. Only tracked inputs and
+# their working-tree source bytes enter the archive, never generated/private files.
+archive_inputs = tracked_archive_inputs(root, inputs)
 output.parent.mkdir(parents=True, exist_ok=True)
 with output.open("wb") as raw:
     with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as gz:
         with tarfile.open(fileobj=gz, mode="w", format=tarfile.USTAR_FORMAT) as archive:
-            for path in sorted(set(paths)):
+            for selected in archive_inputs:
+                relative = selected.relative
+                path = root / relative
                 assert not path.is_symlink(), path
-                relative = path.relative_to(root)
                 assert ".DS_Store" not in relative.parts, relative
                 info = archive.gettarinfo(str(path), arcname=f"rightclick-{version}/{relative}")
                 info.uid = info.gid = 0
                 info.uname = info.gname = "root"
                 info.mtime = 1767225600
-                info.mode = 0o755 if path.is_dir() or relative.as_posix() == "scripts/build-cli.sh" else 0o644
+                info.mode = selected.mode
                 if info.isfile():
                     with path.open("rb") as stream:
                         archive.addfile(info, stream)

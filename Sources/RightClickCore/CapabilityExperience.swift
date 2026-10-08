@@ -1,4 +1,10 @@
+import RightClickProviders
+import RightClickProtocol
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import Foundation
 
 /// Learns observations about freshly discovered contracts, never permissions.
@@ -26,7 +32,7 @@ public final class CapabilityExperience: @unchecked Sendable {
     /// The fresh contract is authoritative. Raw payloads and credentials never
     /// enter this key. A fingerprint is not proof of unchanged provider code.
     public func contractKey(for capability: Capability) -> String? {
-        let clean = Self.withoutExperience(capability)
+        let clean = capability.withoutDiscoveryAdvice()
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys]
         guard let data = try? encoder.encode(clean), data.count <= 262_144 else { return nil }
@@ -88,8 +94,6 @@ public final class CapabilityExperience: @unchecked Sendable {
     }
 
     public static func withoutExperience(_ capability: Capability) -> Capability {
-        var clean = capability
-        clean.metadata = clean.metadata.filter { !$0.key.hasPrefix("experience.") }
-        return clean
+        CapabilityDispatchContract.withoutExperience(capability)
     }
 }

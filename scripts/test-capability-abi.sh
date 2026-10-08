@@ -6,14 +6,14 @@ command -v swift >/dev/null || { echo 'Swift 6.2+ is required.' >&2; exit 1; }
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/rightclick-abi.XXXXXXXX")"
 trap 'rm -rf -- "$WORK"' EXIT
 mkdir -p "$WORK/Sources/RightClickCore" "$WORK/Tests/RightClickCoreTests"
-cp "$ROOT/Sources/RightClickCore/CapabilityABI.swift" "$WORK/Sources/RightClickCore/"
+cp "$ROOT/Sources/RightClickProtocol/CapabilityABI.swift" "$WORK/Sources/RightClickCore/"
 for name in CapabilityABITests CapabilityABIBoundaryTests; do
-    cp "$ROOT/Tests/RightClickCoreTests/$name.swift" "$WORK/Tests/RightClickCoreTests/"
+    sed '/@testable import RightClickProtocol/d; /@testable import RightClickProviders/d; /@testable import RightClickMacOS/d' "$ROOT/Tests/RightClickCoreTests/$name.swift" > "$WORK/Tests/RightClickCoreTests/$name.swift"
 done
 cat > "$WORK/Package.swift" <<'PACKAGE'
 // swift-tools-version: 6.0
 import PackageDescription
-let package = Package(name: "RightClickABIValidation", targets: [
+let package = Package(name: "RightClickABIValidation", platforms: [.macOS(.v14)], targets: [
     .target(name: "RightClickCore", swiftSettings: [.swiftLanguageMode(.v5)]),
     .testTarget(name: "RightClickCoreTests", dependencies: ["RightClickCore"],
                 swiftSettings: [.swiftLanguageMode(.v5)])

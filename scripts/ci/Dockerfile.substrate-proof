@@ -1,0 +1,14 @@
+# Disposable test executor only. Administrative fixtures run outside this image.
+ARG SWIFT_BASE=swift:6.3.3-noble
+FROM ${SWIFT_BASE}
+ARG FIXTURE_UID=1001
+ARG FIXTURE_GID=1001
+RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-venv openssl ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && (getent group ${FIXTURE_GID} || groupadd --gid ${FIXTURE_GID} rcproof) \
+    && useradd --uid ${FIXTURE_UID} --gid ${FIXTURE_GID} --create-home rcproof \
+    && python3 -m venv /opt/rightclick-verifier \
+    && /opt/rightclick-verifier/bin/pip install --no-cache-dir cryptography==50.0.1 \
+        mcp==1.30.0 graphql-core==3.3.0 grpcio==1.78.0 grpcio-reflection==1.78.0 protobuf==6.33.6
+USER rcproof
+WORKDIR /workspace

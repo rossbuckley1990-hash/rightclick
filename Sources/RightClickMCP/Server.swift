@@ -1,12 +1,29 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
+#if canImport(Darwin)
 import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
 import Foundation
 import MCP
 import RightClickCore
 
 public enum RightClickMCPRuntime {
+    /// This callable registration is used by runtime composition and CI's
+    /// substrate contract. Federation is transport, not another tool namespace.
+    public static func sourceRegistrations() -> [CapabilitySourceRegistration] {
+        [.init(family: "mcp", role: "federation_peer_source") { environment, _ in
+            FederationPeerSource.fromEnvironment(environment)
+        }]
+    }
+
     public static func makeEngine(
-        startBrowsing: Bool = true
+        startBrowsing: Bool = true,
+        additionalSources: [any CapabilityReflectorSource] = []
     ) -> CapabilityEngine {
         var sources =
             CapabilityReflectorSourceDefaults
@@ -15,14 +32,10 @@ public enum RightClickMCPRuntime {
                         startBrowsing
                 )
 
-        if let federation =
-            FederationPeerSource
-                .fromEnvironment()
-        {
-            sources.append(
-                federation
-            )
-        }
+        sources.append(contentsOf: sourceRegistrations().compactMap {
+            $0.make(environment: ProcessInfo.processInfo.environment, startBrowsing: startBrowsing)
+        })
+        sources.append(contentsOf: additionalSources)
 
         return CapabilityRuntimeDefaults
             .makeEngine(
@@ -37,7 +50,19 @@ public enum RightClickMCPRuntime {
 public enum RightClickMCPMain {
     public static func run(_ args: [String]) -> Int {
         let http = args.contains("--http")
-        let port = UInt16(flag(args, "--port") ?? "") ?? 8765
+        let port: UInt16
+        if args.contains("--port") {
+            guard args.filter({ $0 == "--port" }).count == 1,
+                  let value = flag(args, "--port"), !value.isEmpty,
+                  value.utf8.allSatisfy({ (48...57).contains($0) }),
+                  let parsed = UInt16(value), parsed > 0 else {
+                fputs("HTTP MCP port must be an integer from 1 to 65535.\n", stderr); return 2
+            }
+            port = parsed
+        } else { port = 8765 }
+        if args.contains("--bind"), flag(args, "--bind") != "127.0.0.1" {
+            fputs("MCP binding must be the numeric loopback address 127.0.0.1.\n", stderr); return 2
+        }
         let token = flag(args, "--token") ?? ProcessInfo.processInfo.environment["RIGHTCLICK_MCP_TOKEN"]
         StartupLog.record(transport: http ? "http" : "stdio")
         let box = EngineBox(
@@ -48,8 +73,7 @@ public enum RightClickMCPMain {
                 fputs("HTTP MCP requires --token or RIGHTCLICK_MCP_TOKEN.\n", stderr)
                 return 2
             }
-            HTTPMCPServer(engine: box, port: port, token: token).run()
-            return 0
+            return HTTPMCPServer(engine: box, port: port, token: token).run()
         }
         StdioMCPServer(engine: box).run()
         return 0
@@ -70,11 +94,7 @@ enum StartupLog {
         \(stamp) pid=\(runtime.pid) transport=\(runtime.transport) version=\(runtime.version) path=\(runtime.executablePath) realpath=\(runtime.executableRealPath) sha256=\(runtime.executableSHA256)
         """
 
-        let directory = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent(
-                "Library/Logs/RIGHTCLICK",
-                isDirectory: true
-            )
+        let directory = RuntimePlatform.logDirectory
 
         let file = directory.appendingPathComponent("startup.log")
 
@@ -131,17 +151,23 @@ final class EngineBox: @unchecked Sendable {
     init(_ engine: CapabilityEngine) { self.engine = engine }
 
     func call<T>(_ body: @escaping (CapabilityEngine) throws -> T) throws -> T {
+        #if os(macOS)
         // ShareKit creates NSWindows during perform(withItems:). DispatchQueue.main.sync
         // can run that block inline on the MCP worker, which AppKit then aborts.
         if pthread_main_np() != 0 {
-            return try body(engine)
+            return try self.engine.withExclusiveAccess { try body(self.engine) }
         }
         let box = MainResultBox<T>()
         let engine = self.engine
         DispatchQueue.main.async {
-            box.finish(Result { try body(engine) })
+            box.finish(Result { try engine.withExclusiveAccess { try body(engine) } })
         }
         return try box.wait()
+        #else
+        // The same engine is serialized on headless hosts without AppKit's
+        // main-thread requirement.
+        return try engine.withExclusiveAccess { try body(engine) }
+        #endif
     }
 }
 
@@ -151,6 +177,7 @@ final class StdioMCPServer {
 
     func run() {
         let engine = self.engine
+        #if os(macOS)
         let stop = StopFlag()
         Task.detached {
             do {
@@ -164,6 +191,15 @@ final class StdioMCPServer {
         while !stop.stop {
             RunLoop.main.run(mode: .default, before: Date().addingTimeInterval(0.2))
         }
+        #else
+        let done = DispatchSemaphore(value: 0)
+        Task.detached {
+            do { try await Self.serve(engine) }
+            catch { fputs("MCP server failed: \(error)\n", stderr) }
+            done.signal()
+        }
+        done.wait()
+        #endif
     }
 
     private static func serve(_ engine: EngineBox) async throws {
@@ -179,7 +215,7 @@ final class StdioMCPServer {
         )
         let transport = ModernMCPStdioTransport()
         try await server.start(transport: transport)
-        try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
+        await server.waitUntilCompleted()
     }
 }
 
@@ -194,10 +230,11 @@ final class HTTPMCPServer {
         self.token = token
     }
 
-    func run() {
+    func run() -> Int {
         let engine = self.engine
         let port = self.port
         let token = self.token
+        #if os(macOS)
         let ready = DispatchSemaphore(value: 0)
         Task.detached {
             do {
@@ -208,6 +245,20 @@ final class HTTPMCPServer {
             }
         }
         RunLoop.main.run()
+        return 0
+        #else
+        let dispatcher = HTTPRequestDispatcher(engine: engine, token: token, port: port)
+        let listener = MCPHTTPListener(port: port, path: "/mcp") { await dispatcher.handle($0) }
+        do {
+            try listener.start()
+            fputs("RIGHTCLICK HTTP MCP listening on http://127.0.0.1:\(port)/mcp\n", stderr)
+            withExtendedLifetime(listener) { DispatchSemaphore(value: 0).wait() }
+            return 0
+        } catch {
+            fputs("HTTP MCP failed to start: \(error)\n", stderr)
+            return 1
+        }
+        #endif
     }
 
     private static func serve(engine: EngineBox, port: UInt16, token: String, ready: DispatchSemaphore) async throws {
@@ -292,9 +343,9 @@ private func registerTools(
                 engine: engine,
                 transport: transport
             )
-            return .init(content: [.text(text)], isError: false)
+            return .init(content: [.text(text: text, annotations: nil, _meta: nil)], isError: false)
         } catch {
-            return .init(content: [.text(String(describing: error))], isError: true)
+            return .init(content: [.text(text: String(describing: error), annotations: nil, _meta: nil)], isError: true)
         }
     }
 }
@@ -397,6 +448,7 @@ private func rightClickTools() -> [Tool] {
         "properties": .object([
             "item": schemaString("File path, http(s) URL, or plain text."),
             "actionId": schemaString("Capability id or exact title returned by context_actions."),
+            "contractSHA256": schemaString("Optional exact declaration fingerprint returned by discovery; rejects changed contracts and grants no authority."),
             "arguments": capabilityArgumentsSchema,
             "expectedOutput": schemaString("Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes."),
             "verification": verificationSchema,
@@ -458,7 +510,7 @@ private func rightClickTools() -> [Tool] {
     ]
 }
 
-private func handleTool(
+func handleTool(
     _ name: String,
     arguments: [String: Value]?,
     engine: EngineBox,
@@ -488,8 +540,15 @@ private func handleTool(
     case "context_explain":
         let action = arguments?["actionId"]?.stringValue ?? ""
         let capability = try engine.call { try $0.describe(id: action, item: item) }
-        return RightClickJSON.encode(capability)
+        return RightClickJSON.encode(CapabilityExplanationView(capability))
     case "context_run":
+        let contractSHA256: String?
+        if let supplied = arguments?["contractSHA256"] {
+            guard let pin = supplied.stringValue, CapabilityContract.isValidSHA256(pin) else {
+                throw RightClickError("Invalid contractSHA256. Supply the exact lowercase SHA-256 returned by discovery.")
+            }
+            contractSHA256 = pin
+        } else { contractSHA256 = nil }
         let action = arguments?["actionId"]?.stringValue ?? ""
         let confirmed =
             arguments?["confirmed"]?
@@ -546,7 +605,7 @@ private func handleTool(
                 confirmed: confirmed,
                 arguments: capabilityArguments,
                 expectedOutput: expectedOutput,
-                verification: verification
+                verification: verification, contractSHA256: contractSHA256
             )
         }
 

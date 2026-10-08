@@ -1,57 +1,77 @@
+import RightClickProviders
+import RightClickProtocol
 import Foundation
+#if os(Linux)
+import RightClickLinux
+#endif
 
 /// Built-in environment-level capability discovery sources.
 ///
 /// This registry is product composition, not capability-engine routing.
 /// Individual sources remain ordinary CapabilityReflectorSource values.
+/// Callable registrations are the runtime composition and the inventory seam.
+/// Unconfigured optional sources remain implemented, never fake live providers.
+public struct CapabilitySourceRegistration {
+    public let family: String
+    public let role: String
+    private let construct: ([String: String], Bool) -> (any CapabilityReflectorSource)?
+    public init(family: String, role: String,
+        construct: @escaping ([String: String], Bool) -> (any CapabilityReflectorSource)?) {
+        self.family = family; self.role = role; self.construct = construct
+    }
+    public func make(environment: [String: String], startBrowsing: Bool) -> (any CapabilityReflectorSource)? {
+        construct(environment, startBrowsing)
+    }
+}
+
+public enum CapabilityArtifactResolverRuntimeDefaults {
+    public static func all(environment: [String: String] = ProcessInfo.processInfo.environment) -> [any CapabilityArtifactResolver] {
+        var resolvers = CapabilityArtifactResolverDefaults.all()
+#if os(Linux)
+        resolvers.append(DBusCapabilityArtifactResolver(environment: environment))
+#endif
+        return resolvers
+    }
+}
+
 public enum CapabilityReflectorSourceDefaults {
-    public static func all(
-        startBrowsing: Bool = true
+    public static func registrations(
+        registry: CapabilityArtifactResolverRegistry = CapabilityArtifactResolverRegistry(resolvers: CapabilityArtifactResolverRuntimeDefaults.all())
+    ) -> [CapabilitySourceRegistration] {
+        var entries = [
+            CapabilitySourceRegistration(family: "openapi", role: "configured_source") { _, _ in ConfiguredOpenAPISource() },
+            CapabilitySourceRegistration(family: "generic_artifacts", role: "configured_source") { environment, _ in
+                ConfiguredCapabilityArtifactSource.fromEnvironment(environment, registry: registry)
+            },
+            CapabilitySourceRegistration(family: "a2a", role: "configured_source") { environment, _ in
+                ConfiguredA2ASource.fromEnvironment(environment)
+            },
+            CapabilitySourceRegistration(family: "ard", role: "configured_source") { environment, _ in
+                ARDRegistrySource.fromEnvironment(environment)
+            },
+        ]
+#if os(macOS)
+        entries += [
+            CapabilitySourceRegistration(family: "openapi", role: "bonjour_source") { _, browsing in BonjourOpenAPISource(startBrowsing: browsing) },
+            CapabilitySourceRegistration(family: "graphql", role: "bonjour_source") { _, browsing in BonjourGraphQLSource(startBrowsing: browsing) },
+            CapabilitySourceRegistration(family: "grpc", role: "bonjour_source") { _, browsing in BonjourGRPCSource(startBrowsing: browsing) },
+        ]
+#endif
+#if os(Linux)
+        entries.append(CapabilitySourceRegistration(family: "dbus", role: "native_session_source") { _, _ in
+            guard let resolver = registry.registeredResolver(kind: "dbus") as? DBusCapabilityArtifactResolver else { return nil }
+            return DBusSessionSource(resolver: resolver)
+        })
+#endif
+        return entries
+    }
+
+    public static func all(startBrowsing: Bool = true,
+        environment: [String: String] = ProcessInfo.processInfo.environment
     ) -> [any CapabilityReflectorSource] {
-        var sources:
-            [any CapabilityReflectorSource] = [
-                ConfiguredOpenAPISource(),
-
-                BonjourOpenAPISource(
-                    startBrowsing:
-                        startBrowsing
-                ),
-                BonjourGraphQLSource(
-                    startBrowsing:
-                        startBrowsing
-                ),
-            ]
-
-        if let configuredArtifacts =
-            ConfiguredCapabilityArtifactSource
-                .fromEnvironment()
-        {
-            sources.append(
-                configuredArtifacts
-            )
-        }
-
-#if canImport(RightClickARD)
-        if let ard =
-            ARDRegistrySource
-                .fromEnvironment()
-        {
-            sources.append(
-                ard
-            )
-        }
-#endif
-
-#if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
-        sources.append(
-            BonjourGRPCSource(
-                startBrowsing:
-                    startBrowsing
-            )
-        )
-#endif
-
-        return sources
+        // These exact factories are audited by the substrate inventory gate.
+        let registry = CapabilityArtifactResolverRegistry(resolvers: CapabilityArtifactResolverRuntimeDefaults.all(environment: environment))
+        return registrations(registry: registry).compactMap { $0.make(environment: environment, startBrowsing: startBrowsing) }
     }
 }
 

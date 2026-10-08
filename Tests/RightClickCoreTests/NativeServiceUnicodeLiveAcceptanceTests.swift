@@ -1,3 +1,9 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 #if os(macOS)
 import Foundation
 import XCTest

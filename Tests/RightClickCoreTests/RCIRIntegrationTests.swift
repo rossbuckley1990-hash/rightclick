@@ -1,11 +1,38 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
 import XCTest
 @testable import RightClickCore
+#if canImport(CryptoKit) || canImport(Crypto)
 #if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 #endif
 
 final class RCIRIntegrationTests: XCTestCase {
+    #if canImport(RightClickProviders)
+    func testOwnerSynchronizationPreservesExactUTF8WithdrawalIdentity() throws {
+        let host = RCIRExecutionHost()
+        let composed = "reflector:\u{00e9}", decomposed = "reflector:e\u{0301}"
+        XCTAssertEqual(composed, decomposed) // Swift String equality normalizes Unicode.
+        XCTAssertNotEqual(Data(composed.utf8), Data(decomposed.utf8))
+        for (index, owner) in [composed, decomposed].enumerated() {
+            let abi = CapabilityContract(capabilityID: "action:\(index)", reflectorID: owner, providerID: "provider:\(index)",
+                arguments: .null, result: .unit, declaration: .string("exact bytes"))
+            _ = try host.admission.publish(RCIRContract(abi: abi, scopes: []), authenticatedPrincipal: "principal:\(index)")
+        }
+        XCTAssertEqual(host.admission.discover().count, 2)
+        host.synchronize(ownerBytes: Set([Data(composed.utf8)]))
+        XCTAssertEqual(host.admission.discover().map { Data($0.contract.abi.reflectorID.utf8) }, [Data(composed.utf8)])
+    }
+
+    #endif
     func task() throws -> RCIRTask {
         let abi = CapabilityContract(capabilityID: "fixture:act", reflectorID: "r:fixture", providerID: "fixture",
                                      arguments: .object(properties: ["target": .string], required: ["target"]),
@@ -105,7 +132,7 @@ final class RCIRIntegrationTests: XCTestCase {
         XCTAssertEqual(t.outcome, .unverified)
         XCTAssertTrue(try t.receiptData().starts(with: Data("RIGHTCLICK-RCIR-RECEIPT-1\0".utf8)))
     }
-    #if canImport(CryptoKit)
+    #if canImport(CryptoKit) || canImport(Crypto)
     func testRealCryptoKitSignatureAndPinnedKey() throws {
         let key = Curve25519.Signing.PrivateKey()
         let signer = try RCIREd25519Signer(rawPrivateKey: key.rawRepresentation)

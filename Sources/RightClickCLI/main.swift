@@ -27,7 +27,7 @@ struct CLI {
             print(usage())
             return 0
         case "doctor":
-            return emit(CapabilityRuntimeDefaults.makeEngine().doctor(), json: json)
+            return emit(RightClickMCPRuntime.makeEngine().doctor(), json: json)
         case "inspect":
             return inspect(positional, json: json)
         case "actions", "capabilities":
@@ -45,7 +45,7 @@ struct CLI {
         case "authority":
             return RightClickAuthorityCLI.run(rest)
         case "refresh":
-            CapabilityRuntimeDefaults.makeEngine().refresh()
+            RightClickMCPRuntime.makeEngine().refresh()
             print("Refreshed macOS Services registrations. The next query scans installed providers again.")
             return 0
         case "version", "--version":
@@ -67,7 +67,7 @@ struct CLI {
                     args: rest,
                     executable: RightClickSetup.executablePath()
                 ) {
-                    let item = try CapabilityRuntimeDefaults.makeEngine().inspect("RIGHTCLICK onboarding probe")
+                    let item = try RightClickMCPRuntime.makeEngine().inspect("RIGHTCLICK onboarding probe")
                     guard item.typeIdentifier == "public.plain-text" else {
                         throw RightClickLocalOnboarding.SetupError(
                             "Local text inspection did not return public.plain-text."
@@ -108,7 +108,7 @@ struct CLI {
             return 2
         }
         do {
-            let item = try CapabilityRuntimeDefaults.makeEngine().inspect(raw)
+            let item = try RightClickMCPRuntime.makeEngine().inspect(raw)
             return emit(item, json: json)
         } catch {
             fputs("\(error)\n", stderr)
@@ -122,7 +122,7 @@ struct CLI {
             return 2
         }
         do {
-            let result = try CapabilityRuntimeDefaults.makeEngine().capabilities(for: raw)
+            let result = try RightClickMCPRuntime.makeEngine().capabilities(for: raw)
             if json {
                 print(RightClickJSON.encode(ActionList(item: result.item, actions: result.capabilities)))
                 return 0
@@ -142,7 +142,7 @@ struct CLI {
         }
         let item = positional.dropFirst().first
         do {
-            let capability = try CapabilityRuntimeDefaults.makeEngine().describe(id: id, item: item)
+            let capability = try RightClickMCPRuntime.makeEngine().describe(id: id, item: item)
             return emit(capability, json: json || true)
         } catch {
             fputs("\(error)\n", stderr)
@@ -188,7 +188,7 @@ struct CLI {
         }
 
         do {
-            let result = try CapabilityRuntimeDefaults.makeEngine().run(
+            let result = try RightClickMCPRuntime.makeEngine().run(
                 id: resolvedAction,
                 item: resolvedItem,
                 confirmed: confirmed,
@@ -238,7 +238,7 @@ struct CLI {
             fputs("status needs an execution id.\n", stderr)
             return 2
         }
-        let record = CapabilityRuntimeDefaults.makeEngine().executionStatus(id)
+        let record = RightClickMCPRuntime.makeEngine().executionStatus(id)
         if json {
             print(RightClickJSON.encode(record))
         } else {
@@ -252,7 +252,7 @@ struct CLI {
     }
 
     private func providers(json: Bool) -> Int {
-        let rows = CapabilityRuntimeDefaults.makeEngine().providers()
+        let rows = RightClickMCPRuntime.makeEngine().providers()
         if json {
             print(RightClickJSON.encode(rows))
             return 0

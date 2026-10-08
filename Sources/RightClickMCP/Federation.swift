@@ -1,5 +1,13 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import MCP
+#if canImport(CryptoKit)
+import CryptoKit
+#else
+import Crypto
+#endif
 import RightClickCore
 
 struct FederationPeerConfiguration:
@@ -241,6 +249,20 @@ protocol FederationPeerTransport:
         arguments: CapabilityArguments?,
         verification: VerificationSpec?
     ) throws -> ExecutionRecord
+    func run(item: String, actionID: String, arguments: CapabilityArguments?, verification: VerificationSpec?,
+             expectedContractSHA256: String?) throws -> ExecutionRecord
+    func status(executionID: String) throws -> ExecutionRecord
+}
+
+extension FederationPeerTransport {
+    func run(item: String, actionID: String, arguments: CapabilityArguments?, verification: VerificationSpec?,
+             expectedContractSHA256: String?) throws -> ExecutionRecord {
+        guard expectedContractSHA256 == nil else { throw RightClickError("Peer transport cannot enforce the advertised admission pin.") }
+        return try run(item: item, actionID: actionID, arguments: arguments, verification: verification)
+    }
+    func status(executionID: String) throws -> ExecutionRecord {
+        throw RightClickError("This peer transport does not implement retained execution status.")
+    }
 }
 
 final class FederationPeerSource:
@@ -352,9 +374,12 @@ final class FederationPeerSource:
 }
 
 final class FederatedPeerReflector:
-    CapabilityVerificationReflector
+    CapabilityVerificationReflector, CapabilityExecutionStatusReflector
 {
     let id: String
+    var routingOrigin: CapabilityRoutingOrigin {
+        .init(transport: "federation", executionRuntimeID: "federation-peer:" + peer.id)
+    }
 
     private let peer:
         FederationPeerConfiguration
@@ -368,6 +393,17 @@ final class FederatedPeerReflector:
     private var lastCapabilityTitles:
         [String] = []
 
+    private struct OwnedExecution {
+        let remoteID: String
+        let remoteActionID: String
+        let capability: Capability
+        let verification: VerificationSpec?
+        let item: String
+        let runtimeDigest: String
+        let contractDigest: String
+        var transportUncertain = false
+    }
+    private var executions: [String: OwnedExecution] = [:]
     init(
         peer:
             FederationPeerConfiguration,
@@ -411,11 +447,13 @@ final class FederatedPeerReflector:
                 )
 
             let reflected =
-                actions.compactMap {
+                try actions.compactMap {
                     action
                         -> Capability? in
 
                     guard
+                        action.routingOrigin == nil,
+                        action.contractSHA256.map(CapabilityContract.isValidSHA256) ?? true,
                         !action.id
                             .hasPrefix(
                                 "federation:"
@@ -485,6 +523,9 @@ final class FederatedPeerReflector:
                             "federationRuntimeSHA256":
                                 runtime
                                     .executableSHA256,
+                            "federationRuntimeDigest": try self.digest(runtime),
+                            "federationContractDigest": try self.digest(action),
+                            "federationAdmissionPin": action.contractSHA256 ?? "unavailable-legacy",
                         ]
                     )
                 }
@@ -625,6 +666,16 @@ final class FederatedPeerReflector:
         }
 
         do {
+            let raw = rawItem(item)
+            let runtimeDigest = try digest(transport.runtime())
+            let actions = try transport.actions(item: raw)
+            guard let view = actions.first(where: { $0.id.utf8.elementsEqual(remoteActionID.utf8) }),
+                  view.routingOrigin == nil, !view.id.hasPrefix("federation:"),
+                  runtimeDigest == capability.metadata["federationRuntimeDigest"],
+                  try digest(view) == capability.metadata["federationContractDigest"] else {
+                return ExecutionRecord(executionId: executionID, actionId: capability.id, state: .rejected,
+                    message: "Federated ownership or capability changed before dispatch.")
+            }
             var remote =
                 try transport.run(
                     item:
@@ -636,7 +687,8 @@ final class FederatedPeerReflector:
                     arguments:
                         arguments,
                     verification:
-                        verification
+                        verification,
+                    expectedContractSHA256: view.contractSHA256
                 )
 
             guard
@@ -664,6 +716,12 @@ final class FederatedPeerReflector:
             let remoteExecutionID =
                 remote.executionId
 
+            stateLock.lock()
+            executions = executions.filter { ExecutionStore.shared.get($0.key) != nil }
+            executions[executionID] = OwnedExecution(remoteID: remoteExecutionID, remoteActionID: remoteActionID,
+                capability: capability, verification: verification, item: raw, runtimeDigest: runtimeDigest, contractDigest: try digest(view))
+            stateLock.unlock()
+
             remote.executionId =
                 executionID
 
@@ -681,35 +739,7 @@ final class FederatedPeerReflector:
                 "remote execution \(remoteExecutionID)"
             )
 
-            if verification != nil,
-               remote.state
-                    == .succeeded,
-               (
-                    remote
-                        .verification?
-                        .status
-                        != .verifiedSuccess
-                    || !remote
-                        .evidence
-                        .outcomeVerified
-               )
-            {
-                remote.state =
-                    .accepted
-
-                remote.message =
-                    "Federated peer did not return complete verification evidence; semantic success is unverified."
-
-                remote.evidence =
-                    OutcomeEvidence(
-                        type:
-                            "delegated_verification_incomplete",
-                        boundary:
-                            "Remote execution did not establish VERIFIED_SUCCESS with outcomeVerified=true.",
-                        outcomeVerified:
-                            false
-                    )
-            }
+            validateCompletion(&remote, expected: verification)
 
             return remote
         } catch {
@@ -721,15 +751,77 @@ final class FederatedPeerReflector:
                 title:
                     capability.title,
                 state:
-                    .unavailable,
+                    .unknown,
                 message:
-                    "Federated RIGHTCLICK peer is unavailable.",
+                    "Federated delivery may have reached the execution node; the outcome is unknown. Do not retry blindly.",
                 events: [
                     "federation peer \(peer.id)",
                     "peer request failed",
                 ]
             )
         }
+    }
+
+    func executionStatus(_ executionID: String) -> ExecutionRecord? {
+        stateLock.lock(); let owned = executions[executionID]; stateLock.unlock()
+        guard var owned = owned else { return nil }
+        if let retained = ExecutionStore.shared.get(executionID), retained.state == .unknown, !owned.transportUncertain {
+            return retained // A node-reported terminal uncertainty cannot restart work.
+        }
+        // Retained status is pinned to this configured peer and original contract.
+        // Withdrawal/replacement does not turn status into a newly routed RUN.
+        do {
+            guard try digest(transport.runtime()) == owned.runtimeDigest,
+                  let view = try transport.actions(item: owned.item).first(where: { $0.id.utf8.elementsEqual(owned.remoteActionID.utf8) }),
+                  view.routingOrigin == nil, !view.id.hasPrefix("federation:"),
+                  try digest(view) == owned.contractDigest else {
+                owned.transportUncertain = false
+                stateLock.lock(); executions[executionID] = owned; stateLock.unlock()
+                let result = ExecutionRecord(executionId: executionID, actionId: owned.capability.id, state: .unknown,
+                    message: "Original federation runtime or capability withdrawn; task cannot be reselected.")
+                ExecutionStore.shared.put(result); return result
+            }
+            var record = try transport.status(executionID: owned.remoteID)
+            guard record.executionId.utf8.elementsEqual(owned.remoteID.utf8),
+                  record.actionId.utf8.elementsEqual(owned.remoteActionID.utf8) else {
+                throw RightClickError("Peer returned another task or capability.")
+            }
+            owned.transportUncertain = false
+            stateLock.lock(); executions[executionID] = owned; stateLock.unlock()
+            record.executionId = executionID; record.actionId = owned.capability.id; record.title = owned.capability.title
+            record.events.append("remote execution " + owned.remoteID)
+            validateCompletion(&record, expected: owned.verification)
+            ExecutionStore.shared.put(record)
+            return record
+        } catch {
+            owned.transportUncertain = true
+            stateLock.lock(); executions[executionID] = owned; stateLock.unlock()
+            let unknown = ExecutionRecord(executionId: executionID, actionId: owned.capability.id, state: .unknown,
+                message: "Federated task status is uncertain; do not redispatch its original effect.")
+            ExecutionStore.shared.put(unknown)
+            return unknown
+        }
+    }
+
+    private func validateCompletion(_ record: inout ExecutionRecord, expected: VerificationSpec?) {
+        guard record.state == .succeeded else { return }
+        let completePredicates = record.verification?.validatesSuccess(expected: expected) == true
+        // RCIR fields and even a self-signed receipt from a peer do not establish
+        // local host provenance. Retain them as evidence data; only exact,
+        // consistent delegated predicates can establish this completion here.
+        guard record.evidence.outcomeVerified && completePredicates else {
+            record.state = .accepted
+            record.evidence = OutcomeEvidence(type: "delegated_verification_incomplete",
+                boundary: "Peer acceptance lacks complete, consistent execution-node verification.", outcomeVerified: false)
+            record.verification = nil
+            record.message = "Federated provider completion remains accepted but unverified."
+            return
+        }
+    }
+
+    private func digest<T: Encodable>(_ value: T) throws -> String {
+        let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
+        return SHA256.hash(data: try encoder.encode(value)).map { String(format: "%02x", $0) }.joined()
     }
 
     private func rawItem(
@@ -810,6 +902,10 @@ private final class MCPFederationPeerTransport:
         arguments: CapabilityArguments?,
         verification: VerificationSpec?
     ) throws -> ExecutionRecord {
+        try run(item: item, actionID: actionID, arguments: arguments, verification: verification, expectedContractSHA256: nil)
+    }
+    func run(item: String, actionID: String, arguments: CapabilityArguments?, verification: VerificationSpec?,
+             expectedContractSHA256: String?) throws -> ExecutionRecord {
         var values:
             [String: Value] = [
                 "item":
@@ -828,6 +924,7 @@ private final class MCPFederationPeerTransport:
                     ),
             ]
 
+        if let pin = expectedContractSHA256 { values["contractSHA256"] = .string(pin) }
         if let arguments {
             values[
                 "arguments"
@@ -856,6 +953,10 @@ private final class MCPFederationPeerTransport:
             arguments:
                 values
         )
+    }
+
+    func status(executionID: String) throws -> ExecutionRecord {
+        try callTool(name: "context_run_status", arguments: ["executionId": .string(executionID)])
     }
 
     private func callTool<
@@ -928,6 +1029,7 @@ private final class MCPFederationPeerTransport:
                 "Authorization"
         )
 
+        let admittedRequest = request
         return try waitForFederation {
             let configuration =
                 URLSessionConfiguration
@@ -959,7 +1061,7 @@ private final class MCPFederationPeerTransport:
                 try await session
                     .data(
                         for:
-                            request
+                            admittedRequest
                     )
 
             guard

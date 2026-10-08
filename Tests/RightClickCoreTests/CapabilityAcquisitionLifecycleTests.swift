@@ -1,3 +1,9 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
 import XCTest
 @testable import RightClickCore
@@ -19,7 +25,7 @@ final class CapabilityAcquisitionLifecycleTests: XCTestCase {
     }
 
     func testUnchangedConfigurationDoesNotRetainWithdrawnProviderForever() throws {
-        let directory = FileManager.default.temporaryDirectory
+        let directory = NativeHTTPFixture.temporaryDirectory
             .appendingPathComponent("rightclick-lifecycle-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directory) }
@@ -49,7 +55,7 @@ final class CapabilityAcquisitionLifecycleTests: XCTestCase {
     }
 
     func testRealProviderWithdrawalAndChangedReappearanceWithUnchangedConfiguration() throws {
-        let directory = FileManager.default.temporaryDirectory
+        let directory = NativeHTTPFixture.temporaryDirectory
             .appendingPathComponent("rightclick-real-lifecycle-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directory) }
@@ -59,7 +65,7 @@ final class CapabilityAcquisitionLifecycleTests: XCTestCase {
             .appendingPathComponent("scripts/proof-discovery-provider.py")
         func start(_ port: Int, operation: String) throws -> (Process, Int) {
             let process = Process()
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
+            process.executableURL = try NativeHTTPFixture.python()
             process.arguments = [script.path, "--port", String(port), "--operation", operation,
                                  "--evidence", requests.path]
             let pipe = Pipe()

@@ -1,0 +1,76 @@
+name: Reconciled portable fabric
+on:
+  pull_request:
+  push:
+    branches: [feature/reconcile-portable-v023]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: portable-fabric-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+jobs:
+  macos:
+    name: macOS arm64 complete regression
+    runs-on: macos-26
+    timeout-minutes: 100
+    defaults:
+      run:
+        shell: bash
+    env:
+      RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Independent targets, complete tests and retained identities
+        run: |
+          set -euo pipefail
+          bash scripts/ci/reconciliation-platform-proof.sh macos 'arm64' evidence/portable-fabric/macos
+      - name: Preserve public evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: portable-fabric-macos-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/portable-fabric/macos
+          if-no-files-found: error
+  linux:
+    name: Linux ${{ matrix.arch }} complete regression
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    container: swift:6.3.3-noble
+    timeout-minutes: 100
+    defaults:
+      run:
+        shell: bash
+    env:
+      RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Provision native fixture prerequisites
+        run: |
+          set -euo pipefail
+          apt-get update
+          apt-get install -y --no-install-recommends python3 python3-venv openssl ca-certificates curl xz-utils
+      - name: Independent targets, complete tests and retained identities
+        run: |
+          set -euo pipefail
+          bash scripts/ci/reconciliation-platform-proof.sh linux '${{ matrix.arch }}' evidence/portable-fabric/linux
+      - name: Preserve public evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: portable-fabric-linux-${{ matrix.arch }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/portable-fabric/linux
+          if-no-files-found: error
