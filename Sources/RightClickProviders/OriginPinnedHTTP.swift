@@ -16,7 +16,8 @@ import FoundationNetworking
 /// Provider-document acquisition is additionally bounded:
 ///
 /// - maximum body: 1 MiB inclusive
-/// - wall-clock acquisition deadline: 5 seconds
+/// - ordinary document wall-clock deadline: 5 seconds
+/// - host-selected OpenAPI specifications: 16 MiB and at most 30 seconds
 public enum OriginPinnedHTTP {
     static let maximumAcquisitionBytes =
         1_048_576
@@ -318,17 +319,31 @@ public enum OriginPinnedHTTP {
         )
     }
 
+    /// Larger host-selected specification acquisition has its own finite budget.
+    /// Ordinary reads and capability exchanges retain their existing ceilings.
     public static func loadOpenAPISpecification(
         _ url: URL,
         template:
             URLSession = .shared
+    ) throws -> Data {
+        try loadOpenAPISpecification(url, template: template, deadline: 30)
+    }
+
+    /// Host-only narrower budgets support bounded acquisition pressure tests;
+    /// provider descriptors cannot select or expand capability-call deadlines.
+    static func loadOpenAPISpecification(
+        _ url: URL,
+        template: URLSession = .shared,
+        deadline: TimeInterval
     ) throws -> Data {
         try boundedLoad(
             url,
             maximumBytes:
                 maximumOpenAPISpecificationBytes,
             template:
-                template
+                template,
+            deadline: deadline,
+            maximumDeadline: 30
         )
     }
 
@@ -370,19 +385,24 @@ public enum OriginPinnedHTTP {
         template: URLSession,
         initialRequest: URLRequest? = nil,
         admitStart: ((_ enqueue: () -> Void) throws -> Void)? = nil,
-        credentialFree: Bool = false
+        credentialFree: Bool = false,
+        deadline: TimeInterval = acquisitionDeadline,
+        maximumDeadline: TimeInterval = 10
     ) throws -> Data {
         try boundedExchange(url, maximumBytes: maximumBytes, template: template,
-                            initialRequest: initialRequest, admitStart: admitStart, credentialFree: credentialFree).0
+                            initialRequest: initialRequest, admitStart: admitStart, deadline: deadline,
+                            maximumDeadline: maximumDeadline, credentialFree: credentialFree).0
     }
 
     private static func boundedExchange(_ url: URL, maximumBytes: Int, template: URLSession,
                                         initialRequest: URLRequest?,
                                         admitStart: ((_ start: () -> Void) throws -> Void)? = nil,
                                         deadline: TimeInterval = acquisitionDeadline,
+                                        maximumDeadline: TimeInterval = 10,
                                         successfulStatusRequired: Bool = true, credentialFree: Bool = false) throws -> (Data, HTTPURLResponse) {
         guard maximumBytes > 0, maximumBytes <= maximumOpenAPISpecificationBytes,
-              deadline.isFinite, deadline > 0, deadline <= 10 else { throw RCIRError.invalidLimit }
+              maximumDeadline == 10 || maximumDeadline == 30,
+              deadline.isFinite, deadline > 0, deadline <= maximumDeadline else { throw RCIRError.invalidLimit }
 
         let configuration = credentialFree ? URLSessionConfiguration.ephemeral : template.configuration
         if credentialFree {
