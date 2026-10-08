@@ -33,7 +33,8 @@ jobs:
           python -u .github/scripts/tests/test_windows_focused_fixture_diagnostic.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Exact source and all-name guard, then selected ten tests
-        timeout-minutes: 35
+        # Contain the owned20/5/10minute phase deadlines and encryption cleanup.
+        timeout-minutes: 45
         run: |
           New-Item -ItemType Directory -Path focused-console-private -ErrorAction Stop | Out-Null
           # The unchanged supervisor forwards raw child stdout. This outer

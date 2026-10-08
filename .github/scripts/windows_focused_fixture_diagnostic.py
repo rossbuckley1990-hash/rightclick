@@ -268,7 +268,10 @@ def main():
             if stream.read(6) != b"PE\x00\x00\x64\x86":
                 raise ValueError("native_pe")
         report["nativeXCTestPE_SHA256"] = digest(binary.read_bytes())
-        discovery = private_supervise(["swift", "test", "list", "--skip-build"], "discovery", 60)
+        # The same discovery command in the real 78ea Windows job completed in
+        # 94 seconds. Match its existing five-minute CI ceiling; the old
+        # diagnostic's 60-second cut did not establish a runtime failure.
+        discovery = private_supervise(["swift", "test", "list", "--skip-build"], "discovery", 300)
         if discovery:
             raise ValueError("discovery_failed")
         report["inventory"] = inventory((PRIVATE / "discovery-output.log").read_text(
