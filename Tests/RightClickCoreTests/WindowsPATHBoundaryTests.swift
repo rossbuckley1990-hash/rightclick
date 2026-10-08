@@ -151,8 +151,10 @@ final class WindowsPATHBoundaryTests: XCTestCase {
             XCTAssertTrue(observation["present"] as? Bool == true)
             XCTAssertTrue(observation["ownedParentMatch"] as? Bool == false)
             XCTAssertTrue(observation["ownedParentComponentPresent"] as? Bool == false)
-            // Original PATH may already be empty or exactly System32. Only
-            // the controlled sentinel and exact expected child value prove isolation.
+            // Original PATH may already equal the authorized value. Match the
+            // native observation to that exact expected identity, not an absence assumption.
+            let authorizedDigest = index == 1 ? expectedSearchDigest : CapabilityJSON.digest(Data())
+            XCTAssertTrue(observation["originalParentMatch"] as? Bool == (original.digest == authorizedDigest))
             if index == 1 {
                 XCTAssertTrue(observation["empty"] as? Bool == false)
                 XCTAssertTrue(observation["system32Match"] as? Bool == true)
