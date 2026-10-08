@@ -8,6 +8,57 @@ import windows_compiler_context_matrix as m
 
 
 class MatrixControls(unittest.TestCase):
+    def test_fixed_optout_requires_actual_guard_and_never_changes_parent_profiles(self):
+        evidence = {'boundedSourceExcerpts': [{'fixedScript': 'developer_command', 'excerptTruncated': False,
+                     'sourceExcerptUTF8': 'if "%VSCMD_SKIP_SENDTELEMETRY%"=="" (\npowershell fixed\n)'}]}
+        self.assertTrue(m.fixed_optout_guard_evidenced(json.dumps(evidence).encode()))
+        for changed in ('if "%VSCMD_SKIP_SENDTELEMETRY%"=="1" (\npowershell fixed\n)', 'if "%OTHER%"=="" (\npowershell fixed\n)', 'if "%VSCMD_SKIP_SENDTELEMETRY%"=="" (\nother fixed\n)'):
+            evidence['boundedSourceExcerpts'][0]['sourceExcerptUTF8'] = changed
+            self.assertFalse(m.fixed_optout_guard_evidenced(json.dumps(evidence).encode()))
+        selected = {'SystemRoot': 'C:\\Windows', 'ProgramData': 'C:\\ProgramData', 'ProgramFiles(x86)': 'C:\\Programs'}
+        self.assertTrue(all('VSCMD_SKIP_SENDTELEMETRY' not in p for p in m.profiles(selected, 'C:\\Temp')))
+
+    def test_foreground_owned_cleanup_predicate_never_relabels_whole_group_natural(self):
+        sample = {'outcome': 'completed', 'exitCode': 0, 'foregroundNativeCompletion': True,
+                  'ownedCleanupClosed': True, 'postCleanupActiveProcesses': 0,
+                  'ownedDescendantsQuiescentBeforeCleanup': False, 'wholeOwnedGroupExitedNaturally': False,
+                  'stdout': {'drained': True, 'overBudget': False}, 'stderr': {'drained': True, 'overBudget': False}}
+        self.assertTrue(m.foreground_completion_and_cleanup_closed(sample)); self.assertFalse(m.natural(sample))
+        for key, value in (('foregroundNativeCompletion', False), ('ownedCleanupClosed', False), ('postCleanupActiveProcesses', 1), ('exitCode', None), ('outcome', 'deadline'), ('outcome', 'owned_cleanup_failure')):
+            self.assertFalse(m.foreground_completion_and_cleanup_closed({**sample, key: value}))
+        for stream in ('stdout', 'stderr'):
+            self.assertFalse(m.foreground_completion_and_cleanup_closed({**sample, stream: {'drained': False, 'overBudget': False}}))
+            self.assertFalse(m.foreground_completion_and_cleanup_closed({**sample, stream: {'drained': True, 'overBudget': True}}))
+
+    @unittest.skipUnless(os.name == 'nt', 'Owned foreground cleanup and late-writer isolation require Windows')
+    def test_native_owned_cleanup_prevents_late_creation_and_mutation_and_spares_outsider(self):
+        root = Path(tempfile.gettempdir()) / ('rightclick-owned-cleanup-control-' + uuid.uuid4().hex)
+        environment = m.profiles(m.selected_host_context(os.environ), tempfile.gettempdir())[0]
+        outsider = None
+        try:
+            m.private_directory(root)
+            outsider = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(5)'], env=environment,
+                stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            for index, write_before in enumerate((True, False)):
+                marker = root / ('fixed-effect-' + str(index))
+                late = 'import time,pathlib; time.sleep(1); pathlib.Path(' + repr(str(marker)) + ').write_bytes(b"wrong late mutation")'
+                foreground = ('import subprocess,pathlib,sys; ' + ('pathlib.Path(' + repr(str(marker)) + ').write_bytes(b"fixed foreground canary"); ' if write_before else '')
+                              + 'subprocess.Popen([sys.executable,"-c",' + repr(late) + '],stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)')
+                measured = m.owned_sample(Path(sys.executable), ['-c', foreground], environment, root, 'owned-control-' + str(index))
+                self.assertTrue(m.foreground_completion_and_cleanup_closed(measured))
+                self.assertFalse(measured['wholeOwnedGroupExitedNaturally']); self.assertFalse(m.natural(measured))
+                self.assertTrue(measured['ownedCleanupPerformed']); self.assertEqual(measured['postCleanupActiveProcesses'], 0)
+                self.assertIsNone(outsider.poll())
+                time.sleep(1.1)
+                if write_before: self.assertTrue(marker.read_bytes() == b'fixed foreground canary')
+                else: self.assertFalse(marker.exists())
+        except Exception as error:
+            raise AssertionError('native_owned_cleanup_control_failed_' + type(error).__name__) from None
+        finally:
+            if outsider:
+                outsider.kill(); outsider.wait(timeout=2)
+            if root.exists(): shutil.rmtree(root)
+
     def test_owned_process_projection_rejects_paths_and_never_exposes_pid(self):
         rows = [{'root': False, 'imageName': 'VCTIP.EXE', 'pid': 123},
                 {'root': False, 'imageName': 'unknown-owned-fixed-canary.exe', 'pid': 124},

@@ -359,6 +359,83 @@ def natural(sample):
             and all(sample[s]['drained'] and not sample[s]['overBudget'] for s in ('stdout', 'stderr')))
 
 
+def foreground_completion_and_cleanup_closed(sample):
+    return (sample['outcome'] in ('completed', 'child_failed') and sample['exitCode'] is not None
+            and sample.get('foregroundNativeCompletion') is True
+            and sample.get('ownedCleanupClosed') is True
+            and sample.get('postCleanupActiveProcesses') == 0
+            and all(sample[s]['drained'] and not sample[s]['overBudget'] for s in ('stdout', 'stderr')))
+
+
+def owned_sample(executable, arguments, environment, out, name):
+    """Natural foreground exit, then explicit closure of its validated owned job."""
+    began = time.monotonic(); deadline = began + OWNED_COMPILER_DEADLINE
+    stdout, stderr = BoundedStream(MAX_STDOUT), BoundedStream(MAX_STDERR)
+    job, child, threads = None, None, []
+    outcome, exit_code, foreground, before_zero, cleanup, closed = 'launch_failed', None, False, False, False, False
+    initial, post, roles, snapshots = None, None, {}, {}
+    try:
+        job = WindowsJob()
+        child = subprocess.Popen([str(executable), *arguments], env=environment,
+            stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=4)
+        job.assign_and_resume(child)
+        for stream, pipe in ((stdout, child.stdout), (stderr, child.stderr)):
+            thread = threading.Thread(target=stream.consume, args=(pipe,), daemon=True)
+            thread.start(); threads.append(thread)
+        outcome = 'completed'
+        while child.poll() is None:
+            if stdout.over or stderr.over: outcome = 'output_budget'; break
+            if time.monotonic() >= deadline: outcome = 'deadline'; break
+            time.sleep(0.002)
+        foreground = outcome == 'completed' and child.poll() is not None and time.monotonic() <= deadline
+        if not foreground: job.terminate()
+        child.wait(timeout=2); exit_code = child.returncode
+        initial = active_processes(job)
+        roles = owned_process_roles(job.snapshot(child.pid))
+        before_zero = initial == 0 and foreground
+        if foreground and initial != 0:
+            job.terminate(); cleanup = True
+        observed = observe_quiescence(job, deadline)
+        post = observed['finalOwnedActiveProcesses']
+        for thread in threads: thread.join(timeout=max(0, min(1, deadline - time.monotonic())))
+        closed = (observed['ownedQuiescenceObservedBeforeDeadline'] and time.monotonic() <= deadline
+                  and all(s.metadata()['drained'] and not s.over for s in (stdout, stderr)))
+        if foreground and not closed: outcome = 'owned_cleanup_failure'
+        elif foreground: outcome = 'completed' if exit_code == 0 else 'child_failed'
+    except Exception:
+        outcome = 'launch_or_ownership_failed'
+    finally:
+        if job:
+            try: job.terminate()
+            finally: job.close()
+        if child and child.poll() is None:
+            child.kill(); child.wait(timeout=2)
+        for thread in threads: thread.join(timeout=1)
+        if child:
+            for pipe, stream in ((child.stdout, stdout), (child.stderr, stderr)):
+                if stream.done.is_set(): pipe.close()
+        for suffix, stream in (('stdout', stdout), ('stderr', stderr)):
+            data, metadata = stream.frozen(); snapshots[suffix] = metadata
+            path = out / (name + '-' + suffix + '.log')
+            if unsafe_path(path) or path.exists(): raise ValueError('raw_output_type')
+            private_file(path, data)
+    return {'outcome': outcome, 'exitCode': exit_code, 'stdout': snapshots['stdout'], 'stderr': snapshots['stderr'],
+            'foregroundNativeCompletion': foreground, 'wholeOwnedGroupExitedNaturally': before_zero,
+            'ownedDescendantsQuiescentBeforeCleanup': before_zero, 'initialOwnedActiveProcesses': initial,
+            'initialOwnedProcessRoles': roles, 'ownedCleanupPerformed': cleanup,
+            'postCleanupActiveProcesses': post, 'ownedCleanupClosed': closed,
+            'deadlineSeconds': OWNED_COMPILER_DEADLINE,
+            'elapsedMilliseconds': round((time.monotonic() - began) * 1000, 3)}
+
+
+def fixed_optout_guard_evidenced(private_evidence):
+    evidence = json.loads(private_evidence)
+    return any(not e['excerptTruncated'] and e['fixedScript'] == 'developer_command'
+               and re.search(r'(?i)if\s+"%VSCMD_SKIP_SENDTELEMETRY%"==""', e['sourceExcerptUTF8'])
+               and 'powershell' in e['sourceExcerptUTF8'].lower()
+               for e in evidence['boundedSourceExcerpts'])
+
+
 def use_owned_renderer(samples):
     return (len(samples) == 5 and [s['profile'] for s in samples] == list(PROFILES)
             and all(s['renderer'] == 'packed_body' and natural(s)
@@ -466,8 +543,10 @@ def main(openssl):
         installation = host_path(installed.decode('utf-8').strip())
         setup = Path(installation) / 'VC/Auxiliary/Build/vcvars64.bat'
         bootstrap, source_excerpt, bootstrap_snapshots = bootstrap_evidence(installation)
+        if not fixed_optout_guard_evidenced(source_excerpt): raise ValueError('fixed_optout_guard_not_evidenced')
         private_file(private / 'bootstrap-evidence.log', source_excerpt, read_only=True)
         report['installedBootstrapSourceEvidence'] = bootstrap
+        report['fixedSDKOptOutSourceGuardConfirmed'] = True
         executable = Path(environments[0]['SystemRoot']) / 'System32/cmd.exe'
         source, header, script = (private / name for name in ('client-launcher.c', 'windows-python-client-paths.h', 'owned-script.py'))
         client, obj = private / 'client.exe', private / 'client.obj'
@@ -479,7 +558,10 @@ def main(openssl):
         private_file(header, ('#define RIGHTCLICK_FIXTURE_PYTHON L"' + literal(interpreter) + '"\n#define RIGHTCLICK_FIXTURE_SCRIPT L"' + literal(str(script.absolute())) + '"\n').encode('utf-8'), read_only=True)
         batch = 'call "' + native(setup) + '" > nul && cl /nologo /std:c17 "' + native(source) + '" /Fe:"' + native(client) + '" /Fo:"' + native(obj) + '"'
         owned_batch = private / 'compile-client.bat'
-        private_file(owned_batch, ('@echo off\r\n' + batch + '\r\n').encode('ascii'), read_only=True)
+        private_file(owned_batch, ('@echo off\r\nset "VSCMD_SKIP_SENDTELEMETRY=1"\r\n' + batch + '\r\n').encode('ascii'), read_only=True)
+        report['constantFixedBootstrapOptOutAppliedToOwnedBatch'] = True
+        report['ownedLifecyclePredicate'] = 'foregroundNativeCompletionAndOwnedCleanupClosed'
+        report['wholeGroupNaturalCompletionNotRequiredOrClaimedByOwnedPredicate'] = True
         frozen_paths = [(where, 8_388_608), (executable, 8_388_608), (setup, 1_048_576), (source, 65_536), (header, 32_768), (script, 128), (owned_batch, 32_768)]
         frozen = [checked_read(path, maximum) for path, maximum in frozen_paths]
         report['directInputSHA256'] = dict(zip(('installedQuery', 'cmd', 'setupBatch', 'ownedC', 'ownedHeader', 'ownedScript', 'ownedBatch'), map(digest, frozen)))
@@ -501,14 +583,24 @@ def main(openssl):
                 if any(path.exists() for path in (client, obj)): raise ValueError('output_not_fresh')
                 if [checked_read(path, maximum) for path, maximum in frozen_paths] != frozen: raise ValueError('direct_input_changed')
                 if not bootstrap_unchanged(bootstrap_snapshots): raise ValueError('bootstrap_source_changed')
-                measured = sample(executable, arguments, environment, private, f'{prefix}-{index}',
-                                  deadline_seconds=OWNED_COMPILER_DEADLINE if renderer_index == 1 else 5)
+                measured = (owned_sample(executable, arguments, environment, private, f'{prefix}-{index}')
+                            if renderer_index == 1 else sample(executable, arguments, environment, private, f'{prefix}-{index}'))
+                if renderer_index == 1 and not foreground_completion_and_cleanup_closed(measured):
+                    samples.append({'renderer': renderer, 'profile': name, **measured, 'outputsAbsentBefore': True,
+                                    'freshPE': None, 'outputInspectionStarted': False,
+                                    'outputSHA256': None, 'outputBytesClosedAfterOwnedCleanup': False,
+                                    'argumentUTF16SHA256': argument_hash, 'pythonRenderedCommandLineUTF16SHA256': rendered_hash})
+                    raise ValueError('owned_foreground_or_cleanup_abort')
                 emitted = checked_read(client, 8_388_608) if client.exists() else b''
+                emitted_again = checked_read(client, 8_388_608) if client.exists() else b''
+                if emitted != emitted_again: raise ValueError('closed_output_changed')
                 samples.append({'renderer': renderer, 'profile': name, **measured, 'outputsAbsentBefore': True,
                                 'freshPE': valid_pe(emitted), 'outputSHA256': digest(emitted) if emitted else None,
+                                'outputInspectionStarted': True,
+                                'outputBytesClosedAfterOwnedCleanup': renderer_index == 1,
                                 'argumentUTF16SHA256': argument_hash, 'pythonRenderedCommandLineUTF16SHA256': rendered_hash})
                 # Abort before another context/renderer after any unsafe state.
-                if not natural(measured): raise ValueError('matrix_non_natural_abort')
+                if renderer_index == 0 and not natural(measured): raise ValueError('matrix_non_natural_abort')
         report['directInputsUnchanged'] = [checked_read(path, maximum) for path, maximum in frozen_paths] == frozen
         report['installedQueryUnchanged'] = checked_read(where, 8_388_608) == where_bytes
         report['installedBootstrapSourceUnchanged'] = bootstrap_unchanged(bootstrap_snapshots)
