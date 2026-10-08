@@ -8,6 +8,9 @@ The next runtime candidate preserves the seven canonical RIGHTCLICK operations w
 - Invocation contracts, retained task lifecycles, policy decisions and signed receipts preserve the distinction between provider acceptance and verified outcome. `context_run` adds an optional `contractSHA256`; existing required arguments and the other six operation schemas remain compatible in the measured release comparison.
 - Existing OpenAPI execution rejects undeclared inputs and detected credential-bearing responses before retaining output or signed evidence. Valid declared request bodies and paths retain their previous behavior.
 - Existing protobuf wire decoding rejects overflowing varints and hostile field lengths before arithmetic or allocation. Valid full-width varints remain supported by the decoder.
+- Mac Service input uses Unicode-safe ASCII RTF. Returned provider observations retain exact text and UTF-16 bytes; the runtime no longer guesses and rewrites valid UTF-8-looking literals. All three real Apple text-converter regression cases pass on the separately identified native host.
+- A bounded typed native host-context primitive supports fixture acquisition of the authoritative Windows ProgramData location. It uses the existing process helper and retains default production resolver environment behavior; it adds no model-facing tool or direct Windows discovery reflector.
+- The Claude Code client starts `rightclick mcp`, with the launcher and active package metadata aligned to runtime 0.2.3. Live client loading has a separate verification boundary.
 - Disposable HTTP fixtures bind real numeric loopback sockets without reverse DNS, publish complete readiness markers atomically, and bound failure diagnostics. The source archive includes the tracked fixture and script closure required by its tests.
 
 ## Compatibility evidence
