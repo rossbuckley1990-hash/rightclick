@@ -90,7 +90,7 @@ The 0b404 wave passed the real Swift 6.2 Linux and Swift 6.2.4 Mac ARD gates.
 Its Linux full suite executed 887 cases, with 861 passes, 25 skips and one failed
 ambient Basic-auth positive control; production credential-isolation controls
 passed. The test fixture now supplies the exact same-origin shared credential on
-its challenge delegate, preserving all original method bodies and assertions. Its
+its challenge delegate, preserving all original assertions and every other test method body. Its
 complete six-case Mac class passed; fresh native Linux evidence remains required.
 Both D-Bus architectures passed 13 native primitives before the first Core7
 admission failed. Only the producer's public root becomes readable 0755 so the
