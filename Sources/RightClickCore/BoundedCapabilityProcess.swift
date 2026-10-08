@@ -41,6 +41,7 @@ enum BoundedCapabilityProcess {
     static func run(executable: URL, arguments: [String], timeout: TimeInterval = 5,
                     maximumBytes: Int = 1_048_576,
                     input: Data? = nil,
+                    hostContext: TrustedHostProcessContext = .isolated,
                     diagnostic: ((Diagnostic) -> Void)? = nil,
                     admitStart: ((_ start: () -> Void) throws -> Void)? = nil) throws -> Data {
         let began = ProcessInfo.processInfo.systemUptime
@@ -60,10 +61,10 @@ enum BoundedCapabilityProcess {
         let process = Process(); process.executableURL = executable; process.arguments = arguments
 #if os(Windows)
         let environment = ProcessInfo.processInfo.environment
-        process.environment = ["SystemRoot": environment["SystemRoot"] ?? "C:\\Windows",
-            "TEMP": FileManager.default.temporaryDirectory.path, "TMP": FileManager.default.temporaryDirectory.path]
+        process.environment = try hostContext.applying(to: ["SystemRoot": environment["SystemRoot"] ?? "C:\\Windows",
+            "TEMP": FileManager.default.temporaryDirectory.path, "TMP": FileManager.default.temporaryDirectory.path])
 #else
-        process.environment = ["PATH": "/usr/bin:/bin", "HOME": FileManager.default.temporaryDirectory.path]
+        process.environment = try hostContext.applying(to: ["PATH": "/usr/bin:/bin", "HOME": FileManager.default.temporaryDirectory.path])
 #endif
         let pipe = Pipe(); process.standardOutput = pipe
 #if os(Windows)
@@ -99,7 +100,10 @@ enum BoundedCapabilityProcess {
         var startError: Error?
         let start = {
             let launchBegan = ProcessInfo.processInfo.systemUptime
-            do { try process.run(); started = true } catch { startError = error }
+            do {
+                guard hostContext.isCurrent else { throw RCIRError.unavailable }
+                try process.run(); started = true
+            } catch { startError = error }
             launchMilliseconds = (ProcessInfo.processInfo.systemUptime - launchBegan) * 1000
         }
         outcome = .admissionOrLaunchFailure

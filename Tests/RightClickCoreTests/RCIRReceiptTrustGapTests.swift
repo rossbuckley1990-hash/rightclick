@@ -22,6 +22,27 @@ final class RCIRReceiptTrustGapTests: XCTestCase {
     private var outcomes: [[String: Any]] = []
     private var keys: [Data] = []
 
+    private enum FixtureBoundary: String {
+        case directoryProvisioning, agents, providerConfiguration
+        case firstSigner, firstEffect, firstSignature
+        case rotatedSigner, rotatedEffect, rotatedSignature
+    }
+    private struct FixtureFailure: Error, CustomStringConvertible {
+        let boundary: FixtureBoundary
+        let cocoaCode: Int?
+        var description: String {
+            "ReceiptTrustFixture boundary=\(boundary.rawValue) cocoa=\(cocoaCode.map(String.init) ?? "none")"
+        }
+    }
+    private func fixtureBoundary<T>(_ boundary: FixtureBoundary, _ body: () throws -> T) throws -> T {
+        do { return try body() }
+        catch {
+            // Retain only a fixed setup boundary and a public Cocoa code. Error
+            // messages, paths, configurations and key material remain private.
+            throw FixtureFailure(boundary: boundary, cocoaCode: (error as? CocoaError)?.code.rawValue)
+        }
+    }
+
     private func launch(_ script: String) throws {
         let root = URL(fileURLWithPath:#filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
         let process = Process(); process.executableURL = try NativeHTTPFixture.python()
@@ -40,9 +61,11 @@ final class RCIRReceiptTrustGapTests: XCTestCase {
     }
     private func provision() throws -> Data {
         let file = directory.appendingPathComponent("signer.raw")
-        if FileManager.default.fileExists(atPath:file.path) { try NativeHTTPFixture.release(file) }
-        let key = Curve25519.Signing.PrivateKey(); try key.rawRepresentation.write(to:file)
-        try NativeHTTPFixture.protect(file); config.signingKeyFile = file.path
+        let key = Curve25519.Signing.PrivateKey()
+        if FileManager.default.fileExists(atPath:file.path) {
+            try NativeHTTPFixture.replacePrivate(key.rawRepresentation, at:file)
+        } else { try NativeHTTPFixture.writePrivate(key.rawRepresentation, to:file) }
+        config.signingKeyFile = file.path
         keys.append(key.publicKey.rawRepresentation); return key.publicKey.rawRepresentation
     }
     private func invoke(_ capability: Capability, ordinal: Int) throws -> ExecutionRecord {
@@ -69,13 +92,13 @@ final class RCIRReceiptTrustGapTests: XCTestCase {
     }
     override func setUpWithError() throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("rcir-receipt-trust-" + UUID().uuidString)
-        try FileManager.default.createDirectory(at:directory,withIntermediateDirectories:false)
-        try NativeHTTPFixture.protect(directory,directory:true)
-        try launch("a2a-proof-agent.py"); try launch("a2a-proof-observer.py")
+        try fixtureBoundary(.directoryProvisioning) { try NativeHTTPFixture.createPrivateDirectory(directory) }
+        try fixtureBoundary(.agents) { try launch("a2a-proof-agent.py"); try launch("a2a-proof-observer.py") }
         let base = "http://127.0.0.1:" + (try port("port")), observer = "http://127.0.0.1:" + (try port("observer-port"))
         let providers = directory.appendingPathComponent("providers.json")
-        try JSONSerialization.data(withJSONObject:["version":1,"agentCards":[base + "/.well-known/agent.json"]]).write(to:providers)
-        try NativeHTTPFixture.protect(providers)
+        try fixtureBoundary(.providerConfiguration) {
+            try NativeHTTPFixture.writePrivate(JSONSerialization.data(withJSONObject:["version":1,"agentCards":[base + "/.well-known/agent.json"]]), to:providers)
+        }
         host = RCIRExecutionHost(); host.configuration = { [weak self] in
             guard let self else { throw RCIRError.authorityDenied }; return self.config
         }
@@ -83,10 +106,12 @@ final class RCIRReceiptTrustGapTests: XCTestCase {
         let cap = try XCTUnwrap(engine.capabilities(for:"receipt trust pressure").capabilities.first)
         var observation = RCIRHostConfiguration.Observer(urlTemplate:observer + "/observations/{message}",expectedArgument:"message")
         observation.trustedOrigin = observer; config.observers = [cap.id:observation]
-        _ = try provision(); let first = try invoke(cap,ordinal:1)
-        try signed(first).verify(trustedPublicKey:keys[0],using:RCIREd25519Verifier())
-        _ = try provision(); let second = try invoke(cap,ordinal:2)
-        try signed(second).verify(trustedPublicKey:keys[1],using:RCIREd25519Verifier())
+        _ = try fixtureBoundary(.firstSigner) { try provision() }
+        let first = try fixtureBoundary(.firstEffect) { try invoke(cap,ordinal:1) }
+        try fixtureBoundary(.firstSignature) { try signed(first).verify(trustedPublicKey:keys[0],using:RCIREd25519Verifier()) }
+        _ = try fixtureBoundary(.rotatedSigner) { try provision() }
+        let second = try fixtureBoundary(.rotatedEffect) { try invoke(cap,ordinal:2) }
+        try fixtureBoundary(.rotatedSignature) { try signed(second).verify(trustedPublicKey:keys[1],using:RCIREd25519Verifier()) }
         XCTAssertNotEqual(keys[0],keys[1]); XCTAssertEqual(first.rcir?.generation,second.rcir?.generation)
         XCTAssertNotEqual(first.rcir?.taskID,second.rcir?.taskID)
     }

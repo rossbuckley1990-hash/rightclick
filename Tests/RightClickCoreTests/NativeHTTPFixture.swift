@@ -6,6 +6,31 @@ import RightClickHostFiles
 /// This chooses an installed interpreter and protects fixture references using
 /// the production host-file primitive; it does not fabricate runtime outcomes.
 enum NativeHTTPFixture {
+    enum PythonClientBootstrapStage: String {
+        case installationQuery, installationValidation, interpreterSelection
+        case ownedInputPreparation, nativeCompilation, outputValidation
+    }
+    struct PythonClientInstallationValidation: CustomStringConvertible {
+        let empty: Bool
+        let isAbsolute: Bool
+        let containsQuote: Bool
+        let containsEmbeddedLF: Bool
+        let startsUTF8BOM: Bool
+        var description: String {
+            "empty=\(empty) isAbsolute=\(isAbsolute) containsQuote=\(containsQuote) containsEmbeddedLF=\(containsEmbeddedLF) startsUTF8BOM=\(startsUTF8BOM)"
+        }
+    }
+    /// Test-bootstrap diagnostics contain fixed labels and process measurements
+    /// only. Do not retain source paths, command arguments or compiler output.
+    struct PythonClientBootstrapFailure: Error, CustomStringConvertible {
+        let stage: PythonClientBootstrapStage
+        let kind: String
+        let process: BoundedCapabilityProcess.Diagnostic?
+        let validation: PythonClientInstallationValidation?
+        var description: String {
+            "NativePythonClient stage=\(stage.rawValue) kind=\(kind) processOutcome=\(process?.outcome.rawValue ?? "none") started=\(process.map { String($0.started) } ?? "none") exit=\(process?.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(process.map { String($0.stdoutBytes) } ?? "none") validation=[\(validation?.description ?? "none")]"
+        }
+    }
     private static let captureLock = NSLock()
     private static var captures: [ObjectIdentifier: StartupStderr] = [:]
 
@@ -195,34 +220,58 @@ enum NativeHTTPFixture {
 
 #if os(Windows)
     static func pythonClient(script: URL, directory: URL) throws -> URL {
-        let environment = ProcessInfo.processInfo.environment
-        let programs = environment.first { $0.key.caseInsensitiveCompare("ProgramFiles(x86)") == .orderedSame }?.value ?? "C:\\Program Files (x86)"
-        let whereTool = URL(fileURLWithPath: programs).appendingPathComponent("Microsoft Visual Studio/Installer/vswhere.exe")
-        let installed = try BoundedCapabilityProcess.run(executable: whereTool,
-            arguments: ["-latest", "-products", "*", "-requires", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property", "installationPath"],
-            timeout: 5, maximumBytes: 32_768)
-        let installation = String(decoding: installed, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
-        guard RuntimePlatform.isAbsolutePath(installation), !installation.contains("\""), !installation.contains("\n") else { throw RCIRError.unavailable }
-        let setup = URL(fileURLWithPath: installation).appendingPathComponent("VC/Auxiliary/Build/vcvars64.bat")
-        let repository = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        let source = directory.appendingPathComponent("client-launcher.c"), header = directory.appendingPathComponent("windows-python-client-paths.h")
-        let client = directory.appendingPathComponent("client.exe"), object = directory.appendingPathComponent("client.obj")
-        func literal(_ value: String) -> String { value.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"") }
-        try writePrivate(Data(contentsOf: repository.appendingPathComponent("Tests/Fixtures/windows-python-client-launcher.c")), to: source)
-        let declaration = "#define RIGHTCLICK_FIXTURE_PYTHON L\"\(literal(try python().path))\"\n#define RIGHTCLICK_FIXTURE_SCRIPT L\"\(literal(script.path))\"\n"
-        try writePrivate(Data(declaration.utf8), to: header)
-        func native(_ file: URL) -> String { file.path.replacingOccurrences(of: "/", with: "\\") }
-        let command = "call \"\(native(setup))\" > nul && cl /nologo /std:c17 \"\(native(source))\" /Fe:\"\(native(client))\" /Fo:\"\(native(object))\""
-        try nativeCommand("cmd.exe", ["/d", "/s", "/c", command])
-        guard FileManager.default.fileExists(atPath: client.path) else { throw RCIRError.unavailable }
-        return client
+        var stage = PythonClientBootstrapStage.installationQuery
+        var diagnostic: BoundedCapabilityProcess.Diagnostic?
+        var validation: PythonClientInstallationValidation?
+        do {
+            let environment = ProcessInfo.processInfo.environment
+            let programs = environment.first { $0.key.caseInsensitiveCompare("ProgramFiles(x86)") == .orderedSame }?.value ?? "C:\\Program Files (x86)"
+            let whereTool = URL(fileURLWithPath: programs).appendingPathComponent("Microsoft Visual Studio/Installer/vswhere.exe")
+            let installed = try BoundedCapabilityProcess.run(executable: whereTool,
+                arguments: ["-latest", "-products", "*", "-requires", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", "-property", "installationPath"],
+                timeout: 5, maximumBytes: 32_768,
+                hostContext: try TrustedHostProcessContext.resolving(.machineApplicationData),
+                diagnostic: { diagnostic = $0 })
+            stage = .installationValidation
+            let installation = String(decoding: installed, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
+            validation = .init(empty: installation.isEmpty, isAbsolute: RuntimePlatform.isAbsolutePath(installation),
+                containsQuote: installation.contains("\""), containsEmbeddedLF: installation.contains("\n"),
+                startsUTF8BOM: installed.prefix(3).elementsEqual([239, 187, 191]))
+            guard RuntimePlatform.isAbsolutePath(installation), !installation.contains("\""), !installation.contains("\n") else { throw RCIRError.unavailable }
+            let setup = URL(fileURLWithPath: installation).appendingPathComponent("VC/Auxiliary/Build/vcvars64.bat")
+            let repository = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            let source = directory.appendingPathComponent("client-launcher.c"), header = directory.appendingPathComponent("windows-python-client-paths.h")
+            let client = directory.appendingPathComponent("client.exe"), object = directory.appendingPathComponent("client.obj")
+            func literal(_ value: String) -> String { value.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"") }
+            stage = .interpreterSelection
+            diagnostic = nil
+            let interpreter = try python()
+            stage = .ownedInputPreparation
+            try writePrivate(Data(contentsOf: repository.appendingPathComponent("Tests/Fixtures/windows-python-client-launcher.c")), to: source)
+            let declaration = "#define RIGHTCLICK_FIXTURE_PYTHON L\"\(literal(interpreter.path))\"\n#define RIGHTCLICK_FIXTURE_SCRIPT L\"\(literal(script.path))\"\n"
+            try writePrivate(Data(declaration.utf8), to: header)
+            func native(_ file: URL) -> String { file.path.replacingOccurrences(of: "/", with: "\\") }
+            let command = "call \"\(native(setup))\" > nul && cl /nologo /std:c17 \"\(native(source))\" /Fe:\"\(native(client))\" /Fo:\"\(native(object))\""
+            stage = .nativeCompilation
+            diagnostic = nil
+            try nativeCommand("cmd.exe", ["/d", "/s", "/c", command], diagnostic: { diagnostic = $0 })
+            stage = .outputValidation
+            guard FileManager.default.fileExists(atPath: client.path) else { throw RCIRError.unavailable }
+            return client
+        } catch {
+            let kind = (error as? RCIRError).map { String(describing: $0) } ??
+                (error as? CocoaError).map { "cocoa_" + String($0.code.rawValue) } ?? "other"
+            throw PythonClientBootstrapFailure(stage: stage, kind: kind, process: diagnostic,
+                validation: stage == .installationValidation ? validation : nil)
+        }
     }
-    static func nativeCommand(_ executable: String, _ arguments: [String]) throws {
+    static func nativeCommand(_ executable: String, _ arguments: [String],
+                              diagnostic: ((BoundedCapabilityProcess.Diagnostic) -> Void)? = nil) throws {
         let system = ProcessInfo.processInfo.environment.first {
             $0.key.caseInsensitiveCompare("SystemRoot") == .orderedSame
         }?.value ?? "C:\\Windows"
         _ = try BoundedCapabilityProcess.run(executable: URL(fileURLWithPath: system + "\\System32\\" + executable),
-            arguments: arguments, timeout: 5, maximumBytes: 16_384)
+            arguments: arguments, timeout: 5, maximumBytes: 16_384, diagnostic: diagnostic)
     }
     static func junction(_ alias: URL, target: URL) throws {
         try nativeCommand("cmd.exe", ["/d", "/c", "mklink", "/J",

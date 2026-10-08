@@ -43,7 +43,25 @@ final class CapabilityExecutableSnapshotPoolTests: XCTestCase {
             XCTAssertEqual(try Data(contentsOf: one.file), bytes)
             let timestamp = try FileManager.default.attributesOfItem(atPath: source.path)[.modificationDate]
             try NativeHTTPFixture.replacePrivate(self.executableBytes("HOST-selected-executable"), at: source)
-            if let timestamp { try FileManager.default.setAttributes([.modificationDate: timestamp], ofItemAtPath: source.path) }
+            if let timestamp {
+#if os(Windows)
+                // replacePrivate seals the owned source read-only. Foundation
+                // requests GENERIC_WRITE to restore its modification date.
+                XCTAssertThrowsError(try FileManager.default.setAttributes([.modificationDate: timestamp], ofItemAtPath: source.path)) {
+                    XCTAssertEqual(($0 as? CocoaError)?.code, .fileReadNoPermission)
+                }
+                try NativeHTTPFixture.release(source)
+                do {
+                    try FileManager.default.setAttributes([.modificationDate: timestamp], ofItemAtPath: source.path)
+                } catch {
+                    try? NativeHTTPFixture.protect(source)
+                    throw error
+                }
+                try NativeHTTPFixture.protect(source)
+#else
+                try FileManager.default.setAttributes([.modificationDate: timestamp], ofItemAtPath: source.path)
+#endif
+            }
             XCTAssertTrue(FileManager.default.isExecutableFile(atPath: source.path))
             let changed = try pool.acquire(executable: source, maximum: maximum)
             XCTAssertFalse(one === changed); XCTAssertNotEqual(one.sha256, changed.sha256)
