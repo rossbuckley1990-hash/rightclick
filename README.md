@@ -30,7 +30,9 @@ RIGHTCLICK distinguishes provider acceptance from verified outcome
 
 **Stable:** v0.2.2 · Apple Silicon · macOS 14+ · Homebrew · MCP · Apache-2.0
 
-The shared macOS, Linux and Windows runtime is an unreleased candidate. See [portable runtime build instructions and adapter limits](docs/PORTABILITY.md) for its validation and release gates.
+The universal runtime candidate in [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49) contains generic acquisition paths for **Linux D-Bus, configured A2A agent cards, acquired Kafka topic metadata, Kubernetes discovered resources and WASM component-model WIT**, alongside the existing Mac, REST/OpenAPI, GraphQL, supported unary gRPC and MCP paths. The source catalogue contains 21 implementation kinds. [Current source and evidence inventory](docs/CANDIDATE-INVENTORY.md) records their exact availability and limits.
+
+Native Mac, Linux and Windows portable tests/builds are release gates; a direct Windows discovery reflector is still absent. The candidate is not installed by the current Stable tap. See [portable runtime build instructions and limits](docs/PORTABILITY.md).
 
 <img src="docs/media/rightclick-hero-architecture.gif" alt="Supplied RIGHTCLICK 0.2.2 architecture illustration showing OpenAPI, GraphQL and gRPC behind one generic interface" width="960">
 
@@ -627,6 +629,8 @@ Current `main` has moved beyond that release with post-v0.2.2 runtime work inclu
 - live OpenAPI contract revalidation before dispatch
 - bounded discovery snapshot freshness and stale-provider invalidation
 - stronger external-observation and signed-receipt proof routes
+- preservation of legitimate Mac Service observation bytes while retaining Unicode-safe RTF input
+- the MCP client launcher invoking `rightclick mcp`
 
 Those changes are development bytes until a later immutable release is published. A version string alone must not be used to infer that the installed v0.2.2 bottle contains post-release `main` changes.
 
@@ -648,7 +652,7 @@ Kubernetes cluster
 WASM component
 ```
 
-Some substrate support exists today; the single restricted-agent, all-eleven acceptance run remains a work in progress.
+The five additional generic source paths listed above exist in the PR49 candidate. Their source/native evidence and scope limits are recorded in the [current inventory](docs/CANDIDATE-INVENTORY.md). The single restricted-agent, all-eleven acceptance run remains a work in progress.
 
 [Universal runtime acceptance scorecard](docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md)
 

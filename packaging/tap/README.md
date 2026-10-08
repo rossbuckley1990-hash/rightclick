@@ -9,7 +9,7 @@ rightclick setup
 
 Apple Silicon, macOS 14+. Source builds need Swift 6.2+ from free Apple Command Line Tools. Update Command Line Tools through Software Update if needed. A matching bottle is used automatically when available. No paid Apple Developer account is required.
 
-The formula pins the immutable release source asset by SHA256, resolves only the locked dependency revisions, and builds inside Homebrew's sandbox. Its test verifies the RIGHTCLICK version, exact text classification, and the bundled compatible OpenAI tunnel runtime. It does not rely on a development checkout or existing build directory.
+The formula pins the accepted release source asset by SHA256, resolves only the locked dependency revisions, and builds inside Homebrew's sandbox. Its test verifies the RIGHTCLICK version, exact text classification, and the bundled compatible OpenAI tunnel runtime. It does not rely on a development checkout or existing build directory.
 
 Bottles use the standard `brew tap-new` test-bot and reviewed `brew pr-pull` workflows, restricted to Apple Silicon macOS. Before publishing bottles, require a green formula pull request and its reviewed head SHA. Source installation remains supported when no bottle matches.
 
