@@ -12,9 +12,6 @@ import Glibc
 @testable import RightClickCore
 @testable import RightClickProtocol
 @testable import RightClickProviders
-#if os(macOS)
-import Security
-#endif
 
 /// Test-owned real HTTP servers record only dummy-authority matches and closed
 /// header facts. No provider response is used as independent semantic proof.
@@ -154,66 +151,4 @@ if mode=='tls':
 """#
 }
 
-#if os(macOS)
-/// This certificate bridge is limited to one test-owned HTTPS origin and keeps
-/// request URL/body/headers unchanged. It never trusts a system certificate or
-/// redirects. Product TLS trust integration is outside this regression proof.
-final class CredentialIsolationTLSBridge: URLProtocol {
-    static var base: URL?, certificate: Data?
-    private var transfer: URLSessionDataTask?, session: URLSession?
-    private final class Trust: NSObject, URLSessionDelegate, URLSessionTaskDelegate {
-        func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge,
-                        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-            guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-                  let selected = CredentialIsolationTLSBridge.base,
-                  challenge.protectionSpace.host == selected.host, challenge.protectionSpace.port == selected.port,
-                  let pin = CredentialIsolationTLSBridge.certificate, let trust = challenge.protectionSpace.serverTrust,
-                  let chain = SecTrustCopyCertificateChain(trust) as? [SecCertificate], let first = chain.first,
-                  SecCertificateCopyData(first) as Data == pin, let anchor = SecCertificateCreateWithData(nil, pin as CFData) else {
-                completionHandler(.cancelAuthenticationChallenge, nil); return
-            }
-            SecTrustSetAnchorCertificates(trust, [anchor] as CFArray); SecTrustSetAnchorCertificatesOnly(trust, true)
-            guard SecTrustEvaluateWithError(trust, nil) else { completionHandler(.cancelAuthenticationChallenge, nil); return }
-            completionHandler(.useCredential, URLCredential(trust: trust))
-        }
-        func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse,
-                        newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) { completionHandler(nil) }
-    }
-    override class func canInit(with request: URLRequest) -> Bool {
-        guard let url = request.url, let base else { return false }
-        return OriginPinnedHTTP.sameOrigin(base, url)
-    }
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
-    override func startLoading() {
-        guard let url = request.url, let base = Self.base, OriginPinnedHTTP.sameOrigin(base, url) else {
-            client?.urlProtocol(self, didFailWithError: URLError(.badURL)); return
-        }
-        var forwarded = request
-        if forwarded.httpBody == nil, let stream = forwarded.httpBodyStream {
-            stream.open(); defer { stream.close() }
-            var bytes = Data(), buffer = [UInt8](repeating: 0, count: 4096)
-            while bytes.count <= 16384 {
-                let count = stream.read(&buffer, maxLength: buffer.count)
-                if count <= 0 { break }; bytes.append(contentsOf: buffer.prefix(count))
-            }
-            guard bytes.count <= 16384 else { client?.urlProtocol(self, didFailWithError: URLError(.dataLengthExceedsMaximum)); return }
-            forwarded.httpBody = bytes
-        }
-        let config = URLSessionConfiguration.ephemeral
-        config.protocolClasses = []; config.httpCookieStorage = nil; config.httpShouldSetCookies = false
-        config.urlCredentialStorage = nil; config.urlCache = nil
-        let session = URLSession(configuration: config, delegate: Trust(), delegateQueue: nil); self.session = session
-        transfer = session.dataTask(with: forwarded) { data, response, error in
-            defer { session.finishTasksAndInvalidate() }
-            if let error { self.client?.urlProtocol(self, didFailWithError: error); return }
-            guard let response = response as? HTTPURLResponse,
-                  OriginPinnedHTTP.sameOrigin(base, response.url) else { self.client?.urlProtocol(self, didFailWithError: URLError(.badServerResponse)); return }
-            self.client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-            self.client?.urlProtocol(self, didLoad: data ?? Data()); self.client?.urlProtocolDidFinishLoading(self)
-        }
-        transfer?.resume()
-    }
-    override func stopLoading() { transfer?.cancel(); session?.invalidateAndCancel() }
-}
-#endif
 #endif

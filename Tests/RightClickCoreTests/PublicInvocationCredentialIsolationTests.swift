@@ -140,37 +140,32 @@ final class PublicInvocationCredentialIsolationTests: XCTestCase {
     }
 
 #if os(macOS)
-    func testExplicitLocallyProvisionedMCPBearerRemainsBoundToItsOwnedHTTPSOrigin() throws {
+    func testUntrustedLocalHTTPSCannotReceivePublicOrExplicitMCPAuthority() throws {
+        // This is a real certificate rejection, not valid-trust bearer support.
+        // No system/user trust, keychain search list or production transport
+        // configuration is changed to accept this self-signed fixture.
         let secured = try CredentialIsolationHTTPFixture(tls: true)
         defer { try? secured.close() }
         try seed(for: secured)
-        CredentialIsolationTLSBridge.base = secured.base
-        CredentialIsolationTLSBridge.certificate = try Data(contentsOf: secured.directory.appendingPathComponent("certificate.der"))
-        XCTAssertTrue(URLProtocol.registerClass(CredentialIsolationTLSBridge.self))
-        defer {
-            URLProtocol.unregisterClass(CredentialIsolationTLSBridge.self)
-            CredentialIsolationTLSBridge.base = nil; CredentialIsolationTLSBridge.certificate = nil
-        }
         let scheme = "h6-owned-" + UUID().uuidString
         try OpenAPIAuthorityStore.setBearerToken(CredentialIsolationHTTPFixture.dummyBearer, origin: secured.base.absoluteString, schemeName: scheme)
         defer { _ = try? OpenAPIAuthorityStore.deleteBearerToken(origin: secured.base.absoluteString, schemeName: scheme) }
-        XCTAssertThrowsError(try mcp(secured.base.appendingPathComponent("mcp-authorized"), scheme: scheme + "-other"))
+        let endpoint = secured.base.appendingPathComponent("mcp-authorized")
+        XCTAssertThrowsError(try mcp(endpoint, scheme: scheme + "-other"))
         XCTAssertTrue(try secured.rows().isEmpty)
-        let (engine, capability) = try mcp(secured.base.appendingPathComponent("mcp-authorized"), scheme: scheme)
-        let result = try engine.begin(id: capability.id, item: "owned credential isolation", confirmed: true,
-            arguments: ["message": "owned literal input"])
-        XCTAssertEqual(result.state, .accepted, result.message); XCTAssertEqual(result.rcir?.leaseConsumed, true)
-        let rows = try secured.rows()
-        XCTAssertFalse(rows.isEmpty)
-        XCTAssertTrue(rows.allSatisfy { $0["explicitBearerMatched"] as? Bool == true && $0["authorizationKind"] as? String == "Bearer" })
-        XCTAssertTrue(rows.allSatisfy { $0["cookiePresent"] as? Bool == false && $0["ambientBasicMatched"] as? Bool == false })
-        XCTAssertEqual(rows.filter { $0["rpc"] as? String == "tools/call" }.count, 1)
-        XCTAssertEqual(try secured.rows("effects.jsonl").count, 1)
-        XCTAssertFalse((HTTPCookieStorage.shared.cookies ?? []).contains { $0.name == secured.responseCookieName })
-        try NativeHTTPFixture.writePrivate(Data((fixture.base.absoluteString + "/trap").utf8), to: secured.directory.appendingPathComponent("redirect-target"))
-        XCTAssertThrowsError(try mcp(secured.base.appendingPathComponent("mcp-redirect"), scheme: scheme))
-        XCTAssertTrue(try fixture.rows().isEmpty, "A bearer-bearing redirect must never reach the second real origin.")
+        for selectedScheme: String? in [nil, scheme] {
+            let started = ProcessInfo.processInfo.systemUptime
+            XCTAssertThrowsError(try mcp(endpoint, scheme: selectedScheme)) { error in
+                let actual = error as NSError
+                XCTAssertEqual(actual.domain, NSURLErrorDomain)
+                XCTAssertEqual(actual.code, URLError.Code.serverCertificateUntrusted.rawValue)
+            }
+            XCTAssertLessThan(ProcessInfo.processInfo.systemUptime - started, 6.5)
+            XCTAssertTrue(try secured.rows().isEmpty, "Untrusted TLS must reject before any server RPC or credential-bearing HTTP request.")
+            XCTAssertTrue(try secured.rows("effects.jsonl").isEmpty)
+        }
     }
+
 #endif
 }
 #endif

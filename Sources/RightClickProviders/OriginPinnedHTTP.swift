@@ -50,9 +50,36 @@ public enum OriginPinnedHTTP {
         NSObject,
         URLSessionTaskDelegate
     {
+        private let credentialFree: Bool
+
+        init(credentialFree: Bool = false) {
+            self.credentialFree = credentialFree
+            super.init()
+        }
+
         // Explicit witness permits subclass overrides on FoundationNetworking,
         // where inherited protocol defaults do not use Objective-C selectors.
         func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {}
+
+        func urlSession(
+            _ session: URLSession,
+            task: URLSessionTask,
+            didReceive challenge: URLAuthenticationChallenge,
+            completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+        ) {
+            // Normal TLS certificate validation is independent of HTTP
+            // credential authority. Preserve the platform trust evaluator.
+#if canImport(Security)
+            if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
+                completionHandler(.performDefaultHandling, nil)
+                return
+            }
+#endif
+            // An isolated request may carry an explicitly bound Authorization
+            // header, but a challenge must not cause another HTTP request or
+            // select credentials from ambient storage.
+            completionHandler(credentialFree ? .cancelAuthenticationChallenge : .performDefaultHandling, nil)
+        }
 
         func urlSession(
             _ session: URLSession,
@@ -101,12 +128,13 @@ public enum OriginPinnedHTTP {
             false
 
         init(
-            maximumBytes: Int
+            maximumBytes: Int,
+            credentialFree: Bool
         ) {
             self.maximumBytes =
                 maximumBytes
 
-            super.init()
+            super.init(credentialFree: credentialFree)
         }
 
         func urlSession(
@@ -375,7 +403,9 @@ public enum OriginPinnedHTTP {
         let delegate =
             BoundedLoadDelegate(
                 maximumBytes:
-                    maximumBytes
+                    maximumBytes,
+                credentialFree:
+                    credentialFree
             )
 
         let session =
