@@ -5,15 +5,15 @@ binary and an observed execution establish different facts. Record each identity
 before describing a capability as available. This inventory is not the eleven
 substrate acceptance scorecard.
 
-Reconciliation snapshot on 2026-10-08, after two exact-source CI waves exposed portable build, focused-gate and owned fixture failures; the reviewed repair candidate awaits fresh CI and public distribution gates:
+Reconciliation snapshot on 2026-10-08, after three exact-source CI waves exposed portable build, focused-gate and owned fixture failures; the reviewed repair candidate awaits fresh CI and public distribution gates:
 
 | Identity | Exact scope |
 | --- | --- |
 | Remote main | `381a87b53dbd0046f1acef1984587199da0e630c`; the direct A2A, Kafka, Kubernetes, WASM and D-Bus compiler files below are absent at this SHA |
-| Remote universal candidate | [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49), `b407824dca9dde8129592bb029bb236eddedbcc7`; the first reviewed repair composition is published. Its native Linux test build exposed the missing derived host diagnostic, and its focused RCIR gate omitted the real execution-host dependency |
+| Remote universal candidate | [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49), `0b404bf7488553bdc148d56283705d58066564b1`; the derived host diagnostic and actual-package focused RCIR repairs are published. Its Linux runs exposed three producer setup deficiencies and a Basic-auth positive-control fixture failure |
 | Remote portable candidate | [PR99](https://github.com/rossbuckley1990-hash/rightclick/pull/99), `6a18aaae3ae3a15b9f6c78f189adc695ae11585a`; extracts the existing engine into portable modules, with macOS adapters and Linux composition |
-| Reviewed repair composition | `4473b0d6884f33a04b4b21705df6fe59444fa0b9`, Sources `7d9c25e668376e9cdd62bd58540edfc9b7548a3d`, Tests `2371a0d45ef2f4c4d14dc555cd065b839f9d2dd2`; retains the frozen403 foundation, all profile/process/authority repairs and 045/b407 ancestry. The latest reviewed changes add the derived current-host diagnostic without altering Codable fields and run the same six RCIR classes through the actual package graph. Fresh native and provider CI remains required |
-| Earlier composed Mac proof | `fe10f424e5584cd3e2c6a5cf1fcc9eacdb0ecc48`, Sources `6c624ad4503999360938fa0c8c083010f9fad7c0`, same Tests tree; actual complete Mac run 1107 = 1076 PASS, 31 SKIP, zero FAIL. This is a preserved source-bound result, not a claim that the newly composed manifest/Linux/script bytes were tested |
+| Reviewed repair composition | `9158b2209d134ad0243128ccb974f5050b4233b9`, Sources `7d9c25e668376e9cdd62bd58540edfc9b7548a3d`, Tests `a83775b1dca71a9e3e056bb2cd5aa41a5d548e92`; retains the frozen403 foundation, all profile/process/authority repairs and 045/b407/0b404 ancestry. The latest reviewed changes affect only three owned producer scripts and one test positive control; production source is unchanged. Fresh native and provider CI remains required |
+| Earlier composed Mac proof | `fe10f424e5584cd3e2c6a5cf1fcc9eacdb0ecc48`, Sources `6c624ad4503999360938fa0c8c083010f9fad7c0`, Tests `2371a0d45ef2f4c4d14dc555cd065b839f9d2dd2`; actual complete Mac run 1107 = 1076 PASS, 31 SKIP, zero FAIL. This is a preserved source-bound result, not a claim that the newly composed manifest/Linux/script/test bytes were tested |
 | Installed and connected stable runtime | v0.2.2, serving PID `67552`, executable SHA256 `d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d`, stdio; observed through `context_runtime` on 2026-10-08. This does not attest to candidate source |
 
 These remote and process values are snapshots. Refresh main, both PR heads,
@@ -85,6 +85,25 @@ The b407 Mac A2A proof independently retained exactly seven operation definition
 three delegated requests, two effect observations and twelve distinct pinned
 receipt signatures across public and native lifecycle evidence. Its failed Linux
 siblings and absent exported executable-image bytes remain explicit limitations.
+
+The 0b404 wave passed the real Swift 6.2 Linux and Swift 6.2.4 Mac ARD gates.
+Its Linux full suite executed 887 cases, with 861 passes, 25 skips and one failed
+ambient Basic-auth positive control; production credential-isolation controls
+passed. The test fixture now supplies the exact same-origin shared credential on
+its challenge delegate, preserving all original method bodies and assertions. Its
+complete six-case Mac class passed; fresh native Linux evidence remains required.
+Both D-Bus architectures passed 13 native primitives before the first Core7
+admission failed. Only the producer's public root becomes readable 0755 so the
+runtime UID can traverse the protected-reference backend; nested writer state,
+signing key/configuration and identity controls retain their private modes.
+
+The Linux public OpenAPI launcher previously invoked macOS-only `dns-sd` after
+43 native RCIR cases passed. It now selects the existing generic configured
+artifact source on Linux, with real specification acquisition and revalidation
+over a listener bound to loopback. Mac Bonjour remains the default. The explicit
+fixture selector exercised both OpenAPI execution and live contract freshness on
+a real current-source Mac CLI; this establishes transport controls, not native
+Linux acceptance. No production discovery, TLS or authority policy is changed.
 
 Windows is not a supported v0.2.3 release host. Actual protected-reference and
 native environment-boundary controls have been run, and authority failures were
