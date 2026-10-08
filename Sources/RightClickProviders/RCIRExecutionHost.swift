@@ -22,6 +22,19 @@ public protocol RCIRExecutionReflector: CapabilityReflector {
                        host: RCIRExecutionHost, revalidate: @escaping () -> Bool) throws -> ExecutionRecord
 }
 
+/// Host-installed compiler observation. This closure never crosses MCP/Link or
+/// comes from provider metadata; the RCIR host invokes it after accepted effects.
+/// Initial support is unary and uses the same admission, task and receipt engine.
+public struct RCIRIndependentObserver {
+    public let contract: RCIRVerificationContract
+    public let boundary: String
+    public let observe: () throws -> CapabilityValue
+    public init(contract: RCIRVerificationContract, boundary: String,
+                observe: @escaping () throws -> CapabilityValue) {
+        self.contract = contract; self.boundary = boundary; self.observe = observe
+    }
+}
+
 /// Host/operator configuration. Never read from provider metadata or tool inputs.
 /// A deny list is local policy containment, not issuer credential downscoping.
 struct RCIRHostConfiguration: Codable {
@@ -437,6 +450,8 @@ public final class RCIRExecutionHost {
                  capability: Capability, executionID: String,
                  argumentStrings: CapabilityArguments?, item: ContentItem,
                  verification: VerificationSpec?, expectedOutput: String?, target: URL,
+                 independentObserver: RCIRIndependentObserver? = nil,
+                 afterDispatchRevalidate: (() -> Bool)? = nil,
                  authority: @escaping () -> Set<RCIRScope>, revalidate: @escaping () -> Bool,
                  currentContract: @escaping () -> Bool,
                  dispatch: (String, (_ start: () -> Void) throws -> Void) throws -> ExecutionRecord,
@@ -453,6 +468,12 @@ public final class RCIRExecutionHost {
             let config = try configuration()
             let observation = try observer(config, capabilityID: capability.id,
                                            arguments: argumentStrings, target: target)
+            if afterDispatchRevalidate != nil { guard taskModel.shape == .unary else { throw RCIRError.invalidContract } }
+            if independentObserver != nil {
+                guard observation == nil, taskModel.shape == .unary,
+                      independentObserver!.boundary.utf8.count <= 1024,
+                      !independentObserver!.boundary.isEmpty else { throw RCIRError.invalidContract }
+            }
             let returnedPostcondition = verification ?? expectedOutput.map {
                 VerificationSpec(predicates: [.init(type: .textEquals, value: $0)])
             }
@@ -460,7 +481,7 @@ public final class RCIRExecutionHost {
             // limited trust boundary explicit. They prove returned bytes only.
             let observerContract = observation.map {
                 RCIRVerificationContract(observerID: $0.url.absoluteString, schema: .string, expected: .string($0.expected))
-            } ?? returnedPostcondition.map { _ in
+            } ?? independentObserver?.contract ?? returnedPostcondition.map { _ in
                 RCIRVerificationContract(observerID: "host:returned-value-postcondition-1", schema: .boolean, expected: .boolean(true))
             }
             let combinedObserverContract: RCIRVerificationContract?
@@ -468,6 +489,10 @@ public final class RCIRExecutionHost {
                 combinedObserverContract = RCIRVerificationContract(observerID: observation.url.absoluteString,
                     schema: .object(properties: ["external": .string, "returned": .boolean], required: ["external", "returned"]),
                     expected: .object(["external": .string(observation.expected), "returned": .boolean(true)]))
+            } else if let independentObserver, returnedPostcondition != nil {
+                combinedObserverContract = RCIRVerificationContract(observerID: independentObserver.contract.observerID,
+                    schema: .object(properties: ["external": independentObserver.contract.schema, "returned": .boolean], required: ["external", "returned"]),
+                    expected: .object(["external": independentObserver.contract.expected, "returned": .boolean(true)]))
             } else { combinedObserverContract = observerContract }
             let contract = RCIRContract(
                 abi: abi,
@@ -665,7 +690,11 @@ public final class RCIRExecutionHost {
                 if let live = activeExecutionStatus(executionID: executionID) { return live }
                 throw RCIRError.unavailable
             }
-            if !revalidate() || !currentContract() {
+            // Stateful resources may intentionally lose the admitted action after
+            // an effect (e.g. destroyed). A host compiler supplies a narrower
+            // immutable-owner check; pre-effect graph/authority checks still run.
+            let retainedBinding = afterDispatchRevalidate.map { $0() } ?? (revalidate() && currentContract())
+            if !retainedBinding {
                 admission.withdraw(reflectorID: abi.reflectorID)
                 record.state = .unknown
                 record.message = "Provider disappeared or changed after dispatch; the external outcome is unknown. Do not retry blindly."
@@ -709,6 +738,29 @@ public final class RCIRExecutionHost {
                                 boundary: "Separate host-selected read-back proved an exact argument-bound mismatch.", outcomeVerified: false)
                         }
                     }
+                } else if task.phase == .completed, let independentObserver {
+                    do {
+                        var observed = try independentObserver.observe()
+                        if let returnedPostcondition {
+                            let result = try OutcomeVerifier.verify(spec: returnedPostcondition, item: item,
+                                before: postconditionBefore ?? OutcomeSnapshot(), returnedText: record.output, returnedResult: record.result)
+                            record.verification = result
+                            guard result.status == .verifiedSuccess || result.status == .verifiedFailure else { throw RCIRError.unverified }
+                            observed = .object(["external": observed, "returned": .boolean(result.status == .verifiedSuccess)])
+                        }
+                        try task.verify(observerID: independentObserver.contract.observerID, now: now()) { _, _ in observed }
+                        record.state = task.outcome == .succeeded ? .succeeded : .failed
+                        record.message = task.outcome == .succeeded
+                            ? "The host independently observed the admitted postcondition."
+                            : "Provider accepted, but independent observation disproved the admitted postcondition."
+                        record.evidence = OutcomeEvidence(type: "rcir_independent_observation", boundary: independentObserver.boundary,
+                            outcomeVerified: task.outcome == .succeeded)
+                    } catch {
+                        try task.finalizationFailed(now: now())
+                        record.state = .unknown
+                        record.message = "Provider accepted; independent observation is unavailable. Do not retry blindly."
+                        record.evidence = OutcomeEvidence(type: "rcir_independent_observation_unavailable", boundary: independentObserver.boundary)
+                    }
                 } else if task.phase == .completed, let returnedPostcondition {
                     let result = try OutcomeVerifier.verify(spec: returnedPostcondition, item: item,
                         before: postconditionBefore ?? OutcomeSnapshot(), returnedText: record.output, returnedResult: record.result)
@@ -737,18 +789,18 @@ public final class RCIRExecutionHost {
                 leaseID: lease.id.uuidString, generation: binding.generation,
                 leaseConsumed: true, phase: task.phase.rawValue, outcome: task.outcome.rawValue,
                 receipt: payload.base64EncodedString(), signedReceipt: envelope,
-                observationBoundary: observation == nil
+                observationBoundary: independentObserver?.boundary ?? (observation == nil
                     ? (returnedPostcondition == nil ? "No host observer configured; provider completion is unverified."
                         : (postconditionBoundary(record.verification) == .externalState
                             ? "Caller-declared postcondition evaluated against independent host observations relative to the admitted pre-effect snapshot."
                             : "Caller-declared returned-value postcondition; no independent external effect observation."))
-                    : "Separate same-origin read-back, same service trust source; missing observation remains unverified.")
+                    : "Separate same-origin read-back, same service trust source; missing observation remains unverified."))
             record.events.append(contentsOf: ["RCIR admitted generation=\(binding.generation)",
                 "RCIR consumed lease=\(lease.id.uuidString)", "RCIR task=\(task.id.uuidString) outcome=\(task.outcome.rawValue)"])
             record.rcirEvents = task.typedEvents
             record.rcirEventPage = try task.statusEventPage()
             if task.phase == .completed, task.outcome == .unverified { record.state = .accepted }
-            let boundary: OutcomeObservationBoundary = observation != nil && task.outcome != .unverified ? .externalState
+            let boundary: OutcomeObservationBoundary = (observation != nil || independentObserver != nil) && [.succeeded, .failed].contains(task.outcome) ? .externalState
                 : (returnedPostcondition != nil && task.outcome != .unverified ? postconditionBoundary(record.verification) : .none)
             record.evidence.observationBoundary = boundary
             record.lifecycle = .init(executionID: executionID, originatingRequestID: executionID,

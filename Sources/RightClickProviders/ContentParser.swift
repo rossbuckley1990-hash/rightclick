@@ -7,6 +7,11 @@ public enum ContentParser {
         if trimmed.isEmpty {
             throw RightClickError("Item is empty.")
         }
+        if trimmed.lowercased().hasPrefix("rcenv:") {
+            if trimmed != EnvironmentIdentity.factoryURI { _ = try EnvironmentIdentity.environmentID(from: trimmed) }
+            return ContentItem(kind: "environment", display: trimmed, url: trimmed,
+                typeIdentifier: "org.rightclick.environment", typeDescription: "Ephemeral execution environment")
+        }
         if let web = webURL(trimmed) {
             return ContentItem(
                 kind: "web_url",

@@ -11,6 +11,20 @@ public final class CapabilityEngine {
         return try body()
     }
     public let runtimeEnvironment: RuntimeEnvironment
+    /// Endpoint composition validates delegated execution-node identity without
+    /// confusing it with a remote client's separately authenticated grant.
+    public func permitsExecutionNode(publicKey: Data, runtimeID: String) -> Bool {
+        reflectorSources.compactMap { $0 as? any CapabilityExecutionNodeBoundSource }.allSatisfy {
+            ($0.executionNodePublicKey == nil && $0.executionNodeRuntimeID == nil) ||
+                ($0.executionNodePublicKey == publicKey && $0.executionNodeRuntimeID == runtimeID)
+        }
+    }
+    private func permitsRetainedStatus(_ executionID: String) -> Bool {
+        reflectorSources.compactMap { $0 as? any CapabilityExecutionStatusAccessSource }.allSatisfy {
+            do { return try $0.permitsRetainedStatus(executionID: executionID) != false }
+            catch { return false }
+        }
+    }
     private let rcirHost: RCIRExecutionHost
     private var statusReflectors: [String: any CapabilityExecutionStatusReflector] = [:]
     private let experience: CapabilityExperience?
@@ -92,7 +106,8 @@ public final class CapabilityEngine {
     /// currently visible reflector claims the same id, none of those
     /// ambiguous reflectors enter the live graph.
     private func currentReflectors(
-        for item: ContentItem? = nil
+        for item: ContentItem? = nil,
+        synchronizeHost: Bool = true
     ) -> [any CapabilityReflector]
     {
         var candidates =
@@ -128,7 +143,7 @@ public final class CapabilityEngine {
         }
 
         let current = candidates.filter { counts[$0.id] == 1 }
-        rcirHost.synchronize(owners: Set(current.map { $0.id }))
+        if synchronizeHost { rcirHost.synchronize(owners: Set(current.map { $0.id })) }
         return current
     }
 
@@ -438,10 +453,11 @@ public final class CapabilityEngine {
         verification: VerificationSpec? = nil,
         expectedCapability: Capability? = nil,
         admissionCheck: (() throws -> Void)? = nil,
-        allowFileInputs: Bool = true
+        allowFileInputs: Bool = true,
+        executionID: UUID? = nil
     ) throws -> ExecutionRecord {
         try admissionCheck?()
-        let executionId = UUID().uuidString
+        let executionId = (executionID ?? UUID()).uuidString
         let (item, capabilities) =
             try capabilities(for: raw, allowFileInputs: allowFileInputs)
 
@@ -610,10 +626,15 @@ public final class CapabilityEngine {
                 capability.title
         }
 
+        let environmentAudit = providerRecord.environmentEvidence
         ExecutionStore.shared.put(
             providerRecord
         )
         providerRecord = ExecutionStore.shared.get(executionId) ?? providerRecord
+        // The RCIR host has already frozen its terminal execution publication.
+        // The separately retained, signed audit projection is returned without
+        // replacing that immutable host record or discarding the source view.
+        providerRecord.environmentEvidence = environmentAudit ?? providerRecord.environmentEvidence
 
         // Asynchronous reflectors remain started. Verification
         // cannot adjudicate an outcome that has not reached an
@@ -683,13 +704,18 @@ public final class CapabilityEngine {
             rcir: result.rcir,
             rcirEvents: providerRecord.rcirEvents,
             rcirEventPage: providerRecord.rcirEventPage,
-            lifecycle: providerRecord.lifecycle
+            lifecycle: providerRecord.lifecycle,
+            environmentEvidence: providerRecord.environmentEvidence
         )
 
         ExecutionStore.shared.put(final)
         experience?.observe(capability: capability, executionID: executionId, result: result)
 
-        return ExecutionStore.shared.get(executionId) ?? final
+        var retained = ExecutionStore.shared.get(executionId) ?? final
+        // Optional durable audit projection does not rewrite the immutable
+        // RCIR terminal publication retained by the execution host.
+        retained.environmentEvidence = final.environmentEvidence
+        return retained
     }
 
     private func reflector(
@@ -952,6 +978,9 @@ public final class CapabilityEngine {
     }
 
     public func executionStatus(_ executionId: String) -> ExecutionRecord {
+        guard permitsRetainedStatus(executionId) else {
+            return ExecutionRecord(executionId: executionId, actionId: "", state: .unknown, message: "No execution with that id.")
+        }
         let live = rcirHost.activeExecutionStatus(executionID: executionId)
         let stored = ExecutionStore.shared.get(executionId)
         if stored?.lifecycle?.terminal == true { return stored! }
@@ -968,6 +997,9 @@ public final class CapabilityEngine {
                                 maximumBytes: Int = 262_144) throws -> ExecutionRecord {
         guard cursor >= 0 else { throw RCIRError.invalidSequence }
         guard (1...256).contains(limit), (1...262_144).contains(maximumBytes) else { throw RCIRError.invalidLimit }
+        guard permitsRetainedStatus(executionId) else {
+            return ExecutionRecord(executionId: executionId, actionId: "", state: .unknown, message: "No execution with that id.")
+        }
         // Each owner captures lifecycle, result and bounded event history from
         // the same immutable snapshot. Completion or a working callback cannot
         // mix a newer page with an older lifecycle while this call is reading.
@@ -987,7 +1019,17 @@ public final class CapabilityEngine {
 
     /// Captured before dispatch, so later discovery cannot change execution's owner.
     public func executionStatusReflector(_ executionId: String) -> (any CapabilityExecutionStatusReflector)? {
-        withExclusiveAccess { statusReflectors[executionId] }
+        withExclusiveAccess {
+            guard permitsRetainedStatus(executionId) else { return nil }
+            if let retained = statusReflectors[executionId] { return retained }
+            // Historical owner lookup is observational. It must not reconcile
+            // live tasks against an incidental recovery-source inventory.
+            let recovered = currentReflectors(synchronizeHost: false).compactMap { $0 as? any CapabilityExecutionRecoveryReflector }
+                .filter { (try? $0.ownsExecution(executionID: executionId)) == true }
+            guard recovered.count == 1 else { return nil }
+            statusReflectors[executionId] = recovered[0]
+            return recovered[0]
+        }
     }
 
     /// Transport waits happen outside the engine lock and never redispatch.
