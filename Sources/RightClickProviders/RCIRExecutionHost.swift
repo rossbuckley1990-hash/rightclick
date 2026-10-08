@@ -329,13 +329,18 @@ public final class RCIRExecutionHost {
             try active.task.verify(observerID: "host:returned-value-postcondition-1", now: stamp) { _, _ in
                 .boolean(returned.status == .verifiedSuccess)
             }
-            active.verifiedBoundary = policy.postcondition?.predicates.allSatisfy {
-                $0.type == .textEquals || $0.type == .resultPathEquals
-            } == true ? .returnedValue : .externalState
+            active.verifiedBoundary = postconditionBoundary(returned)
         }
         let aggregate: OutcomeVerificationStatus = active.task.outcome == .succeeded ? .verifiedSuccess
             : (active.task.outcome == .failed ? .verifiedFailure : .unverified)
         active.verificationResult = .init(status: aggregate, predicates: returned?.predicates ?? [])
+    }
+
+    private func postconditionBoundary(_ verification: OutcomeVerification?) -> OutcomeObservationBoundary {
+        let evaluated = verification?.predicates.filter(\.evaluated) ?? []
+        guard !evaluated.isEmpty else { return .none }
+        return evaluated.contains { $0.predicate.type != .textEquals && $0.predicate.type != .resultPathEquals }
+            ? .externalState : .returnedValue
     }
 
     public func requestActiveTaskCancellation(executionID: String, now: Int64) throws {
@@ -494,14 +499,18 @@ public final class RCIRExecutionHost {
                     )
                     : "Separate same-origin read-back, same service trust source; missing observation remains unverified."
 
+            let lease = try admission.issue(binding, arguments: arguments, authority: authority(),
+                                            policy: policy(config), now: now())
+            // A before-reference must describe admitted pre-effect state. The
+            // provider must never select its own baseline by mutating the file
+            // before the host captures it. This observation is outside locks;
+            // fresh policy/authority still gate consumption immediately at start.
+            let postconditionBefore = try returnedPostcondition.map { _ in try OutcomeVerifier.snapshot(item: item) }
             let deferredVerificationPolicy: DeferredVerificationPolicy?
             if taskModel.shape != .unary, observation != nil || returnedPostcondition != nil {
                 deferredVerificationPolicy = .init(observation: observation, postcondition: returnedPostcondition,
-                    item: item, before: try OutcomeVerifier.snapshot(item: item))
+                    item: item, before: postconditionBefore ?? OutcomeSnapshot())
             } else { deferredVerificationPolicy = nil }
-
-            let lease = try admission.issue(binding, arguments: arguments, authority: authority(),
-                                            policy: policy(config), now: now())
             var task = try RCIRTask(lease: lease, startedAt: now(), deadline: now() + 30_000)
             try beforeConsume?(lease)
             guard revalidate() else {
@@ -680,7 +689,7 @@ public final class RCIRExecutionHost {
                         var complete = true
                         if let returnedPostcondition {
                             let result = try OutcomeVerifier.verify(spec: returnedPostcondition, item: item,
-                                before: OutcomeVerifier.snapshot(item: item), returnedText: record.output, returnedResult: record.result)
+                                before: postconditionBefore ?? OutcomeSnapshot(), returnedText: record.output, returnedResult: record.result)
                             record.verification = result
                             complete = result.status == .verifiedSuccess || result.status == .verifiedFailure
                             observed = .object(["external": .string(text), "returned": .boolean(result.status == .verifiedSuccess)])
@@ -702,7 +711,7 @@ public final class RCIRExecutionHost {
                     }
                 } else if task.phase == .completed, let returnedPostcondition {
                     let result = try OutcomeVerifier.verify(spec: returnedPostcondition, item: item,
-                        before: OutcomeVerifier.snapshot(item: item), returnedText: record.output, returnedResult: record.result)
+                        before: postconditionBefore ?? OutcomeSnapshot(), returnedText: record.output, returnedResult: record.result)
                     record.verification = result
                     if result.status == .verifiedSuccess || result.status == .verifiedFailure {
                         try task.verify(observerID: "host:returned-value-postcondition-1", now: now()) { _, _ in
@@ -710,7 +719,9 @@ public final class RCIRExecutionHost {
                         }
                         record.state = task.outcome == .succeeded ? .succeeded : .failed
                         record.evidence = OutcomeEvidence(type: "generic_postcondition",
-                            boundary: "Caller-declared returned-value postcondition; verifies ABI-validated returned value, not external effects.",
+                            boundary: postconditionBoundary(result) == .externalState
+                                ? "Caller-declared postcondition evaluated against independent host observations relative to the admitted pre-effect snapshot."
+                                : "Caller-declared returned-value postcondition; verifies ABI-validated returned value, not external effects.",
                             outcomeVerified: task.outcome == .succeeded)
                     }
                 }
@@ -728,7 +739,9 @@ public final class RCIRExecutionHost {
                 receipt: payload.base64EncodedString(), signedReceipt: envelope,
                 observationBoundary: observation == nil
                     ? (returnedPostcondition == nil ? "No host observer configured; provider completion is unverified."
-                        : "Caller-declared returned-value postcondition; no independent external effect observation.")
+                        : (postconditionBoundary(record.verification) == .externalState
+                            ? "Caller-declared postcondition evaluated against independent host observations relative to the admitted pre-effect snapshot."
+                            : "Caller-declared returned-value postcondition; no independent external effect observation."))
                     : "Separate same-origin read-back, same service trust source; missing observation remains unverified.")
             record.events.append(contentsOf: ["RCIR admitted generation=\(binding.generation)",
                 "RCIR consumed lease=\(lease.id.uuidString)", "RCIR task=\(task.id.uuidString) outcome=\(task.outcome.rawValue)"])
@@ -736,7 +749,8 @@ public final class RCIRExecutionHost {
             record.rcirEventPage = try task.statusEventPage()
             if task.phase == .completed, task.outcome == .unverified { record.state = .accepted }
             let boundary: OutcomeObservationBoundary = observation != nil && task.outcome != .unverified ? .externalState
-                : (returnedPostcondition != nil && task.outcome != .unverified ? .returnedValue : .none)
+                : (returnedPostcondition != nil && task.outcome != .unverified ? postconditionBoundary(record.verification) : .none)
+            record.evidence.observationBoundary = boundary
             record.lifecycle = .init(executionID: executionID, originatingRequestID: executionID,
                 taskID: task.id.uuidString, generation: binding.generation, taskShape: taskModel.shape,
                 phase: task.phase, semanticOutcome: task.outcome, sequence: task.sequence, terminal: task.terminal,
