@@ -1,0 +1,208 @@
+warning: 'rightclick-graphql-typed-20261007': found 4 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /private/tmp/rightclick-graphql-typed-20261007/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+    /private/tmp/rightclick-graphql-typed-20261007/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /private/tmp/rightclick-graphql-typed-20261007/Tests/RightClickCoreTests/Fixtures/InstalledRuntime022Identity.json
+    /private/tmp/rightclick-graphql-typed-20261007/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/16] Write sources
+[4/16] Write swift-version--58304C5D6DBC2206.txt
+[6/17] Compiling RightClickCore GraphQLHTTP.swift
+[7/17] Compiling RightClickCore GRPCWireCodec.swift
+[8/17] Compiling RightClickCore KafkaCapabilityArtifactResolver.swift
+[9/17] Emitting module RightClickCore
+[10/17] Compiling RightClickCore GRPCReflector.swift
+[11/17] Compiling RightClickCore KubernetesCapabilityArtifactResolver.swift
+[12/17] Compiling RightClickCore GraphQLReflector.swift
+[13/23] Compiling RightClickCore GRPCReflectionTransport.swift
+[14/23] Compiling RightClickCore BonjourGraphQLSource.swift
+[15/23] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+[16/23] Compiling RightClickCore BonjourGRPCSource.swift
+[17/23] Compiling RightClickCore MCPCapabilityArtifactResolver.swift
+[18/23] Compiling RightClickCore CapabilityArtifactResolver.swift
+[19/107] Compiling RightClickMCP Server.swift
+/private/tmp/rightclick-graphql-typed-20261007/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |                 transport: transport
+317 |             )
+318 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/private/tmp/rightclick-graphql-typed-20261007/Sources/RightClickMCP/Server.swift:320:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+318 |             return .init(content: [.text(text)], isError: false)
+319 |         } catch {
+320 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+321 |         }
+322 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[20/107] Compiling RightClickMCP ModernMCPStdioTransport.swift
+[21/107] Compiling RightClickMCP PortableStdioTransport.swift
+[22/107] Compiling RightClickMCP HTTPListener.swift
+[23/107] Compiling RightClickMCP Federation.swift
+/private/tmp/rightclick-graphql-typed-20261007/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[24/107] Emitting module RightClickMCP
+[25/107] Emitting module RightClickCoreTests
+[26/137] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[27/137] Compiling RightClickMCPTests FederationTests.swift
+[28/137] Emitting module RightClickMCPTests
+[29/137] Compiling RightClickCLI ClientRegistry.swift
+[30/137] Compiling RightClickCLI CodexClientAdapter.swift
+[31/137] Compiling RightClickCLI SetupAllTransaction.swift
+[32/137] Compiling RightClickCLI SetupState.swift
+[33/139] Compiling RightClickCoreTests GRPCRealProviderAcceptanceTests.swift
+[34/139] Compiling RightClickCoreTests GRPCReflectionTransportTests.swift
+[35/139] Compiling RightClickCoreTests GRPCReflectorTests.swift
+[36/139] Compiling RightClickCoreTests GraphQLReflectorTests.swift
+[37/139] Compiling RightClickCoreTests HostProtectedReferenceTests.swift
+[38/139] Compiling RightClickCoreTests InvocationBindingTests.swift
+[39/139] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+[40/139] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+[41/139] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+[42/139] Compiling RightClickCoreTests MOAT005G5FullFrozenGitHubContractTests.swift
+[43/139] Compiling RightClickCoreTests MOAT005G6MultiSegmentPathTests.swift
+[44/139] Compiling RightClickCoreTests NativeBoundedHTTPTests.swift
+[45/139] Compiling RightClickCoreTests NativeHTTPFixture.swift
+[46/139] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+[47/139] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+[48/139] Compiling RightClickCoreTests OpenAPIAcknowledgementTests.swift
+[49/139] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+[50/139] Compiling RightClickCoreTests OpenAPIAuthorityManagementTests.swift
+[51/139] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+[52/139] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+[53/139] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+[54/139] Compiling RightClickCoreTests OutcomeVerifierTests.swift
+[55/139] Compiling RightClickCoreTests PolicyTests.swift
+[56/139] Compiling RightClickCoreTests PortableRuntimeTests.swift
+[57/139] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+[58/139] Emitting module RightClickCLI
+[59/139] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[60/139] Compiling RightClickCLI BridgeRuntime.swift
+[61/139] Compiling RightClickCLI ChatGPTOnboardingTransaction.swift
+[62/139] Compiling RightClickCLI ClaudeClientAdapter.swift
+[63/139] Compiling RightClickCLI LocalOnboarding.swift
+[64/139] Compiling RightClickCLI NativeRegistrationBackend.swift
+[65/139] Compiling RightClickCLI ChatGPTLiveAttestation.swift
+[66/139] Compiling RightClickCLI ChatGPTOnboarding.swift
+[67/139] Compiling RightClickCLI ChatGPTBridge.swift
+[68/139] Compiling RightClickCLI ChatGPTBridgeInstaller.swift
+[69/139] Compiling RightClickCLI OnboardingEngine.swift
+[70/139] Compiling RightClickCLI OpenAIPluginSetup.swift
+[71/139] Compiling RightClickCLI ProviderConfigurationCLI.swift
+[72/139] Compiling RightClickCLI Setup.swift
+[73/139] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+[74/139] Compiling RightClickCoreTests RCIRUnitCompletionTests.swift
+[75/139] Compiling RightClickCoreTests RuntimeIdentityCompatibilityTests.swift
+[76/139] Compiling RightClickCoreTests ServiceContextTests.swift
+[77/139] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+[78/139] Compiling RightClickCoreTests SharingExecutionTests.swift
+[79/139] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+[80/139] Compiling RightClickCoreTests VerificationIntegrationTests.swift
+[81/139] Compiling RightClickCLI StableEntrypoint.swift
+[82/139] Compiling RightClickCLI main.swift
+[82/139] Write Objects.LinkFileList
+[84/139] Compiling RightClickCoreTests CapabilityStringConstraintTests.swift
+[85/139] Compiling RightClickCoreTests CapabilityTypedCoreBoundaryTests.swift
+[86/139] Compiling RightClickCoreTests ConfiguredOpenAPISourceTests.swift
+[87/139] Compiling RightClickCoreTests DBusNativeOwnerAcceptanceTests.swift
+[88/139] Compiling RightClickCoreTests DBusRuntimeTests.swift
+[89/139] Compiling RightClickCoreTests DispatchContractBindingTests.swift
+[90/139] Compiling RightClickCoreTests EngineTests.swift
+[91/139] Compiling RightClickCoreTests ExecutionCapacityAdmissionTests.swift
+[92/139] Compiling RightClickCoreTests ExecutionRetentionTests.swift
+[96/139] Compiling RightClickCoreTests BonjourGRPCSourceTests.swift
+[97/139] Compiling RightClickCoreTests BonjourOpenAPISourceTests.swift
+[98/139] Compiling RightClickCoreTests BonjourRealLifecycleAcceptanceTests.swift
+[99/139] Compiling RightClickCoreTests CapabilityABIAdapterTests.swift
+[100/139] Compiling RightClickCoreTests CapabilityABIBoundaryTests.swift
+[101/139] Compiling RightClickCoreTests CapabilityABITests.swift
+[102/139] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+[103/139] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+[104/139] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+[105/139] Compiling RightClickCoreTests MOAT004G5ExternalBearerAuthorityTests.swift
+[106/139] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+[107/139] Compiling RightClickCoreTests MOAT005G1PathAndJSONBodyTests.swift
+[108/139] Compiling RightClickCoreTests MOAT005G2MultiplePathArgumentsTests.swift
+[109/139] Compiling RightClickCoreTests MOAT005G3GitHubRequestSchemaTests.swift
+[110/139] Compiling RightClickCoreTests MOAT005G4MutationJSONResponseFallbackTests.swift
+[128/139] Compiling RightClickCoreTests RCIRAuthorityDispatchTests.swift
+[129/139] Compiling RightClickCoreTests RCIRAuthorityTests.swift
+[130/139] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+[131/139] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+[132/139] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+[133/139] Compiling RightClickCoreTests RCIRHTTPJSONCausalityTests.swift
+[134/139] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+[135/139] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+[135/139] Linking rightclick
+[136/139] Applying rightclick
+[138/159] Compiling RightClickCLITests ChatGPTOnboardingTests.swift
+[139/159] Compiling RightClickCLITests ChatGPTOnboardingTransactionTests.swift
+[140/159] Compiling RightClickCLITests ChatGPTBridgeTests.swift
+[141/159] Compiling RightClickCLITests ChatGPTLiveAttestationTests.swift
+[142/159] Compiling RightClickCLITests AuthorityConfigurationCLITests.swift
+[143/159] Compiling RightClickCLITests BridgeRuntimeTests.swift
+[144/159] Compiling RightClickCLITests ChatGPTBridgeInstallerTests.swift
+[145/159] Compiling RightClickCLITests ClientRegistryRedTests.swift
+[146/159] Compiling RightClickCLITests CodexOnboardingRedTests.swift
+[147/159] Compiling RightClickCLITests SetupAllTransactionRedTests.swift
+[148/159] Compiling RightClickCLITests SetupStateTests.swift
+[149/159] Emitting module RightClickCLITests
+[150/159] Compiling RightClickCLITests OnboardingEngineTests.swift
+[151/159] Compiling RightClickCLITests ProviderConfigurationCLITests.swift
+[152/159] Compiling RightClickCLITests LocalOnboardingTests.swift
+[153/159] Compiling RightClickCLITests NativeMutationLeaseRedTests.swift
+[154/159] Compiling RightClickCLITests SetupTests.swift
+[155/159] Compiling RightClickCLITests StableEntrypointTests.swift
+[156/159] Compiling RightClickCLITests ClaudeConfigDirTruthTests.swift
+[157/159] Compiling RightClickCLITests ClaudeOnboardingRedTests.swift
+[158/161] Compiling RightClickCLITests StableProfileIntegrityTests.swift
+[159/161] Compiling RightClickCLITests StableUpgradeReconciliationTests.swift
+[160/163] Compiling rightclick_mcpPackageTests runner.swift
+[161/163] Emitting module rightclick_mcpPackageTests
+[161/163] Write Objects.LinkFileList
+[162/163] Linking rightclick-mcpPackageTests
+Build complete! (11.51s)
+Test Suite 'Selected tests' started at 2026-10-07 19:41:44.160.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 19:41:44.160.
+Test Suite 'CapabilityIntegerRangeTests' started at 2026-10-07 19:41:44.160.
+Test Case '-[RightClickCoreTests.CapabilityIntegerRangeTests testInclusiveNarrowRangeRejectsOverflowAndOtherValueKinds]' started.
+Test Case '-[RightClickCoreTests.CapabilityIntegerRangeTests testInclusiveNarrowRangeRejectsOverflowAndOtherValueKinds]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityIntegerRangeTests testRangeIsPartOfCanonicalContractAndExistingIntegerBytesRemainStable]' started.
+Test Case '-[RightClickCoreTests.CapabilityIntegerRangeTests testRangeIsPartOfCanonicalContractAndExistingIntegerBytesRemainStable]' passed (0.000 seconds).
+Test Suite 'CapabilityIntegerRangeTests' passed at 2026-10-07 19:41:44.162.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'GraphQLReflectorTests' started at 2026-10-07 19:41:44.162.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testExecutesMutationWithJSONEncodedInputObject]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testExecutesMutationWithJSONEncodedInputObject]' passed (0.040 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testExecutesQueryWithVariablesAndSynthesizedSelection]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testExecutesQueryWithVariablesAndSynthesizedSelection]' passed (0.005 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testGraphQLErrorsFailEvenWhenPartialDataExists]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testGraphQLErrorsFailEvenWhenPartialDataExists]' passed (0.004 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testInvalidNestedEnumFailsBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testInvalidNestedEnumFailsBeforeTransport]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testMutationRequiresConfirmationBeforeTransport]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testMutationRequiresConfirmationBeforeTransport]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testReflectsQueriesAndMutationsBehindGenericCapabilities]' started.
+Test Case '-[RightClickCoreTests.GraphQLReflectorTests testReflectsQueriesAndMutationsBehindGenericCapabilities]' passed (0.001 seconds).
+Test Suite 'GraphQLReflectorTests' passed at 2026-10-07 19:41:44.215.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.053 (0.054) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 19:41:44.215.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.055 (0.055) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 19:41:44.215.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.055 (0.056) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

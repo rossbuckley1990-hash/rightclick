@@ -1,0 +1,35 @@
+{
+  "id": "graphql:e1adf4ed12f4ba4e100c4176531bdc93dd7ee896a81a95901c3237b3eb208577:d5911b84dedc1742:record%5F4fe79a3a8e0f",
+  "inputs": [
+    "public.plain-text"
+  ],
+  "invocation": "interactive",
+  "metadata": {
+    "argumentEncoding": "graphql_legacy_text: scalar text; list/input-object JSON text; nullable null sentinel; nullable String/ID backslash forces literal text",
+    "argumentSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzI6czU6bm9uY2VzNjpzdHJpbmdzNzpwYXlsb2FkbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvNDpzNjphYnNlbnRvMTpzODpudWxsYWJsZXM3OmJvb2xlYW5zODpjaGlsZHJlbm8xOnM1OmFycmF5bzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMzpzNTpjb3VudG8xOnMxMjppbnRlZ2VyUmFuZ2VvMjpzNzptYXhpbXVtaTEwOjIxNDc0ODM2NDdzNzptaW5pbXVtaTExOi0yMTQ3NDgzNjQ4czQ6ZmxhZ3M3OmJvb2xlYW5zNDpub3RlbzE6czg6bnVsbGFibGVzNjpzdHJpbmdzODpyZXF1aXJlZGEyOnM1OmNvdW50czQ6ZmxhZ3M0Om1vZGVvMTpzNDplbnVtYTI6czU6RklSU1RzNjpTRUNPTkRzNTpyYXRpb3M2Om51bWJlcnM4OnJlcXVpcmVkYTM6czg6Y2hpbGRyZW5zNDptb2RlczU6cmF0aW9zODpyZXF1aXJlZGEyOnM1Om5vbmNlczc6cGF5bG9hZA==",
+    "argumentsSchema": "{\"additionalProperties\":false,\"properties\":{\"nonce\":{\"description\":\"GraphQL type String!. Supply this argument as a string; RIGHTCLICK coerces it to the reflected GraphQL scalar or enum type.\",\"type\":\"string\"},\"payload\":{\"description\":\"GraphQL type Payload!. Supply this argument as a JSON-encoded string.\",\"type\":\"string\"}},\"required\":[\"nonce\",\"payload\"],\"type\":\"object\"}",
+    "endpointURL": "http://127.0.0.1:55315/graphql",
+    "field": "record_4fe79a3a8e0f",
+    "graphqlReturnType": "Record!",
+    "operationKind": "mutation",
+    "providerIdentity": "e1adf4ed12f4ba4e100c4176531bdc93dd7ee896a81a95901c3237b3eb208577",
+    "resultSchema": "UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czE2OnJpZ2h0Y2xpY2tSZXN1bHRvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG82OnMxMDpfX3R5cGVuYW1lbzE6czQ6ZW51bWExOnM2OlJlY29yZHM2OmFic2VudG8xOnM4Om51bGxhYmxlczc6Ym9vbGVhbnM4OmNoaWxkcmVubzE6czU6YXJyYXlvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG80OnMxMDpfX3R5cGVuYW1lbzE6czQ6ZW51bWExOnM1OkNoaWxkczU6Y291bnRvMTpzMTI6aW50ZWdlclJhbmdlbzI6czc6bWF4aW11bWkxMDoyMTQ3NDgzNjQ3czc6bWluaW11bWkxMTotMjE0NzQ4MzY0OHM0OmZsYWdzNzpib29sZWFuczQ6bm90ZW8xOnM4Om51bGxhYmxlczY6c3RyaW5nczg6cmVxdWlyZWRhNDpzMTA6X190eXBlbmFtZXM1OmNvdW50czQ6ZmxhZ3M0Om5vdGVzNDptb2RlbzE6czQ6ZW51bWEyOnM1OkZJUlNUczY6U0VDT05EczU6bm9uY2VzNjpzdHJpbmdzNTpyYXRpb3M2Om51bWJlcnM4OnJlcXVpcmVkYTY6czEwOl9fdHlwZW5hbWVzNjphYnNlbnRzODpjaGlsZHJlbnM0Om1vZGVzNTpub25jZXM1OnJhdGlvczg6cmVxdWlyZWRhMTpzMTY6cmlnaHRjbGlja1Jlc3VsdA==",
+    "resultValidation": "closed_typed_graphql_selection",
+    "schemaSHA256": "07516cf6a97be0f97105642aa3b7df7784b25b9596b9de4cb134bdfb34b1676d",
+    "substrate": "graphql",
+    "typedArgumentsSchema": "{\"additionalProperties\":false,\"properties\":{\"nonce\":{\"type\":\"string\"},\"payload\":{\"additionalProperties\":false,\"properties\":{\"absent\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"null\"}]},\"children\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"count\":{\"maximum\":2147483647,\"minimum\":-2147483648,\"type\":\"integer\"},\"flag\":{\"type\":\"boolean\"},\"note\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}]}},\"required\":[\"count\",\"flag\"],\"type\":\"object\"},\"type\":\"array\"},\"mode\":{\"enum\":[\"FIRST\",\"SECOND\"],\"type\":\"string\"},\"ratio\":{\"type\":\"number\"}},\"required\":[\"children\",\"mode\",\"ratio\"],\"type\":\"object\"}},\"required\":[\"nonce\",\"payload\"],\"type\":\"object\"}",
+    "typedResultSchema": "{\"additionalProperties\":false,\"properties\":{\"rightclickResult\":{\"additionalProperties\":false,\"properties\":{\"__typename\":{\"enum\":[\"Record\"],\"type\":\"string\"},\"absent\":{\"anyOf\":[{\"type\":\"boolean\"},{\"type\":\"null\"}]},\"children\":{\"items\":{\"additionalProperties\":false,\"properties\":{\"__typename\":{\"enum\":[\"Child\"],\"type\":\"string\"},\"count\":{\"maximum\":2147483647,\"minimum\":-2147483648,\"type\":\"integer\"},\"flag\":{\"type\":\"boolean\"},\"note\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}]}},\"required\":[\"__typename\",\"count\",\"flag\",\"note\"],\"type\":\"object\"},\"type\":\"array\"},\"mode\":{\"enum\":[\"FIRST\",\"SECOND\"],\"type\":\"string\"},\"nonce\":{\"type\":\"string\"},\"ratio\":{\"type\":\"number\"}},\"required\":[\"__typename\",\"absent\",\"children\",\"mode\",\"nonce\",\"ratio\"],\"type\":\"object\"}},\"required\":[\"rightclickResult\"],\"type\":\"object\"}"
+  },
+  "output": [
+    "public.json"
+  ],
+  "provider": {
+    "name": "GraphQL provider"
+  },
+  "reflectorID": "graphql-reflector:e1adf4ed12f4ba4e100c4176531bdc93dd7ee896a81a95901c3237b3eb208577",
+  "requiresConfirmation": true,
+  "safety": "unknown",
+  "source": "system",
+  "supportLevel": "experimental",
+  "title": "GraphQL mutation: record_4fe79a3a8e0f"
+}
