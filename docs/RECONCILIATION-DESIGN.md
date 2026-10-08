@@ -130,3 +130,43 @@ The current routed caller's local-to-node task map is volatile. Caller process
 restart cannot fabricate recovery or redispatch an ambiguous mutation; durable
 caller-side task recovery is deferred. Direct authenticated status with a retained
 execution ID and the same identity is supported and tested separately.
+
+## Fresh native evidence prerequisites
+
+The portable doctor report retains PR49's platform and operating-system-version
+fields alongside PR99's wire fields and public initializer. Legacy reports decode
+missing portable facts as unknown; the decoder never substitutes the reader's host.
+
+The native D-Bus workflow keeps the original private bus, three kernel principals,
+13-test gate, invocation-specific Store observations and owner-withdrawal controls.
+Its optional same-client proof runs the generic coexistence helper entirely as the
+writer (UID/GID1100, no supplementary groups), beside the seven controlled portable
+families. EchoTags proves exact native returned bytes and a separately verified
+receipt, not a filesystem mutation. It does not claim same-graph D-Bus withdrawal.
+Only public result rows and the verification key are exported from writer-private
+scratch; configuration, observer credentials, raw receipts and transcripts remain
+private. Evidence reads reject FIFOs without waiting for a writer, as well as
+symlinks, hardlinks, unsafe ownership/modes and oversized data. Both actual native
+architectures must pass; helper unit tests alone prove none of these product rows.
+
+Receipt verifier tests retain every outcome, external-effect, key-pin, tampering
+and structural assertion from the input candidate. The RCIR production workflow
+first runs the genuine native HTTP/authority and acknowledgement producers, then
+the public seven-operation producer and independent signed-effect correlation.
+All 18 Python verifier tests consume those fresh roots. No missing prerequisite is
+skipped; no historical payload is edited or re-signed. The historical fixture audit
+found hostnames and protected observer-reference paths inside otherwise authentic
+payloads, so missing raw historical receipts are not copied into this source tree.
+Per-run raw receipt artifacts contain disposable fixture metadata and are not
+redistributable source fixtures or proof of production signer trust.
+
+For a local run, use the exact producer sequence in
+`.github/workflows/rcir-production.yml` with a private output directory and a Python
+interpreter containing cryptography. Set `RCIR_DISPATCH_EVIDENCE`,
+`RCIR_AUTHORITY_EVIDENCE`, and `RIGHTCLICK_ACK_HTTP_EVIDENCE` for the 50 native tests;
+run `acceptance-rcir-openapi.py` and then `acceptance-rcir-signed-evidence.py`.
+Run the unchanged verifier suite with `RIGHTCLICK_PUBLIC_RECEIPT_EVIDENCE`,
+`RIGHTCLICK_SIGNED_RECEIPT_EVIDENCE`, `RIGHTCLICK_NATIVE_RECEIPT_EVIDENCE`,
+`RIGHTCLICK_ACK_RECEIPT_EVIDENCE`, and `RIGHTCLICK_AUTHORITY_RECEIPT_EVIDENCE` pointing
+to those outputs. Without generated inputs the suite fails; it does not manufacture
+receipts, claim skipped tests passed, or fetch private historical evidence.

@@ -32,7 +32,11 @@ class WriterClient(canonical.Client):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("binary", type=pathlib.Path); parser.add_argument("output", type=pathlib.Path)
-    parser.add_argument("--expect-red", action="store_true"); args = parser.parse_args()
+    parser.add_argument("--expect-red", action="store_true")
+    parser.add_argument("--coexistence", action="store_true", help="Add the same-client controlled seven plus native D-Bus proof as UID1100 before owner withdrawal")
+    args = parser.parse_args()
+    if args.coexistence and args.expect_red:
+        parser.error("Coexistence requires the working native D-Bus acceptance path")
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=True)
     report = {"runKind": "NEW_NATIVE_LINUX_DBUS_RUN", "controls": {}, "principals": {"writerUID": 1100, "observerUID": 1101, "serviceUID": 1102}}
     processes = []; client = None
@@ -168,6 +172,12 @@ def main():
             assert replay_observation["invocation"] == result["rcir"]["taskID"]
             assert replay_observation["invocation"] != replay_observation["requestInvocation"]
             (root / "no-effect").unlink()
+            if args.coexistence:
+                hook_spec = importlib.util.spec_from_file_location("dbus_coexistence_hook", pathlib.Path(__file__).parent / "ci/dbus-coexistence-hook.py")
+                hook = importlib.util.module_from_spec(hook_spec); hook_spec.loader.exec_module(hook)
+                report["coexistence"] = hook.run(args.binary, root / "writer-state", out, address, token,
+                    pathlib.Path(__file__).resolve().parent.parent)
+                report["controls"]["sameClientNativeDBus"] = "PASS — one UID1100 client/runtime discovers and verifies controlled seven plus real EchoTags; D-Bus returned-byte boundary; no same-graph D-Bus withdrawal claim"
             (root / "release-name").touch(); wait(root / "state" / "service-released")
             still_callable = bus_call("Introspect", interface="org.freedesktop.DBus.Introspectable", destination=original_owner)
             assert still_callable.returncode == 0 and service.poll() is None

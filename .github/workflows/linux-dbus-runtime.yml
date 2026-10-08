@@ -46,6 +46,30 @@ jobs:
           useradd -u 1102 -m rcservice
       - name: Record exact candidate and native platform
         run: python3 scripts/ci/record-reconciliation-source.py evidence/linux-dbus/source.json --expected-arch '${{ matrix.arch }}'
+      - name: Provision genuine writer-readable coexistence fixtures
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/provision-component-tools.py /opt/rightclick-coexistence-tools evidence/linux-dbus/tools.json
+          python3 -m venv /opt/rightclick-coexistence-python
+          /opt/rightclick-coexistence-python/bin/pip install 'mcp==1.30.0' 'cryptography==50.0.1' 'graphql-core==3.3.0' 'grpcio==1.78.0' 'grpcio-reflection==1.78.0' 'protobuf==6.33.6'
+          /opt/rightclick-coexistence-python/bin/pip freeze > evidence/linux-dbus/python-package-versions.txt
+          # Public pinned executable/dependency bits, not authority/configuration.
+          find /opt/rightclick-coexistence-tools /opt/rightclick-coexistence-python -type d -exec chmod 755 {} +
+          find /opt/rightclick-coexistence-python -type f -exec chmod a+r {} +
+          echo 'RIGHTCLICK_COEXISTENCE_PYTHON=/opt/rightclick-coexistence-python/bin/python' >> "$GITHUB_ENV"
+      - name: Compile actual component and prove writer access
+        run: |
+          set -euo pipefail
+          chmod 555 "$RIGHTCLICK_WASM_RUNTIME" "$RIGHTCLICK_WASM_TOOLS"
+          "$RIGHTCLICK_WASM_TOOLS" parse examples/universal-descriptors/fingerprint.component.wat -o /opt/rightclick-coexistence-tools/fingerprint.component.wasm
+          chmod 444 /opt/rightclick-coexistence-tools/fingerprint.component.wasm
+          echo 'RIGHTCLICK_WASM_COMPONENT=/opt/rightclick-coexistence-tools/fingerprint.component.wasm' >> "$GITHUB_ENV"
+          runuser -u rcwriter -- "$RIGHTCLICK_WASM_RUNTIME" --version
+          runuser -u rcwriter -- "$RIGHTCLICK_WASM_TOOLS" --version
+          runuser -u rcwriter -- /opt/rightclick-coexistence-python/bin/python -c 'import cryptography, graphql, grpc, grpc_reflection, mcp'
+          PYTHONDONTWRITEBYTECODE=1 python3 -W error::ResourceWarning -m unittest discover \
+            -s scripts/tests -p test_dbus_coexistence_hook.py -v \
+            2>&1 | tee evidence/linux-dbus/coexistence-adapter-controls.log
       - name: Typed compiler and genuine final-gate owner controls
         env:
           RIGHTCLICK_TEST_DBUS_NATIVE: '1'
@@ -65,7 +89,7 @@ jobs:
       - name: Actual seven operations, automatic discovery and independent native effect
         run: |
           set -euo pipefail
-          python3 scripts/acceptance-linux-dbus.py .build/release/rightclick evidence/linux-dbus/public-mcp
+          python3 scripts/acceptance-linux-dbus.py .build/release/rightclick evidence/linux-dbus/public-mcp --coexistence
           git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code
       - name: Preserve public evidence
         if: always()
