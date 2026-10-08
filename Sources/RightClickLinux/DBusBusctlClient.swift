@@ -15,7 +15,7 @@ final class DBusBusctlClient: DBusTransport {
     init(address: String, executable: URL) throws {
         guard Self.validAddress(address) else { throw CapabilityArtifactResolutionError.invalidDescriptor("D-Bus requires a single native Unix session address") }
         self.address = address
-        self.executable = try CapabilityExecutableProcess(source: executable, maximumExecutableBytes: 16_777_216)
+        self.executable = try CapabilityExecutableProcess(executable: executable, maximumExecutableBytes: 16_777_216)
     }
     static func validAddress(_ value: String) -> Bool {
         guard value.utf8.count <= 4096, !value.utf8.contains(0), value.rangeOfCharacter(from: .controlCharacters) == nil else { return false }
