@@ -1,0 +1,65 @@
+name: v0.2.3 fast exact-head validation
+
+on:
+  push:
+    branches:
+      - validation/v0.2.3-fast-20261008
+    paths:
+      - .github/workflows/v023-fast-validation.yml
+
+permissions:
+  contents: write
+
+jobs:
+  macos:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: d063fa35f8507adec9ea0c584f7fb96fd9822c3e
+          fetch-depth: 0
+      - run: test "$(git rev-parse HEAD)" = "d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+      - run: swift test
+      - run: swift build -c release
+      - run: python3 scripts/ci/queue_cleanup_policy.py --self-test
+      - run: git diff --exit-code
+
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: d063fa35f8507adec9ea0c584f7fb96fd9822c3e
+          fetch-depth: 0
+      - run: test "$(git rev-parse HEAD)" = "d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+      - run: swift test
+      - run: swift build -c release
+      - run: python3 scripts/ci/queue_cleanup_policy.py --self-test
+      - run: git diff --exit-code
+
+  evidence:
+    if: always()
+    needs: [macos, linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: validation/v0.2.3-fast-20261008
+          fetch-depth: 0
+      - name: Write durable result
+        env:
+          MACOS_RESULT: ${{ needs.macos.result }}
+          LINUX_RESULT: ${{ needs.linux.result }}
+        run: |
+          set -euo pipefail
+          result=FAIL
+          if [ "$MACOS_RESULT" = "success" ] && [ "$LINUX_RESULT" = "success" ]; then result=PASS; fi
+          mkdir -p validation-results
+          printf 'candidate=d063fa35f8507adec9ea0c584f7fb96fd9822c3e\nmacos=%s\nlinux=%s\nresult=%s\n' "$MACOS_RESULT" "$LINUX_RESULT" "$result" > validation-results/v0.2.3-fast-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add validation-results/v0.2.3-fast-d063fa35f8507adec9ea0c584f7fb96fd9822c3e.txt
+          git commit -m "validation(v0.2.3-fast): $result exact head d063fa35f8507adec9ea0c584f7fb96fd9822c3e"
+          git push origin HEAD:validation/v0.2.3-fast-20261008
