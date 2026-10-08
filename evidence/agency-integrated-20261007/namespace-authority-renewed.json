@@ -1,0 +1,18 @@
+{
+  "source": "Kubernetes TokenRequest",
+  "reference": "/private/tmp/rightclick-proof-lab-20261007/kubernetes-token",
+  "kubeconfigReference": "/private/tmp/rightclick-proof-lab-20261007/scoped.kubeconfig",
+  "principal": "system:serviceaccount:rightclick-proof:rightclick-proof",
+  "authority": "namespace:rightclick-proof:configmaps:get,create,update,patch,delete",
+  "expiry": "2026-10-07T16:53:44+00:00",
+  "server": "https://127.0.0.1:16443",
+  "observerCredential": {
+    "source": "Kubernetes TokenRequest",
+    "reference": "/private/tmp/rightclick-proof-lab-20261007/kubernetes-observer-token",
+    "kubeconfigReference": "/private/tmp/rightclick-proof-lab-20261007/observer.kubeconfig",
+    "principal": "system:serviceaccount:rightclick-proof:rightclick-proof-observer",
+    "authority": "namespace:rightclick-proof:configmaps:get",
+    "expiry": "2026-10-07T16:53:44+00:00",
+    "server": "https://127.0.0.1:16443"
+  }
+}

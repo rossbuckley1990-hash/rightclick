@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 import CoreFoundation
 
@@ -80,3 +81,5 @@ enum ServiceContext {
         }
     }
 }
+
+#endif

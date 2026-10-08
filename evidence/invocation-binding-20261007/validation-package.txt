@@ -1,0 +1,4 @@
+Native macOS Swift validation package copies production Sources/RightClickCore, without unrelated SwiftMCP/gRPC dependencies. Base copied before implementation; four edited Core files recopied only for GREEN. Package definition:
+// swift-tools-version: 6.0
+import PackageDescription
+let package = Package(name:"SecurityInvocationValidation",platforms:[.macOS(.v14)],targets:[.target(name:"RightClickCore",swiftSettings:[.swiftLanguageMode(.v5)],linkerSettings:[.linkedFramework("AppKit")]),.testTarget(name:"RightClickCoreTests",dependencies:["RightClickCore"],swiftSettings:[.swiftLanguageMode(.v5)])])

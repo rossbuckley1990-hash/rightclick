@@ -1,5 +1,7 @@
 import Foundation
+#if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers
+#endif
 
 public struct ContentItem: Codable, Sendable, Equatable {
     public var kind: String
@@ -34,10 +36,12 @@ public struct ContentItem: Codable, Sendable, Equatable {
         self.isDirectory = isDirectory
     }
 
+#if canImport(UniformTypeIdentifiers)
     public var utType: UTType? {
         guard let typeIdentifier else { return nil }
         return UTType(typeIdentifier)
     }
+#endif
 }
 
 public enum ContentParser {
@@ -51,8 +55,8 @@ public enum ContentParser {
                 kind: "web_url",
                 display: web.absoluteString,
                 url: web.absoluteString,
-                typeIdentifier: UTType.url.identifier,
-                typeDescription: UTType.url.localizedDescription
+                typeIdentifier: "public.url",
+                typeDescription: "URL"
             )
         }
         let expanded = (trimmed as NSString).expandingTildeInPath
@@ -68,13 +72,15 @@ public enum ContentParser {
             kind: "text",
             display: trimmed,
             text: trimmed,
-            typeIdentifier: UTType.plainText.identifier,
-            typeDescription: UTType.plainText.localizedDescription,
+            typeIdentifier: "public.plain-text",
+            typeDescription: "Plain text",
             byteCount: trimmed.lengthOfBytes(using: .utf8)
         )
     }
 
     public static func fileItem(url: URL, isDirectory: Bool) -> ContentItem {
+#if canImport(UniformTypeIdentifiers)
+
         let values = try? url.resourceValues(forKeys: [
             .contentTypeKey, .fileSizeKey, .localizedTypeDescriptionKey, .isDirectoryKey,
         ])
@@ -106,12 +112,24 @@ public enum ContentParser {
             byteCount: values?.fileSize,
             isDirectory: isDirectory || resolved.conforms(to: .folder)
         )
-    }
 
+#else
+        let values = try? url.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey])
+        let type = PortableContentType.forExtension(url.pathExtension, directory: isDirectory)
+        return ContentItem(kind: type.kind, display: url.path, path: url.path,
+            typeIdentifier: type.identifier, typeDescription: type.description,
+            byteCount: values?.fileSize, isDirectory: isDirectory)
+
+#endif
+}
+
+#if canImport(UniformTypeIdentifiers)
     public static func conforms(_ item: ContentItem, to other: UTType) -> Bool {
         guard let type = item.utType else { return false }
         return type.conforms(to: other) || type.identifier == other.identifier
     }
+
+#endif
 
     private static func webURL(_ raw: String) -> URL? {
         guard let url = URL(string: raw), let scheme = url.scheme?.lowercased(), scheme == "http" || scheme == "https" else {
@@ -121,7 +139,7 @@ public enum ContentParser {
     }
 
     private static func looksLikePath(_ raw: String) -> Bool {
-        raw.hasPrefix("/") || raw.hasPrefix("~") || raw.hasPrefix("./") || raw.hasPrefix("../")
+        RuntimePlatform.isAbsolutePath(raw) || raw.hasPrefix("~") || raw.hasPrefix("./") || raw.hasPrefix("../")
     }
 }
 

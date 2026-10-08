@@ -59,7 +59,7 @@ final class CapabilityAcquisitionLifecycleTests: XCTestCase {
             .appendingPathComponent("scripts/proof-discovery-provider.py")
         func start(_ port: Int, operation: String) throws -> (Process, Int) {
             let process = Process()
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
+            process.executableURL = try NativeHTTPFixture.python()
             process.arguments = [script.path, "--port", String(port), "--operation", operation,
                                  "--evidence", requests.path]
             let pipe = Pipe()

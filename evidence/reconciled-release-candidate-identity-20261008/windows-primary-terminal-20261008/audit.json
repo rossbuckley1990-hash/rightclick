@@ -1,0 +1,160 @@
+{
+  "schema": "rightclick-windows-primary-terminal-audit/1",
+  "recordedUTC": "2026-10-07T23:42:42.132031+00:00",
+  "runID": 37699465385,
+  "jobID": 113059171723,
+  "diagnosticHead": "28a801d598e21e14a75ff3cf9940919c190aaeaf",
+  "releaseSourceClosure": "39b37afbcc288eb07c5fe341b506f35ebb77e361",
+  "artifactID": 11519055090,
+  "artifactZipSHA256": "4fbcfb147b342d7a4fb2b630234309e1d8ddba9da644f43a203b44b683f7ee39",
+  "privateTerminalJobLogSHA256": "fef82ea51302e9434777d5fa1481f1d0882d1cb14e3faa1ef45fe624adeb19af",
+  "phase": {
+    "schemaVersion": 1,
+    "state": "TIMED_OUT",
+    "platform": "win32",
+    "startedUTC": "2026-10-07T23:15:15.006783+00:00",
+    "deadlineSeconds": 1440.0,
+    "heartbeatSeconds": 10.0,
+    "rootPID": 96,
+    "exitCode": 124,
+    "childExitCode": 124,
+    "outputDrainCompleted": true,
+    "outputBytes": 22,
+    "lastOutputElapsedSeconds": 98.422,
+    "drainError": null,
+    "completedUTC": "2026-10-07T23:39:15.012276+00:00",
+    "elapsedSeconds": 1440.0
+  },
+  "eventCount": 150,
+  "xctestFirstSample": {
+    "elapsedSeconds": 100.343,
+    "utc": "2026-10-07T23:16:55.357949+00:00",
+    "process": {
+      "creationFileTime100ns": 134358886139779905,
+      "imageName": "rightclick-mcpPackageTests.xctest",
+      "kernelTime100ns": 1250000,
+      "pid": 9468,
+      "root": false,
+      "userTime100ns": 781250
+    }
+  },
+  "xctestLastSample": {
+    "elapsedSeconds": 170.593,
+    "utc": "2026-10-07T23:18:05.601420+00:00",
+    "process": {
+      "creationFileTime100ns": 134358886139779905,
+      "imageName": "rightclick-mcpPackageTests.xctest",
+      "kernelTime100ns": 34062500,
+      "pid": 9468,
+      "root": false,
+      "userTime100ns": 148750000
+    }
+  },
+  "xctestAliveSampleCount": 8,
+  "firstLaterSampleWithoutXCTest": {
+    "drainError": null,
+    "elapsedSeconds": 180.625,
+    "event": "heartbeat",
+    "lastOutputElapsedSeconds": 98.422,
+    "outputBytes": 22,
+    "ownedProcesses": [
+      {
+        "creationFileTime100ns": 134358885150148781,
+        "imageName": "swift.exe",
+        "kernelTime100ns": 625000,
+        "pid": 96,
+        "root": true,
+        "userTime100ns": 468750
+      },
+      {
+        "creationFileTime100ns": 134358886881044454,
+        "imageName": "python.exe",
+        "kernelTime100ns": 156250,
+        "pid": 3876,
+        "root": false,
+        "userTime100ns": 468750
+      },
+      {
+        "creationFileTime100ns": 134358886881983088,
+        "imageName": "python.exe",
+        "kernelTime100ns": 0,
+        "pid": 8752,
+        "root": false,
+        "userTime100ns": 1093750
+      },
+      {
+        "creationFileTime100ns": 134358885150939400,
+        "imageName": "swift-test.exe",
+        "kernelTime100ns": 17031250,
+        "pid": 10196,
+        "root": false,
+        "userTime100ns": 852812500
+      }
+    ],
+    "rootPID": 96,
+    "utc": "2026-10-07T23:18:15.635212+00:00"
+  },
+  "deadlineSample": {
+    "elapsedSeconds": 1440.0,
+    "event": "deadline_reached",
+    "ownedProcesses": [
+      {
+        "creationFileTime100ns": 134358885150148781,
+        "imageName": "swift.exe",
+        "kernelTime100ns": 625000,
+        "pid": 96,
+        "root": true,
+        "userTime100ns": 468750
+      },
+      {
+        "creationFileTime100ns": 134358886881044454,
+        "imageName": "python.exe",
+        "kernelTime100ns": 156250,
+        "pid": 3876,
+        "root": false,
+        "userTime100ns": 468750
+      },
+      {
+        "creationFileTime100ns": 134358886881983088,
+        "imageName": "python.exe",
+        "kernelTime100ns": 0,
+        "pid": 8752,
+        "root": false,
+        "userTime100ns": 1093750
+      },
+      {
+        "creationFileTime100ns": 134358885150939400,
+        "imageName": "swift-test.exe",
+        "kernelTime100ns": 17031250,
+        "pid": 10196,
+        "root": false,
+        "userTime100ns": 852812500
+      }
+    ],
+    "rootPID": 96,
+    "utc": "2026-10-07T23:39:15.012276+00:00"
+  },
+  "findings": {
+    "innerSupervisorExit124": true,
+    "outerPowerShellStepExit": 1,
+    "ownedCleanupCompletedRecorded": true,
+    "rootReapedAndOutputDrainCompleted": true,
+    "drainError": null,
+    "recoveredXCTestCaseOrSuiteRows": 0,
+    "recoveredExecutionSummaryRows": 0,
+    "testExecutableDescendantExitCodeRetained": false,
+    "naturalSwiftPMExitStatusProved": false,
+    "postCleanupMembershipSnapshotRetained": false,
+    "normalWindowsFullSuitePASS": false,
+    "releaseAndProviderSkipped": true,
+    "causeEstablished": false
+  },
+  "hypothesis": "Surviving owned Python fixtures may hold SwiftPM test-output pipe handles. The trace supports investigating this; it does not prove handle ownership, the earlier XCTest exit status, or a specific test failure.",
+  "privacy": {
+    "retainedMetadataForbiddenKeysAbsent": true,
+    "rawPrivateFixtureStderrRetained": false,
+    "credentialsOrPrivateKeysRetained": false,
+    "actualProcessArgumentsOrEnvironmentRetained": false,
+    "privateRawGitHubJobLogExcludedFromManifest": true
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "scope": "Intermediate candidate: 137 controls;6 failures. UTF8 owner test exposed canonical-equivalent owner IDs being removed by String-keyed counts. Duplicate-owner test erroneously expected discovery to retain an already quarantined owner; corrected to preserve the existing fail-closed guard. No real substrate or GREEN claim.",
+  "records": [
+    {
+      "source": "Sources/RightClickCore/CapabilitySelection.swift",
+      "sourceSHA256": "2db962df6416205f3a5abb71e70c5a15bdad8895b4c24874a8531301fa3c19cc",
+      "artifact": "Sources--RightClickCore--CapabilitySelection.swift.gz"
+    },
+    {
+      "source": "Sources/RightClickCore/CapabilityEngine.swift",
+      "sourceSHA256": "945e9104d4702996faf301cc8d9ac68824c0aa70a31f101be7e72768d0c4e917",
+      "artifact": "Sources--RightClickCore--CapabilityEngine.swift.gz"
+    },
+    {
+      "source": "Tests/RightClickCoreTests/ExecutionPreflightIntegrationTests.swift",
+      "sourceSHA256": "28addc6047fc5a69b55690859aa344097286748a40f37f0767c2fc93140a2a54",
+      "artifact": "Tests--RightClickCoreTests--ExecutionPreflightIntegrationTests.swift.gz"
+    },
+    {
+      "source": "actual control output",
+      "sourceSHA256": "c9b0cdf83bfe38e69f70d25aa10f4f6bfc8009cc74377db3ba06ed62820c270e",
+      "artifact": "controls.log.gz"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+warning: 'rightclick-journal-policy-race-20261007': found 4 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /private/tmp/rightclick-journal-policy-race-20261007/Tests/RightClickCoreTests/Fixtures/InstalledRuntime022Identity.json
+    /private/tmp/rightclick-journal-policy-race-20261007/Tests/RightClickCoreTests/Fixtures/WindowsActualAcknowledgementDeclaration.json
+    /private/tmp/rightclick-journal-policy-race-20261007/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /private/tmp/rightclick-journal-policy-race-20261007/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/12] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (9.56s)
+Test Suite 'Selected tests' started at 2026-10-07 20:02:12.737.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 20:02:12.737.
+Test Suite 'RCIRProductionDispatchTests' started at 2026-10-07 20:02:12.737.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testJournalIntentPolicyRevocationDeniesActualHTTPBeforeEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testJournalIntentPolicyRevocationDeniesActualHTTPBeforeEffect]' passed (0.208 seconds).
+Test Suite 'RCIRProductionDispatchTests' passed at 2026-10-07 20:02:12.946.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.208 (0.208) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 20:02:12.946.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.208 (0.208) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 20:02:12.946.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.208 (0.209) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

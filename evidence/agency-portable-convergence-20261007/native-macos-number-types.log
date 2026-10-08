@@ -1,0 +1,424 @@
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/14] Write sources
+[4/14] Write swift-version--58304C5D6DBC2206.txt
+[6/11] Compiling RightClickCore CapabilityInterface.swift
+[7/13] Compiling RightClickCore CapabilityABI.swift
+[8/13] Emitting module RightClickCore
+[9/17] Compiling RightClickCore CapabilityArtifactSnapshot.swift
+[10/17] Compiling RightClickCore KafkaCapabilityArtifactResolver.swift
+[11/22] Compiling RightClickCore RCIRHTTPObservation.swift
+[12/22] Compiling RightClickCore WASMCapabilityArtifactResolver.swift
+[13/22] Compiling RightClickCore KubernetesCapabilityArtifactResolver.swift
+[14/22] Compiling RightClickCore MCPCapabilityArtifactResolver.swift
+[15/31] Compiling RightClickCore RCIRExecutionHost.swift
+[16/31] Compiling RightClickCore RCIRHostObservation.swift
+[17/31] Compiling RightClickCore RCIRSignedReceipt.swift
+[18/31] Compiling RightClickCore RCIRUnaryInvocation.swift
+[19/31] Compiling RightClickCore A2AReflector.swift
+[20/31] Compiling RightClickCore BonjourOpenAPISource.swift
+[21/31] Compiling RightClickCore CapabilityABIAdapter.swift
+[22/31] Compiling RightClickCore CapabilityArtifactResolver.swift
+[23/31] Compiling RightClickCore CapabilityEngine.swift
+[24/31] Compiling RightClickCore CapabilityRuntimeDefaults.swift
+[25/31] Compiling RightClickCore ConfiguredOpenAPISource.swift
+[26/31] Compiling RightClickCore OpenAPIReflector.swift
+[27/31] Compiling RightClickCore RCIR.swift
+[28/31] Compiling RightClickCore RCIRDeferredExecution.swift
+[29/86] Emitting module RightClickMCP
+[30/86] Compiling RightClickMCP ModernMCPStdioTransport.swift
+[31/86] Compiling RightClickCoreTests A2ARealLifecycleTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[32/86] Compiling RightClickCoreTests ARDAcquisitionGateTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Sources/RightClickMCP/Federation.swift:965:29: warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 963 |                     .data(
+ 964 |                         for:
+ 965 |                             request
+     |                             `- warning: reference to captured var 'request' in concurrently-executing code; this is an error in the Swift 6 language mode [#SendableClosureCaptures]
+ 966 |                     )
+ 967 | 
+
+[#SendableClosureCaptures]: <https://docs.swift.org/compiler/documentation/diagnostics/sendable-closure-captures>
+[33/87] Emitting module RightClickCoreTests
+[34/112] Compiling RightClickMCP Server.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Sources/RightClickMCP/Server.swift:316:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+314 |                 transport: transport
+315 |             )
+316 |             return .init(content: [.text(text)], isError: false)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+317 |         } catch {
+318 |             return .init(content: [.text(String(describing: error))], isError: true)
+
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Sources/RightClickMCP/Server.swift:318:37: warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+316 |             return .init(content: [.text(text)], isError: false)
+317 |         } catch {
+318 |             return .init(content: [.text(String(describing: error))], isError: true)
+    |                                     `- warning: 'text(_:metadata:)' is deprecated: Use .text(text:annotations:_meta:) instead. [#DeprecatedDeclaration]
+319 |         }
+320 |     }
+
+[#DeprecatedDeclaration]: <https://docs.swift.org/compiler/documentation/diagnostics/deprecated-declaration>
+[35/128] Compiling RightClickMCPTests FederationTests.swift
+[36/128] Emitting module RightClickMCPTests
+[37/128] Compiling RightClickMCPTests MCPInitializationCompatibilityTests.swift
+[38/128] Compiling RightClickCoreTests OpenAPIAuthorityTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[39/128] Compiling RightClickCoreTests OpenAPIRealProviderAcceptanceTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[40/128] Compiling RightClickCoreTests OpenAPIReflectorTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[41/128] Compiling RightClickCoreTests OutcomeVerifierTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[42/128] Compiling RightClickCoreTests PolicyTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[43/128] Compiling RightClickCoreTests PortableRuntimeTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[44/128] Compiling RightClickCoreTests ProductSurfaceRuntimeTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[45/128] Compiling RightClickCoreTests RCIRBoundaryTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[46/128] Compiling RightClickCoreTests RCIRDeferredCapacityTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[47/128] Compiling RightClickCoreTests RCIRDeferredProductionTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[48/128] Compiling RightClickCoreTests RCIRHTTPJSONObservationTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[49/128] Compiling RightClickCoreTests RCIRIntegrationTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[50/128] Compiling RightClickCoreTests RCIRInvocationBindingTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[51/128] Compiling RightClickCoreTests RCIRInvocationIsolationTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[52/128] Compiling RightClickCoreTests RCIRNoOutputTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[53/128] Compiling RightClickCoreTests RCIRProductionDispatchTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[54/128] Compiling RightClickCoreTests RCIRStructuredObservationTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[55/128] Compiling RightClickCoreTests RCIRTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[56/128] Compiling RightClickCoreTests RCIRUnaryAdmissionTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[57/128] Compiling RightClickCoreTests RCIRUnitCompletionTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[58/128] Compiling RightClickCoreTests ServiceContextTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[59/128] Compiling RightClickCoreTests ServiceOutcomeTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[60/128] Compiling RightClickCoreTests SharingExecutionTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[61/128] Compiling RightClickCoreTests UniversalReflectorContractTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[62/128] Compiling RightClickCoreTests VerificationIntegrationTests.swift
+/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-agency-portable/Tests/RightClickCoreTests/PortableRuntimeTests.swift:11:9: error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+ 9 |         XCTAssertEqual(values.map(CapabilityJSONNumber.isBoolean), [true, true, false, false, false, false])
+10 |         let typed = try CapabilityJSON.value(values)
+11 |         XCTAssertEqual(typed, .array([.boolean(true), .boolean(false), .integer(0), .integer(1), .integer(-1), .number(1.5)]))
+   |         `- error: global function 'XCTAssertEqual(_:_:_:file:line:)' requires that 'CapabilityValue' conform to 'Equatable'
+12 |         for number in [NSNumber(value: true), NSNumber(value: false)] {
+13 |             XCTAssertThrowsError(try CapabilitySchema.stringContract(["type": "string", "minLength": number]))
+
+XCTest.XCTAssertEqual:1:13: note: where 'T' = 'CapabilityValue'
+1 | public func XCTAssertEqual<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line) where T : Equatable
+  |             `- note: where 'T' = 'CapabilityValue'
+[63/128] Compiling RightClickCLI ChatGPTOnboardingTransaction.swift
+[64/128] Compiling RightClickCLI ClientRegistry.swift
+[65/128] Compiling RightClickCLI CodexClientAdapter.swift
+[66/128] Compiling RightClickCLI LocalOnboarding.swift
+[67/128] Compiling RightClickCLI NativeRegistrationBackend.swift
+[68/128] Compiling RightClickCLI OnboardingEngine.swift
+[69/128] Compiling RightClickCLI AuthorityConfigurationCLI.swift
+[70/128] Compiling RightClickCLI BridgeRuntime.swift
+[71/128] Compiling RightClickCLI ChatGPTBridge.swift
+[72/128] Compiling RightClickCLI ChatGPTBridgeInstaller.swift
+[73/128] Compiling RightClickCLI ChatGPTLiveAttestation.swift
+[74/128] Compiling RightClickCLI ChatGPTOnboarding.swift
+[75/128] Emitting module RightClickCLI
+[76/134] Compiling RightClickCoreTests GRPCReflectorTests.swift
+[77/134] Compiling RightClickCoreTests GraphQLReflectorTests.swift
+[78/134] Compiling RightClickCoreTests HostProtectedReferenceTests.swift
+[79/134] Compiling RightClickCoreTests InvocationBindingTests.swift
+[80/134] Compiling RightClickCoreTests KafkaCapabilityTests.swift
+[81/134] Compiling RightClickCoreTests KubernetesCapabilityArtifactTests.swift
+[82/134] Compiling RightClickCoreTests MOAT004G1AcquisitionTests.swift
+[83/134] Compiling RightClickCoreTests MOAT004G2SplitOriginTests.swift
+[84/134] Compiling RightClickCoreTests MOAT004G3ZeroArgumentGETTests.swift
+[85/134] Compiling RightClickCoreTests MOAT004G4JSONSyntaxFallbackTests.swift
+[86/134] Compiling RightClickCoreTests MOAT004G5ExternalBearerAuthorityTests.swift
+[87/134] Compiling RightClickCoreTests MOAT004G6RealGitHubAuthenticatedCompatibilityTests.swift
+[88/134] Compiling RightClickCoreTests MOAT005G1PathAndJSONBodyTests.swift
+[89/134] Compiling RightClickCoreTests MOAT005G2MultiplePathArgumentsTests.swift
+[90/134] Compiling RightClickCoreTests MOAT005G3GitHubRequestSchemaTests.swift
+[91/134] Compiling RightClickCoreTests MOAT005G4MutationJSONResponseFallbackTests.swift
+[92/134] Compiling RightClickCoreTests MOAT005G5FullFrozenGitHubContractTests.swift
+[93/134] Compiling RightClickCoreTests MOAT005G6MultiSegmentPathTests.swift
+[94/134] Compiling RightClickCoreTests NativeBoundedHTTPTests.swift
+[95/134] Compiling RightClickCoreTests NativeHTTPFixture.swift
+[96/134] Compiling RightClickCoreTests NetworkOriginAuthorityTests.swift
+[97/134] Compiling RightClickCoreTests OAuthOIDCAuthorityTests.swift
+[98/134] Compiling RightClickCoreTests OpenAPIAcknowledgementTests.swift
+[99/134] Compiling RightClickCoreTests OpenAPIAcquisitionBoundsTests.swift
+[100/134] Compiling RightClickCoreTests OpenAPIAuthorityManagementTests.swift
+[113/134] Compiling RightClickCLI OpenAIPluginSetup.swift
+[114/134] Compiling RightClickCLI ProviderConfigurationCLI.swift
+[115/134] Compiling RightClickCLI Setup.swift
+[116/134] Compiling RightClickCLI SetupState.swift
+[117/134] Compiling RightClickCLI StableEntrypoint.swift
+[118/134] Compiling RightClickCLI main.swift
+[119/134] Compiling RightClickCoreTests ConfiguredOpenAPISourceTests.swift
+[120/134] Compiling RightClickCoreTests DispatchContractBindingTests.swift
+[121/134] Compiling RightClickCoreTests EngineTests.swift
+[122/134] Compiling RightClickCoreTests ExecutionCapacityAdmissionTests.swift
+[123/134] Compiling RightClickCoreTests ExecutionRetentionTests.swift
+[124/134] Compiling RightClickCoreTests GRPCRealProviderAcceptanceTests.swift
+[125/134] Compiling RightClickCoreTests GRPCReflectionTransportTests.swift
+error: fatalError

@@ -84,7 +84,7 @@ struct GRPCWireReader {
         var shift:
             UInt64 = 0
 
-        for _ in 0..<10 {
+        for offset in 0..<10 {
             guard
                 index < bytes.count
             else {
@@ -94,6 +94,13 @@ struct GRPCWireReader {
 
             let byte =
                 bytes[index]
+
+            guard
+                offset != 9 || byte <= 1
+            else {
+                throw GRPCWireCodecError
+                    .malformedVarint
+            }
 
             index += 1
 
@@ -217,8 +224,8 @@ struct GRPCWireReader {
     ) throws -> [UInt8] {
         guard
             count >= 0,
-            index + count
-                <= bytes.count
+            index <= bytes.count,
+            count <= bytes.count - index
         else {
             throw GRPCWireCodecError
                 .truncatedField

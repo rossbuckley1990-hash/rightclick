@@ -1,0 +1,26 @@
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	﻿2026-10-07T13:07:01.4591831Z ##[group]Run ./scripts/proof-lab/windows-lab.ps1
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:01.4592388Z ^[[36;1m./scripts/proof-lab/windows-lab.ps1^[[0m
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:01.4694995Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:01.4695553Z ##[endgroup]
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.3956849Z Traceback (most recent call last):
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.3957618Z   File "D:\a\rightclick\rightclick\scripts\proof-lab\windows-verify.py", line 39, in <module>
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.3958266Z     assert effect["platform"] == "Windows" and effect["principal"] == "rightclick-proof"
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.4013324Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.4013825Z AssertionError
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.6530472Z ^[[31;1mException: ^[[0mD:\a\rightclick\rightclick\scripts\proof-lab\windows-lab.ps1:42^[[0m
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.6531471Z ^[[31;1m^[[0m^[[36;1mLine |^[[0m
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.6532208Z ^[[31;1m^[[0m^[[36;1m^[[36;1m  42 | ^[[0m … TCODE -ne 0) { ^[[36;1mthrow 'Native Windows readiness verification failed'^[[0m }^[[0m
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.6533165Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m     | ^[[31;1m                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^[[0m
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.6533841Z ^[[31;1m^[[0m^[[36;1m^[[36;1m^[[0m^[[36;1m^[[0m^[[36;1m^[[31;1m^[[31;1m^[[36;1m     | ^[[31;1mNative Windows readiness verification failed^[[0m
+native-windows	Real Windows identity, scoped effect, independent readback and denied administrator resource	2026-10-07T13:07:50.6749850Z ##[error]Process completed with exit code 1.
+native-windows	Preserve non-secret native Windows readiness evidence	﻿2026-10-07T13:07:50.7024646Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.7025331Z with:
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.7025661Z   name: proof-lab-native-windows
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.7026024Z   path: evidence/proof-lab/*.json
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.7026335Z   if-no-files-found: error
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.7026674Z   compression-level: 6
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.7026966Z   overwrite: false
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.7027240Z   include-hidden-files: false
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.7027548Z   archive: true
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.7027840Z ##[endgroup]
+native-windows	Preserve non-secret native Windows readiness evidence	2026-10-07T13:07:50.8640811Z ##[error]No files were found with the provided path: evidence/proof-lab/*.json. No artifacts will be uploaded.

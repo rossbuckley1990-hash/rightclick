@@ -1,0 +1,46 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/12] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (0.50s)
+Test Suite 'Selected tests' started at 2026-10-07 15:19:04.743.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 15:19:04.744.
+Test Suite 'ExecutionCapacityAdmissionTests' started at 2026-10-07 15:19:04.744.
+Test Case '-[RightClickCoreTests.ExecutionCapacityAdmissionTests testFullActiveHistoryRefusesBothEngineEntryPointsBeforeProviderStart]' started.
+Test Case '-[RightClickCoreTests.ExecutionCapacityAdmissionTests testFullActiveHistoryRefusesBothEngineEntryPointsBeforeProviderStart]' passed (0.924 seconds).
+Test Case '-[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints]' started.
+Test Case '-[RightClickCoreTests.ExecutionCapacityAdmissionTests testThrowingBeginReleasesReservationForBothEngineEntryPoints]' passed (0.009 seconds).
+Test Suite 'ExecutionCapacityAdmissionTests' passed at 2026-10-07 15:19:05.677.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.932 (0.933) seconds
+Test Suite 'ExecutionRetentionTests' started at 2026-10-07 15:19:05.677.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testActualLargeEvidenceAndRecordFloodRespectIndependentBounds]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testActualLargeEvidenceAndRecordFloodRespectIndependentBounds]' passed (0.027 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testByteCapacityRefusalPreservesEveryExistingActiveReservation]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testByteCapacityRefusalPreservesEveryExistingActiveReservation]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testBytePressureEvictsOldestTerminalAndReadsNeverRefreshOrder]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testBytePressureEvictsOldestTerminalAndReadsNeverRefreshOrder]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testCompactedRCIRAcceptedTaskRetainsPendingOwnershipUntilTerminalSnapshot]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testCompactedRCIRAcceptedTaskRetainsPendingOwnershipUntilTerminalSnapshot]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testConcurrentUpdatesKeepSynchronizedAccountingAndActiveCallbacks]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testConcurrentUpdatesKeepSynchronizedAccountingAndActiveCallbacks]' passed (0.059 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testLargeActualSignedReceiptCompactionRetainsDigestWithoutInventingReceipt]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testLargeActualSignedReceiptCompactionRetainsDigestWithoutInventingReceipt]' passed (0.006 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testMonotonicExpiryIgnoresRegressionAndUpdatesReadsDoNotExtendTTL]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testMonotonicExpiryIgnoresRegressionAndUpdatesReadsDoNotExtendTTL]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testStartedReservationsSurviveExpiryAndFloodThenReleaseAtTerminalCallback]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testStartedReservationsSurviveExpiryAndFloodThenReleaseAtTerminalCallback]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testUnconfirmedAwaitingUserDoesNotReserveActiveCapacity]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testUnconfirmedAwaitingUserDoesNotReserveActiveCapacity]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testUpdateReaccountsLargeAndShrinkingOutputsAndCannotMoveIdentity]' started.
+Test Case '-[RightClickCoreTests.ExecutionRetentionTests testUpdateReaccountsLargeAndShrinkingOutputsAndCannotMoveIdentity]' passed (0.002 seconds).
+Test Suite 'ExecutionRetentionTests' passed at 2026-10-07 15:19:05.779.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 0.102 (0.103) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 15:19:05.779.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 1.034 (1.036) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 15:19:05.780.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 1.034 (1.036) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

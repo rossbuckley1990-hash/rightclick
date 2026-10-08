@@ -1,0 +1,178 @@
+{
+  "reviewer": "stream_verifier",
+  "audit": "PASS_TESTED_PUBLIC_UNARY_PARITY",
+  "sourceRefs": {
+    "stable0.2.2": "7a935fea719601492fe05beba1a4223c283eb350",
+    "releaseCandidate": "bd5ed53f02c5cf76fc35796e665ef2c076296dd2"
+  },
+  "files": {
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickCore/BonjourGRPCSource.swift": {
+      "sha256": "e3d91724b7dbc3732e01741a58a3a9f04ad672b69788c77eac129073bfaee855",
+      "bytes": 14575
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickCore/GRPCReflector.swift": {
+      "sha256": "8e51d5240c206f1332c9ee652e989c74f31ca7726f3507a3fac48d7fb789ffb2",
+      "bytes": 57666
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickCore/GRPCReflectionTransport.swift": {
+      "sha256": "873e25dac9017a462b7af026528fca8e0b74f66db34d3966092e4c779cb47199",
+      "bytes": 22245
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickCore/GRPCWireCodec.swift": {
+      "sha256": "09a3bf2620ff85beb881adf4c95dc07218ebdf41ab3808bd920b9031572dd0cd",
+      "bytes": 7280
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/stable0.2.2/Sources/RightClickCore/ProductSurface.swift": {
+      "sha256": "6846dd82cdd16d0c008658a31f8185e9addfd5606edc3857c04be34b94b8d92c",
+      "bytes": 6383
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickCore/BonjourGRPCSource.swift": {
+      "sha256": "b348a26a0ff03e155eeab1739895ae0e8c28908264973f9d9feacdb576fd0d4b",
+      "bytes": 14597
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickCore/GRPCReflector.swift": {
+      "sha256": "5a247a94a05f4143b73d021218ed2c20cfb623ee03af5e0128454b0d8974af3d",
+      "bytes": 60146
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickCore/GRPCReflectionTransport.swift": {
+      "sha256": "22e90e7c32cf2ea201fdb3a6327cc23966cf10d88c5d484fdb49fa0973c3c523",
+      "bytes": 22529
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickCore/GRPCWireCodec.swift": {
+      "sha256": "09a3bf2620ff85beb881adf4c95dc07218ebdf41ab3808bd920b9031572dd0cd",
+      "bytes": 7280
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/releaseCandidate/Sources/RightClickCore/ProductSurface.swift": {
+      "sha256": "d2e00ad461b1d78ba4238ea4e09474d4daa525e0b1c3cb3ff7705da362428610",
+      "bytes": 8493
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/grpc-stream-core7-proof.py": {
+      "sha256": "7f6f90ce11b373126cf6785ea252aa72b07ccfb7b04082eeb770b6545afab2a6",
+      "bytes": 14587
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-snapshots/grpc-stream-pressure-provider.py": {
+      "sha256": "278fa24f316663b3c37936f8940da5f63ce5e2b005d68c5571deaf097cddaee1",
+      "bytes": 9666
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/stable-vs-bd5-unary-source.patch": {
+      "sha256": "61b20ba0f80854e7958eddd2966dee26f73f8f50774b67e2f33cbfa358fe6feb",
+      "bytes": 5914
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/source-and-result-parity-supplement.json": {
+      "sha256": "3d1b113d92f74ea68b7ac1cbe4c97cc6d9eb80d57034908f7c3c95a55d40efdb",
+      "bytes": 2320
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/audit_public_unary.py": {
+      "sha256": "63f126404730b50ed2dbc5d6aa449bbb8cd70b26ac3645e4d458474399434366",
+      "bytes": 10073
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/corrected-public-unary-parity-audit.json": {
+      "sha256": "5b798ad483d5c97f0aaf4968742c69cdbf05b60dd84ee5694b19c0d428bfc902",
+      "bytes": 6823
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/initial-candidate-config-rejection-audit.json": {
+      "sha256": "dafe47ee47e196d0a28e99799ae405e06722330e7d2ddef4ddf9506da76b9894",
+      "bytes": 6146
+    },
+    "/private/tmp/rightclick-unary-compatibility-independent-20261007/initial-evidence-manifest.json": {
+      "sha256": "c7a1579642a7fb4455cee50db1560b42f3d0132c358ec0a539078fce9b8f38e9",
+      "bytes": 3570
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/tools.json": {
+      "sha256": "836d6b6b459dc11a15bc48aba313352ec33b7643828be5d7934ebb4b7730ed9e",
+      "bytes": 7053
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/exchanges.json": {
+      "sha256": "8c89ac2a59d922463d51a02863da192b93aeedec3d7e82dd0c87b08b98e8da51",
+      "bytes": 6853
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/capability.json": {
+      "sha256": "b1ac15bccc4955f558a085ac66ffa5efc051735bc1b8c275ceb2e5d0d418b2a5",
+      "bytes": 504
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/runtime-records.json": {
+      "sha256": "3532c3b415b5ec41e094840152959af579433bef4763d08a96344ac9c3248ebc",
+      "bytes": 1752
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/stream-events.jsonl": {
+      "sha256": "55a33d590b529860b6a51ac9974dd6e752427d84fcb7540d4291ffefeb64753a",
+      "bytes": 94
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/results.json": {
+      "sha256": "56bed2e16cf7ac6e0fa3824312e27edec653e99cc33eddaa78aa49b28140a144",
+      "bytes": 1048
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/advertisement.log": {
+      "sha256": "40a36ce06d3c524414533b43c70231e592158087258d6e5496f7a571b60d0e66",
+      "bytes": 491
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/provider-port": {
+      "sha256": "1e17f0acd8d883fe56152ed39b8426fc3d2f8431559e8bbf800a2aa54f9480da",
+      "bytes": 5
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007/echo-parity-c9ea4760dec14877b2602e9539206949.txt": {
+      "sha256": "145c6ef41c786b8867bbadf6edd51b5a3e80eae42277184814ad167e47d0eb9d",
+      "bytes": 39
+    },
+    "/private/tmp/rightclick-grpc-unary-baseline-valid-20261007.log": {
+      "sha256": "b418115845c0419d579e48836913640e96b6af777d98215dcb1918968de8ba1a",
+      "bytes": 937
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/tools.json": {
+      "sha256": "9035305b839de7083e57350751fb2a1487a64f85c921ca93eed2f58d8496c2d7",
+      "bytes": 7358
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/exchanges.json": {
+      "sha256": "32249b7f84d5044068bfa0fcc112ba7d810175d39c0595c88c7bc75a3ff8ba94",
+      "bytes": 25022
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/capability.json": {
+      "sha256": "c97e2af641cbd8eed862d6d8b25a9ec25b58a0747884984ae117c7b959bdb3b0",
+      "bytes": 592
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/runtime-records.json": {
+      "sha256": "12149b2f41e1cc1f5d4ce0aaa558872c84500c7bb914a19fc9ce7770b9abe162",
+      "bytes": 19126
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/stream-events.jsonl": {
+      "sha256": "1fcd5d7e8d14def6e596bf1bbfa0df544a6d1618aef2657d396f4d47abadde51",
+      "bytes": 94
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/results.json": {
+      "sha256": "ecd86420bf11b6461c7d35f5feacbad03a94f3ac1e37e5eb42b974f04d721384",
+      "bytes": 1381
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/advertisement.log": {
+      "sha256": "9e164d1283d3ef329c7ce18d2b90e0d0037e2e1b7181ed0d3f2d07aa262c50e8",
+      "bytes": 491
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/provider-port": {
+      "sha256": "d03fec49fa0f7ac5528371e2424ef68b2c2c88499b8b110fea23e7775abe4af0",
+      "bytes": 5
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007/echo-parity-681a0b6a76e049db8b954efeedcd18a6.txt": {
+      "sha256": "8f6bcf726fc361852d22cd89b4b9cc0354a2da8533c9f92bd2c5daa7bc83f2a6",
+      "bytes": 39
+    },
+    "/private/tmp/rightclick-grpc-unary-candidate-valid-20261007.log": {
+      "sha256": "4e651f267279d44be566d8e045d75a48d6517ec5ef1d50e1382386fe7bf09926",
+      "bytes": 1138
+    }
+  },
+  "baselineBinary": {
+    "path": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "sha256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "bytes": 27991272
+  },
+  "candidateBinary": {
+    "path": "/private/tmp/rightclick-parity-candidate-c61f0cb2",
+    "sha256": "c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12",
+    "bytes": 30280536
+  },
+  "evidenceScope": "actual public catalogue/default DNS-SD/reflection/unary/file/output/status only",
+  "rootProductionModified": false,
+  "privateSigningKeysRead": false,
+  "newStreamClaims": false,
+  "authorityClaims": false,
+  "publication": "NONE"
+}

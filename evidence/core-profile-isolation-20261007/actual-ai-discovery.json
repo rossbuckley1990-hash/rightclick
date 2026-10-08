@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "claimScope": "Fresh AI discovery using the Core Profile; not complete G13 or full substrate acceptance",
+  "status": "GREEN limited discovery; full G13 remains RED",
+  "clientVersion": "0.159.3",
+  "clientExecutableSHA256": "4d210f7c5a18fd0386434df23b5bdbb8c0e7257d3e8a2b30b0769c8bbe99a878",
+  "model": "gpt-6.1-sol",
+  "runtime": {
+    "executablePath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/.build/debug/rightclick",
+    "executableRealPath": "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/.build/arm64-apple-macosx/debug/rightclick",
+    "executableSHA256": "eaa0580f2755a3bbea28fd224870952a9b7a9c8666c460fc9575b2d5c44fc979",
+    "pid": 64323,
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "actualAIInference": true,
+  "actualAIToolCalls": [
+    {
+      "tool": "context_runtime",
+      "arguments": {}
+    },
+    {
+      "tool": "context_providers",
+      "arguments": {}
+    },
+    {
+      "tool": "context_inspect",
+      "arguments": {
+        "item": "RIGHTCLICK seven-operation proof"
+      }
+    },
+    {
+      "tool": "context_actions",
+      "arguments": {
+        "item": "RIGHTCLICK seven-operation proof"
+      }
+    }
+  ],
+  "terminalStatus": "completed",
+  "effectiveSandbox": {
+    "type": "readOnly",
+    "networkAccess": false
+  },
+  "ephemeral": true,
+  "workspaceRoots": [],
+  "environments": [],
+  "inheritedInstructionSources": [],
+  "noProviderSpecificAITools": true,
+  "noCredentialInspection": true,
+  "modelFacingCatalogueEvidence": "capture-thread-tool-config/request-catalog.json: outgoing request serialization captured without inference; same client and thread-scoped tool settings used by actual AI run",
+  "actualOutgoingCatalogueDirectlyCaptured": false,
+  "fullElevenSubstrateExperiment": "RED",
+  "sourceMainReportedByParent": "1c3d8c91be5b419e3e4af882972dba025fad2794",
+  "candidateSourceReportedByParent": "19cd9f59112e31688eef1fa2d79ebc3f43d6f0ed",
+  "sourceBindingClaim": "Runtime executable attested directly. Source SHAs supplied by parent; no independent build-source attestation claimed by this probe."
+}

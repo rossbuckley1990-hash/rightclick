@@ -1,0 +1,102 @@
+{
+  "result": "PASS",
+  "proofKind": "ENGINEERING_ACCEPTANCE_NOT_RESTRICTED_AI_AGENT",
+  "operations": [
+    "context_actions",
+    "context_explain",
+    "context_inspect",
+    "context_providers",
+    "context_run",
+    "context_run_status",
+    "context_runtime"
+  ],
+  "toolSchemaSHA256": "4e2661a32122479d49b9e83261a767a9af36948a6280dd1db7a492c08b385fd5",
+  "claims": [
+    {
+      "signature": "VALID",
+      "algorithm": "Ed25519",
+      "trustedKeyMatched": true,
+      "payloadBytes": 6047,
+      "signedClaims": {
+        "taskID": "061C1841-EC64-4C62-9A46-9D00F39BBB35",
+        "leaseID": "B55D80D5-21F5-4BC2-9A15-8659E68D1633",
+        "providerGeneration": 1,
+        "phase": "completed",
+        "semanticOutcome": "succeeded",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ]
+      },
+      "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+      "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+    },
+    {
+      "signature": "VALID",
+      "algorithm": "Ed25519",
+      "trustedKeyMatched": true,
+      "payloadBytes": 6029,
+      "signedClaims": {
+        "taskID": "C7BA3C04-CA2E-42AD-8935-F85A9BCA9E14",
+        "leaseID": "6E10F7D6-4E27-4DE9-9A2C-78FC4DFEC55C",
+        "providerGeneration": 1,
+        "phase": "completed",
+        "semanticOutcome": "failed",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ]
+      },
+      "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+      "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+    },
+    {
+      "signature": "VALID",
+      "algorithm": "Ed25519",
+      "trustedKeyMatched": true,
+      "payloadBytes": 5994,
+      "signedClaims": {
+        "taskID": "A7E902DB-D98C-43A0-BB3D-D8AEBCB79364",
+        "leaseID": "1DF484BA-A17B-464B-BDB0-FF4D0A386E01",
+        "providerGeneration": 1,
+        "phase": "completed",
+        "semanticOutcome": "unverified",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ]
+      },
+      "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+      "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+    },
+    {
+      "signature": "VALID",
+      "algorithm": "Ed25519",
+      "trustedKeyMatched": true,
+      "payloadBytes": 5381,
+      "signedClaims": {
+        "taskID": "9807ED40-119D-4438-934E-DEA83AEBC5E2",
+        "leaseID": "6201238A-27A6-4201-9FF2-3768916F9B56",
+        "providerGeneration": 1,
+        "phase": "unknown",
+        "semanticOutcome": "unknown",
+        "scopeCount": 1,
+        "effects": [
+          "execute"
+        ]
+      },
+      "semanticClaim": "SIGNED_RUNTIME_ASSERTION",
+      "externalTruth": "NOT_ESTABLISHED_BY_SIGNATURE_ALONE"
+    }
+  ],
+  "nonSuccessPromotionRejected": [
+    "failed",
+    "unknown",
+    "unverified"
+  ],
+  "tamperedReceiptRejected": true,
+  "untrustedKeyRejected": true,
+  "authorityBoundary": "Exact-resource in-process leases, not issuer-downscoped provider credentials",
+  "signerBoundary": "Separately pinned disposable fixture keys, not production signer trust",
+  "verificationBoundary": "Host-selected read-back independent of invocation response; same service trust source"
+}

@@ -1,0 +1,122 @@
+{
+  "failingPR49": "e09f0179f738189fb30b87c652a5433fba648054",
+  "readMain": "33fc2c33f70445e47104c4e8abc0d91987ec2b4e",
+  "integratedWindows": {
+    "tests": 512,
+    "skips": 78,
+    "failures": 81,
+    "unexpected": 68
+  },
+  "protectedGate": {
+    "tests": 9,
+    "failures": 0
+  },
+  "boundary": "Original native Windows evidence preserved before repair. Python exact environment/interpreter cause requires additional native diagnosis. Experience durable storage explicitly unavailable; no assertion change or silent in-memory substitution. NULL DACL recipe actual descriptor not yet demonstrated.",
+  "records": [
+    {
+      "original": "/private/tmp/pr49-native-windows-e09-job-raw.log",
+      "archive": "pr49-native-windows-e09-job-raw.log.gz",
+      "bytes": 556970,
+      "rawSHA256": "6b7a19fe6937eb54dbb845de0fadca72b9410014ca7c09e1f61f6a86f085ed87",
+      "archiveSHA256": "a3d062d5b8ba27fd0616a1c3cf86816b48bd8b8551dc051b08a354c5628fcb0f"
+    },
+    {
+      "original": "/private/tmp/pr49-native-windows-e09-failure-index.json",
+      "archive": "pr49-native-windows-e09-failure-index.json.gz",
+      "bytes": 37873,
+      "rawSHA256": "5678f19e73455f1c959ec287b6a9f0896d1de2e67be248d0747afd44ec2e4af4",
+      "archiveSHA256": "72f4265d7f7b4eb251f7fb364c07b049caee899f36d7a578938ce7dda60609ec"
+    },
+    {
+      "original": "/private/tmp/pr49-native-windows-e09-artifact/windows-tests.log",
+      "archive": "windows-tests.log.gz",
+      "bytes": 177172,
+      "rawSHA256": "c7d81850eef19019198fab2cdb3d101aee03f309ec45d4f96fd17b2dd03ab2eb",
+      "archiveSHA256": "27f528bd99d74cd0aa5c9c7d5f7fc149fd4d1e989e4129952bcb0cb35aeab173"
+    },
+    {
+      "original": "/private/tmp/pr49-native-windows-e09-artifact/windows-protected-files.log",
+      "archive": "windows-protected-files.log.gz",
+      "bytes": 111855,
+      "rawSHA256": "ae5791a0a0d718521320d3a3445c25e7ba52a70e23978961e54c05efe5bd3390",
+      "archiveSHA256": "70a2c8244364713ca6939ef8f8e1c6ae5fa665e1f2edc7de44591e3f1e049293"
+    },
+    {
+      "original": "/private/tmp/pr49-native-windows-e09-artifact/portable-source.txt",
+      "archive": "portable-source.txt.gz",
+      "bytes": 42,
+      "rawSHA256": "f482b2e6c97cd06fdb08f1e7a45d9f3069b0f6c284ca93bab30daa161f2f411d",
+      "archiveSHA256": "55c9e112cc9690d0fdd8414c71a566185ad1b1c10c98b5e4dec027ea2f326820"
+    },
+    {
+      "original": "/private/tmp/pr49-native-windows-e09-artifact/portable-toolchain.txt",
+      "archive": "portable-toolchain.txt.gz",
+      "bytes": 103,
+      "rawSHA256": "fa5f6abcb1a722939e20fac6e0f878c8e366d6fd43567690b60beaac53fc53d2",
+      "archiveSHA256": "28c2a26f84fd097e6e2e539614cbe01d9172cafd5fc7f4bffbba0357092ac287"
+    },
+    {
+      "source": "Tests/RightClickCoreTests/NativeHTTPFixture.swift",
+      "archive": "Tests--RightClickCoreTests--NativeHTTPFixture.swift.gz",
+      "bytes": 2979,
+      "rawSHA256": "640d3efe730d39791ccbfbfe520d7c663a13e54c17842d8fb5a76ac20324c8f0",
+      "archiveSHA256": "65b5a778eef6e1d0e062214580620a8f7eb341727339de849516c98dbe903563"
+    },
+    {
+      "source": "Tests/RightClickCoreTests/CapabilityExecutableSnapshotPoolTests.swift",
+      "archive": "Tests--RightClickCoreTests--CapabilityExecutableSnapshotPoolTests.swift.gz",
+      "bytes": 11130,
+      "rawSHA256": "6b6a3225f1530b40f9129eb49f1d4c4ebbffc9161acc4d0375bd6d561175441f",
+      "archiveSHA256": "14ac7eac1908cbab4c3efd13f186ffd2a7f5fdf7f0f5beb4b8c144d4ed775972"
+    },
+    {
+      "source": "Tests/RightClickCoreTests/CapabilityInterfaceTests.swift",
+      "archive": "Tests--RightClickCoreTests--CapabilityInterfaceTests.swift.gz",
+      "bytes": 16085,
+      "rawSHA256": "40ffeadc67391dc7e47fe48afe61407293a96f8a1316fbb37e4b1e9f7ff849c3",
+      "archiveSHA256": "84f3d19982900515f64ee0ddaa6c09f752f2ec9bdc7b9acda325ebb3163b4749"
+    },
+    {
+      "source": "Tests/RightClickCoreTests/InvocationBindingTests.swift",
+      "archive": "Tests--RightClickCoreTests--InvocationBindingTests.swift.gz",
+      "bytes": 5695,
+      "rawSHA256": "20faa2aefdbcf87121b03be97a5e50ba1eab0a4394839a1ee3b2f7df6583a5a4",
+      "archiveSHA256": "4f3e7e698fc2cd5ad2170f6826c6c5e103f85b39db1e8306bab9c07bf7d1de1e"
+    },
+    {
+      "source": "Sources/RightClickCore/CapabilityExperienceLedger.swift",
+      "archive": "Sources--RightClickCore--CapabilityExperienceLedger.swift.gz",
+      "bytes": 9916,
+      "rawSHA256": "69bc0d7c19d29ddb1f1adc3f079cadba6144b9ae01c443cb1f8f493a699eb6c4",
+      "archiveSHA256": "ffbf374eec8cbb12fd6c5b23246fb346d0720ea7eca91939a8cbc5eae5d21910"
+    },
+    {
+      "source": "Sources/RightClickHostFiles/HostFiles.c",
+      "archive": "Sources--RightClickHostFiles--HostFiles.c.gz",
+      "bytes": 18943,
+      "rawSHA256": "b3d86e0e05accc95518596b4ae06b89242e2dd11ef7f273fa4487064c577da73",
+      "archiveSHA256": "d5643867d7bab26cfe46eb4c9b44f4a286b51a3e0ce121328480a9082e4fe438"
+    },
+    {
+      "source": "Tests/RightClickCoreTests/HostProtectedReferenceTests.swift",
+      "archive": "Tests--RightClickCoreTests--HostProtectedReferenceTests.swift.gz",
+      "bytes": 10795,
+      "rawSHA256": "e28616fd6ab6f61b2cc75a514ddf47c3591477074ddde54ed41aae9588ca9065",
+      "archiveSHA256": "24b364f49095ebf8c9cd5a7a9f44c2bdb5da474a97b3562add3cdadd063f3f18"
+    },
+    {
+      "source": "Tests/Fixtures/windows-fixture-command-probe.swift",
+      "archive": "Tests--Fixtures--windows-fixture-command-probe.swift.gz",
+      "bytes": 5096,
+      "rawSHA256": "1851566e815283dd64dff4aab29322a25180fc8cde6b99b5dfa41fedd2ddc3f5",
+      "archiveSHA256": "3d29b751c075659fd570cc78149a6747ee6071080bb72564572738749d30ec08"
+    },
+    {
+      "source": ".github/workflows/portable-runtime.yml",
+      "archive": ".github--workflows--portable-runtime.yml.gz",
+      "bytes": 4764,
+      "rawSHA256": "bf785070734356ce98d9625263116af1f2d296c86ddd988dd9849b30b2059e8b",
+      "archiveSHA256": "70314b170c890cd22d1fe70796efaec7831e6387640f0624513b0db34c816579"
+    }
+  ]
+}

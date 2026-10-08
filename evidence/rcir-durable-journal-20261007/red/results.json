@@ -1,0 +1,72 @@
+{
+  "binarySHA256": "80f5e7875f84deaeeeb04ced3f5d2d7137ad046a0a8af8a91887532253f1100a",
+  "harnessSHA256": "9328eccdd043711308beaefad1ee98252bf7a1f6f8f1c7df42e1c96e2621e5dd",
+  "status": "RED",
+  "scope": "Real A2A process + native MCP crash/restart, synthetic disposable effect",
+  "beforeRuntime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-programme-baseline-2dd7bd2/rightclick",
+    "executableRealPath": "/tmp/rightclick-programme-baseline-2dd7bd2/rightclick",
+    "executableSHA256": "80f5e7875f84deaeeeb04ced3f5d2d7137ad046a0a8af8a91887532253f1100a",
+    "pid": 60009,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "executionID": "1B90A977-7B40-4AAF-9C98-8A4FD05CDE97",
+  "taskID": "807988FB-1C4A-45F5-87C4-4951C8442422",
+  "independentEffectMatched": true,
+  "afterRuntime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-programme-baseline-2dd7bd2/rightclick",
+    "executableRealPath": "/tmp/rightclick-programme-baseline-2dd7bd2/rightclick",
+    "executableSHA256": "80f5e7875f84deaeeeb04ced3f5d2d7137ad046a0a8af8a91887532253f1100a",
+    "pid": 60331,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "recoveredStatus": {
+    "actionId": "",
+    "events": [],
+    "evidence": {
+      "boundary": "No outcome observation.",
+      "outcomeVerified": false,
+      "type": "none"
+    },
+    "executionId": "1B90A977-7B40-4AAF-9C98-8A4FD05CDE97",
+    "message": "No execution with that id.",
+    "state": "unknown"
+  },
+  "failure": "restart lost durable invocation identity"
+}

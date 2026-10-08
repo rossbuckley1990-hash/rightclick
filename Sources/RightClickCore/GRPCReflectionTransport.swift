@@ -607,7 +607,8 @@ enum GRPCReflectionTransport {
     static func invokeUnary(
         endpoint: GRPCEndpoint,
         path: String,
-        request: Data
+        request: Data,
+        admitStart: ((_ start: () -> Void) throws -> Void)? = nil
     ) throws -> Data {
         try withConnection(
             endpoint:
@@ -625,12 +626,13 @@ enum GRPCReflectionTransport {
                         )
                 )
 
-            let call:
+            var pending:
                 UnaryCall<
                     GRPCRawPayload,
                     GRPCRawPayload
-                > =
-                connection
+                >?
+            let start = {
+                pending = connection
                     .makeUnaryCall(
                         path:
                             path,
@@ -642,6 +644,9 @@ enum GRPCReflectionTransport {
                         callOptions:
                             options
                     )
+            }
+            if let admitStart { try admitStart(start) } else { start() }
+            guard let call = pending else { throw GRPCReflectionTransportError.noResponse }
 
             let response =
                 try call
