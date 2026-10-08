@@ -219,7 +219,19 @@ enum NativeHTTPFixture {
     }
 
 #if os(Windows)
-    static func pythonClient(script: URL, directory: URL) throws -> URL {
+    struct CompilerInputs {
+        let executable: URL, setup: URL, source: URL, header: URL, script: URL, batch: URL
+        let client: URL, object: URL, installedQuery: URL, developerCommand: URL
+        let packedArguments: [String], ownedArguments: [String]
+        var frozenInputs: [(URL, Int)] {
+            [(executable, 8_388_608), (setup, 1_048_576), (source, 65_536), (header, 32_768),
+             (script, 1_048_576), (batch, 32_768), (installedQuery, 8_388_608), (developerCommand, 65_536)]
+        }
+    }
+
+    /// Fixed test acquisition schema. The owned batch carries no agent/provider
+    /// shell input; direct invocation arguments keep their usual runtime grammar.
+    static func compilerInputs(script: URL, directory: URL) throws -> CompilerInputs {
         var stage = PythonClientBootstrapStage.installationQuery
         var diagnostic: BoundedCapabilityProcess.Diagnostic?
         var validation: PythonClientInstallationValidation?
@@ -250,19 +262,61 @@ enum NativeHTTPFixture {
             try writePrivate(Data(contentsOf: repository.appendingPathComponent("Tests/Fixtures/windows-python-client-launcher.c")), to: source)
             let declaration = "#define RIGHTCLICK_FIXTURE_PYTHON L\"\(literal(interpreter.path))\"\n#define RIGHTCLICK_FIXTURE_SCRIPT L\"\(literal(script.path))\"\n"
             try writePrivate(Data(declaration.utf8), to: header)
-            func native(_ file: URL) -> String { file.path.replacingOccurrences(of: "/", with: "\\") }
-            let command = "call \"\(native(setup))\" > nul && cl /nologo /std:c17 \"\(native(source))\" /Fe:\"\(native(client))\" /Fo:\"\(native(object))\""
-            stage = .nativeCompilation
-            diagnostic = nil
-            try nativeCommand("cmd.exe", ["/d", "/s", "/c", command], diagnostic: { diagnostic = $0 })
-            stage = .outputValidation
-            guard FileManager.default.fileExists(atPath: client.path) else { throw RCIRError.unavailable }
-            return client
+            func native(_ file: URL) throws -> String {
+                let path = file.path.replacingOccurrences(of: "/", with: "\\")
+                guard RuntimePlatform.isAbsolutePath(path),
+                      !path.unicodeScalars.contains(where: { $0.value < 32 || $0.value == 127 }),
+                      !path.contains("\""), !path.contains("%"), !path.contains("!") else { throw RCIRError.unavailable }
+                return path
+            }
+            let command = "call \"\(try native(setup))\" > nul && cl /nologo /std:c17 \"\(try native(source))\" /Fe:\"\(try native(client))\" /Fo:\"\(try native(object))\""
+            let developerCommand = URL(fileURLWithPath: installation).appendingPathComponent("Common7/Tools/VsDevCmd.bat")
+            let developerBytes = try CapabilityArtifactSnapshot.read(source: developerCommand, maximum: 65_536)
+            let developerText = String(decoding: developerBytes, as: UTF8.self)
+            guard developerText.contains("if \"%VSCMD_SKIP_SENDTELEMETRY%\"==\"\""),
+                  developerText.lowercased().contains("powershell") else { throw RCIRError.unavailable }
+            let batch = directory.appendingPathComponent("compile-client.bat")
+            let batchBody = "@echo off\r\nset \"VSCMD_SKIP_SENDTELEMETRY=1\"\r\n" + command + "\r\n"
+            guard batchBody.utf8.allSatisfy({ $0 < 128 }) else { throw RCIRError.unavailable }
+            try writePrivate(Data(batchBody.utf8), to: batch)
+            let system = environment.first { $0.key.caseInsensitiveCompare("SystemRoot") == .orderedSame }?.value ?? "C:\\Windows"
+            let executable = URL(fileURLWithPath: system + "\\System32\\cmd.exe")
+            return CompilerInputs(executable: executable, setup: setup, source: source, header: header,
+                script: script, batch: batch, client: client, object: object, installedQuery: whereTool,
+                developerCommand: developerCommand, packedArguments: ["/d", "/s", "/c", command],
+                ownedArguments: ["/d", "/c", try native(batch)])
         } catch {
             let kind = (error as? RCIRError).map { String(describing: $0) } ??
                 (error as? CocoaError).map { "cocoa_" + String($0.code.rawValue) } ?? "other"
             throw PythonClientBootstrapFailure(stage: stage, kind: kind, process: diagnostic,
                 validation: stage == .installationValidation ? validation : nil)
+        }
+    }
+
+    static func isAMD64PE(_ bytes: Data) -> Bool {
+        guard bytes.count >= 64, bytes.prefix(2).elementsEqual([77, 90]) else { return false }
+        let offset = (0..<4).reduce(0) { $0 | (Int(bytes[60 + $1]) << (8 * $1)) }
+        return offset <= bytes.count - 6 && bytes[offset..<(offset + 6)].elementsEqual([80, 69, 0, 0, 100, 134])
+    }
+
+    static func pythonClient(script: URL, directory: URL) throws -> URL {
+        let inputs = try compilerInputs(script: script, directory: directory)
+        var stage = PythonClientBootstrapStage.nativeCompilation
+        var diagnostic: BoundedCapabilityProcess.Diagnostic?
+        do {
+            stage = .nativeCompilation
+            _ = try BoundedCapabilityProcess.run(executable: inputs.executable, arguments: inputs.ownedArguments,
+                timeout: 10, maximumBytes: 16_384,
+                hostContext: try TrustedHostProcessContext.resolving(.systemExecutableSearch), diagnostic: { diagnostic = $0 })
+            stage = .outputValidation
+            let bytes = try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)
+            guard isAMD64PE(bytes) else { throw RCIRError.unavailable }
+            return inputs.client
+        } catch {
+            let kind = (error as? RCIRError).map { String(describing: $0) } ??
+                (error as? CocoaError).map { "cocoa_" + String($0.code.rawValue) } ?? "other"
+            throw PythonClientBootstrapFailure(stage: stage, kind: kind, process: diagnostic,
+                validation: nil)
         }
     }
     static func nativeCommand(_ executable: String, _ arguments: [String],
