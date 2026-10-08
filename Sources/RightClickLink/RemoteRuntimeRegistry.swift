@@ -214,6 +214,12 @@ private final class RemoteRoutedReflector: CapabilityRoutingReflector, Capabilit
         executionLock.lock(); defer { executionLock.unlock() }; return executions[executionID]
     }
     private func store(_ record: ExecutionRecord, executionID: String) {
+        if record.lifecycle?.terminal == true {
+            // Retain the authenticated terminal alias before a delayed initial
+            // Core record can overwrite it. Pages remain observational views.
+            do { try ExecutionStore.shared.putTerminalSnapshot(record) }
+            catch { return }
+        }
         executionLock.lock(); defer { executionLock.unlock() }
         executions[executionID]?.record = record; executions[executionID]?.pending = nil
     }

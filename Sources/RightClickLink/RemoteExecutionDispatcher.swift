@@ -182,14 +182,17 @@ public final class RemoteExecutionDispatcher {
         } else {
             // The host process lost live ownership. Preserve binding and refuse
             // redispatch; a surviving reservation is not evidence of completion.
-            var unknown = retained; unknown.state = .unknown; unknown.providerAcceptance = .unknown
+            var unknown = retained; unknown.state = .unknown
+            if unknown.providerAcceptance != .accepted { unknown.providerAcceptance = .unknown }
             unknown.verification = .unverified; unknown.observationBoundary = .none; unknown.result = nil
             unknown.error = .executionUncertain
             unknown.executionLifecycle = .init(executionID: previous.executionID,
                 originatingRequestID: previous.originatingRequestID, runtimeID: previous.runtimeID,
                 taskID: previous.taskID, generation: previous.generation, taskShape: previous.taskShape,
                 phase: .unknown, semanticOutcome: .unknown, sequence: previous.sequence, terminal: true,
-                providerAcceptance: .unknown, verification: .unverified, observationBoundary: .none)
+                providerAcceptance: ExecutionProviderAcceptance(rawValue: unknown.providerAcceptance.rawValue)!,
+                verification: .unverified, observationBoundary: .none)
+            if !unknown.lifecycle.contains(.unknown) { unknown.lifecycle.append(.unknown) }
             let history = retainedEvents ?? []
             guard Int64(history.count) == previous.sequence else { throw RemoteLinkError.storageUnavailable }
             unknown.eventPage = try rcirExecutionEventPage(history, after: query.cursor, limit: query.limit,
@@ -202,7 +205,11 @@ public final class RemoteExecutionDispatcher {
     }
 
     private static func safeEvents(_ events: [RCIRExecutionEvent], exportsValues: Bool) -> [RCIRExecutionEvent] {
-        events.map { .init(sequence: $0.sequence, time: $0.time, kind: $0.kind, value: exportsValues ? $0.value : .null) }
+        events.map { event in
+            let permitted = exportsValues && ((try? event.value.canonicalData().count) ?? Int.max) <= 8_192 &&
+                ((try? RemoteWire.encode(event.value).count) ?? Int.max) <= 8_192
+            return .init(sequence: event.sequence, time: event.time, kind: event.kind, value: permitted ? event.value : .null)
+        }
     }
 
     static func contractDigest(_ capability: Capability) throws -> String {
@@ -225,7 +232,10 @@ public final class RemoteExecutionDispatcher {
                 summary.eventPage = .init(events: safeEvents(page.events, exportsValues: exportsValues),
                     nextCursor: page.nextCursor, hasMore: page.hasMore, terminal: page.terminal)
             }
-            summary.result = exportsValues ? record.result : nil
+            if exportsValues, let value = record.result, ((try? value.canonicalData().count) ?? Int.max) <= 8_192,
+               ((try? RemoteWire.encode(value).count) ?? Int.max) <= 8_192 {
+                summary.result = value
+            }
             if live.providerAcceptance == .accepted { summary.lifecycle.append(.providerAccepted) }
             if live.terminal { summary.lifecycle.append(live.verification == .verifiedSuccess ? .verified : .unverified) }
             return summary

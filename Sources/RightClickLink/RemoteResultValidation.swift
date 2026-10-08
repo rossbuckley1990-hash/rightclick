@@ -49,7 +49,7 @@ extension RemoteExecutionSummary {
             guard providerAcceptance == .notInvoked, verification == .unverified, observationBoundary == .none,
                   state != .succeeded && state != .accepted && state != .started else { throw RemoteLinkError.inconsistentResult }
         }
-        if state == .awaitingUser {
+        if state == .awaitingUser, executionLifecycle?.phase != .inputRequired {
             guard policy == .confirmationRequired, lifecycle.last == .awaitingUser else { throw RemoteLinkError.inconsistentResult }
         }
         if state == .accepted {

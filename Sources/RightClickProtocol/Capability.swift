@@ -305,6 +305,49 @@ public final class ExecutionStore: @unchecked Sendable {
         entries[record.executionId] = entry
     }
 
+    /// Retain authenticated terminal metadata for a routed local alias without
+    /// claiming its bounded view is the complete execution-node event history.
+    /// Only the infrastructure verifier calls this after validating the signer.
+    public func putTerminalSnapshot(_ record: ExecutionRecord) throws {
+        guard let lifecycle = record.lifecycle, lifecycle.version == 1, lifecycle.terminal,
+              [.completed, .failed, .cancelled, .unknown].contains(lifecycle.phase),
+              lifecycle.sequence >= 0, lifecycle.generation > 0 else { throw RCIRError.invalidTransition }
+        if let page = record.rcirEventPage {
+            guard page.terminal, page.events.count <= 256, page.nextCursor >= 0,
+                  page.nextCursor <= lifecycle.sequence else { throw RCIRError.invalidSequence }
+            try validateView(page.events, maximum: 262_144)
+            if let last = page.events.last {
+                guard last.sequence == page.nextCursor else { throw RCIRError.invalidSequence }
+            }
+        }
+        if let events = record.rcirEvents {
+            guard events.count <= 1_024 else { throw RCIRError.invalidLimit }
+            try validateView(events, maximum: 262_144)
+        }
+        lock.lock(); defer { lock.unlock() }
+        var entry = entries[record.executionId] ?? Entry()
+        if let existing = entry.terminal {
+            var old = existing, new = record
+            old.rcirEventPage = nil; old.rcirEvents = nil
+            new.rcirEventPage = nil; new.rcirEvents = nil
+            let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
+            guard try encoder.encode(old) == encoder.encode(new) else { throw RCIRError.invalidTransition }
+        }
+        entry.terminal = record; entry.record = record
+        entries[record.executionId] = entry
+    }
+
+    private func validateView(_ events: [RCIRExecutionEvent], maximum: Int) throws {
+        var bytes = 0, previous: Int64?
+        for event in events {
+            guard event.sequence > 0 else { throw RCIRError.invalidSequence }
+            if let previous { guard previous < Int64.max, event.sequence == previous + 1 else { throw RCIRError.invalidSequence } }
+            let size = try event.canonicalData().count
+            guard size <= maximum - bytes else { throw RCIRError.invalidLimit }
+            bytes += size; previous = event.sequence
+        }
+    }
+
     public func putRCIRHistory(_ events: [RCIRExecutionEvent], executionId: String) throws {
         try validateHistory(events)
         lock.lock(); defer { lock.unlock() }

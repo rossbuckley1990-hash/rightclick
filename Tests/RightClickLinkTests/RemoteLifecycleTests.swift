@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+import NIOPosix
 import RightClickCore
 import RightClickProviders
 @testable import RightClickLink
@@ -158,6 +159,64 @@ final class RemoteLifecycleTests: XCTestCase {
         await XCTAssertAsyncLinkError(.replay) { _ = try await f.client.send(status) }
         XCTAssertEqual(f.provider.effects, 1)
     }
+    @MainActor func testRemoteFastCompletionRetainedBeforeDelayedCallerInitialRecord() async throws {
+        let f = try PortableDeferredLinkFixture(); f.provider.completeSynchronously = true; try await f.connect()
+        let registry = RemoteRuntimeRegistry(); try await registry.enroll(f.client, item: "portable")
+        let engine = CapabilityEngine(reflectors: [], reflectorSources: [RemoteCapabilitySource(registry: registry)], experience: nil,
+            runtimeEnvironment: .init(operatingSystem: .linux, architecture: "arm64"))
+        let capability = try XCTUnwrap(engine.capabilities(for: "portable").capabilities.first)
+        let initial = try engine.begin(id: capability.id, item: "portable", confirmed: false)
+        let final = try await engine.refreshedExecutionStatus(initial.executionId)
+        XCTAssertTrue(final.lifecycle!.terminal)
+        ExecutionStore.shared.put(initial)
+        let retained = engine.executionStatus(initial.executionId)
+        XCTAssertTrue(retained.lifecycle!.terminal)
+        XCTAssertEqual(try retained.result?.canonicalData(), try CapabilityValue.integer(7).canonicalData())
+        XCTAssertEqual(f.provider.effects, 1)
+    }
+
+    @MainActor func testRealEncryptedOutboundTransportLifecycleReconnectAndExactlyOneEffect() async throws {
+        let f = try PortableDeferredLinkFixture()
+        let group = MultiThreadedEventLoopGroup(numberOfThreads: 2)
+        let broker = EncryptedOutboundLinkBroker(group: group)
+        let port = try await broker.start()
+        let host = EncryptedOutboundLinkHostSession(dispatcher: f.dispatcher, identity: f.target, group: group)
+        try await host.connect(host: "127.0.0.1", port: port)
+        let transport = try EncryptedOutboundLinkTransport(identity: f.caller, trustedRuntimeKey: f.target.publicKey,
+            host: "127.0.0.1", port: port, group: group)
+        let client = try RemoteLinkClient(identity: f.caller, trustedRuntimeKey: f.target.publicKey, transport: transport)
+        let capability = try XCTUnwrap(f.engine.capabilities(for: "portable").capabilities.first)
+        let key = UUID()
+        func request() throws -> RemoteExecutionRequest {
+            client.makeRequest(operation: .run, item: "portable", capabilityID: capability.id,
+                capabilityDigest: try RemoteExecutionDispatcher.contractDigest(capability), idempotencyKey: key)
+        }
+        let run = try request(), live = try await client.send(run)
+        XCTAssertFalse(live.summary.executionLifecycle!.terminal)
+        let retry = try await client.send(request())
+        XCTAssertTrue(retry.reused); XCTAssertEqual(f.provider.effects, 1)
+        await host.shutdown()
+        do { _ = try await client.send(client.makeStatusRequest(for: run, executionID: live.summary.executionLifecycle!.executionID)); XCTFail("Disconnected host was observed") }
+        catch {}
+        // Explicitly reconnect infrastructure; observe the same execution. The
+        // transport never repeats an uncertain consequential delivery itself.
+        try await host.connect(host: "127.0.0.1", port: port)
+        try f.provider.working()
+        let working = try await client.send(client.makeStatusRequest(for: run, executionID: live.summary.executionLifecycle!.executionID))
+        XCTAssertFalse(working.summary.executionLifecycle!.terminal)
+        try f.provider.complete()
+        let final = try await client.send(client.makeStatusRequest(for: run, executionID: live.summary.executionLifecycle!.executionID))
+        XCTAssertTrue(final.summary.executionLifecycle!.terminal)
+        XCTAssertEqual(try final.summary.result?.canonicalData(), try CapabilityValue.integer(7).canonicalData())
+        XCTAssertEqual(f.provider.effects, 1)
+        let wrongKey = try RemoteNodeIdentity(signer: RCIREd25519Signer(rawPrivateKey: Data(repeating: 31, count: 32)))
+        let wrongPin = try EncryptedOutboundLinkTransport(identity: f.caller, trustedRuntimeKey: wrongKey.publicKey,
+            host: "127.0.0.1", port: port, group: group)
+        await XCTAssertAsyncLinkError(.wrongRuntime) { _ = try await wrongPin.exchange(Data(), targetRuntimeID: f.target.runtimeID) }
+        await host.shutdown(); await broker.shutdown(); try await group.shutdownGracefully()
+        print("REAL LINK SOCKET PROOF: outbound broker+host+caller, pinned Ed25519/X25519/ChaChaPoly, live -> disconnected -> reconnected same execution -> terminal integer7; effects=1")
+    }
+
 }
 
 @MainActor private func XCTAssertAsyncLinkError(_ expected: RemoteLinkError, file: StaticString = #filePath, line: UInt = #line,
