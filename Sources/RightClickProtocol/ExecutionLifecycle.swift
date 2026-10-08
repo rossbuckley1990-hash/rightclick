@@ -51,3 +51,21 @@ public protocol CapabilityExecutionStatusReflector: CapabilityReflector {
                          maximumBytes: Int) async throws -> ExecutionRecord?
 }
 
+/// Host-installed durable ownership recovery after the serving process restarts.
+/// Ambiguous owners fail closed; this lookup never invokes provider work.
+public protocol CapabilityExecutionRecoveryReflector: CapabilityExecutionStatusReflector {
+    func ownsExecution(executionID: String) throws -> Bool
+}
+
+/// Optional host-installed scope on retained status, including shared caches.
+/// nil means the source has no record for this execution; false denies access.
+public protocol CapabilityExecutionStatusAccessSource {
+    func permitsRetainedStatus(executionID: String) throws -> Bool?
+}
+
+/// A node-local source can bind its delegated authority to the actual Link
+/// execution endpoint. Incoming client identity remains a separate grant.
+public protocol CapabilityExecutionNodeBoundSource {
+    var executionNodePublicKey: Data? { get }
+    var executionNodeRuntimeID: String? { get }
+}

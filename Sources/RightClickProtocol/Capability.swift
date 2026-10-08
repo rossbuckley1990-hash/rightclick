@@ -215,6 +215,9 @@ public struct ExecutionRecord: Codable, Sendable {
     public var evidence: OutcomeEvidence
     public var verification: OutcomeVerification?
     public var rcir: RCIRExecutionEvidence?
+    /// Non-secret signed nested evidence projected from the durable host ledger.
+    /// Its availability never substitutes for the invocation's final outcome.
+    public var environmentEvidence: EnvironmentExecutionEvidence?
 
     public init(
         executionId: String,
@@ -230,7 +233,8 @@ public struct ExecutionRecord: Codable, Sendable {
         rcir: RCIRExecutionEvidence? = nil,
         rcirEvents: [RCIRExecutionEvent]? = nil,
         rcirEventPage: RCIRExecutionEventPage? = nil,
-        lifecycle: ExecutionLifecycle? = nil
+        lifecycle: ExecutionLifecycle? = nil,
+        environmentEvidence: EnvironmentExecutionEvidence? = nil
     ) {
         self.executionId = executionId
         self.actionId = actionId
@@ -242,6 +246,7 @@ public struct ExecutionRecord: Codable, Sendable {
         self.rcirEvents = rcirEvents
         self.rcirEventPage = rcirEventPage
         self.lifecycle = lifecycle
+        self.environmentEvidence = environmentEvidence
         self.events = events
         self.evidence = evidence
         self.verification = verification
