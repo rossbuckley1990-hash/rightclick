@@ -8,6 +8,45 @@ import windows_compiler_context_matrix as m
 
 
 class MatrixControls(unittest.TestCase):
+    def test_owned_process_projection_rejects_paths_and_never_exposes_pid(self):
+        rows = [{'root': False, 'imageName': 'VCTIP.EXE', 'pid': 123},
+                {'root': False, 'imageName': 'unknown-owned-fixed-canary.exe', 'pid': 124},
+                {'root': True, 'imageName': 'cmd.exe', 'pid': 125}]
+        result = m.owned_process_roles(rows)
+        self.assertEqual(result['fixedNameRoleCounts'], {'compiler_telemetry_name': 1})
+        self.assertEqual(result['rootRows'], 1)
+        self.assertNotIn('unknown-owned-fixed-canary', json.dumps(result))
+        self.assertNotIn('pid', json.dumps(result))
+        for name in ('C:\\private\\host.exe', '../host', 'host\nname'):
+            with self.assertRaises(ValueError): m.owned_process_roles([{'root': False, 'imageName': name}])
+        with self.assertRaises(ValueError): m.owned_process_roles(rows * 22)
+
+    def test_fixed_bootstrap_source_is_evidenced_without_flag_execution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            file = root / m.BOOTSTRAP_SCRIPTS[2][1]; file.parent.mkdir(parents=True)
+            file.write_bytes(b'@echo off\nif "%VSCMD_SKIP_SENDTELEMETRY%"=="1" goto end\n:end\n')
+            public, private, snapshots = m.bootstrap_evidence(root)
+            self.assertTrue(public['fixedReferenceObserved']); self.assertFalse(public['optOutFlagApplied'])
+            self.assertEqual(public['fixedReferenceOccurrences'], 1)
+            self.assertIn(b'goto end', private); self.assertLessEqual(len(private), 32768)
+            self.assertTrue(m.bootstrap_unchanged(snapshots))
+            file.write_bytes(b'changed')
+            self.assertFalse(m.bootstrap_unchanged(snapshots))
+
+    def test_bootstrap_evidence_bounds_excerpts_and_detects_added_missing_input(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            file = root / m.BOOTSTRAP_SCRIPTS[0][1]; file.parent.mkdir(parents=True)
+            file.write_bytes((b'VSCMD_SKIP_SENDTELEMETRY' + b'x' * 2048 + b'\n') * 30)
+            public, private, snapshots = m.bootstrap_evidence(root)
+            self.assertEqual(public['fixedReferenceOccurrences'], 30)
+            self.assertEqual(public['sourceExcerptsCaptured'], 16)
+            self.assertLessEqual(len(private), 32768)
+            missing = root / m.BOOTSTRAP_SCRIPTS[2][1]; missing.parent.mkdir(parents=True)
+            missing.write_bytes(b'@echo off\n')
+            self.assertFalse(m.bootstrap_unchanged(snapshots))
+
     def test_accounting_lag_requires_actual_zero_within_original_budget(self):
         clock = [1.0]; values = iter((2, 1, 0))
         def pause(seconds): clock[0] += seconds
@@ -179,8 +218,9 @@ class MatrixControls(unittest.TestCase):
             bad = [dict(s) for s in samples]; bad[2][key] = value
             self.assertFalse(m.use_owned_renderer(bad))
 
-    def test_raw_export_names_are_closed_and_twenty_two_only(self):
-        self.assertEqual(len(m.RAW_NAMES), 22)
+    def test_raw_export_names_are_closed_and_twenty_three_only(self):
+        self.assertEqual(len(m.RAW_NAMES), 23)
+        self.assertIn('bootstrap-evidence.log', m.RAW_NAMES)
         self.assertNotIn('environment.json', m.RAW_NAMES); self.assertNotIn('../stderr.log', m.RAW_NAMES)
 
     def test_redirected_input_and_oversize_are_rejected(self):

@@ -10,8 +10,17 @@ CERT_SHA = '1f10ec5ff26b0ef1fbb91248ac954cf15757e8782101f90abe05a171af58bf9d'
 INPUTS = ['Package.swift', 'Package.resolved', 'LICENSE', 'Sources', 'Tests', 'Vendor', 'fixtures', 'packaging', 'scripts']
 QUERY_ARGS = ['-latest', '-products', '*', '-requires', 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '-property', 'installationPath']
 PROFILES = ('minimal_before', 'fixed_system_executable_search', 'machine_application_data', 'machine_data_and_system_search', 'minimal_after')
-RAW_NAMES = {'query-stdout.log', 'query-stderr.log'} | {f'{renderer}-{i}-{stream}.log' for renderer in ('packed', 'owned') for i in range(5) for stream in ('stdout', 'stderr')}
+RAW_NAMES = {'query-stdout.log', 'query-stderr.log', 'bootstrap-evidence.log'} | {f'{renderer}-{i}-{stream}.log' for renderer in ('packed', 'owned') for i in range(5) for stream in ('stdout', 'stderr')}
 MAX_STDOUT, MAX_STDERR = 16_384, 32_768
+OWNED_COMPILER_DEADLINE = 30
+BOOTSTRAP_SCRIPTS = (
+    ('vcvars64', 'VC/Auxiliary/Build/vcvars64.bat'),
+    ('vcvarsall', 'VC/Auxiliary/Build/vcvarsall.bat'),
+    ('developer_command', 'Common7/Tools/VsDevCmd.bat'),
+    ('developer_command_start', 'Common7/Tools/vsdevcmd/core/vsdevcmd_start.bat'),
+    ('developer_command_end', 'Common7/Tools/vsdevcmd/core/vsdevcmd_end.bat'),
+    ('vcvars_extension', 'Common7/Tools/vsdevcmd/ext/vcvars.bat'))
+FIXED_OPT_OUT_REFERENCE = 'VSCMD_SKIP_SENDTELEMETRY'
 
 
 def digest(data):
@@ -187,6 +196,68 @@ def observe_quiescence(job, deadline, query=active_processes, now=time.monotonic
             'ownedQuiescenceObservedBeforeDeadline': current == 0 and observed <= deadline}
 
 
+def owned_process_roles(rows):
+    """Only the reviewed job's verified members; names are hints, not identity."""
+    if len(rows) > 64: raise ValueError('owned_snapshot_budget')
+    names = {'cmd.exe': 'command_host_name', 'cl.exe': 'compiler_name', 'link.exe': 'linker_name',
+             'powershell.exe': 'powershell_host_name', 'vctip.exe': 'compiler_telemetry_name',
+             'vswhere.exe': 'installation_query_name', 'python.exe': 'python_host_name',
+             'conhost.exe': 'console_host_name'}
+    roles, unknown, roots = {}, {}, 0
+    for row in rows:
+        name = row.get('imageName')
+        if (not isinstance(name, str) or not 0 < len(name) <= 260
+                or any(ord(c) < 32 or c in '\\/:"' for c in name)
+                or type(row.get('root')) is not bool): raise ValueError('owned_snapshot_shape')
+        if row['root']: roots += 1; continue
+        key = names.get(name.lower())
+        if key: roles[key] = roles.get(key, 0) + 1
+        else:
+            key = digest(name.encode('utf-16-le'))
+            unknown[key] = unknown.get(key, 0) + 1
+    return {'verifiedOwnedSnapshotRows': len(rows), 'rootRows': roots,
+            'fixedNameRoleCounts': roles, 'unknownImageNameUTF16SHA256Counts': unknown,
+            'namesDoNotProveBinaryIdentityOrCause': True}
+
+
+def bootstrap_evidence(installation):
+    """Read fixed installed source, never apply or evaluate its opt-out flag."""
+    files, excerpts, snapshots = [], [], []
+    reference = FIXED_OPT_OUT_REFERENCE.encode('ascii')
+    occurrences = 0
+    for label, relative in BOOTSTRAP_SCRIPTS:
+        path = Path(installation) / relative
+        if unsafe_path(path): raise ValueError('bootstrap_source_redirect')
+        if not path.exists():
+            files.append({'fixedScript': label, 'present': False})
+            snapshots.append((path, None)); continue
+        data = checked_read(path, 1_048_576)
+        snapshots.append((path, data))
+        lines = data.splitlines()
+        matching = [i for i, line in enumerate(lines) if reference in line.upper()]
+        occurrences += len(matching)
+        files.append({'fixedScript': label, 'present': True, 'bytes': len(data),
+                      'sha256': digest(data), 'fixedReferenceOccurrences': len(matching)})
+        for i in matching:
+            if len(excerpts) >= 16: continue
+            snippet = b'\n'.join(lines[max(0, i - 2):i + 4])
+            excerpts.append({'fixedScript': label, 'matchingLine': i + 1,
+                             'sourceExcerptUTF8': snippet[:1024].decode('utf-8', errors='replace'),
+                             'excerptTruncated': len(snippet) > 1024})
+    public = {'fixedOptOutReference': FIXED_OPT_OUT_REFERENCE, 'fixedReferenceObserved': occurrences > 0,
+              'fixedReferenceOccurrences': occurrences, 'scriptFiles': files,
+              'sourceExcerptsCaptured': len(excerpts), 'optOutFlagApplied': False,
+              'installedSourceOnlyNotExecuted': True}
+    private = json.dumps({**public, 'boundedSourceExcerpts': excerpts}, separators=(',', ':')).encode('utf-8')
+    if len(private) > MAX_STDERR: raise ValueError('bootstrap_evidence_budget')
+    return public, private, snapshots
+
+
+def bootstrap_unchanged(snapshots):
+    return all((not path.exists() and not unsafe_path(path)) if data is None
+               else checked_read(path, 1_048_576) == data for path, data in snapshots)
+
+
 class BoundedStream:
     def __init__(self, maximum):
         self.maximum, self.data, self.observed = maximum, bytearray(), 0
@@ -216,9 +287,10 @@ class BoundedStream:
             return data, metadata
 
 
-def sample(executable, arguments, environment, out, name, maximum=MAX_STDOUT):
+def sample(executable, arguments, environment, out, name, maximum=MAX_STDOUT, deadline_seconds=5):
+    if deadline_seconds not in (5, OWNED_COMPILER_DEADLINE): raise ValueError('fixed_acquisition_deadline')
     began = time.monotonic()
-    deadline = began + 5
+    deadline = began + deadline_seconds
     stdout, stderr = BoundedStream(maximum), BoundedStream(MAX_STDERR)
     job, child, threads = None, None, []
     outcome, exit_code, quiescent = 'launch_failed', None, False
@@ -241,11 +313,13 @@ def sample(executable, arguments, environment, out, name, maximum=MAX_STDOUT):
             time.sleep(0.002)
         if outcome != 'completed': job.terminate()
         child.wait(timeout=2)
+        observation['initialOwnedProcessRoles'] = owned_process_roles(job.snapshot(child.pid))
         # A foreground exit cannot hide active descendants or a late PE. Native
         # job accounting can still be nonzero immediately after parent exit;
         # require an actual zero observation within the SAME original deadline.
-        observation = observe_quiescence(job, deadline)
+        observation.update(observe_quiescence(job, deadline))
         quiescent = observation['ownedQuiescenceObservedBeforeDeadline']
+        observation['finalOwnedProcessRoles'] = owned_process_roles(job.snapshot(child.pid))
         if not quiescent:
             outcome = 'descendants_not_quiescent'; job.terminate()
         for thread in threads: thread.join(timeout=1)
@@ -275,7 +349,7 @@ def sample(executable, arguments, environment, out, name, maximum=MAX_STDOUT):
     return {'outcome': outcome, 'exitCode': exit_code, 'stdout': snapshots['stdout'],
             'stderr': snapshots['stderr'], 'ownedDescendantsQuiescentBeforeCleanup': quiescent,
             **observation,
-            'deadlineSeconds': 5,
+            'deadlineSeconds': deadline_seconds,
             'elapsedMilliseconds': round((time.monotonic() - began) * 1000, 3)}
 
 
@@ -349,7 +423,7 @@ def seal(directory, output, openssl, recipient):
             info = tarfile.TarInfo(path.name); info.size = len(data); info.mode = 0o600
             tar.addfile(info, io.BytesIO(data))
     try:
-        if len(manifest) > 22 or sum(x['bytes'] for x in manifest.values()) > 720_896: raise ValueError('raw_total_budget')
+        if len(manifest) > 23 or sum(x['bytes'] for x in manifest.values()) > 753_664: raise ValueError('raw_total_budget')
         if digest(checked_read(recipient, 16_384)) != CERT_SHA: raise ValueError('recipient_changed')
         crypto(openssl, recipient, plain, output)
         return {'recipientPublicCertificateSHA256': CERT_SHA, 'plaintextArchiveSHA256': digest(plain.read_bytes()),
@@ -391,6 +465,9 @@ def main(openssl):
         if installed.startswith(b'\xef\xbb\xbf'): raise ValueError('installation_bom')
         installation = host_path(installed.decode('utf-8').strip())
         setup = Path(installation) / 'VC/Auxiliary/Build/vcvars64.bat'
+        bootstrap, source_excerpt, bootstrap_snapshots = bootstrap_evidence(installation)
+        private_file(private / 'bootstrap-evidence.log', source_excerpt, read_only=True)
+        report['installedBootstrapSourceEvidence'] = bootstrap
         executable = Path(environments[0]['SystemRoot']) / 'System32/cmd.exe'
         source, header, script = (private / name for name in ('client-launcher.c', 'windows-python-client-paths.h', 'owned-script.py'))
         client, obj = private / 'client.exe', private / 'client.obj'
@@ -423,7 +500,9 @@ def main(openssl):
                     path.unlink(missing_ok=True)
                 if any(path.exists() for path in (client, obj)): raise ValueError('output_not_fresh')
                 if [checked_read(path, maximum) for path, maximum in frozen_paths] != frozen: raise ValueError('direct_input_changed')
-                measured = sample(executable, arguments, environment, private, f'{prefix}-{index}')
+                if not bootstrap_unchanged(bootstrap_snapshots): raise ValueError('bootstrap_source_changed')
+                measured = sample(executable, arguments, environment, private, f'{prefix}-{index}',
+                                  deadline_seconds=OWNED_COMPILER_DEADLINE if renderer_index == 1 else 5)
                 emitted = checked_read(client, 8_388_608) if client.exists() else b''
                 samples.append({'renderer': renderer, 'profile': name, **measured, 'outputsAbsentBefore': True,
                                 'freshPE': valid_pe(emitted), 'outputSHA256': digest(emitted) if emitted else None,
@@ -432,6 +511,8 @@ def main(openssl):
                 if not natural(measured): raise ValueError('matrix_non_natural_abort')
         report['directInputsUnchanged'] = [checked_read(path, maximum) for path, maximum in frozen_paths] == frozen
         report['installedQueryUnchanged'] = checked_read(where, 8_388_608) == where_bytes
+        report['installedBootstrapSourceUnchanged'] = bootstrap_unchanged(bootstrap_snapshots)
+        if not report['installedBootstrapSourceUnchanged']: raise ValueError('bootstrap_source_changed')
         if not report['directInputsUnchanged'] or not report['installedQueryUnchanged']: raise ValueError('direct_input_changed')
         if (git('rev-parse', 'HEAD').decode().strip() != report['physicalHead']
                 or git('diff', SOURCE, '--', *INPUTS) or git('ls-files', '--others', '--exclude-standard', '--', *INPUTS)):

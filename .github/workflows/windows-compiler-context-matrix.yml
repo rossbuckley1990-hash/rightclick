@@ -27,10 +27,10 @@ jobs:
           python -u .github/scripts/tests/test_windows_compiler_context_matrix.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Native fixed context matrix and sealed compiler streams
-        # Eleven samples including query: 5s child + up to6s drain/cleanup each;
-        # before/after source subprocesses ≤240s and encryption ≤60s. Allow
-        # 480s for this measured matrix without waiting on any Swift build.
-        timeout-minutes: 8
+        # Query and five packed profiles stay5s; five owned acquisition profiles
+        # have an explicit30s compiler deadline, plus ≤6s drain/cleanup each.
+        # Worst-case sampling246s + source checks240s + crypto60s <600s.
+        timeout-minutes: 10
         run: |
           $compilerProbeOpenSSL = (Get-Command openssl -ErrorAction Stop).Source
           python -u .github/scripts/windows_compiler_context_matrix.py --openssl $compilerProbeOpenSSL
