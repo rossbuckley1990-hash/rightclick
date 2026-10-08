@@ -1,0 +1,13 @@
+# Current native regression scope, 2026-10-08
+
+The candidate at `4b23f3c20d502776468097ad6b58377a4ea586e0` has genuine current Linux D-Bus proof, but **Windows remains RED**. Its full native Windows run starts and finishes all 686 discovered cases exactly once: 656 pass, 25 explicitly skip and five fail. The outer XCTest summary reports 26 skips; the per-case discrepancy is retained. Windows release and Core7 proof steps are skipped after that failure.
+
+The five failing cases comprise one snapshot timestamp fixture error, three invocation fixture provisioning failures and one receipt fixture permission error. The historical focused `c41a6098…` run proves the reviewed timestamp and receipt fixes against `f07db372…`; it does not make the current candidate GREEN.
+
+A separate read-only native diagnostic at `9118efdf…` holds the installed query binary and arguments fixed and measures seven environments. Minimal context returns zero bytes; adding only the machine application-data role (`ProgramData`) returns a validated absolute selection, identical to the four-key context; restoring minimal context returns zero bytes again. The other three individual roles return zero bytes. This is Python native subprocess evidence. Foundation invocation, production authority/cache identity binding and the repaired current invocation tests remain RED.
+
+The independent current Linux D-Bus audit authenticates the API artifact, verifies six signed receipts against a separately provisioned pin, confirms two fresh independently observed durable writes under distinct kernel UID roles, and checks provider withdrawal/restoration and the exact canonical seven operations. The four ingress journal rows are dispatches, including no-effect calls. The replay control rejects an old marker for a new task. It does not demonstrate reusing one authority lease. No external issuer authority envelope or complete eleven-substrate acceptance is claimed.
+
+`red-green-scope-ledger.json` records, for each current RED, its exposing substrate, generic deficiency, reusable primitive, thin platform layer, required GREEN evidence and potential reuse. The accompanying safe audits retain source/run/artifact pins and limits. The native isolation report alone is copied with CRLF converted to LF; its original and copied byte counts and SHA-256 are both recorded, and the parsed JSON is identical. Raw query output, host paths, private keys, environment values and raw Windows receipt capsules are excluded.
+
+Public release, tags, release assets and Homebrew publishing are held. Source review, CI and regression fixes continue.
