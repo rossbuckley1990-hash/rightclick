@@ -144,10 +144,12 @@ final class CapabilityRuntimeDefaultsTests:
                 $0 is BonjourGRPCSource
             }
         )
-        #else
-        XCTAssertEqual(sources.count, 1)
-        XCTAssertEqual(sourceIDs, Set(["configured.openapi"]))
-        #endif
+#elseif os(Linux)
+        XCTAssertEqual(sourceIDs, ["configured.openapi", "linux.dbus-session"])
+        XCTAssertTrue(sources.contains { $0 is DBusSessionSource })
+#else
+        XCTAssertEqual(sourceIDs, ["configured.openapi"])
+#endif
     }
 
     func testRuntimeDefaultsConsumeLiveSuppliedSource()

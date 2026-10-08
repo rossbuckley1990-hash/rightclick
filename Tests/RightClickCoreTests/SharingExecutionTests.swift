@@ -7,7 +7,6 @@
 import XCTest
 @testable import RightClickCore
 
-#if os(macOS)
 final class SharingExecutionTests: XCTestCase {
     func testPerformReturnWithoutCallbackStaysStarted() {
         var model = SharingExecutionModel()
@@ -63,5 +62,3 @@ final class SharingExecutionTests: XCTestCase {
         XCTAssertTrue(model.message.contains("unverified"))
     }
 }
-
-#endif

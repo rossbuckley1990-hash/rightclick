@@ -8,7 +8,6 @@ import Foundation
 import XCTest
 @testable import RightClickCore
 
-#if os(macOS)
 final class NetworkOriginAuthorityTests:
     XCTestCase
 {
@@ -179,5 +178,3 @@ final class NetworkOriginAuthorityTests:
         )
     }
 }
-
-#endif

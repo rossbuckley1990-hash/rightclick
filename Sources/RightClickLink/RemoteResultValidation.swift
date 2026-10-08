@@ -8,6 +8,7 @@ extension RemoteExecutionSummary {
         guard completedAtMilliseconds > 0, (1...16).contains(lifecycle.count),
               Set(lifecycle).count == lifecycle.count, capabilities.count <= 128,
               Set(capabilities.map(\.id)).count == capabilities.count,
+              taskPhase.map({ ["started", "accepted", "working", "inputRequired", "cancelRequested", "completed", "failed", "cancelled", "unknown"].contains($0) }) ?? true,
               evidenceExecutionID.map({ UUID(uuidString: $0)?.uuidString == $0 }) ?? true,
               capabilities.allSatisfy({ RemoteWire.isIdentifier($0.id) && RemoteWire.isDigest($0.contractDigest) &&
                   !$0.title.isEmpty && $0.title.utf8.count <= 512 && $0.title.rangeOfCharacter(from: .controlCharacters) == nil })
@@ -25,13 +26,17 @@ extension RemoteExecutionSummary {
             coherentLifecycle = tail == [.executing, .providerRejected] || (error != nil && tail == [.unknown])
         case .failed:
             coherentLifecycle = providerAcceptance == .accepted ? tail == [.executing, .providerAccepted, .unverified] : tail == [.executing, .providerRejected]
-        case .started, .cancelled: coherentLifecycle = false
+        case .started: coherentLifecycle = tail == [.executing, .providerAccepted] &&
+            providerAcceptance == .accepted && policy == .evaluated && verification == .unverified &&
+            observationBoundary == .none && evidenceExecutionID != nil && error == nil &&
+            ["accepted", "working", "cancelRequested"].contains(taskPhase ?? "")
+        case .cancelled: coherentLifecycle = false
         }
         guard coherentLifecycle else { throw RemoteLinkError.inconsistentResult }
         if let runtime {
             guard runtime.version == 1, RemoteWire.isIdentifier(runtime.runtimeID), RemoteWire.isIdentifier(runtime.deviceID),
                   runtime.architecture == "arm64" || runtime.architecture == "x86_64" || runtime.architecture == "other",
-                  Set(runtime.operations).isSubset(of: [.runtime, .actions, .run]) else { throw RemoteLinkError.inconsistentResult }
+                  Set(runtime.operations).isSubset(of: [.runtime, .actions, .run, .status]) else { throw RemoteLinkError.inconsistentResult }
         }
         if verification == .verifiedSuccess {
             guard state == .succeeded, providerAcceptance == .accepted, policy == .evaluated,
@@ -47,7 +52,10 @@ extension RemoteExecutionSummary {
                   state != .succeeded && state != .accepted && state != .started else { throw RemoteLinkError.inconsistentResult }
         }
         if state == .awaitingUser {
-            guard policy == .confirmationRequired, lifecycle.last == .awaitingUser else { throw RemoteLinkError.inconsistentResult }
+            let confirmation = policy == .confirmationRequired && providerAcceptance == .notInvoked && taskPhase == nil
+            let inputRequired = policy == .evaluated && providerAcceptance == .accepted && taskPhase == "inputRequired" &&
+                verification == .unverified && evidenceExecutionID != nil && observationBoundary == .none
+            guard (confirmation || inputRequired), lifecycle.last == .awaitingUser else { throw RemoteLinkError.inconsistentResult }
         }
         if state == .accepted {
             guard providerAcceptance == .accepted, policy == .evaluated,

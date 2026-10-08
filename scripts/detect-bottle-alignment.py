@@ -35,7 +35,8 @@ def source_candidates(path: str) -> list[str]:
     filename = pathlib.Path(path).name
     moved_name = "MacOSCapabilityReflectors.swift" if filename == "CapabilityReflector.swift" else filename
     return [path, "Sources/RightClickProtocol/" + filename,
-            "Sources/RightClickProviders/" + filename, "Sources/RightClickMacOS/" + moved_name]
+            "Sources/RightClickProviders/" + filename, "Sources/RightClickMacOS/" + moved_name,
+            "Sources/RightClickLinux/" + filename]
 
 # Stable kind IDs. Detection uses durable source fingerprints so a renamed
 # helper file cannot silently drop a substrate from the bottle contract.
@@ -190,6 +191,24 @@ KIND_RULES: list[dict[str, object]] = [
 ]
 
 
+# Detect callable compiler/source registrations in both monolithic published
+# trees and the reconciled portable modules. The runtime substrate contract is
+# separately exercised by SubstrateInventoryTests; this is bottle comparison.
+for family, class_name in [("kafka", "Kafka"), ("kubernetes", "Kubernetes"),
+                           ("wasm", "WASM"), ("mcp", "MCP"), ("dbus", "DBus")]:
+    KIND_RULES.append({"id": "artifact.resolver." + family,
+        "title": family + " capability artifact resolver",
+        "any_files": ["Sources/RightClickCore/" + class_name + "CapabilityArtifactResolver.swift"],
+        "any_patterns": [class_name + "CapabilityArtifactResolver"],
+        "composition_patterns": [class_name + r"CapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift",
+                              "Sources/RightClickCore/CapabilityRuntimeDefaults.swift"]})
+KIND_RULES.append({"id": "source.a2a.configured", "title": "A2A agent-card/task source",
+    "any_files": ["Sources/RightClickCore/A2AReflector.swift"],
+    "any_patterns": ["ConfiguredA2ASource"], "composition_patterns": ["ConfiguredA2ASource"],
+    "composition_files": ["Sources/RightClickCore/CapabilityRuntimeDefaults.swift"]})
+
+
 def read_text(path: pathlib.Path) -> str:
     try:
         return path.read_text(encoding="utf-8")
@@ -219,8 +238,8 @@ def inventory_tree(root: pathlib.Path) -> dict[str, object]:
         composition_hit = True
         composition_patterns = list(rule.get("composition_patterns", []))  # type: ignore[arg-type]
         composition_files = [
-            root / pathlib.Path(p)
-            for p in rule.get("composition_files", [])  # type: ignore[arg-type]
+            root / pathlib.Path(candidate)
+            for p in rule.get("composition_files", []) for candidate in source_candidates(p)  # type: ignore[arg-type]
         ]
         if composition_patterns:
             if composition_files:

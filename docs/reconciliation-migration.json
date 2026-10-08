@@ -1,0 +1,2398 @@
+{
+  "schemaVersion": 1,
+  "scope": "Source declaration reconciliation; compilation, acquisition, execution and verification are separate evidence gates.",
+  "inputHeads": {
+    "pr99": "6a18aaae3ae3a15b9f6c78f189adc695ae11585a",
+    "pr49": "053b6202df504ff1a33682a39f2e72a959f65983"
+  },
+  "sourceRows": [
+    {
+      "sourceBefore": "Sources/RightClickARD/ARD.swift",
+      "sourceBeforeSHA256": "e07e7282644ca1ccb6b037e470e5af911bdb8c5219307dd1b2932d9b4e941617",
+      "sourceAfter": [
+        "Sources/RightClickARD/ARD.swift"
+      ],
+      "targetModules": [
+        "RightClickARD"
+      ],
+      "declaredTypesRetained": [
+        "ARDSearchResult",
+        "ARDSearchResponse",
+        "ARDOpenAPICandidate",
+        "ARDAcquisitionError",
+        "ARDAcquisition"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickARD/ARD.swift": "e07e7282644ca1ccb6b037e470e5af911bdb8c5219307dd1b2932d9b4e941617"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickARDProbe/main.swift",
+      "sourceBeforeSHA256": "47358aafa27492923efdc5bf47b967651049fa4bee0457c42c2dc791255213ec",
+      "sourceAfter": [
+        "Sources/RightClickARDProbe/main.swift",
+        "Sources/RightClickCLI/main.swift",
+        "Sources/RightClickMarker/main.swift",
+        "Sources/RightClickProbe/main.swift",
+        "Sources/RightClickProviders/GraphQLHTTP.swift"
+      ],
+      "targetModules": [
+        "RightClickARDProbe",
+        "RightClickCLI",
+        "RightClickMarker",
+        "RightClickProbe",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RightClickARDProbe",
+        "ResultBox"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickARDProbe/main.swift": "47358aafa27492923efdc5bf47b967651049fa4bee0457c42c2dc791255213ec",
+        "Sources/RightClickCLI/main.swift": "ea4decb693d95e7f1461363f2e01cf43e1ac69434eeec96039040cd298989307",
+        "Sources/RightClickMarker/main.swift": "25f8ff11c81bfee9d54c2c4d80c8925007eb3df0b5ee71a1d702ceca9fa8e892",
+        "Sources/RightClickProbe/main.swift": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a",
+        "Sources/RightClickProviders/GraphQLHTTP.swift": "b19feed9ccd61810556b4f7abff372f4c40a506be08f88a1c4ac0059fb9c17b6"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/AuthorityConfigurationCLI.swift",
+      "sourceBeforeSHA256": "ca3931efbd1269f789389ad39d599a234688f31006d0f6ac6e3d9fe6aa48c1fc",
+      "sourceAfter": [
+        "Sources/RightClickCLI/AuthorityConfigurationCLI.swift",
+        "Sources/RightClickCLI/ProviderConfigurationCLI.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickAuthorityCLI",
+        "CommandError",
+        "ParsedFlags"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/AuthorityConfigurationCLI.swift": "db90861ef0bc510ea7737e0803ad8af632b07b9a09f394bfc786904755a0547f",
+        "Sources/RightClickCLI/ProviderConfigurationCLI.swift": "bc4ff123105e391486cf5d58ee0ca164a2381dc24944d26ddebc4b7747deb3bb"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/BridgeRuntime.swift",
+      "sourceBeforeSHA256": "cfd779e0d573da96128d8653c58b763cc3236424590d2f66c8e0e6fb3fa845a7",
+      "sourceAfter": [
+        "Sources/RightClickCLI/BridgeRuntime.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickRuntimeKeyStore",
+        "RightClickRuntimeKeyStoreError",
+        "SystemRightClickRuntimeKeyStore",
+        "RightClickBridgeChildConfiguration",
+        "RightClickBridgeRuntime",
+        "StableProfileIntegrityError",
+        "StableProfileAttestation",
+        "StableSetupStateReconciliationError",
+        "RightClickBridgeCLI"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/BridgeRuntime.swift": "cfd779e0d573da96128d8653c58b763cc3236424590d2f66c8e0e6fb3fa845a7"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/ChatGPTBridge.swift",
+      "sourceBeforeSHA256": "04fed3e8c527d0378b62b62503d038ad2ed3bccd5558d5b40a136677204e7f73",
+      "sourceAfter": [
+        "Sources/RightClickCLI/ChatGPTBridge.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickChatGPTBridgeError",
+        "RightClickChatGPTBridge"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/ChatGPTBridge.swift": "04fed3e8c527d0378b62b62503d038ad2ed3bccd5558d5b40a136677204e7f73"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/ChatGPTBridgeInstaller.swift",
+      "sourceBeforeSHA256": "85626ccc5625b4e09d955555be24ff716cc87788649bbef9630cfed735fb081a",
+      "sourceAfter": [
+        "Sources/RightClickCLI/ChatGPTBridgeInstaller.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickCommandResult",
+        "RightClickCommandRunning",
+        "SystemRightClickCommandRunner",
+        "RightClickChatGPTBridgeInstallResult",
+        "RightClickChatGPTBridgeInstaller"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/ChatGPTBridgeInstaller.swift": "85626ccc5625b4e09d955555be24ff716cc87788649bbef9630cfed735fb081a"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/ChatGPTLiveAttestation.swift",
+      "sourceBeforeSHA256": "d5a77ab154365a8a3d6a9693030f7531b04cb8a6635488cef753209346e1aa72",
+      "sourceAfter": [
+        "Sources/RightClickCLI/ChatGPTLiveAttestation.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "LiveAttestation"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/ChatGPTLiveAttestation.swift": "d5a77ab154365a8a3d6a9693030f7531b04cb8a6635488cef753209346e1aa72"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/ChatGPTOnboarding.swift",
+      "sourceBeforeSHA256": "73e5e8bdce180891e1eabccce7bd0b0e1c539f18ce2371de6253db8992080d23",
+      "sourceAfter": [
+        "Sources/RightClickCLI/ChatGPTOnboarding.swift",
+        "Sources/RightClickCLI/LocalOnboarding.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickChatGPTOnboarding",
+        "SetupError",
+        "Options"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/ChatGPTOnboarding.swift": "73e5e8bdce180891e1eabccce7bd0b0e1c539f18ce2371de6253db8992080d23",
+        "Sources/RightClickCLI/LocalOnboarding.swift": "9cd4f792ce97134ca5bb5a4bde3983e6c2c2932503fa9ae2497d3a98e7762df6"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/ChatGPTOnboardingTransaction.swift",
+      "sourceBeforeSHA256": "98d3e8b4952d6939cee9a32d1f5b67a5dbf85ab6bdc8580625a11d63e92cd01c",
+      "sourceAfter": [
+        "Sources/RightClickCLI/ChatGPTOnboardingTransaction.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "FileSnapshot"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/ChatGPTOnboardingTransaction.swift": "98d3e8b4952d6939cee9a32d1f5b67a5dbf85ab6bdc8580625a11d63e92cd01c"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/ClaudeClientAdapter.swift",
+      "sourceBeforeSHA256": "f6307f188878256c9ab9aeefb237c1a39fc9c126abb6c16a678b567b3b04bfc9",
+      "sourceAfter": [
+        "Sources/RightClickCLI/ClaudeClientAdapter.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickClaudeClientAdapter"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/ClaudeClientAdapter.swift": "f6307f188878256c9ab9aeefb237c1a39fc9c126abb6c16a678b567b3b04bfc9"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/ClientRegistry.swift",
+      "sourceBeforeSHA256": "af59cd64f15689f80b332ca1140420e7fde27f547db60de6d6f07feac5a9a057",
+      "sourceAfter": [
+        "Sources/RightClickCLI/ClientRegistry.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickClientRegistry"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/ClientRegistry.swift": "af59cd64f15689f80b332ca1140420e7fde27f547db60de6d6f07feac5a9a057"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/CodexClientAdapter.swift",
+      "sourceBeforeSHA256": "19480c7b9021651d9589938dcccb013197b10b4a9f995ee1db743dcc6bf7a9ad",
+      "sourceAfter": [
+        "Sources/RightClickCLI/CodexClientAdapter.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickCodexClientAdapter"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/CodexClientAdapter.swift": "19480c7b9021651d9589938dcccb013197b10b4a9f995ee1db743dcc6bf7a9ad"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/LocalOnboarding.swift",
+      "sourceBeforeSHA256": "9cd4f792ce97134ca5bb5a4bde3983e6c2c2932503fa9ae2497d3a98e7762df6",
+      "sourceAfter": [
+        "Sources/RightClickCLI/ChatGPTOnboarding.swift",
+        "Sources/RightClickCLI/LocalOnboarding.swift",
+        "Sources/RightClickCLI/NativeRegistrationBackend.swift",
+        "Sources/RightClickCLI/OnboardingEngine.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickLocalOnboarding",
+        "SetupError",
+        "Plan",
+        "Applied",
+        "Options"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/ChatGPTOnboarding.swift": "73e5e8bdce180891e1eabccce7bd0b0e1c539f18ce2371de6253db8992080d23",
+        "Sources/RightClickCLI/LocalOnboarding.swift": "9cd4f792ce97134ca5bb5a4bde3983e6c2c2932503fa9ae2497d3a98e7762df6",
+        "Sources/RightClickCLI/NativeRegistrationBackend.swift": "a3535d9f8aab12411133aae5257502979a1934f20f9545ef119219be05e49222",
+        "Sources/RightClickCLI/OnboardingEngine.swift": "fa8329c7264555d708e3a5640c581a4a62b993016bf296eadb14ec27ba0275fd"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/NativeRegistrationBackend.swift",
+      "sourceBeforeSHA256": "a3535d9f8aab12411133aae5257502979a1934f20f9545ef119219be05e49222",
+      "sourceAfter": [
+        "Sources/RightClickCLI/LocalOnboarding.swift",
+        "Sources/RightClickCLI/NativeRegistrationBackend.swift",
+        "Sources/RightClickCLI/OnboardingEngine.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickNativeRegistrationBackend",
+        "Command",
+        "Contract",
+        "Plan",
+        "Applied",
+        "Result"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/LocalOnboarding.swift": "9cd4f792ce97134ca5bb5a4bde3983e6c2c2932503fa9ae2497d3a98e7762df6",
+        "Sources/RightClickCLI/NativeRegistrationBackend.swift": "a3535d9f8aab12411133aae5257502979a1934f20f9545ef119219be05e49222",
+        "Sources/RightClickCLI/OnboardingEngine.swift": "fa8329c7264555d708e3a5640c581a4a62b993016bf296eadb14ec27ba0275fd"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/OnboardingEngine.swift",
+      "sourceBeforeSHA256": "fa8329c7264555d708e3a5640c581a4a62b993016bf296eadb14ec27ba0275fd",
+      "sourceAfter": [
+        "Sources/RightClickCLI/LocalOnboarding.swift",
+        "Sources/RightClickCLI/NativeRegistrationBackend.swift",
+        "Sources/RightClickCLI/OnboardingEngine.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickOnboardingError",
+        "RightClickClientState",
+        "RightClickConnectionRecipe",
+        "Transport",
+        "RightClickClientAdapter",
+        "RightClickCursorClientAdapter",
+        "RightClickOnboardingMutation",
+        "RightClickOnboardingPlan",
+        "RightClickOnboardingApplied",
+        "RightClickOnboardingEngine",
+        "RightClickJSONConfigBackend",
+        "Plan",
+        "Applied"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/LocalOnboarding.swift": "9cd4f792ce97134ca5bb5a4bde3983e6c2c2932503fa9ae2497d3a98e7762df6",
+        "Sources/RightClickCLI/NativeRegistrationBackend.swift": "a3535d9f8aab12411133aae5257502979a1934f20f9545ef119219be05e49222",
+        "Sources/RightClickCLI/OnboardingEngine.swift": "fa8329c7264555d708e3a5640c581a4a62b993016bf296eadb14ec27ba0275fd"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/OpenAIPluginSetup.swift",
+      "sourceBeforeSHA256": "742d751248116beb1f1a9371b1fe5097a2cfd6b2b4ae37d439c71c27206a307e",
+      "sourceAfter": [
+        "Sources/RightClickCLI/OpenAIPluginSetup.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickOpenAIPlugin"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/OpenAIPluginSetup.swift": "742d751248116beb1f1a9371b1fe5097a2cfd6b2b4ae37d439c71c27206a307e"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/ProviderConfigurationCLI.swift",
+      "sourceBeforeSHA256": "bc4ff123105e391486cf5d58ee0ca164a2381dc24944d26ddebc4b7747deb3bb",
+      "sourceAfter": [
+        "Sources/RightClickCLI/AuthorityConfigurationCLI.swift",
+        "Sources/RightClickCLI/ProviderConfigurationCLI.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickProviderCLI",
+        "CommandError",
+        "ParsedFlags"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/AuthorityConfigurationCLI.swift": "db90861ef0bc510ea7737e0803ad8af632b07b9a09f394bfc786904755a0547f",
+        "Sources/RightClickCLI/ProviderConfigurationCLI.swift": "bc4ff123105e391486cf5d58ee0ca164a2381dc24944d26ddebc4b7747deb3bb"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/Setup.swift",
+      "sourceBeforeSHA256": "4879d2844bd80eaabb4e4c177603d0d8cd37cb448a1980bdd065841b2bb32a04",
+      "sourceAfter": [
+        "Sources/RightClickCLI/Setup.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickSetup",
+        "Check",
+        "RightClickAuth",
+        "RightClickServe"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/Setup.swift": "4879d2844bd80eaabb4e4c177603d0d8cd37cb448a1980bdd065841b2bb32a04"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/SetupAllTransaction.swift",
+      "sourceBeforeSHA256": "4cfcc4e73a971bbd19fe5d66ae487e568f6226457955298017dba34bbcfc67b8",
+      "sourceAfter": [
+        "Sources/RightClickCLI/SetupAllTransaction.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickSetupAllTransaction",
+        "PreparedClient",
+        "AppliedClient",
+        "PreflightFailure",
+        "ApplyFailure"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/SetupAllTransaction.swift": "4cfcc4e73a971bbd19fe5d66ae487e568f6226457955298017dba34bbcfc67b8"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/SetupState.swift",
+      "sourceBeforeSHA256": "d8fc3f4741e12e32174a3a08b077fadb50c9257d9b8bd3c601a8955151977266",
+      "sourceAfter": [
+        "Sources/RightClickCLI/SetupState.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickSetupState",
+        "RightClickSetupStateStore",
+        "RightClickSetupStateReconciliation"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/SetupState.swift": "d8fc3f4741e12e32174a3a08b077fadb50c9257d9b8bd3c601a8955151977266"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/StableEntrypoint.swift",
+      "sourceBeforeSHA256": "3f019cf8e18f81d9cda2b14e37b1134945e9bcb4de0b7d6bc4048fa4efa4c068",
+      "sourceAfter": [
+        "Sources/RightClickCLI/StableEntrypoint.swift"
+      ],
+      "targetModules": [
+        "RightClickCLI"
+      ],
+      "declaredTypesRetained": [
+        "RightClickStableEntrypointError",
+        "RightClickStableEntrypoint",
+        "Layout"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCLI/StableEntrypoint.swift": "3f019cf8e18f81d9cda2b14e37b1134945e9bcb4de0b7d6bc4048fa4efa4c068"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCLI/main.swift",
+      "sourceBeforeSHA256": "2265bc507a934d17ffdf4d44b6e6303bfbcc9c27194de1248774ecc6389b9c71",
+      "sourceAfter": [
+        "Sources/RightClickARDProbe/main.swift",
+        "Sources/RightClickCLI/main.swift",
+        "Sources/RightClickMarker/main.swift",
+        "Sources/RightClickProbe/main.swift"
+      ],
+      "targetModules": [
+        "RightClickARDProbe",
+        "RightClickCLI",
+        "RightClickMarker",
+        "RightClickProbe"
+      ],
+      "declaredTypesRetained": [
+        "RightClickCLIMain",
+        "CLI",
+        "Registration",
+        "CLIRender"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickARDProbe/main.swift": "47358aafa27492923efdc5bf47b967651049fa4bee0457c42c2dc791255213ec",
+        "Sources/RightClickCLI/main.swift": "ea4decb693d95e7f1461363f2e01cf43e1ac69434eeec96039040cd298989307",
+        "Sources/RightClickMarker/main.swift": "25f8ff11c81bfee9d54c2c4d80c8925007eb3df0b5ee71a1d702ceca9fa8e892",
+        "Sources/RightClickProbe/main.swift": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/A2AReflector.swift",
+      "sourceBeforeSHA256": "c357822fd0e900f6aadc80285fad980b5f736d9e62ab539e1026b399aaac2e21",
+      "sourceAfter": [
+        "Sources/RightClickProviders/A2AReflector.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "A2AReflector",
+        "ConfiguredA2ASource"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/A2AReflector.swift": "3e051d3d8a25d2e544cf1c21b0eb5a38eedb5c3875739a4229e56e3b2395b991"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/ARDRegistrySource.swift",
+      "sourceBeforeSHA256": "ff392711946bc7dc90837b787de79179741a1a06c6acfb644b67449a600ee288",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift",
+        "Sources/RightClickProviders/ARDRegistrySource.swift",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift",
+        "Sources/RightClickProviders/ConfiguredOpenAPISource.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "ARDRegistryDescriptor",
+        "ARDRegistrySource",
+        "SearchLoader",
+        "SpecificationLoader",
+        "SearchBox",
+        "ARDOpenAPIReflector"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift": "257dc47618ea0eb0e6d95846877e4b718eff1faaa4c38d281678ed8da1869992",
+        "Sources/RightClickProviders/ARDRegistrySource.swift": "d76b83b26862bb8bb0f42d4ede31cb74ba0cef0e0d6db8cd89b953b4f4bfd1f7",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift": "65869f894ee84ad6f9b7fbc7f75490a4ac59b14cc7ecb8e4b5d4c5ee66218fe4",
+        "Sources/RightClickProviders/ConfiguredOpenAPISource.swift": "f3e00a2bad0f76bce27c01667ca9faa18f0f7a15302530a828bc4354a0e1b830"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/ActionExtensionCatalog.swift",
+      "sourceBeforeSHA256": "04dedc4abda3512dd7cc847174973348f3b1a73180b135cd303bd5686feddbed",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/ActionExtensionCatalog.swift",
+        "Sources/RightClickProbe/main.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS",
+        "RightClickProbe"
+      ],
+      "declaredTypesRetained": [
+        "ActionExtensionRecord",
+        "ActionExtensionCatalog",
+        "RuleApplicability"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/ActionExtensionCatalog.swift": "a0fd4e8260edf20ff7fe332cdfdebf05fe84e01d785d25058d4cfdcc3c9fcdd8",
+        "Sources/RightClickProbe/main.swift": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/BonjourGRPCSource.swift",
+      "sourceBeforeSHA256": "b348a26a0ff03e155eeab1739895ae0e8c28908264973f9d9feacdb576fd0d4b",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/BonjourGRPCSource.swift",
+        "Sources/RightClickMacOS/BonjourGraphQLSource.swift",
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift",
+        "Sources/RightClickProviders/GRPCReflector.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "BonjourGRPCServiceDescriptor",
+        "BonjourGRPCSource",
+        "ReflectionLoader",
+        "UnaryInvoker",
+        "ServiceKey",
+        "Material"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/BonjourGRPCSource.swift": "ec867e460d1aba1b2117f6a2a09d4f3cbcf9f8007128546464cc591d9833c8e2",
+        "Sources/RightClickMacOS/BonjourGraphQLSource.swift": "e6638f50857c014da9713d61d33018fd56f0f4c3a025b52a6f447dd65cbb47ec",
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift": "257dc47618ea0eb0e6d95846877e4b718eff1faaa4c38d281678ed8da1869992",
+        "Sources/RightClickProviders/GRPCReflector.swift": "b585e2519242333ff72afc1674cf1be35743ad1eeef5719ad4cdd8ccfbeba32c"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/BonjourGraphQLSource.swift",
+      "sourceBeforeSHA256": "940b20fd5bb63fa07adb56923c91470f42cde9533a2498ffac9abe073eff1415",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/BonjourGRPCSource.swift",
+        "Sources/RightClickMacOS/BonjourGraphQLSource.swift",
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "BonjourGraphQLServiceDescriptor",
+        "BonjourGraphQLSource",
+        "SchemaLoader",
+        "IntrospectionLoader",
+        "ServiceKey",
+        "Material"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/BonjourGRPCSource.swift": "ec867e460d1aba1b2117f6a2a09d4f3cbcf9f8007128546464cc591d9833c8e2",
+        "Sources/RightClickMacOS/BonjourGraphQLSource.swift": "e6638f50857c014da9713d61d33018fd56f0f4c3a025b52a6f447dd65cbb47ec",
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift": "257dc47618ea0eb0e6d95846877e4b718eff1faaa4c38d281678ed8da1869992",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift": "65869f894ee84ad6f9b7fbc7f75490a4ac59b14cc7ecb8e4b5d4c5ee66218fe4"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/BonjourOpenAPISource.swift",
+      "sourceBeforeSHA256": "6c02e1350ecc88bde68e32f58cb19332bf294e79458a01c3402015e6191973c4",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/BonjourGRPCSource.swift",
+        "Sources/RightClickMacOS/BonjourGraphQLSource.swift",
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift",
+        "Sources/RightClickProviders/ARDRegistrySource.swift",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift",
+        "Sources/RightClickProviders/ConfiguredOpenAPISource.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "BonjourOpenAPIServiceDescriptor",
+        "BonjourOpenAPISource",
+        "SpecificationLoader",
+        "ServiceKey"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/BonjourGRPCSource.swift": "ec867e460d1aba1b2117f6a2a09d4f3cbcf9f8007128546464cc591d9833c8e2",
+        "Sources/RightClickMacOS/BonjourGraphQLSource.swift": "e6638f50857c014da9713d61d33018fd56f0f4c3a025b52a6f447dd65cbb47ec",
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift": "257dc47618ea0eb0e6d95846877e4b718eff1faaa4c38d281678ed8da1869992",
+        "Sources/RightClickProviders/ARDRegistrySource.swift": "d76b83b26862bb8bb0f42d4ede31cb74ba0cef0e0d6db8cd89b953b4f4bfd1f7",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift": "65869f894ee84ad6f9b7fbc7f75490a4ac59b14cc7ecb8e4b5d4c5ee66218fe4",
+        "Sources/RightClickProviders/ConfiguredOpenAPISource.swift": "f3e00a2bad0f76bce27c01667ca9faa18f0f7a15302530a828bc4354a0e1b830"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/BoundedCapabilityProcess.swift",
+      "sourceBeforeSHA256": "074fa91d127aba7700b6f9c5ed7f382e5b49f8ef87ecb61a4abb72383481af82",
+      "sourceAfter": [
+        "Sources/RightClickProviders/BoundedCapabilityProcess.swift",
+        "Sources/RightClickProviders/KafkaCapabilityArtifactResolver.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "BoundedCapabilityProcess",
+        "Diagnostic",
+        "Outcome",
+        "Buffer"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/BoundedCapabilityProcess.swift": "39ed49137cf70e80de8e4aff7193bfa5c93d89fcfc57d77bdfe4ef6749928050",
+        "Sources/RightClickProviders/KafkaCapabilityArtifactResolver.swift": "9fd5bd71e8b5df828f608857f61bab9204bf11b3df266e46427a567d1e1df9c0"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/BundleScan.swift",
+      "sourceBeforeSHA256": "b188140b91dfd98cda035a1da54fcb7bb9427fcd57e4f2e485906a1ce13e38ac",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/BundleScan.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS"
+      ],
+      "declaredTypesRetained": [
+        "BundleScan"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/BundleScan.swift": "c9b9cefdea7bf5421146274d056df629204059b66fb35bba792d5af0c9cd133c"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/Capability.swift",
+      "sourceBeforeSHA256": "2469911a9fcfff92d059d040048bb42bd988a6ae8f0243c8fc40f3473997a1d6",
+      "sourceAfter": [
+        "Sources/RightClickLink/RemoteReplayLedger.swift",
+        "Sources/RightClickProtocol/Capability.swift",
+        "Sources/RightClickProtocol/RCIR.swift",
+        "Sources/RightClickProtocol/RCIRAuthority.swift",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift"
+      ],
+      "targetModules": [
+        "RightClickLink",
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilitySource",
+        "CapabilitySafety",
+        "CapabilityInvocation",
+        "SupportLevel",
+        "CapabilityProvider",
+        "Capability",
+        "CapabilityID",
+        "RunStatus",
+        "ExecutionState",
+        "OutcomeEvidence",
+        "ExecutionRetentionEvidence",
+        "ExecutionRecord",
+        "ExecutionStore",
+        "Statistics",
+        "Entry",
+        "RunResult"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickLink/RemoteReplayLedger.swift": "af154f184ea3611db8e7b3fba18b22bc81b0b3462274d65d2b7145b19404f0d8",
+        "Sources/RightClickProtocol/Capability.swift": "3bab3e1990d7dcc31b9ea0399b9e35adfadea5325025724c3cc91c58e7536482",
+        "Sources/RightClickProtocol/RCIR.swift": "965e8bcad08d94de03a41eccea1cd83bc2f363bad97ce38813288272d32671da",
+        "Sources/RightClickProtocol/RCIRAuthority.swift": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift": "598881d8054656b90b1bd3369c799df067995fc0c34e140b998df5f3d886ac9f",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift": "49d2c61325ea230be380a671b180ba69bf906609198f619b52c1db3f045adc62",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift": "43b847de6b8ebb3a782242c298a6f06e95dd0e0c38f20fb8186d7756ecc1d141"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityABI.swift",
+      "sourceBeforeSHA256": "de98d9495c316cc4a8a73ed7d313bc73baf8cbded0f30ddcd11bd8ba1410368a",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/CapabilityABI.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityABIError",
+        "CapabilityABILimits",
+        "CapabilityValue",
+        "CapabilitySchema",
+        "CapabilityContract",
+        "CapabilityJSONNumber"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/CapabilityABI.swift": "de98d9495c316cc4a8a73ed7d313bc73baf8cbded0f30ddcd11bd8ba1410368a"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityABIAdapter.swift",
+      "sourceBeforeSHA256": "1f767384f537fa349e0b31bf8d8a62d1fac916da9f9a3d8cbcb0f859ab2fb50a",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/CapabilityABIAdapter.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/CapabilityABIAdapter.swift": "be9d2542ce73b8f85a554eb3e93de80d740834eb6dc94d8954b6750b7773dd0b"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityArgumentPreflight.swift",
+      "sourceBeforeSHA256": "fb8c3f2906b3f61b2c54d44c6ee032a9f9127e5a1cf81ac6359b80262e7015b3",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/CapabilityArgumentPreflight.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityPreflightIssue",
+        "CapabilityArgumentPreflight"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/CapabilityArgumentPreflight.swift": "fb8c3f2906b3f61b2c54d44c6ee032a9f9127e5a1cf81ac6359b80262e7015b3"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityArtifactResolver.swift",
+      "sourceBeforeSHA256": "bc57a4ccf6e013f8f8dca04c64b5f99f86fde6ff8c9e70d9574b65fdd58c24c7",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/BonjourGraphQLSource.swift",
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift",
+        "Sources/RightClickProviders/ARDRegistrySource.swift",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift",
+        "Sources/RightClickProviders/ConfiguredOpenAPISource.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityArtifactDescriptor",
+        "CapabilityArtifactResolutionError",
+        "CapabilityArtifactResolver",
+        "CapabilityArtifactResolverRegistry",
+        "CapabilityArtifactResolverDefaults",
+        "OpenAPICapabilityArtifactResolver",
+        "SpecificationLoader",
+        "GraphQLCapabilityArtifactResolver",
+        "SchemaLoader",
+        "IntrospectionLoader",
+        "GRPCCapabilityArtifactResolver",
+        "DescriptorLoader",
+        "CapabilityArtifactURLPolicy",
+        "ConfiguredCapabilityArtifactSource"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/BonjourGraphQLSource.swift": "e6638f50857c014da9713d61d33018fd56f0f4c3a025b52a6f447dd65cbb47ec",
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift": "257dc47618ea0eb0e6d95846877e4b718eff1faaa4c38d281678ed8da1869992",
+        "Sources/RightClickProviders/ARDRegistrySource.swift": "d76b83b26862bb8bb0f42d4ede31cb74ba0cef0e0d6db8cd89b953b4f4bfd1f7",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift": "65869f894ee84ad6f9b7fbc7f75490a4ac59b14cc7ecb8e4b5d4c5ee66218fe4",
+        "Sources/RightClickProviders/ConfiguredOpenAPISource.swift": "f3e00a2bad0f76bce27c01667ca9faa18f0f7a15302530a828bc4354a0e1b830"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityArtifactSnapshot.swift",
+      "sourceBeforeSHA256": "b08b0e1a879b6251a5ecea93a9f5f793b5b6ae54adde99a1f3c2147a89c057df",
+      "sourceAfter": [
+        "Sources/RightClickProviders/CapabilityArtifactSnapshot.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityArtifactSnapshot"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/CapabilityArtifactSnapshot.swift": "6f20e04dcc731883940b8b14312df69047a074b03c242cb36aed423d9773b9e4"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityCoreArgumentEncoding.swift",
+      "sourceBeforeSHA256": "3519820b5ebeb3d6710bb076e674bdb24ea9f3198e0ab6d81706f4fbecd2ee88",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/CapabilityCoreArgumentEncoding.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityCoreArgumentEncoding"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/CapabilityCoreArgumentEncoding.swift": "c2a8f86f303aaf84fa14f6d223ef3bba5f5a950d25c518c8e88d79f417881ec6"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityEffectAssessment.swift",
+      "sourceBeforeSHA256": "480e244412793e70514128bab4d8573244a624902410ee37c6728a3ca14761b1",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/CapabilityEffectAssessment.swift",
+        "Sources/RightClickProviders/OAuthOIDCAuthority.swift",
+        "Sources/RightClickProviders/ProductSurface.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityEffectAssessment",
+        "CapabilityExplanationView",
+        "CodingKeys"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/CapabilityEffectAssessment.swift": "480e244412793e70514128bab4d8573244a624902410ee37c6728a3ca14761b1",
+        "Sources/RightClickProviders/OAuthOIDCAuthority.swift": "f32958b2d6d67a1aa2e4881e3fcfc96dfa266432ce1bc8ba4259e4b29a31fbaf",
+        "Sources/RightClickProviders/ProductSurface.swift": "ad1928a1e306f1c18b19f2640e146ae9514dbfd43066d302e60e80edeaa47f06"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityEngine.swift",
+      "sourceBeforeSHA256": "ea41052402b7851f41b35734c29fab5a58cf200217dd154809b96dc12befe8ff",
+      "sourceAfter": [
+        "Sources/RightClickCore/CapabilityEngine.swift",
+        "Sources/RightClickProtocol/RuntimeReports.swift"
+      ],
+      "targetModules": [
+        "RightClickCore",
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "ProviderSummary",
+        "DoctorReport",
+        "CapabilityEngine",
+        "RightClickJSON"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCore/CapabilityEngine.swift": "c1573377d9c1f2d3b932ef5807d3f05f48e13647d87a170b60edf22f8cb3ac18",
+        "Sources/RightClickProtocol/RuntimeReports.swift": "d83c29790241e82aba1fea0054832161b3a94a484308c13f958e5502cf7de373"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityExecutableSnapshotPool.swift",
+      "sourceBeforeSHA256": "557c7adc201452cdeed563badad7ee27558d08adca9e989b659cde8b3fa565fe",
+      "sourceAfter": [
+        "Sources/RightClickLink/RemoteReplayLedger.swift",
+        "Sources/RightClickProtocol/Capability.swift",
+        "Sources/RightClickProtocol/RCIR.swift",
+        "Sources/RightClickProtocol/RCIRAuthority.swift",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift"
+      ],
+      "targetModules": [
+        "RightClickLink",
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityExecutableSnapshotPool",
+        "Entry"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickLink/RemoteReplayLedger.swift": "af154f184ea3611db8e7b3fba18b22bc81b0b3462274d65d2b7145b19404f0d8",
+        "Sources/RightClickProtocol/Capability.swift": "3bab3e1990d7dcc31b9ea0399b9e35adfadea5325025724c3cc91c58e7536482",
+        "Sources/RightClickProtocol/RCIR.swift": "965e8bcad08d94de03a41eccea1cd83bc2f363bad97ce38813288272d32671da",
+        "Sources/RightClickProtocol/RCIRAuthority.swift": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift": "598881d8054656b90b1bd3369c799df067995fc0c34e140b998df5f3d886ac9f",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift": "49d2c61325ea230be380a671b180ba69bf906609198f619b52c1db3f045adc62",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift": "43b847de6b8ebb3a782242c298a6f06e95dd0e0c38f20fb8186d7756ecc1d141"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityExperience.swift",
+      "sourceBeforeSHA256": "73dfbe12605e956e109513f49639529d0698c6d6a0c38b5b5146a1903583da0c",
+      "sourceAfter": [
+        "Sources/RightClickCore/CapabilityExperience.swift"
+      ],
+      "targetModules": [
+        "RightClickCore"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityExperience"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCore/CapabilityExperience.swift": "355a8e01cf9be98bac7d6441c01ccfe6828eb97d82135a00b0d896b517268e1c"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityExperienceLedger.swift",
+      "sourceBeforeSHA256": "69bc0d7c19d29ddb1f1adc3f079cadba6144b9ae01c443cb1f8f493a699eb6c4",
+      "sourceAfter": [
+        "Sources/RightClickCore/CapabilityExperienceLedger.swift",
+        "Sources/RightClickLink/RemoteReplayLedger.swift",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift"
+      ],
+      "targetModules": [
+        "RightClickCore",
+        "RightClickLink",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityExperienceOutcome",
+        "CapabilityExperienceEntry",
+        "CapabilityExperienceError",
+        "CapabilityExperienceLedger",
+        "Document"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCore/CapabilityExperienceLedger.swift": "69bc0d7c19d29ddb1f1adc3f079cadba6144b9ae01c443cb1f8f493a699eb6c4",
+        "Sources/RightClickLink/RemoteReplayLedger.swift": "af154f184ea3611db8e7b3fba18b22bc81b0b3462274d65d2b7145b19404f0d8",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift": "43b847de6b8ebb3a782242c298a6f06e95dd0e0c38f20fb8186d7756ecc1d141"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityInterface.swift",
+      "sourceBeforeSHA256": "157f0edc0d84bc392b7aca6956008802b25aed99887f3f6dd044b91120af77a0",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/CapabilityInterface.swift",
+        "Sources/RightClickProviders/CapabilityInterfaceReflector.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityInterfaceOperation",
+        "CapabilityInterfaceReflector",
+        "Invocation",
+        "BoundInvocation",
+        "CapabilityJSON"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/CapabilityInterface.swift": "3a3bcd2d5c0588dc2601166986f33ce644e78fc6aeee6fad67cc0c03f7122aab",
+        "Sources/RightClickProviders/CapabilityInterfaceReflector.swift": "511d04d2043478e03a54c51bd4b5bc30cdddf4d778b1b4c1167bc91b44d2de07"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityProtectedReference.swift",
+      "sourceBeforeSHA256": "52e32f1882e89da73280d5d104fc822a00ba6a0ae10520272fe07523bd752b34",
+      "sourceAfter": [
+        "Sources/RightClickProviders/CapabilityProtectedReference.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityProtectedReference"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/CapabilityProtectedReference.swift": "ce6e568972d0365f1dbec9153dab7e1309d7e206a9e2a0479da620774e7697be"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityReflector.swift",
+      "sourceBeforeSHA256": "d8b01038448cdd43e7807de58ba1b1602b33e059f65836003e420d726b14625c",
+      "sourceAfter": [
+        "Sources/RightClickCore/NativeRuntimeDefaults.swift",
+        "Sources/RightClickMacOS/MacOSCapabilityReflectors.swift",
+        "Sources/RightClickProtocol/CapabilityReflector.swift"
+      ],
+      "targetModules": [
+        "RightClickCore",
+        "RightClickMacOS",
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityArguments",
+        "CapabilityReflector",
+        "CapabilityContractRefreshingReflector",
+        "CapabilityVerificationReflector",
+        "CapabilityReflectorID",
+        "CapabilityReflectorDefaults",
+        "MacOSServiceReflector",
+        "MacOSSharingReflector",
+        "MacOSActionExtensionReflector"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCore/NativeRuntimeDefaults.swift": "157db3e4ab35fa44302a0312d6359c179d63aaf80f80b47c6c86f8005b254639",
+        "Sources/RightClickMacOS/MacOSCapabilityReflectors.swift": "ee22262753a25049876a14efed1453320b015f3a5cb1dfc928268adfb6b74abc",
+        "Sources/RightClickProtocol/CapabilityReflector.swift": "9812d0aff0497844fcf0fa2179a859045a0ef3fd47794638ca8146dd44c893e1"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityReflectorSource.swift",
+      "sourceBeforeSHA256": "784f3eab45d5ae7ddfc567639640fdc67e95972d485847ac532aaa3795e38a64",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/CapabilityReflectorSource.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityReflectorSource",
+        "ContextualCapabilityReflectorSource"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/CapabilityReflectorSource.swift": "784f3eab45d5ae7ddfc567639640fdc67e95972d485847ac532aaa3795e38a64"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilityRuntimeDefaults.swift",
+      "sourceBeforeSHA256": "d4c22102faea2e6a6826c727bc96a36d9c6c74e1cad04f56b0e00d44662ed028",
+      "sourceAfter": [
+        "Sources/RightClickCore/CapabilityRuntimeDefaults.swift"
+      ],
+      "targetModules": [
+        "RightClickCore"
+      ],
+      "declaredTypesRetained": [
+        "CapabilityReflectorSourceDefaults",
+        "CapabilityRuntimeDefaults"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCore/CapabilityRuntimeDefaults.swift": "bd51b43955a29993db49b85f16e572131a82348ad4d2803b52b52dc1d0272699"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilitySelection.swift",
+      "sourceBeforeSHA256": "2db962df6416205f3a5abb71e70c5a15bdad8895b4c24874a8531301fa3c19cc",
+      "sourceAfter": [
+        "Sources/RightClickLink/RemoteRuntimeRegistry.swift",
+        "Sources/RightClickProtocol/CapabilitySelection.swift"
+      ],
+      "targetModules": [
+        "RightClickLink",
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "CapabilitySelectionError",
+        "CapabilitySelection",
+        "Catalog"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickLink/RemoteRuntimeRegistry.swift": "f1f805048043f45a96643b6f86692b1e73c777826432a0a189e99ca47e86afe5",
+        "Sources/RightClickProtocol/CapabilitySelection.swift": "6a1e320e0aacabd141186420a8d42eace08bb41afa410c9b8b11c5913103f291"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilitySensitiveMaterial.swift",
+      "sourceBeforeSHA256": "dc25e83533eaf7609827de558145de19e95b59e1e96f81411782ef6ae433e7e9",
+      "sourceAfter": [
+        "Sources/RightClickProviders/CapabilitySensitiveMaterial.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilitySensitiveMaterial"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/CapabilitySensitiveMaterial.swift": "46a828c67900f1bec7d8e50a4abe07134aea1fe0f7999008021fdee8aece6300"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/CapabilitySnapshotFreshness.swift",
+      "sourceBeforeSHA256": "791683a0844e2adc2baf5d4e2b8b44b5494348509232ed452419fd0643523019",
+      "sourceAfter": [
+        "Sources/RightClickProviders/CapabilitySnapshotFreshness.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "CapabilitySnapshotFreshness"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/CapabilitySnapshotFreshness.swift": "06c1b751aa7fef3a4ec69d1cf51254ce011810f233ddae6bf0e2544b80ad7063"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/ConfiguredOpenAPISource.swift",
+      "sourceBeforeSHA256": "51722991806115317ed061f78fcec18d782cc9e9cb334b175aa16d8c06615d94",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift",
+        "Sources/RightClickProviders/ARDRegistrySource.swift",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift",
+        "Sources/RightClickProviders/ConfiguredOpenAPISource.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "ConfiguredOpenAPIProviderDescriptor",
+        "ConfiguredOpenAPIProviderStoreError",
+        "ConfiguredOpenAPIProviderStore",
+        "ConfiguredOpenAPISource",
+        "SpecificationLoader"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/BonjourOpenAPISource.swift": "257dc47618ea0eb0e6d95846877e4b718eff1faaa4c38d281678ed8da1869992",
+        "Sources/RightClickProviders/ARDRegistrySource.swift": "d76b83b26862bb8bb0f42d4ede31cb74ba0cef0e0d6db8cd89b953b4f4bfd1f7",
+        "Sources/RightClickProviders/CapabilityArtifactResolver.swift": "65869f894ee84ad6f9b7fbc7f75490a4ac59b14cc7ecb8e4b5d4c5ee66218fe4",
+        "Sources/RightClickProviders/ConfiguredOpenAPISource.swift": "f3e00a2bad0f76bce27c01667ca9faa18f0f7a15302530a828bc4354a0e1b830"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/ContentItem.swift",
+      "sourceBeforeSHA256": "f9631387fe8369b699ff2a8d8d6a2d1a3744a6bb0ba4e0059e8d180bcd87530b",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/ContentItem.swift",
+        "Sources/RightClickProviders/ContentParser.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "ContentItem",
+        "ContentParser",
+        "RightClickError"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/ContentItem.swift": "d11b41679994708e9264e813761a62989d4ae00be08bc209ce1f7c9ef7db2bba",
+        "Sources/RightClickProviders/ContentParser.swift": "77e0619b59d38b853f5518e4da273ee4951f92d184c728559a5dcf7d485dc77f"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/DBusCapabilityArtifactResolver.swift",
+      "sourceBeforeSHA256": "070b97058390b2181737c399f4eb19a0505942936f0a3bd0fa3c3d2032c7ab6f",
+      "sourceAfter": [
+        "Sources/RightClickLinux/DBusBusctlClient.swift",
+        "Sources/RightClickProviders/DBusCapabilityArtifactResolver.swift"
+      ],
+      "targetModules": [
+        "RightClickLinux",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "DBusTransport",
+        "DBusBusctlClient",
+        "DBusAcquiredReflector",
+        "DBusCapabilityArtifactResolver"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickLinux/DBusBusctlClient.swift": "1f6e98ac72b7e2ca5f775fb729131b32e13d24e94608ef2a5fdb7cae45c4a69a",
+        "Sources/RightClickProviders/DBusCapabilityArtifactResolver.swift": "e14f68aa3eb004825c4d03055bde82df25d475ecb31e763f8a72dd648b1e0833"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/DBusIntrospection.swift",
+      "sourceBeforeSHA256": "f0b367d519373d6d3ef097c5f6efe039450efa5233b9b7822ec4ceb342e8e83f",
+      "sourceAfter": [
+        "Sources/RightClickProviders/DBusIntrospection.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "DBusValueType",
+        "DBusMethodDeclaration",
+        "Argument",
+        "DBusIntrospection",
+        "RawArgument",
+        "DBusIntrospection"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/DBusIntrospection.swift": "ad82791d984f90d4d9e2ff29cedb2db066796cf952d54db27fadd5ccdb39d77a"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/DBusSessionSource.swift",
+      "sourceBeforeSHA256": "6766b08926366f6c07a4e4e82b4766ee1e7476f522235fef5ad41f90a6b900c0",
+      "sourceAfter": [
+        "Sources/RightClickLinux/DBusSessionSource.swift"
+      ],
+      "targetModules": [
+        "RightClickLinux"
+      ],
+      "declaredTypesRetained": [
+        "DBusSessionSource"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickLinux/DBusSessionSource.swift": "60e3a49f771231feda602c6c8ddf75f3f532f313ca97756c674877bc764afcfd"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/GRPCReflectionTransport.swift",
+      "sourceBeforeSHA256": "22e90e7c32cf2ea201fdb3a6327cc23966cf10d88c5d484fdb49fa0973c3c523",
+      "sourceAfter": [
+        "Sources/RightClickProviders/GRPCReflectionTransport.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "GRPCEndpoint",
+        "GRPCRawPayload",
+        "GRPCReflectionTransportError",
+        "GRPCReflectionWire",
+        "GRPCReflectionTransport",
+        "ResponseBox"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/GRPCReflectionTransport.swift": "642290ba14f69fe251817795a0f3e291f48d13f2bc55b8bdfef2dc4c3fbc70fd"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/GRPCReflector.swift",
+      "sourceBeforeSHA256": "5a247a94a05f4143b73d021218ed2c20cfb623ee03af5e0128454b0d8974af3d",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/BonjourGRPCSource.swift",
+        "Sources/RightClickProviders/GRPCReflector.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "GRPCReflector",
+        "UnaryInvoker",
+        "EnumContract",
+        "FieldKind",
+        "FieldContract",
+        "MessageContract",
+        "MethodContract"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/BonjourGRPCSource.swift": "ec867e460d1aba1b2117f6a2a09d4f3cbcf9f8007128546464cc591d9833c8e2",
+        "Sources/RightClickProviders/GRPCReflector.swift": "b585e2519242333ff72afc1674cf1be35743ad1eeef5719ad4cdd8ccfbeba32c"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/GRPCWireCodec.swift",
+      "sourceBeforeSHA256": "8a64f3c757b028602f24040cb2bf35f34d281ef7c5b9290546ed38aac5057824",
+      "sourceAfter": [
+        "Sources/RightClickProviders/GRPCWireCodec.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "GRPCWireCodecError",
+        "GRPCWireReader",
+        "GRPCWireWriter"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/GRPCWireCodec.swift": "6ff24148414f53ccbca86c49104ca9777ee548b81e723518c438478a6b3187e5"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/GraphQLHTTP.swift",
+      "sourceBeforeSHA256": "1283c0594298e7f084d3cfd2dace43257749b3af10992ad170c31b77eed40a77",
+      "sourceAfter": [
+        "Sources/RightClickARDProbe/main.swift",
+        "Sources/RightClickProbe/main.swift",
+        "Sources/RightClickProviders/GraphQLHTTP.swift"
+      ],
+      "targetModules": [
+        "RightClickARDProbe",
+        "RightClickProbe",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "GraphQLHTTP",
+        "ResultBox",
+        "GraphQLIntrospection"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickARDProbe/main.swift": "47358aafa27492923efdc5bf47b967651049fa4bee0457c42c2dc791255213ec",
+        "Sources/RightClickProbe/main.swift": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a",
+        "Sources/RightClickProviders/GraphQLHTTP.swift": "b19feed9ccd61810556b4f7abff372f4c40a506be08f88a1c4ac0059fb9c17b6"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/GraphQLReflector.swift",
+      "sourceBeforeSHA256": "b3211c7ef3d1674d75af97e0d21f3e59082dd6637d28039207f3cc9cf9c1e09e",
+      "sourceAfter": [
+        "Sources/RightClickProviders/GraphQLReflector.swift",
+        "Sources/RightClickProviders/OpenAPIReflector.swift",
+        "Sources/RightClickProviders/RCIRHTTPObservation.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "GraphQLReflector",
+        "OperationKind",
+        "TypeRef",
+        "InputField",
+        "Field",
+        "TypeDefinition",
+        "Operation"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/GraphQLReflector.swift": "17f1216d0a24e3e6aec593d0d6d21f6a8684b88eb6cd5334a0f4c0bdef968e0e",
+        "Sources/RightClickProviders/OpenAPIReflector.swift": "428df3c1f907d3eafc2595584e4b78c52b9a4235ca88a7cfef8fe0d7b7fbb422",
+        "Sources/RightClickProviders/RCIRHTTPObservation.swift": "7eca37158ba71c252286b2a0e44c46817098b46802f2e3213b4c2e4f140a5698"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift",
+      "sourceBeforeSHA256": "5bdc5b3fbb2e121f1b22ecb551f10a1c79cd4ccd27ddc6f0002d3156273b806d",
+      "sourceAfter": [
+        "Sources/RightClickProviders/BoundedCapabilityProcess.swift",
+        "Sources/RightClickProviders/KafkaCapabilityArtifactResolver.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "KafkaCapabilityArtifactResolver",
+        "Diagnostic",
+        "Stage",
+        "KafkaCredential",
+        "KafkaRecord",
+        "KafkaRecordObserver"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/BoundedCapabilityProcess.swift": "39ed49137cf70e80de8e4aff7193bfa5c93d89fcfc57d77bdfe4ef6749928050",
+        "Sources/RightClickProviders/KafkaCapabilityArtifactResolver.swift": "9fd5bd71e8b5df828f608857f61bab9204bf11b3df266e46427a567d1e1df9c0"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/KubernetesCapabilityArtifactResolver.swift",
+      "sourceBeforeSHA256": "a9e2db55b344f8f7abde4a4e9f9124ed58b1efd6c6af3e8edd3b54623aad8e4d",
+      "sourceAfter": [
+        "Sources/RightClickProviders/KubernetesCapabilityArtifactResolver.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "KubernetesCapabilityArtifactResolver",
+        "KubernetesCredential",
+        "KubernetesConfigMap",
+        "KubernetesConfigMapObserver"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/KubernetesCapabilityArtifactResolver.swift": "d78a2333e569560d8b16936c336564315973f2364b9aecfa99132d08dc924746"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/MCPCapabilityArtifactResolver.swift",
+      "sourceBeforeSHA256": "29bf0a67db3f1520d81510567dcf5e769373e89bbc789ff87a9b66c9febf46e4",
+      "sourceAfter": [
+        "Sources/RightClickProviders/MCPCapabilityArtifactResolver.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "MCPCapabilityArtifactResolver",
+        "MCPDescriptorSession"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/MCPCapabilityArtifactResolver.swift": "4e58d9ee7398fba0afc76c104fa69835f017d575c8c1c73a486a5fc3ca2f1d59"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/OAuthOIDCAuthority.swift",
+      "sourceBeforeSHA256": "94cd6348817cb002f40ff90ce87c1e5444a27bc0ff1fb8d2841dfb8f8838ed6a",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/CapabilityEffectAssessment.swift",
+        "Sources/RightClickProviders/OAuthOIDCAuthority.swift",
+        "Sources/RightClickProviders/ProductSurface.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "OAuthOIDCAuthorityError",
+        "OAuthAuthorizationServerMetadata",
+        "CodingKeys",
+        "OAuthAuthorityBinding",
+        "OAuthPKCE",
+        "OAuthTokenBundle",
+        "OAuthOIDCAuthority"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/CapabilityEffectAssessment.swift": "480e244412793e70514128bab4d8573244a624902410ee37c6728a3ca14761b1",
+        "Sources/RightClickProviders/OAuthOIDCAuthority.swift": "f32958b2d6d67a1aa2e4881e3fcfc96dfa266432ce1bc8ba4259e4b29a31fbaf",
+        "Sources/RightClickProviders/ProductSurface.swift": "ad1928a1e306f1c18b19f2640e146ae9514dbfd43066d302e60e80edeaa47f06"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/OpenAPIAuthority.swift",
+      "sourceBeforeSHA256": "18371da862d8170d8e6d0debd92de207ab5d4483e3e292534f29a6160dc980ea",
+      "sourceAfter": [
+        "Sources/RightClickProviders/OpenAPIAuthority.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "OpenAPIAuthorityRequirement",
+        "OpenAPIAuthorityStoreError",
+        "OpenAPIAuthorityStore"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/OpenAPIAuthority.swift": "3b1b27b05b83424f6f53000c872179eb57102114a37f9427807008aef05df21b"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/OpenAPIReflector.swift",
+      "sourceBeforeSHA256": "31632964693bdb9a32c4abfd83aa4c2f2e2191af3800f4bb1415af4ce89d4eb3",
+      "sourceAfter": [
+        "Sources/RightClickProviders/GraphQLReflector.swift",
+        "Sources/RightClickProviders/OpenAPIReflector.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "OpenAPIReflector",
+        "JSONStringProperty",
+        "JSONObjectSchema",
+        "AuthorityResolution",
+        "Operation",
+        "HTTPResultBox"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/GraphQLReflector.swift": "17f1216d0a24e3e6aec593d0d6d21f6a8684b88eb6cd5334a0f4c0bdef968e0e",
+        "Sources/RightClickProviders/OpenAPIReflector.swift": "428df3c1f907d3eafc2595584e4b78c52b9a4235ca88a7cfef8fe0d7b7fbb422"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/OriginPinnedHTTP.swift",
+      "sourceBeforeSHA256": "dc95771515189e0642fa5f9986a5b7816b5e098872b496968f1eda6341d15e22",
+      "sourceAfter": [
+        "Sources/RightClickProviders/OriginPinnedHTTP.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "OriginPinnedHTTP",
+        "AcquisitionFailure",
+        "RedirectRejectingDelegate",
+        "BoundedLoadDelegate"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/OriginPinnedHTTP.swift": "237518fa727ebb99bedd55e6b132f48f20d9050e9a3276c896765a7cdad2e6a6"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/OutcomeVerifier.swift",
+      "sourceBeforeSHA256": "8b8918706e865c58f5c55729518ee81f45593e3ad9ab0b87c4965c086e4d75fa",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/Verification.swift",
+        "Sources/RightClickProviders/OutcomeVerifier.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "VerificationPredicateType",
+        "VerificationPredicate",
+        "VerificationSpec",
+        "OutcomeVerificationStatus",
+        "PredicateVerification",
+        "OutcomeVerification",
+        "OutcomeSnapshot",
+        "OutcomeVerifier"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/Verification.swift": "6dd5074d439a5918af1c0ad91582d16ee5ed67200d06e53a5366189b34fbba60",
+        "Sources/RightClickProviders/OutcomeVerifier.swift": "be0c075d0eb7b2876bfd72937a4ee06c0512341bfc93e3b6d82cf5375fc95af6"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/ProductSurface.swift",
+      "sourceBeforeSHA256": "d2e00ad461b1d78ba4238ea4e09474d4daa525e0b1c3cb3ff7705da362428610",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/CapabilityEffectAssessment.swift",
+        "Sources/RightClickProviders/OAuthOIDCAuthority.swift",
+        "Sources/RightClickProviders/ProductSurface.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RightClickVersion",
+        "RightClickAgentABIProfile",
+        "RightClickRuntimeIdentity",
+        "CodingKeys",
+        "RightClickRuntime",
+        "RightClickPaths",
+        "CapabilityView",
+        "CapabilityExplanation",
+        "ActionList"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/CapabilityEffectAssessment.swift": "480e244412793e70514128bab4d8573244a624902410ee37c6728a3ca14761b1",
+        "Sources/RightClickProviders/OAuthOIDCAuthority.swift": "f32958b2d6d67a1aa2e4881e3fcfc96dfa266432ce1bc8ba4259e4b29a31fbaf",
+        "Sources/RightClickProviders/ProductSurface.swift": "ad1928a1e306f1c18b19f2640e146ae9514dbfd43066d302e60e80edeaa47f06"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIR.swift",
+      "sourceBeforeSHA256": "05bcf76000f59ea24b6cd8b5dbbc130d8f812bdef19b0fd57837ff5f0ab16563",
+      "sourceAfter": [
+        "Sources/RightClickLink/RemoteReplayLedger.swift",
+        "Sources/RightClickProtocol/Capability.swift",
+        "Sources/RightClickProtocol/RCIR.swift",
+        "Sources/RightClickProtocol/RCIRAuthority.swift",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift"
+      ],
+      "targetModules": [
+        "RightClickLink",
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRError",
+        "RCIREffect",
+        "RCIRScope",
+        "RCIRTaskShape",
+        "RCIRTaskModel",
+        "RCIRInvocationBinding",
+        "RCIRObservationProjection",
+        "RCIRVerificationContract",
+        "RCIRContract",
+        "RCIRBinding",
+        "RCIRPolicy",
+        "RCIRLease",
+        "RCIRAdmission",
+        "Entry",
+        "RCIRTaskPhase",
+        "RCIRSemanticOutcome",
+        "RCIRTaskEvent",
+        "RCIRObservationRequest",
+        "RCIRObserver",
+        "RCIREventPage",
+        "RCIRTask"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickLink/RemoteReplayLedger.swift": "af154f184ea3611db8e7b3fba18b22bc81b0b3462274d65d2b7145b19404f0d8",
+        "Sources/RightClickProtocol/Capability.swift": "3bab3e1990d7dcc31b9ea0399b9e35adfadea5325025724c3cc91c58e7536482",
+        "Sources/RightClickProtocol/RCIR.swift": "965e8bcad08d94de03a41eccea1cd83bc2f363bad97ce38813288272d32671da",
+        "Sources/RightClickProtocol/RCIRAuthority.swift": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift": "598881d8054656b90b1bd3369c799df067995fc0c34e140b998df5f3d886ac9f",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift": "49d2c61325ea230be380a671b180ba69bf906609198f619b52c1db3f045adc62",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift": "43b847de6b8ebb3a782242c298a6f06e95dd0e0c38f20fb8186d7756ecc1d141"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRAuthority.swift",
+      "sourceBeforeSHA256": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70",
+      "sourceAfter": [
+        "Sources/RightClickLink/RemoteReplayLedger.swift",
+        "Sources/RightClickProtocol/Capability.swift",
+        "Sources/RightClickProtocol/RCIR.swift",
+        "Sources/RightClickProtocol/RCIRAuthority.swift",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift"
+      ],
+      "targetModules": [
+        "RightClickLink",
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRAuthorityIdentity",
+        "RCIRAuthorityContext",
+        "RCIRAuthorityTarget",
+        "RCIRArgumentConstraint",
+        "RCIRCredentialReference",
+        "RCIRAuthorityRequest",
+        "RCIRAuthorityGrant",
+        "RCIRAuthorityLedger",
+        "Entry"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickLink/RemoteReplayLedger.swift": "af154f184ea3611db8e7b3fba18b22bc81b0b3462274d65d2b7145b19404f0d8",
+        "Sources/RightClickProtocol/Capability.swift": "3bab3e1990d7dcc31b9ea0399b9e35adfadea5325025724c3cc91c58e7536482",
+        "Sources/RightClickProtocol/RCIR.swift": "965e8bcad08d94de03a41eccea1cd83bc2f363bad97ce38813288272d32671da",
+        "Sources/RightClickProtocol/RCIRAuthority.swift": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift": "598881d8054656b90b1bd3369c799df067995fc0c34e140b998df5f3d886ac9f",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift": "49d2c61325ea230be380a671b180ba69bf906609198f619b52c1db3f045adc62",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift": "43b847de6b8ebb3a782242c298a6f06e95dd0e0c38f20fb8186d7756ecc1d141"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRDeferredExecution.swift",
+      "sourceBeforeSHA256": "60d686e15bc3ef16d0f1e8ac693b335311420efa8325728488c0e53d57a5fca2",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/RCIRDeferredLifecycle.swift",
+        "Sources/RightClickProviders/RCIRDeferredSession.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRDeferredLifecycle",
+        "RCIRDeferredSession"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/RCIRDeferredLifecycle.swift": "45611537667af9103e1ece81f2eafe6fad7249bb8339fd716297bc4edba0b216",
+        "Sources/RightClickProviders/RCIRDeferredSession.swift": "f95fa0bbba9e06d99e6d60d8c859a67fff378e32dca5b1ec4ada3974f25cc748"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRExecutionHost.swift",
+      "sourceBeforeSHA256": "523e1edcc629207de59be92523a06db88a2132497678de77c4b5dc3e4be0da67",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/RCIRExecutionEvidence.swift",
+        "Sources/RightClickProviders/RCIRExecutionHost.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRExecutionReflector",
+        "RCIRExecutionEvidence",
+        "RCIRReceiptEnvelope",
+        "RCIRHostConfiguration",
+        "Observer",
+        "RCIRHostAuthority",
+        "RCIRExecutionHost"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/RCIRExecutionEvidence.swift": "0b14248024156a088c75c415196b8ab0180c052950efc4ad0ca7eedb09e14966",
+        "Sources/RightClickProviders/RCIRExecutionHost.swift": "adb0eb32636e4fa7deaf6e68bcb3336be6cc5e699a6d99f759909432d29af064"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRHTTPObservation.swift",
+      "sourceBeforeSHA256": "ad38ba58c6b648c8aa39f9f90146280f718c7f64c3fd27af065c2a07b1c32244",
+      "sourceAfter": [
+        "Sources/RightClickProviders/GraphQLReflector.swift",
+        "Sources/RightClickProviders/RCIRHTTPObservation.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRJSONObservationConfiguration",
+        "Field",
+        "RCIRHTTPJSONObserver",
+        "RCIRObserverPath"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/GraphQLReflector.swift": "17f1216d0a24e3e6aec593d0d6d21f6a8684b88eb6cd5334a0f4c0bdef968e0e",
+        "Sources/RightClickProviders/RCIRHTTPObservation.swift": "7eca37158ba71c252286b2a0e44c46817098b46802f2e3213b4c2e4f140a5698"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRHostObservation.swift",
+      "sourceBeforeSHA256": "be56bfd1885773fae17bb4c04041c8110055f18ecc6fad3d425c4ca3c6ed7209",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/RCIRHostObservation.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "RCIRHostObservation",
+        "RCIRHostObserverFactory"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/RCIRHostObservation.swift": "be56bfd1885773fae17bb4c04041c8110055f18ecc6fad3d425c4ca3c6ed7209"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRInvocationJournal.swift",
+      "sourceBeforeSHA256": "5787fba26bd4fb2f60f1193d8764d8f914c87578cbcd960f6662f9abac711827",
+      "sourceAfter": [
+        "Sources/RightClickCore/CapabilityExperienceLedger.swift",
+        "Sources/RightClickLink/RemoteReplayLedger.swift",
+        "Sources/RightClickProtocol/Capability.swift",
+        "Sources/RightClickProtocol/RCIR.swift",
+        "Sources/RightClickProtocol/RCIRAuthority.swift",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift"
+      ],
+      "targetModules": [
+        "RightClickCore",
+        "RightClickLink",
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRJournalError",
+        "RCIRInvocationJournal",
+        "Identity",
+        "Ticket",
+        "Entry",
+        "Document",
+        "DirectoryHandle",
+        "RCIRJournalConfiguration"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickCore/CapabilityExperienceLedger.swift": "69bc0d7c19d29ddb1f1adc3f079cadba6144b9ae01c443cb1f8f493a699eb6c4",
+        "Sources/RightClickLink/RemoteReplayLedger.swift": "af154f184ea3611db8e7b3fba18b22bc81b0b3462274d65d2b7145b19404f0d8",
+        "Sources/RightClickProtocol/Capability.swift": "3bab3e1990d7dcc31b9ea0399b9e35adfadea5325025724c3cc91c58e7536482",
+        "Sources/RightClickProtocol/RCIR.swift": "965e8bcad08d94de03a41eccea1cd83bc2f363bad97ce38813288272d32671da",
+        "Sources/RightClickProtocol/RCIRAuthority.swift": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift": "598881d8054656b90b1bd3369c799df067995fc0c34e140b998df5f3d886ac9f",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift": "49d2c61325ea230be380a671b180ba69bf906609198f619b52c1db3f045adc62",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift": "43b847de6b8ebb3a782242c298a6f06e95dd0e0c38f20fb8186d7756ecc1d141"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRProvisionedReceiptTrust.swift",
+      "sourceBeforeSHA256": "d032b1886836f5844aa25883d0051d11a7c24a0fd7b62517f8208ced0dd41ff7",
+      "sourceAfter": [
+        "Sources/RightClickProviders/RCIRProvisionedReceiptTrust.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRProvisionedReceiptTrust"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/RCIRProvisionedReceiptTrust.swift": "896e05fe10736c24fae8717a9b36bb2afd805399603ba606caf1781e2e667361"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRProvisionedSigner.swift",
+      "sourceBeforeSHA256": "53eddc7db8426dd5962b3fee2075d638014740ab5294301fc44a943db80238f8",
+      "sourceAfter": [
+        "Sources/RightClickProviders/RCIRProvisionedSigner.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRProvisionedSigner"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/RCIRProvisionedSigner.swift": "79a56c142c1f4d5031122c0f736a8820cb4e5dda744abe847c7402a86ff41434"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRReceiptClaims.swift",
+      "sourceBeforeSHA256": "6b081b09e51451b76f965c555dd459ee16f282319b6dc7165716941204d7f5f7",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/RCIRReceiptClaims.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "RCIRReceiptClaims",
+        "RCIRCanonicalReceiptReader",
+        "Parser"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/RCIRReceiptClaims.swift": "6b081b09e51451b76f965c555dd459ee16f282319b6dc7165716941204d7f5f7"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRReceiptTrust.swift",
+      "sourceBeforeSHA256": "598881d8054656b90b1bd3369c799df067995fc0c34e140b998df5f3d886ac9f",
+      "sourceAfter": [
+        "Sources/RightClickLink/RemoteReplayLedger.swift",
+        "Sources/RightClickProtocol/Capability.swift",
+        "Sources/RightClickProtocol/RCIR.swift",
+        "Sources/RightClickProtocol/RCIRAuthority.swift",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift"
+      ],
+      "targetModules": [
+        "RightClickLink",
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRReceiptTrustError",
+        "RCIRReceiptTrustMode",
+        "RCIRReceiptKeyRecord",
+        "RCIRReceiptTrustRequest",
+        "RCIRReceiptSigningAuthorization",
+        "RCIRReceiptTrustDecision",
+        "RCIRReceiptTrustPolicy",
+        "Entry"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickLink/RemoteReplayLedger.swift": "af154f184ea3611db8e7b3fba18b22bc81b0b3462274d65d2b7145b19404f0d8",
+        "Sources/RightClickProtocol/Capability.swift": "3bab3e1990d7dcc31b9ea0399b9e35adfadea5325025724c3cc91c58e7536482",
+        "Sources/RightClickProtocol/RCIR.swift": "965e8bcad08d94de03a41eccea1cd83bc2f363bad97ce38813288272d32671da",
+        "Sources/RightClickProtocol/RCIRAuthority.swift": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70",
+        "Sources/RightClickProtocol/RCIRReceiptTrust.swift": "598881d8054656b90b1bd3369c799df067995fc0c34e140b998df5f3d886ac9f",
+        "Sources/RightClickProviders/CapabilityExecutableSnapshotPool.swift": "49d2c61325ea230be380a671b180ba69bf906609198f619b52c1db3f045adc62",
+        "Sources/RightClickProviders/RCIRInvocationJournal.swift": "43b847de6b8ebb3a782242c298a6f06e95dd0e0c38f20fb8186d7756ecc1d141"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRReceiptTrustDocument.swift",
+      "sourceBeforeSHA256": "459a28897cd78508fc1a12407929129bc458b940869910b3edbb6d8f4a6f9b9e",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/RCIRReceiptTrustDocument.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "RCIRReceiptTrustDocument",
+        "RCIRReceiptTrustJSON",
+        "ReceiptPolicyValue",
+        "ReceiptPolicyJSON"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/RCIRReceiptTrustDocument.swift": "0671723bc3fd46130766aa62db0e61e01cdc417fe82d451644456d5e5f2bf92b"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRSignedReceipt.swift",
+      "sourceBeforeSHA256": "5322e7aa3ee7dc6244c2006fba8090152da6ae568903f0710fbe988c3a552f6b",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/RCIRSignedReceipt.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "RCIRReceiptError",
+        "RCIRReceiptSigning",
+        "RCIRReceiptVerifying",
+        "RCIRSignedReceipt",
+        "RCIRReceiptEmission",
+        "RCIREd25519Signer",
+        "RCIREd25519Verifier"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/RCIRSignedReceipt.swift": "6e1c371137799ddae17d6f8a7a9d4d26e0147e683b676b1b7c845ac0762631bb"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RCIRUnaryInvocation.swift",
+      "sourceBeforeSHA256": "61a0e854818a24e956eff2f26380d47d7f8f6f0a8856353896c2c55b96206c67",
+      "sourceAfter": [
+        "Sources/RightClickProviders/RCIRUnaryInvocation.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RCIRUnaryInvocation"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/RCIRUnaryInvocation.swift": "51537df3c87d4dd578479d86c597f986b6f14bf5516ac59a6101ce503df2a567"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/RuntimePlatform.swift",
+      "sourceBeforeSHA256": "47485af96b9c80de5d0aa95750da8abf09d7e76ee4fe4799ae71c69323818036",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/PlatformHost.swift",
+        "Sources/RightClickProviders/PortableContentType.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "RuntimePlatform",
+        "PortableContentType"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/PlatformHost.swift": "80e1cab39044f3d1300ab81916d77132bd880c935d5cc9228f7e2eed7718e607",
+        "Sources/RightClickProviders/PortableContentType.swift": "1ae55e73e2b86dd34676fc8e0a4c04839e4afe298333207c09fe72dacc123d04"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/SafetyPolicy.swift",
+      "sourceBeforeSHA256": "396ef2d7410b3c4e76190a6d8b857d3264fad3e23658f032a48ab1e39f5f8e7f",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/SafetyPolicy.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "SafetyPolicy"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/SafetyPolicy.swift": "396ef2d7410b3c4e76190a6d8b857d3264fad3e23658f032a48ab1e39f5f8e7f"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/ServiceCatalog.swift",
+      "sourceBeforeSHA256": "921f49096c860b1a20591edcc4cfde8f42f5518278d8382e1f3b9b4c418400e8",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/ServiceCatalog.swift",
+        "Sources/RightClickProbe/main.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS",
+        "RightClickProbe"
+      ],
+      "declaredTypesRetained": [
+        "InstalledServiceRecord",
+        "ServiceCatalog",
+        "ServicePayload",
+        "ServiceCallBox"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/ServiceCatalog.swift": "f0601bbd830f882998ee64b5bf249fb847084b7d4aa57f690ee0c314205d3b23",
+        "Sources/RightClickProbe/main.swift": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/ServiceContext.swift",
+      "sourceBeforeSHA256": "744901505ecb5d8cdf52a9af6cace595303d0ba163acef0ac77c3da99ad7f865",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/ServiceContext.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS"
+      ],
+      "declaredTypesRetained": [
+        "ServiceContext"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/ServiceContext.swift": "89c8672e4b584dde824bf25c175ba0beab330441ff775b6b88c23cdcc4b31176"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/ServiceOutcome.swift",
+      "sourceBeforeSHA256": "457413ac2012a8d0facf878b2404a280587cb83f02143a9d2e42d07bdca2a1d9",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/ServiceOutcome.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "ServiceOutcome"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/ServiceOutcome.swift": "e16a2e51b100a21c15957ba4b91f6e1fe0d526ff17a9b7c4ea02b8df124ee4f9"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/ServiceRTFEncoder.swift",
+      "sourceBeforeSHA256": "9cc839bfe16440d20eb7322f9e83a891fd5bdadc1ec018a4eea99eaec59d2447",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/ServiceRTFEncoder.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "ServiceRTFEncoder"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/ServiceRTFEncoder.swift": "4147f267f228f69c283eb2dba0586763cc3f76222d9c86a49478d4930b3a51b5"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/SharingCatalog.swift",
+      "sourceBeforeSHA256": "2f49444150bb339f597ff10b7e6ec2e7d4c46c3adcdcaec9a66c0c7b591d945d",
+      "sourceAfter": [
+        "Sources/RightClickMacOS/SharingCatalog.swift"
+      ],
+      "targetModules": [
+        "RightClickMacOS"
+      ],
+      "declaredTypesRetained": [
+        "KnownSharingName",
+        "SharingCatalog",
+        "ExecutionLog",
+        "ShareExecutionRegistry",
+        "ShareSession"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMacOS/SharingCatalog.swift": "568d63c82d9246fcc600cca5990f70e1193101bda3dc04c922045ce39f9f9f44"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/SharingExecutionModel.swift",
+      "sourceBeforeSHA256": "cf96729ee6822b7a9473b16df9839eb4a0c77cd70b795a03eab8a82fa41c8d83",
+      "sourceAfter": [
+        "Sources/RightClickProtocol/SharingExecutionModel.swift"
+      ],
+      "targetModules": [
+        "RightClickProtocol"
+      ],
+      "declaredTypesRetained": [
+        "SharingExecutionModel"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProtocol/SharingExecutionModel.swift": "cf96729ee6822b7a9473b16df9839eb4a0c77cd70b795a03eab8a82fa41c8d83"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/TrustedHostProcessContext.swift",
+      "sourceBeforeSHA256": "5f5341dcd278f8de4cf52b805dab6c334e01028e3fdc2d8e31916a4addfb2f43",
+      "sourceAfter": [
+        "Sources/RightClickProviders/TrustedHostProcessContext.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "TrustedHostProcessContext",
+        "KnownHostLocation"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/TrustedHostProcessContext.swift": "e6b381f21139866e56de248e40f89daee779e1c5a9255e2cf8a6afd990ebe7ac"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickCore/WASMCapabilityArtifactResolver.swift",
+      "sourceBeforeSHA256": "1c7d87fd966fcd25c49966b3fad5887eb498dd513f35ca82a017b40efabb2e5f",
+      "sourceAfter": [
+        "Sources/RightClickProviders/WASMCapabilityArtifactResolver.swift"
+      ],
+      "targetModules": [
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "WASMCapabilityArtifactResolver"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProviders/WASMCapabilityArtifactResolver.swift": "9e58a5ce927acb0142bb9f177f16d302e2ec7e149d98ce676583ae7c8a07a60f"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickHostFiles/HostFiles.c",
+      "sourceBeforeSHA256": "b3d86e0e05accc95518596b4ae06b89242e2dd11ef7f273fa4487064c577da73",
+      "sourceAfter": [
+        "Sources/RightClickHostFiles/HostFiles.c"
+      ],
+      "targetModules": [
+        "RightClickHostFiles"
+      ],
+      "declaredTypesRetained": [
+        "timespec"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickHostFiles/HostFiles.c": "86af8ccc32cedeff1548b021f769c64984b0c8efc7ef805d1466b9afff5a8f3b"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickHostFiles/include/RightClickHostFiles.h",
+      "sourceBeforeSHA256": "0cd58ab9b5fba5f46692491521e0848dd1827213b2038f13f11feb37bd5f7ef3",
+      "sourceAfter": [
+        "Sources/RightClickHostFiles/include/RightClickHostFiles.h"
+      ],
+      "targetModules": [
+        "RightClickHostFiles"
+      ],
+      "declaredTypesRetained": [],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickHostFiles/include/RightClickHostFiles.h": "c8841be2e574470762a604bf8737c10148bbb7ecfb29205d9e69d40bb3a5a5c4"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickMCP/Federation.swift",
+      "sourceBeforeSHA256": "691d1461fc4a96ed8b8660818b334c423640d49734a4cd30252936b0c6271e55",
+      "sourceAfter": [
+        "Sources/RightClickMCP/Federation.swift"
+      ],
+      "targetModules": [
+        "RightClickMCP"
+      ],
+      "declaredTypesRetained": [
+        "FederationPeerConfiguration",
+        "FederationPeerTransport",
+        "FederationPeerSource",
+        "TransportFactory",
+        "FederatedPeerReflector",
+        "MCPFederationPeerTransport",
+        "FederationJSONRPCToolRequest",
+        "FederationJSONRPCToolParameters",
+        "FederationJSONRPCResponse",
+        "FederationJSONRPCError",
+        "FederationJSONRPCToolResult",
+        "FederationJSONRPCContent",
+        "FederationActionsPayload",
+        "FederationResultBox"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMCP/Federation.swift": "4af34261efec9375d8ffbe3a4a830ee3393eb24c36d61e5859ac50c167254ccf"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickMCP/HTTPListener.swift",
+      "sourceBeforeSHA256": "250b0d1d0790c8c9d991563a69a40494c21a658fdf34ab5ce6fb5f3dd231526a",
+      "sourceAfter": [
+        "Sources/RightClickMCP/HTTPListener.swift",
+        "Sources/RightClickMCP/HTTPListenerNIO.swift"
+      ],
+      "targetModules": [
+        "RightClickMCP"
+      ],
+      "declaredTypesRetained": [
+        "MCPHTTPListener",
+        "InboundIn",
+        "OutboundOut"
+      ],
+      "intentionalReconciliation": {
+        "PortableHTTPHandler": "BoundedHTTPHandler: retain PR99 bounded NIO listener, reject unbounded legacy handler"
+      },
+      "sourceAfterSHA256": {
+        "Sources/RightClickMCP/HTTPListener.swift": "69f910e5f83ea84ac853d10b77199834a51f6d2c8701246b876ad73335c845ac",
+        "Sources/RightClickMCP/HTTPListenerNIO.swift": "e85071452b054f1d84f5c9839503758d18c30e57eb5341dc556cf5d0afc11325"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickMCP/ModernMCPStdioTransport.swift",
+      "sourceBeforeSHA256": "2d872111ff19ed8b67d2e42cafdf8241f773ba4c1934df417e1a1e3ec0a6b193",
+      "sourceAfter": [
+        "Sources/RightClickMCP/ModernMCPStdioTransport.swift"
+      ],
+      "targetModules": [
+        "RightClickMCP"
+      ],
+      "declaredTypesRetained": [],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMCP/ModernMCPStdioTransport.swift": "2d872111ff19ed8b67d2e42cafdf8241f773ba4c1934df417e1a1e3ec0a6b193"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickMCP/PortableStdioTransport.swift",
+      "sourceBeforeSHA256": "6b9099cfcbd821beb7a5355f8462674529b97e555f0044974fd43e97e057e933",
+      "sourceAfter": [
+        "Sources/RightClickMCP/PortableStdioTransport.swift"
+      ],
+      "targetModules": [
+        "RightClickMCP"
+      ],
+      "declaredTypesRetained": [
+        "PortableStdioTransport"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMCP/PortableStdioTransport.swift": "6b9099cfcbd821beb7a5355f8462674529b97e555f0044974fd43e97e057e933"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickMCP/Server.swift",
+      "sourceBeforeSHA256": "35a22b27cb5c5b34eb25433e4de816a3b2d161d8f5ee848d751606ad7baf5172",
+      "sourceAfter": [
+        "Sources/RightClickMCP/Server.swift"
+      ],
+      "targetModules": [
+        "RightClickMCP"
+      ],
+      "declaredTypesRetained": [
+        "RightClickMCPRuntime",
+        "RightClickMCPMain",
+        "StartupLog",
+        "MainResultBox",
+        "StopFlag",
+        "EngineBox",
+        "StdioMCPServer",
+        "HTTPMCPServer",
+        "ContextActionsPayload",
+        "RightClickMCPContract"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickMCP/Server.swift": "df175955222ea719c1f39e6b3adb49a4959e78aa09cf399b8f0aba58cd76cf04"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickMarker/main.swift",
+      "sourceBeforeSHA256": "25f8ff11c81bfee9d54c2c4d80c8925007eb3df0b5ee71a1d702ceca9fa8e892",
+      "sourceAfter": [
+        "Sources/RightClickARDProbe/main.swift",
+        "Sources/RightClickCLI/main.swift",
+        "Sources/RightClickMarker/main.swift",
+        "Sources/RightClickProbe/main.swift"
+      ],
+      "targetModules": [
+        "RightClickARDProbe",
+        "RightClickCLI",
+        "RightClickMarker",
+        "RightClickProbe"
+      ],
+      "declaredTypesRetained": [
+        "MarkerProvider"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickARDProbe/main.swift": "47358aafa27492923efdc5bf47b967651049fa4bee0457c42c2dc791255213ec",
+        "Sources/RightClickCLI/main.swift": "ea4decb693d95e7f1461363f2e01cf43e1ac69434eeec96039040cd298989307",
+        "Sources/RightClickMarker/main.swift": "25f8ff11c81bfee9d54c2c4d80c8925007eb3df0b5ee71a1d702ceca9fa8e892",
+        "Sources/RightClickProbe/main.swift": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickProbe/main.swift",
+      "sourceBeforeSHA256": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a",
+      "sourceAfter": [
+        "Sources/RightClickARDProbe/main.swift",
+        "Sources/RightClickCLI/main.swift",
+        "Sources/RightClickMacOS/ActionExtensionCatalog.swift",
+        "Sources/RightClickMacOS/ServiceCatalog.swift",
+        "Sources/RightClickMarker/main.swift",
+        "Sources/RightClickProbe/main.swift",
+        "Sources/RightClickProviders/GraphQLHTTP.swift"
+      ],
+      "targetModules": [
+        "RightClickARDProbe",
+        "RightClickCLI",
+        "RightClickMacOS",
+        "RightClickMarker",
+        "RightClickProbe",
+        "RightClickProviders"
+      ],
+      "declaredTypesRetained": [
+        "ShareRecord",
+        "MenuNode",
+        "SharingSample",
+        "InstalledService",
+        "ServiceAttempt",
+        "ActionExtensionRecord",
+        "ProbeReport",
+        "SharingSection",
+        "SharingExecution",
+        "ServicesSection",
+        "QuickActionSection",
+        "PrivateRuntimeResult",
+        "PrivateMatchAttempt",
+        "GateSection",
+        "ShareDelegate",
+        "PickerDelegate",
+        "KnownShareName",
+        "RightClickProbe",
+        "FixtureSet",
+        "ProbeError",
+        "ServiceExecutionOutcome",
+        "ServiceCallBox",
+        "ActionDiscovery",
+        "SampleKind",
+        "RuleApplicability",
+        "ResultBox"
+      ],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickARDProbe/main.swift": "47358aafa27492923efdc5bf47b967651049fa4bee0457c42c2dc791255213ec",
+        "Sources/RightClickCLI/main.swift": "ea4decb693d95e7f1461363f2e01cf43e1ac69434eeec96039040cd298989307",
+        "Sources/RightClickMacOS/ActionExtensionCatalog.swift": "a0fd4e8260edf20ff7fe332cdfdebf05fe84e01d785d25058d4cfdcc3c9fcdd8",
+        "Sources/RightClickMacOS/ServiceCatalog.swift": "f0601bbd830f882998ee64b5bf249fb847084b7d4aa57f690ee0c314205d3b23",
+        "Sources/RightClickMarker/main.swift": "25f8ff11c81bfee9d54c2c4d80c8925007eb3df0b5ee71a1d702ceca9fa8e892",
+        "Sources/RightClickProbe/main.swift": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a",
+        "Sources/RightClickProviders/GraphQLHTTP.swift": "b19feed9ccd61810556b4f7abff372f4c40a506be08f88a1c4ac0059fb9c17b6"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickProbePrivate/RCPrivateExtensionProbe.m",
+      "sourceBeforeSHA256": "945cf0b4ff819def05f2fa45e447616cc6e907373c8a30eec3f41ede05ea8a62",
+      "sourceAfter": [
+        "Sources/RightClickProbePrivate/RCPrivateExtensionProbe.m"
+      ],
+      "targetModules": [
+        "RightClickProbePrivate"
+      ],
+      "declaredTypesRetained": [],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProbePrivate/RCPrivateExtensionProbe.m": "945cf0b4ff819def05f2fa45e447616cc6e907373c8a30eec3f41ede05ea8a62"
+      }
+    },
+    {
+      "sourceBefore": "Sources/RightClickProbePrivate/include/RCPrivateExtensionProbe.h",
+      "sourceBeforeSHA256": "b6302734f921c9876304f72f0e20776ebaf455432382581602776121d38584a7",
+      "sourceAfter": [
+        "Sources/RightClickProbePrivate/include/RCPrivateExtensionProbe.h"
+      ],
+      "targetModules": [
+        "RightClickProbePrivate"
+      ],
+      "declaredTypesRetained": [],
+      "intentionalReconciliation": {},
+      "sourceAfterSHA256": {
+        "Sources/RightClickProbePrivate/include/RCPrivateExtensionProbe.h": "b6302734f921c9876304f72f0e20776ebaf455432382581602776121d38584a7"
+      }
+    }
+  ],
+  "sourceRowCount": 104,
+  "reusablePrimitiveCount": 37,
+  "longTermBehaviorContract": "substrate-contract.json and SubstrateInventoryTests actual callable factories"
+}

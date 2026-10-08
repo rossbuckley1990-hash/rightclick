@@ -17,6 +17,7 @@ trap 'rm -rf -- "$WORK"' EXIT
 swiftc -swift-version 5 \
     "$ROOT/Sources/RightClickProtocol/CapabilityABI.swift" \
     "$ROOT/Sources/RightClickProtocol/RCIR.swift" \
+    "$ROOT/Sources/RightClickProtocol/RCIRAuthority.swift" \
     "$ROOT/Sources/RightClickProtocol/RCIRSignedReceipt.swift" \
     "$ROOT/examples/rcir-receipt-fixture/main.swift" -o "$WORK/receipt-fixture"
 PYTHON_BIN="$(command -v "$PYTHON")"

@@ -1,0 +1,368 @@
+{
+  "schemaVersion": 1,
+  "status": "Required callable runtime registrations and behavioral test contracts; execution evidence is recorded separately.",
+  "inputHeads": {
+    "pr99": "6a18aaae3ae3a15b9f6c78f189adc695ae11585a",
+    "pr49": "053b6202df504ff1a33682a39f2e72a959f65983"
+  },
+  "requiredFamilies": [
+    {
+      "family": "macos",
+      "modules": [
+        "RightClickMacOS",
+        "RightClickMacOSHost"
+      ],
+      "roles": [
+        "native_reflector"
+      ],
+      "actualReflectorIDs": [
+        "macos.service",
+        "macos.sharing",
+        "macos.action-extension"
+      ],
+      "nativeExecutionPlatforms": [
+        "macos"
+      ],
+      "requiredTests": [
+        "NativeServiceUnicodeLiveAcceptanceTests",
+        "ServiceOutcomeTests",
+        "SharingExecutionTests",
+        "ServiceRTFUnicodeTests"
+      ],
+      "unsupportedInvocationMustRemain": [
+        "action_extension"
+      ]
+    },
+    {
+      "family": "openapi",
+      "modules": [
+        "RightClickProviders",
+        "RightClickCore"
+      ],
+      "compilerKinds": [
+        "openapi"
+      ],
+      "roles": [
+        "artifact_compiler",
+        "configured_source",
+        "bonjour_source"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "nativeAcquisitionPlatforms": [
+        "macos"
+      ],
+      "requiredTests": [
+        "OpenAPIReflectorTests",
+        "OpenAPIAcquisitionBoundsTests",
+        "BonjourOpenAPISourceTests",
+        "OpenAPIAcknowledgementTests",
+        "OpenAPICredentialEchoTests"
+      ]
+    },
+    {
+      "family": "graphql",
+      "modules": [
+        "RightClickProviders"
+      ],
+      "compilerKinds": [
+        "graphql"
+      ],
+      "roles": [
+        "artifact_compiler",
+        "bonjour_source"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "nativeAcquisitionPlatforms": [
+        "macos"
+      ],
+      "requiredTests": [
+        "GraphQLReflectorTests",
+        "RCIRUnaryAdmissionTests"
+      ]
+    },
+    {
+      "family": "grpc",
+      "modules": [
+        "RightClickProviders"
+      ],
+      "compilerKinds": [
+        "grpc"
+      ],
+      "roles": [
+        "artifact_compiler",
+        "bonjour_source"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "nativeAcquisitionPlatforms": [
+        "macos"
+      ],
+      "requiredTests": [
+        "GRPCReflectorTests",
+        "GRPCReflectionTransportTests",
+        "GRPCWireCodecBoundsTests",
+        "GRPCRealProviderAcceptanceTests",
+        "RCIRUnaryAdmissionTests"
+      ],
+      "externalFixtureProof": "RIGHTCLICK_GRPC_REAL_HOST/PORT must be actually provisioned; reflection is distinct from execution/verification"
+    },
+    {
+      "family": "ard",
+      "modules": [
+        "RightClickARD",
+        "RightClickProviders",
+        "RightClickCore"
+      ],
+      "roles": [
+        "configured_source"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "internalCompilerKinds": [
+        "openapi"
+      ],
+      "requiredTests": [
+        "ARDPortableTests",
+        "ARDAcquisitionGateTests"
+      ]
+    },
+    {
+      "family": "mcp",
+      "modules": [
+        "RightClickProviders",
+        "RightClickMCP"
+      ],
+      "compilerKinds": [
+        "mcp"
+      ],
+      "roles": [
+        "artifact_compiler",
+        "federation_peer_source"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "requiredTests": [
+        "CapabilityInterfaceTests",
+        "FederationTests"
+      ],
+      "linkIsIndependentTransport": true
+    },
+    {
+      "family": "a2a",
+      "modules": [
+        "RightClickProviders",
+        "RightClickCore"
+      ],
+      "roles": [
+        "configured_source"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "requiredTests": [
+        "A2ARealLifecycleTests",
+        "RCIRDeferredProductionTests",
+        "RCIRDeferredCapacityTests"
+      ],
+      "configurationKey": "RIGHTCLICK_A2A_PROVIDERS"
+    },
+    {
+      "family": "kafka",
+      "modules": [
+        "RightClickProviders"
+      ],
+      "compilerKinds": [
+        "kafka"
+      ],
+      "roles": [
+        "artifact_compiler"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "hostPrerequisites": [
+        "integrity-bound-native-rpk",
+        "local-scoped-writer-authority",
+        "distinct-local-observer-authority"
+      ],
+      "requiredTests": [
+        "KafkaCapabilityTests",
+        "KafkaAcquisitionStabilityTests"
+      ],
+      "acceptance": "scripts/acceptance-kafka.py; external owner-controlled broker withdrawal required"
+    },
+    {
+      "family": "kubernetes",
+      "modules": [
+        "RightClickProviders"
+      ],
+      "compilerKinds": [
+        "kubernetes"
+      ],
+      "roles": [
+        "artifact_compiler"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "hostPrerequisites": [
+        "integrity-bound-native-kubectl",
+        "namespaced-writer-authority",
+        "distinct-GET-only-observer-authority"
+      ],
+      "requiredTests": [
+        "KubernetesCapabilityArtifactTests"
+      ],
+      "acceptance": "scripts/acceptance-kubernetes.py without --expect-red; runtime never receives admin.kubeconfig"
+    },
+    {
+      "family": "wasm",
+      "modules": [
+        "RightClickProviders"
+      ],
+      "compilerKinds": [
+        "wasm"
+      ],
+      "roles": [
+        "artifact_compiler"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "hostPrerequisites": [
+        "integrity-bound-wasm-tools",
+        "compatible-integrity-bound-wasmtime",
+        "supported-no-import-component-contract"
+      ],
+      "requiredTests": [
+        "CapabilityInterfaceTests",
+        "CapabilityTypedCoreBoundaryTests"
+      ],
+      "acceptance": "scripts/acceptance-capability-interfaces.py with real selected component/runtime; descriptor acquisition does not imply execution"
+    },
+    {
+      "family": "dbus",
+      "modules": [
+        "RightClickProviders",
+        "RightClickLinux"
+      ],
+      "compilerKinds": [
+        "dbus"
+      ],
+      "roles": [
+        "generic_artifact_compiler",
+        "native_artifact_compiler",
+        "native_session_source"
+      ],
+      "genericCompilerPlatforms": [
+        "macos",
+        "linux"
+      ],
+      "nativeExecutionPlatforms": [
+        "linux"
+      ],
+      "hostPrerequisites": [
+        "session-bus",
+        "current-bus-incarnation/unique-owner",
+        "reviewed-UID-authority"
+      ],
+      "requiredTests": [
+        "DBusRuntimeTests",
+        "DBusNativeOwnerAcceptanceTests",
+        "CapabilityTypedCoreBoundaryTests"
+      ],
+      "acceptance": "scripts/acceptance-linux-dbus.py with actual private bus/UIDs"
+    }
+  ],
+  "portableResolverKinds": [
+    "graphql",
+    "grpc",
+    "kafka",
+    "kubernetes",
+    "mcp",
+    "openapi",
+    "wasm"
+  ],
+  "linuxNativeAdditionalResolverKinds": [
+    "dbus"
+  ],
+  "sevenCanonicalOperations": [
+    "context_runtime",
+    "context_providers",
+    "context_inspect",
+    "context_actions",
+    "context_explain",
+    "context_run",
+    "context_run_status"
+  ],
+  "sameClientAssertions": {
+    "toolCount": 7,
+    "schemasStableWithinSession": true,
+    "singleRuntimeProcessPerGraph": true,
+    "separateRowFields": [
+      "implemented",
+      "compiles",
+      "discovered",
+      "executed",
+      "verified",
+      "liveWithdrawalTested",
+      "platformsTested"
+    ],
+    "receiptTrustIndependentOfLinkSignature": true
+  },
+  "testIdentityGate": {
+    "macInputUnionCount": 1070,
+    "linuxInputUnionCount": 860,
+    "failureRules": [
+      "previously-passed-missing",
+      "previously-passed-skipped",
+      "any-failed",
+      "duplicate-normalized-identity",
+      "incomplete-suite",
+      "discovered-completed-summary-mismatch",
+      "provisioned-required-test-skipped"
+    ],
+    "mappingMustBeExplicit": true,
+    "intentionalMappingProposal": {
+      "from": "PolicyTests.testDedupeKeepsFirstIdentifier",
+      "to": [
+        "PolicyTests.testDedupeQuarantinesConflictingIdentity"
+      ],
+      "reason": "Stronger candidate security contract quarantines conflicting same-ID identities and preserves exact duplicate dedupe. Review and test evidence required."
+    },
+    "restoreUnexplainedDeletion": "RCIRProductionDispatchTests.testSuccessfulBoundedProviderAcquisitionSignalsTaskCompletion"
+  },
+  "sourceTrace": {
+    "productionRows": 104,
+    "reusablePrimitives": 37,
+    "candidateSwiftTestFiles": 135,
+    "candidateTestMethodDeclarations": 1010,
+    "sourceHashesAreMigrationEvidenceNotLongTermCapabilitySupport": true
+  },
+  "forbiddenSuccessInference": [
+    "file-exists-to-implemented",
+    "compiled-to-discovered",
+    "descriptor-to-executed",
+    "provider-ACK-to-verified",
+    "lab-ready-to-product-verified",
+    "x86-to-native-arm64",
+    "outer-Link-signature-to-receipt-trust"
+  ],
+  "windows": "Unproven separate gate; preserve native/SDK-patch provenance and do not infer package support from C source"
+}

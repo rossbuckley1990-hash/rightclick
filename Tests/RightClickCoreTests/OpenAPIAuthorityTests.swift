@@ -1211,15 +1211,25 @@ final class OpenAPIAuthorityTests:
                 ]
             )
 
-        XCTAssertTrue(
-            try engine
+        let inherited = try XCTUnwrap(
+            engine
                 .capabilities(
                     for:
                         "Create a secure record"
                 )
                 .capabilities
-                .isEmpty
+                .first
         )
+        XCTAssertEqual(inherited.metadata["authorityRequired"], "true")
+        XCTAssertEqual(inherited.metadata["authorityScheme"], "BearerAuth")
+        deleteBearerToken(origin: "https://provider.example", schemeName: "BearerAuth")
+        var transportCalled = false
+        StubURLProtocol.handler = { _ in transportCalled = true; throw RightClickError("Missing inherited authority must not start transport") }
+        let denied = try engine.begin(id: inherited.id, item: "Create a secure record", confirmed: true,
+            arguments: ["title": "Isolated inheritance proof", "priority": "low"])
+        XCTAssertFalse(transportCalled)
+        XCTAssertFalse(denied.evidence.outcomeVerified)
+        XCTAssertEqual(denied.evidence.type, "authority_unavailable")
     }
 
     func testExplicitEmptyOperationSecurityOverridesRootSecurityAsPublic()

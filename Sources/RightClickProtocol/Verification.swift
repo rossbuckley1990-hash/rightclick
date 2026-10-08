@@ -148,3 +148,27 @@ public struct OutcomeSnapshot: Codable, Sendable, Equatable {
         self.metadataValues = metadataValues
     }
 }
+
+/// Shared validation of delegated predicate evidence. A remote assertion must
+/// establish the caller's exact postcondition, not a substituted passing value.
+extension OutcomeVerification {
+    package func validatesSuccess(expected: VerificationSpec? = nil) -> Bool {
+        guard status == .verifiedSuccess, !predicates.isEmpty,
+              predicates.allSatisfy({ $0.evaluated && $0.passed }) else { return false }
+        return matches(expected: expected)
+    }
+
+    package func validatesFailure(expected: VerificationSpec? = nil) -> Bool {
+        guard status == .verifiedFailure, !predicates.isEmpty,
+              predicates.allSatisfy(\.evaluated), predicates.contains(where: { !$0.passed }) else { return false }
+        return matches(expected: expected)
+    }
+
+    private func matches(expected: VerificationSpec?) -> Bool {
+        guard let expected else { return true }
+        let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
+        guard let wanted = try? encoder.encode(expected.predicates),
+              let observed = try? encoder.encode(predicates.map(\.predicate)) else { return false }
+        return wanted == observed
+    }
+}

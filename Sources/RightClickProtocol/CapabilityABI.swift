@@ -204,7 +204,11 @@ public indirect enum CapabilityValue: Sendable, Codable {
 /// Unknown constraints must be rejected by an importing compiler, never discarded.
 public indirect enum CapabilitySchema: Sendable {
     case null, boolean, integer, number, string, bytes
+    /// Compiler-declared absence of a returned value, distinct from JSON null
+    /// and from an unknown result schema. Completion cannot supply typed bytes.
+    case unit
     case stringEnum([String])
+    case constrainedString(minimum: Int, maximum: Int?, asciiCharacters: String?, enumeration: [String]?)
     case array(CapabilitySchema)
     case object(properties: [String: CapabilitySchema], required: [String])
     case nullable(CapabilitySchema)
@@ -224,9 +228,18 @@ public indirect enum CapabilitySchema: Sendable {
         case .number: return .string("number")
         case .string: return .string("string")
         case .bytes: return .string("bytes")
+        case .unit: return .string("unit:no-declared-output")
         case let .stringEnum(values):
             guard !values.isEmpty, values.count == Set(values).count else { throw CapabilityABIError.invalidSchema }
             return .object(["enum": .array(CapabilityValue.ordered(values).map { .string($0) })])
+        case let .constrainedString(minimum, maximum, ascii, enumeration):
+            guard minimum >= 0, minimum <= 1_048_576, maximum.map({ $0 >= minimum && $0 <= 1_048_576 }) ?? true,
+                  ascii.map({ !$0.isEmpty && $0.utf8.count <= 128 && $0.utf8.allSatisfy { $0 >= 32 && $0 <= 126 } && Set($0.utf8).count == $0.utf8.count }) ?? true,
+                  enumeration.map({ !$0.isEmpty && Set($0).count == $0.count }) ?? true else { throw CapabilityABIError.invalidSchema }
+            return .object(["constrainedString": .boolean(true), "minLength": .integer(Int64(minimum)),
+                "maxLength": maximum.map { .integer(Int64($0)) } ?? .null,
+                "asciiCharacters": ascii.map { .string(String(decoding: $0.utf8.sorted(), as: UTF8.self)) } ?? .null,
+                "enum": enumeration.map { .array(CapabilityValue.ordered($0).map { .string($0) }) } ?? .null])
         case let .array(schema):
             return .object(["array": try schema.representation(depth: depth + 1, remaining: &remaining)])
         case let .nullable(schema):
@@ -256,6 +269,12 @@ public indirect enum CapabilitySchema: Sendable {
              (.number, .number), (.string, .string), (.bytes, .bytes): return
         case let (.stringEnum(choices), .string(text)):
             guard choices.contains(where: { $0.utf8.elementsEqual(text.utf8) }) else { throw CapabilityABIError.schemaMismatch }
+        case let (.constrainedString(minimum, maximum, ascii, enumeration), .string(text)):
+            let length = text.unicodeScalars.count
+            let allowedBytes = ascii.map { Set($0.utf8) }
+            guard length >= minimum, maximum.map({ length <= $0 }) ?? true,
+                  allowedBytes.map({ allowed in text.utf8.allSatisfy { allowed.contains($0) } }) ?? true,
+                  enumeration.map({ $0.contains { $0.utf8.elementsEqual(text.utf8) } }) ?? true else { throw CapabilityABIError.schemaMismatch }
         case (.nullable, .null): return
         case let (.nullable(schema), value): try schema.check(value)
         case let (.array(schema), .array(values)):
@@ -310,5 +329,70 @@ public struct CapabilityContract: Sendable {
         _ = try canonicalData()
         guard let arguments else { throw CapabilityABIError.unknownSchema }
         try arguments.validate(value)
+    }
+}
+
+/// Closed, bounded string-contract importer shared by all descriptor compilers.
+/// The regex subset is exactly an anchored printable ASCII character class with
+/// finite repetition. No regex engine, alternation, lookaround or backtracking.
+public extension CapabilitySchema {
+    static func stringContract(_ raw: [String: Any]) throws -> CapabilitySchema {
+        guard Set(raw.keys).isSubset(of: ["type", "enum", "pattern", "minLength", "maxLength", "title", "description", "$schema"]),
+              raw["type"] as? String == "string" else { throw CapabilityABIError.invalidSchema }
+        func length(_ key: String) throws -> Int? {
+            guard let value = raw[key] else { return nil }
+            guard let number = value as? NSNumber, !CapabilityJSONNumber.isBoolean(number),
+                  number.doubleValue.isFinite, number.doubleValue >= 0, number.doubleValue <= 1_048_576,
+                  number.doubleValue.rounded(.towardZero) == number.doubleValue else { throw CapabilityABIError.invalidSchema }
+            return Int(number.doubleValue)
+        }
+        var minimum = try length("minLength") ?? 0
+        var maximum = try length("maxLength")
+        var characters: String?
+        if let value = raw["pattern"] {
+            guard let pattern = value as? String, pattern.utf8.count <= 512,
+                  pattern.hasPrefix("^["), pattern.hasSuffix("}$"), let close = pattern.firstIndex(of: "]") else { throw CapabilityABIError.invalidSchema }
+            let body = Array(pattern[pattern.index(pattern.startIndex, offsetBy: 2)..<close].utf8)
+            let suffix = String(pattern[pattern.index(after: close)...])
+            guard !body.isEmpty, body.count <= 128, suffix.hasPrefix("{") else { throw CapabilityABIError.invalidSchema }
+            let bounds = suffix.dropFirst().dropLast(2).split(separator: ",", omittingEmptySubsequences: false)
+            guard (1...2).contains(bounds.count), bounds.allSatisfy({ !$0.isEmpty && $0.utf8.allSatisfy { (48...57).contains($0) } }),
+                  let lower = Int(bounds[0]), let upper = Int(bounds.last!), lower >= 0, upper >= lower, upper <= 1_048_576 else { throw CapabilityABIError.invalidSchema }
+            var allowed: Set<UInt8> = []; var index = 0
+            while index < body.count {
+                let first = body[index]
+                guard first >= 32, first <= 126, ![91, 92, 93, 94].contains(first) else { throw CapabilityABIError.invalidSchema }
+                if index + 2 < body.count, body[index + 1] == 45 {
+                    let last = body[index + 2]
+                    guard first != 45, last >= first, last <= 126, ![91, 92, 93, 94].contains(last) else { throw CapabilityABIError.invalidSchema }
+                    for byte in first...last { allowed.insert(byte) }; index += 3
+                } else {
+                    guard first != 45 || index == 0 || index == body.count - 1 else { throw CapabilityABIError.invalidSchema }
+                    allowed.insert(first); index += 1
+                }
+            }
+            characters = String(decoding: allowed.sorted(), as: UTF8.self)
+            minimum = max(minimum, lower); maximum = min(maximum ?? upper, upper)
+        }
+        let enumeration: [String]?
+        if let value = raw["enum"] {
+            guard let values = value as? [String], !values.isEmpty, Set(values).count == values.count else { throw CapabilityABIError.invalidSchema }
+            enumeration = values
+        } else { enumeration = nil }
+        let constrained = raw["pattern"] != nil || raw["minLength"] != nil || raw["maxLength"] != nil
+        let schema: CapabilitySchema = constrained ? .constrainedString(minimum: minimum, maximum: maximum, asciiCharacters: characters, enumeration: enumeration)
+            : enumeration.map { .stringEnum($0) } ?? .string
+        _ = try schema.canonicalData(); return schema
+    }
+}
+
+/// Foundation JSON preserves boolean identity even where CoreFoundation is not
+/// exposed. ObjC type codes cannot distinguish Bool from every narrow integer.
+/// This bounded scalar classification never accepts numeric zero/one as Bool.
+enum CapabilityJSONNumber {
+    static func isBoolean(_ number: NSNumber) -> Bool {
+        guard number.doubleValue.isFinite,
+              let data = try? JSONSerialization.data(withJSONObject: [number]) else { return false }
+        return data == Data("[true]".utf8) || data == Data("[false]".utf8)
     }
 }

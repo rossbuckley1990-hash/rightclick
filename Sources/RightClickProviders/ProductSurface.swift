@@ -10,8 +10,21 @@ public enum RightClickVersion {
     public static let current = "0.2.2"
 }
 
+/// Versioned substrate-independent agent contract. Profiles are advertised by
+/// the runtime; no extra negotiation tool or provider operation is introduced.
+public struct RightClickAgentABIProfile: Codable, Sendable {
+    public let id: String
+    public let version: Int
+    public let operations: [String]
+
+    public static let core = Self(id: "core", version: 1, operations: [
+        "context_runtime", "context_providers", "context_inspect", "context_actions",
+        "context_explain", "context_run", "context_run_status",
+    ])
+}
 
 public struct RightClickRuntimeIdentity: Codable, Sendable {
+    public var platform: String = RuntimePlatform.name
     public var product: String
     public var version: String
     public var executablePath: String
@@ -19,6 +32,7 @@ public struct RightClickRuntimeIdentity: Codable, Sendable {
     public var executableSHA256: String
     public var pid: Int
     public var transport: String
+    public var agentABIProfiles: [RightClickAgentABIProfile]?
 
     public init(
         product: String,
@@ -27,7 +41,8 @@ public struct RightClickRuntimeIdentity: Codable, Sendable {
         executableRealPath: String,
         executableSHA256: String,
         pid: Int,
-        transport: String
+        transport: String,
+        agentABIProfiles: [RightClickAgentABIProfile]? = nil
     ) {
         self.product = product
         self.version = version
@@ -36,6 +51,27 @@ public struct RightClickRuntimeIdentity: Codable, Sendable {
         self.executableSHA256 = executableSHA256
         self.pid = pid
         self.transport = transport
+        self.agentABIProfiles = agentABIProfiles
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case platform, product, version, executablePath, executableRealPath
+        case executableSHA256, pid, transport, agentABIProfiles
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let fields = try decoder.container(keyedBy: CodingKeys.self)
+        // A legacy remote did not attest its platform or ABI profile. Preserve
+        // compatibility without filling that absence with local host facts.
+        platform = try fields.decodeIfPresent(String.self, forKey: .platform) ?? "unknown"
+        product = try fields.decode(String.self, forKey: .product)
+        version = try fields.decode(String.self, forKey: .version)
+        executablePath = try fields.decode(String.self, forKey: .executablePath)
+        executableRealPath = try fields.decode(String.self, forKey: .executableRealPath)
+        executableSHA256 = try fields.decode(String.self, forKey: .executableSHA256)
+        pid = try fields.decode(Int.self, forKey: .pid)
+        transport = try fields.decode(String.self, forKey: .transport)
+        agentABIProfiles = try fields.decodeIfPresent([RightClickAgentABIProfile].self, forKey: .agentABIProfiles)
     }
 }
 
@@ -59,14 +95,15 @@ public enum RightClickRuntime {
             executableRealPath: realPath,
             executableSHA256: sha256File(realPath),
             pid: pid ?? Int(ProcessInfo.processInfo.processIdentifier),
-            transport: transport
+            transport: transport,
+            agentABIProfiles: [.core]
         )
     }
 
     public static func executablePath() -> String {
         let raw = CommandLine.arguments[0]
 
-        if raw.hasPrefix("/") {
+        if RuntimePlatform.isAbsolutePath(raw) {
             return URL(fileURLWithPath: raw).standardizedFileURL.path
         }
 
@@ -74,11 +111,11 @@ public enum RightClickRuntime {
             fileURLWithPath: FileManager.default.currentDirectoryPath
         )
 
-        if !raw.contains("/") {
+        if !raw.contains("/") && !raw.contains("\\") {
             let path = ProcessInfo.processInfo.environment["PATH"] ?? ""
 
             for component in path.split(
-                separator: ":",
+                separator: RuntimePlatform.pathSeparator,
                 omittingEmptySubsequences: false
             ) {
                 let base = component.isEmpty
@@ -158,6 +195,8 @@ public struct CapabilityView: Codable, Sendable {
     public var explanation: String
     public var runtimeRequirements: RuntimeRequirements?
     public var executionRuntimeID: String?
+    public var routingOrigin: CapabilityRoutingOrigin?
+    public var contractSHA256: String?
 
     public init(_ capability: Capability) {
         id = capability.id
@@ -172,6 +211,8 @@ public struct CapabilityView: Codable, Sendable {
         explanation = CapabilityExplanation.text(for: capability)
         runtimeRequirements = capability.runtimeRequirements
         executionRuntimeID = capability.metadata["link.runtimeID"]
+        routingOrigin = capability.routingOrigin
+        contractSHA256 = capability.contractSHA256
     }
 }
 

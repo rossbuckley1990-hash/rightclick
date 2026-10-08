@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 
+
 root = pathlib.Path(__file__).resolve().parent.parent
 binary = pathlib.Path(sys.argv[1]).resolve()
 evidence = pathlib.Path(sys.argv[2]).resolve()
@@ -58,12 +59,15 @@ let package = Package(name: "CoreAcceptance", platforms: [.macOS(.v14)],
     (evidence / "direct.stderr.txt").write_text(process.stderr)
     assert process.returncode == 0, process.stderr
     direct = json.loads(process.stdout)
+    (evidence / "direct.json").write_text(json.dumps(direct, ensure_ascii=False, indent=2) + "\n")
 
 cli_actions = json.loads(subprocess.check_output([str(binary), "actions", "RightClick", "--json"], text=True))
 cli_verified = json.loads(subprocess.check_output([
     str(binary), "run", "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
     "RightClick", "--yes", "--expect-output", "ＲｉｇｈｔＣｌｉｃｋ", "--json"], text=True))
 mcp = json.loads(mcp_evidence.read_text())
+(evidence / "cli-actions.json").write_text(json.dumps(cli_actions, ensure_ascii=False, indent=2) + "\n")
+(evidence / "cli-verified.json").write_text(json.dumps(cli_verified, ensure_ascii=False, indent=2) + "\n")
 assert mcp["sha256"] == hashlib.sha256(binary.read_bytes()).hexdigest()
 
 def contextual(rows, direct=False):
@@ -72,13 +76,23 @@ def contextual(rows, direct=False):
                          row["invocation"], row["requiresConfirmation"], row["supportLevel"])
             for row in rows}
 
+def compare_catalogue(actual, label):
+    expected = contextual(direct["actions"], True)
+    observed = contextual(actual)
+    differences = {identifier: {"direct": expected.get(identifier), label: observed.get(identifier)}
+                   for identifier in sorted(expected.keys() | observed.keys())
+                   if expected.get(identifier) != observed.get(identifier)}
+    (evidence / (label + "-catalogue-differences.json")).write_text(
+        json.dumps(differences, ensure_ascii=False, indent=2) + "\n")
+    assert expected == observed, f"{label}: {len(differences)} contextual rows differ; see retained diagnostics"
+
 assert direct["gated"]["status"] == "CONFIRMATION_REQUIRED"
 assert direct["verified"]["status"] == cli_verified["status"] == "VERIFIED"
 assert direct["verified"]["output"] == cli_verified["output"] == "ＲｉｇｈｔＣｌｉｃｋ"
 assert direct["verified"]["evidence"] == cli_verified["evidence"]
-assert contextual(direct["actions"], True) == contextual(cli_actions["actions"])
-for record in mcp["records"]:
-    assert contextual(direct["actions"], True) == contextual(record["actions"]["actions"])
+compare_catalogue(cli_actions["actions"], "cli")
+for index, record in enumerate(mcp["records"]):
+    compare_catalogue(record["actions"]["actions"], f"mcp-{index}")
     assert record["confirmation"]["state"] == "awaiting_user"
     assert record["fullWidth"]["state"] == "succeeded"
     assert record["fullWidth"]["output"] == direct["verified"]["output"]
@@ -88,6 +102,7 @@ result = {"direct": direct, "cliVerified": cli_verified,
           "equivalence": "PASS: contextual identity/types/support/policy and returned-text outcome evidence across direct, CLI, stdio and HTTP",
           "boundary": "Direct client depends only on actual Core product, with no MCP import or server. Uses the same default source composition as CLI/MCP.",
           "sources": {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},
+          "nativeDependency": "SwiftPM resolves actual platform adapters",
           "candidateSHA256": mcp["sha256"]}
 (evidence / "results.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")
 print(result["equivalence"])

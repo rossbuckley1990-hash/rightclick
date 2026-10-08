@@ -5,7 +5,7 @@ import Crypto
 #endif
 #if canImport(Darwin)
 import Darwin
-#else
+#elseif canImport(Glibc)
 import Glibc
 #endif
 import Foundation
@@ -13,6 +13,14 @@ import MCP
 import RightClickCore
 
 public enum RightClickMCPRuntime {
+    /// This callable registration is used by runtime composition and CI's
+    /// substrate contract. Federation is transport, not another tool namespace.
+    public static func sourceRegistrations() -> [CapabilitySourceRegistration] {
+        [.init(family: "mcp", role: "federation_peer_source") { environment, _ in
+            FederationPeerSource.fromEnvironment(environment)
+        }]
+    }
+
     public static func makeEngine(
         startBrowsing: Bool = true,
         additionalSources: [any CapabilityReflectorSource] = []
@@ -24,14 +32,9 @@ public enum RightClickMCPRuntime {
                         startBrowsing
                 )
 
-        if let federation =
-            FederationPeerSource
-                .fromEnvironment()
-        {
-            sources.append(
-                federation
-            )
-        }
+        sources.append(contentsOf: sourceRegistrations().compactMap {
+            $0.make(environment: ProcessInfo.processInfo.environment, startBrowsing: startBrowsing)
+        })
         sources.append(contentsOf: additionalSources)
 
         return CapabilityRuntimeDefaults
@@ -212,7 +215,7 @@ final class StdioMCPServer {
         )
         let transport = ModernMCPStdioTransport()
         try await server.start(transport: transport)
-        try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
+        await server.waitUntilCompleted()
     }
 }
 
@@ -340,9 +343,9 @@ private func registerTools(
                 engine: engine,
                 transport: transport
             )
-            return .init(content: [.text(text)], isError: false)
+            return .init(content: [.text(text: text, annotations: nil, _meta: nil)], isError: false)
         } catch {
-            return .init(content: [.text(String(describing: error))], isError: true)
+            return .init(content: [.text(text: String(describing: error), annotations: nil, _meta: nil)], isError: true)
         }
     }
 }
@@ -445,6 +448,7 @@ private func rightClickTools() -> [Tool] {
         "properties": .object([
             "item": schemaString("File path, http(s) URL, or plain text."),
             "actionId": schemaString("Capability id or exact title returned by context_actions."),
+            "contractSHA256": schemaString("Optional exact declaration fingerprint returned by discovery; rejects changed contracts and grants no authority."),
             "arguments": capabilityArgumentsSchema,
             "expectedOutput": schemaString("Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes."),
             "verification": verificationSchema,
@@ -536,8 +540,15 @@ func handleTool(
     case "context_explain":
         let action = arguments?["actionId"]?.stringValue ?? ""
         let capability = try engine.call { try $0.describe(id: action, item: item) }
-        return RightClickJSON.encode(capability)
+        return RightClickJSON.encode(CapabilityExplanationView(capability))
     case "context_run":
+        let contractSHA256: String?
+        if let supplied = arguments?["contractSHA256"] {
+            guard let pin = supplied.stringValue, CapabilityContract.isValidSHA256(pin) else {
+                throw RightClickError("Invalid contractSHA256. Supply the exact lowercase SHA-256 returned by discovery.")
+            }
+            contractSHA256 = pin
+        } else { contractSHA256 = nil }
         let action = arguments?["actionId"]?.stringValue ?? ""
         let confirmed =
             arguments?["confirmed"]?
@@ -594,7 +605,7 @@ func handleTool(
                 confirmed: confirmed,
                 arguments: capabilityArguments,
                 expectedOutput: expectedOutput,
-                verification: verification
+                verification: verification, contractSHA256: contractSHA256
             )
         }
 

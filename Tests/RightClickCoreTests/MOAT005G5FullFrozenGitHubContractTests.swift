@@ -9,7 +9,6 @@ import XCTest
 
 @testable import RightClickCore
 
-#if os(macOS)
 final class MOAT005G5FullFrozenGitHubContractTests:
     XCTestCase
 {
@@ -336,5 +335,3 @@ final class MOAT005G5FullFrozenGitHubContractTests:
         )
     }
 }
-
-#endif

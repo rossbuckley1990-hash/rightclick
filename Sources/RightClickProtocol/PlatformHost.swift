@@ -30,6 +30,37 @@ public protocol PlatformHost {
 
 public enum RuntimeOperatingSystem: String, Codable, Sendable { case macOS = "macos", linux, windows, other }
 public enum RuntimePlatform {
+    public static var name: String {
+#if os(macOS)
+        return "macOS"
+#elseif os(Windows)
+        return "Windows"
+#elseif os(Linux)
+        return "Linux"
+#else
+        return "unknown"
+#endif
+    }
+
+    public static var pathSeparator: Character {
+#if os(Windows)
+        return ";"
+#else
+        return ":"
+#endif
+    }
+
+    public static func isAbsolutePath(_ path: String) -> Bool {
+#if os(Windows)
+        if path.hasPrefix("\\\\") { return true }
+        let bytes = Array(path.utf8)
+        if bytes.count >= 3, ((65...90).contains(bytes[0]) || (97...122).contains(bytes[0])),
+           bytes[1] == 58, bytes[2] == 92 || bytes[2] == 47 { return true }
+#endif
+        return path.hasPrefix("/")
+    }
+
+
     public static var operatingSystem: RuntimeOperatingSystem {
         #if os(macOS)
         return .macOS
@@ -53,6 +84,12 @@ public enum RuntimePlatform {
     public static func supportDirectory(home: URL = FileManager.default.homeDirectoryForCurrentUser,
         environment: [String: String] = ProcessInfo.processInfo.environment) -> URL {
         if operatingSystem == .macOS { return home.appendingPathComponent("Library/Application Support/RIGHTCLICK", isDirectory: true) }
+        if operatingSystem == .windows {
+            let raw = environment["LOCALAPPDATA"]
+            let base = raw.map { isAbsolutePath($0) ? URL(fileURLWithPath: $0) : home.appendingPathComponent("AppData/Local") }
+                ?? home.appendingPathComponent("AppData/Local")
+            return base.appendingPathComponent("RIGHTCLICK", isDirectory: true)
+        }
         let raw = environment["XDG_CONFIG_HOME"]
         let base = raw?.hasPrefix("/") == true ? URL(fileURLWithPath: raw!) : home.appendingPathComponent(".config", isDirectory: true)
         return base.appendingPathComponent("rightclick", isDirectory: true)
@@ -60,6 +97,7 @@ public enum RuntimePlatform {
     public static var logDirectory: URL {
         let home = FileManager.default.homeDirectoryForCurrentUser
         if operatingSystem == .macOS { return home.appendingPathComponent("Library/Logs/RIGHTCLICK", isDirectory: true) }
+        if operatingSystem == .windows { return supportDirectory().appendingPathComponent("logs", isDirectory: true) }
         let raw = ProcessInfo.processInfo.environment["XDG_STATE_HOME"]
         let base = raw?.hasPrefix("/") == true ? URL(fileURLWithPath: raw!) : home.appendingPathComponent(".local/state", isDirectory: true)
         return base.appendingPathComponent("rightclick/logs", isDirectory: true)
@@ -94,7 +132,7 @@ public struct RuntimeEnvironment: Sendable, Equatable {
 /// Exact authoritative snapshot bytes shared by local and remote admission.
 public enum CapabilityDispatchContract {
     public static func withoutExperience(_ capability: Capability) -> Capability {
-        var clean = capability; clean.metadata = clean.metadata.filter { !$0.key.hasPrefix("experience.") }; return clean
+        var clean = capability; clean.contractSHA256 = nil; clean.metadata = clean.metadata.filter { !$0.key.hasPrefix("experience.") }; return clean
     }
     public static func canonicalData(_ capability: Capability) throws -> Data {
         let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]

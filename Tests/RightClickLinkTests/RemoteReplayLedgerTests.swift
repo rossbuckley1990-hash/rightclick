@@ -81,9 +81,9 @@ final class RemoteReplayLedgerTests: XCTestCase {
         }
     }
 
-    private func acceptedSummary(at now: Int64 = 1_001) -> RemoteExecutionSummary {
+    private func acceptedSummary(at now: Int64 = 1_001, executionID: String = UUID().uuidString) -> RemoteExecutionSummary {
         RemoteExecutionSummary(state: .accepted, policy: .evaluated, providerAcceptance: .accepted,
-            evidenceExecutionID: UUID().uuidString,
+            evidenceExecutionID: executionID,
             lifecycle: [.requested, .authorized, .delivered, .executing, .providerAccepted, .unverified],
             completedAtMilliseconds: now)
     }
@@ -117,9 +117,11 @@ final class RemoteReplayLedgerTests: XCTestCase {
     }
 
     func testCompletedAcceptanceSurvivesRestartWithoutVerificationPromotion() throws {
-        let fixture = try Fixture(), request = fixture.request(), summary = acceptedSummary()
+        let fixture = try Fixture(), request = fixture.request(), summaryPlaceholder = acceptedSummary()
         var ledger: RemoteReplayLedger? = try fixture.open()
         XCTAssertNil(try ledger?.reserve(request, now: 1_000))
+        var summary = summaryPlaceholder
+        summary.evidenceExecutionID = try ledger!.executionID(forRun: request).uuidString
         try ledger?.complete(request, summary: summary)
         ledger = nil
         let retry = try XCTUnwrap(fixture.open().reserve(fixture.request(key: request.idempotencyKey), now: 1_002))
@@ -130,12 +132,13 @@ final class RemoteReplayLedgerTests: XCTestCase {
 
     func testCompletedVerifiedEvidenceSurvivesRestartExactly() throws {
         let fixture = try Fixture(), request = fixture.request()
-        let summary = RemoteExecutionSummary(state: .succeeded, policy: .evaluated, providerAcceptance: .accepted,
+        var summary = RemoteExecutionSummary(state: .succeeded, policy: .evaluated, providerAcceptance: .accepted,
             verification: .verifiedSuccess, observationBoundary: .externalState, evidenceExecutionID: UUID().uuidString,
             lifecycle: [.requested, .authorized, .delivered, .executing, .providerAccepted, .verified],
             completedAtMilliseconds: 1_001)
         var ledger: RemoteReplayLedger? = try fixture.open()
         XCTAssertNil(try ledger?.reserve(request, now: 1_000))
+        summary.evidenceExecutionID = try ledger!.executionID(forRun: request).uuidString
         try ledger?.complete(request, summary: summary)
         ledger = nil
         let retry = try XCTUnwrap(fixture.open().reserve(fixture.request(key: request.idempotencyKey), now: 1_002))
@@ -148,7 +151,7 @@ final class RemoteReplayLedgerTests: XCTestCase {
         let fixture = try Fixture(), request = fixture.request()
         var ledger: RemoteReplayLedger? = try fixture.open()
         XCTAssertNil(try ledger?.reserve(request, now: 1_000))
-        try ledger?.complete(request, summary: acceptedSummary())
+        try ledger?.complete(request, summary: acceptedSummary(executionID: try ledger!.executionID(forRun: request).uuidString))
         ledger = nil
         let reopened = try fixture.open()
         assertError(.replay, try reopened.reserve(request, now: 1_001))
@@ -221,7 +224,7 @@ final class RemoteReplayLedgerTests: XCTestCase {
         let fixture = try Fixture(), request = fixture.request()
         var ledger: RemoteReplayLedger? = try fixture.open(maximumRequests: 2)
         XCTAssertNil(try ledger?.reserve(request, now: 1_000))
-        let summary = acceptedSummary()
+        let summary = acceptedSummary(executionID: try ledger!.executionID(forRun: request).uuidString)
         try ledger?.complete(request, summary: summary)
         XCTAssertEqual(try RemoteWire.encode(ledger!.reserve(fixture.request(key: request.idempotencyKey), now: 1_001)),
             try RemoteWire.encode(Optional(summary)))
@@ -243,7 +246,7 @@ final class RemoteReplayLedgerTests: XCTestCase {
     func testMissingHistoryDeniesActiveAndRestartedLedger() throws {
         let fixture = try Fixture(), ledger = try fixture.open(), request = fixture.request()
         XCTAssertNil(try ledger.reserve(request, now: 1_000))
-        try ledger.complete(request, summary: acceptedSummary())
+        try ledger.complete(request, summary: acceptedSummary(executionID: try ledger.executionID(forRun: request).uuidString))
         try FileManager.default.removeItem(at: fixture.child("link.json"))
         assertStorageDenied(fixture, active: ledger)
     }
@@ -419,7 +422,7 @@ final class RemoteReplayLedgerTests: XCTestCase {
         var contradictory = acceptedSummary()
         contradictory.state = .succeeded
         assertError(.inconsistentResult, try ledger.complete(request, summary: contradictory))
-        let summary = acceptedSummary()
+        let summary = acceptedSummary(executionID: try ledger.executionID(forRun: request).uuidString)
         try ledger.complete(request, summary: summary)
         assertError(.storageUnavailable, try ledger.complete(request, summary: summary))
         XCTAssertEqual(try ledger.reserve(fixture.request(key: request.idempotencyKey), now: 1_002)?.state, .accepted)

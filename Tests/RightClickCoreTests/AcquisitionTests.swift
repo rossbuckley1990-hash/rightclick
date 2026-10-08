@@ -10,7 +10,7 @@ import XCTest
 final class AcquisitionTests: XCTestCase {
     #if os(macOS)
     func testServiceAppearsAndDisappearsWithTheBundle() throws {
-        let root = FileManager.default.temporaryDirectory.appendingPathComponent("rightclick-test-\(UUID().uuidString)", isDirectory: true)
+        let root = NativeHTTPFixture.temporaryDirectory.appendingPathComponent("rightclick-test-\(UUID().uuidString)", isDirectory: true)
         let app = root.appendingPathComponent("Example.service")
         try FileManager.default.createDirectory(at: app.appendingPathComponent("Contents"), withIntermediateDirectories: true)
         let plist: [String: Any] = [
@@ -174,7 +174,7 @@ final class AcquisitionTests: XCTestCase {
     #endif
 
     func testDirectoryAndURLClassification() throws {
-        let directory = FileManager.default.temporaryDirectory
+        let directory = NativeHTTPFixture.temporaryDirectory
         let parsed = try ContentParser.parse(directory.path)
         XCTAssertTrue(parsed.isDirectory || parsed.kind == "directory")
         let url = try ContentParser.parse("https://example.com/rightclick")

@@ -48,6 +48,9 @@ public struct CapabilityProvider: Codable, Sendable, Equatable {
 }
 
 public struct Capability: Codable, Sendable, Equatable, Identifiable {
+    /// Assigned by the engine from an installed routing adapter, never accepted
+    /// from a local provider's advertised metadata or contract.
+    public var routingOrigin: CapabilityRoutingOrigin? = nil
     public var id: String
     public var title: String
     public var source: CapabilitySource
@@ -62,6 +65,8 @@ public struct Capability: Codable, Sendable, Equatable, Identifiable {
     public var metadata: [String: String]
     /// Absent in legacy contracts; native capabilities remain host-bound.
     public var runtimeRequirements: RuntimeRequirements?
+    /// Optional engine-produced declaration fingerprint, never execution authority.
+    public var contractSHA256: String? = nil
 
     public init(
         id: String,
@@ -200,6 +205,16 @@ public struct OutcomeEvidence: Codable, Sendable, Equatable {
     }
 }
 
+/// An honest status-only summary when the original record exceeds retention
+/// capacity. A digest identifies discarded receipt bytes; it is not a receipt,
+/// signature, durable export, or independent outcome verification.
+public struct ExecutionRetentionEvidence: Codable, Sendable, Equatable {
+    public let fullRecordRetained: Bool
+    public let originalEncodedBytes: Int
+    public let receiptPayloadSHA256: String?
+    public let taskPhase: String?
+}
+
 public struct ExecutionRecord: Codable, Sendable {
     public var executionId: String
     public var actionId: String
@@ -211,6 +226,27 @@ public struct ExecutionRecord: Codable, Sendable {
     public var evidence: OutcomeEvidence
     public var verification: OutcomeVerification?
     public var rcir: RCIRExecutionEvidence?
+    public var retention: ExecutionRetentionEvidence?
+
+    /// Process-local provenance, set only by the existing RCIR execution host.
+    /// Never serialized: a provider/peer's RCIR fields or receipt are data, not
+    /// evidence that this host admitted and independently observed that task.
+    private var localAdmissionIdentity: (executionID: String, actionID: String)? = nil
+    package var locallyAdmittedRCIR: Bool {
+        get { localAdmissionIdentity.map { $0.executionID == executionId && $0.actionID.utf8.elementsEqual(actionId.utf8) } ?? false }
+        set { localAdmissionIdentity = newValue ? (executionId, actionId) : nil }
+    }
+    /// Set only after Link validates the enrolled node's signed, request-bound
+    /// summary. It conveys an execution-node assertion, never receipt trust.
+    private var nodeObservationIdentity: (executionID: String, actionID: String)? = nil
+    package var authenticatedNodeVerification: Bool {
+        get { nodeObservationIdentity.map { $0.executionID == executionId && $0.actionID.utf8.elementsEqual(actionId.utf8) } ?? false }
+        set { nodeObservationIdentity = newValue ? (executionId, actionId) : nil }
+    }
+    private enum CodingKeys: String, CodingKey {
+        case executionId, actionId, title, state, message, output, events
+        case evidence, verification, rcir, retention
+    }
 
     public init(
         executionId: String,
@@ -222,7 +258,8 @@ public struct ExecutionRecord: Codable, Sendable {
         events: [String] = [],
         evidence: OutcomeEvidence = OutcomeEvidence(),
         verification: OutcomeVerification? = nil,
-        rcir: RCIRExecutionEvidence? = nil
+        rcir: RCIRExecutionEvidence? = nil,
+        retention: ExecutionRetentionEvidence? = nil
     ) {
         self.executionId = executionId
         self.actionId = actionId
@@ -234,34 +271,179 @@ public struct ExecutionRecord: Codable, Sendable {
         self.evidence = evidence
         self.verification = verification
         self.rcir = rcir
+        self.retention = retention
     }
 }
 
 public final class ExecutionStore: @unchecked Sendable {
     public static let shared = ExecutionStore()
+    public struct Statistics: Sendable {
+        public let records: Int
+        public let encodedBytes: Int
+        public let reservedBytes: Int
+        public let activeRecords: Int
+    }
+    private struct Entry {
+        var record: ExecutionRecord
+        var encodedBytes: Int
+        var accountedBytes: Int
+        var active: Bool
+        var ordinal: UInt64
+        var terminalAt: UInt64?
+    }
     private let lock = NSLock()
-    private var records: [String: ExecutionRecord] = [:]
+    private var records: [String: Entry] = [:]
+    private var accountedBytes = 0
+    private var ordinal: UInt64 = 0
+    private var lastNow: UInt64 = 0
+    private let maximumRecords: Int
+    private let maximumEncodedBytes: Int
+    private let timeToLiveNanoseconds: UInt64
+    private let clock: @Sendable () -> UInt64
 
-    public func put(_ record: ExecutionRecord) {
+    /// Bounded volatile history, not durable receipt storage. Active reservations
+    /// survive history expiry/eviction until their callback reports a terminal
+    /// state. Their compact-summary byte allowance is reserved before dispatch.
+    public init(maximumRecords: Int = 1_024, maximumEncodedBytes: Int = 16_777_216,
+                timeToLiveNanoseconds: UInt64 = 300_000_000_000,
+                clock: @escaping @Sendable () -> UInt64 = { DispatchTime.now().uptimeNanoseconds }) {
+        precondition(maximumRecords >= 0 && maximumEncodedBytes >= 0)
+        self.maximumRecords = maximumRecords
+        self.maximumEncodedBytes = maximumEncodedBytes
+        self.timeToLiveNanoseconds = timeToLiveNanoseconds
+        self.clock = clock
+    }
+
+    /// False means no reservation/history was stored. Callers must check an
+    /// initial started reservation before dispatching an external task.
+    @discardableResult public func put(_ record: ExecutionRecord) -> Bool {
         lock.lock()
-        records[record.executionId] = record
-        lock.unlock()
+        defer { lock.unlock() }
+        let now = monotonicNow()
+        expire(at: now)
+        return retain(record, previous: records[record.executionId], at: now)
     }
 
     public func get(_ executionId: String) -> ExecutionRecord? {
         lock.lock()
-        let record = records[executionId]
-        lock.unlock()
-        return record
+        defer { lock.unlock() }
+        expire(at: monotonicNow())
+        return records[executionId]?.record
     }
 
-    public func update(_ executionId: String, _ body: (inout ExecutionRecord) -> Void) {
+    /// The callback always runs for a reserved active task, including when its
+    /// previous output was compacted. It may release external session ownership.
+    @discardableResult public func update(_ executionId: String, _ body: (inout ExecutionRecord) -> Void) -> Bool {
         lock.lock()
-        if var record = records[executionId] {
-            body(&record)
-            records[executionId] = record
+        defer { lock.unlock() }
+        let now = monotonicNow()
+        expire(at: now)
+        guard let previous = records[executionId] else { return false }
+        var record = previous.record
+        body(&record)
+        // An update cannot move a reservation to another execution/capability.
+        record.executionId = previous.record.executionId
+        record.actionId = previous.record.actionId
+        return retain(record, previous: previous, at: now)
+    }
+
+    public func statistics() -> Statistics {
+        lock.lock()
+        defer { lock.unlock() }
+        expire(at: monotonicNow())
+        return Statistics(records: records.count,
+                          encodedBytes: records.values.reduce(0) { $0 + $1.encodedBytes },
+                          reservedBytes: accountedBytes,
+                          activeRecords: records.values.filter(\.active).count)
+    }
+
+    private func monotonicNow() -> UInt64 {
+        lastNow = max(lastNow, clock())
+        return lastNow
+    }
+
+    private func expire(at now: UInt64) {
+        for (id, entry) in records where !entry.active {
+            if let terminalAt = entry.terminalAt, now - terminalAt >= timeToLiveNanoseconds { remove(id) }
         }
-        lock.unlock()
+    }
+
+    private func remove(_ id: String) {
+        if let removed = records.removeValue(forKey: id) { accountedBytes -= removed.accountedBytes }
+    }
+
+    private func isPending(_ record: ExecutionRecord, previouslyActive: Bool) -> Bool {
+        if [.succeeded, .unsupported, .unavailable, .rejected, .failed, .cancelled, .unknown].contains(record.state) { return false }
+        let phase = record.rcir?.phase ?? record.retention?.taskPhase
+        if let phase { return ["started", "accepted", "working", "inputRequired", "cancelRequested"].contains(phase) }
+        return record.state == .started || (previouslyActive && record.state == .awaitingUser)
+    }
+
+    private func compact(_ record: ExecutionRecord, size: Int, reserve: Bool = false) -> ExecutionRecord {
+        let receipt = record.rcir?.signedReceipt?.payload ?? record.rcir?.receipt
+        let digest = (reserve ? nil : receipt).flatMap { Data(base64Encoded: $0) }.map {
+            SHA256.hash(data: $0).map { String(format: "%02x", $0) }.joined()
+        } ?? record.retention?.receiptPayloadSHA256
+        let annotation = ExecutionRetentionEvidence(
+            fullRecordRetained: false,
+            originalEncodedBytes: reserve ? Int.max : max(size, record.retention?.originalEncodedBytes ?? 0),
+            receiptPayloadSHA256: reserve ? String(repeating: "0", count: 64) : digest,
+            taskPhase: reserve ? "cancelRequested" : (record.rcir?.phase ?? record.retention?.taskPhase))
+        return ExecutionRecord(executionId: record.executionId, actionId: record.actionId,
+                               state: reserve ? .awaitingUser : record.state,
+                               message: "History was compacted; output, events, observations and receipt are not retained. No durable receipt export exists.",
+                               evidence: OutcomeEvidence(type: "retention_summary",
+                                   boundary: "Status identity and state only; full evidence/output is not retained and this summary does not verify an outcome."),
+                               retention: annotation)
+    }
+
+    private func encodedSize(_ record: ExecutionRecord) -> Int? {
+        (try? JSONEncoder().encode(record))?.count
+    }
+
+    private func retain(_ incoming: ExecutionRecord, previous: Entry?, at now: UInt64) -> Bool {
+        let active = isPending(incoming, previouslyActive: previous?.active ?? false)
+        guard let fullSize = encodedSize(incoming),
+              let summaryReserve = encodedSize(compact(incoming, size: fullSize, reserve: true)) else { return false }
+        // Reserve worst-case summary length up front, including its receipt
+        // digest and lifecycle phase, so active updates never lose bookkeeping.
+        let minimum = active ? summaryReserve : 0
+        let available = maximumEncodedBytes - (accountedBytes - (previous?.accountedBytes ?? 0))
+        let activeOthers = records.values.filter { $0.active && $0.record.executionId != incoming.executionId }
+        let activeBytes = activeOthers.reduce(0) { $0 + $1.accountedBytes }
+        var record = incoming
+        var size = fullSize
+        var charge = max(size, minimum)
+        if charge > maximumEncodedBytes - activeBytes || (active && charge > available) {
+            record = compact(incoming, size: fullSize)
+            guard let compactSize = encodedSize(record) else { return false }
+            size = compactSize
+            charge = max(size, minimum)
+        }
+        // Refuse impossible new reservations before evicting any history.
+        guard maximumRecords > activeOthers.count, charge <= maximumEncodedBytes - activeBytes else {
+            if let previous, !active { remove(previous.record.executionId) }
+            return false
+        }
+        if let previous { remove(previous.record.executionId) }
+        while records.count >= maximumRecords || charge > maximumEncodedBytes - accountedBytes {
+            guard let victim = records.values.filter({ !$0.active }).min(by: {
+                $0.ordinal == $1.ordinal ? $0.record.executionId < $1.record.executionId : $0.ordinal < $1.ordinal
+            }) else { return false }
+            remove(victim.record.executionId)
+        }
+        if ordinal == UInt64.max {
+            let ids = records.values.sorted { $0.ordinal < $1.ordinal }.map { $0.record.executionId }
+            for (index, id) in ids.enumerated() { records[id]?.ordinal = UInt64(index) }
+            ordinal = UInt64(ids.count)
+        }
+        let order = previous?.ordinal ?? ordinal
+        if previous == nil { ordinal += 1 }
+        let terminalAt = active ? nil : (previous?.terminalAt ?? now)
+        records[incoming.executionId] = Entry(record: record, encodedBytes: size,
+            accountedBytes: charge, active: active, ordinal: order, terminalAt: terminalAt)
+        accountedBytes += charge
+        return true
     }
 }
 
@@ -303,12 +485,5 @@ public struct RunResult: Codable, Sendable {
 }
 
 public func dedupeCapabilities(_ capabilities: [Capability]) -> [Capability] {
-    var seen = Set<String>()
-    var result: [Capability] = []
-    for capability in capabilities {
-        if seen.insert(capability.id).inserted {
-            result.append(capability)
-        }
-    }
-    return result
+    CapabilitySelection.unambiguous(capabilities)
 }

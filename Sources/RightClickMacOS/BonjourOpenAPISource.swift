@@ -2,208 +2,61 @@ import RightClickProviders
 import RightClickProtocol
 import Foundation
 
-public struct BonjourOpenAPIServiceDescriptor:
-    Equatable,
-    Sendable
-{
-    public var instanceName: String
-    public var serviceType: String
-    public var domain: String
-    public var host: String
-    public var port: Int
-    public var txt: [String: String]
-
-    public init(
-        instanceName: String,
-        serviceType: String,
-        domain: String,
-        host: String,
-        port: Int,
-        txt: [String: String]
-    ) {
-        self.instanceName = instanceName
-        self.serviceType = serviceType
-        self.domain = domain
-        self.host = host
-        self.port = port
-        self.txt = txt
-    }
-}
-
-public final class BonjourOpenAPISource:
-    NSObject,
-    CapabilityReflectorSource
-{
+/// Native Bonjour discovery only. Portable descriptor validation and compilation
+/// live in Providers and use the same withdrawal tokens on every host.
+public final class BonjourOpenAPISource: NSObject, CapabilityReflectorSource {
     public let id = "bonjour.openapi"
-
-    public static let serviceType =
-        "_rightclick._tcp."
-
-    public typealias SpecificationLoader =
-        (URL) throws -> Data
-
-    private struct ServiceKey:
-        Hashable
-    {
+    public static let serviceType = OpenAPIServiceDescriptorSource.serviceType
+    public typealias SpecificationLoader = OpenAPIServiceDescriptorSource.SpecificationLoader
+    private struct ServiceKey: Hashable {
         let instanceName: String
         let serviceType: String
         let domain: String
     }
-
+    private let acquisition: OpenAPIServiceDescriptorSource
     private let lock = NSLock()
-
-    private let specificationLoader:
-        SpecificationLoader
-
-    private var currentReflectors:
-        [ServiceKey: OpenAPIReflector] = [:]
-
-    // Acquisition tokens are revoked by removal/replacement, including queued reads.
-    private var acquisitionTokens: [ServiceKey: UUID] = [:]
-
-    private var discoveredServices:
-        [ServiceKey: NetService] = [:]
-
-    private var browser:
-        NetServiceBrowser?
-
-    private let acquisitionQueue =
-        DispatchQueue(
-            label:
-                "rightclick.bonjour-openapi.acquire",
-            qos:
-                .utility
-        )
-
-    public convenience init(
-        startBrowsing: Bool = true
-    ) {
-        self.init(
-            startBrowsing:
-                startBrowsing,
-            specificationLoader: {
-                try OriginPinnedHTTP
-                    .loadOpenAPISpecification(
-                        $0
-                    )
-            }
-        )
+    private var discoveredServices: [ServiceKey: NetService] = [:]
+    private var browser: NetServiceBrowser?
+    private let acquisitionQueue = DispatchQueue(label: "rightclick.bonjour-openapi.acquire", qos: .utility)
+    public convenience init(startBrowsing: Bool = true) {
+        self.init(startBrowsing: startBrowsing, specificationLoader: {
+            try OriginPinnedHTTP.loadOpenAPISpecification($0)
+        })
     }
-
-    public init(
-        startBrowsing: Bool = true,
-        specificationLoader:
-            @escaping SpecificationLoader
-    ) {
-        self.specificationLoader =
-            specificationLoader
-
+    public init(startBrowsing: Bool = true, specificationLoader: @escaping SpecificationLoader) {
+        acquisition = OpenAPIServiceDescriptorSource(specificationLoader: specificationLoader)
         super.init()
-
-        if startBrowsing {
-            start()
-        }
+        if startBrowsing { start() }
     }
-
     deinit {
         browser?.stop()
-
         lock.lock()
-
-        let services =
-            Array(
-                discoveredServices.values
-            )
-
+        let services = Array(discoveredServices.values)
         discoveredServices.removeAll()
-        currentReflectors.removeAll()
-
         lock.unlock()
-
-        for service in services {
-            service.stop()
-        }
+        for service in services { service.stop() }
     }
-
-    public func reflectors()
-        -> [any CapabilityReflector]
-    {
-        lock.lock()
-        let compiled = currentReflectors
-        lock.unlock()
-        for (key, old) in compiled where old.requiresContractRefresh {
-            guard let refreshed = try? old.refreshContract() as? OpenAPIReflector else { continue }
-            lock.lock()
-            // A delayed refresh must never resurrect a removed/replaced service.
-            if currentReflectors[key] === old { currentReflectors[key] = refreshed }
-            lock.unlock()
-        }
-        lock.lock()
-
-        let snapshot =
-            Array(
-                currentReflectors.values
-            )
-
-        lock.unlock()
-
-        return snapshot.sorted {
-            $0.id < $1.id
-        }
-    }
-
-    public func update(resolved descriptor: BonjourOpenAPIServiceDescriptor) {
-        let key = serviceKey(descriptor)
-        guard let token = beginAcquisition(for: key) else { return }
-        update(descriptor, key: key, token: token)
-    }
-
-    private func beginAcquisition(for key: ServiceKey, requiring service: NetService? = nil) -> UUID? {
-        lock.lock(); defer { lock.unlock() }
-        if let service, discoveredServices[key] !== service { return nil }
-        let token = UUID()
-        acquisitionTokens[key] = token
-        // New metadata cannot leave the old executable contract active while loading.
-        currentReflectors.removeValue(forKey: key)
-        return token
-    }
-
-    private func update(_ descriptor: BonjourOpenAPIServiceDescriptor, key: ServiceKey, token: UUID) {
-        lock.lock(); let current = acquisitionTokens[key] == token; lock.unlock()
-        guard current else { return }
-        var reflected: OpenAPIReflector?
-        if let material = validatedMaterial(descriptor) {
-            do {
-                let specification = try specificationLoader(material.specificationURL)
-                reflected = try OpenAPIReflector(specificationData: specification,
-                    baseURL: material.baseURL, externalBearerSchemeName: material.externalBearerSchemeName,
-                    revalidateSpecification: { [loader = specificationLoader] in
-                        try loader(material.specificationURL)
-                    }, acquisitionIncarnation: token)
-            } catch {
-                // Untrusted/unavailable input contributes no capability. An old
-                // failed read must not remove a newer successful acquisition.
-            }
-        }
-        lock.lock(); defer { lock.unlock() }
-        guard acquisitionTokens[key] == token else { return }
-        currentReflectors[key] = reflected
-    }
-
+    public func reflectors() -> [any CapabilityReflector] { acquisition.reflectors() }
+    public func update(resolved descriptor: BonjourOpenAPIServiceDescriptor) { acquisition.update(resolved: descriptor) }
     public func remove(instanceName: String, serviceType: String, domain: String) {
         remove(for: ServiceKey(instanceName: instanceName, serviceType: serviceType, domain: domain))
     }
-
+    private func invalidate(_ key: ServiceKey) {
+        acquisition.remove(instanceName: key.instanceName, serviceType: key.serviceType, domain: key.domain)
+    }
     private func remove(for key: ServiceKey, requiring expected: NetService? = nil) {
         lock.lock()
         if let expected, discoveredServices[key] !== expected { lock.unlock(); return }
-        acquisitionTokens.removeValue(forKey: key)
-        currentReflectors.removeValue(forKey: key)
+        invalidate(key)
         let service = discoveredServices.removeValue(forKey: key)
         lock.unlock()
         service?.stop()
     }
-
+    private func removeReflector(for key: ServiceKey, requiring service: NetService? = nil) {
+        lock.lock(); defer { lock.unlock() }
+        if let service, discoveredServices[key] !== service { return }
+        invalidate(key)
+    }
     private func start() {
         let startBrowser = {
             let browser =
@@ -231,20 +84,6 @@ public final class BonjourOpenAPISource:
     }
 
     private func serviceKey(
-        _ descriptor:
-            BonjourOpenAPIServiceDescriptor
-    ) -> ServiceKey {
-        ServiceKey(
-            instanceName:
-                descriptor.instanceName,
-            serviceType:
-                descriptor.serviceType,
-            domain:
-                descriptor.domain
-        )
-    }
-
-    private func serviceKey(
         _ service: NetService
     ) -> ServiceKey {
         ServiceKey(
@@ -255,338 +94,6 @@ public final class BonjourOpenAPISource:
             domain:
                 service.domain
         )
-    }
-
-    private func removeReflector(for key: ServiceKey, requiring service: NetService? = nil) {
-        lock.lock(); defer { lock.unlock() }
-        if let service, discoveredServices[key] !== service { return }
-        acquisitionTokens.removeValue(forKey: key)
-        currentReflectors.removeValue(forKey: key)
-    }
-
-    private func validatedMaterial(
-        _ descriptor:
-            BonjourOpenAPIServiceDescriptor
-    ) -> (
-        specificationURL: URL,
-        baseURL: URL,
-        externalBearerSchemeName: String?
-    )? {
-        guard
-            descriptor.serviceType
-                == Self.serviceType
-        else {
-            return nil
-        }
-
-        guard
-            descriptor.txt["kind"]?
-                .trimmingCharacters(
-                    in:
-                        .whitespacesAndNewlines
-                )
-                .lowercased()
-                == "openapi"
-        else {
-            return nil
-        }
-
-        let externalBearerSchemeName:
-            String?
-
-        if descriptor.txt.keys.contains(
-            "auth-scheme"
-        ) {
-            guard
-                let value =
-                    validatedAuthoritySchemeName(
-                        descriptor.txt[
-                            "auth-scheme"
-                        ]
-                    )
-            else {
-                return nil
-            }
-
-            externalBearerSchemeName =
-                value
-
-        } else {
-            externalBearerSchemeName =
-                nil
-        }
-
-        let hasAbsoluteAdvertisement =
-            descriptor.txt["spec-url"] != nil
-            || descriptor.txt["base-url"] != nil
-
-        let hasLegacyAdvertisement =
-            descriptor.txt["scheme"] != nil
-            || descriptor.txt["spec"] != nil
-            || descriptor.txt["base"] != nil
-
-        if hasAbsoluteAdvertisement {
-            guard
-                !hasLegacyAdvertisement,
-                let specificationURL =
-                    validatedAbsoluteHTTPSURL(
-                        descriptor.txt[
-                            "spec-url"
-                        ]
-                    ),
-                let baseURL =
-                    validatedAbsoluteHTTPSURL(
-                        descriptor.txt[
-                            "base-url"
-                        ]
-                    )
-            else {
-                return nil
-            }
-
-            return (
-                specificationURL,
-                baseURL,
-                externalBearerSchemeName
-            )
-        }
-
-        let rawHost =
-            descriptor.host
-            .trimmingCharacters(
-                in:
-                    .whitespacesAndNewlines
-            )
-
-        var host = rawHost
-
-        if host.hasSuffix(".") {
-            host.removeLast()
-        }
-
-        guard
-            !host.isEmpty,
-            !host.hasSuffix(".")
-        else {
-            return nil
-        }
-
-        guard
-            (1...65_535).contains(
-                descriptor.port
-            )
-        else {
-            return nil
-        }
-
-        guard
-            let rawScheme =
-                descriptor.txt["scheme"]?
-                .trimmingCharacters(
-                    in:
-                        .whitespacesAndNewlines
-                )
-                .lowercased(),
-            rawScheme == "http"
-                || rawScheme == "https"
-        else {
-            return nil
-        }
-
-        guard
-            let specificationPath =
-                validatedAdvertisedPath(
-                    descriptor.txt["spec"]
-                ),
-            let basePath =
-                validatedAdvertisedPath(
-                    descriptor.txt["base"]
-                )
-        else {
-            return nil
-        }
-
-        guard
-            let specificationURL =
-                endpointURL(
-                    scheme:
-                        rawScheme,
-                    host:
-                        host,
-                    port:
-                        descriptor.port,
-                    path:
-                        specificationPath
-                ),
-            let baseURL =
-                endpointURL(
-                    scheme:
-                        rawScheme,
-                    host:
-                        host,
-                    port:
-                        descriptor.port,
-                    path:
-                        basePath
-                )
-        else {
-            return nil
-        }
-
-        return (
-            specificationURL,
-            baseURL,
-            externalBearerSchemeName
-        )
-    }
-
-    private func validatedAuthoritySchemeName(
-        _ raw: String?
-    ) -> String? {
-        guard
-            let raw
-        else {
-            return nil
-        }
-
-        let value =
-            raw.trimmingCharacters(
-                in:
-                    .whitespacesAndNewlines
-            )
-
-        guard
-            !value.isEmpty,
-            !value.contains("|"),
-            value.rangeOfCharacter(
-                from:
-                    .controlCharacters
-            ) == nil
-        else {
-            return nil
-        }
-
-        return value
-    }
-
-    private func validatedAbsoluteHTTPSURL(
-        _ raw: String?
-    ) -> URL? {
-        guard
-            let raw
-        else {
-            return nil
-        }
-
-        let value =
-            raw.trimmingCharacters(
-                in:
-                    .whitespacesAndNewlines
-            )
-
-        guard
-            !value.isEmpty,
-            var components =
-                URLComponents(
-                    string:
-                        value
-                ),
-            components.scheme?
-                .lowercased()
-                == "https",
-            let rawHost =
-                components.host,
-            !rawHost.isEmpty,
-            components.user == nil,
-            components.password == nil,
-            components.fragment == nil
-        else {
-            return nil
-        }
-
-        components.scheme =
-            "https"
-
-        components.host =
-            rawHost.lowercased()
-
-        if components.port == 443 {
-            components.port =
-                nil
-        }
-
-        return components.url
-    }
-
-    private func validatedAdvertisedPath(
-        _ raw: String?
-    ) -> String? {
-        guard
-            let raw
-        else {
-            return nil
-        }
-
-        let value =
-            raw.trimmingCharacters(
-                in:
-                    .whitespacesAndNewlines
-            )
-
-        guard
-            value.hasPrefix("/"),
-            !value.hasPrefix("//"),
-            !value.contains("://"),
-            !value.contains("#"),
-            !value.contains("?"),
-            !value.contains("\\")
-        else {
-            return nil
-        }
-
-        let pathComponents =
-            value
-            .split(
-                separator: "/",
-                omittingEmptySubsequences:
-                    true
-            )
-
-        guard
-            !pathComponents.contains("."),
-            !pathComponents.contains("..")
-        else {
-            return nil
-        }
-
-        return value
-    }
-
-    private func endpointURL(
-        scheme: String,
-        host: String,
-        port: Int,
-        path: String
-    ) -> URL? {
-        var components =
-            URLComponents()
-
-        components.scheme =
-            scheme
-
-        components.host =
-            host
-
-        components.port =
-            port
-
-        components.path =
-            path
-
-        components.query = nil
-        components.fragment = nil
-
-        return components.url
     }
 
     private func descriptor(
@@ -685,12 +192,15 @@ public final class BonjourOpenAPISource:
         return result
     }
 
+
     private func acquire(_ descriptor: BonjourOpenAPIServiceDescriptor, from service: NetService) {
-        let key = serviceKey(descriptor)
-        // Capture the token before queueing, under the same lock as removal.
-        guard let token = beginAcquisition(for: key, requiring: service) else { return }
+        let key = serviceKey(service)
+        lock.lock()
+        guard discoveredServices[key] === service else { lock.unlock(); return }
+        let token = acquisition.beginAcquisition(descriptor)
+        lock.unlock()
         acquisitionQueue.async { [weak self] in
-            self?.update(descriptor, key: key, token: token)
+            self?.acquisition.completeAcquisition(descriptor, token: token)
         }
     }
 }
@@ -718,8 +228,7 @@ extension BonjourOpenAPISource:
         lock.lock()
 
         if discoveredServices[key] !== service {
-            acquisitionTokens.removeValue(forKey: key)
-            currentReflectors.removeValue(forKey: key)
+            invalidate(key)
         }
         discoveredServices[key] = service
 

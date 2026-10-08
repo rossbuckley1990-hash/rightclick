@@ -1,6 +1,10 @@
 #if !os(macOS)
 import Foundation
+#if canImport(Glibc)
 import Glibc
+#elseif canImport(ucrt)
+import ucrt
+#endif
 import RightClickCore
 import RightClickMCP
 

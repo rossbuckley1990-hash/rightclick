@@ -9,7 +9,6 @@ import XCTest
 
 @testable import RightClickCore
 
-#if os(macOS)
 final class MOAT004G2SplitOriginTests:
     XCTestCase
 {
@@ -739,5 +738,3 @@ final class MOAT004G2SplitOriginTests:
         )
     }
 }
-
-#endif
