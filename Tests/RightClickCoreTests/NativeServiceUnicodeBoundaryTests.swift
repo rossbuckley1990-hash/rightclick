@@ -21,7 +21,7 @@ final class NativeServiceUnicodeBoundaryTests: XCTestCase {
             inputText: input
         )
         XCTAssertEqual(result.status, .accepted)
-        XCTAssertEqual(result.evidence?.type, "provider_returned_text")
+        XCTAssertEqual(result.evidence.type, "provider_returned_text")
         return result.output
     }
 
@@ -110,7 +110,7 @@ final class NativeServiceUnicodeBoundaryTests: XCTestCase {
         XCTAssertEqual(record.output.map { Array($0.utf8) }, Array(rawDeclaredOutput.utf8))
         XCTAssertEqual(record.output.map { Array($0.utf16) }, Array(rawDeclaredOutput.utf16))
         XCTAssertEqual(record.status, .verified)
-        XCTAssertEqual(record.evidence?.outcomeVerified, true)
+        XCTAssertEqual(record.evidence.outcomeVerified, true)
     }
 
     func testLiteralOutputCannotSatisfyReinterpretedPostcondition() {
@@ -129,7 +129,7 @@ final class NativeServiceUnicodeBoundaryTests: XCTestCase {
             "{\\rtf1\\ansi\\ansicpg1252\\uc1 caf\\u195?\\u169?}"
         )
         XCTAssertEqual(record.status, .failed)
-        XCTAssertEqual(record.evidence?.outcomeVerified, false)
+        XCTAssertEqual(record.evidence.outcomeVerified, false)
     }
 
     /// Test fixture only; encodes real UTF-8 bytes into the Windows-1252
