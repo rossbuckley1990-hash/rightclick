@@ -60,3 +60,19 @@ wait "$controller_pid"
 controller_pid=''
 execute /opt/rightclick-verifier/bin/python scripts/acceptance-kubernetes.py .build/release/rightclick \
   "$evidence/kubernetes-product" --lab /runtime-inputs --client /proof-tools/kubectl
+
+# One additional client owns a single combined graph, including the exact scoped
+# broker and namespace. The fixture owner still retains all administration.
+execute bash -euo pipefail -c '
+  export RIGHTCLICK_COEXISTENCE_PYTHON=/opt/rightclick-verifier/bin/python
+  export RIGHTCLICK_WASM_RUNTIME=/proof-tools/components/wasmtime-v49.0.2-x86_64-linux/wasmtime
+  export RIGHTCLICK_WASM_TOOLS=/proof-tools/components/wasm-tools-1.261.0-x86_64-linux/wasm-tools
+  export RIGHTCLICK_WASM_COMPONENT=/proof-tools/fingerprint.component.wasm
+  manifest="$(mktemp /tmp/rightclick-scoped-coexistence.XXXXXXXX)"
+  trap '\''rm -f -- "$manifest"'\'' EXIT
+  "$RIGHTCLICK_COEXISTENCE_PYTHON" scripts/ci/make-scoped-coexistence-manifest.py \
+    /runtime-inputs "$manifest" --rpk /proof-tools/rpk --kubectl /proof-tools/kubectl
+  bash scripts/ci/run-substrate-coexistence.sh .build/release/rightclick \
+    evidence/proof-lab/coexistence --manifest "$manifest" \
+    --require kafka --require kubernetes --require-verified kafka --require-verified kubernetes
+'

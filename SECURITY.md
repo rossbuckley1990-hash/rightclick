@@ -40,3 +40,42 @@ Homebrew uninstall removes package files, not your Cursor configuration, logs, o
 ## Reporting
 
 Report security findings directly to the maintainer through your existing private contact, or use GitHub private vulnerability reporting when enabled on the public repository. Do not place credentials or sensitive payloads in public issue reports. Include the release version or source commit and the affected host platform.
+
+## Reconciled substrate and task boundaries
+
+Every substrate uses the same Core selection, local confirmation/policy and RCIR
+admission machinery. Kafka acknowledgements and Kubernetes HTTP/process success
+remain provider acceptance. Host-selected observations use separate scoped
+observer authority. Kubeconfig, broker credentials, OAuth grants, native Keychain
+secrets and provisioned receipt signing keys stay at the executing node. D-Bus
+pins the live bus incarnation/unique owner and reviewed UID authority. WASM
+requires integrity-bound component/tools/runtime snapshots and bounded execution;
+a compiled descriptor does not demonstrate compatible execution.
+
+The short threat model is request/contract/target substitution, replay or ambiguous
+retry, stale or revoked provider authority, fabricated verification, and untrusted
+storage. Link authenticates bounded versioned requests/results and durable owned
+status context. Core compares the current full capability contract; the host
+checks current graph/authority/policy immediately before an atomic lease start.
+Lease expiry is sampled after external callbacks inside the admission lock.
+MCP artifact acquisition rechecks the actual server contract and selected local
+credential bytes at final admission. Server-side changes after that final check
+cannot be made atomic by the supported MCP protocol and remain a limitation.
+
+Provider-supplied RCIR fields do not prove local admission. Process-local host
+and authenticated-node provenance bind exact invocation/action identity and are
+excluded from JSON. Delegated verification checks exact original predicates for
+success and failure; missing, contradictory or substituted evidence cannot become
+verified merely because an outer Link result is signed. Inner receipt trust uses
+independently provisioned issuers/keys/task/lease expectations. A receipt from a
+second runtime's untrusted signing key is rejected. Version 1 receipts do not
+independently claim a runtime or capability fingerprint; future receipt export
+must add explicit binding rather than infer it from a transport signature.
+
+Link delivery history cannot be recreated silently after deletion/corruption.
+The RCIR journal additionally pins trusted ancestry and a durable identity anchor;
+old initialized journals without that anchor need an operator-reviewed migration,
+not an automatic empty-history reset. Owned status never retries a mutation.
+An offline node or lost connection supplies uncertainty, never fabricated success.
+The caller's routed-task map remains volatile; execution-node durability does not
+imply caller-process restart recovery.

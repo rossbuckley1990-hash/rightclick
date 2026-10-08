@@ -34,10 +34,15 @@ RIGHTCLICK distinguishes provider acceptance from verified outcome
 and Linux, with native Mac features behind an adapter. Linux source builds and
 container validation are separate from the published Mac Homebrew release.
 See [portable setup and supported platforms](docs/PORTABLE-FABRIC.md#start-a-portable-runtime).
-Authenticated multi-runtime routing is currently an embedding library with a
-simulated outbound relay; a deployable network Link and enrollment UI are the
-next step. This candidate does not yet connect a cloud agent to a real Mac over
-the internet.
+The integration candidate migrates the v0.2.3 substrate and RCIR lifecycle work
+into these portable modules. [The reconciliation design](docs/RECONCILIATION-DESIGN.md),
+[source inventory](docs/reconciliation-migration.json) and
+[registered substrate contract](docs/substrate-contract.json) distinguish source
+retention from discovery, execution and verification proof.
+Authenticated multi-runtime routing remains an embedding library with a
+simulated outbound relay. Capability reconciliation and native platform gates
+must pass before extending it to a deployable network Link and enrollment UI.
+This candidate does not yet connect a cloud agent to a real Mac over the internet.
 
 ```mermaid
 flowchart TD

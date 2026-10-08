@@ -1,4 +1,24 @@
-# Reviewer inventory: source, candidate and connected runtime
+# Reviewer inventory: reconciled portable candidate
+
+The active reconciliation branch is `feature/reconcile-portable-v023`, based on
+PR #99 `6a18aaae3ae3a15b9f6c78f189adc695ae11585a`, incorporating the exact
+PR #49 input `053b6202df504ff1a33682a39f2e72a959f65983`. Neither PR has been
+merged or released by this task. Stable remains unchanged.
+
+The current module map and source-by-source migration are in
+[RECONCILIATION-DESIGN.md](RECONCILIATION-DESIGN.md) and
+[reconciliation-migration.json](reconciliation-migration.json). The enforced
+[substrate contract](substrate-contract.json) checks actual callable compiler and
+runtime source registrations; source presence alone is not execution proof.
+A2A/Kafka/Kubernetes/WASM and generic D-Bus compilation now live in Providers.
+Native D-Bus discovery and host execution live in RightClickLinux. Native Mac
+Services/sharing remain in RightClickMacOS. Shared ABI/authority/task/receipt
+contracts live in Protocol, orchestrated by Core and its single RCIR host.
+
+The following is retained historical evidence from 2026-10-07. Its older heads,
+monolithic paths and test counts are not results for the reconciled tree.
+
+## Historical reviewer snapshot
 
 A reflector can be implemented in an active candidate while remaining absent from main and the installed runtime. Reviewers must inspect all three identities before describing availability. This table is an implementation inventory; it is not an eleven-substrate acceptance scorecard.
 

@@ -1,0 +1,76 @@
+name: Reconciled native Linux D-Bus runtime
+on:
+  pull_request:
+  push:
+    branches: [feature/reconcile-portable-v023]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: linux-dbus-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  native-linux-dbus:
+    name: Native Linux ${{ matrix.arch }} private D-Bus
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    container: swift:6.3.3-noble
+    timeout-minutes: 75
+    defaults:
+      run:
+        shell: bash
+    env:
+      RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Provision native fixture prerequisites
+        run: |
+          set -euo pipefail
+          apt-get update
+          apt-get install -y --no-install-recommends python3 python3-venv openssl ca-certificates curl xz-utils dbus systemd python3-dbus python3-gi passwd util-linux
+      - name: Preserve distinct kernel principals
+        run: |
+          set -euo pipefail
+          useradd -u 1100 -m rcwriter
+          useradd -u 1101 -m rcobserver
+          useradd -u 1102 -m rcservice
+      - name: Record exact candidate and native platform
+        run: python3 scripts/ci/record-reconciliation-source.py evidence/linux-dbus/source.json --expected-arch '${{ matrix.arch }}'
+      - name: Typed compiler and genuine final-gate owner controls
+        env:
+          RIGHTCLICK_TEST_DBUS_NATIVE: '1'
+        run: |
+          set -euo pipefail
+          bash scripts/ci/run-fixture-tests.sh \
+            'DBusRuntimeTests|DBusNativeOwnerAcceptanceTests|CapabilityTypedCoreBoundaryTests' \
+            evidence/linux-dbus/native-tests.log evidence/linux-dbus/native-outcomes.json \
+            --require-class DBusRuntimeTests --require-class DBusNativeOwnerAcceptanceTests \
+            --require-class CapabilityTypedCoreBoundaryTests \
+            --not-compiled DBusRuntimeTests/testAbsentXMLParserCannotClaimDirectNativeCapabilities
+      - name: Build the candidate runtime
+        run: |
+          set -euo pipefail
+          swift build -c release --product rightclick --force-resolved-versions --jobs 4 2>&1 | tee evidence/linux-dbus/runtime-build.log
+          sha256sum .build/release/rightclick > evidence/linux-dbus/binary-sha256.txt
+      - name: Actual seven operations, automatic discovery and independent native effect
+        run: |
+          set -euo pipefail
+          python3 scripts/acceptance-linux-dbus.py .build/release/rightclick evidence/linux-dbus/public-mcp
+          git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code
+      - name: Preserve public evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: dbus-${{ matrix.arch }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/linux-dbus
+          if-no-files-found: error

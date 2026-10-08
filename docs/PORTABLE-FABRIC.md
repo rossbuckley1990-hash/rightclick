@@ -1,6 +1,16 @@
 # Portable capability fabric
 
-## Repository investigation and migration decision
+## Reconciled candidate
+
+The integration candidate combines the exact reviewed portable and universal
+inputs recorded in [the design gate](RECONCILIATION-DESIGN.md). A2A, Kafka,
+Kubernetes, WASM, MCP artifact compilation and generic D-Bus contracts now share
+the portable Providers boundary. Native D-Bus belongs to RightClickLinux; native
+Mac capabilities remain in RightClickMacOS. The seven-operation interface is
+unchanged. [The required substrate contract](substrate-contract.json) is checked
+against actual callable resolver and source factories, not just file names.
+
+## Repository investigation and migration decision (portable input history)
 
 Baseline main `df6690d0fbd2030116736a15f2fd5dff46a21a19` placed native
 Services/Sharing/Action Extensions, Bonjour, Keychain, ImageIO and all generic
@@ -22,12 +32,14 @@ The selected dependency boundaries are:
 flowchart TD
   MCP[Seven-operation MCP] --> Core[RightClickCore: original CapabilityEngine]
   Core --> Protocol[RightClickProtocol: models and interfaces]
-  Core --> Providers[RightClickProviders: OpenAPI / GraphQL / gRPC / ARD]
+  Core --> Providers[RightClickProviders: generic substrates and one RCIR host]
   Core --> Native[RightClickMacOS: native catalogs and Bonjour]
   Providers --> Protocol
   Native --> Providers
   Native --> Host[RightClickMacOSHost: Keychain and native observations]
   Host --> Protocol
+  Core --> Linux[RightClickLinux: native D-Bus discovery and host transport]
+  Linux --> Providers
 ```
 
 Native dependencies are conditional package composition on macOS. Protocol and
@@ -80,7 +92,7 @@ do not require a Mac. Native Services and Sharing require macOS 14 or later.
 ```sh
 git clone https://github.com/rossbuckley1990-hash/rightclick
 cd rightclick
-git checkout feature/portable-fabric-foundation
+git checkout feature/reconcile-portable-v023
 swift build -c release --product rightclick --force-resolved-versions --jobs 4
 .build/release/rightclick doctor --json
 .build/release/rightclick mcp
@@ -226,3 +238,38 @@ tests exercise the actual OpenAPI/RCIR policy and readback paths. Tests print
 effect counters for duplicate retry and durable restart. They do not claim a
 real cross-machine network deployment. Run the portable acceptance script above
 for actual Linux-only startup/provider/verification evidence in native CI.
+
+## One local and remote execution lifecycle
+
+Local: agent → loopback MCP → Core graph/selection/policy → one RCIR admission
+host → node-local provider/credentials → independent observation → evidence.
+Remote: cloud agent → replaceable gateway/relay → outbound authenticated Link
+→ execution-node Core graph/selection/policy → the same RCIR host/provider →
+independent observation → signed structured Link result. Mac native capabilities
+execute on a Mac; portable API/component capabilities execute on a compatible
+runtime with the necessary local authority and executable facilities.
+
+Link's delivery reservation precedes Core's invocation reservation and RCIR's
+one-use effect lease. Deferred tasks retain their original owner and verification
+expectations; fresh authenticated status reads never begin the effect again.
+The protected Link ledger records the original predicate and binding version.
+Legacy entries without a predicate binding cannot authorise status. Core retains
+bounded invocation context while the original record exists. Missing context,
+missing node history, corrupt ledgers, revoked authority and ambiguous transport
+outcomes remain unavailable, unknown or accepted-unverified as appropriate.
+
+Host admission and enrolled-node verification have distinct process-local
+provenance tied to the exact execution and action identity. These private flags
+are never serialized. Incoming RCIR models and receipts cannot set them. Predicate
+success/failure must establish the caller's original exact postcondition.
+The authenticated node's structured summary is an execution-node assertion;
+it does not automatically establish receipt issuer trust. Raw receipts stay at
+the execution node in this protocol version.
+
+No SaaS relay or TLS connection is implemented here. Simulated outbound transport
+proves orchestration through the existing engine. Durable caller-side routed-task
+recovery after process restart, first-party enrollment provisioning, transport
+backpressure and a production TLS relay remain explicit future work. Do not infer
+that a routed caller can recover a lost initial RUN reply without its original
+request/idempotency key. Capability reconciliation and live substrate evidence
+must be proven before prioritising a real relay.

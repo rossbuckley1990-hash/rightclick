@@ -1,9 +1,14 @@
-name: Isolated universal-runtime proof lab
+name: Isolated genuine substrate product proof
 on:
   workflow_dispatch:
   pull_request:
     paths:
-      - 'scripts/proof-lab/**'
+      - 'Sources/**'
+      - 'Tests/**'
+      - 'scripts/**'
+      - 'Package.swift'
+      - 'Package.resolved'
+      - 'docs/substrate-contract.json'
       - '.github/workflows/proof-lab.yml'
 permissions:
   contents: read
@@ -13,15 +18,25 @@ concurrency:
 jobs:
   linux-kafka-kubernetes:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 100
+    defaults:
+      run:
+        shell: bash
+    env:
+      RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      - name: Install pinned official kind and kubectl
-        shell: bash
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Verify official native fixture administration tools
         run: |
           set -euo pipefail
+          test "$(uname -m)" = x86_64
+          test "$(git rev-parse HEAD)" = "$RIGHTCLICK_CI_SOURCE"
           tools="$RUNNER_TEMP/rightclick-proof-tools"
-          mkdir -p "$tools"
+          mkdir -m 700 "$tools"
+          mkdir -p evidence/proof-lab
           cd "$tools"
           curl -fsSLO https://github.com/kubernetes-sigs/kind/releases/download/v0.32.0/kind-linux-amd64
           curl -fsSLO https://github.com/kubernetes-sigs/kind/releases/download/v0.32.0/kind-linux-amd64.sha256sum
@@ -29,35 +44,124 @@ jobs:
           mv kind-linux-amd64 kind
           curl -fsSLo kubectl https://dl.k8s.io/release/v1.36.1/bin/linux/amd64/kubectl
           curl -fsSLo kubectl.sha256 https://dl.k8s.io/release/v1.36.1/bin/linux/amd64/kubectl.sha256
-          echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+          printf '%s  kubectl\n' "$(cat kubectl.sha256)" | sha256sum --check
           chmod +x kind kubectl
           echo "$tools" >> "$GITHUB_PATH"
-      - name: Provision genuine Linux, Kafka and Kubernetes substrates
+          sha256sum kind kubectl > "$GITHUB_WORKSPACE/evidence/proof-lab/fixture-tools-sha256.txt"
+      - name: Provision verified native components before scoped token issuance
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/provision-component-tools.py "$RUNNER_TEMP/rightclick-proof-tools/components" evidence/proof-lab/component-tools.json
+          component_tools="$RUNNER_TEMP/rightclick-proof-tools/components/wasm-tools-1.261.0-x86_64-linux/wasm-tools"
+          "$component_tools" parse examples/universal-descriptors/fingerprint.component.wat -o "$RUNNER_TEMP/rightclick-proof-tools/fingerprint.component.wasm"
+      - name: Build the exact product before issuing short-lived scoped tokens
+        timeout-minutes: 55
+        run: |
+          set -euo pipefail
+          docker pull swift:6.3.3-noble
+          swift_base="$(docker image inspect swift:6.3.3-noble --format '{{index .RepoDigests 0}}')"
+          test -n "$swift_base"
+          docker build --file scripts/ci/Dockerfile.substrate-proof --iidfile "$RUNNER_TEMP/rightclick-product-image" \
+            --build-arg "SWIFT_BASE=$swift_base" --build-arg "FIXTURE_UID=$(id -u)" --build-arg "FIXTURE_GID=$(id -g)" scripts/ci
+          image="$(cat "$RUNNER_TEMP/rightclick-product-image")"
+          printf '%s\n' "$swift_base" "$image" > evidence/proof-lab/executor-image-digests.txt
+          docker run --rm --cap-drop ALL --security-opt no-new-privileges:true --memory 12g --cpus 4 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" -e "RIGHTCLICK_CI_SOURCE=$RIGHTCLICK_CI_SOURCE" \
+            "$image" bash -euo pipefail -c \
+            'python3 scripts/ci/record-reconciliation-source.py evidence/proof-lab/source.json --expected-arch x86_64
+             swift build --force-resolved-versions -c release --product rightclick --jobs 4 2>&1 | tee evidence/proof-lab/runtime-build.log
+             swift build --force-resolved-versions --jobs 4 --build-tests 2>&1 | tee evidence/proof-lab/test-build.log
+             sha256sum .build/release/rightclick > evidence/proof-lab/binary-sha256.txt'
+      - name: Provision genuine scoped Kafka and Kubernetes substrates
+        timeout-minutes: 15
         run: python3 scripts/proof-lab/lab.py up --state "$RUNNER_TEMP/rightclick-proof-private" --evidence evidence/proof-lab/provisioning.json
-      - name: Independent effects and least-authority denial controls
+      - name: Preserve independent infrastructure effects and scope denials
+        timeout-minutes: 5
         run: python3 scripts/proof-lab/lab.py verify --state "$RUNNER_TEMP/rightclick-proof-private" --evidence evidence/proof-lab/readiness.json
-      - name: Remove only owned proof resources and private credentials
+      - name: Stage only scoped inputs and the actual owned broker client binary
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/stage-scoped-substrate-inputs.py "$RUNNER_TEMP/rightclick-proof-private" "$RUNNER_TEMP/rightclick-runtime-inputs"
+          python3 - "$RUNNER_TEMP/rightclick-proof-tools/rpk" <<'PY'
+          import importlib.util, json, pathlib, subprocess, sys
+          spec = importlib.util.spec_from_file_location('lab', 'scripts/proof-lab/lab.py')
+          lab = importlib.util.module_from_spec(spec); spec.loader.exec_module(lab)
+          assert lab.owned(lab.KAFKA)
+          before = json.loads(lab.docker('inspect', lab.KAFKA).stdout)[0]
+          assert before['Config']['Image'] == lab.REDPANDA
+          path = lab.docker('exec', lab.KAFKA, 'sh', '-c', 'readlink -f "$(command -v rpk)"').stdout.strip()
+          assert path.startswith('/') and '\n' not in path
+          lab.docker('cp', lab.KAFKA + ':' + path, sys.argv[1])
+          after = json.loads(lab.docker('inspect', lab.KAFKA).stdout)[0]
+          assert before['Id'] == after['Id'] and before['Image'] == after['Image']
+          target = pathlib.Path(sys.argv[1]); target.chmod(0o755)
+          import hashlib
+          record = {'source': 'actual executable extracted from exact existing owned Redpanda container',
+                    'containerID': before['Id'], 'imageID': before['Image'], 'imageReference': before['Config']['Image'],
+                    'clientSHA256': hashlib.sha256(target.read_bytes()).hexdigest(), 'nativeArchitecture': 'x86_64'}
+          pathlib.Path('evidence/proof-lab/rpk-provenance.json').write_text(json.dumps(record, indent=2) + '\n')
+          PY
+          image="$(cat "$RUNNER_TEMP/rightclick-product-image")"
+          docker run --rm --cap-drop ALL --security-opt no-new-privileges:true \
+            --mount "type=bind,src=$RUNNER_TEMP/rightclick-proof-tools,dst=/proof-tools,readonly" \
+            "$image" /proof-tools/rpk version > evidence/proof-lab/rpk-version.txt
+      - name: Execute actual package fixtures and seven-operation product acceptances
+        timeout-minutes: 20
+        run: bash scripts/ci/run-scoped-substrate-products.sh "$(cat "$RUNNER_TEMP/rightclick-product-image")"
+      - name: Reject private credentials in public artifact allowlist
+        id: evidence_boundary
         if: always()
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/assert-substrate-evidence-private.py \
+            --private-inputs "$RUNNER_TEMP/rightclick-runtime-inputs" --evidence evidence/proof-lab
+          git diff --exit-code
+          echo 'SUBSTRATE_EVIDENCE_UPLOAD_ALLOWED=1' >> "$GITHUB_ENV"
+      - name: Remove only owned proof resources and private lab credentials
+        if: always()
+        timeout-minutes: 5
         run: python3 scripts/proof-lab/lab.py down --state "$RUNNER_TEMP/rightclick-proof-private" --evidence evidence/proof-lab/teardown.json
-      - name: Preserve non-secret infrastructure evidence
+      - name: Remove private staged product inputs
         if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        run: |
+          python3 - "$RUNNER_TEMP/rightclick-runtime-inputs" <<'PY'
+          import pathlib, shutil, sys
+          path = pathlib.Path(sys.argv[1])
+          if path.exists():
+              assert not path.is_symlink() and path.name == 'rightclick-runtime-inputs'
+              shutil.rmtree(path)
+          PY
+      - name: Preserve non-secret infrastructure and product evidence
+        if: always() && env.SUBSTRATE_EVIDENCE_UPLOAD_ALLOWED == '1'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: proof-lab-linux-kafka-kubernetes
-          path: evidence/proof-lab/*.json
+          name: genuine-kafka-kubernetes-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/proof-lab
           if-no-files-found: error
   native-windows:
     runs-on: windows-2022
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      - name: Real Windows identity, scoped effect, independent readback and denied administrator resource
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Record exact fixture source
+        shell: pwsh
+        env:
+          RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          $source = git rev-parse HEAD
+          if ($source -ne $env:RIGHTCLICK_CI_SOURCE) { throw 'Wrong checked-out candidate' }
+          New-Item -ItemType Directory -Force evidence/proof-lab | Out-Null
+          $source | Set-Content evidence/proof-lab/source.txt
+      - name: Real Windows identity, scoped effect, independent readback and administrator denial
         shell: pwsh
         run: ./scripts/proof-lab/windows-lab.ps1
-      - name: Preserve non-secret native Windows readiness evidence
+      - name: Preserve non-secret native Windows infrastructure evidence
         if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: proof-lab-native-windows
-          path: evidence/proof-lab/*.json
+          name: proof-lab-native-windows-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/proof-lab
           if-no-files-found: error

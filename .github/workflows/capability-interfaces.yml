@@ -1,0 +1,151 @@
+name: Reconciled genuine component and MCP artifact interfaces
+on:
+  pull_request:
+  push:
+    branches: [feature/reconcile-portable-v023]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: capability-interfaces-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  macos:
+    name: macOS arm64 actual MCP and WASM
+    runs-on: macos-26
+    timeout-minutes: 75
+    defaults:
+      run:
+        shell: bash
+    env:
+      RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.12'
+      - name: Select the real Ed25519 verification backend
+        run: echo "$(brew --prefix openssl@3)/bin" >> "$GITHUB_PATH"
+      - name: Record exact candidate and native platform
+        run: python3 scripts/ci/record-reconciliation-source.py evidence/capability-interfaces/macos/source.json --expected-arch 'arm64'
+      - name: Verify official native tools and provision the actual MCP SDK
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/provision-component-tools.py "$RUNNER_TEMP/component-tools" evidence/capability-interfaces/macos/tools.json
+          python3 -m venv "$RUNNER_TEMP/mcp-venv"
+          "$RUNNER_TEMP/mcp-venv/bin/pip" install 'mcp==1.30.0' 'cryptography==50.0.1' 'graphql-core==3.3.0' 'grpcio==1.78.0' 'grpcio-reflection==1.78.0' 'protobuf==6.33.6'
+          "$RUNNER_TEMP/mcp-venv/bin/pip" freeze > evidence/capability-interfaces/macos/python-package-versions.txt
+      - name: Compile actual component and enforce every provisioned interface case
+        run: |
+          set -euo pipefail
+          "$RIGHTCLICK_WASM_TOOLS" parse examples/universal-descriptors/fingerprint.component.wat -o "$RUNNER_TEMP/fingerprint.component.wasm"
+          export RIGHTCLICK_TEST_WASM_COMPONENT="$RUNNER_TEMP/fingerprint.component.wasm"
+          bash scripts/ci/run-fixture-tests.sh 'CapabilityInterfaceTests|ExecutionRetentionTests' \
+            evidence/capability-interfaces/macos/native-tests.log evidence/capability-interfaces/macos/native-outcomes.json \
+            --require-class CapabilityInterfaceTests --require-class ExecutionRetentionTests
+          swift build --force-resolved-versions --product rightclick --jobs 4 2>&1 | tee evidence/capability-interfaces/macos/runtime-build.log
+      - name: Genuine SDK server, seven operations and independent outcomes
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/mcp-venv/bin/python" scripts/ci/run-component-acceptance.py \
+            .build/debug/rightclick evidence/capability-interfaces/macos --component "$RUNNER_TEMP/fingerprint.component.wasm"
+          git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code
+      - name: Same seven-operation client across the live substrate graph
+        run: |
+          set -euo pipefail
+          export RIGHTCLICK_COEXISTENCE_PYTHON="$RUNNER_TEMP/mcp-venv/bin/python"
+          export RIGHTCLICK_WASM_COMPONENT="$RUNNER_TEMP/fingerprint.component.wasm"
+          COEXISTENCE_GRAPHQL_PYTHON="$RIGHTCLICK_COEXISTENCE_PYTHON" \
+            COEXISTENCE_GRPC_PYTHON="$RIGHTCLICK_COEXISTENCE_PYTHON" \
+            COEXISTENCE_MCP_PYTHON="$RIGHTCLICK_COEXISTENCE_PYTHON" \
+            PYTHONDONTWRITEBYTECODE=1 "$RIGHTCLICK_COEXISTENCE_PYTHON" -W error::ResourceWarning \
+            -m unittest discover -s scripts/tests -p test_substrate_coexistence.py -v \
+            2>&1 | tee evidence/capability-interfaces/macos/coexistence-controls.log
+          "$RIGHTCLICK_COEXISTENCE_PYTHON" scripts/ci/make-native-mac-coexistence-manifest.py "$RUNNER_TEMP/native-mac-coexistence.json"
+          bash scripts/ci/run-substrate-coexistence.sh .build/debug/rightclick \
+            evidence/capability-interfaces/macos/coexistence \
+            --manifest "$RUNNER_TEMP/native-mac-coexistence.json" --require macos --require-verified macos
+          git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code
+      - name: Preserve public evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: interfaces-macos-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/capability-interfaces/macos
+          if-no-files-found: error
+  linux:
+    name: Linux ${{ matrix.arch }} actual MCP and WASM
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: x86_64
+          - runner: ubuntu-24.04-arm
+            arch: aarch64
+    runs-on: ${{ matrix.runner }}
+    container: swift:6.3.3-noble
+    timeout-minutes: 75
+    defaults:
+      run:
+        shell: bash
+    env:
+      RIGHTCLICK_CI_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Provision native fixture prerequisites
+        run: |
+          set -euo pipefail
+          apt-get update
+          apt-get install -y --no-install-recommends python3 python3-venv openssl ca-certificates curl xz-utils
+      - name: Record exact candidate and native platform
+        run: python3 scripts/ci/record-reconciliation-source.py evidence/capability-interfaces/linux/source.json --expected-arch '${{ matrix.arch }}'
+      - name: Verify official native tools and provision the actual MCP SDK
+        run: |
+          set -euo pipefail
+          python3 scripts/ci/provision-component-tools.py "$RUNNER_TEMP/component-tools" evidence/capability-interfaces/linux/tools.json
+          python3 -m venv "$RUNNER_TEMP/mcp-venv"
+          "$RUNNER_TEMP/mcp-venv/bin/pip" install 'mcp==1.30.0' 'cryptography==50.0.1' 'graphql-core==3.3.0' 'grpcio==1.78.0' 'grpcio-reflection==1.78.0' 'protobuf==6.33.6'
+          "$RUNNER_TEMP/mcp-venv/bin/pip" freeze > evidence/capability-interfaces/linux/python-package-versions.txt
+      - name: Compile actual component and enforce every provisioned interface case
+        run: |
+          set -euo pipefail
+          "$RIGHTCLICK_WASM_TOOLS" parse examples/universal-descriptors/fingerprint.component.wat -o "$RUNNER_TEMP/fingerprint.component.wasm"
+          export RIGHTCLICK_TEST_WASM_COMPONENT="$RUNNER_TEMP/fingerprint.component.wasm"
+          bash scripts/ci/run-fixture-tests.sh 'CapabilityInterfaceTests|ExecutionRetentionTests' \
+            evidence/capability-interfaces/linux/native-tests.log evidence/capability-interfaces/linux/native-outcomes.json \
+            --require-class CapabilityInterfaceTests --require-class ExecutionRetentionTests
+          swift build --force-resolved-versions --product rightclick --jobs 4 2>&1 | tee evidence/capability-interfaces/linux/runtime-build.log
+      - name: Genuine SDK server, seven operations and independent outcomes
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/mcp-venv/bin/python" scripts/ci/run-component-acceptance.py \
+            .build/debug/rightclick evidence/capability-interfaces/linux --component "$RUNNER_TEMP/fingerprint.component.wasm"
+          git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code
+      - name: Same seven-operation client across the live substrate graph
+        run: |
+          set -euo pipefail
+          export RIGHTCLICK_COEXISTENCE_PYTHON="$RUNNER_TEMP/mcp-venv/bin/python"
+          export RIGHTCLICK_WASM_COMPONENT="$RUNNER_TEMP/fingerprint.component.wasm"
+          COEXISTENCE_GRAPHQL_PYTHON="$RIGHTCLICK_COEXISTENCE_PYTHON" \
+            COEXISTENCE_GRPC_PYTHON="$RIGHTCLICK_COEXISTENCE_PYTHON" \
+            COEXISTENCE_MCP_PYTHON="$RIGHTCLICK_COEXISTENCE_PYTHON" \
+            PYTHONDONTWRITEBYTECODE=1 "$RIGHTCLICK_COEXISTENCE_PYTHON" -W error::ResourceWarning \
+            -m unittest discover -s scripts/tests -p test_substrate_coexistence.py -v \
+            2>&1 | tee evidence/capability-interfaces/linux/coexistence-controls.log
+          bash scripts/ci/run-substrate-coexistence.sh .build/debug/rightclick \
+            evidence/capability-interfaces/linux/coexistence
+          git -c safe.directory="$GITHUB_WORKSPACE" diff --exit-code
+      - name: Preserve public evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: interfaces-linux-${{ matrix.arch }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/capability-interfaces/linux
+          if-no-files-found: error
