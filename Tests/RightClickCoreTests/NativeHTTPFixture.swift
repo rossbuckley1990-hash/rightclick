@@ -10,14 +10,25 @@ enum NativeHTTPFixture {
         case installationQuery, installationValidation, interpreterSelection
         case ownedInputPreparation, nativeCompilation, outputValidation
     }
+    struct PythonClientInstallationValidation: CustomStringConvertible {
+        let empty: Bool
+        let isAbsolute: Bool
+        let containsQuote: Bool
+        let containsEmbeddedLF: Bool
+        let startsUTF8BOM: Bool
+        var description: String {
+            "empty=\(empty) isAbsolute=\(isAbsolute) containsQuote=\(containsQuote) containsEmbeddedLF=\(containsEmbeddedLF) startsUTF8BOM=\(startsUTF8BOM)"
+        }
+    }
     /// Test-bootstrap diagnostics contain fixed labels and process measurements
     /// only. Do not retain source paths, command arguments or compiler output.
     struct PythonClientBootstrapFailure: Error, CustomStringConvertible {
         let stage: PythonClientBootstrapStage
         let kind: String
         let process: BoundedCapabilityProcess.Diagnostic?
+        let validation: PythonClientInstallationValidation?
         var description: String {
-            "NativePythonClient stage=\(stage.rawValue) kind=\(kind) processOutcome=\(process?.outcome.rawValue ?? "none") started=\(process.map { String($0.started) } ?? "none") exit=\(process?.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(process.map { String($0.stdoutBytes) } ?? "none")"
+            "NativePythonClient stage=\(stage.rawValue) kind=\(kind) processOutcome=\(process?.outcome.rawValue ?? "none") started=\(process.map { String($0.started) } ?? "none") exit=\(process?.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(process.map { String($0.stdoutBytes) } ?? "none") validation=[\(validation?.description ?? "none")]"
         }
     }
     private static let captureLock = NSLock()
@@ -211,6 +222,7 @@ enum NativeHTTPFixture {
     static func pythonClient(script: URL, directory: URL) throws -> URL {
         var stage = PythonClientBootstrapStage.installationQuery
         var diagnostic: BoundedCapabilityProcess.Diagnostic?
+        var validation: PythonClientInstallationValidation?
         do {
             let environment = ProcessInfo.processInfo.environment
             let programs = environment.first { $0.key.caseInsensitiveCompare("ProgramFiles(x86)") == .orderedSame }?.value ?? "C:\\Program Files (x86)"
@@ -220,6 +232,9 @@ enum NativeHTTPFixture {
                 timeout: 5, maximumBytes: 32_768, diagnostic: { diagnostic = $0 })
             stage = .installationValidation
             let installation = String(decoding: installed, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
+            validation = .init(empty: installation.isEmpty, isAbsolute: RuntimePlatform.isAbsolutePath(installation),
+                containsQuote: installation.contains("\""), containsEmbeddedLF: installation.contains("\n"),
+                startsUTF8BOM: installed.prefix(3).elementsEqual([239, 187, 191]))
             guard RuntimePlatform.isAbsolutePath(installation), !installation.contains("\""), !installation.contains("\n") else { throw RCIRError.unavailable }
             let setup = URL(fileURLWithPath: installation).appendingPathComponent("VC/Auxiliary/Build/vcvars64.bat")
             let repository = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
@@ -244,7 +259,8 @@ enum NativeHTTPFixture {
         } catch {
             let kind = (error as? RCIRError).map { String(describing: $0) } ??
                 (error as? CocoaError).map { "cocoa_" + String($0.code.rawValue) } ?? "other"
-            throw PythonClientBootstrapFailure(stage: stage, kind: kind, process: diagnostic)
+            throw PythonClientBootstrapFailure(stage: stage, kind: kind, process: diagnostic,
+                validation: stage == .installationValidation ? validation : nil)
         }
     }
     static func nativeCommand(_ executable: String, _ arguments: [String],
