@@ -1,6 +1,4 @@
 import Foundation
-import RightClickHostFiles
-@testable import RightClickCore
 
 /// Test provisioning for the same real Python HTTP fixture on each native host.
 /// This chooses an installed interpreter and protects fixture references using

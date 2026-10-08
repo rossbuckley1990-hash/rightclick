@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import RightClickCore
+@testable import Fixture
 
 final class NativeFixtureReadinessTests: XCTestCase {
     private func fixture(_ program: String, exercise: (URL, Process) throws -> Void) throws {
