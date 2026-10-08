@@ -304,12 +304,23 @@ enum NativeHTTPFixture {
         var stage = PythonClientBootstrapStage.nativeCompilation
         var diagnostic: BoundedCapabilityProcess.Diagnostic?
         do {
+            stage = .ownedInputPreparation
+            let frozen = try inputs.frozenInputs.map { try CapabilityArtifactSnapshot.read(source: $0.0, maximum: $0.1) }
             stage = .nativeCompilation
             _ = try BoundedCapabilityProcess.runForHostAcquisition(executable: inputs.executable, arguments: inputs.ownedArguments,
                 timeout: 30, maximumBytes: 16_384, diagnostic: { diagnostic = $0 })
             stage = .outputValidation
             let bytes = try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)
             guard isAMD64PE(bytes) else { throw RCIRError.unavailable }
+            let unchangedInputs = try inputs.frozenInputs.enumerated().allSatisfy {
+                try CapabilityArtifactSnapshot.read(source: $0.element.0, maximum: $0.element.1) == frozen[$0.offset]
+            }
+            let stableOutput = bytes == (try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608))
+            guard unchangedInputs, stableOutput, let diagnostic, diagnostic.started,
+                  diagnostic.outcome == .completed, diagnostic.terminationStatus == 0,
+                  diagnostic.stdoutBytes <= 16_384 else { throw RCIRError.unavailable }
+            let inputDigest = CapabilityJSON.digest(Data(frozen.map(CapabilityJSON.digest).joined(separator: ":").utf8))
+            print("NativePythonClient acquisitionCompleted outcome=\(diagnostic.outcome.rawValue) started=\(diagnostic.started) exit=\(diagnostic.terminationStatus.map(String.init) ?? "none") stdoutBytes=\(diagnostic.stdoutBytes) elapsedMilliseconds=\(diagnostic.elapsedMilliseconds) freshPE=true outputSHA256=\(CapabilityJSON.digest(bytes)) stableOutput=\(stableOutput) unchangedInputs=\(unchangedInputs) directInputSetSHA256=\(inputDigest) hostContext=isolated acquisitionCeilingSeconds=30 parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
             return inputs.client
         } catch {
             let kind = (error as? RCIRError).map { String(describing: $0) } ??
