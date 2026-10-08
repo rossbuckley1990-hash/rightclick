@@ -10,7 +10,8 @@ final class FederationDeferredReconciliationTests: XCTestCase {
         var identity = RightClickRuntimeIdentity(product: "RIGHTCLICK", version: "test", executablePath: "/fixture/node",
             executableRealPath: "/fixture/node", executableSHA256: "original", pid: 1, transport: "http")
         var views = [CapabilityView(Capability(id: "remote:ordinary-local-id", title: "Local task", source: .system,
-            reflectorID: "local", safety: .localReversible, invocation: .direct, requiresConfirmation: true))]
+            reflectorID: "local", safety: .localReversible, invocation: .direct, supportLevel: .publicSupported,
+            requiresConfirmation: true))]
         let remoteID = UUID().uuidString
         var runs = 0, polls = 0, loseRun = false, loseStatus = false
         var statusState: ExecutionState = .started
