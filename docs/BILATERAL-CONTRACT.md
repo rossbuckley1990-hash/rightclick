@@ -56,8 +56,23 @@ path atomically retains terminal record, typed result/events, lifecycle and rece
 even before any initial ExecutionRecord exists. Later put merges that retained
 terminal snapshot and cannot reopen it. No gap: retain before removing active.
 Capture signer and host observation policy at admission. Never sign live receipts.
+If completion needs host verification, retain it as a pending copy and keep the
+prior live snapshot visible until bounded adjudication publishes terminal state.
+Observer I/O runs outside admission/registry locks. Detected disappearance or
+deadline wins UNKNOWN; a late successful observer cannot reopen that publication.
+Local loss detection occurs on owner withdrawal/catalog refresh or task deadline;
+catalog TTL expiry alone never invalidates a captured remote execution owner.
 Post-dispatch uncertainty never authorizes retry. Deadline/disappearance/budget
 failure cannot leave an orphaned active entry. Cancellation is host controlled.
+
+The host reserves at most 1,024 execution identities per process, across unary and
+deferred shapes, without evicting dispatched identities. A pre-effect admission
+failure may release its reservation. Cross-restart consequential idempotency is
+the durable Link ledger's responsibility, not an in-memory local UUID cache.
+ExecutionStore.putTerminal retains full local event history atomically;
+putTerminalSnapshot retains authenticated remote terminal metadata without
+pretending a bounded remote page contains the complete history. Both defeat late
+initial-record overwrite. Fresh pages cannot alter terminal evidence or result.
 
 Protocol owns the portable ExecutionStore (existing placement), typed models,
 and `CapabilityExecutionStatusReflector: CapabilityReflector`:
@@ -95,6 +110,9 @@ typed public result/event values for the portable proof provider. That policy is
 never supplied by a remote caller. Safe signed evidence identity/availability and
 semantic summary are visible; full canonical receipt stays on execution node.
 Credentials, consent and observations always remain there.
+Exported values must fit both canonical and JSON encoding budgets of 8 KiB;
+otherwise that value is redacted without altering target history. Initial remote
+pages obey the same 16 KiB ceiling as polls.
 
 ## Specialist scopes
 
