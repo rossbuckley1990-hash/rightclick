@@ -4,7 +4,7 @@ This is engineering workbench acceptance, not the restricted eleven-substrate ag
 No provider credentials, Docker, paid services or global client configuration.
 """
 import argparse, base64, hashlib, http.server, json, os, pathlib, selectors
-import subprocess, tempfile, threading, time, uuid
+import subprocess, sys, tempfile, threading, time, uuid
 
 TOOLS = {"context_runtime", "context_inspect", "context_actions", "context_explain",
          "context_run", "context_run_status", "context_providers"}
@@ -57,10 +57,15 @@ def main():
         config = tmp/"host.json"
         config.write_text(json.dumps({"version":1,"revision":"acceptance-1","deniedCapabilities":[]})); config.chmod(0o600)
         err = (out/"mcp.stderr.log").open("w")
+        environment = dict(os.environ,RIGHTCLICK_RCIR_CONFIG=str(config),RIGHTCLICK_EXPERIENCE="off")
+        # Linux uses the existing generic descriptor source; macOS keeps Bonjour.
+        if sys.platform == "linux":
+            environment["RIGHTCLICK_CAPABILITY_ARTIFACTS"] = json.dumps([{
+                "id":marker,"kind":"openapi","specificationURL":f"http://127.0.0.1:{port}/openapi.json",
+                "baseURL":f"http://127.0.0.1:{port}/"}])
         process = subprocess.Popen([str(binary),"mcp"],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err,text=True,bufsize=1,
-            env=dict(os.environ,RIGHTCLICK_RCIR_CONFIG=str(config),RIGHTCLICK_EXPERIENCE="off"))
-        advertise = subprocess.Popen(["dns-sd","-R",marker,"_rightclick._tcp","local",str(port),
-                                     "kind=openapi","scheme=http","spec=/openapi.json","base=/"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+            env=environment)
+        advertise = None
         seq = 0
         def request(method, params):
             nonlocal seq
@@ -84,8 +89,11 @@ def main():
             result = request("tools/call",{"name":name,"arguments":arguments})
             assert not result.get("isError"), result
             return json.loads(result["content"][0]["text"])
-        report = {"runKind":"NEW_RUN","binary":str(binary),"binarySHA256":hashlib.sha256(binary.read_bytes()).hexdigest(),"controls":{}}
+        report = {"runKind":"NEW_RUN","binary":str(binary),"binarySHA256":hashlib.sha256(binary.read_bytes()).hexdigest(),"discoveryMechanism":"configured_capability_artifact" if sys.platform == "linux" else "bonjour_dns_sd","controls":{}}
         try:
+            if sys.platform != "linux":
+                advertise = subprocess.Popen(["dns-sd","-R",marker,"_rightclick._tcp","local",str(port),
+                                             "kind=openapi","scheme=http","spec=/openapi.json","base=/"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
             request("initialize",{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"rcir-production-acceptance","version":"1"}})
             tools = request("tools/list",{})["tools"]
             assert {t["name"] for t in tools} == TOOLS
@@ -154,7 +162,9 @@ def main():
         finally:
             (out/"transcript.json").write_text(json.dumps(transcript,indent=2)+"\n")
             (out/"results.json").write_text(json.dumps(report,indent=2)+"\n")
-            advertise.terminate(); advertise.wait(timeout=5); process.terminate(); process.wait(timeout=5)
+            if advertise is not None:
+                advertise.terminate(); advertise.wait(timeout=5)
+            process.terminate(); process.wait(timeout=5)
             server.shutdown(); err.close()
     print(json.dumps(report["controls"],indent=2))
 
