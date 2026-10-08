@@ -34,6 +34,9 @@ RIGHTCLICK distinguishes provider acceptance from verified outcome
 and Linux, with native Mac features behind an adapter. Linux source builds and
 container validation are separate from the published Mac Homebrew release.
 See [portable setup and supported platforms](docs/PORTABLE-FABRIC.md#start-a-portable-runtime).
+See the [reconciled implementation and proof inventory](docs/CANDIDATE-INVENTORY.md)
+for the A2A, Kafka, Kubernetes, WASM, MCP and Linux D-Bus source paths and their
+current release and execution boundaries.
 Authenticated multi-runtime routing is currently an embedding library with a
 simulated outbound relay; a deployable network Link and enrollment UI are the
 next step. This candidate does not yet connect a cloud agent to a real Mac over

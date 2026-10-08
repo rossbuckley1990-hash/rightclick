@@ -1,3 +1,79 @@
+# Reviewer inventory: reconciled source and serving runtime
+
+A source file establishes implementation presence. A release asset, installed
+binary and an observed execution establish different facts. Record each identity
+before describing a capability as available. This inventory is not the eleven
+substrate acceptance scorecard.
+
+Reconciliation snapshot on 2026-10-08, before the final composed release gate:
+
+| Identity | Exact scope |
+| --- | --- |
+| Remote main | `381a87b53dbd0046f1acef1984587199da0e630c`; the direct A2A, Kafka, Kubernetes, WASM and D-Bus compiler files below are absent at this SHA |
+| Remote universal candidate | [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49), `2525794c390d19d54871f1a9695462425fc13051`; implemented compiler paths and native proofs use the older Core layout |
+| Remote portable candidate | [PR99](https://github.com/rossbuckley1990-hash/rightclick/pull/99), `6a18aaae3ae3a15b9f6c78f189adc695ae11585a`; extracts the existing engine into portable modules, with macOS adapters and Linux composition |
+| Prepared reconciliation | Frozen foundation `403bf31868822bab4e0a66824fbbfd93f691d8a7` preserves the prepared PR99 integration. Reviewed profile, process, authority and fixture repairs are being composed with it. The final head, native results and package digest must be frozen separately before publication |
+| Installed and connected stable runtime | v0.2.2, serving PID `67552`, executable SHA256 `d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d`, stdio; observed through `context_runtime` on 2026-10-08. This does not attest to candidate source |
+
+These remote and process values are snapshots. Refresh main, both PR heads,
+release/tap state and the actual connected `context_runtime` during each review.
+A version label or plugin metadata does not identify the serving executable.
+
+## Implemented acquisition in the reconciled source
+
+| Substrate | Direct source path | Composition and evidence boundary |
+| --- | --- | --- |
+| A2A | `Sources/RightClickProviders/A2AReflector.swift` | Configured agent-card discovery enters `RightClickCore/CapabilityRuntimeDefaults.swift` and the existing RCIR lifecycle. Actual 252 lifecycle/receipt proof is historical until repeated against the final composed build |
+| Kafka | `Sources/RightClickProviders/KafkaCapabilityArtifactResolver.swift` | Shared artifact resolver and bounded executable acquisition; a provisioned topic or prior test does not establish final product authority, receipts or graph mutation |
+| Kubernetes | `Sources/RightClickProviders/KubernetesCapabilityArtifactResolver.swift` | Shared discovery/compiler and independently scoped read-back; lab/RBAC readiness alone is not runtime acceptance |
+| WASM | `Sources/RightClickProviders/WASMCapabilityArtifactResolver.swift` | Shared descriptor/component boundary. The packaged `examples/universal-descriptors` fixtures must be exercised by the final native binary |
+| MCP descriptors | `Sources/RightClickProviders/MCPCapabilityArtifactResolver.swift` | Generic descriptor reflection and the same Core7 dispatcher; federation remains in `RightClickMCP` |
+| Linux D-Bus | `Sources/RightClickLinux/DBusSessionSource.swift`, `RightClickProviders/DBusIntrospection.swift`, `RightClickProviders/DBusCapabilityArtifactResolver.swift` | Linux bus acquisition compiles into the existing engine; native UID policy, separate signature verification and owner withdrawal must retain exact build scope |
+
+The existing native Mac Services/sharing, REST/OpenAPI, GraphQL and supported
+unary gRPC paths remain part of the same composition. Native Apple acquisition
+lives in `RightClickMacOS`, portable providers in `RightClickProviders`, shared
+contracts in `RightClickProtocol`, and the original engine in `RightClickCore`.
+The Link library is an embedding foundation; it does not provide a shipped
+internet relay or automated enrollment.
+
+The model-facing profile remains exactly `context_runtime`, `context_inspect`,
+`context_providers`, `context_actions`, `context_explain`, `context_run` and
+`context_run_status`. No provider-specific AI operations are added.
+
+## Proof scope before publication
+
+The previous 252/DFD candidate has a full native Mac result of 1005 tests
+(970 passed, 35 skipped, zero failed), a Linux x86_64 result of 779 tests
+(751 passed, 28 skipped, zero failed), and separate actual D-Bus, A2A and MCP/WASM
+proofs. Their source, artifacts and independent audits are retained. They do not
+attest to the reconciled source: it needs fresh Mac and native Linux x86_64/arm64
+regression, lifecycle, authority, verification and receipt gates.
+
+Windows is not a supported v0.2.3 release host. Actual protected-reference and
+native environment-boundary controls have been run, and authority failures were
+repaired. The 252 full Windows run still had six compiler acquisition failures;
+the measured SDK dependency and remaining full-runtime/direct-reflection proofs
+remain explicit engineering work. Unsupported release scope does not turn these
+failures or the Windows goal row GREEN.
+
+Source method retention must include both PR99 and 252. Two intentional mappings
+require explicit review: conflicting policy identities are quarantined rather
+than resolved by first arrival, and Windows SDK acquisition uses the measured,
+explicit bounded system search rather than claiming search was unnecessary.
+Method-name retention alone does not prove unchanged assertions or native success.
+
+The packaged kind detector inventories 21 implementation kinds. Zero missing
+kinds proves source/package alignment, not all eleven substrates or a live provider
+graph. Final source archive, immutable public assets, trusted bottle provenance,
+fresh installation, pairing preservation and a new serving PID/accepted executable
+remain release gates. Skipped or missing controls remain RED.
+
+## Historical 2026-10-07 inventory
+
+The following original snapshot is retained for comparison. Its identities,
+paths and test counts describe that earlier candidate and are not current claims.
+
 # Reviewer inventory: source, candidate and connected runtime
 
 A reflector can be implemented in an active candidate while remaining absent from main and the installed runtime. Reviewers must inspect all three identities before describing availability. This table is an implementation inventory; it is not an eleven-substrate acceptance scorecard.
