@@ -32,7 +32,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -u .github/scripts/tests/test_windows_focused_fixture_diagnostic.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Exact source and all-name guard, then selected seventeen tests
+      - name: Exact source and all-name guard, then selected eighteen tests
         # Contain the owned20/5/10minute phase deadlines and encryption cleanup.
         timeout-minutes: 45
         run: |

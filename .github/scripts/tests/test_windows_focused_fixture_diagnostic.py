@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / '.github/scripts'))
 import windows_focused_fixture_diagnostic as d
 
-EXPECTED = set(json.loads((ROOT / '.github/windows-current-context-focused-17-names.json').read_text()))
-BASELINE = set(json.loads((ROOT / '.github/windows-current-native-baseline-tests.json').read_text())['names'])
+EXPECTED = set(json.loads((ROOT / '.github/windows-current-context-focused-18-names.json').read_text()))
+BASELINE = set(json.loads((ROOT / '.github/windows-current-native-693-baseline-tests.json').read_text())['names'])
 ALGORITHMS = b'''contentType: id-smime-ct-authEnvelopedData
 keyEncryptionAlgorithm:
 algorithm: rsaesOaep
@@ -45,7 +45,7 @@ class CollectorTests(unittest.TestCase):
     def tearDown(self):
         self.temp.cleanup()
 
-    def test_all_686_baseline_names_required_even_with_693_total(self):
+    def test_all_693_baseline_names_required_even_with_694_total(self):
         # Synthetic extra names exercise the guard; they are not native evidence.
         extra = EXPECTED - BASELINE
         current = BASELINE | extra
@@ -60,7 +60,7 @@ class CollectorTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 d.checked_names(bad, 2)
 
-    def test_filter_selects_exact_seventeen_and_rejects_similar_class_names(self):
+    def test_filter_selects_exact_eighteen_and_rejects_similar_class_names(self):
         self.assertEqual({name for name in (BASELINE | EXPECTED) if re.search(d.FILTER, name)}, EXPECTED)
         similar = 'RightClickCoreTests.RCIRInvocationBindingTests/testOnlyHostTaskIdentityCanVerifyMatchingObservation'
         self.assertIn(similar, BASELINE)
@@ -68,11 +68,11 @@ class CollectorTests(unittest.TestCase):
         self.assertIsNone(re.search(d.FILTER,
             'RightClickCoreTests.UnrelatedInvocationBindingTests/testExtra'))
 
-    def test_complete_seventeen_and_failure_are_distinct(self):
+    def test_complete_eighteen_and_failure_are_distinct(self):
         result = d.execution(log(), EXPECTED)
-        self.assertEqual((result['passes'], result['failures'], result['skips']), (17, 0, 0))
+        self.assertEqual((result['passes'], result['failures'], result['skips']), (18, 0, 0))
         failed = d.execution(log().replace(' passed (', ' failed (', 1), EXPECTED)
-        self.assertEqual((failed['passes'], failed['failures']), (16, 1))
+        self.assertEqual((failed['passes'], failed['failures']), (17, 1))
         self.assertTrue(result['swiftTestingZeroSuiteObserved'])
 
     def test_truncated_duplicate_or_unselected_completion_rejected(self):
@@ -84,7 +84,7 @@ class CollectorTests(unittest.TestCase):
 
     def test_skipped_case_never_counted_as_pass(self):
         result = d.execution(log().replace(' passed (', ' skipped (', 1), EXPECTED)
-        self.assertEqual((result['passes'], result['skips']), (16, 1))
+        self.assertEqual((result['passes'], result['skips']), (17, 1))
 
     def test_closed_bootstrap_flags_and_stage_without_private_values(self):
         line = ('NativePythonClient stage=installationValidation kind=unavailable '

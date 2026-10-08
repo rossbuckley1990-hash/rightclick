@@ -14,10 +14,10 @@ import tarfile
 
 from windows_test_supervisor import supervise
 
-SOURCE = "40a0c0d80eff1e3855e8633182feba94d5236075"
+SOURCE = "048436f791b9b5ff124582117ba2f6b0df1bae92"
 SOURCES_TREE = "9716cb182db859368f47b603137189d3b257ca43"
 CERT_SHA = "1f10ec5ff26b0ef1fbb91248ac954cf15757e8782101f90abe05a171af58bf9d"
-BASELINE_SHA = "f576ed56efeeb2f1fe2b4a03384a8f9d11162faf3d0dae1eee80aae7a439e04a"
+BASELINE_SHA = "b62e1ac13d59f7ebb59a9a0329e4b247b09e2a7b2a4419cbf3aeb7963bbd0bed"
 INPUTS = ["Package.swift", "Package.resolved", "LICENSE", "Sources", "Tests",
           "Vendor", "fixtures", "packaging", "scripts"]
 FILTER = r"^RightClickCoreTests\.(?:InvocationBindingTests|CapabilityExecutableSnapshotPoolTests|RCIRReceiptTrustGapTests|TrustedHostProcessContextTests)/"
@@ -69,26 +69,26 @@ def checked_names(data, count):
 
 def inventory(text, expected, baseline):
     names = [x.strip() for x in text.splitlines() if NAME.fullmatch(x.strip())]
-    current = checked_names(names, 693)
+    current = checked_names(names, 694)
     if not expected.issubset(current) or not baseline.issubset(current):
         raise ValueError("inventory_preservation")
-    return {"all693NamesUnique": True, "all686BaselineNamesPreserved": True,
+    return {"all694NamesUnique": True, "all693BaselineNamesPreserved": True,
             "selectedNames": sorted(expected)}
 
 
 def execution(text, expected):
     # XCTest omits the target prefix; exact discovery maps each class uniquely.
     short = {x.split(".", 1)[1].replace("/", "."): x for x in expected}
-    if len(short) != 17:
+    if len(short) != 18:
         raise ValueError("selected_names")
     starts = re.findall(r"Test Case '([^']+)' started", text)
     finishes = re.findall(r"Test Case '([^']+)' (passed|failed|skipped) \(([0-9.]+) seconds\)", text)
-    if (len(starts) != 17 or set(starts) != set(short)
-            or len(finishes) != 17 or {x[0] for x in finishes} != set(short)):
+    if (len(starts) != 18 or set(starts) != set(short)
+            or len(finishes) != 18 or {x[0] for x in finishes} != set(short)):
         raise ValueError("selected_completion")
     results = [{"test": short[n], "state": state, "seconds": float(seconds)}
                for n, state, seconds in finishes]
-    return {"starts": 17, "finishes": 17, "results": results,
+    return {"starts": 18, "finishes": 18, "results": results,
             "passes": sum(x["state"] == "passed" for x in results),
             "failures": sum(x["state"] == "failed" for x in results),
             "skips": sum(x["state"] == "skipped" for x in results),
@@ -212,7 +212,7 @@ def main():
     PRIVATE.mkdir(exist_ok=False)
     if unsafe_path(SAFE) or unsafe_path(PRIVATE):
         raise ValueError("owned_directory_type")
-    report = {"status": "STARTED", "diagnosticOnly": True, "full693GreenClaimed": False,
+    report = {"status": "STARTED", "diagnosticOnly": True, "full694GreenClaimed": False,
               "reviewedSource": SOURCE, "runtimeSourcesTree": SOURCES_TREE,
               "rawValuesArgumentsEnvironmentUploaded": False}
     exit_code = 125
@@ -231,12 +231,12 @@ def main():
         if not re.search(r"Swift version 6\.2\b", version):
             raise ValueError("swift_version")
         report["swiftVersion"] = version.strip()
-        names = json.loads(git("show", "HEAD:.github/windows-current-context-focused-17-names.json"))
-        expected = checked_names(names, 17)
-        blob = git("show", "HEAD:.github/windows-current-native-baseline-tests.json")
+        names = json.loads(git("show", "HEAD:.github/windows-current-context-focused-18-names.json"))
+        expected = checked_names(names, 18)
+        blob = git("show", "HEAD:.github/windows-current-native-693-baseline-tests.json")
         if digest(blob) != BASELINE_SHA:
             raise ValueError("baseline_pin")
-        baseline = checked_names(json.loads(blob)["names"], 686)
+        baseline = checked_names(json.loads(blob)["names"], 693)
         cert = git("show", "HEAD:.github/windows-focused-recipient-public.pem")
         if digest(cert) != CERT_SHA:
             raise ValueError("recipient_pin")
@@ -287,12 +287,12 @@ def main():
         report["execution"] = execution(text, expected)
         if digest(binary.read_bytes()) != report["nativeXCTestPE_SHA256"]:
             raise ValueError("native_pe_changed")
-        if (exit_code == 0 and report["execution"]["passes"] == 17
+        if (exit_code == 0 and report["execution"]["passes"] == 18
                 and report["execution"]["skips"] == 0
                 and report["execution"]["swiftTestingZeroSuiteObserved"]):
-            report["status"] = "PASS_SCOPED_FOCUSED_17"
+            report["status"] = "PASS_SCOPED_FOCUSED_18"
         else:
-            report["status"] = "RED_SCOPED_FOCUSED_17"
+            report["status"] = "RED_SCOPED_FOCUSED_18"
             exit_code = exit_code or 1
     except Exception as error:
         report["status"] = "FAILED"
