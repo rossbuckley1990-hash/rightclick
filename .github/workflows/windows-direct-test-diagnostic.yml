@@ -42,6 +42,8 @@ jobs:
       - name: Direct inventory and completion self-checks
         timeout-minutes: 2
         run: |
+          python -u .github/scripts/windows_direct_test.py baseline
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -u .github/scripts/tests/test_windows_direct_test.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Native protected policy, signing and observer references

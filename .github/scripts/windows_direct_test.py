@@ -35,15 +35,41 @@ def write_json(path, data):
 def baseline_names(path=Path('.github/windows-native-baseline-tests.json')):
     # Preserve the actual original discovery/native dump intersection, rather
     # than accepting an unchanged count after dropping a formerly covered test.
-    if sha256(path) != BASELINE_SHA256:
+    # Git can transport a text blob to a Windows checkout with CRLF. Pin all
+    # repository bytes after only this transport conversion; no JSON rewrite,
+    # whitespace stripping or content substitution is accepted.
+    canonical = path.read_bytes().replace(b'\r\n', b'\n')
+    if hashlib.sha256(canonical).hexdigest() != BASELINE_SHA256:
         raise ValueError('baseline_provenance')
-    data = json.loads(path.read_text(encoding='utf-8'))
+    data = json.loads(canonical.decode('utf-8'))
     names = data.get('names')
     if (not isinstance(names, list) or len(names) != BASELINE_COUNT
             or any(not isinstance(name, str) or not NAME.fullmatch(name) for name in names)
             or len(set(names)) != BASELINE_COUNT):
         raise ValueError('baseline_inventory')
     return set(names)
+
+
+def baseline_checkout_audit():
+    path = Path('.github/windows-native-baseline-tests.json')
+    raw = path.read_bytes()
+    canonical = raw.replace(b'\r\n', b'\n')
+    blob = subprocess.check_output(['git', 'show', 'HEAD:' + path.as_posix()])
+    digest = lambda data: hashlib.sha256(data).hexdigest()
+    return {
+        'source': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+        'baselineCheckoutRawSHA256': digest(raw),
+        'baselineCheckoutCanonicalLFSHA256': digest(canonical),
+        'baselineGitBlobSHA256': digest(blob),
+        'baselinePinnedCanonicalSHA256': BASELINE_SHA256,
+        'baselineCRLFCount': raw.count(b'\r\n'),
+        'baselineLFOnlyCount': raw.count(b'\n') - raw.count(b'\r\n'),
+        'baselineBareCRCount': raw.count(b'\r') - raw.count(b'\r\n'),
+        'oldRawBytePinWouldPass': digest(raw) == BASELINE_SHA256,
+        'baselineCanonicalBytesEqualGitBlob': canonical == blob,
+        'baselineGitBlobMatchesReviewedPin': digest(blob) == BASELINE_SHA256,
+        'contentBytesRetained': False,
+    }
 
 
 def require_baseline_preserved(names, baseline=None):
@@ -171,7 +197,7 @@ def completed_xctest(text, expected):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('phase', choices=['inventory', 'full'])
+    parser.add_argument('phase', choices=['baseline', 'inventory', 'full'])
     args = parser.parse_args()
     record_path = 'windows-direct-' + args.phase + '-summary.json'
     record = {'state': 'STARTED', 'originalSwiftPMRunID': 37699465385,
@@ -179,6 +205,16 @@ def main():
               'swiftpmSkipTestsListAbsent': '_SWIFTPM_SKIP_TESTS_LIST' not in os.environ}
     exit_code = 125
     try:
+        if args.phase == 'baseline':
+            record.update(baseline_checkout_audit())
+            write_json(record_path, record)
+            if (not record['baselineCanonicalBytesEqualGitBlob']
+                    or not record['baselineGitBlobMatchesReviewedPin']):
+                raise ValueError('baseline_git_provenance')
+            record.update(baselineInventoryNames=len(baseline_names()),
+                          state='COMPLETED', exitCode=0)
+            exit_code = 0
+            return exit_code
         metadata = preflight()
         record.update(metadata)
         write_json(record_path, record)

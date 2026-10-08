@@ -90,6 +90,21 @@ class DirectProofTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 direct.baseline_names(path)
 
+    def test_baseline_checkout_lf_and_crlf_transport_preserves_pin_but_not_tampering(self):
+        original = Path('.github/windows-native-baseline-tests.json').read_bytes().replace(b'\r\n', b'\n')
+        expected = direct.baseline_names()
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'baseline.json'
+            for data in (original, original.replace(b'\n', b'\r\n')):
+                path.write_bytes(data)
+                self.assertEqual(direct.baseline_names(path), expected)
+            for data in (original.replace(b'test', b'tampered', 1),
+                         original.replace(b'\n', b'\r\r\n'),
+                         original.replace(b'\n', b'\r')):
+                path.write_bytes(data)
+                with self.assertRaises(ValueError):
+                    direct.baseline_names(path)
+
     def test_sdk_plist_selects_exact_installed_dll_directories_and_rejects_missing(self):
         with tempfile.TemporaryDirectory() as tmp:
             platform = Path(tmp)
