@@ -1,0 +1,677 @@
+{
+  "runKind": "NEW_RUN",
+  "controls": {
+    "confirmationDenial": "PASS \u2014 zero delegated requests",
+    "acceptedIsNotVerified": "PASS \u2014 pending task, no effect, no terminal receipt",
+    "successSignature": "PASS \u2014 independently pinned OpenSSL Ed25519",
+    "independentEffect": "PASS \u2014 separate observer process/origin reads exact nonce-bound bytes",
+    "mismatchSignature": "PASS \u2014 independently pinned OpenSSL Ed25519",
+    "missingSignature": "PASS \u2014 independently pinned OpenSSL Ed25519",
+    "policyDenial": "PASS \u2014 denied before provider dispatch",
+    "liveProviderRemoval": "PASS \u2014 A2A capability disappears; tool definitions unchanged",
+    "noStatusReplay": "PASS \u2014 exactly three separately admitted tasks, no replay during status"
+  },
+  "binary": "/private/tmp/rightclick-integrated-candidate-20261007/rightclick",
+  "binarySHA256": "50e9c55b5c52086511ff80c48c0343a78f1ab37040f95eaba04d566c01dbf26b",
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-integrated-candidate-20261007/rightclick",
+    "executableRealPath": "/tmp/rightclick-integrated-candidate-20261007/rightclick",
+    "executableSHA256": "50e9c55b5c52086511ff80c48c0343a78f1ab37040f95eaba04d566c01dbf26b",
+    "pid": 11837,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.2"
+  },
+  "toolCountBefore": 7,
+  "toolCountAfter": 7,
+  "providerSpecificToolsAdded": 0,
+  "scopeBoundary": "Local exact endpoint/message lease and confirmation policy; public A2A endpoint, no authenticated issuer downscoping claim.",
+  "restrictedAgentBoundary": "Engineering MCP client uses only seven operations; fresh AI eleven-substrate proof remains a separate acceptance requirement.",
+  "providersBefore": [
+    {
+      "capabilityTitles": [
+        "Ask Claude"
+      ],
+      "name": "/Users/ross/Library/Services/Claude - ask.workflow",
+      "source": "service"
+    },
+    {
+      "capabilityTitles": [
+        "New Claude Code Session Here"
+      ],
+      "name": "/Users/ross/Library/Services/Claude - codeHere.workflow",
+      "source": "service"
+    },
+    {
+      "capabilityTitles": [
+        "Send to Claude"
+      ],
+      "name": "/Users/ross/Library/Services/Claude - send.workflow",
+      "source": "service"
+    },
+    {
+      "capabilityTitles": [
+        "RIGHTCLICK PROBE - Make Evidence Copy"
+      ],
+      "name": "/Users/ross/Library/Services/RIGHTCLICK PROBE - Make Evidence Copy.workflow",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.flyingmeat.Acorn8",
+      "capabilityTitles": [
+        "Open Image in Acorn"
+      ],
+      "name": "Acorn",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.services.addToiTunesAsSpokenTrack",
+      "capabilityTitles": [
+        "Add to Music as a Spoken Track"
+      ],
+      "name": "Add to Music as a Spoken Track",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Automator",
+      "capabilityTitles": [
+        "Create Service",
+        "Create Workflow"
+      ],
+      "name": "Automator",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.barebones.bbedit",
+      "capabilityTitles": [
+        "BBEdit/Append Selection to BBEdit Scratchpad",
+        "BBEdit/Compare Using BBEdit",
+        "BBEdit/New BBEdit Document with Selection",
+        "BBEdit/New Note in BBEdit",
+        "BBEdit/Open File in BBEdit",
+        "BBEdit/Search Here in BBEdit"
+      ],
+      "name": "BBEdit",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.BluetoothFileExchange",
+      "capabilityTitles": [
+        "Send File To Bluetooth Device"
+      ],
+      "name": "Bluetooth File Exchange",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.ChineseTextConverterService",
+      "capabilityTitles": [
+        "Convert Text from Simplified to Traditional Chinese",
+        "Convert Text from Traditional to Simplified Chinese",
+        "Convert Text to Full Width",
+        "Convert Text to Half Width"
+      ],
+      "name": "ChineseTextConverterService",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.coteditor.CotEditor",
+      "capabilityTitles": [
+        "New CotEditor Window Containing Selection",
+        "Open in CotEditor"
+      ],
+      "name": "CotEditor",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "ch.sudo.cyberduck",
+      "capabilityTitles": [
+        "Cyberduck/Upload with Cyberduck"
+      ],
+      "name": "Cyberduck",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Dictionary",
+      "capabilityTitles": [
+        "Look Up in Dictionary"
+      ],
+      "name": "Dictionary",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.QuickTime.service.encodeSelectedAudioFiles",
+      "capabilityTitles": [
+        "Encode Selected Audio Files"
+      ],
+      "name": "Encode Selected Audio Files",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.services.encodeSelectedVideoFiles",
+      "capabilityTitles": [
+        "Encode Selected Video Files"
+      ],
+      "name": "Encode Selected Video Files",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.FileMerge",
+      "capabilityTitles": [
+        "FileMerge/Compare Files",
+        "FileMerge/Compare To Main"
+      ],
+      "name": "FileMerge",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.finder",
+      "capabilityTitles": [
+        "Finder/Open",
+        "Finder/Reveal",
+        "Finder/Show Info"
+      ],
+      "name": "Finder",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.FolderActionsSetup",
+      "capabilityTitles": [
+        "Folder Actions Setup"
+      ],
+      "name": "Folder Actions Setup",
+      "source": "service"
+    },
+    {
+      "capabilityTitles": [
+        "Check if a gist is starred",
+        "Check if a person is followed by the authenticated user",
+        "Check if a repository is starred by the authenticated user",
+        "Check if a user can be assigned",
+        "Check if a user follows another user",
+        "Check if a user is a repository collaborator",
+        "Check if a user is blocked by an organization",
+        "Check if a user is blocked by the authenticated user",
+        "Check if Dependabot security updates are enabled for a repository",
+        "Check if immutable releases are enabled for a repository",
+        "Check if private vulnerability reporting is enabled for a repository",
+        "Check if vulnerability alerts are enabled for a repository",
+        "Check organization membership for a user",
+        "Check public organization membership for a user",
+        "Check team permissions for a repository",
+        "Create a blob",
+        "Create a check suite",
+        "Create a code security configuration",
+        "Create a code security configuration for an enterprise",
+        "Create a commit",
+        "Create a commit comment",
+        "Create a commit status",
+        "Create a deploy key",
+        "Create a deployment",
+        "Create a GPG key for the authenticated user",
+        "Create a label",
+        "Create a milestone",
+        "Create a pull request",
+        "Create a reference",
+        "Create a release",
+        "Create a repository dispatch event",
+        "Create a repository using a template",
+        "Create a repository variable",
+        "Create a repository variable",
+        "Create a self-hosted runner group for an organization",
+        "Create a tag object",
+        "Create a team",
+        "Create an autolink reference for a repository",
+        "Create an environment variable",
+        "Create an issue",
+        "Create an organization repository",
+        "Create an organization variable",
+        "Create an organization variable",
+        "Create or update a secret for the authenticated user",
+        "Create or update an organization secret",
+        "Create or update an organization secret",
+        "Create or update file contents",
+        "Export a software bill of materials (SBOM) for a repository.",
+        "Fetch a software bill of materials (SBOM) for a repository.",
+        "Generate release notes content for a release",
+        "Get a blob",
+        "Get a branch",
+        "Get a code of conduct",
+        "Get a code quality setup configuration",
+        "Get a code scanning default setup configuration",
+        "Get a CodeQL database for a repository",
+        "Get a codespace for the authenticated user",
+        "Get a commit object",
+        "Get a custom property for an organization",
+        "Get a DNS health check for GitHub Pages",
+        "Get a gist",
+        "Get a gist revision",
+        "Get a GitHub Pages site",
+        "Get a gitignore template",
+        "Get a global security advisory",
+        "Get a hosted compute network configuration for an organization",
+        "Get a hosted compute network settings resource for an organization",
+        "Get a label",
+        "Get a license",
+        "Get a private registry for an organization",
+        "Get a release by tag name",
+        "Get a repository",
+        "Get a repository installation for the authenticated app",
+        "Get a repository public key",
+        "Get a repository public key",
+        "Get a repository public key",
+        "Get a repository public key",
+        "Get a repository secret",
+        "Get a repository secret",
+        "Get a repository secret",
+        "Get a repository secret",
+        "Get a repository security advisory",
+        "Get a repository subscription",
+        "Get a repository variable",
+        "Get a repository variable",
+        "Get a secret for the authenticated user",
+        "Get a tag",
+        "Get a task by ID",
+        "Get a task by repo",
+        "Get a team by name",
+        "Get a user",
+        "Get a user installation for the authenticated app",
+        "Get a webhook configuration for an app",
+        "Get access restrictions",
+        "Get admin branch protection",
+        "Get AI Scan enablement for a repository",
+        "Get all API versions",
+        "Get all autolinks of a repository",
+        "Get all codes of conduct",
+        "Get all contributor commit activity",
+        "Get all custom properties for an organization",
+        "Get all custom property values for a repository",
+        "Get all deployment protection rules for an environment",
+        "Get all external custom properties for a GitHub App installation in an organization",
+        "Get all gitignore templates",
+        "Get all organization roles for an organization",
+        "Get all status check contexts",
+        "Get allowed actions and reusable workflows for a repository",
+        "Get allowed actions and reusable workflows for an organization",
+        "Get an app",
+        "Get an environment",
+        "Get an environment public key",
+        "Get an environment secret",
+        "Get an environment variable",
+        "Get an import status",
+        "Get an organization",
+        "Get an organization installation for the authenticated app",
+        "Get an organization membership for the authenticated user",
+        "Get an organization public key",
+        "Get an organization public key",
+        "Get an organization public key",
+        "Get an organization public key",
+        "Get an organization secret",
+        "Get an organization secret",
+        "Get an organization secret",
+        "Get an organization secret",
+        "Get an organization variable",
+        "Get an organization variable",
+        "Get apps with access to the protected branch",
+        "Get artifact and log retention settings for a repository",
+        "Get artifact and log retention settings for an organization",
+        "Get branch protection",
+        "Get commit signature protection",
+        "Get community profile metrics",
+        "Get Copilot cloud agent configuration for a repository",
+        "Get Copilot cloud agent permissions for an organization",
+        "Get Copilot content exclusion rules for an organization",
+        "Get Copilot enterprise usage metrics",
+        "Get Copilot organization usage metrics",
+        "Get Copilot organization users usage metrics",
+        "Get Copilot seat assignment details for a user",
+        "Get Copilot seat information and settings for an organization",
+        "Get Copilot users usage metrics",
+        "Get default code security configurations",
+        "Get default code security configurations for an enterprise",
+        "Get default workflow permissions for a repository",
+        "Get default workflow permissions for an organization",
+        "Get details about a codespace export",
+        "Get emojis",
+        "Get feeds",
+        "Get fork PR contributor approval permissions for a repository",
+        "Get fork PR contributor approval permissions for an organization",
+        "Get GitHub Actions cache retention limit for a repository",
+        "Get GitHub Actions cache retention limit for an enterprise",
+        "Get GitHub Actions cache retention limit for an organization",
+        "Get GitHub Actions cache storage limit for a repository",
+        "Get GitHub Actions cache storage limit for an enterprise",
+        "Get GitHub Actions cache storage limit for an organization",
+        "Get GitHub Actions cache usage for a repository",
+        "Get GitHub Actions cache usage for an organization",
+        "Get GitHub Actions permissions for a repository",
+        "Get GitHub Actions permissions for an organization",
+        "Get GitHub meta information",
+        "Get GitHub-hosted runners machine specs for an organization",
+        "Get GitHub-owned images for GitHub-hosted runners in an organization",
+        "Get immutable releases settings for an organization",
+        "Get information about a SARIF upload",
+        "Get interaction restrictions for a repository",
+        "Get interaction restrictions for an organization",
+        "Get interaction restrictions for your public repositories",
+        "Get large files",
+        "Get latest Pages build",
+        "Get limits on GitHub-hosted runners for an organization",
+        "Get list of conflicting packages during Docker migration for authenticated-user",
+        "Get list of conflicting packages during Docker migration for organization",
+        "Get list of conflicting packages during Docker migration for user",
+        "Get organization membership for a user",
+        "Get partner images for GitHub-hosted runners in an organization",
+        "Get platforms for GitHub-hosted runners in an organization",
+        "Get private registries public key for an organization",
+        "Get private repo fork PR workflow settings for a repository",
+        "Get private repo fork PR workflow settings for an organization",
+        "Get public key for the authenticated user",
+        "Get pull request creation cap bypass list for a repository",
+        "Get pull request creation cap for a repository",
+        "Get pull request creation cap for an org",
+        "Get pull request review protection",
+        "Get rate limit status for the authenticated user",
+        "Get registered app installations for external custom properties",
+        "Get repository permissions for a user",
+        "Get secret scanning scan history for a repository",
+        "Get self-hosted runners settings for an organization",
+        "Get stargazer count",
+        "Get status checks protection",
+        "Get team membership for a user",
+        "Get teams with access to the protected branch",
+        "Get the AI Scan setting for an organization",
+        "Get the authenticated app",
+        "Get the authenticated user",
+        "Get the code security configuration associated with a repository",
+        "Get the customization template for an OIDC subject claim for a repository",
+        "Get the customization template for an OIDC subject claim for an organization",
+        "Get the hash algorithm for a repository",
+        "Get the hourly commit count for each day",
+        "Get the last year of commit activity",
+        "Get the latest release",
+        "Get the level of access for workflows outside of the repository",
+        "Get the weekly commit activity",
+        "Get the weekly commit count",
+        "Get the Zen of GitHub",
+        "Get top referral paths",
+        "Get top referral sources",
+        "Get users with access to the protected branch",
+        "GitHub API Root",
+        "List branches for HEAD commit",
+        "List CodeQL databases for a repository",
+        "List custom images for an organization",
+        "List issue fields for an organization",
+        "List issue types for a repository",
+        "List issue types for an organization",
+        "List machine types for a codespace",
+        "List OIDC custom property inclusions for an enterprise",
+        "List OIDC custom property inclusions for an organization",
+        "List organization pattern configurations",
+        "List repository languages",
+        "List runner applications for a repository",
+        "List runner applications for an organization",
+        "List security manager teams",
+        "List selected repositories for a user secret",
+        "Manage access control for organization codespaces",
+        "Merge a branch",
+        "Rename a branch",
+        "Request generation of a software bill of materials (SBOM) for a repository.",
+        "Set Copilot cloud agent permissions for an organization",
+        "Set primary email visibility for the authenticated user",
+        "Set self-hosted runners settings for an organization",
+        "Start a task",
+        "Start an import",
+        "Sync a fork branch with the upstream repository",
+        "Transfer a repository",
+        "Update an organization membership for the authenticated user",
+        "Update Git LFS preference"
+      ],
+      "name": "GitHub v3 REST API",
+      "source": "openapi"
+    },
+    {
+      "bundleIdentifier": "com.lemkesoft.graphicconverter12",
+      "capabilityTitles": [
+        "Convert to JPEG (Quality 75%) using GraphicConverter",
+        "Convert to JPEG (Quality 85%) using GraphicConverter",
+        "Create Icon and Preview using GraphicConverter",
+        "Open using GraphicConverter",
+        "Remove Extended Attributes (Xattr) using GraphicConverter",
+        "Remove Metadata using GraphicConverter",
+        "Remove Resourcefork using GraphicConverter",
+        "Rename using GraphicConverter\u2026",
+        "Rotate JPEG lossless depending on Exif using GraphicConverter",
+        "Set File Date to Exif Date using GraphicConverter",
+        "Set default XMP using GraphicConverter",
+        "Show in Browser using GraphicConverter",
+        "Show random in Slide Show using GraphicConverter",
+        "Show sorted in Slide Show using GraphicConverter"
+      ],
+      "name": "GraphicConverter 12",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "net.pornel.ImageOptim",
+      "capabilityTitles": [
+        "ImageOptimize"
+      ],
+      "name": "ImageOptim",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "net.pornel.ImageOptimizeExtension",
+      "capabilityTitles": [
+        "ImageOptimize"
+      ],
+      "name": "ImageOptimize",
+      "source": "action_extension"
+    },
+    {
+      "bundleIdentifier": "com.apple.dt.Instruments",
+      "capabilityTitles": [
+        "Activity Monitor",
+        "Allocations & Leaks",
+        "File Activity",
+        "System Trace"
+      ],
+      "name": "Instruments",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.aone.keka",
+      "capabilityTitles": [
+        "Keka/Compress using Keka",
+        "Keka/Extract using Keka",
+        "Keka/Send to Keka"
+      ],
+      "name": "Keka",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "org.vim.MacVim",
+      "capabilityTitles": [
+        "MacVim/New MacVim Buffer Here",
+        "MacVim/New MacVim Buffer With Selection"
+      ],
+      "name": "MacVim",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.mail",
+      "capabilityTitles": [
+        "Mail/New Email To Address",
+        "Mail/New Email With Selection"
+      ],
+      "name": "Mail",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.MarkupUI.Markup",
+      "capabilityTitles": [
+        "Markup"
+      ],
+      "name": "Markup",
+      "source": "action_extension"
+    },
+    {
+      "bundleIdentifier": "dev.zcode.app.finder-open-workflow",
+      "capabilityTitles": [
+        "Open in ZCode"
+      ],
+      "name": "Open in ZCode",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Preview",
+      "capabilityTitles": [
+        "Preview/Open images"
+      ],
+      "name": "Preview",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "org.R-project.R",
+      "capabilityTitles": [
+        "R/R \u2013 Open selection",
+        "R/R \u2013 Run selection in Console"
+      ],
+      "name": "R",
+      "source": "service"
+    },
+    {
+      "capabilityTitles": [
+        "Write disposable record"
+      ],
+      "name": "RCIR-343a751c0c5f44f69ed5aa78940e337c",
+      "source": "openapi"
+    },
+    {
+      "capabilityTitles": [
+        "Delegate a task to RIGHTCLICK disposable delegated agent"
+      ],
+      "name": "RIGHTCLICK disposable delegated agent",
+      "source": "a2a"
+    },
+    {
+      "bundleIdentifier": "com.apple.ScriptEditor2",
+      "capabilityTitles": [
+        "Script Editor/Get Result of AppleScript",
+        "Script Editor/Make New AppleScript",
+        "Script Editor/Run as AppleScript"
+      ],
+      "name": "Script Editor",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.services.setDesktopPicture",
+      "capabilityTitles": [
+        "Set Desktop Picture"
+      ],
+      "name": "Set Desktop Picture",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.services.showMap",
+      "capabilityTitles": [
+        "Show Map"
+      ],
+      "name": "Show Map",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.speech.SpeechService",
+      "capabilityTitles": [
+        "Speech/Start Speaking Text",
+        "Speech/Stop Speaking"
+      ],
+      "name": "Speech Service",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.SpotlightService",
+      "capabilityTitles": [
+        "SEARCH_WITH_SPOTLIGHT"
+      ],
+      "name": "SpotlightService",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Stickies",
+      "capabilityTitles": [
+        "Make Sticky"
+      ],
+      "name": "Stickies",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.SummaryService",
+      "capabilityTitles": [
+        "Summarize"
+      ],
+      "name": "Summary Service",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.systemuiserver",
+      "capabilityTitles": [
+        "Open URL"
+      ],
+      "name": "SystemUIServer",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.Terminal",
+      "capabilityTitles": [
+        "New Terminal Tab at Folder",
+        "New Terminal at Folder",
+        "Open man Page in Terminal",
+        "Search man Page Index in Terminal"
+      ],
+      "name": "Terminal",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.TextEdit",
+      "capabilityTitles": [
+        "New TextEdit Window Containing Selection",
+        "Open Selected File in TextEdit"
+      ],
+      "name": "TextEdit",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.apple.dt.Xcode",
+      "capabilityTitles": [
+        "Find in Xcode",
+        "Open Quickly in Xcode"
+      ],
+      "name": "Xcode",
+      "source": "service"
+    },
+    {
+      "bundleIdentifier": "com.yojam.app",
+      "capabilityTitles": [
+        "Open in Yojam"
+      ],
+      "name": "Yojam",
+      "source": "service"
+    }
+  ],
+  "status": "GREEN_FOR_THIS_BOUNDARY"
+}

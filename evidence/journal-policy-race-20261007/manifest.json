@@ -1,0 +1,14 @@
+{
+  "testSourceSHA": "3dfdf958c8df4a73b8a3c15eb6ae826c91f90ed8",
+  "productionBaseline": "baee56aae3c24f1a55d47522fcaa5641fa3f3b00",
+  "productionDiff": "",
+  "platform": "macOS-26.4.1-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "sourceFiles": {
+    "Tests/RightClickCoreTests/RCIRProductionDispatchTests.swift": "2362ca22a524e11983efd989b523f3ea7aa4a02d33e6e87fc01cef668ae1a55c",
+    "Sources/RightClickCore/RCIRExecutionHost.swift": "5f91704e99fd0316fb0555cc4cc0447917dc105a1a0273c37dc95b862b0c5a18",
+    "Sources/RightClickCore/RCIRInvocationJournal.swift": "5787fba26bd4fb2f60f1193d8764d8f914c87578cbcd960f6662f9abac711827"
+  },
+  "test": "RCIRProductionDispatchTests/testJournalIntentPolicyRevocationDeniesActualHTTPBeforeEffect",
+  "result": "Mac native PASS; 1 control, 0 skips, 0 failures. No production change. First sandboxed attempt failed fixture provisioning and is retained."
+}

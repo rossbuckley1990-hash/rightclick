@@ -1,0 +1,305 @@
+Build complete! (13.32s)
+Test Suite 'Selected tests' started at 2026-10-08 01:01:27.994.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-08 01:01:27.994.
+Test Suite 'A2ARealLifecycleTests' started at 2026-10-08 01:01:27.994.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testAcceptedAndCompletedTaskWithMismatchedEffectFailsWithSignedReceipt]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testAcceptedAndCompletedTaskWithMismatchedEffectFailsWithSignedReceipt]' passed (0.798 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testCompletedUnverifiedTaskCannotObserveAfterPolicyRevocation]' passed (0.759 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testCompletedWithoutIndependentEffectRemainsUnverified]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testCompletedWithoutIndependentEffectRemainsUnverified]' passed (0.723 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testDeadlineIsUnknownWithoutRetryingOrFabricatingCompletion]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testDeadlineIsUnknownWithoutRetryingOrFabricatingCompletion]' passed (0.184 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testGenuineDelegationObservesEffectAndSignsTerminalReceipt]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testGenuineDelegationObservesEffectAndSignsTerminalReceipt]' passed (0.725 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testPolicyAndConfirmationDenialsHaveZeroDelegatedEffects]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testPolicyAndConfirmationDenialsHaveZeroDelegatedEffects]' passed (0.193 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testPolicyRevocationDuringTaskCannotBeSilentlyIgnored]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testPolicyRevocationDuringTaskCannotBeSilentlyIgnored]' passed (0.197 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testProviderDisappearingMidTaskIsSignedUnknownWithoutReplay]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testProviderDisappearingMidTaskIsSignedUnknownWithoutReplay]' passed (0.191 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testRemoteTaskFailureCannotBecomeSemanticSuccess]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testRemoteTaskFailureCannotBecomeSemanticSuccess]' passed (0.726 seconds).
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testUnpinnedIndependentObserverFailsBeforeDispatch]' started.
+Test Case '-[RightClickCoreTests.A2ARealLifecycleTests testUnpinnedIndependentObserverFailsBeforeDispatch]' passed (0.201 seconds).
+Test Suite 'A2ARealLifecycleTests' passed at 2026-10-08 01:01:32.694.
+	 Executed 10 tests, with 0 failures (0 unexpected) in 4.698 (4.700) seconds
+Test Suite 'CapabilityExperienceTests' started at 2026-10-08 01:01:32.694.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testContractKeyChangesWithAuthoritySchemaRouteAndPolicy]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testContractKeyChangesWithAuthoritySchemaRouteAndPolicy]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testDisabledExperienceDoesNotAddHints]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testDisabledExperienceDoesNotAddHints]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testEmptyFailedOrUnevaluatedPredicatesNeverTeachVerifiedSuccess]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testEmptyFailedOrUnevaluatedPredicatesNeverTeachVerifiedSuccess]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testGatedAndMismatchedResultsAreNotRecorded]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testGatedAndMismatchedResultsAreNotRecorded]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testNamespaceSeparatesExperience]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testNamespaceSeparatesExperience]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testNoCapabilitiesAreResurrectedByRecall]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testNoCapabilitiesAreResurrectedByRecall]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testOnlyFingerprintsAndOutcomesPersistNotUserData]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testOnlyFingerprintsAndOutcomesPersistNotUserData]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testProviderCannotForgeExperienceMetadata]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testProviderCannotForgeExperienceMetadata]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testProviderExperienceKeysCannotBlockFreshDispatchOrForgeHints]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testProviderExperienceKeysCannotBlockFreshDispatchOrForgeHints]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRemovalSchemaDriftAndRevokedAuthorityRemainEnforced]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRemovalSchemaDriftAndRevokedAuthorityRemainEnforced]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRepeatedRunAndBeginRemainUsableWithAdvisoryHistory]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRepeatedRunAndBeginRemainUsableWithAdvisoryHistory]' passed (0.004 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRuntimeBeginLearnsVerifiedPredicatesButNextRunIsNotVerifiedByHistory]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRuntimeBeginLearnsVerifiedPredicatesButNextRunIsNotVerifiedByHistory]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRuntimeRunLearnsAcceptanceWithoutSkippingConfirmation]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRuntimeRunLearnsAcceptanceWithoutSkippingConfirmation]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRuntimeRunLearnsGenericVerification]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testRuntimeRunLearnsGenericVerification]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testVerifiedBooleanAloneNeverTeachesVerifiedSuccess]' started.
+Test Case '-[RightClickCoreTests.CapabilityExperienceTests testVerifiedBooleanAloneNeverTeachesVerifiedSuccess]' passed (0.000 seconds).
+Test Suite 'CapabilityExperienceTests' passed at 2026-10-08 01:01:32.717.
+	 Executed 15 tests, with 0 failures (0 unexpected) in 0.021 (0.022) seconds
+Test Suite 'FixtureLineFramingTests' started at 2026-10-08 01:01:32.717.
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testBareOrRepeatedCarriageReturnsAreRejected]' started.
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testBareOrRepeatedCarriageReturnsAreRejected]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testEmptyAndUnterminatedFinalRecordAreDistinctFromBlankRecords]' started.
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testEmptyAndUnterminatedFinalRecordAreDistinctFromBlankRecords]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testLFCRLFAndMixedRecordsPreserveEveryObject]' started.
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testLFCRLFAndMixedRecordsPreserveEveryObject]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testMalformedJSONAndNonObjectRecordsFailWithoutPrivateBytes]' started.
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testMalformedJSONAndNonObjectRecordsFailWithoutPrivateBytes]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testMissingJournalIsEmptyButMalformedExistingJournalFails]' started.
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testMissingJournalIsEmptyButMalformedExistingJournalFails]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testUnicodeLineCharactersAndEscapedCRLFArePayloadNotFraming]' started.
+Test Case '-[RightClickCoreTests.FixtureLineFramingTests testUnicodeLineCharactersAndEscapedCRLFArePayloadNotFraming]' passed (0.000 seconds).
+Test Suite 'FixtureLineFramingTests' passed at 2026-10-08 01:01:32.719.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'InvocationBindingTests' started at 2026-10-08 01:01:32.719.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testFreshMarkersVerifyForBothTransports]' started.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testFreshMarkersVerifyForBothTransports]' passed (6.116 seconds).
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend]' started.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKafkaRecordCannotVerifyCurrentAppend]' passed (2.489 seconds).
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate]' started.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testMatchingStaleKubernetesResourceCannotVerifyCurrentCreate]' passed (3.580 seconds).
+Test Case '-[RightClickCoreTests.InvocationBindingTests testRelativeHostClientPathFailsBeforeNativeDispatch]' started.
+Test Case '-[RightClickCoreTests.InvocationBindingTests testRelativeHostClientPathFailsBeforeNativeDispatch]' passed (0.000 seconds).
+Test Suite 'InvocationBindingTests' passed at 2026-10-08 01:01:44.904.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 12.185 (12.185) seconds
+Test Suite 'NativeBoundedHTTPTests' started at 2026-10-08 01:01:44.904.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testDeadlineCancelsNativeExchangeWithinBound]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testDeadlineCancelsNativeExchangeWithinBound]' passed (0.210 seconds).
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testDeclaredAndChunkedOversizeNeverReturnAnAdmittedPrefix]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testDeclaredAndChunkedOversizeNeverReturnAnAdmittedPrefix]' passed (0.112 seconds).
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testNativeCompletionReleasesWaiterAndReturnsExactCap]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testNativeCompletionReleasesWaiterAndReturnsExactCap]' passed (0.100 seconds).
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testNativeErrorAndPrematureConnectionCloseRemainFailures]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testNativeErrorAndPrematureConnectionCloseRemainFailures]' passed (0.100 seconds).
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testRedirectNeverReachesNewTarget]' started.
+Test Case '-[RightClickCoreTests.NativeBoundedHTTPTests testRedirectNeverReachesNewTarget]' passed (0.099 seconds).
+Test Suite 'NativeBoundedHTTPTests' passed at 2026-10-08 01:01:45.524.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.619 (0.620) seconds
+Test Suite 'OpenAPIAcknowledgementTests' started at 2026-10-08 01:01:45.524.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementCannotSatisfyCallerReturnedValuePostcondition]' passed (0.222 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementHasNoTypedOutputAndRemainsUnverified]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testAcknowledgementHasNoTypedOutputAndRemainsUnverified]' passed (0.222 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testConfirmationAndCurrentHostPolicyStopAcknowledgementMutation]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testConfirmationAndCurrentHostPolicyStopAcknowledgementMutation]' passed (0.219 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testIndependentStructuredObservationVerifiesActualEffectAndSignsReceipt]' passed (0.224 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testUndeclared2xxStatusRemainsUnknownDespiteActualEffect]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testUndeclared2xxStatusRemainsUnknownDespiteActualEffect]' passed (0.222 seconds).
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testWrongOrMissingExternalEffectNeverBecomesSuccess]' started.
+Test Case '-[RightClickCoreTests.OpenAPIAcknowledgementTests testWrongOrMissingExternalEffectNeverBecomesSuccess]' passed (0.229 seconds).
+Test Suite 'OpenAPIAcknowledgementTests' passed at 2026-10-08 01:01:46.863.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 1.339 (1.339) seconds
+Test Suite 'OpenAPICredentialEchoTests' started at 2026-10-08 01:01:46.863.
+Test Case '-[RightClickCoreTests.OpenAPICredentialEchoTests testBenignCredentialBackedResultStillAcceptedWithSignedEvidence]' started.
+Test Case '-[RightClickCoreTests.OpenAPICredentialEchoTests testBenignCredentialBackedResultStillAcceptedWithSignedEvidence]' passed (0.354 seconds).
+Test Case '-[RightClickCoreTests.OpenAPICredentialEchoTests testCredentialEchoCannotReachModelRecordEventsOrSignedReceipt]' started.
+Test Case '-[RightClickCoreTests.OpenAPICredentialEchoTests testCredentialEchoCannotReachModelRecordEventsOrSignedReceipt]' passed (0.427 seconds).
+Test Suite 'OpenAPICredentialEchoTests' passed at 2026-10-08 01:01:47.645.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.781 (0.781) seconds
+Test Suite 'RCIRAuthorityDispatchTests' started at 2026-10-08 01:01:47.645.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testAncestorRevocationAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testAncestorRevocationAtFinalGateProducesZeroActualHTTPRequests]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testAuthenticatedContextErrorsCannotLeakCredentialMaterial]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testAuthenticatedContextErrorsCannotLeakCredentialMaterial]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testCredentialScopeWithdrawalAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testCredentialScopeWithdrawalAtFinalGateProducesZeroActualHTTPRequests]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testLegalChildProducesIndependentlyObservedSignedEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testLegalChildProducesIndependentlyObservedSignedEffect]' passed (0.114 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testPolicyRevocationAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testPolicyRevocationAtFinalGateProducesZeroActualHTTPRequests]' passed (0.111 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testRevocationAfterEffectWithholdsObservationAndSuccess]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testRevocationAfterEffectWithholdsObservationAndSuccess]' passed (0.113 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testSiblingAndParentCannotExceedSharedBudget]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testSiblingAndParentCannotExceedSharedBudget]' passed (0.115 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongAudienceAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongAudienceAtFinalGateProducesZeroActualHTTPRequests]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongSubjectAtFinalGateProducesZeroActualHTTPRequests]' started.
+Test Case '-[RightClickCoreTests.RCIRAuthorityDispatchTests testWrongSubjectAtFinalGateProducesZeroActualHTTPRequests]' passed (0.110 seconds).
+Test Suite 'RCIRAuthorityDispatchTests' passed at 2026-10-08 01:01:48.650.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 1.004 (1.005) seconds
+Test Suite 'RCIRHTTPJSONCausalityTests' started at 2026-10-08 01:01:48.650.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testFreshIndependentMarkerMatchesHostTaskAndProducesSignedSuccess]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testFreshIndependentMarkerMatchesHostTaskAndProducesSignedSuccess]' passed (0.224 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testInvalidCausalBindingPathsRejectBeforeActualMutation]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testInvalidCausalBindingPathsRejectBeforeActualMutation]' passed (0.236 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testMissingIndependentMarkerRemainsSignedUnverified]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testMissingIndependentMarkerRemainsSignedUnverified]' passed (0.247 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testNoOpAcknowledgementAndOldMatchingArtifactCannotVerifyCurrentMutation]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testNoOpAcknowledgementAndOldMatchingArtifactCannotVerifyCurrentMutation]' passed (0.239 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testObserverCannotReflectProtectedCredentialIntoMetadataOrReceipt]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testObserverCannotReflectProtectedCredentialIntoMetadataOrReceipt]' passed (0.252 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testStateOnlyPredicateDoesNotClaimCurrentMutationCausality]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONCausalityTests testStateOnlyPredicateDoesNotClaimCurrentMutationCausality]' passed (0.224 seconds).
+Test Suite 'RCIRHTTPJSONCausalityTests' passed at 2026-10-08 01:01:50.073.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 1.422 (1.423) seconds
+Test Suite 'RCIRHTTPJSONObservationTests' started at 2026-10-08 01:01:50.073.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbientCookiesCannotEnterObservationOrPersistResponseCookie]' passed (0.335 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testAmbiguousProjectionOrMissingCallerDigestFailsBeforeMutation]' passed (0.329 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testDefaultCredentialStorageCannotSupplyObserverAuthority]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testDefaultCredentialStorageCannotSupplyObserverAuthority]' passed (0.333 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testMismatchMissingAndUndeclaredObservationFieldsNeverSucceed]' passed (0.342 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPinnedOriginAndRevokedReferenceAbstainWithoutObserverRead]' passed (0.331 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testPrintableJSONSegmentEncodesOnceWithoutTraversalOrAuthorityChange]' passed (0.326 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRealJSONObservationRetainsFullMetadataAndMatchesIndependentDigest]' passed (0.333 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRedirectNeverSendsObserverCredentialToAnotherOrigin]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testRedirectNeverSendsObserverCredentialToAnotherOrigin]' passed (0.356 seconds).
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testWriterCredentialCannotActAsReadonlyObserver]' started.
+Test Case '-[RightClickCoreTests.RCIRHTTPJSONObservationTests testWriterCredentialCannotActAsReadonlyObserver]' passed (0.334 seconds).
+Test Suite 'RCIRHTTPJSONObservationTests' passed at 2026-10-08 01:01:53.094.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 3.020 (3.021) seconds
+Test Suite 'RCIRInvocationBindingTests' started at 2026-10-08 01:01:53.094.
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testInvocationBindingRejectsNoncanonicalIdentityAndUnboundedOrWildcardPaths]' started.
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testInvocationBindingRejectsNoncanonicalIdentityAndUnboundedOrWildcardPaths]' passed (0.001 seconds).
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testMatchingOldMarkerIsRetainedInSignedFailureInsteadOfVerifyingCurrentInvocation]' started.
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testMatchingOldMarkerIsRetainedInSignedFailureInsteadOfVerifyingCurrentInvocation]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testOnlyHostTaskIdentityCanVerifyMatchingObservation]' started.
+Test Case '-[RightClickCoreTests.RCIRInvocationBindingTests testOnlyHostTaskIdentityCanVerifyMatchingObservation]' passed (0.001 seconds).
+Test Suite 'RCIRInvocationBindingTests' passed at 2026-10-08 01:01:53.098.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.004 (0.005) seconds
+Test Suite 'RCIRProductionDispatchTests' started at 2026-10-08 01:01:53.098.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualArtifactSchemaDriftRejectsOldInvocationAndReacquires]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualArtifactSchemaDriftRejectsOldInvocationAndReacquires]' passed (0.144 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualContractDisappearanceDeniesEffectsAndRecoversNewLease]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualContractDisappearanceDeniesEffectsAndRecoversNewLease]' passed (0.124 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testActualSchemaChangeAfterDispatchRemainsUnknownWithoutRetry]' passed (0.120 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceAfterDispatchPreservesUnknown]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceAfterDispatchPreservesUnknown]' passed (0.113 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery]' passed (0.114 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBoundedLargeArgumentIsNotDuplicatedIntoContract]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testBoundedLargeArgumentIsNotDuplicatedIntoContract]' passed (0.117 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCallerPostconditionCannotBeSilentlyIgnoredByHostObserver]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCallerPostconditionCannotBeSilentlyIgnoredByHostObserver]' passed (0.114 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedArgumentsCannotUseOriginalLease]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testChangedEndpointBeforeDispatchProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCompetingConsumersStartAtMostOneRealRequest]' passed (0.112 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testConfirmationDenialProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCredentialFreeObserverCannotInheritInvocationCookie]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCredentialFreeObserverCannotInheritInvocationCookie]' passed (0.114 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCrossOriginObserverBlocksBeforeAnyEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCrossOriginObserverBlocksBeforeAnyEffect]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testCurrentPolicyRevocationProducesZeroProviderEffects]' passed (0.111 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testExpiredLeaseProducesZeroProviderEffects]' passed (0.111 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testIndependentInvocationsDoNotReplaceTheDiscoveredProviderGeneration]' passed (0.115 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testInvalidSignerBlocksBeforeAnyEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testInvalidSignerBlocksBeforeAnyEffect]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testJournalIntentPolicyRevocationDeniesActualHTTPBeforeEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testJournalIntentPolicyRevocationDeniesActualHTTPBeforeEffect]' passed (0.128 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testLostResponseRetainsSignedUnknownAndDoesNotRetry]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testLostResponseRetainsSignedUnknownAndDoesNotRetry]' passed (0.113 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testMissingExactOriginAuthorityProducesZeroProviderEffects]' passed (0.112 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testNotYetValidLeaseProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testObserverTraversalAndDoubleEncodingCannotDispatch]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testObserverTraversalAndDoubleEncodingCannotDispatch]' passed (0.112 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence]' passed (0.112 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAfterDispatchPreservesUnknownWithoutRetry]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAfterDispatchPreservesUnknownWithoutRetry]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAtTransportAdmissionProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalAtTransportAdmissionProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovalBeforeDispatchProducesZeroProviderEffects]' passed (0.110 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation]' passed (0.111 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSameProviderReappearingCannotReviveOldGeneration]' passed (0.113 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSchemaDriftBeforeDispatchProducesZeroProviderEffects]' passed (0.111 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSeparateRepeatIssuesNewLeaseThroughBothEntryPoints]' passed (0.115 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionDispatchTests testSpentLeaseCannotDispatchAgain]' passed (0.112 seconds).
+Test Suite 'RCIRProductionDispatchTests' passed at 2026-10-08 01:01:56.642.
+	 Executed 31 tests, with 0 failures (0 unexpected) in 3.542 (3.544) seconds
+Test Suite 'RCIRProductionReceiptTrustTests' started at 2026-10-08 01:01:56.642.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActiveIssuerControlProducesOneTrustedObservedEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActiveIssuerControlProducesOneTrustedObservedEffect]' passed (0.725 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActualClockExpiryAfterHeldAdmissionWithholdsSignature]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActualClockExpiryAfterHeldAdmissionWithholdsSignature]' passed (2.246 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActualLeaseExpiryDuringProtectedSigningValidationHasZeroEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActualLeaseExpiryDuringProtectedSigningValidationHasZeroEffects]' passed (30.210 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActuallyExpiredKeyBeforeAdmissionHasZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testActuallyExpiredKeyBeforeAdmissionHasZeroProviderEffects]' passed (0.206 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testConfigurationRefreshRevokesPolicyBeforeFinalAdmissionHasZeroEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testConfigurationRefreshRevokesPolicyBeforeFinalAdmissionHasZeroEffects]' passed (0.185 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testConsumptionCallbackRevokesPolicyBeforeFinalAdmissionHasZeroEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testConsumptionCallbackRevokesPolicyBeforeFinalAdmissionHasZeroEffects]' passed (0.186 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testDeletedPolicyAfterAdmissionPreservesObservedUnsignedTruth]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testDeletedPolicyAfterAdmissionPreservesObservedUnsignedTruth]' passed (0.721 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testLegalHostKeyRotationControlUsesFreshTrustedKey]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testLegalHostKeyRotationControlUsesFreshTrustedKey]' passed (1.278 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testMalformedPolicyBeforeAdmissionHasZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testMalformedPolicyBeforeAdmissionHasZeroProviderEffects]' passed (0.202 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testPreRevokedPolicyDeniesAdmissionWithZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testPreRevokedPolicyDeniesAdmissionWithZeroProviderEffects]' passed (0.181 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testRestoredOlderPolicyCannotResurrectObservedRevocation]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testRestoredOlderPolicyCannotResurrectObservedRevocation]' passed (0.752 seconds).
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testRevokedPolicyAfterAdmissionWithholdsSignatureAndRetainsRealTruth]' started.
+Test Case '-[RightClickCoreTests.RCIRProductionReceiptTrustTests testRevokedPolicyAfterAdmissionWithholdsSignatureAndRetainsRealTruth]' passed (0.741 seconds).
+Test Suite 'RCIRProductionReceiptTrustTests' passed at 2026-10-08 01:02:34.276.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 37.633 (37.635) seconds
+Test Suite 'RCIRReceiptTrustGapTests' started at 2026-10-08 01:02:34.277.
+Test Case '-[RightClickCoreTests.RCIRReceiptTrustGapTests testActualLegalRotationReceiptsRequireExplicitIssuerLifecyclePolicy]' started.
+Test Case '-[RightClickCoreTests.RCIRReceiptTrustGapTests testActualLegalRotationReceiptsRequireExplicitIssuerLifecyclePolicy]' passed (1.345 seconds).
+Test Suite 'RCIRReceiptTrustGapTests' passed at 2026-10-08 01:02:35.622.
+Test Suite 'RCIRSigningLifecycleTests' started at 2026-10-08 01:02:35.622.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testFreshInvocationAfterRotationUsesNewProvisionedKey]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testFreshInvocationAfterRotationUsesNewProvisionedKey]' passed (1.270 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testKeyWithdrawalAtAdmissionBoundaryHasZeroProviderEffects]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testKeyWithdrawalAtAdmissionBoundaryHasZeroProviderEffects]' passed (0.208 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testSamePathKeyRotationDoesNotSignWithRetainedOldKey]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testSamePathKeyRotationDoesNotSignWithRetainedOldKey]' passed (0.731 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testSignerReferenceRotationPreservesUnknownEffectWithoutOldSignature]' passed (0.732 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testUnaryHTTPAfterKeyWithdrawalRetainsActualEffectAndUnsignedTruth]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testUnaryHTTPAfterKeyWithdrawalRetainsActualEffectAndUnsignedTruth]' passed (0.317 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testUnchangedProvisionedSignerSignsGenuineEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testUnchangedProvisionedSignerSignsGenuineEffect]' passed (0.743 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyAfterRealEffectAndProviderLossPreservesUnknown]' passed (0.731 seconds).
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect]' started.
+Test Case '-[RightClickCoreTests.RCIRSigningLifecycleTests testWithdrawnKeyDoesNotSignAlreadyAdmittedVerifiedEffect]' passed (0.723 seconds).
+Test Suite 'RCIRSigningLifecycleTests' passed at 2026-10-08 01:02:41.078.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 5.455 (5.456) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-08 01:02:41.078.
+	 Executed 127 tests, with 0 failures (0 unexpected) in 73.071 (73.084) seconds
+Test Suite 'Selected tests' passed at 2026-10-08 01:02:41.079.
+	 Executed 127 tests, with 0 failures (0 unexpected) in 73.071 (73.085) seconds

@@ -1,0 +1,94 @@
+{
+  "baseCommit": "2992218e6d0361d033f151e50755f4e9a87bbb7d",
+  "byteControls": {
+    "after": {
+      "failed": 0,
+      "passed": 19
+    },
+    "before": {
+      "failed": 2,
+      "passed": 17
+    },
+    "onlyFailedBaselineHex": [
+      "310d0a",
+      "36353533350d0a"
+    ]
+  },
+  "extractionChecks": {
+    "beforeAfterReadinessBodiesExactlyEqualTrackedSource": true,
+    "fullFixtureBodiesUnchangedExceptUnusedImports": true,
+    "testBodiesUnchangedExceptModuleImport": true
+  },
+  "historicalHarnessFailures": {
+    "readiness-package-xctests-own-cache-no-sandbox.log": "f313764d87262206b6a453367bfe4ee8149dd48da04318c178db8264843a309f",
+    "readiness-package-xctests-own-cache.log": "eb178bb81cdb52c16d259aba847ebeab1a2ae1e7f1c96a9bddc8d59ce74d4e0d",
+    "readiness-package-xctests.log": "55e89b37dcb946aeaad2e54328a6b56ead32b6b8d4f0b3f3b005b723598992d7",
+    "readiness-xctests-build.log": "7df59d79bcc6f81290b136fdc8daa6f55f9fdcc2085d51fa8d7790127fffeffb"
+  },
+  "nativeBinaries": {
+    "after": "6e69990f9a170bf60a74de45056ba4831d920ded7e20e5424a7c55cc74dc0233",
+    "before": "5f8305a251ae146f8f375d362c7d756a0dac7ed7cb077ebe91f2a8d2e79b4b33"
+  },
+  "packageAdaptations": [
+    "Declare macOS14 and Swift language5 to match repository",
+    "Remove unused RightClickHostFiles and RightClickCore imports from full fixture for macOS",
+    "Replace test module import with Fixture",
+    "No other helper or test-body changes"
+  ],
+  "remainingRED": [
+    "Fresh combined complete native Windows inventory plus new controls",
+    "Default SwiftPM runner cause remains unknown",
+    "Final combined Mac/Linux regression, source archive and metadata regeneration",
+    "Immutable assets/tap/fresh install/public alignment",
+    "Universal eleven-substrate goal"
+  ],
+  "sameSevenXCTestMethods": {
+    "baseline": {
+      "executed": 7,
+      "exit": 1,
+      "failedAssertions": 2,
+      "failedMethods": 1
+    },
+    "repaired": {
+      "elapsedSeconds": 2.834,
+      "executed": 7,
+      "exit": 0,
+      "failedAssertions": 0,
+      "failedMethods": 0
+    }
+  },
+  "scope": "Native macOS actual Foundation Process/FileHandle port grammar and full isolated fixture XCTest bodies; no Windows or full RightClickCore integrated proof.",
+  "sourcePins": {
+    "Tests/RightClickCoreTests/NativeFixtureReadinessTests.swift": {
+      "repairedSHA256": "b191879797b29a85de9c527b2ab9c671492621e22f7fec05bfaf8b60be50292b"
+    },
+    "Tests/RightClickCoreTests/NativeHTTPFixture.swift": {
+      "baselineSHA256": "05de4df590d5633dbcfdc5ef6170ae666b21522e3c764654df1696516be3177c",
+      "repairedSHA256": "f3796d6bb669c65f654e8dfeabc80c2a110a118db50b98fac7c503210608f5b0"
+    }
+  },
+  "testInventory": {
+    "baselineMethods": [
+      "testEmptyExistingMarkerWaitsForCompleteDecimalPort",
+      "testEmptyMarkerFailsWithinUnchangedBoundInsteadOfInventingReadiness",
+      "testZeroOversizedAndNonDecimalMarkersCannotBecomePorts",
+      "testExitedChildCannotPublishReadiness",
+      "testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted",
+      "testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr"
+    ],
+    "baselineMethodsRetained": true,
+    "currentMethods": [
+      "testEmptyExistingMarkerWaitsForCompleteDecimalPort",
+      "testEmptyMarkerFailsWithinUnchangedBoundInsteadOfInventingReadiness",
+      "testZeroOversizedAndNonDecimalMarkersCannotBecomePorts",
+      "testExitedChildCannotPublishReadiness",
+      "testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted",
+      "testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation",
+      "testReadinessFailureRetainsOnlyBoundedOwnerPrivateStderr"
+    ],
+    "newMethods": [
+      "testLFAndCRLFPortMarkersAreAcceptedWithoutTextModeTranslation"
+    ]
+  },
+  "toolchain": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0"
+}

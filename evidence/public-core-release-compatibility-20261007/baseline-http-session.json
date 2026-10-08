@@ -1,0 +1,328 @@
+{
+  "CoreTools": [
+    "context_actions",
+    "context_explain",
+    "context_inspect",
+    "context_providers",
+    "context_run",
+    "context_run_status",
+    "context_runtime"
+  ],
+  "cases": [
+    {
+      "actualRequest": {
+        "JSONBody": null,
+        "body": "safe-text",
+        "contentType": "text/plain",
+        "method": "POST",
+        "path": "/text",
+        "taskID": null
+      },
+      "confirmation": "awaiting_user",
+      "exactBody": true,
+      "independentSignedCorrelation": false,
+      "malformed": "accepted",
+      "malformedActualRequests": 1,
+      "record": {
+        "actionId": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:ee09feb1d158b8c0:Write%20text",
+        "events": [
+          "HTTP POST http://127.0.0.1:57346/text",
+          "provider returned 200"
+        ],
+        "evidence": {
+          "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+          "outcomeVerified": false,
+          "type": "provider_returned_text"
+        },
+        "executionId": "DA599812-011C-4F9F-AF6F-6FA4CC89ED2B",
+        "message": "HTTP provider returned 200; semantic outcome is unverified.",
+        "output": "safe-text",
+        "state": "accepted",
+        "title": "Write text"
+      },
+      "retainedResult": true,
+      "statusMatches": true,
+      "title": "Write text",
+      "wrongPinDenied": null
+    },
+    {
+      "actualRequest": {
+        "JSONBody": {
+          "priority": "high",
+          "value": "safe-json"
+        },
+        "body": "{\"priority\":\"high\",\"value\":\"safe-json\"}",
+        "contentType": "application/json",
+        "method": "POST",
+        "path": "/record",
+        "taskID": null
+      },
+      "confirmation": "awaiting_user",
+      "exactBody": true,
+      "independentSignedCorrelation": false,
+      "malformed": "failed",
+      "malformedActualRequests": 0,
+      "record": {
+        "actionId": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:f60a22167cda8e62:Write%20JSON",
+        "events": [
+          "HTTP POST http://127.0.0.1:57346/record",
+          "provider returned 200"
+        ],
+        "evidence": {
+          "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+          "outcomeVerified": false,
+          "type": "provider_returned_text"
+        },
+        "executionId": "B83ADB7B-99E7-4F7D-A4C4-F3F406832282",
+        "message": "HTTP provider returned 200; semantic outcome is unverified.",
+        "output": "{\"value\":\"safe-json\"}",
+        "state": "accepted",
+        "title": "Write JSON"
+      },
+      "retainedResult": true,
+      "statusMatches": true,
+      "title": "Write JSON",
+      "wrongPinDenied": null
+    },
+    {
+      "actualRequest": {
+        "JSONBody": null,
+        "body": "",
+        "contentType": null,
+        "method": "GET",
+        "path": "/records/name%20with%20space-%C3%A9",
+        "taskID": null
+      },
+      "confirmation": "awaiting_user",
+      "exactBody": true,
+      "independentSignedCorrelation": false,
+      "malformed": "failed",
+      "malformedActualRequests": 0,
+      "record": {
+        "actionId": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:5f651c43f0fa88ac:Read%20path",
+        "events": [
+          "HTTP GET http://127.0.0.1:57346/records/name%20with%20space-%C3%A9",
+          "provider returned 200"
+        ],
+        "evidence": {
+          "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+          "outcomeVerified": false,
+          "type": "provider_returned_text"
+        },
+        "executionId": "AB090188-5AAB-4ED2-A53A-D2729D1CFE7C",
+        "message": "HTTP provider returned 200; semantic outcome is unverified.",
+        "output": "{\"value\":\"name with space-\u00e9\"}",
+        "state": "accepted",
+        "title": "Read path"
+      },
+      "retainedResult": true,
+      "statusMatches": true,
+      "title": "Read path",
+      "wrongPinDenied": null
+    },
+    {
+      "actualRequest": {
+        "JSONBody": {
+          "priority": "low",
+          "value": "safe-combined"
+        },
+        "body": "{\"priority\":\"low\",\"value\":\"safe-combined\"}",
+        "contentType": "application/json",
+        "method": "POST",
+        "path": "/combined/part%20with%20space",
+        "taskID": null
+      },
+      "confirmation": "awaiting_user",
+      "exactBody": true,
+      "independentSignedCorrelation": false,
+      "malformed": "failed",
+      "malformedActualRequests": 0,
+      "record": {
+        "actionId": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:a86a6429d01aab99:Write%20combined",
+        "events": [
+          "HTTP POST http://127.0.0.1:57346/combined/part%20with%20space",
+          "provider returned 200"
+        ],
+        "evidence": {
+          "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+          "outcomeVerified": false,
+          "type": "provider_returned_text"
+        },
+        "executionId": "D2088AFF-4239-4A13-BC46-A033430E786A",
+        "message": "HTTP provider returned 200; semantic outcome is unverified.",
+        "output": "{\"value\":\"safe-combined\"}",
+        "state": "accepted",
+        "title": "Write combined"
+      },
+      "retainedResult": true,
+      "statusMatches": true,
+      "title": "Write combined",
+      "wrongPinDenied": null
+    }
+  ],
+  "label": "baseline",
+  "parameterAndAuthorityVariations": [
+    {
+      "action": {
+        "explanation": "Query variation",
+        "id": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:ffdf7ca27ab25f4c:Query%20variation",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private release compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Query variation"
+      },
+      "optionalParameterArgumentRejected": true,
+      "providerRequests": 1,
+      "result": {
+        "actionId": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:ffdf7ca27ab25f4c:Query%20variation",
+        "events": [
+          "HTTP POST http://127.0.0.1:57346/query",
+          "provider returned 200"
+        ],
+        "evidence": {
+          "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+          "outcomeVerified": false,
+          "type": "provider_returned_text"
+        },
+        "executionId": "CF94CBFA-C3B4-44C0-854F-FF7961EDCE5D",
+        "message": "HTTP provider returned 200; semantic outcome is unverified.",
+        "output": "{\"value\":\"safe\"}",
+        "state": "accepted",
+        "title": "Query variation"
+      },
+      "state": "accepted",
+      "title": "Query variation"
+    },
+    {
+      "action": {
+        "explanation": "Header variation",
+        "id": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:6d220bec51e738f5:Header%20variation",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private release compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Header variation"
+      },
+      "optionalParameterArgumentRejected": true,
+      "providerRequests": 1,
+      "result": {
+        "actionId": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:6d220bec51e738f5:Header%20variation",
+        "events": [
+          "HTTP POST http://127.0.0.1:57346/header",
+          "provider returned 200"
+        ],
+        "evidence": {
+          "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+          "outcomeVerified": false,
+          "type": "provider_returned_text"
+        },
+        "executionId": "F42CEBBA-6C91-46F8-8A69-22CC07DA5A8E",
+        "message": "HTTP provider returned 200; semantic outcome is unverified.",
+        "output": "{\"value\":\"safe\"}",
+        "state": "accepted",
+        "title": "Header variation"
+      },
+      "state": "accepted",
+      "title": "Header variation"
+    },
+    {
+      "action": {
+        "explanation": "Cookie variation",
+        "id": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:4a7933282f006bba:Cookie%20variation",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private release compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Cookie variation"
+      },
+      "optionalParameterArgumentRejected": true,
+      "providerRequests": 1,
+      "result": {
+        "actionId": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:4a7933282f006bba:Cookie%20variation",
+        "events": [
+          "HTTP POST http://127.0.0.1:57346/cookie",
+          "provider returned 200"
+        ],
+        "evidence": {
+          "boundary": "A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.",
+          "outcomeVerified": false,
+          "type": "provider_returned_text"
+        },
+        "executionId": "30260693-43C3-4C98-AAA2-24FD00084125",
+        "message": "HTTP provider returned 200; semantic outcome is unverified.",
+        "output": "{\"value\":\"safe\"}",
+        "state": "accepted",
+        "title": "Cookie variation"
+      },
+      "state": "accepted",
+      "title": "Cookie variation"
+    },
+    {
+      "action": {
+        "explanation": "Missing provider authority",
+        "id": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:643d57adf0d32ead:Missing%20provider%20authority",
+        "inputTypes": [
+          "public.plain-text"
+        ],
+        "invocation": "interactive",
+        "provider": {
+          "name": "Private release compatibility"
+        },
+        "requiresConfirmation": true,
+        "safety": "unknown",
+        "source": "system",
+        "supportLevel": "experimental",
+        "title": "Missing provider authority"
+      },
+      "optionalParameterArgumentRejected": false,
+      "providerRequests": 0,
+      "result": {
+        "actionId": "openapi:14a86ed8b8759b9be498f2176e0a43434866beb760c99cea46507ff116fa2e8c:643d57adf0d32ead:Missing%20provider%20authority",
+        "events": [],
+        "evidence": {
+          "boundary": "RIGHTCLICK found no credential for the exact reflected authority origin and security scheme. No provider transport occurred.",
+          "outcomeVerified": false,
+          "type": "authority_unavailable"
+        },
+        "executionId": "BFE77688-8F10-45F1-8E79-056C5C409274",
+        "message": "Required provider authority is unavailable.",
+        "state": "unavailable",
+        "title": "Missing provider authority"
+      },
+      "state": "unavailable",
+      "title": "Missing provider authority"
+    }
+  ],
+  "runtime": {
+    "executablePath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "executableRealPath": "/opt/homebrew/Cellar/rightclick/0.2.2/bin/rightclick",
+    "executableSHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "pid": 84916,
+    "product": "RIGHTCLICK",
+    "transport": "http",
+    "version": "0.2.2"
+  },
+  "transport": "http"
+}

@@ -1,0 +1,123 @@
+{
+  "CoreTools": [
+    "context_actions",
+    "context_explain",
+    "context_inspect",
+    "context_providers",
+    "context_run",
+    "context_run_status",
+    "context_runtime"
+  ],
+  "artifacts": [
+    {
+      "SHA256": "4ebfc7dd547355df5b11b6ec897786391c1c6d31951ed9da16d45e282211aaf9",
+      "bytes": 13930,
+      "path": "baseline-session.json"
+    },
+    {
+      "SHA256": "2053a42fc5a1a9a7d83f6f4baee89cdf24a31f94f8f130782ed4adca33634164",
+      "bytes": 7828,
+      "path": "candidate-cleared-bearer-requirement-receipt.json"
+    },
+    {
+      "SHA256": "175d58f6fa8352b2b1d5b97532b1e516873d57f9ed6bec6f01439cd7a2353288",
+      "bytes": 7724,
+      "path": "candidate-http-unavailable-receipt.json"
+    },
+    {
+      "SHA256": "3debb60815029b0e3ea164f4c62307716b435905d9e611d33fa3b2bb9b4b56a2",
+      "bytes": 7724,
+      "path": "candidate-malformed-response-receipt.json"
+    },
+    {
+      "SHA256": "eff80ccc19275083138d2f1c4c6e319a387a21a7dd1b2692eb3e32fb909755fe",
+      "bytes": 95414,
+      "path": "candidate-session.json"
+    },
+    {
+      "SHA256": "9b5862a044f15edeaa607dd84ece61598bf3fdc8bd8e4ce80fbb3bdbc44f01eb",
+      "bytes": 7672,
+      "path": "candidate-valid-json-receipt.json"
+    },
+    {
+      "SHA256": "9f1bcff87046c4f75518e34588e1d3353fb6747cb4054bfe36d1e242e61f07f8",
+      "bytes": 7728,
+      "path": "candidate-wrong-response-type-receipt.json"
+    },
+    {
+      "SHA256": "0f22900e0b88be75fb820a4cc2763bed6aeafbfe685f6836ad9e27cac94d837b",
+      "bytes": 60,
+      "path": "candidate.stderr.log"
+    },
+    {
+      "SHA256": "c15e7cb97b87e08dcaa238f1fea9fec4720694c1823d80e92a65d2c109286476",
+      "bytes": 5362,
+      "path": "executed-probe.py.gz"
+    },
+    {
+      "SHA256": "192f477481f98e5ae01bdedfdc753ac9c8cbce565f9649d445ec2ac002113689",
+      "bytes": 6516,
+      "path": "independent-verification.json"
+    },
+    {
+      "SHA256": "0ea4272f60b0835974808e51a8d4d7ee673f186d4d0c88c9260ff32e79dbcc55",
+      "bytes": 118641,
+      "path": "summary.json"
+    },
+    {
+      "SHA256": "0d6b876654a323653daf15d6cd427ce58c2b88f554278a4e46a8f4bf65c0cc78",
+      "bytes": 32,
+      "path": "trusted-public-key.raw"
+    }
+  ],
+  "baseline": {
+    "SHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "kind": "reused actual immutable installed 0.2.2 evidence",
+    "newBaselineInvocations": 0,
+    "sessionSHA256": "4ebfc7dd547355df5b11b6ec897786391c1c6d31951ed9da16d45e282211aaf9",
+    "sourceEvidencePath": "/private/tmp/rightclick-authority-resume-20261007/evidence/openapi-response-release-compatibility-20261007",
+    "sourceManifestSHA256": "c963f1b5324c3a62192c97ef3833ba1f34ef3f1601116ffe714094071dcfde9b",
+    "version": "0.2.2"
+  },
+  "candidate": {
+    "SHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+    "buildSourceProvidedByRoot": "1b8dc070361f2a6205698b9a69e4323828eb2a8d",
+    "independentlyReadGitSourcesTree": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+    "nativePlatform": "macOS",
+    "path": "/private/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+    "version": "0.2.3"
+  },
+  "comparisonPairs": 9,
+  "executedProbeSHA256": "5ac5d521993af8cd6f1b2a5c2909e3b412c3cf03131cc922f72a32f5e54fd3fc",
+  "failureBoundary": "Malformed JSON and wrong-type responses follow actual fixture writes; final runtime reports failed with no output and signed outcome unverified. HTTP503 has one request/no fixture write and rejected/nooutput. This does not claim external no-effect from receipt signature.",
+  "freshBaselineInvocations": 0,
+  "freshCandidateFixtureWrites": 4,
+  "freshCandidateOperationRequests": 5,
+  "independentlyPinnedAndCorrelatedReceipts": 5,
+  "inheritedGaps": [
+    "GET query operation absent in both catalogues; no invocation fabricated.",
+    "Missing provider bearer unavailable in both; no provider credential was provisioned."
+  ],
+  "notProved": [
+    "Actual provider credential-backed TLS authority on product public path",
+    "Issuer downscoping or authenticated subject broker",
+    "All platforms/substrates release acceptance"
+  ],
+  "privateMaterial": "Disposable HTTP access bearer and signing private key/config only in temporary memory/environment/files; not retained. Public pin, generated receipt/task/lease IDs and safe owned request/response observations retained.",
+  "probeExitCode": 0,
+  "publicHTTPAuth": {
+    "correctDisposableBearer": "accepted",
+    "missingBearerHTTP": 401,
+    "unauthorizedOperationRequests": 0,
+    "wrongBearerHTTP": 401
+  },
+  "receiptMismatchDenials": {
+    "wrongLease": 5,
+    "wrongPin": 5,
+    "wrongTask": 5
+  },
+  "result": "PASS: all nine retained baseline response/auth/discovery states, output presence and operation bodies/effect counts preserved against exact final release bytes.",
+  "retainedAtUTC": "2026-10-07T21:31:29.939654+00:00",
+  "specificationAcquisitionRequestsIncludedInCount": false,
+  "version": 1
+}

@@ -1,0 +1,44 @@
+name: Bounded native compiler context matrix
+on:
+  push:
+    branches: [codex/windows-current-compiler-context-matrix-20261008]
+    paths: ['.github/**']
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+        with:
+          python-version: '3.12'
+      - name: Matrix and owned-process controls
+        timeout-minutes: 3
+        run: |
+          python -u .github/scripts/tests/test_windows_test_supervisor.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -u .github/scripts/tests/test_windows_compiler_context_matrix.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Native fixed context matrix and sealed compiler streams
+        # Query and five packed profiles stay5s; five owned acquisition profiles
+        # have an explicit30s compiler deadline, plus ≤6s drain/cleanup each.
+        # Worst-case sampling246s + source checks240s + crypto60s <600s.
+        timeout-minutes: 10
+        run: |
+          $compilerProbeOpenSSL = (Get-Command openssl -ErrorAction Stop).Source
+          python -u .github/scripts/windows_compiler_context_matrix.py --openssl $compilerProbeOpenSSL
+          exit $LASTEXITCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: windows-compiler-context-matrix-${{ github.sha }}
+          path: compiler-matrix-safe
+          if-no-files-found: error
+          retention-days: 7

@@ -1,0 +1,36 @@
+[
+  {
+    "actionId": "grpc:a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552:8f88a99cf9dc3b02:rightclick.pressure.Streams.Echo",
+    "events": [
+      "gRPC unary /rightclick.pressure.Streams/Echo",
+      "provider returned OK"
+    ],
+    "evidence": {
+      "boundary": "gRPC status OK plus successful protobuf decoding establishes provider acceptance only. It does not independently verify the user's intended external outcome.",
+      "outcomeVerified": false,
+      "type": "provider_acceptance"
+    },
+    "executionId": "1BA36899-4277-438E-ACCA-E0A7DBDA24A5",
+    "message": "The gRPC provider returned OK and a protobuf response matching the reflected descriptor. Semantic outcome is unverified.",
+    "output": "{\"value\":\"parity-c9ea4760dec14877b2602e9539206949\"}",
+    "state": "accepted",
+    "title": "gRPC rightclick.pressure.Streams/Echo"
+  },
+  {
+    "actionId": "grpc:a22c6bf41cb6c98cf01049de43570856e80a9afcbe72ec116132d5f0fa39a552:8f88a99cf9dc3b02:rightclick.pressure.Streams.Echo",
+    "events": [
+      "gRPC unary /rightclick.pressure.Streams/Echo",
+      "provider returned OK"
+    ],
+    "evidence": {
+      "boundary": "gRPC status OK plus successful protobuf decoding establishes provider acceptance only. It does not independently verify the user's intended external outcome.",
+      "outcomeVerified": false,
+      "type": "provider_acceptance"
+    },
+    "executionId": "1BA36899-4277-438E-ACCA-E0A7DBDA24A5",
+    "message": "The gRPC provider returned OK and a protobuf response matching the reflected descriptor. Semantic outcome is unverified.",
+    "output": "{\"value\":\"parity-c9ea4760dec14877b2602e9539206949\"}",
+    "state": "accepted",
+    "title": "gRPC rightclick.pressure.Streams/Echo"
+  }
+]

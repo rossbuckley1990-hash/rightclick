@@ -1,0 +1,771 @@
+[
+  {
+    "runtime": "before-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "rcir-crash-acceptance",
+          "version": "1"
+        }
+      }
+    },
+    "response": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.2"
+        }
+      }
+    }
+  },
+  {
+    "runtime": "before-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list",
+      "params": {}
+    },
+    "response": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "runtime": "before-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"executablePath\" : \"/build/aarch64-unknown-linux-gnu/debug/rightclick\",\n  \"executableRealPath\" : \"/build/aarch64-unknown-linux-gnu/debug/rightclick\",\n  \"executableSHA256\" : \"ac10ada413f207e0ba7fbc16cd31831c764d622ed14f853ddeedfeed8a042cb2\",\n  \"pid\" : 11,\n  \"platform\" : \"Linux\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"stdio\",\n  \"version\" : \"0.2.2\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "before-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "tools/call",
+      "params": {
+        "name": "context_inspect",
+        "arguments": {
+          "item": "Disposable journal crash proof"
+        }
+      }
+    },
+    "response": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"byteCount\" : 30,\n  \"display\" : \"Disposable journal crash proof\",\n  \"isDirectory\" : false,\n  \"kind\" : \"text\",\n  \"text\" : \"Disposable journal crash proof\",\n  \"typeDescription\" : \"Plain text\",\n  \"typeIdentifier\" : \"public.plain-text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "before-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "method": "tools/call",
+      "params": {
+        "name": "context_providers",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "[\n  {\n    \"capabilityTitles\" : [\n      \"Delegate a task to RIGHTCLICK disposable delegated agent\"\n    ],\n    \"name\" : \"RIGHTCLICK disposable delegated agent\",\n    \"source\" : \"a2a\"\n  }\n]",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "before-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "Disposable journal crash proof"
+        }
+      }
+    },
+    "response": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actions\" : [\n    {\n      \"explanation\" : \"Delegate a task to RIGHTCLICK disposable delegated agent\",\n      \"id\" : \"a2a:41313b962400c941c28c202b9d9e9ff580b91bd4dafd20a6241fe022d8c3cec3:delegate\",\n      \"inputTypes\" : [\n        \"public.plain-text\"\n      ],\n      \"invocation\" : \"direct\",\n      \"provider\" : {\n        \"name\" : \"RIGHTCLICK disposable delegated agent\"\n      },\n      \"requiresConfirmation\" : true,\n      \"safety\" : \"external_share\",\n      \"source\" : \"system\",\n      \"supportLevel\" : \"public_supported\",\n      \"title\" : \"Delegate a task to RIGHTCLICK disposable delegated agent\"\n    }\n  ],\n  \"contentType\" : \"public.plain-text\",\n  \"item\" : \"Disposable journal crash proof\",\n  \"kind\" : \"text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "before-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "tools/call",
+      "params": {
+        "name": "context_explain",
+        "arguments": {
+          "item": "Disposable journal crash proof",
+          "actionId": "a2a:41313b962400c941c28c202b9d9e9ff580b91bd4dafd20a6241fe022d8c3cec3:delegate"
+        }
+      }
+    },
+    "response": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"id\" : \"a2a:41313b962400c941c28c202b9d9e9ff580b91bd4dafd20a6241fe022d8c3cec3:delegate\",\n  \"inputs\" : [\n    \"public.plain-text\"\n  ],\n  \"invocation\" : \"direct\",\n  \"metadata\" : {\n    \"agentCardURL\" : \"http://127.0.0.1:44279/.well-known/agent.json\",\n    \"authority\" : \"public endpoint; exact invocation lease\",\n    \"description\" : \"Persist one independently observable challenge\",\n    \"descriptorSHA256\" : \"39367cf70c70a081cd3404436d40af990bc2966bc664569d26fbabe25be2a22b\",\n    \"endpoint\" : \"http://127.0.0.1:44279/a2a\",\n    \"executionMode\" : \"deferred\",\n    \"protocolVersion\" : \"0.2.6\",\n    \"requestJSONSchema\" : \"{\\\"additionalProperties\\\":false,\\\"properties\\\":{\\\"message\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"message\\\"],\\\"type\\\":\\\"object\\\"}\",\n    \"skills\" : \"[{\\\"description\\\":\\\"Write one disposable nonce-bound result\\\",\\\"id\\\":\\\"persist-challenge\\\",\\\"name\\\":\\\"Persist challenge\\\",\\\"tags\\\":[\\\"proof\\\"]}]\",\n    \"substrate\" : \"a2a\"\n  },\n  \"output\" : [\n    \"public.plain-text\"\n  ],\n  \"provider\" : {\n    \"name\" : \"RIGHTCLICK disposable delegated agent\"\n  },\n  \"reflectorID\" : \"a2a:41313b962400c941c28c202b9d9e9ff580b91bd4dafd20a6241fe022d8c3cec3\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"external_share\",\n  \"source\" : \"system\",\n  \"supportLevel\" : \"public_supported\",\n  \"title\" : \"Delegate a task to RIGHTCLICK disposable delegated agent\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "before-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "Disposable journal crash proof",
+          "actionId": "a2a:41313b962400c941c28c202b9d9e9ff580b91bd4dafd20a6241fe022d8c3cec3:delegate",
+          "confirmed": true,
+          "arguments": {
+            "message": "{\"challenge\":\"a5b5c2e7bdec479ca1c2c85053a66f40\",\"value\":\"argument-must-not-enter-journal-af634ae3808c47959de77e0f1bd036c2\"}"
+          }
+        }
+      }
+    },
+    "response": {
+      "id": 8,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"a2a:41313b962400c941c28c202b9d9e9ff580b91bd4dafd20a6241fe022d8c3cec3:delegate\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No host-selected independent observer; remote completion remains unverified.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"rcir_deferred_task\"\n  },\n  \"executionId\" : \"AA1AAA2E-E35B-4BF9-86B4-30EF3227B6C8\",\n  \"message\" : \"Admitted remote task is accepted; outcome remains unverified.\",\n  \"output\" : \"{\\\"id\\\": \\\"FC7CE07E-D4A9-4F2E-B99F-06B042491BAF\\\", \\\"jsonrpc\\\": \\\"2.0\\\", \\\"result\\\": {\\\"contextId\\\": \\\"4691ca39-91b4-42a8-ba01-978b15698a6d\\\", \\\"id\\\": \\\"dfe2eb11-4a40-4bf8-a92a-e8a6f2e2e070\\\", \\\"kind\\\": \\\"task\\\", \\\"status\\\": {\\\"state\\\": \\\"submitted\\\"}}}\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"3B357279-6E29-49C0-9C66-7FCA8D47CCC1\",\n    \"observationBoundary\" : \"No host-selected independent observer; remote completion remains unverified.\",\n    \"outcome\" : \"unverified\",\n    \"phase\" : \"accepted\",\n    \"taskEvents\" : [\n      \"UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5NzkwNzMxOHM1OnZhbHVlbg==\"\n    ],\n    \"taskID\" : \"D0ABD181-8704-487A-9A15-43D9430B3763\",\n    \"version\" : 1\n  },\n  \"state\" : \"started\",\n  \"title\" : \"Delegate a task to RIGHTCLICK disposable delegated agent\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "after-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "rcir-crash-acceptance",
+          "version": "1"
+        }
+      }
+    },
+    "response": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.2"
+        }
+      }
+    }
+  },
+  {
+    "runtime": "after-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "method": "tools/list",
+      "params": {}
+    },
+    "response": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "runtime": "after-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"executablePath\" : \"/build/aarch64-unknown-linux-gnu/debug/rightclick\",\n  \"executableRealPath\" : \"/build/aarch64-unknown-linux-gnu/debug/rightclick\",\n  \"executableSHA256\" : \"ac10ada413f207e0ba7fbc16cd31831c764d622ed14f853ddeedfeed8a042cb2\",\n  \"pid\" : 33,\n  \"platform\" : \"Linux\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"stdio\",\n  \"version\" : \"0.2.2\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "after-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "AA1AAA2E-E35B-4BF9-86B4-30EF3227B6C8"
+        }
+      }
+    },
+    "response": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"\",\n  \"events\" : [\n    \"task=D0ABD181-8704-487A-9A15-43D9430B3763\",\n    \"lease=3B357279-6E29-49C0-9C66-7FCA8D47CCC1\",\n    \"generation=1\",\n    \"requestSHA256=3ea52f036829c3cd182f6f4ec277a9505c9c80569656818985c27826f3424820\",\n    \"lastDurablePhase=accepted\",\n    \"lastDurableState=started\",\n    \"lastDurableOutcome=unverified\",\n    \"receiptSHA256=unavailable\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"Durable identity/status summary, not a signed receipt or current independent observation. No authority, remote polling or mutation replay is restored.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"rcir_recovered_journal\"\n  },\n  \"executionId\" : \"AA1AAA2E-E35B-4BF9-86B4-30EF3227B6C8\",\n  \"message\" : \"Invocation survived restart without a live execution session. Its external outcome is unknown. Do not retry blindly.\",\n  \"state\" : \"unknown\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "after-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "AA1AAA2E-E35B-4BF9-86B4-30EF3227B6C8"
+        }
+      }
+    },
+    "response": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"\",\n  \"events\" : [\n    \"task=D0ABD181-8704-487A-9A15-43D9430B3763\",\n    \"lease=3B357279-6E29-49C0-9C66-7FCA8D47CCC1\",\n    \"generation=1\",\n    \"requestSHA256=3ea52f036829c3cd182f6f4ec277a9505c9c80569656818985c27826f3424820\",\n    \"lastDurablePhase=accepted\",\n    \"lastDurableState=started\",\n    \"lastDurableOutcome=unverified\",\n    \"receiptSHA256=unavailable\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"Durable identity/status summary, not a signed receipt or current independent observation. No authority, remote polling or mutation replay is restored.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"rcir_recovered_journal\"\n  },\n  \"executionId\" : \"AA1AAA2E-E35B-4BF9-86B4-30EF3227B6C8\",\n  \"message\" : \"Invocation survived restart without a live execution session. Its external outcome is unknown. Do not retry blindly.\",\n  \"state\" : \"unknown\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "after-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "AA1AAA2E-E35B-4BF9-86B4-30EF3227B6C8"
+        }
+      }
+    },
+    "response": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"\",\n  \"events\" : [\n    \"task=D0ABD181-8704-487A-9A15-43D9430B3763\",\n    \"lease=3B357279-6E29-49C0-9C66-7FCA8D47CCC1\",\n    \"generation=1\",\n    \"requestSHA256=3ea52f036829c3cd182f6f4ec277a9505c9c80569656818985c27826f3424820\",\n    \"lastDurablePhase=accepted\",\n    \"lastDurableState=started\",\n    \"lastDurableOutcome=unverified\",\n    \"receiptSHA256=unavailable\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"Durable identity/status summary, not a signed receipt or current independent observation. No authority, remote polling or mutation replay is restored.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"rcir_recovered_journal\"\n  },\n  \"executionId\" : \"AA1AAA2E-E35B-4BF9-86B4-30EF3227B6C8\",\n  \"message\" : \"Invocation survived restart without a live execution session. Its external outcome is unknown. Do not retry blindly.\",\n  \"state\" : \"unknown\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "runtime": "after-crash",
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "AA1AAA2E-E35B-4BF9-86B4-30EF3227B6C8"
+        }
+      }
+    },
+    "response": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"\",\n  \"events\" : [\n    \"task=D0ABD181-8704-487A-9A15-43D9430B3763\",\n    \"lease=3B357279-6E29-49C0-9C66-7FCA8D47CCC1\",\n    \"generation=1\",\n    \"requestSHA256=3ea52f036829c3cd182f6f4ec277a9505c9c80569656818985c27826f3424820\",\n    \"lastDurablePhase=accepted\",\n    \"lastDurableState=started\",\n    \"lastDurableOutcome=unverified\",\n    \"receiptSHA256=unavailable\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"Durable identity/status summary, not a signed receipt or current independent observation. No authority, remote polling or mutation replay is restored.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"rcir_recovered_journal\"\n  },\n  \"executionId\" : \"AA1AAA2E-E35B-4BF9-86B4-30EF3227B6C8\",\n  \"message\" : \"Invocation survived restart without a live execution session. Its external outcome is unknown. Do not retry blindly.\",\n  \"state\" : \"unknown\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

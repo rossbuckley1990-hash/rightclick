@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "scope": "Supported REST/OpenAPI safe public invocation and existing native macOS unary gRPC only; actual previous-version baseline and exact final binary.",
+  "finalBinary": {
+    "version": "0.2.3",
+    "SHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+    "sourceClosure": "c7414e1dc9cf28c98262aa933e40166113f66ba8",
+    "binarySourceCommit": "1b8dc070361f2a6205698b9a69e4323828eb2a8d"
+  },
+  "baseline": {
+    "version": "0.2.2",
+    "SHA256": "d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d",
+    "retainedActualRESTSummarySHA256": "755678b7e36a478269a5b726c1b5761e8b38f5ee4475b3e26f1dd362123e7c81",
+    "actualNewBaselineInvocationsInFinalRepeat": 0
+  },
+  "REST": {
+    "supportedShapeTransportPairs": 8,
+    "actualFreshCandidateRequests": 14,
+    "supportedBodiesAndPathsPreserved": true,
+    "receiptsVerifiedByIndependentPinnedKey": 14,
+    "verificationBoundary": "Actual fixture requests/bodies/returned values and signed correlation. Runtime records remain accepted and outcomeVerified=false. No provider credential was provisioned.",
+    "scopeLabelCorrection": "Raw summary inherits the original candidate6642 label. Runtime provenance of both new sessions establishes final23d92 binary. The retained summary also contains an earlier 2f20 source-build candidate; only its two actual 0.2.2 baseline sessions are used in this comparison.",
+    "retainedStatusCheck": {
+      "scope": "Eight main supported shape/transport cases only; variation cases do not query status.",
+      "stateAndOutputMatch": true,
+      "RCIRObjectMatches": true,
+      "fullRawStatusRetained": false
+    }
+  },
+  "unary": {
+    "discovery": "Actual native LocalOnly DNS-SD, Cocoa service acquisition, official gRPC reflection",
+    "canonicalOperationsUsed": 7,
+    "actualNativeCalls": 1,
+    "independentFileEffectAndReturnValue": true,
+    "independentArtifactAudit": "PASS",
+    "fullRetainedStatusMatches": true,
+    "verificationBoundary": "Runtime reports accepted with semantic outcome unverified; an external owned-file check establishes this one unary effect. No signed unary receipt verification is claimed by this bundle."
+  },
+  "introducedLosses": [],
+  "intentionalHardening": [
+    "Undeclared text-body arguments rejected before dispatch; old runtime ignored them."
+  ],
+  "inheritedLimitations": [
+    "Optional query/header/cookie omission accepted; supplying those values as body arguments fails in both.",
+    "Missing reflected bearer authority remains unavailable without dispatch.",
+    "Caller subject/audience and issuer downscope not demonstrated."
+  ],
+  "notDemonstrated": [
+    "New gRPC stream support",
+    "Windows/Linux native discovery",
+    "All eleven substrate acceptance",
+    "Fresh restricted AI",
+    "Shipping, public tap alignment, fresh user installation"
+  ],
+  "privacy": {
+    "rawStderrAndHostHomeLogsExcluded": true,
+    "privateSigningKeyExcluded": true,
+    "signedReceiptValuesUnmodified": true,
+    "providerCountsInUnaryRepliesAreIncidentalAndDoNotEstablishInstalledConnectorCoverage": true
+  },
+  "reproducer": {
+    "executedOriginalSHA256": "3489a94dd7edc1c7fe4653b46fcabd793422eee894fe169ad9a4267c2b17c7da",
+    "relocatableForkChanges": "Only local verifier import path; this fork has not been invoked against live runtimes.",
+    "receiptVerifierSHA256": "05651856afd2d4f1730c42cb6808b1c7e13b831e86939751a22bc6a116418966"
+  }
+}

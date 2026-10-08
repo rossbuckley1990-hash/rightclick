@@ -1,0 +1,15 @@
+{
+  "observerCredentialReference": "/private/tmp/rightclick-proof-lab-20261007/kafka-observer.json",
+  "providerCredentialReference": "/private/tmp/rightclick-proof-lab-20261007/kafka-publisher.json",
+  "runtimeOutcome": "unverified",
+  "independentObservedRecord": {
+    "topic": "rightclick.proof",
+    "key": "runtime-direct-proof",
+    "value": "{\"challenge\":\"runtime-direct-proof\",\"message\":\"hello from RIGHTCLICK\"}",
+    "timestamp": 1791379086847,
+    "partition": 0,
+    "offset": 4
+  },
+  "allExactFieldsMatch": true,
+  "runtimeIndependentVerification": "RED until host-selected structured observer is integrated; external workbench verification alone does not promote runtime"
+}

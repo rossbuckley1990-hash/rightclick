@@ -1,3 +1,4 @@
+#if os(macOS)
 #if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
 import Foundation
 
@@ -712,4 +713,6 @@ extension BonjourGRPCSource:
         )
     }
 }
+#endif
+
 #endif
