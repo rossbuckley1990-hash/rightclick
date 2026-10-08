@@ -5,14 +5,14 @@ binary and an observed execution establish different facts. Record each identity
 before describing a capability as available. This inventory is not the eleven
 substrate acceptance scorecard.
 
-Reconciliation snapshot on 2026-10-08, after the first exact-source CI wave exposed portable build and owned fixture failures; the reviewed repair candidate awaits fresh CI and public distribution gates:
+Reconciliation snapshot on 2026-10-08, after two exact-source CI waves exposed portable build, focused-gate and owned fixture failures; the reviewed repair candidate awaits fresh CI and public distribution gates:
 
 | Identity | Exact scope |
 | --- | --- |
 | Remote main | `381a87b53dbd0046f1acef1984587199da0e630c`; the direct A2A, Kafka, Kubernetes, WASM and D-Bus compiler files below are absent at this SHA |
-| Remote universal candidate | [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49), `045d4940f52d39768d2c691e04b659716e08f128`; the reviewed portable composition is published. Its first native CI wave exposed the stale Linux process callsite, Swift 6.2 manifest inference and protected-reference fixture parent aliases |
+| Remote universal candidate | [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49), `b407824dca9dde8129592bb029bb236eddedbcc7`; the first reviewed repair composition is published. Its native Linux test build exposed the missing derived host diagnostic, and its focused RCIR gate omitted the real execution-host dependency |
 | Remote portable candidate | [PR99](https://github.com/rossbuckley1990-hash/rightclick/pull/99), `6a18aaae3ae3a15b9f6c78f189adc695ae11585a`; extracts the existing engine into portable modules, with macOS adapters and Linux composition |
-| Reviewed repair composition | `76a3852e52d28540cccbf7ff32a00965c0b5b0a5`, Sources `1122145c99f43fefa859643632c839b7156e0bfa`, Tests `2371a0d45ef2f4c4d14dc555cd065b839f9d2dd2`; retains the frozen403 foundation, all profile/process/authority repairs and 045 ancestry. The typed manifest, one thin Linux initializer label and ten owned producer parent resolutions are independently reviewed. Fresh native and provider CI remains required |
+| Reviewed repair composition | `4473b0d6884f33a04b4b21705df6fe59444fa0b9`, Sources `7d9c25e668376e9cdd62bd58540edfc9b7548a3d`, Tests `2371a0d45ef2f4c4d14dc555cd065b839f9d2dd2`; retains the frozen403 foundation, all profile/process/authority repairs and 045/b407 ancestry. The latest reviewed changes add the derived current-host diagnostic without altering Codable fields and run the same six RCIR classes through the actual package graph. Fresh native and provider CI remains required |
 | Earlier composed Mac proof | `fe10f424e5584cd3e2c6a5cf1fcc9eacdb0ecc48`, Sources `6c624ad4503999360938fa0c8c083010f9fad7c0`, same Tests tree; actual complete Mac run 1107 = 1076 PASS, 31 SKIP, zero FAIL. This is a preserved source-bound result, not a claim that the newly composed manifest/Linux/script bytes were tested |
 | Installed and connected stable runtime | v0.2.2, serving PID `67552`, executable SHA256 `d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d`, stdio; observed through `context_runtime` on 2026-10-08. This does not attest to candidate source |
 
@@ -70,6 +70,21 @@ portable Core7) each measured fail → pass → fail when only the producer-owne
 parent was resolved before provisioning. Untrusted authority references and every
 other assertion remain unchanged. These controlled positives do not establish
 fresh native Linux, current CI or installed distribution acceptance.
+
+The b407 wave independently passed the actual Swift 6.2 Linux ARD job and the
+Swift 6.2.4 Mac ARD job; the previously failing manifest inference is repaired.
+All measured Linux provider failures then stopped before test execution because
+`DoctorReport.platform` was missing. The reviewed computed property derives the
+current host from `RuntimePlatform.name`; it adds no serialized field or remote
+host attestation. Both focused RCIR jobs exposed a synthetic source-copy gate that
+omitted the real execution host. The repaired gate preserves all six classes and
+105 existing assertions through the actual package graph. A native Mac command
+using the exclusively loaned existing scratch passed all 105 cases; this is not
+the literal disposable-script run, fresh Linux CI or complete product acceptance.
+The b407 Mac A2A proof independently retained exactly seven operation definitions,
+three delegated requests, two effect observations and twelve distinct pinned
+receipt signatures across public and native lifecycle evidence. Its failed Linux
+siblings and absent exported executable-image bytes remain explicit limitations.
 
 Windows is not a supported v0.2.3 release host. Actual protected-reference and
 native environment-boundary controls have been run, and authority failures were
