@@ -43,12 +43,24 @@ struct RCIRHostConfiguration: Codable {
     var deniedCapabilities: [String] = []
     var observers: [String: Observer]? = nil
     var signingKeyFile: String? = nil
+    var actenon: ActenonHostConfiguration? = nil
 
     static func load() throws -> Self {
         guard let path = ProcessInfo.processInfo.environment["RIGHTCLICK_RCIR_CONFIG"] else { return Self() }
         let data = try protectedRead(path, maximum: 65_536)
         guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-              Set(object.keys).isSubset(of: ["version", "revision", "deniedCapabilities", "observers", "signingKeyFile"]) else { throw RCIRError.invalidContract }
+              Set(object.keys).isSubset(of: ["version", "revision", "deniedCapabilities", "observers", "signingKeyFile", "actenon"]) else { throw RCIRError.invalidContract }
+        if let actenon = object["actenon"] as? [String: Any] {
+            let allowed = Set([
+                "enabled", "verifierExecutable", "verifierSHA256", "intentFile", "proofFile",
+                "publicKeyJWKFile", "audience", "tenantID", "subjectType", "subjectID", "replayFile"
+            ])
+            guard Set(actenon.keys).isSubset(of: allowed), actenon["enabled"] is Bool else {
+                throw RCIRError.invalidContract
+            }
+        } else if object["actenon"] != nil {
+            throw RCIRError.invalidContract
+        }
         if let observers = object["observers"] as? [String: [String: Any]] {
             for value in observers.values where Set(value.keys) != ["urlTemplate", "expectedArgument"] {
                 throw RCIRError.invalidContract
@@ -59,7 +71,7 @@ struct RCIRHostConfiguration: Codable {
         return config
     }
 
-    fileprivate static func protectedRead(_ path: String, maximum: Int) throws -> Data {
+    static func protectedRead(_ path: String, maximum: Int) throws -> Data {
         let descriptor = open(path, O_RDONLY | O_NOFOLLOW | O_CLOEXEC)
         guard descriptor >= 0 else { throw RCIRError.authorityDenied }
         defer { close(descriptor) }
@@ -93,6 +105,7 @@ public final class RCIRExecutionHost {
     var consumptionArguments: (CapabilityValue) -> CapabilityValue = { $0 }
     var beforeConsume: ((RCIRLease) throws -> Void)?
     var beforeStart: ((RCIRLease, (_ enqueue: () -> Void) throws -> Void, () -> Void) throws -> Void)?
+    var actenonAuthority = ActenonAuthorityGate()
 
     public init() {}
 
@@ -134,6 +147,15 @@ public final class RCIRExecutionHost {
             let contract = RCIRContract(abi: abi, scopes: [scope], verification: combinedObserverContract)
             let principal = "local-owner:" + abi.reflectorID
             let binding = try admission.publishInvocation(contract, discovery: discovery, authenticatedPrincipal: principal)
+            let actenonAuthorization = try actenonAuthority.verifyIfRequired(
+                configuration: config.actenon,
+                capability: capability,
+                binding: binding,
+                arguments: arguments,
+                scope: scope,
+                requestID: executionID,
+                now: now()
+            )
             func policy(_ config: RCIRHostConfiguration) throws -> RCIRPolicy {
                 let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
                 let encoded = try encoder.encode(config)
@@ -165,8 +187,30 @@ public final class RCIRExecutionHost {
                             self.admission.withdraw(reflectorID: abi.reflectorID)
                             throw RCIRError.staleBinding
                         }
-                        try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments), authority: authority(),
-                            policy: policy(self.configuration()), now: self.now()) {
+                        let freshConfig = try self.configuration()
+                        let freshAuthorization = try self.actenonAuthority.verifyIfRequired(
+                            configuration: freshConfig.actenon,
+                            capability: capability,
+                            binding: binding,
+                            arguments: arguments,
+                            scope: scope,
+                            requestID: executionID,
+                            now: self.now()
+                        )
+                        try self.actenonAuthority.requireSameAuthorization(actenonAuthorization, freshAuthorization)
+                        if let freshAuthorization {
+                            try self.actenonAuthority.claimReplay(
+                                freshAuthorization,
+                                configuration: freshConfig.actenon
+                            )
+                        }
+                        try self.admission.consumeAndStart(
+                            lease,
+                            arguments: self.consumptionArguments(arguments),
+                            authority: authority(),
+                            policy: policy(freshConfig),
+                            now: self.now()
+                        ) {
                             dispatched = true
                             enqueue()
                         }
@@ -254,6 +298,9 @@ public final class RCIRExecutionHost {
                     : "Separate same-origin read-back, same service trust source; missing observation remains unverified.")
             record.events.append(contentsOf: ["RCIR admitted generation=\(binding.generation)",
                 "RCIR consumed lease=\(lease.id.uuidString)", "RCIR task=\(task.id.uuidString) outcome=\(task.outcome.rawValue)"])
+            if let actenonAuthorization {
+                record.events.append("Actenon proof \(actenonAuthorization.proofID) verified before dispatch")
+            }
             return record
         } catch {
             return ExecutionRecord(executionId: executionID, actionId: capability.id, title: capability.title,
