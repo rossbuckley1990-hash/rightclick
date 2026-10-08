@@ -1,0 +1,157 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rc-fabric
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fabric-agent
+  namespace: rc-fabric
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: fabric-agent
+  namespace: rc-fabric
+rules:
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["create","get","list","delete"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get","list","delete"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["get"]
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get","list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fabric-agent
+  namespace: rc-fabric
+subjects:
+- kind: ServiceAccount
+  name: fabric-agent
+  namespace: rc-fabric
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: fabric-agent
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-a
+  namespace: rc-fabric
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: agent-a}}
+  template:
+    metadata: {labels: {app: agent-a}}
+    spec:
+      serviceAccountName: fabric-agent
+      containers:
+      - name: agent
+        image: python:3.12-slim
+        command: ["python","/app/agent.py"]
+        env:
+        - {name: AGENT_NAME, value: agent-a}
+        - {name: CAPACITY, value: "1"}
+        - {name: MODULE_SHA, value: "__MODULE_SHA__"}
+        - {name: EXECUTOR_IMAGE, value: "rc-wasm-executor:local"}
+        - {name: NAMESPACE, value: rc-fabric}
+        ports: [{containerPort: 8080}]
+        volumeMounts: [{name: code, mountPath: /app}]
+      volumes:
+      - name: code
+        configMap: {name: fabric-code}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent-a
+  namespace: rc-fabric
+  labels: {a2a-agent: "true"}
+spec:
+  selector: {app: agent-a}
+  ports: [{port: 8080, targetPort: 8080}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-b
+  namespace: rc-fabric
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: agent-b}}
+  template:
+    metadata: {labels: {app: agent-b}}
+    spec:
+      serviceAccountName: fabric-agent
+      containers:
+      - name: agent
+        image: python:3.12-slim
+        command: ["python","/app/agent.py"]
+        env:
+        - {name: AGENT_NAME, value: agent-b}
+        - {name: CAPACITY, value: "2"}
+        - {name: MODULE_SHA, value: "__MODULE_SHA__"}
+        - {name: EXECUTOR_IMAGE, value: "rc-wasm-executor:local"}
+        - {name: NAMESPACE, value: rc-fabric}
+        ports: [{containerPort: 8080}]
+        volumeMounts: [{name: code, mountPath: /app}]
+      volumes:
+      - name: code
+        configMap: {name: fabric-code}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent-b
+  namespace: rc-fabric
+  labels: {a2a-agent: "true"}
+spec:
+  selector: {app: agent-b}
+  ports: [{port: 8080, targetPort: 8080}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-c
+  namespace: rc-fabric
+spec:
+  replicas: 1
+  selector: {matchLabels: {app: agent-c}}
+  template:
+    metadata: {labels: {app: agent-c}}
+    spec:
+      serviceAccountName: fabric-agent
+      containers:
+      - name: agent
+        image: python:3.12-slim
+        command: ["python","/app/agent.py"]
+        env:
+        - {name: AGENT_NAME, value: agent-c}
+        - {name: CAPACITY, value: "3"}
+        - {name: MODULE_SHA, value: "__MODULE_SHA__"}
+        - {name: EXECUTOR_IMAGE, value: "rc-wasm-executor:local"}
+        - {name: NAMESPACE, value: rc-fabric}
+        ports: [{containerPort: 8080}]
+        volumeMounts: [{name: code, mountPath: /app}]
+      volumes:
+      - name: code
+        configMap: {name: fabric-code}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent-c
+  namespace: rc-fabric
+  labels: {a2a-agent: "true"}
+spec:
+  selector: {app: agent-c}
+  ports: [{port: 8080, targetPort: 8080}]
