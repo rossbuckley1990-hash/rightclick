@@ -1,0 +1,20 @@
+name: RIGHTCLICK multisegment range
+on:
+  push:
+    branches: [rightclick-readonly-web-provider]
+permissions:
+  contents: write
+jobs:
+  emit:
+    if: ${{ startsWith(github.event.head_commit.message, 'Emit RIGHTCLICK multisegment range') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - shell: bash
+        run: |
+          git config user.name "rightclick-evidence"
+          git config user.email "rightclick-evidence@users.noreply.github.com"
+          { echo RIGHTCLICK_MULTISEGMENT_RANGE; sed -n '3660,3765p' Sources/RightClickCore/OpenAPIReflector.swift; } > /tmp/msg.txt
+          git commit --allow-empty -F /tmp/msg.txt
+          git push origin HEAD:rightclick-readonly-web-provider
