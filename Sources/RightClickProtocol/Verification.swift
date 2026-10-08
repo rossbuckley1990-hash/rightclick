@@ -2,6 +2,7 @@ import Foundation
 
 public enum VerificationPredicateType: String, Codable, Sendable {
     case textEquals = "text_equals"
+    case resultPathEquals = "result_path_equals"
 
     case fileExists = "file_exists"
     case fileReadable = "file_readable"
