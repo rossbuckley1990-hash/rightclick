@@ -104,6 +104,24 @@
         "Old effect marker rejection is for a new task, not reuse of one authority lease.",
         "No issuer authority envelope, external issuer identity or complete full-runtime acceptance is demonstrated."
       ]
+    },
+    "MacFinalTrustedContextSource": {
+      "sourceHead": "f73633a32364c1626f0c47794b6758a8e99b9c63",
+      "runtimeSourcesTree": "9716cb182db859368f47b603137189d3b257ca43",
+      "naturalExit": 0,
+      "startedAndFinishedExactlyOnce": 996,
+      "passed": 961,
+      "explicitSkipped": 35,
+      "failed": 0,
+      "all993PreviousMethodsAndResultStatesPreserved": true,
+      "newPortableContextControlsPassed": 3,
+      "realAppleServiceCasesPassed": 3,
+      "all4139TrackedBytesAndGitExecutableModesMatchedBeforeAfter": true,
+      "compiledRepositoryModules": 11,
+      "compiledCoreSources": 71,
+      "compiledCoreTestSources": 110,
+      "actualTestMachOSHA256": "9429fd9a1b8acb3f78127e42524b81b0a68a1c278c6d8f5f4154141313fb7c2a",
+      "WindowsNativeBranchesClaimed": false
     }
   },
   "manifest": [
@@ -134,6 +152,16 @@
       "path": "native-known-host-location-independent-security-audit.json",
       "bytes": 2802,
       "sha256": "dfd2ac5da1a1bbb3c063603049dc521c4150f7d84d3b95945ef0bfed5884c86d"
+    },
+    {
+      "path": "final-context-mac-full-suite-and-input-closure.json",
+      "bytes": 194049,
+      "sha256": "287f50447b3b25107d987d77f237683ad4a0f463058dfe7d5354e719065b450c"
+    },
+    {
+      "path": "final-context-mac-independent-security-audit.json",
+      "bytes": 2795,
+      "sha256": "0148d108633e06d1d51f2fe6b22b0c939c972b65037a53bc1caa47de8bda5c02"
     }
   ],
   "releasePublicationAtAudit": "HELD"
