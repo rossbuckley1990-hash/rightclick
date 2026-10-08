@@ -1,0 +1,60 @@
+[
+  {
+    "actionId" : "a2a:f039b080712b70c81a1dbc9889112ac69823cd1f1d08e7fd3887b7b8e94a731a:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "4C3FB11E-1A56-491C-A6E6-43F8D01BE5D7",
+    "message" : "Admitted remote task is accepted; outcome remains unverified.",
+    "output" : "{\"id\": \"B1468F94-14A7-43F6-90FB-73BD25373954\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"a177e96c-ef15-47c9-8fe2-dc12722ea164\", \"id\": \"7fcb247e-283e-44ad-a7d2-a4ec1df89e74\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "D8ECFA64-44E4-4D97-93E4-4DC52C465A4B",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "accepted",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1NjA5OXM1OnZhbHVlbg=="
+      ],
+      "taskID" : "B9CE0FBD-4E26-43E2-BB0C-EF682AD377D3",
+      "version" : 1
+    },
+    "state" : "started",
+    "title" : "Delegate a task to RIGHTCLICK disposable delegated agent"
+  },
+  {
+    "actionId" : "a2a:f039b080712b70c81a1dbc9889112ac69823cd1f1d08e7fd3887b7b8e94a731a:delegate",
+    "events" : [
+      "RCIR signed receipt withheld because current provisioned signing authority is unavailable."
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "4C3FB11E-1A56-491C-A6E6-43F8D01BE5D7",
+    "message" : "Remote task disappeared, exceeded its deadline or could not be observed; do not retry blindly.",
+    "output" : "{\"id\": \"B1468F94-14A7-43F6-90FB-73BD25373954\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"a177e96c-ef15-47c9-8fe2-dc12722ea164\", \"id\": \"7fcb247e-283e-44ad-a7d2-a4ec1df89e74\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "D8ECFA64-44E4-4D97-93E4-4DC52C465A4B",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unknown",
+      "phase" : "unknown",
+      "receipt" : "UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxMzkwMjg2MDk1czY6ZXZlbnRzYTE6eDg4OlJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzNDpraW5kczg6YWNjZXB0ZWRzODpzZXF1ZW5jZWkxOjFzNDp0aW1laTEzOjE3OTEzOTAyNTYwOTlzNTp2YWx1ZW5zMTA6ZmluaXNoZWRBdGkxMzoxNzkxMzkwMjU2NzA0czE5Omxhc3RPYnNlcnZhdGlvblRpbWVpMTM6MTc5MTM5MDI1NjcwNHMxMjpsYXN0U2VxdWVuY2VpMToxczc6bGVhc2VJRHMzNjpEOEVDRkE2NC00NEU0LTREOTctOTNFNC00REM1MkM0NjVBNEJzMTE6b2JzZXJ2YXRpb25uczEwOm9ic2VydmVkQXRuczU6cGhhc2VzNzp1bmtub3duczc6cmVxdWVzdHg1MDM3OlJJR0hUQ0xJQ0stUkNJUi1SRVFVRVNULTEAUklHSFRDTElDSy1WQUxVRS0xAG82OnM5OmFyZ3VtZW50c3gxMTU6UklHSFRDTElDSy1WQUxVRS0xAG8xOnM3Om1lc3NhZ2VzNzk6eyJjaGFsbGVuZ2UiOiIxQTBDQTdBQi01QkY4LTQ3OEQtOERBQy01NDg0MEUyMjQ3OUMiLCJ2YWx1ZSI6InNpZ25lci1saWZlY3ljbGUifXM3OmJpbmRpbmd4NDM3MjpSSUdIVENMSUNLLVJDSVItQklORElORy0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzODpjb250cmFjdHgyNDYyOlJJR0hUQ0xJQ0stUkNJUi1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzMzphYml4MTkxOTpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gxMDM6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czc6bWVzc2FnZXM2OnN0cmluZ3M4OnJlcXVpcmVkYTE6czc6bWVzc2FnZXMxMDpjYXBhYmlsaXR5czc3OmEyYTpmMDM5YjA4MDcxMmI3MGM4MWExZGJjOTg4OTExMmFjNjk4MjNjZDFmMWQwOGU3ZmQzODg3YjdiOGU5NGE3MzFhOmRlbGVnYXRlczExOmRlY2xhcmF0aW9ubzQ6czEwOmNhcGFiaWxpdHlvMTE6czY6aW5wdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czEwOmludm9jYXRpb25zNjpkaXJlY3RzODptZXRhZGF0YW8xMDpzMTI6YWdlbnRDYXJkVVJMczQ1Omh0dHA6Ly8xMjcuMC4wLjE6NTE0MTQvLndlbGwta25vd24vYWdlbnQuanNvbnM5OmF1dGhvcml0eXMzOTpwdWJsaWMgZW5kcG9pbnQ7IGV4YWN0IGludm9jYXRpb24gbGVhc2VzMTE6ZGVzY3JpcHRpb25zNDY6UGVyc2lzdCBvbmUgaW5kZXBlbmRlbnRseSBvYnNlcnZhYmxlIGNoYWxsZW5nZXMxNjpkZXNjcmlwdG9yU0hBMjU2czY0OjZmYWMzZjY0ZDZmY2VlYzg0ZmM5OTRmNzVlZGFkNzYxMGY0Nzk4ZmI5ODhmNTAyZGM5MTdjNGU1MmU2MDI5YzdzODplbmRwb2ludHMyNjpodHRwOi8vMTI3LjAuMC4xOjUxNDE0L2EyYXMxMzpleGVjdXRpb25Nb2Rlczg6ZGVmZXJyZWRzMTU6cHJvdG9jb2xWZXJzaW9uczU6MC4yLjZzMTc6cmVxdWVzdEpTT05TY2hlbWFzMTEyOnsiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlLCJwcm9wZXJ0aWVzIjp7Im1lc3NhZ2UiOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsibWVzc2FnZSJdLCJ0eXBlIjoib2JqZWN0In1zNjpza2lsbHNzMTI4Olt7ImRlc2NyaXB0aW9uIjoiV3JpdGUgb25lIGRpc3Bvc2FibGUgbm9uY2UtYm91bmQgcmVzdWx0IiwiaWQiOiJwZXJzaXN0LWNoYWxsZW5nZSIsIm5hbWUiOiJQZXJzaXN0IGNoYWxsZW5nZSIsInRhZ3MiOlsicHJvb2YiXX1dczk6c3Vic3RyYXRlczM6YTJhczc6b3V0cHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzMzc6UklHSFRDTElDSyBkaXNwb3NhYmxlIGRlbGVnYXRlZCBhZ2VudHMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czE0OmV4dGVybmFsX3NoYXJlczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxNjpwdWJsaWNfc3VwcG9ydGVkczU6dGl0bGVzNTY6RGVsZWdhdGUgYSB0YXNrIHRvIFJJR0hUQ0xJQ0sgZGlzcG9zYWJsZSBkZWxlZ2F0ZWQgYWdlbnRzODplbmRwb2ludHMyNjpodHRwOi8vMTI3LjAuMC4xOjUxNDE0L2EyYXM2Om1ldGhvZHMxMjptZXNzYWdlL3NlbmRzMTE6cmVxdWVzdEJvZHl4MjkxOnsiY29uZmlndXJhdGlvbiI6eyJhY2NlcHRlZE91dHB1dE1vZGVzIjpbInRleHRcL3BsYWluIl0sImJsb2NraW5nIjpmYWxzZX0sIm1lc3NhZ2UiOnsia2luZCI6Im1lc3NhZ2UiLCJtZXNzYWdlSWQiOiJGN0Y5NTNEMS0xQjk4LTREQzctQTJCRC0xRUQyRjIwRUY3OTIiLCJwYXJ0cyI6W3sia2luZCI6InRleHQiLCJ0ZXh0Ijoie1wiY2hhbGxlbmdlXCI6XCIxQTBDQTdBQi01QkY4LTQ3OEQtOERBQy01NDg0MEUyMjQ3OUNcIixcInZhbHVlXCI6XCJzaWduZXItbGlmZWN5Y2xlXCJ9In1dLCJyb2xlIjoidXNlciJ9fXM4OnByb3ZpZGVyczY4OmEyYTpmMDM5YjA4MDcxMmI3MGM4MWExZGJjOTg4OTExMmFjNjk4MjNjZDFmMWQwOGU3ZmQzODg3YjdiOGU5NGE3MzFhczk6cmVmbGVjdG9yczY4OmEyYTpmMDM5YjA4MDcxMmI3MGM4MWExZGJjOTg4OTExMmFjNjk4MjNjZDFmMWQwOGU3ZmQzODg3YjdiOGU5NGE3MzFhczY6cmVzdWx0eDI4OlJJR0hUQ0xJQ0stVkFMVUUtMQBzNjpzdHJpbmdzNzp2ZXJzaW9uaTE6MXM3OmVmZmVjdHNhMTpvMjpzNjplZmZlY3RzNzpleGVjdXRlczg6cmVzb3VyY2VzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTQxNC9hMmFzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzODpkZWZlcnJlZHMxMjp2ZXJpZmljYXRpb25vMzpzODpleHBlY3RlZHM3OTp7ImNoYWxsZW5nZSI6IjFBMENBN0FCLTVCRjgtNDc4RC04REFDLTU0ODQwRTIyNDc5QyIsInZhbHVlIjoic2lnbmVyLWxpZmVjeWNsZSJ9czg6b2JzZXJ2ZXJzMTQxOmh0dHA6Ly8xMjcuMC4wLjE6NTE0MTMvb2JzZXJ2YXRpb25zLyU3QiUyMmNoYWxsZW5nZSUyMiUzQSUyMjFBMENBN0FCLTVCRjgtNDc4RC04REFDLTU0ODQwRTIyNDc5QyUyMiUyQyUyMnZhbHVlJTIyJTNBJTIyc2lnbmVyLWxpZmVjeWNsZSUyMiU3RHM2OnNjaGVtYXgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczk6ZGlzY292ZXJ5eDE3MTM6UklHSFRDTElDSy1SQ0lSLUdSQVBILURFQ0xBUkFUSU9OLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMzOmFiaXgxNTI1OlJJR0hUQ0xJQ0stQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzc6czk6YXJndW1lbnRzeDEwMzpSSUdIVENMSUNLLVZBTFVFLTEAbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMTpzNzptZXNzYWdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzNzptZXNzYWdlczEwOmNhcGFiaWxpdHlzNzc6YTJhOmYwMzliMDgwNzEyYjcwYzgxYTFkYmM5ODg5MTEyYWM2OTgyM2NkMWYxZDA4ZTdmZDM4ODdiN2I4ZTk0YTczMWE6ZGVsZWdhdGVzMTE6ZGVjbGFyYXRpb25vMTE6czY6aW5wdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czEwOmludm9jYXRpb25zNjpkaXJlY3RzODptZXRhZGF0YW8xMDpzMTI6YWdlbnRDYXJkVVJMczQ1Omh0dHA6Ly8xMjcuMC4wLjE6NTE0MTQvLndlbGwta25vd24vYWdlbnQuanNvbnM5OmF1dGhvcml0eXMzOTpwdWJsaWMgZW5kcG9pbnQ7IGV4YWN0IGludm9jYXRpb24gbGVhc2VzMTE6ZGVzY3JpcHRpb25zNDY6UGVyc2lzdCBvbmUgaW5kZXBlbmRlbnRseSBvYnNlcnZhYmxlIGNoYWxsZW5nZXMxNjpkZXNjcmlwdG9yU0hBMjU2czY0OjZmYWMzZjY0ZDZmY2VlYzg0ZmM5OTRmNzVlZGFkNzYxMGY0Nzk4ZmI5ODhmNTAyZGM5MTdjNGU1MmU2MDI5YzdzODplbmRwb2ludHMyNjpodHRwOi8vMTI3LjAuMC4xOjUxNDE0L2EyYXMxMzpleGVjdXRpb25Nb2Rlczg6ZGVmZXJyZWRzMTU6cHJvdG9jb2xWZXJzaW9uczU6MC4yLjZzMTc6cmVxdWVzdEpTT05TY2hlbWFzMTEyOnsiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlLCJwcm9wZXJ0aWVzIjp7Im1lc3NhZ2UiOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsibWVzc2FnZSJdLCJ0eXBlIjoib2JqZWN0In1zNjpza2lsbHNzMTI4Olt7ImRlc2NyaXB0aW9uIjoiV3JpdGUgb25lIGRpc3Bvc2FibGUgbm9uY2UtYm91bmQgcmVzdWx0IiwiaWQiOiJwZXJzaXN0LWNoYWxsZW5nZSIsIm5hbWUiOiJQZXJzaXN0IGNoYWxsZW5nZSIsInRhZ3MiOlsicHJvb2YiXX1dczk6c3Vic3RyYXRlczM6YTJhczc6b3V0cHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzMzc6UklHSFRDTElDSyBkaXNwb3NhYmxlIGRlbGVnYXRlZCBhZ2VudHMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czE0OmV4dGVybmFsX3NoYXJlczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxNjpwdWJsaWNfc3VwcG9ydGVkczU6dGl0bGVzNTY6RGVsZWdhdGUgYSB0YXNrIHRvIFJJR0hUQ0xJQ0sgZGlzcG9zYWJsZSBkZWxlZ2F0ZWQgYWdlbnRzODpwcm92aWRlcnM2ODphMmE6ZjAzOWIwODA3MTJiNzBjODFhMWRiYzk4ODkxMTJhYzY5ODIzY2QxZjFkMDhlN2ZkMzg4N2I3YjhlOTRhNzMxYXM5OnJlZmxlY3RvcnM2ODphMmE6ZjAzOWIwODA3MTJiNzBjODFhMWRiYzk4ODkxMTJhYzY5ODIzY2QxZjFkMDhlN2ZkMzg4N2I3YjhlOTRhNzMxYXM2OnJlc3VsdHgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczc6dmVyc2lvbmkxOjFzNzplZmZlY3RzYTE6czc6ZXhlY3V0ZXM0OnRhc2tvNTpzMTE6Y2FuY2VsbGFibGViMHM3OmVsZW1lbnRuczg6bWF4Qnl0ZXNpNjoyNjIxNDRzOTptYXhFdmVudHNpMzoyNTZzNTpzaGFwZXM4OmRlZmVycmVkczEwOmdlbmVyYXRpb25pMToxczk6cHJpbmNpcGFsczgwOmxvY2FsLW93bmVyOmEyYTpmMDM5YjA4MDcxMmI3MGM4MWExZGJjOTg4OTExMmFjNjk4MjNjZDFmMWQwOGU3ZmQzODg3YjdiOGU5NGE3MzFhczk6ZXhwaXJlc0F0aTEzOjE3OTEzOTAyODYwOTVzODppc3N1ZWRBdGkxMzoxNzkxMzkwMjU2MDk1czY6cG9saWN5eDMyMzpSSUdIVENMSUNLLVJDSVItUE9MSUNZLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMxMDpwcmluY2lwYWxzYTE6czgwOmxvY2FsLW93bmVyOmEyYTpmMDM5YjA4MDcxMmI3MGM4MWExZGJjOTg4OTExMmFjNjk4MjNjZDFmMWQwOGU3ZmQzODg3YjdiOGU5NGE3MzFhczg6cmV2aXNpb25zODU6bG9jYWwtY29uZmlybWF0aW9uLTE6N2Q1OTZlMTM5ZWJhYzg4ZDYzMGI3ODY0MzdjZGJjMjdmOGMwMmZjNjNjNTQ3MjYwZTI0Y2ZjNTUxNjAzYjQzMHM2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMyNjpodHRwOi8vMTI3LjAuMC4xOjUxNDE0L2EyYXM2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMyNjpodHRwOi8vMTI3LjAuMC4xOjUxNDE0L2EyYXMxNTpzZW1hbnRpY091dGNvbWVzNzp1bmtub3duczk6c3RhcnRlZEF0aTEzOjE3OTEzOTAyNTYwOTVzNjp0YXNrSURzMzY6QjlDRTBGQkQtNEUyNi00M0UyLUJCMEMtRUY2ODJBRDM3N0Qz",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1NjA5OXM1OnZhbHVlbg=="
+      ],
+      "taskID" : "B9CE0FBD-4E26-43E2-BB0C-EF682AD377D3",
+      "version" : 1
+    },
+    "state" : "unknown"
+  }
+]

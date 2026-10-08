@@ -1,0 +1,673 @@
+[
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "1A0EA52E-8029-4118-8A3B-0C48709B960E",
+    "message" : "Admitted remote task is accepted; outcome remains unverified.",
+    "output" : "{\"id\": \"40EC8FC4-0E2F-4390-8080-7979475BD341\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"1805bd77-6712-4640-bcd5-757828174a1a\", \"id\": \"5cb96a8b-c5de-4b23-af4b-ff06a83bf397\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "B154A20D-8993-45C2-AC98-3E92F2F39839",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "accepted",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjAxN3M1OnZhbHVlbg=="
+      ],
+      "taskID" : "7B8725B2-1BFB-4950-B07C-EE4393BDF268",
+      "version" : 1
+    },
+    "state" : "started",
+    "title" : "Delegate a task to RIGHTCLICK disposable delegated agent"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+      "RCIR signed receipt withheld because current provisioned signing authority is unavailable."
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : true,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "1A0EA52E-8029-4118-8A3B-0C48709B960E",
+    "message" : "Independent observation determined the remote task outcome.",
+    "output" : "signer-lifecycle",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "B154A20D-8993-45C2-AC98-3E92F2F39839",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "succeeded",
+      "phase" : "completed",
+      "receipt" : "UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxMzkwMjgyMDEzczY6ZXZlbnRzYTI6eDg4OlJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzNDpraW5kczg6YWNjZXB0ZWRzODpzZXF1ZW5jZWkxOjFzNDp0aW1laTEzOjE3OTEzOTAyNTIwMTdzNTp2YWx1ZW54MTA4OlJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzNDpraW5kczk6Y29tcGxldGVkczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNTY2czU6dmFsdWVzMTY6c2lnbmVyLWxpZmVjeWNsZXMxMDpmaW5pc2hlZEF0aTEzOjE3OTEzOTAyNTI1NjZzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxMzkwMjUyNTcyczEyOmxhc3RTZXF1ZW5jZWkxOjJzNzpsZWFzZUlEczM2OkIxNTRBMjBELTg5OTMtNDVDMi1BQzk4LTNFOTJGMkYzOTgzOXMxMTpvYnNlcnZhdGlvbngxMDI6UklHSFRDTElDSy1WQUxVRS0xAHM3OTp7ImNoYWxsZW5nZSI6IjJBRkYzRERELTgzMUYtNDQyNi1CODVDLUNDRjc2MEI5RTJDMCIsInZhbHVlIjoic2lnbmVyLWxpZmVjeWNsZSJ9czEwOm9ic2VydmVkQXRpMTM6MTc5MTM5MDI1MjU3MnM1OnBoYXNlczk6Y29tcGxldGVkczc6cmVxdWVzdHg1MDM3OlJJR0hUQ0xJQ0stUkNJUi1SRVFVRVNULTEAUklHSFRDTElDSy1WQUxVRS0xAG82OnM5OmFyZ3VtZW50c3gxMTU6UklHSFRDTElDSy1WQUxVRS0xAG8xOnM3Om1lc3NhZ2VzNzk6eyJjaGFsbGVuZ2UiOiIyQUZGM0RERC04MzFGLTQ0MjYtQjg1Qy1DQ0Y3NjBCOUUyQzAiLCJ2YWx1ZSI6InNpZ25lci1saWZlY3ljbGUifXM3OmJpbmRpbmd4NDM3MjpSSUdIVENMSUNLLVJDSVItQklORElORy0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzODpjb250cmFjdHgyNDYyOlJJR0hUQ0xJQ0stUkNJUi1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzMzphYml4MTkxOTpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gxMDM6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czc6bWVzc2FnZXM2OnN0cmluZ3M4OnJlcXVpcmVkYTE6czc6bWVzc2FnZXMxMDpjYXBhYmlsaXR5czc3OmEyYTozM2ZhNmQ1MDE3ZDk1Y2RmMzQ1NDc0MjVmMThkMTkwMmQ3YzQ2MDY3ZTlkN2Q0MmMxMTUyZTg3YTdkOThjMzUzOmRlbGVnYXRlczExOmRlY2xhcmF0aW9ubzQ6czEwOmNhcGFiaWxpdHlvMTE6czY6aW5wdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czEwOmludm9jYXRpb25zNjpkaXJlY3RzODptZXRhZGF0YW8xMDpzMTI6YWdlbnRDYXJkVVJMczQ1Omh0dHA6Ly8xMjcuMC4wLjE6NTEyOTgvLndlbGwta25vd24vYWdlbnQuanNvbnM5OmF1dGhvcml0eXMzOTpwdWJsaWMgZW5kcG9pbnQ7IGV4YWN0IGludm9jYXRpb24gbGVhc2VzMTE6ZGVzY3JpcHRpb25zNDY6UGVyc2lzdCBvbmUgaW5kZXBlbmRlbnRseSBvYnNlcnZhYmxlIGNoYWxsZW5nZXMxNjpkZXNjcmlwdG9yU0hBMjU2czY0OmI4Nzg2ZTVlZWEwZjU5Mjk1ZDg2OTM5Yjc5OWU4ZTVjZjdjYTM0ZTU0ZDMxNjM4MzIxMDFmZGNlZTZhMTE0Y2VzODplbmRwb2ludHMyNjpodHRwOi8vMTI3LjAuMC4xOjUxMjk4L2EyYXMxMzpleGVjdXRpb25Nb2Rlczg6ZGVmZXJyZWRzMTU6cHJvdG9jb2xWZXJzaW9uczU6MC4yLjZzMTc6cmVxdWVzdEpTT05TY2hlbWFzMTEyOnsiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlLCJwcm9wZXJ0aWVzIjp7Im1lc3NhZ2UiOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsibWVzc2FnZSJdLCJ0eXBlIjoib2JqZWN0In1zNjpza2lsbHNzMTI4Olt7ImRlc2NyaXB0aW9uIjoiV3JpdGUgb25lIGRpc3Bvc2FibGUgbm9uY2UtYm91bmQgcmVzdWx0IiwiaWQiOiJwZXJzaXN0LWNoYWxsZW5nZSIsIm5hbWUiOiJQZXJzaXN0IGNoYWxsZW5nZSIsInRhZ3MiOlsicHJvb2YiXX1dczk6c3Vic3RyYXRlczM6YTJhczc6b3V0cHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzMzc6UklHSFRDTElDSyBkaXNwb3NhYmxlIGRlbGVnYXRlZCBhZ2VudHMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czE0OmV4dGVybmFsX3NoYXJlczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxNjpwdWJsaWNfc3VwcG9ydGVkczU6dGl0bGVzNTY6RGVsZWdhdGUgYSB0YXNrIHRvIFJJR0hUQ0xJQ0sgZGlzcG9zYWJsZSBkZWxlZ2F0ZWQgYWdlbnRzODplbmRwb2ludHMyNjpodHRwOi8vMTI3LjAuMC4xOjUxMjk4L2EyYXM2Om1ldGhvZHMxMjptZXNzYWdlL3NlbmRzMTE6cmVxdWVzdEJvZHl4MjkxOnsiY29uZmlndXJhdGlvbiI6eyJhY2NlcHRlZE91dHB1dE1vZGVzIjpbInRleHRcL3BsYWluIl0sImJsb2NraW5nIjpmYWxzZX0sIm1lc3NhZ2UiOnsia2luZCI6Im1lc3NhZ2UiLCJtZXNzYWdlSWQiOiJCMEIwQTY4RC04M0IzLTQ1N0EtODA3Ni1EODIzMDIyRDRBOEQiLCJwYXJ0cyI6W3sia2luZCI6InRleHQiLCJ0ZXh0Ijoie1wiY2hhbGxlbmdlXCI6XCIyQUZGM0RERC04MzFGLTQ0MjYtQjg1Qy1DQ0Y3NjBCOUUyQzBcIixcInZhbHVlXCI6XCJzaWduZXItbGlmZWN5Y2xlXCJ9In1dLCJyb2xlIjoidXNlciJ9fXM4OnByb3ZpZGVyczY4OmEyYTozM2ZhNmQ1MDE3ZDk1Y2RmMzQ1NDc0MjVmMThkMTkwMmQ3YzQ2MDY3ZTlkN2Q0MmMxMTUyZTg3YTdkOThjMzUzczk6cmVmbGVjdG9yczY4OmEyYTozM2ZhNmQ1MDE3ZDk1Y2RmMzQ1NDc0MjVmMThkMTkwMmQ3YzQ2MDY3ZTlkN2Q0MmMxMTUyZTg3YTdkOThjMzUzczY6cmVzdWx0eDI4OlJJR0hUQ0xJQ0stVkFMVUUtMQBzNjpzdHJpbmdzNzp2ZXJzaW9uaTE6MXM3OmVmZmVjdHNhMTpvMjpzNjplZmZlY3RzNzpleGVjdXRlczg6cmVzb3VyY2VzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzODpkZWZlcnJlZHMxMjp2ZXJpZmljYXRpb25vMzpzODpleHBlY3RlZHM3OTp7ImNoYWxsZW5nZSI6IjJBRkYzRERELTgzMUYtNDQyNi1CODVDLUNDRjc2MEI5RTJDMCIsInZhbHVlIjoic2lnbmVyLWxpZmVjeWNsZSJ9czg6b2JzZXJ2ZXJzMTQxOmh0dHA6Ly8xMjcuMC4wLjE6NTEyOTcvb2JzZXJ2YXRpb25zLyU3QiUyMmNoYWxsZW5nZSUyMiUzQSUyMjJBRkYzRERELTgzMUYtNDQyNi1CODVDLUNDRjc2MEI5RTJDMCUyMiUyQyUyMnZhbHVlJTIyJTNBJTIyc2lnbmVyLWxpZmVjeWNsZSUyMiU3RHM2OnNjaGVtYXgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczk6ZGlzY292ZXJ5eDE3MTM6UklHSFRDTElDSy1SQ0lSLUdSQVBILURFQ0xBUkFUSU9OLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMzOmFiaXgxNTI1OlJJR0hUQ0xJQ0stQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzc6czk6YXJndW1lbnRzeDEwMzpSSUdIVENMSUNLLVZBTFVFLTEAbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMTpzNzptZXNzYWdlczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzNzptZXNzYWdlczEwOmNhcGFiaWxpdHlzNzc6YTJhOjMzZmE2ZDUwMTdkOTVjZGYzNDU0NzQyNWYxOGQxOTAyZDdjNDYwNjdlOWQ3ZDQyYzExNTJlODdhN2Q5OGMzNTM6ZGVsZWdhdGVzMTE6ZGVjbGFyYXRpb25vMTE6czY6aW5wdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czEwOmludm9jYXRpb25zNjpkaXJlY3RzODptZXRhZGF0YW8xMDpzMTI6YWdlbnRDYXJkVVJMczQ1Omh0dHA6Ly8xMjcuMC4wLjE6NTEyOTgvLndlbGwta25vd24vYWdlbnQuanNvbnM5OmF1dGhvcml0eXMzOTpwdWJsaWMgZW5kcG9pbnQ7IGV4YWN0IGludm9jYXRpb24gbGVhc2VzMTE6ZGVzY3JpcHRpb25zNDY6UGVyc2lzdCBvbmUgaW5kZXBlbmRlbnRseSBvYnNlcnZhYmxlIGNoYWxsZW5nZXMxNjpkZXNjcmlwdG9yU0hBMjU2czY0OmI4Nzg2ZTVlZWEwZjU5Mjk1ZDg2OTM5Yjc5OWU4ZTVjZjdjYTM0ZTU0ZDMxNjM4MzIxMDFmZGNlZTZhMTE0Y2VzODplbmRwb2ludHMyNjpodHRwOi8vMTI3LjAuMC4xOjUxMjk4L2EyYXMxMzpleGVjdXRpb25Nb2Rlczg6ZGVmZXJyZWRzMTU6cHJvdG9jb2xWZXJzaW9uczU6MC4yLjZzMTc6cmVxdWVzdEpTT05TY2hlbWFzMTEyOnsiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlLCJwcm9wZXJ0aWVzIjp7Im1lc3NhZ2UiOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsibWVzc2FnZSJdLCJ0eXBlIjoib2JqZWN0In1zNjpza2lsbHNzMTI4Olt7ImRlc2NyaXB0aW9uIjoiV3JpdGUgb25lIGRpc3Bvc2FibGUgbm9uY2UtYm91bmQgcmVzdWx0IiwiaWQiOiJwZXJzaXN0LWNoYWxsZW5nZSIsIm5hbWUiOiJQZXJzaXN0IGNoYWxsZW5nZSIsInRhZ3MiOlsicHJvb2YiXX1dczk6c3Vic3RyYXRlczM6YTJhczc6b3V0cHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzMzc6UklHSFRDTElDSyBkaXNwb3NhYmxlIGRlbGVnYXRlZCBhZ2VudHMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czE0OmV4dGVybmFsX3NoYXJlczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxNjpwdWJsaWNfc3VwcG9ydGVkczU6dGl0bGVzNTY6RGVsZWdhdGUgYSB0YXNrIHRvIFJJR0hUQ0xJQ0sgZGlzcG9zYWJsZSBkZWxlZ2F0ZWQgYWdlbnRzODpwcm92aWRlcnM2ODphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M5OnJlZmxlY3RvcnM2ODphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M2OnJlc3VsdHgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczc6dmVyc2lvbmkxOjFzNzplZmZlY3RzYTE6czc6ZXhlY3V0ZXM0OnRhc2tvNTpzMTE6Y2FuY2VsbGFibGViMHM3OmVsZW1lbnRuczg6bWF4Qnl0ZXNpNjoyNjIxNDRzOTptYXhFdmVudHNpMzoyNTZzNTpzaGFwZXM4OmRlZmVycmVkczEwOmdlbmVyYXRpb25pMToxczk6cHJpbmNpcGFsczgwOmxvY2FsLW93bmVyOmEyYTozM2ZhNmQ1MDE3ZDk1Y2RmMzQ1NDc0MjVmMThkMTkwMmQ3YzQ2MDY3ZTlkN2Q0MmMxMTUyZTg3YTdkOThjMzUzczk6ZXhwaXJlc0F0aTEzOjE3OTEzOTAyODIwMTJzODppc3N1ZWRBdGkxMzoxNzkxMzkwMjUyMDEyczY6cG9saWN5eDMyMzpSSUdIVENMSUNLLVJDSVItUE9MSUNZLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMxMDpwcmluY2lwYWxzYTE6czgwOmxvY2FsLW93bmVyOmEyYTozM2ZhNmQ1MDE3ZDk1Y2RmMzQ1NDc0MjVmMThkMTkwMmQ3YzQ2MDY3ZTlkN2Q0MmMxMTUyZTg3YTdkOThjMzUzczg6cmV2aXNpb25zODU6bG9jYWwtY29uZmlybWF0aW9uLTE6ZTcxMDNiYjJjOTYyZmI3MTYyZDk4ODI2YjcwNmIxODkyZDlmYmM3MTRkMTBlMWE2NmQzMDVmNzFiZjQ0OTgxMHM2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMyNjpodHRwOi8vMTI3LjAuMC4xOjUxMjk4L2EyYXM2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM3OmV4ZWN1dGVzODpyZXNvdXJjZXMyNjpodHRwOi8vMTI3LjAuMC4xOjUxMjk4L2EyYXMxNTpzZW1hbnRpY091dGNvbWVzOTpzdWNjZWVkZWRzOTpzdGFydGVkQXRpMTM6MTc5MTM5MDI1MjAxM3M2OnRhc2tJRHMzNjo3Qjg3MjVCMi0xQkZCLTQ5NTAtQjA3Qy1FRTQzOTNCREYyNjg=",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjAxN3M1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzOTpjb21wbGV0ZWRzODpzZXF1ZW5jZWkxOjJzNDp0aW1laTEzOjE3OTEzOTAyNTI1NjZzNTp2YWx1ZXMxNjpzaWduZXItbGlmZWN5Y2xl"
+      ],
+      "taskID" : "7B8725B2-1BFB-4950-B07C-EE4393BDF268",
+      "version" : 1
+    },
+    "state" : "succeeded"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is accepted; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "accepted",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg=="
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started",
+    "title" : "Delegate a task to RIGHTCLICK disposable delegated agent"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is accepted; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "accepted",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg=="
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is accepted; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "accepted",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg=="
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is accepted; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "accepted",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg=="
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is accepted; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "accepted",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg=="
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is accepted; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "accepted",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg=="
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is accepted; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "accepted",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg=="
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : false,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Admitted remote task is working; outcome remains unverified.",
+    "output" : "{\"id\": \"F47E8956-B472-4676-8219-0305F8B16876\", \"jsonrpc\": \"2.0\", \"result\": {\"contextId\": \"60d23283-3af2-43b4-a468-d8a71c2937f8\", \"id\": \"e06c5516-9e0f-492a-aa43-6db4f6f33cea\", \"kind\": \"task\", \"status\": {\"state\": \"submitted\"}}}",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "unverified",
+      "phase" : "working",
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "started"
+  },
+  {
+    "actionId" : "a2a:33fa6d5017d95cdf34547425f18d1902d7c46067e9d7d42c1152e87a7d98c353:delegate",
+    "events" : [
+
+    ],
+    "evidence" : {
+      "boundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcomeVerified" : true,
+      "type" : "rcir_deferred_task"
+    },
+    "executionId" : "6CD5E931-DBDB-44CF-8ACA-54EEFF51BE79",
+    "message" : "Independent observation determined the remote task outcome.",
+    "output" : "signer-lifecycle",
+    "rcir" : {
+      "generation" : 1,
+      "leaseConsumed" : true,
+      "leaseID" : "F26B3C2C-6347-4274-9733-ADE461850DC5",
+      "observationBoundary" : "Separate host-pinned observer origin; exact invocation argument postcondition, no provider-selected verification.",
+      "outcome" : "succeeded",
+      "phase" : "completed",
+      "receipt" : "UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxMzkwMjgyNTgwczY6ZXZlbnRzYTM6eDg4OlJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzNDpraW5kczg6YWNjZXB0ZWRzODpzZXF1ZW5jZWkxOjFzNDp0aW1laTEzOjE3OTEzOTAyNTI1ODhzNTp2YWx1ZW54ODc6UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVueDEwODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6M3M0OnRpbWVpMTM6MTc5MTM5MDI1MzExMHM1OnZhbHVlczE2OnNpZ25lci1saWZlY3ljbGVzMTA6ZmluaXNoZWRBdGkxMzoxNzkxMzkwMjUzMTEwczE5Omxhc3RPYnNlcnZhdGlvblRpbWVpMTM6MTc5MTM5MDI1MzExNnMxMjpsYXN0U2VxdWVuY2VpMTozczc6bGVhc2VJRHMzNjpGMjZCM0MyQy02MzQ3LTQyNzQtOTczMy1BREU0NjE4NTBEQzVzMTE6b2JzZXJ2YXRpb254MTAyOlJJR0hUQ0xJQ0stVkFMVUUtMQBzNzk6eyJjaGFsbGVuZ2UiOiI1OUQ1OUIyNC0xNjlFLTQ4QUMtOEJEQS1EQjUxMTY2ODFGQjMiLCJ2YWx1ZSI6InNpZ25lci1saWZlY3ljbGUifXMxMDpvYnNlcnZlZEF0aTEzOjE3OTEzOTAyNTMxMTZzNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NTAzNzpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4MTE1OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMTpzNzptZXNzYWdlczc5OnsiY2hhbGxlbmdlIjoiNTlENTlCMjQtMTY5RS00OEFDLThCREEtREI1MTE2NjgxRkIzIiwidmFsdWUiOiJzaWduZXItbGlmZWN5Y2xlIn1zNzpiaW5kaW5neDQzNzI6UklHSFRDTElDSy1SQ0lSLUJJTkRJTkctMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czg6Y29udHJhY3R4MjQ2MjpSSUdIVENMSUNLLVJDSVItQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czM6YWJpeDE5MTk6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4MTAzOlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8xOnM3Om1lc3NhZ2VzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM3Om1lc3NhZ2VzMTA6Y2FwYWJpbGl0eXM3NzphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1MzpkZWxlZ2F0ZXMxMTpkZWNsYXJhdGlvbm80OnMxMDpjYXBhYmlsaXR5bzExOnM2OmlucHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxMDppbnZvY2F0aW9uczY6ZGlyZWN0czg6bWV0YWRhdGFvMTA6czEyOmFnZW50Q2FyZFVSTHM0NTpodHRwOi8vMTI3LjAuMC4xOjUxMjk4Ly53ZWxsLWtub3duL2FnZW50Lmpzb25zOTphdXRob3JpdHlzMzk6cHVibGljIGVuZHBvaW50OyBleGFjdCBpbnZvY2F0aW9uIGxlYXNlczExOmRlc2NyaXB0aW9uczQ2OlBlcnNpc3Qgb25lIGluZGVwZW5kZW50bHkgb2JzZXJ2YWJsZSBjaGFsbGVuZ2VzMTY6ZGVzY3JpcHRvclNIQTI1NnM2NDpiODc4NmU1ZWVhMGY1OTI5NWQ4NjkzOWI3OTllOGU1Y2Y3Y2EzNGU1NGQzMTYzODMyMTAxZmRjZWU2YTExNGNlczg6ZW5kcG9pbnRzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzMTM6ZXhlY3V0aW9uTW9kZXM4OmRlZmVycmVkczE1OnByb3RvY29sVmVyc2lvbnM1OjAuMi42czE3OnJlcXVlc3RKU09OU2NoZW1hczExMjp7ImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZSwicHJvcGVydGllcyI6eyJtZXNzYWdlIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbIm1lc3NhZ2UiXSwidHlwZSI6Im9iamVjdCJ9czY6c2tpbGxzczEyODpbeyJkZXNjcmlwdGlvbiI6IldyaXRlIG9uZSBkaXNwb3NhYmxlIG5vbmNlLWJvdW5kIHJlc3VsdCIsImlkIjoicGVyc2lzdC1jaGFsbGVuZ2UiLCJuYW1lIjoiUGVyc2lzdCBjaGFsbGVuZ2UiLCJ0YWdzIjpbInByb29mIl19XXM5OnN1YnN0cmF0ZXMzOmEyYXM3Om91dHB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczM3OlJJR0hUQ0xJQ0sgZGlzcG9zYWJsZSBkZWxlZ2F0ZWQgYWdlbnRzMjA6cmVxdWlyZXNDb25maXJtYXRpb25iMXM2OnNhZmV0eXMxNDpleHRlcm5hbF9zaGFyZXM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTY6cHVibGljX3N1cHBvcnRlZHM1OnRpdGxlczU2OkRlbGVnYXRlIGEgdGFzayB0byBSSUdIVENMSUNLIGRpc3Bvc2FibGUgZGVsZWdhdGVkIGFnZW50czg6ZW5kcG9pbnRzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzNjptZXRob2RzMTI6bWVzc2FnZS9zZW5kczExOnJlcXVlc3RCb2R5eDI5MTp7ImNvbmZpZ3VyYXRpb24iOnsiYWNjZXB0ZWRPdXRwdXRNb2RlcyI6WyJ0ZXh0XC9wbGFpbiJdLCJibG9ja2luZyI6ZmFsc2V9LCJtZXNzYWdlIjp7ImtpbmQiOiJtZXNzYWdlIiwibWVzc2FnZUlkIjoiRjIzNzQwOTYtQjVEMi00MUM3LUJGRUMtRTIwMUM2NTc2RTk0IiwicGFydHMiOlt7ImtpbmQiOiJ0ZXh0IiwidGV4dCI6IntcImNoYWxsZW5nZVwiOlwiNTlENTlCMjQtMTY5RS00OEFDLThCREEtREI1MTE2NjgxRkIzXCIsXCJ2YWx1ZVwiOlwic2lnbmVyLWxpZmVjeWNsZVwifSJ9XSwicm9sZSI6InVzZXIifX1zODpwcm92aWRlcnM2ODphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M5OnJlZmxlY3RvcnM2ODphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M2OnJlc3VsdHgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczc6dmVyc2lvbmkxOjFzNzplZmZlY3RzYTE6bzI6czY6ZWZmZWN0czc6ZXhlY3V0ZXM4OnJlc291cmNlczI2Omh0dHA6Ly8xMjcuMC4wLjE6NTEyOTgvYTJhczQ6dGFza281OnMxMTpjYW5jZWxsYWJsZWIwczc6ZWxlbWVudG5zODptYXhCeXRlc2k2OjI2MjE0NHM5Om1heEV2ZW50c2kzOjI1NnM1OnNoYXBlczg6ZGVmZXJyZWRzMTI6dmVyaWZpY2F0aW9ubzM6czg6ZXhwZWN0ZWRzNzk6eyJjaGFsbGVuZ2UiOiI1OUQ1OUIyNC0xNjlFLTQ4QUMtOEJEQS1EQjUxMTY2ODFGQjMiLCJ2YWx1ZSI6InNpZ25lci1saWZlY3ljbGUifXM4Om9ic2VydmVyczE0MTpodHRwOi8vMTI3LjAuMC4xOjUxMjk3L29ic2VydmF0aW9ucy8lN0IlMjJjaGFsbGVuZ2UlMjIlM0ElMjI1OUQ1OUIyNC0xNjlFLTQ4QUMtOEJEQS1EQjUxMTY2ODFGQjMlMjIlMkMlMjJ2YWx1ZSUyMiUzQSUyMnNpZ25lci1saWZlY3ljbGUlMjIlN0RzNjpzY2hlbWF4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M5OmRpc2NvdmVyeXgxNzEzOlJJR0hUQ0xJQ0stUkNJUi1HUkFQSC1ERUNMQVJBVElPTi0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMzphYml4MTUyNTpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gxMDM6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czc6bWVzc2FnZXM2OnN0cmluZ3M4OnJlcXVpcmVkYTE6czc6bWVzc2FnZXMxMDpjYXBhYmlsaXR5czc3OmEyYTozM2ZhNmQ1MDE3ZDk1Y2RmMzQ1NDc0MjVmMThkMTkwMmQ3YzQ2MDY3ZTlkN2Q0MmMxMTUyZTg3YTdkOThjMzUzOmRlbGVnYXRlczExOmRlY2xhcmF0aW9ubzExOnM2OmlucHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxMDppbnZvY2F0aW9uczY6ZGlyZWN0czg6bWV0YWRhdGFvMTA6czEyOmFnZW50Q2FyZFVSTHM0NTpodHRwOi8vMTI3LjAuMC4xOjUxMjk4Ly53ZWxsLWtub3duL2FnZW50Lmpzb25zOTphdXRob3JpdHlzMzk6cHVibGljIGVuZHBvaW50OyBleGFjdCBpbnZvY2F0aW9uIGxlYXNlczExOmRlc2NyaXB0aW9uczQ2OlBlcnNpc3Qgb25lIGluZGVwZW5kZW50bHkgb2JzZXJ2YWJsZSBjaGFsbGVuZ2VzMTY6ZGVzY3JpcHRvclNIQTI1NnM2NDpiODc4NmU1ZWVhMGY1OTI5NWQ4NjkzOWI3OTllOGU1Y2Y3Y2EzNGU1NGQzMTYzODMyMTAxZmRjZWU2YTExNGNlczg6ZW5kcG9pbnRzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzMTM6ZXhlY3V0aW9uTW9kZXM4OmRlZmVycmVkczE1OnByb3RvY29sVmVyc2lvbnM1OjAuMi42czE3OnJlcXVlc3RKU09OU2NoZW1hczExMjp7ImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZSwicHJvcGVydGllcyI6eyJtZXNzYWdlIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbIm1lc3NhZ2UiXSwidHlwZSI6Im9iamVjdCJ9czY6c2tpbGxzczEyODpbeyJkZXNjcmlwdGlvbiI6IldyaXRlIG9uZSBkaXNwb3NhYmxlIG5vbmNlLWJvdW5kIHJlc3VsdCIsImlkIjoicGVyc2lzdC1jaGFsbGVuZ2UiLCJuYW1lIjoiUGVyc2lzdCBjaGFsbGVuZ2UiLCJ0YWdzIjpbInByb29mIl19XXM5OnN1YnN0cmF0ZXMzOmEyYXM3Om91dHB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczM3OlJJR0hUQ0xJQ0sgZGlzcG9zYWJsZSBkZWxlZ2F0ZWQgYWdlbnRzMjA6cmVxdWlyZXNDb25maXJtYXRpb25iMXM2OnNhZmV0eXMxNDpleHRlcm5hbF9zaGFyZXM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTY6cHVibGljX3N1cHBvcnRlZHM1OnRpdGxlczU2OkRlbGVnYXRlIGEgdGFzayB0byBSSUdIVENMSUNLIGRpc3Bvc2FibGUgZGVsZWdhdGVkIGFnZW50czg6cHJvdmlkZXJzNjg6YTJhOjMzZmE2ZDUwMTdkOTVjZGYzNDU0NzQyNWYxOGQxOTAyZDdjNDYwNjdlOWQ3ZDQyYzExNTJlODdhN2Q5OGMzNTNzOTpyZWZsZWN0b3JzNjg6YTJhOjMzZmE2ZDUwMTdkOTVjZGYzNDU0NzQyNWYxOGQxOTAyZDdjNDYwNjdlOWQ3ZDQyYzExNTJlODdhN2Q5OGMzNTNzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOnM3OmV4ZWN1dGVzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzODpkZWZlcnJlZHMxMDpnZW5lcmF0aW9uaTE6MXM5OnByaW5jaXBhbHM4MDpsb2NhbC1vd25lcjphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M5OmV4cGlyZXNBdGkxMzoxNzkxMzkwMjgyNTgwczg6aXNzdWVkQXRpMTM6MTc5MTM5MDI1MjU4MHM2OnBvbGljeXgzMjM6UklHSFRDTElDSy1SQ0lSLVBPTElDWS0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMTA6cHJpbmNpcGFsc2ExOnM4MDpsb2NhbC1vd25lcjphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M4OnJldmlzaW9uczg1OmxvY2FsLWNvbmZpcm1hdGlvbi0xOmU3MTAzYmIyYzk2MmZiNzE2MmQ5ODgyNmI3MDZiMTg5MmQ5ZmJjNzE0ZDEwZTFhNjZkMzA1ZjcxYmY0NDk4MTBzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNzpleGVjdXRlczg6cmVzb3VyY2VzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNzpleGVjdXRlczg6cmVzb3VyY2VzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzMTU6c2VtYW50aWNPdXRjb21lczk6c3VjY2VlZGVkczk6c3RhcnRlZEF0aTEzOjE3OTEzOTAyNTI1ODBzNjp0YXNrSURzMzY6NEUxNDVEQUQtRTZGNy00ODFDLTg1RUUtOTdEMEY0QjYzMUE5",
+      "signedReceipt" : {
+        "algorithm" : "Ed25519",
+        "payload" : "UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxMzkwMjgyNTgwczY6ZXZlbnRzYTM6eDg4OlJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzNDpraW5kczg6YWNjZXB0ZWRzODpzZXF1ZW5jZWkxOjFzNDp0aW1laTEzOjE3OTEzOTAyNTI1ODhzNTp2YWx1ZW54ODc6UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVueDEwODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6M3M0OnRpbWVpMTM6MTc5MTM5MDI1MzExMHM1OnZhbHVlczE2OnNpZ25lci1saWZlY3ljbGVzMTA6ZmluaXNoZWRBdGkxMzoxNzkxMzkwMjUzMTEwczE5Omxhc3RPYnNlcnZhdGlvblRpbWVpMTM6MTc5MTM5MDI1MzExNnMxMjpsYXN0U2VxdWVuY2VpMTozczc6bGVhc2VJRHMzNjpGMjZCM0MyQy02MzQ3LTQyNzQtOTczMy1BREU0NjE4NTBEQzVzMTE6b2JzZXJ2YXRpb254MTAyOlJJR0hUQ0xJQ0stVkFMVUUtMQBzNzk6eyJjaGFsbGVuZ2UiOiI1OUQ1OUIyNC0xNjlFLTQ4QUMtOEJEQS1EQjUxMTY2ODFGQjMiLCJ2YWx1ZSI6InNpZ25lci1saWZlY3ljbGUifXMxMDpvYnNlcnZlZEF0aTEzOjE3OTEzOTAyNTMxMTZzNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NTAzNzpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4MTE1OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMTpzNzptZXNzYWdlczc5OnsiY2hhbGxlbmdlIjoiNTlENTlCMjQtMTY5RS00OEFDLThCREEtREI1MTE2NjgxRkIzIiwidmFsdWUiOiJzaWduZXItbGlmZWN5Y2xlIn1zNzpiaW5kaW5neDQzNzI6UklHSFRDTElDSy1SQ0lSLUJJTkRJTkctMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czg6Y29udHJhY3R4MjQ2MjpSSUdIVENMSUNLLVJDSVItQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czM6YWJpeDE5MTk6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4MTAzOlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8xOnM3Om1lc3NhZ2VzNjpzdHJpbmdzODpyZXF1aXJlZGExOnM3Om1lc3NhZ2VzMTA6Y2FwYWJpbGl0eXM3NzphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1MzpkZWxlZ2F0ZXMxMTpkZWNsYXJhdGlvbm80OnMxMDpjYXBhYmlsaXR5bzExOnM2OmlucHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxMDppbnZvY2F0aW9uczY6ZGlyZWN0czg6bWV0YWRhdGFvMTA6czEyOmFnZW50Q2FyZFVSTHM0NTpodHRwOi8vMTI3LjAuMC4xOjUxMjk4Ly53ZWxsLWtub3duL2FnZW50Lmpzb25zOTphdXRob3JpdHlzMzk6cHVibGljIGVuZHBvaW50OyBleGFjdCBpbnZvY2F0aW9uIGxlYXNlczExOmRlc2NyaXB0aW9uczQ2OlBlcnNpc3Qgb25lIGluZGVwZW5kZW50bHkgb2JzZXJ2YWJsZSBjaGFsbGVuZ2VzMTY6ZGVzY3JpcHRvclNIQTI1NnM2NDpiODc4NmU1ZWVhMGY1OTI5NWQ4NjkzOWI3OTllOGU1Y2Y3Y2EzNGU1NGQzMTYzODMyMTAxZmRjZWU2YTExNGNlczg6ZW5kcG9pbnRzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzMTM6ZXhlY3V0aW9uTW9kZXM4OmRlZmVycmVkczE1OnByb3RvY29sVmVyc2lvbnM1OjAuMi42czE3OnJlcXVlc3RKU09OU2NoZW1hczExMjp7ImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZSwicHJvcGVydGllcyI6eyJtZXNzYWdlIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbIm1lc3NhZ2UiXSwidHlwZSI6Im9iamVjdCJ9czY6c2tpbGxzczEyODpbeyJkZXNjcmlwdGlvbiI6IldyaXRlIG9uZSBkaXNwb3NhYmxlIG5vbmNlLWJvdW5kIHJlc3VsdCIsImlkIjoicGVyc2lzdC1jaGFsbGVuZ2UiLCJuYW1lIjoiUGVyc2lzdCBjaGFsbGVuZ2UiLCJ0YWdzIjpbInByb29mIl19XXM5OnN1YnN0cmF0ZXMzOmEyYXM3Om91dHB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczM3OlJJR0hUQ0xJQ0sgZGlzcG9zYWJsZSBkZWxlZ2F0ZWQgYWdlbnRzMjA6cmVxdWlyZXNDb25maXJtYXRpb25iMXM2OnNhZmV0eXMxNDpleHRlcm5hbF9zaGFyZXM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTY6cHVibGljX3N1cHBvcnRlZHM1OnRpdGxlczU2OkRlbGVnYXRlIGEgdGFzayB0byBSSUdIVENMSUNLIGRpc3Bvc2FibGUgZGVsZWdhdGVkIGFnZW50czg6ZW5kcG9pbnRzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzNjptZXRob2RzMTI6bWVzc2FnZS9zZW5kczExOnJlcXVlc3RCb2R5eDI5MTp7ImNvbmZpZ3VyYXRpb24iOnsiYWNjZXB0ZWRPdXRwdXRNb2RlcyI6WyJ0ZXh0XC9wbGFpbiJdLCJibG9ja2luZyI6ZmFsc2V9LCJtZXNzYWdlIjp7ImtpbmQiOiJtZXNzYWdlIiwibWVzc2FnZUlkIjoiRjIzNzQwOTYtQjVEMi00MUM3LUJGRUMtRTIwMUM2NTc2RTk0IiwicGFydHMiOlt7ImtpbmQiOiJ0ZXh0IiwidGV4dCI6IntcImNoYWxsZW5nZVwiOlwiNTlENTlCMjQtMTY5RS00OEFDLThCREEtREI1MTE2NjgxRkIzXCIsXCJ2YWx1ZVwiOlwic2lnbmVyLWxpZmVjeWNsZVwifSJ9XSwicm9sZSI6InVzZXIifX1zODpwcm92aWRlcnM2ODphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M5OnJlZmxlY3RvcnM2ODphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M2OnJlc3VsdHgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczc6dmVyc2lvbmkxOjFzNzplZmZlY3RzYTE6bzI6czY6ZWZmZWN0czc6ZXhlY3V0ZXM4OnJlc291cmNlczI2Omh0dHA6Ly8xMjcuMC4wLjE6NTEyOTgvYTJhczQ6dGFza281OnMxMTpjYW5jZWxsYWJsZWIwczc6ZWxlbWVudG5zODptYXhCeXRlc2k2OjI2MjE0NHM5Om1heEV2ZW50c2kzOjI1NnM1OnNoYXBlczg6ZGVmZXJyZWRzMTI6dmVyaWZpY2F0aW9ubzM6czg6ZXhwZWN0ZWRzNzk6eyJjaGFsbGVuZ2UiOiI1OUQ1OUIyNC0xNjlFLTQ4QUMtOEJEQS1EQjUxMTY2ODFGQjMiLCJ2YWx1ZSI6InNpZ25lci1saWZlY3ljbGUifXM4Om9ic2VydmVyczE0MTpodHRwOi8vMTI3LjAuMC4xOjUxMjk3L29ic2VydmF0aW9ucy8lN0IlMjJjaGFsbGVuZ2UlMjIlM0ElMjI1OUQ1OUIyNC0xNjlFLTQ4QUMtOEJEQS1EQjUxMTY2ODFGQjMlMjIlMkMlMjJ2YWx1ZSUyMiUzQSUyMnNpZ25lci1saWZlY3ljbGUlMjIlN0RzNjpzY2hlbWF4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M5OmRpc2NvdmVyeXgxNzEzOlJJR0hUQ0xJQ0stUkNJUi1HUkFQSC1ERUNMQVJBVElPTi0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMzphYml4MTUyNTpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gxMDM6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czc6bWVzc2FnZXM2OnN0cmluZ3M4OnJlcXVpcmVkYTE6czc6bWVzc2FnZXMxMDpjYXBhYmlsaXR5czc3OmEyYTozM2ZhNmQ1MDE3ZDk1Y2RmMzQ1NDc0MjVmMThkMTkwMmQ3YzQ2MDY3ZTlkN2Q0MmMxMTUyZTg3YTdkOThjMzUzOmRlbGVnYXRlczExOmRlY2xhcmF0aW9ubzExOnM2OmlucHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxMDppbnZvY2F0aW9uczY6ZGlyZWN0czg6bWV0YWRhdGFvMTA6czEyOmFnZW50Q2FyZFVSTHM0NTpodHRwOi8vMTI3LjAuMC4xOjUxMjk4Ly53ZWxsLWtub3duL2FnZW50Lmpzb25zOTphdXRob3JpdHlzMzk6cHVibGljIGVuZHBvaW50OyBleGFjdCBpbnZvY2F0aW9uIGxlYXNlczExOmRlc2NyaXB0aW9uczQ2OlBlcnNpc3Qgb25lIGluZGVwZW5kZW50bHkgb2JzZXJ2YWJsZSBjaGFsbGVuZ2VzMTY6ZGVzY3JpcHRvclNIQTI1NnM2NDpiODc4NmU1ZWVhMGY1OTI5NWQ4NjkzOWI3OTllOGU1Y2Y3Y2EzNGU1NGQzMTYzODMyMTAxZmRjZWU2YTExNGNlczg6ZW5kcG9pbnRzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzMTM6ZXhlY3V0aW9uTW9kZXM4OmRlZmVycmVkczE1OnByb3RvY29sVmVyc2lvbnM1OjAuMi42czE3OnJlcXVlc3RKU09OU2NoZW1hczExMjp7ImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZSwicHJvcGVydGllcyI6eyJtZXNzYWdlIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbIm1lc3NhZ2UiXSwidHlwZSI6Im9iamVjdCJ9czY6c2tpbGxzczEyODpbeyJkZXNjcmlwdGlvbiI6IldyaXRlIG9uZSBkaXNwb3NhYmxlIG5vbmNlLWJvdW5kIHJlc3VsdCIsImlkIjoicGVyc2lzdC1jaGFsbGVuZ2UiLCJuYW1lIjoiUGVyc2lzdCBjaGFsbGVuZ2UiLCJ0YWdzIjpbInByb29mIl19XXM5OnN1YnN0cmF0ZXMzOmEyYXM3Om91dHB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczM3OlJJR0hUQ0xJQ0sgZGlzcG9zYWJsZSBkZWxlZ2F0ZWQgYWdlbnRzMjA6cmVxdWlyZXNDb25maXJtYXRpb25iMXM2OnNhZmV0eXMxNDpleHRlcm5hbF9zaGFyZXM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTY6cHVibGljX3N1cHBvcnRlZHM1OnRpdGxlczU2OkRlbGVnYXRlIGEgdGFzayB0byBSSUdIVENMSUNLIGRpc3Bvc2FibGUgZGVsZWdhdGVkIGFnZW50czg6cHJvdmlkZXJzNjg6YTJhOjMzZmE2ZDUwMTdkOTVjZGYzNDU0NzQyNWYxOGQxOTAyZDdjNDYwNjdlOWQ3ZDQyYzExNTJlODdhN2Q5OGMzNTNzOTpyZWZsZWN0b3JzNjg6YTJhOjMzZmE2ZDUwMTdkOTVjZGYzNDU0NzQyNWYxOGQxOTAyZDdjNDYwNjdlOWQ3ZDQyYzExNTJlODdhN2Q5OGMzNTNzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOnM3OmV4ZWN1dGVzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzODpkZWZlcnJlZHMxMDpnZW5lcmF0aW9uaTE6MXM5OnByaW5jaXBhbHM4MDpsb2NhbC1vd25lcjphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M5OmV4cGlyZXNBdGkxMzoxNzkxMzkwMjgyNTgwczg6aXNzdWVkQXRpMTM6MTc5MTM5MDI1MjU4MHM2OnBvbGljeXgzMjM6UklHSFRDTElDSy1SQ0lSLVBPTElDWS0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMTA6cHJpbmNpcGFsc2ExOnM4MDpsb2NhbC1vd25lcjphMmE6MzNmYTZkNTAxN2Q5NWNkZjM0NTQ3NDI1ZjE4ZDE5MDJkN2M0NjA2N2U5ZDdkNDJjMTE1MmU4N2E3ZDk4YzM1M3M4OnJldmlzaW9uczg1OmxvY2FsLWNvbmZpcm1hdGlvbi0xOmU3MTAzYmIyYzk2MmZiNzE2MmQ5ODgyNmI3MDZiMTg5MmQ5ZmJjNzE0ZDEwZTFhNjZkMzA1ZjcxYmY0NDk4MTBzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNzpleGVjdXRlczg6cmVzb3VyY2VzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNzpleGVjdXRlczg6cmVzb3VyY2VzMjY6aHR0cDovLzEyNy4wLjAuMTo1MTI5OC9hMmFzMTU6c2VtYW50aWNPdXRjb21lczk6c3VjY2VlZGVkczk6c3RhcnRlZEF0aTEzOjE3OTEzOTAyNTI1ODBzNjp0YXNrSURzMzY6NEUxNDVEQUQtRTZGNy00ODFDLTg1RUUtOTdEMEY0QjYzMUE5",
+        "publicKey" : "7ZwV8\/NXhZly7ExIskfkHXiQrGHOTQEN0DvPCjwZl90=",
+        "signature" : "LcCKZ1\/xawC\/VrHtuvscxAKSJNN7DcMP2u2zaDSKi3sfuUC5lkAWc8+DhL7MHsF6TQgQsnEneWk93O8ZLFMJAw==",
+        "version" : 1
+      },
+      "taskEvents" : [
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzODphY2NlcHRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTM5MDI1MjU4OHM1OnZhbHVlbg==",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzNzp3b3JraW5nczg6c2VxdWVuY2VpMToyczQ6dGltZWkxMzoxNzkxMzkwMjUyNzUyczU6dmFsdWVu",
+        "UklHSFRDTElDSy1WQUxVRS0xAG80OnM0OmtpbmRzOTpjb21wbGV0ZWRzODpzZXF1ZW5jZWkxOjNzNDp0aW1laTEzOjE3OTEzOTAyNTMxMTBzNTp2YWx1ZXMxNjpzaWduZXItbGlmZWN5Y2xl"
+      ],
+      "taskID" : "4E145DAD-E6F7-481C-85EE-97D0F4B631A9",
+      "version" : 1
+    },
+    "state" : "succeeded"
+  }
+]

@@ -1,0 +1,134 @@
+{
+  "sourceBaseSHA": "242e97d51965e6f3a13104f09bc2f5219d5535c4",
+  "sourceFiles": {
+    "Sources/RightClickCore/RCIR.swift": "866fba83b43e057c8277d99b613c05caba4874cf30fa3629e898f95ec90a1b17",
+    "Sources/RightClickCore/RCIRAuthority.swift": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70",
+    "Sources/RightClickCore/RCIRExecutionHost.swift": "6755c0eaa343c99bde50e5d2f3a7f0a850e1a58eb72d3fa2d58fd2994f1e0800",
+    "Tests/RightClickCoreTests/RCIRAuthorityTests.swift": "e3a44ad5f9c9bf60a9120ce2d07774c3f0329ea989f1c26646ac48ae97fb34cd",
+    "Tests/RightClickCoreTests/RCIRAuthorityDispatchTests.swift": "9b05318846ba4be909fb80f45a439f9c342cbcd0eee85ccd1f1f7e89a248f833",
+    "scripts/verify-rcir-receipt.py": "fd229cdfa38d67108fab5b83c7518f8ad46e2be749c9baf189cc8a0aca9ff5cb",
+    "Tests/test_rcir_authority_receipt_verifier.py": "fef07c19fb63e7aa0385267b4d66b199c1919bc4cff0c1e4aa32ed8cbb68c83f"
+  },
+  "candidateExecutableSHA256": "f1bd9e77c07f88131ede112f677011fbd46e06e57ff9c0cbc4ba8873e4838eba",
+  "scope": "Internal host-local authority foundation; engineering proof, not released or restricted-agent acceptance",
+  "logs": [
+    {
+      "logicalPath": "evidence/agency-authority-20261007/context-leak-record-red.log",
+      "originalSHA256": "a3f847a3a1a76d480f1d06738bfcde27f9ae674097725ac985b6d40cd1eba191",
+      "originalBytes": 1890,
+      "archivePath": "evidence/agency-authority-20261007/context-leak-record-red.log.gz",
+      "archiveSHA256": "5151cc4f1a535b59bec3db84ba971de160a434564e32d3f26d47ae3fb1588b15",
+      "archiveBytes": 733
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/foundation-bounded-final.log",
+      "originalSHA256": "33d8352662f4b8447bee3ac239b34de0dbeb3340df0122fc3fdd10c94fa55806",
+      "originalBytes": 25141,
+      "archivePath": "evidence/agency-authority-20261007/foundation-bounded-final.log.gz",
+      "archiveSHA256": "0ee7b4b67b2382298918f060b3ef8246376cdc1503870da93c3ff5ecb72b071a",
+      "archiveBytes": 3495
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/foundation-final.log",
+      "originalSHA256": "c53338da0a8a865977667264112f32a05f9773f66e8f5a14dcfcf450a239ec92",
+      "originalBytes": 24332,
+      "archivePath": "evidence/agency-authority-20261007/foundation-final.log.gz",
+      "archiveSHA256": "de211f2c45d4520f82bd9fda12f5430f3c66745a220824a998f5d995d22ebeb8",
+      "archiveBytes": 3363
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/full-native-final.log",
+      "originalSHA256": "4f7e4c05f8f4184214278e8753c9184064ff08dba2821afec76cd5b20bf025f6",
+      "originalBytes": 217384,
+      "archivePath": "evidence/agency-authority-20261007/full-native-final.log.gz",
+      "archiveSHA256": "a4edbb5751a4b9c369abb0b87da5a4027361fc64324ced199eaad32f56207a22",
+      "archiveBytes": 24829
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/full-native-regression.log",
+      "originalSHA256": "341e17d700a6b2f66bb31f6d4e1994485bb403a40cbf52ecd0f12604c18d3920",
+      "originalBytes": 221136,
+      "archivePath": "evidence/agency-authority-20261007/full-native-regression.log.gz",
+      "archiveSHA256": "bed23d18403d611c046f02cda180e09bb22a8258dc572ae9b39c2e7e097af172",
+      "archiveBytes": 25288
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/green-first.log",
+      "originalSHA256": "8ec9164dd364609b8d6a00f8d624d2896bbb3033a1333d53f6c95101b616d40f",
+      "originalBytes": 23383,
+      "archivePath": "evidence/agency-authority-20261007/green-first.log.gz",
+      "archiveSHA256": "094edac9747a2b6eead103d477188eb4f67e02175d1c0de2142224b922d855ad",
+      "archiveBytes": 3120
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/native-host-context-leak-red.log",
+      "originalSHA256": "9939ba801bda9ed516d10c6aa99fe940630dcb0f9a25454e37835ca1d4a1a94b",
+      "originalBytes": 12914,
+      "archivePath": "evidence/agency-authority-20261007/native-host-context-leak-red.log.gz",
+      "archiveSHA256": "01a8c97719f10468f007fd8cf245b338b38767c898418957ed970b881a627700",
+      "archiveBytes": 2238
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/native-host-first.log",
+      "originalSHA256": "877d08cfc9dbbf8cae8a4bc0957fbf30a7d91c879ebdcf0dea12622af4e72863",
+      "originalBytes": 109991,
+      "archivePath": "evidence/agency-authority-20261007/native-host-first.log.gz",
+      "archiveSHA256": "c56a50361c8415da2413732ef800c6fb7315ee1df37c1db049f395b535b47aae",
+      "archiveBytes": 13968
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/native-host-green.log",
+      "originalSHA256": "f47d84dea2634d533ed0884e08463f26033baa042f28f26f0237a83885db4904",
+      "originalBytes": 21254,
+      "archivePath": "evidence/agency-authority-20261007/native-host-green.log.gz",
+      "archiveSHA256": "8a16820c8c9eeaad9d977b3dd1c8d8f0e0ae208c2e38627d4d362dddc18bd36e",
+      "archiveBytes": 2822
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/native-host-retry.log",
+      "originalSHA256": "af59c9f6c89c653e7c804834fcfb8b9125ba50df7d7bfc9c1a9d22105aa7a8bc",
+      "originalBytes": 28441,
+      "archivePath": "evidence/agency-authority-20261007/native-host-retry.log.gz",
+      "archiveSHA256": "186d1aabdd8ed99dbc1739d0d9c247410f2c17e276b3deb9810cefcea38c5859",
+      "archiveBytes": 2502
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/python-receipt-ci-equivalent-final.log",
+      "originalSHA256": "d06a933193390edc0555195f03f53ed40dcd95e766ba988bab77b668c5bffe69",
+      "originalBytes": 2850,
+      "archivePath": "evidence/agency-authority-20261007/python-receipt-ci-equivalent-final.log.gz",
+      "archiveSHA256": "e3fee55a38470ba55cc9a6904def99c1ec84fb41dedd57e8da9211074711a6ea",
+      "archiveBytes": 573
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/python-receipt-final.log",
+      "originalSHA256": "fe1cfbca1a70a879f2b4e78c4ecf01c1a818b1d7f8ad979720400a2f3914691a",
+      "originalBytes": 2850,
+      "archivePath": "evidence/agency-authority-20261007/python-receipt-final.log.gz",
+      "archiveSHA256": "2a11780ccfbdce13909e09d94546e7ce5e7a148242301ee4940f9ef38223f366",
+      "archiveBytes": 573
+    },
+    {
+      "logicalPath": "evidence/agency-authority-20261007/python-receipt-green.log",
+      "originalSHA256": "f0b03f6b26340bb0ecde82422416eb192513b95476b2f00a0637ca27edf5cdb8",
+      "originalBytes": 2772,
+      "archivePath": "evidence/agency-authority-20261007/python-receipt-green.log.gz",
+      "archiveSHA256": "2bb142fa386b55d2548686de0cf4d8ad63f39994bf0754e0bf7bc7b606393700",
+      "archiveBytes": 564
+    }
+  ],
+  "fullNative": {
+    "tests": 718,
+    "skipped": 31,
+    "failures": 0
+  },
+  "foundation": {
+    "tests": 100,
+    "skipped": 0,
+    "failures": 0
+  },
+  "independentPython": {
+    "tests": 16,
+    "failures": 0
+  }
+}

@@ -1,8 +1,8 @@
 # RIGHTCLICK MCP
 
-RIGHTCLICK MCP exists to make macOS contextual capabilities available to AI agents.
+RIGHTCLICK MCP exposes environment-derived contextual capabilities through one portable runtime on macOS, Linux and Windows. Native OS integrations are optional host adapters.
 
-Its core primitive is asking the operating system what actions are applicable to a specific object.
+Its core primitive is asking supported capability substrates what actions apply to a specific object. Keep the engine, policy, contracts and agent-facing interface independent of native host adapters.
 
 Do not replace contextual discovery with hard-coded actions.
 
@@ -30,6 +30,13 @@ Before finishing substrate work, run:
 
 If it exits `1`, follow `docs/BOTTLE-ALIGNMENT.md` and `docs/RELEASE.md` to cut the next immutable release. Never force-move an existing release tag.
 
+
+## Portability
+
+- Require integrated builds and real-provider transport acceptance on macOS, Linux and Windows before claiming a portable release.
+- OS-specific discovery belongs behind host availability guards; never fabricate native actions on another host.
+- Unsupported credential storage and observation adapters abstain. Preserve authority checks; never substitute plaintext storage or unchecked host configuration reads.
+- Homebrew is one distribution adapter, not a runtime dependency. Preserve the stable formula pin until a new immutable release is accepted.
 
 ## Runtime review inventory
 

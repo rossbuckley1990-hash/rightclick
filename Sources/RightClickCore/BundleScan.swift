@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 enum BundleScan {
@@ -102,3 +103,5 @@ func loadPropertyList(at url: URL) -> [String: Any]? {
 func stringList(_ value: Any?) -> [String] {
     (value as? [Any])?.compactMap { $0 as? String } ?? []
 }
+
+#endif

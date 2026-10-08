@@ -1,7 +1,15 @@
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
+#if canImport(Darwin)
 import Darwin
+#endif
 import Foundation
+#if canImport(ImageIO)
 import ImageIO
+#endif
 
 public enum VerificationPredicateType: String, Codable, Sendable {
     case textEquals = "text_equals"
@@ -671,6 +679,8 @@ public enum OutcomeVerifier {
         path: String,
         key: String
     ) -> Bool? {
+#if os(macOS)
+
         guard
             FileManager.default.fileExists(
                 atPath: path
@@ -705,7 +715,11 @@ public enum OutcomeVerifier {
         }
 
         return nil
-    }
+
+#else
+        return nil
+#endif
+}
 
     private static func imageObservation(
         path: String
@@ -714,6 +728,8 @@ public enum OutcomeVerifier {
         height: Int?,
         metadataValues: [String]?
     ) {
+#if canImport(ImageIO)
+
         let url = URL(
             fileURLWithPath: path
         )
@@ -783,8 +799,13 @@ public enum OutcomeVerifier {
             height,
             values
         )
-    }
 
+#else
+        return (nil, nil, nil)
+#endif
+}
+
+#if canImport(ImageIO)
     private static func collectImageMetadata(
         _ metadata: CGImageMetadata,
         into values: inout [String]
@@ -848,6 +869,7 @@ public enum OutcomeVerifier {
         )
     }
 
+#endif
     private static func collectMetadataValues(
         _ object: Any,
         into values: inout [String]

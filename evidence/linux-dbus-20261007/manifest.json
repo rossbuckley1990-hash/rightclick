@@ -1,0 +1,1079 @@
+{
+  "format": "rightclick-linux-dbus-engineering-evidence-v1",
+  "capturedUTC": "2026-10-07T16:39:10.367327+00:00",
+  "scope": "Direct Linux D-Bus bounded unary methods; full programme RED",
+  "source": {
+    "commit": "ccd260a1089866074dcbf74bfd626b3050b81084",
+    "tree": "b548cc1624c78423f2837bdad1b15f5274366702",
+    "base": "4a3228ca6e800a1e9ffc4fd7e1aaab7ef3817712",
+    "additionalPortabilityCommit": "aa607f4f0b8b8174816ca0e567402fa44729fccc",
+    "portabilityEquivalentUpstreamCommit": "e16ef34",
+    "timing": "Source committed after final build/proof; compiled source files unchanged and checked against committed blobs. Retrospective engineering provenance, not a signed build attestation.",
+    "files": [
+      {
+        "path": "Package.resolved",
+        "bytes": 5938,
+        "sha256": "05d21463a6dca3ac8fb23f81c664b0db1035564f2c9f090a22d01e4aab36fa60"
+      },
+      {
+        "path": "Package.swift",
+        "bytes": 6085,
+        "sha256": "9c5cb61e7088911eae476014e0487e782f4f313f0316b86fb78f99940cb56b69"
+      },
+      {
+        "path": "Sources/RightClickARD/ARD.swift",
+        "bytes": 10901,
+        "sha256": "e07e7282644ca1ccb6b037e470e5af911bdb8c5219307dd1b2932d9b4e941617"
+      },
+      {
+        "path": "Sources/RightClickARDProbe/main.swift",
+        "bytes": 7661,
+        "sha256": "f3e076b296e943a162806fdb9ff9d67d0055ac16de9268161c0c3ee9c1b9b5f5"
+      },
+      {
+        "path": "Sources/RightClickCLI/AuthorityConfigurationCLI.swift",
+        "bytes": 10999,
+        "sha256": "ca3931efbd1269f789389ad39d599a234688f31006d0f6ac6e3d9fe6aa48c1fc"
+      },
+      {
+        "path": "Sources/RightClickCLI/BridgeRuntime.swift",
+        "bytes": 31047,
+        "sha256": "cfd779e0d573da96128d8653c58b763cc3236424590d2f66c8e0e6fb3fa845a7"
+      },
+      {
+        "path": "Sources/RightClickCLI/ChatGPTBridge.swift",
+        "bytes": 9703,
+        "sha256": "04fed3e8c527d0378b62b62503d038ad2ed3bccd5558d5b40a136677204e7f73"
+      },
+      {
+        "path": "Sources/RightClickCLI/ChatGPTBridgeInstaller.swift",
+        "bytes": 12238,
+        "sha256": "85626ccc5625b4e09d955555be24ff716cc87788649bbef9630cfed735fb081a"
+      },
+      {
+        "path": "Sources/RightClickCLI/ChatGPTLiveAttestation.swift",
+        "bytes": 15842,
+        "sha256": "d5a77ab154365a8a3d6a9693030f7531b04cb8a6635488cef753209346e1aa72"
+      },
+      {
+        "path": "Sources/RightClickCLI/ChatGPTOnboarding.swift",
+        "bytes": 16486,
+        "sha256": "73e5e8bdce180891e1eabccce7bd0b0e1c539f18ce2371de6253db8992080d23"
+      },
+      {
+        "path": "Sources/RightClickCLI/ChatGPTOnboardingTransaction.swift",
+        "bytes": 13173,
+        "sha256": "98d3e8b4952d6939cee9a32d1f5b67a5dbf85ab6bdc8580625a11d63e92cd01c"
+      },
+      {
+        "path": "Sources/RightClickCLI/ClaudeClientAdapter.swift",
+        "bytes": 6221,
+        "sha256": "f6307f188878256c9ab9aeefb237c1a39fc9c126abb6c16a678b567b3b04bfc9"
+      },
+      {
+        "path": "Sources/RightClickCLI/ClientRegistry.swift",
+        "bytes": 809,
+        "sha256": "af59cd64f15689f80b332ca1140420e7fde27f547db60de6d6f07feac5a9a057"
+      },
+      {
+        "path": "Sources/RightClickCLI/CodexClientAdapter.swift",
+        "bytes": 8049,
+        "sha256": "19480c7b9021651d9589938dcccb013197b10b4a9f995ee1db743dcc6bf7a9ad"
+      },
+      {
+        "path": "Sources/RightClickCLI/LocalOnboarding.swift",
+        "bytes": 28971,
+        "sha256": "9cd4f792ce97134ca5bb5a4bde3983e6c2c2932503fa9ae2497d3a98e7762df6"
+      },
+      {
+        "path": "Sources/RightClickCLI/NativeRegistrationBackend.swift",
+        "bytes": 15085,
+        "sha256": "a3535d9f8aab12411133aae5257502979a1934f20f9545ef119219be05e49222"
+      },
+      {
+        "path": "Sources/RightClickCLI/OnboardingEngine.swift",
+        "bytes": 22673,
+        "sha256": "fa8329c7264555d708e3a5640c581a4a62b993016bf296eadb14ec27ba0275fd"
+      },
+      {
+        "path": "Sources/RightClickCLI/OpenAIPluginSetup.swift",
+        "bytes": 8471,
+        "sha256": "742d751248116beb1f1a9371b1fe5097a2cfd6b2b4ae37d439c71c27206a307e"
+      },
+      {
+        "path": "Sources/RightClickCLI/ProviderConfigurationCLI.swift",
+        "bytes": 10731,
+        "sha256": "bc4ff123105e391486cf5d58ee0ca164a2381dc24944d26ddebc4b7747deb3bb"
+      },
+      {
+        "path": "Sources/RightClickCLI/Setup.swift",
+        "bytes": 14804,
+        "sha256": "4879d2844bd80eaabb4e4c177603d0d8cd37cb448a1980bdd065841b2bb32a04"
+      },
+      {
+        "path": "Sources/RightClickCLI/SetupAllTransaction.swift",
+        "bytes": 5492,
+        "sha256": "4cfcc4e73a971bbd19fe5d66ae487e568f6226457955298017dba34bbcfc67b8"
+      },
+      {
+        "path": "Sources/RightClickCLI/SetupState.swift",
+        "bytes": 6757,
+        "sha256": "d8fc3f4741e12e32174a3a08b077fadb50c9257d9b8bd3c601a8955151977266"
+      },
+      {
+        "path": "Sources/RightClickCLI/StableEntrypoint.swift",
+        "bytes": 4034,
+        "sha256": "3f019cf8e18f81d9cda2b14e37b1134945e9bcb4de0b7d6bc4048fa4efa4c068"
+      },
+      {
+        "path": "Sources/RightClickCLI/main.swift",
+        "bytes": 14335,
+        "sha256": "2265bc507a934d17ffdf4d44b6e6303bfbcc9c27194de1248774ecc6389b9c71"
+      },
+      {
+        "path": "Sources/RightClickCore/A2AReflector.swift",
+        "bytes": 11788,
+        "sha256": "c357822fd0e900f6aadc80285fad980b5f736d9e62ab539e1026b399aaac2e21"
+      },
+      {
+        "path": "Sources/RightClickCore/ARDRegistrySource.swift",
+        "bytes": 20798,
+        "sha256": "ff392711946bc7dc90837b787de79179741a1a06c6acfb644b67449a600ee288"
+      },
+      {
+        "path": "Sources/RightClickCore/ActionExtensionCatalog.swift",
+        "bytes": 7858,
+        "sha256": "04dedc4abda3512dd7cc847174973348f3b1a73180b135cd303bd5686feddbed"
+      },
+      {
+        "path": "Sources/RightClickCore/BonjourGRPCSource.swift",
+        "bytes": 14597,
+        "sha256": "b348a26a0ff03e155eeab1739895ae0e8c28908264973f9d9feacdb576fd0d4b"
+      },
+      {
+        "path": "Sources/RightClickCore/BonjourGraphQLSource.swift",
+        "bytes": 22011,
+        "sha256": "940b20fd5bb63fa07adb56923c91470f42cde9533a2498ffac9abe073eff1415"
+      },
+      {
+        "path": "Sources/RightClickCore/BonjourOpenAPISource.swift",
+        "bytes": 19555,
+        "sha256": "6c02e1350ecc88bde68e32f58cb19332bf294e79458a01c3402015e6191973c4"
+      },
+      {
+        "path": "Sources/RightClickCore/BoundedCapabilityProcess.swift",
+        "bytes": 5267,
+        "sha256": "d0ddd4401cc070365f69e1c3868148578fc9bcb25e6aebbf222f788a96c4df51"
+      },
+      {
+        "path": "Sources/RightClickCore/BundleScan.swift",
+        "bytes": 4571,
+        "sha256": "b188140b91dfd98cda035a1da54fcb7bb9427fcd57e4f2e485906a1ce13e38ac"
+      },
+      {
+        "path": "Sources/RightClickCore/Capability.swift",
+        "bytes": 18198,
+        "sha256": "c644f0b986db88f1a08cf8c6c618671edcc24b927174ef5b264fc8460cd27bcc"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityABI.swift",
+        "bytes": 21547,
+        "sha256": "de98d9495c316cc4a8a73ed7d313bc73baf8cbded0f30ddcd11bd8ba1410368a"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityABIAdapter.swift",
+        "bytes": 2036,
+        "sha256": "16b973b7a7a4bd50a8344b29f16b6562927b900f4874730f1dbe2ecb98e69d30"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityArtifactResolver.swift",
+        "bytes": 25249,
+        "sha256": "bc57a4ccf6e013f8f8dca04c64b5f99f86fde6ff8c9e70d9574b65fdd58c24c7"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityArtifactSnapshot.swift",
+        "bytes": 5606,
+        "sha256": "e837625366e9980c6bc400e378ed5e4150b985dbe18da2032394e714e15ced7e"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityCoreArgumentEncoding.swift",
+        "bytes": 1288,
+        "sha256": "3519820b5ebeb3d6710bb076e674bdb24ea9f3198e0ab6d81706f4fbecd2ee88"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityEngine.swift",
+        "bytes": 37757,
+        "sha256": "c1cabfd0cfa2cdce48f2fc69e3875b7b890aa814be23a5c5ccee1a361adc0508"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityExperience.swift",
+        "bytes": 5394,
+        "sha256": "61e56667550c049d036eaed193427f162739dc2e72333bf68a9f0d59457b3b9e"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityExperienceLedger.swift",
+        "bytes": 9916,
+        "sha256": "69bc0d7c19d29ddb1f1adc3f079cadba6144b9ae01c443cb1f8f493a699eb6c4"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityInterface.swift",
+        "bytes": 13356,
+        "sha256": "157f0edc0d84bc392b7aca6956008802b25aed99887f3f6dd044b91120af77a0"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityProtectedReference.swift",
+        "bytes": 708,
+        "sha256": "52e32f1882e89da73280d5d104fc822a00ba6a0ae10520272fe07523bd752b34"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityReflector.swift",
+        "bytes": 9457,
+        "sha256": "d8b01038448cdd43e7807de58ba1b1602b33e059f65836003e420d726b14625c"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityReflectorSource.swift",
+        "bytes": 1312,
+        "sha256": "784f3eab45d5ae7ddfc567639640fdc67e95972d485847ac532aaa3795e38a64"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilityRuntimeDefaults.swift",
+        "bytes": 2694,
+        "sha256": "d4c22102faea2e6a6826c727bc96a36d9c6c74e1cad04f56b0e00d44662ed028"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilitySensitiveMaterial.swift",
+        "bytes": 1942,
+        "sha256": "dc25e83533eaf7609827de558145de19e95b59e1e96f81411782ef6ae433e7e9"
+      },
+      {
+        "path": "Sources/RightClickCore/CapabilitySnapshotFreshness.swift",
+        "bytes": 950,
+        "sha256": "791683a0844e2adc2baf5d4e2b8b44b5494348509232ed452419fd0643523019"
+      },
+      {
+        "path": "Sources/RightClickCore/ConfiguredOpenAPISource.swift",
+        "bytes": 27619,
+        "sha256": "51722991806115317ed061f78fcec18d782cc9e9cb334b175aa16d8c06615d94"
+      },
+      {
+        "path": "Sources/RightClickCore/ContentItem.swift",
+        "bytes": 5356,
+        "sha256": "f9631387fe8369b699ff2a8d8d6a2d1a3744a6bb0ba4e0059e8d180bcd87530b"
+      },
+      {
+        "path": "Sources/RightClickCore/DBusCapabilityArtifactResolver.swift",
+        "bytes": 14430,
+        "sha256": "070b97058390b2181737c399f4eb19a0505942936f0a3bd0fa3c3d2032c7ab6f"
+      },
+      {
+        "path": "Sources/RightClickCore/DBusIntrospection.swift",
+        "bytes": 11266,
+        "sha256": "f0b367d519373d6d3ef097c5f6efe039450efa5233b9b7822ec4ceb342e8e83f"
+      },
+      {
+        "path": "Sources/RightClickCore/DBusSessionSource.swift",
+        "bytes": 2040,
+        "sha256": "6766b08926366f6c07a4e4e82b4766ee1e7476f522235fef5ad41f90a6b900c0"
+      },
+      {
+        "path": "Sources/RightClickCore/GRPCReflectionTransport.swift",
+        "bytes": 22529,
+        "sha256": "22e90e7c32cf2ea201fdb3a6327cc23966cf10d88c5d484fdb49fa0973c3c523"
+      },
+      {
+        "path": "Sources/RightClickCore/GRPCReflector.swift",
+        "bytes": 60146,
+        "sha256": "5a247a94a05f4143b73d021218ed2c20cfb623ee03af5e0128454b0d8974af3d"
+      },
+      {
+        "path": "Sources/RightClickCore/GRPCWireCodec.swift",
+        "bytes": 7280,
+        "sha256": "09a3bf2620ff85beb881adf4c95dc07218ebdf41ab3808bd920b9031572dd0cd"
+      },
+      {
+        "path": "Sources/RightClickCore/GraphQLHTTP.swift",
+        "bytes": 13666,
+        "sha256": "1283c0594298e7f084d3cfd2dace43257749b3af10992ad170c31b77eed40a77"
+      },
+      {
+        "path": "Sources/RightClickCore/GraphQLReflector.swift",
+        "bytes": 63583,
+        "sha256": "b3211c7ef3d1674d75af97e0d21f3e59082dd6637d28039207f3cc9cf9c1e09e"
+      },
+      {
+        "path": "Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift",
+        "bytes": 13837,
+        "sha256": "2b70054d0f04c1875a3b12c099fef1c595925fc38b830139ae5f4f71d5bb38de"
+      },
+      {
+        "path": "Sources/RightClickCore/KubernetesCapabilityArtifactResolver.swift",
+        "bytes": 17525,
+        "sha256": "b8579411e9b43e02afa4cd2eb7e931ec90aba764d4647c3cd50845a4d4164bfd"
+      },
+      {
+        "path": "Sources/RightClickCore/MCPCapabilityArtifactResolver.swift",
+        "bytes": 8543,
+        "sha256": "29bf0a67db3f1520d81510567dcf5e769373e89bbc789ff87a9b66c9febf46e4"
+      },
+      {
+        "path": "Sources/RightClickCore/OAuthOIDCAuthority.swift",
+        "bytes": 21346,
+        "sha256": "94cd6348817cb002f40ff90ce87c1e5444a27bc0ff1fb8d2841dfb8f8838ed6a"
+      },
+      {
+        "path": "Sources/RightClickCore/OpenAPIAuthority.swift",
+        "bytes": 11017,
+        "sha256": "18371da862d8170d8e6d0debd92de207ab5d4483e3e292534f29a6160dc980ea"
+      },
+      {
+        "path": "Sources/RightClickCore/OpenAPIReflector.swift",
+        "bytes": 113609,
+        "sha256": "506155f0b45701044553bc7f96170b582e21cfe4c9bf70c1e873c4a7a9dfe038"
+      },
+      {
+        "path": "Sources/RightClickCore/OriginPinnedHTTP.swift",
+        "bytes": 15679,
+        "sha256": "dc95771515189e0642fa5f9986a5b7816b5e098872b496968f1eda6341d15e22"
+      },
+      {
+        "path": "Sources/RightClickCore/OutcomeVerifier.swift",
+        "bytes": 23400,
+        "sha256": "8b8918706e865c58f5c55729518ee81f45593e3ad9ab0b87c4965c086e4d75fa"
+      },
+      {
+        "path": "Sources/RightClickCore/ProductSurface.swift",
+        "bytes": 8403,
+        "sha256": "aeaac3a8cb805d4a07238a81c80284971f3d122f582c192f6aa4a45952362fb1"
+      },
+      {
+        "path": "Sources/RightClickCore/RCIR.swift",
+        "bytes": 40394,
+        "sha256": "05bcf76000f59ea24b6cd8b5dbbc130d8f812bdef19b0fd57837ff5f0ab16563"
+      },
+      {
+        "path": "Sources/RightClickCore/RCIRAuthority.swift",
+        "bytes": 13808,
+        "sha256": "6d0e5e75f3e903313b2db341dd7cf3735f004d8678f15a7387d99ec816066b70"
+      },
+      {
+        "path": "Sources/RightClickCore/RCIRDeferredExecution.swift",
+        "bytes": 6837,
+        "sha256": "c7bc0571cfd1430e15cb616b01d830b4ac57a3b3e37ab9778efa3e0959567f0a"
+      },
+      {
+        "path": "Sources/RightClickCore/RCIRExecutionHost.swift",
+        "bytes": 32397,
+        "sha256": "b31272bb282c7c9c599e5d49e4c27663ce14bdcf5c6ae1b705cc4b3c776906e0"
+      },
+      {
+        "path": "Sources/RightClickCore/RCIRHTTPObservation.swift",
+        "bytes": 7819,
+        "sha256": "ad38ba58c6b648c8aa39f9f90146280f718c7f64c3fd27af065c2a07b1c32244"
+      },
+      {
+        "path": "Sources/RightClickCore/RCIRHostObservation.swift",
+        "bytes": 622,
+        "sha256": "be56bfd1885773fae17bb4c04041c8110055f18ecc6fad3d425c4ca3c6ed7209"
+      },
+      {
+        "path": "Sources/RightClickCore/RCIRSignedReceipt.swift",
+        "bytes": 3469,
+        "sha256": "f0f440ec0ad0c329728248cc07a84798403c6e36b0815e270b9c5e48dba7a5a2"
+      },
+      {
+        "path": "Sources/RightClickCore/RCIRUnaryInvocation.swift",
+        "bytes": 3646,
+        "sha256": "61a0e854818a24e956eff2f26380d47d7f8f6f0a8856353896c2c55b96206c67"
+      },
+      {
+        "path": "Sources/RightClickCore/RuntimePlatform.swift",
+        "bytes": 3426,
+        "sha256": "47485af96b9c80de5d0aa95750da8abf09d7e76ee4fe4799ae71c69323818036"
+      },
+      {
+        "path": "Sources/RightClickCore/SafetyPolicy.swift",
+        "bytes": 2528,
+        "sha256": "396ef2d7410b3c4e76190a6d8b857d3264fad3e23658f032a48ab1e39f5f8e7f"
+      },
+      {
+        "path": "Sources/RightClickCore/ServiceCatalog.swift",
+        "bytes": 20093,
+        "sha256": "330d7071805abdbfa3f29deace863f8ade861d1e24c8d375ebf3f6f29ae7344e"
+      },
+      {
+        "path": "Sources/RightClickCore/ServiceContext.swift",
+        "bytes": 4193,
+        "sha256": "744901505ecb5d8cdf52a9af6cace595303d0ba163acef0ac77c3da99ad7f865"
+      },
+      {
+        "path": "Sources/RightClickCore/ServiceOutcome.swift",
+        "bytes": 2708,
+        "sha256": "457413ac2012a8d0facf878b2404a280587cb83f02143a9d2e42d07bdca2a1d9"
+      },
+      {
+        "path": "Sources/RightClickCore/SharingCatalog.swift",
+        "bytes": 10116,
+        "sha256": "2f49444150bb339f597ff10b7e6ec2e7d4c46c3adcdcaec9a66c0c7b591d945d"
+      },
+      {
+        "path": "Sources/RightClickCore/SharingExecutionModel.swift",
+        "bytes": 3275,
+        "sha256": "cf96729ee6822b7a9473b16df9839eb4a0c77cd70b795a03eab8a82fa41c8d83"
+      },
+      {
+        "path": "Sources/RightClickCore/WASMCapabilityArtifactResolver.swift",
+        "bytes": 7057,
+        "sha256": "1c7d87fd966fcd25c49966b3fad5887eb498dd513f35ca82a017b40efabb2e5f"
+      },
+      {
+        "path": "Sources/RightClickHostFiles/HostFiles.c",
+        "bytes": 10979,
+        "sha256": "a2d47b9607da2cc3282c284e0b1ef82985232801a563bce6b0f1f330e2ac7f1e"
+      },
+      {
+        "path": "Sources/RightClickHostFiles/include/RightClickHostFiles.h",
+        "bytes": 636,
+        "sha256": "6bc99f41358d7aaf9e3c702db8e09557ead494379bc27397a5a083e8e77df04f"
+      },
+      {
+        "path": "Sources/RightClickMCP/Federation.swift",
+        "bytes": 28421,
+        "sha256": "691d1461fc4a96ed8b8660818b334c423640d49734a4cd30252936b0c6271e55"
+      },
+      {
+        "path": "Sources/RightClickMCP/HTTPListener.swift",
+        "bytes": 5971,
+        "sha256": "250b0d1d0790c8c9d991563a69a40494c21a658fdf34ab5ce6fb5f3dd231526a"
+      },
+      {
+        "path": "Sources/RightClickMCP/ModernMCPStdioTransport.swift",
+        "bytes": 7751,
+        "sha256": "2d872111ff19ed8b67d2e42cafdf8241f773ba4c1934df417e1a1e3ec0a6b193"
+      },
+      {
+        "path": "Sources/RightClickMCP/PortableStdioTransport.swift",
+        "bytes": 2781,
+        "sha256": "6b9099cfcbd821beb7a5355f8462674529b97e555f0044974fd43e97e057e933"
+      },
+      {
+        "path": "Sources/RightClickMCP/Server.swift",
+        "bytes": 22083,
+        "sha256": "176b1263523b8596487bc6265b4d43d6c16f39d5301c6975c4a604b5664bd86e"
+      },
+      {
+        "path": "Sources/RightClickMarker/main.swift",
+        "bytes": 923,
+        "sha256": "25f8ff11c81bfee9d54c2c4d80c8925007eb3df0b5ee71a1d702ceca9fa8e892"
+      },
+      {
+        "path": "Sources/RightClickProbe/main.swift",
+        "bytes": 62851,
+        "sha256": "9960e82e61e2eb61fd80ffd0c3a03d8b7c2a298c23952534ef14f2f1e821e07a"
+      },
+      {
+        "path": "Sources/RightClickProbePrivate/RCPrivateExtensionProbe.m",
+        "bytes": 3502,
+        "sha256": "945cf0b4ff819def05f2fa45e447616cc6e907373c8a30eec3f41ede05ea8a62"
+      },
+      {
+        "path": "Sources/RightClickProbePrivate/include/RCPrivateExtensionProbe.h",
+        "bytes": 647,
+        "sha256": "b6302734f921c9876304f72f0e20776ebaf455432382581602776121d38584a7"
+      }
+    ]
+  },
+  "nativeCandidate": {
+    "path": ".build/linux-native/aarch64-unknown-linux-gnu/debug/rightclick",
+    "bytes": 104384832,
+    "sha256": "0274b3131d0d1cace49232e87fd98282f7d530e13202cc32b59fa607f30055ab",
+    "platform": "Linux arm64",
+    "buildConfiguration": "debug",
+    "version": "0.2.2"
+  },
+  "docker": {
+    "candidateTag": "rightclick-dbus-validation:20261007",
+    "candidateImageID": "sha256:aeab1e2745498298dc6bfa875e82f6a223a87f9ececcde07b0438bba2bd45e26",
+    "baseTag": "rightclick-portable-python-validation:local",
+    "baseImageID": "sha256:516f96ff10ddf69808a283888b938ccaef536268e4c502d32a123b0cbe4daa19",
+    "architecture": "arm64",
+    "registryDigest": null
+  },
+  "checks": {
+    "targetedNative": {
+      "executed": 13,
+      "passed": 13,
+      "skipped": 0,
+      "failed": 0
+    },
+    "sharedNativeLinux": {
+      "executed": 97,
+      "passed": 95,
+      "skipped": 2,
+      "failed": 0
+    },
+    "sharedMacOS": {
+      "executed": 51,
+      "passed": 49,
+      "skipped": 2,
+      "failed": 0
+    },
+    "nativeEngineeringSevenOperations": "SCOPED_GREEN",
+    "independentReceiptDecoders": "VALID",
+    "remoteCI": "NOT_RUN",
+    "bottleAlignment": "EXIT_1_RED",
+    "freshAI": "NOT_RUN"
+  },
+  "evidenceFiles": [
+    {
+      "path": "README.md",
+      "bytes": 7236,
+      "sha256": "98e117f87aa95339d4740d9f611f00414fe6b59cd78becc23a847dddb7ba1afc"
+    },
+    {
+      "path": "discovery-red/actual-introspection.json",
+      "bytes": 1290,
+      "sha256": "95dc2550892733c8733409d5d09f8fe1886ec9b83cc0097c520307553f9afc4f"
+    },
+    {
+      "path": "discovery-red/actual-introspection.xml",
+      "bytes": 1151,
+      "sha256": "4d1fe6f769a4734c14670a1bfe94d017bfabe975c54061836b3cfe67b3361603"
+    },
+    {
+      "path": "discovery-red/bus.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-red/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-red/observer.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-red/private-bus-policy.xml",
+      "bytes": 1224,
+      "sha256": "fab28fee01aa8c30e1d644b5cba42eee952960ea37c71f1bcf81db8e6c544355"
+    },
+    {
+      "path": "discovery-red/results.json",
+      "bytes": 1248,
+      "sha256": "3da9ef3325dfccdd08022cfeea9d1346f0ff35b1215f17d69255cc03f25a719e"
+    },
+    {
+      "path": "discovery-red/service.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-red/transcript.json",
+      "bytes": 11976,
+      "sha256": "47a0523020c7075b9413a6287cf1bfc7d8856f23c3a19200dad9d7fdbbbe0266"
+    },
+    {
+      "path": "discovery-red/trusted-public-key.raw",
+      "bytes": 32,
+      "sha256": "b56f98731f86cbac2009b5b36990c8ea48fd57cf4f928e3b3f573ac7b383166e"
+    },
+    {
+      "path": "discovery-red-marker-declared/actual-introspection.json",
+      "bytes": 1354,
+      "sha256": "0de519d4f8f4daad48a9bf1fb49aaadd8dab80928ce04e1a28e27d3be4eec292"
+    },
+    {
+      "path": "discovery-red-marker-declared/actual-introspection.xml",
+      "bytes": 1208,
+      "sha256": "f418659c438f7728fe8b20a51d20e25b23e4ce4a6c5ac1753f7619f81fe44561"
+    },
+    {
+      "path": "discovery-red-marker-declared/bus.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-red-marker-declared/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-red-marker-declared/observer.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-red-marker-declared/private-bus-policy.xml",
+      "bytes": 1224,
+      "sha256": "384786e320ef84489a4a6061d8b385dfcaaaed3fe3e1ccca6708cd62e8012c01"
+    },
+    {
+      "path": "discovery-red-marker-declared/results.json",
+      "bytes": 1248,
+      "sha256": "3da9ef3325dfccdd08022cfeea9d1346f0ff35b1215f17d69255cc03f25a719e"
+    },
+    {
+      "path": "discovery-red-marker-declared/service.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "discovery-red-marker-declared/transcript.json",
+      "bytes": 11976,
+      "sha256": "47a0523020c7075b9413a6287cf1bfc7d8856f23c3a19200dad9d7fdbbbe0266"
+    },
+    {
+      "path": "discovery-red-marker-declared/trusted-public-key.raw",
+      "bytes": 32,
+      "sha256": "5f11b4c18f9dc31b84b5961f1376fc89d7ced5364e51e63fb3e1c18dc93a8344"
+    },
+    {
+      "path": "log-index.json",
+      "bytes": 4126,
+      "sha256": "99a2c5286f2d03f3ea5d6d14759ecabf62bc41aa28bfcf2953d2a743eafe5753"
+    },
+    {
+      "path": "logs/evidence-dbus-bottle-alignment.log.gz",
+      "bytes": 520,
+      "sha256": "7565f5dea204bfc83940d31663e5c481bbb90f3899b8d13b01812c0dd1c250c6"
+    },
+    {
+      "path": "logs/evidence-dbus-broker-red.log.gz",
+      "bytes": 968,
+      "sha256": "86e96f2dafebc13443ffbad9e8ba37337538a29d754f2f4f720825e136ce13b2"
+    },
+    {
+      "path": "logs/evidence-dbus-green-build.log.gz",
+      "bytes": 4148,
+      "sha256": "e09e70803aad073d3540ca4aba0f7e5dcdcd18ffa7be8089656646bbdcd6da01"
+    },
+    {
+      "path": "logs/evidence-dbus-native-final-source.log.gz",
+      "bytes": 4602,
+      "sha256": "d72c974ff430ffe4dbb0d4b88488d2a9fb4fb6545aa92a0185d42385673baccb"
+    },
+    {
+      "path": "logs/evidence-dbus-native-final-tests.log.gz",
+      "bytes": 4692,
+      "sha256": "e43b4613220313b89e0c3699f82900fd273329f274c41d7ee925c2879e932753"
+    },
+    {
+      "path": "logs/evidence-dbus-regression-linux-converged-retry.log.gz",
+      "bytes": 905,
+      "sha256": "b98c7c8841743f4d403289a102bf689aef5ff9183b1e3d9afc8433d27e5b72fa"
+    },
+    {
+      "path": "logs/evidence-dbus-regression-linux-converged.log.gz",
+      "bytes": 5061,
+      "sha256": "f7d78dde1fbcd36b5bad8cfe41fc2757c7998d8aa767a0b7df23062bc9a8d378"
+    },
+    {
+      "path": "logs/evidence-dbus-regression-linux-exact-execute.log.gz",
+      "bytes": 4668,
+      "sha256": "3a5be711f6db3b95365d92bf04dcf758732b00bbc539c1853d40cb07570e1a63"
+    },
+    {
+      "path": "logs/evidence-dbus-regression-linux-final-guard.log.gz",
+      "bytes": 4577,
+      "sha256": "68ce99492f0ee90beae6cdef6e0b981cd6376bc9c2e217d7a7b109e8766f1c6b"
+    },
+    {
+      "path": "logs/evidence-dbus-regression-linux-final.log.gz",
+      "bytes": 5456,
+      "sha256": "f6fc48781373d2f7731eaae3d4cc91190ca8b33245b0d9694edac750f667911e"
+    },
+    {
+      "path": "logs/evidence-dbus-regression-linux.log.gz",
+      "bytes": 3106,
+      "sha256": "3693d09af227baa61bce37152dfea7daea8a4a6c315f616e5492aeae5483cd1c"
+    },
+    {
+      "path": "logs/evidence-dbus-regression-macos-fresh-module.log.gz",
+      "bytes": 16675,
+      "sha256": "56579988e0534c80eb0b1b326fdddd44dbb96d6ea07480d3349e62069c77c31a"
+    },
+    {
+      "path": "logs/evidence-dbus-regression-macos-native-parser.log.gz",
+      "bytes": 4376,
+      "sha256": "97f4f95a0b47c54e5b63cb4fe415cee2b320516ac357e2af4a275a538f327fcc"
+    },
+    {
+      "path": "logs/evidence-dbus-regression-macos.log.gz",
+      "bytes": 1633,
+      "sha256": "f1451f1a822b0dee468f31782f00d905afe659ce8fe8fec255373ee88fe5a75b"
+    },
+    {
+      "path": "logs/evidence-dbus-typed-red-fixed.log.gz",
+      "bytes": 3914,
+      "sha256": "991ad769ed4951d5952364c2510c7cfcc9a23b013ad7cf99a5f3c4a855f06562"
+    },
+    {
+      "path": "logs/evidence-dbus-typed-red.log.gz",
+      "bytes": 8039,
+      "sha256": "8294b2e1304621086f1b3f54b13d89d20a4fb6d15ad75a1dacdfc3b58941a60f"
+    },
+    {
+      "path": "mounted-self-use.json",
+      "bytes": 797,
+      "sha256": "672abe35e09399e3c2fbc75a4d81e0d658df3a0cd604db09afd588ffdec9c3d0"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/actual-introspection.json",
+      "bytes": 1354,
+      "sha256": "0de519d4f8f4daad48a9bf1fb49aaadd8dab80928ce04e1a28e27d3be4eec292"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/actual-introspection.xml",
+      "bytes": 1208,
+      "sha256": "f418659c438f7728fe8b20a51d20e25b23e4ce4a6c5ac1753f7619f81fe44561"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/bus.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/effects.jsonl",
+      "bytes": 246,
+      "sha256": "e957d25c435701a849fd627b3eb5f7b21ab73b60e1872998098e20aa72c63bb5"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/observations.jsonl",
+      "bytes": 308,
+      "sha256": "2fdbf64a6686b2c9c57fec45572959c29e0638ecefcdec486d934065ab248472"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/observer.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/private-bus-policy.xml",
+      "bytes": 1224,
+      "sha256": "ca1c14cb37031380f7f8c049d9c4295bafbb6b8cc30cad08ccd3865f61ad185b"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/results.json",
+      "bytes": 1389,
+      "sha256": "aed611bbdcdfaae4878b21a0e9e45a31eb12c85b52181365d62ca2a86502ecf5"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/service.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/success-receipt.json",
+      "bytes": 12179,
+      "sha256": "1a04cec23deca4014cbd2a20caa30ef52aca987ab7ac6b5e71d7261313a8ffe5"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/transcript.json",
+      "bytes": 74624,
+      "sha256": "843d2f8e30c35ffbbe930ce63cc480d61021d2eaa63ca79f4a17e615966bd049"
+    },
+    {
+      "path": "native-seven-control-shape-fixed/trusted-public-key.raw",
+      "bytes": 32,
+      "sha256": "d6286fd85e289235e1686444632f5de194d9fe9663d03a4d06fc119a41e54892"
+    },
+    {
+      "path": "native-seven-final/actual-introspection.json",
+      "bytes": 1354,
+      "sha256": "0de519d4f8f4daad48a9bf1fb49aaadd8dab80928ce04e1a28e27d3be4eec292"
+    },
+    {
+      "path": "native-seven-final/actual-introspection.xml",
+      "bytes": 1208,
+      "sha256": "f418659c438f7728fe8b20a51d20e25b23e4ce4a6c5ac1753f7619f81fe44561"
+    },
+    {
+      "path": "native-seven-final/bus.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-final/default-session/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-final/default-session/transcript.json",
+      "bytes": 40983,
+      "sha256": "36fb51b58fab1a07f76e6b1def9f5aacf3e4ca24cb17e1d34c857bc7b22d6dbd"
+    },
+    {
+      "path": "native-seven-final/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-final/observer.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-final/private-bus-policy.xml",
+      "bytes": 1304,
+      "sha256": "21e8438d40fd4a3d29dc4d3d1114c044845c71112b86d2a3e3a0136002ba258d"
+    },
+    {
+      "path": "native-seven-final/results.json",
+      "bytes": 1021,
+      "sha256": "370f94fc535b421d00a759ae6056575ec07d0e9350704c1adf442fc501af771c"
+    },
+    {
+      "path": "native-seven-final/service.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-final/transcript.json",
+      "bytes": 14251,
+      "sha256": "bca1852bd270d64d8c5cb422c2a8c367fb387d46fef006c67c3d1cb811fc9176"
+    },
+    {
+      "path": "native-seven-final/trusted-public-key.raw",
+      "bytes": 32,
+      "sha256": "ed97ff18db026aa97034d23fcfa25259414b9566d133cdd469490d1cce40bfcf"
+    },
+    {
+      "path": "native-seven-final-json-display/actual-introspection.json",
+      "bytes": 1354,
+      "sha256": "0de519d4f8f4daad48a9bf1fb49aaadd8dab80928ce04e1a28e27d3be4eec292"
+    },
+    {
+      "path": "native-seven-final-json-display/actual-introspection.xml",
+      "bytes": 1208,
+      "sha256": "f418659c438f7728fe8b20a51d20e25b23e4ce4a6c5ac1753f7619f81fe44561"
+    },
+    {
+      "path": "native-seven-final-json-display/bus.stderr.log",
+      "bytes": 795,
+      "sha256": "1f4ea71edbd8f1ecba340ea193170f84999db9a6dfd10287dfcf8f9b5b715d6a"
+    },
+    {
+      "path": "native-seven-final-json-display/default-session/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-final-json-display/default-session/transcript.json",
+      "bytes": 41012,
+      "sha256": "2e7a1754b892071b1f676c1da2271f7dadc22441c94d7bc21a684d67498c469d"
+    },
+    {
+      "path": "native-seven-final-json-display/effects.jsonl",
+      "bytes": 495,
+      "sha256": "dfbb7c0bae897c93f4f0fec964b45fe2575df960d8dc12fa708aae8f939d008f"
+    },
+    {
+      "path": "native-seven-final-json-display/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-final-json-display/observations.jsonl",
+      "bytes": 924,
+      "sha256": "c2a74af55cefff988420665c568aba1bbfe8bb5dc2bc48ce3144d82241c9bf56"
+    },
+    {
+      "path": "native-seven-final-json-display/observer.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-final-json-display/private-bus-policy.xml",
+      "bytes": 1304,
+      "sha256": "fdd6603a986ff137d726c417d0f497d4a8623eb714e935c71270d95ec19e1df1"
+    },
+    {
+      "path": "native-seven-final-json-display/provider-enforced-denials.json",
+      "bytes": 171,
+      "sha256": "e4369642620b81299ba978a75bcecac7b41932b78431bbf27fdfa53a60139805"
+    },
+    {
+      "path": "native-seven-final-json-display/results.json",
+      "bytes": 2215,
+      "sha256": "81249d5669bc1d73d4d740021a5a73636aa1860962e7c19c8f56c2804d695649"
+    },
+    {
+      "path": "native-seven-final-json-display/service.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-final-json-display/success-receipt.json",
+      "bytes": 12747,
+      "sha256": "e3f0b1e788ed4107504c9a3c7df8c4bc9a2c8d0efcd9cb58d9ea6df60d17ec39"
+    },
+    {
+      "path": "native-seven-final-json-display/transcript.json",
+      "bytes": 175909,
+      "sha256": "d0d7cdd10f6b5ff7d3282b30cec9d80cb6543aab295bee6d2314b2afd76ce740"
+    },
+    {
+      "path": "native-seven-final-json-display/trusted-public-key.raw",
+      "bytes": 32,
+      "sha256": "ef5c3e7c3e6770a9032ed7e95d5b3c0c8335ab0d22070ac06b7261e8558ed385"
+    },
+    {
+      "path": "native-seven-first/actual-introspection.json",
+      "bytes": 1354,
+      "sha256": "0de519d4f8f4daad48a9bf1fb49aaadd8dab80928ce04e1a28e27d3be4eec292"
+    },
+    {
+      "path": "native-seven-first/actual-introspection.xml",
+      "bytes": 1208,
+      "sha256": "f418659c438f7728fe8b20a51d20e25b23e4ce4a6c5ac1753f7619f81fe44561"
+    },
+    {
+      "path": "native-seven-first/bus.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-first/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-first/observer.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-first/private-bus-policy.xml",
+      "bytes": 1224,
+      "sha256": "452c5641f231228d104ac726cab92e7e68e540336a29bafe03f938b89fc8ae02"
+    },
+    {
+      "path": "native-seven-first/results.json",
+      "bytes": 1021,
+      "sha256": "a1f5fd1810ebcd0c1c0fbc24c232cabfc9ea8b465fb3df89bb447813e9a7ab7f"
+    },
+    {
+      "path": "native-seven-first/service.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-first/transcript.json",
+      "bytes": 21427,
+      "sha256": "447d05f9ff32fb8c03d33e5858e3409f877c2f6b7ed314ae393ce861acb44bab"
+    },
+    {
+      "path": "native-seven-first/trusted-public-key.raw",
+      "bytes": 32,
+      "sha256": "9d412d30825dd4a149db2e5b785dec02c698445e42ef1c923019087a4e590d34"
+    },
+    {
+      "path": "native-seven-unit-final/ack-unit-receipt.json",
+      "bytes": 10235,
+      "sha256": "cec49b9fc7345502b0764e26f8e0e6ea532cbe4d2719b4334848374b1b67f6f1"
+    },
+    {
+      "path": "native-seven-unit-final/actual-introspection.json",
+      "bytes": 1354,
+      "sha256": "0de519d4f8f4daad48a9bf1fb49aaadd8dab80928ce04e1a28e27d3be4eec292"
+    },
+    {
+      "path": "native-seven-unit-final/actual-introspection.xml",
+      "bytes": 1208,
+      "sha256": "f418659c438f7728fe8b20a51d20e25b23e4ce4a6c5ac1753f7619f81fe44561"
+    },
+    {
+      "path": "native-seven-unit-final/bus.stderr.log",
+      "bytes": 795,
+      "sha256": "b7cf852194912dffaf87e8c6440cef37b00d9e6a7c0b5ec3e98e090234db510e"
+    },
+    {
+      "path": "native-seven-unit-final/default-session/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-unit-final/default-session/transcript.json",
+      "bytes": 41013,
+      "sha256": "2c164e0d67ab4561013d58dec35e39929f33bb977fccd3f36a2eb5edc79597fa"
+    },
+    {
+      "path": "native-seven-unit-final/effects.jsonl",
+      "bytes": 496,
+      "sha256": "8236ce641fb853263bf80bbe2c760fa47823fe0fc4ae01de008ac82169529b2a"
+    },
+    {
+      "path": "native-seven-unit-final/independent-success-decoder.json",
+      "bytes": 495,
+      "sha256": "9dfcb36a630f845d0f067952fca74804f630557192659b24199d2c564b19d343"
+    },
+    {
+      "path": "native-seven-unit-final/independent-unit-decoder.json",
+      "bytes": 496,
+      "sha256": "7fe3bd762021f71596c69d9cdd385bcc1fbeb91a1c1b13c7f0a07bbfce16e69f"
+    },
+    {
+      "path": "native-seven-unit-final/mcp.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-unit-final/observations.jsonl",
+      "bytes": 924,
+      "sha256": "cc2e67edadd40c7b34cee9a9fe27407989bc391808d9b5658d93dcd60c3c7142"
+    },
+    {
+      "path": "native-seven-unit-final/observer.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-unit-final/private-bus-policy.xml",
+      "bytes": 1304,
+      "sha256": "66bbfb171a58cecbfa1395ababd189d313c46db64ad93263d5b5bf5fe6ffcc19"
+    },
+    {
+      "path": "native-seven-unit-final/provider-enforced-denials.json",
+      "bytes": 171,
+      "sha256": "e4369642620b81299ba978a75bcecac7b41932b78431bbf27fdfa53a60139805"
+    },
+    {
+      "path": "native-seven-unit-final/results.json",
+      "bytes": 2362,
+      "sha256": "6871eec841b4e88cc02f957cf5be581cc6b1472dca8e870a6bbcf98a6db0fdbe"
+    },
+    {
+      "path": "native-seven-unit-final/service.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-seven-unit-final/success-receipt.json",
+      "bytes": 12747,
+      "sha256": "6fd9ddd520bd748fa439e932ce8ae8acc89a40aef3309a399fb64c3d5e0d1aa3"
+    },
+    {
+      "path": "native-seven-unit-final/transcript.json",
+      "bytes": 197988,
+      "sha256": "bb83a44aba351567092d3dd611f54c9ce2afcf341e9b996927f93662803a7e80"
+    },
+    {
+      "path": "native-seven-unit-final/trusted-public-key.raw",
+      "bytes": 32,
+      "sha256": "61b42b6858a8c4defff338766cef15fd68cf43f5201394f75d752eb2915901c5"
+    },
+    {
+      "path": "native-toolchain.json",
+      "bytes": 1534,
+      "sha256": "5e3b344335c9a9b71ae21da6350ad91887c9a2510d2468d3232496030de6ff6a"
+    }
+  ],
+  "manifestHash": "Excluded to avoid self-reference; Git evidence commit binds this manifest."
+}

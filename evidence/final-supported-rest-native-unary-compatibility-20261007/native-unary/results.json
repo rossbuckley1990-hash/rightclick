@@ -1,0 +1,51 @@
+{
+  "result": "PASS",
+  "runtime": {
+    "agentABIProfiles": [
+      {
+        "id": "core",
+        "operations": [
+          "context_runtime",
+          "context_providers",
+          "context_inspect",
+          "context_actions",
+          "context_explain",
+          "context_run",
+          "context_run_status"
+        ],
+        "version": 1
+      }
+    ],
+    "executablePath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+    "executableRealPath": "/tmp/rightclick-final-focused-release-frozen-20261007/rightclick",
+    "executableSHA256": "23d92e6319b299e2c3c47c3c1c0702b9c88eb37db413c533ae0846b9f5cd85fa",
+    "pid": 5199,
+    "platform": "macOS",
+    "product": "RIGHTCLICK",
+    "transport": "stdio",
+    "version": "0.2.3"
+  },
+  "test": "previous supported native unary acquisition and invocation",
+  "canonicalOperationsUsed": [
+    "context_actions",
+    "context_explain",
+    "context_inspect",
+    "context_providers",
+    "context_run",
+    "context_run_status",
+    "context_runtime"
+  ],
+  "toolCount": 7,
+  "discovery": "Actual local-only DNS-SD advertisement, Cocoa acquisition and official gRPC reflection",
+  "nativeCallCount": 1,
+  "exactExternalFileAndReturnedValue": true,
+  "state": "accepted",
+  "outputRetained": true,
+  "excluded": [
+    "new stream support",
+    "fresh restricted AI",
+    "issuer authentication/downscoping",
+    "all eleven",
+    "shipping"
+  ]
+}

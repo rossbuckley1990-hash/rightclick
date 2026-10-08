@@ -178,6 +178,62 @@ KIND_RULES: list[dict[str, object]] = [
         "any_files": ["Sources/RightClickCore/OAuthOIDCAuthority.swift"],
         "any_patterns": [r"OAuthOIDCAuthority|OIDC"],
     },
+    {
+        "id": "artifact.resolver.mcp",
+        "title": "Acquired MCP tool/schema capability resolver",
+        "any_files": ["Sources/RightClickCore/MCPCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"MCPCapabilityArtifactResolver"],
+        "composition_patterns": [r"MCPCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "artifact.resolver.wasm",
+        "title": "Actual component-model WIT capability resolver",
+        "any_files": ["Sources/RightClickCore/WASMCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"WASMCapabilityArtifactResolver"],
+        "composition_patterns": [r"WASMCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "artifact.resolver.kafka",
+        "title": "Acquired Kafka topic metadata capability resolver",
+        "any_files": ["Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"KafkaCapabilityArtifactResolver"],
+        "composition_patterns": [r"KafkaCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "source.a2a.configured",
+        "title": "Configured A2A agent-card source",
+        "any_files": ["Sources/RightClickCore/A2AReflector.swift"],
+        "any_patterns": [r"ConfiguredA2ASource"],
+        "composition_patterns": [r"ConfiguredA2ASource\.fromEnvironment\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityRuntimeDefaults.swift"],
+    },
+    {
+        "id": "artifact.resolver.kubernetes",
+        "title": "Kubernetes discovered-resource capability resolver",
+        "any_files": ["Sources/RightClickCore/KubernetesCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"KubernetesCapabilityArtifactResolver"],
+        "composition_patterns": [r"KubernetesCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "artifact.resolver.dbus",
+        "title": "Linux D-Bus introspection capability resolver",
+        "any_files": ["Sources/RightClickCore/DBusCapabilityArtifactResolver.swift"],
+        "any_patterns": [r"DBusCapabilityArtifactResolver"],
+        "composition_patterns": [r"DBusCapabilityArtifactResolver\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityArtifactResolver.swift"],
+    },
+    {
+        "id": "source.dbus.session",
+        "title": "Linux D-Bus session discovery source",
+        "any_files": ["Sources/RightClickCore/DBusSessionSource.swift"],
+        "any_patterns": [r"DBusSessionSource"],
+        "composition_patterns": [r"DBusSessionSource\s*\("],
+        "composition_files": ["Sources/RightClickCore/CapabilityRuntimeDefaults.swift"],
+    },
 ]
 
 
@@ -439,14 +495,14 @@ def main(argv: list[str]) -> int:
             )
             print("  " + ", ".join(result["bottle"]["kind_ids"]))  # type: ignore[index]
             if comparison["missing_from_bottle"]:
-                print("FAIL CLOSED: checkout kinds missing from published bottle:")
+                print("FAIL CLOSED: checkout kinds missing from compared asset:")
                 for kind in comparison["missing_from_bottle"]:
                     print(f"  - {kind}")
                 print("Alignment path:")
                 for step in comparison["alignment_path"]:
                     print(f"  - {step}")
             else:
-                print("ALIGNED: published bottle contains every checkout substrate kind.")
+                print("ALIGNED: compared asset contains every checkout substrate kind.")
             if comparison["extra_in_bottle"]:
                 print("note: bottle still has kinds not detected in checkout:")
                 for kind in comparison["extra_in_bottle"]:

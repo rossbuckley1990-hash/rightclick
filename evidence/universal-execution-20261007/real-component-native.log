@@ -1,0 +1,39 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: 'rightclick-universal': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/12] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (7.93s)
+Test Suite 'Selected tests' started at 2026-10-07 14:10:47.700.
+Test Suite 'rightclick-mcpPackageTests.xctest' started at 2026-10-07 14:10:47.701.
+Test Suite 'CapabilityInterfaceTests' started at 2026-10-07 14:10:47.701.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorAbstainsForOfflineTool]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorAbstainsForOfflineTool]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testBoundedExecutorRejectsInvalidLimitsAndEnforcesMonotonicDeadline]' passed (0.144 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testDuplicateInterfaceNamesFailClosed]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testDuplicateInterfaceNamesFailClosed]' passed (0.004 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterPreservesTypedResultAndDoesNotCoerceLegacyStrings]' passed (0.002 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterRejectsUnsupportedConstraintsAndOpenObjects]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testImporterRejectsUnsupportedConstraintsAndOpenObjects]' passed (0.000 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testRealWASMComponentWhenProvisioned]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testRealWASMComponentWhenProvisioned]' passed (0.407 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testSharedHostPreservesAcceptedVersusVerifiedAndExactPolicyDenial]' passed (0.003 seconds).
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues]' started.
+Test Case '-[RightClickCoreTests.CapabilityInterfaceTests testTypedBridgeRejectsOutOfRangeIntegersAndDeepValues]' passed (0.000 seconds).
+Test Suite 'CapabilityInterfaceTests' passed at 2026-10-07 14:10:48.263.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.561 (0.562) seconds
+Test Suite 'rightclick-mcpPackageTests.xctest' passed at 2026-10-07 14:10:48.263.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.561 (0.562) seconds
+Test Suite 'Selected tests' passed at 2026-10-07 14:10:48.263.
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.561 (0.563) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

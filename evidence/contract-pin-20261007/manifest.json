@@ -1,0 +1,54 @@
+{
+  "baseline": "2dd7bd2fafbbaa994812d1bc904730b74aa74816",
+  "baselineBinarySHA256": "80f5e7875f84deaeeeb04ced3f5d2d7137ad046a0a8af8a91887532253f1100a",
+  "implementationCommit": "c7de941bebdba4037eed0bd4c8eae5821ec384e9",
+  "candidateBinarySHA256": "405a9f942b1364628f40775e14cf42c4cbcfa8d19a87580f2f17fd1000d1c4ac",
+  "implementationSourceDiff": "empty for Sources, Package.swift, Package.resolved and Vendor at validation",
+  "frozenAcceptanceSHA256": "19273d0a48bf90ceea631469dd46196128363d2f7b30e8212450b97020fc9729",
+  "frozenScriptUnchanged": true,
+  "red": {
+    "passed": 8,
+    "failed": 12,
+    "exit": 1
+  },
+  "green": {
+    "passed": 20,
+    "failed": 0,
+    "exit": 0,
+    "publicRunSchemaAdvertisesPin": true
+  },
+  "native": {
+    "exit": 0,
+    "tests": 783,
+    "skipped": 31,
+    "failures": 0,
+    "command": "swift test --skip-update --jobs 4",
+    "log": "native-regression.log.gz"
+  },
+  "build": {
+    "exit": 0,
+    "command": "swift build --skip-update --jobs 4",
+    "log": "native-build.log.gz"
+  },
+  "bottleAlignment": {
+    "exit": 1,
+    "missingKinds": [
+      "artifact.resolver.kafka",
+      "artifact.resolver.mcp",
+      "artifact.resolver.wasm"
+    ],
+    "log": "bottle-alignment.log",
+    "distributionModified": false
+  },
+  "scope": "Controlled-provider public MCP regression through production transport; not fresh restricted-agent eleven-world acceptance",
+  "limits": [
+    "Optional pin; omitted pin keeps legacy fresh ID/title resolution",
+    "Matching content does not grant confirmation, authority, leases or signatures",
+    "Byte-identical withdrawal/reappearance is a separate incarnation/generation gate",
+    "Caller must verify schema advertisement and runtime identity; older servers can ignore unknown arguments",
+    "Only native macOS build/regression was executed for this focused change; 31 native suite skips preserved",
+    "No merge, release or Homebrew tap modification"
+  ],
+  "stackBaseBranch": "feature/universal-async-proof-20261007",
+  "latestConvergencePR49ObservedHead": "38b27e45e9f566588b398ace20ca3ed07a529da3"
+}

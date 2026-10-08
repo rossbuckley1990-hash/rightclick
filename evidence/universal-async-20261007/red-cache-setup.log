@@ -1,0 +1,31 @@
+warning: '--skip-update' option is deprecated and will be removed in a future release
+warning: 'rightclick-universal-async': found 2 file(s) which are unhandled; explicitly declare them as resources or exclude from the target
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/Fixtures/MOAT005G4IssuesCreateRealResponse.json
+    /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/Tests/RightClickCoreTests/Fixtures/MOAT005G3IssuesCreateRequest.json
+[0/1] Planning build
+[1/1] Compiling plugin SwiftProtobufPlugin
+[2/2] Compiling plugin GRPCSwiftPlugin
+Building for debugging...
+[2/478] /Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/.build/arm64-apple-macosx/debug/rightclick-mcpPackageTests.derived/runner.swift
+[3/478] Write rightclick-probe-entitlement.plist
+[3/478] Write rightclick-marker-entitlement.plist
+[3/478] Write rightclick-entitlement.plist
+[3/478] Write rightclick-ard-probe-entitlement.plist
+[7/481] Write sources
+[15/481] Copying PrivacyInfo.xcprivacy
+[15/481] Write sources
+error: precompiled file '/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/.build/arm64-apple-macosx/debug/ModuleCache/3DBZ4DYOKALPZ/_DarwinFoundation1-2YSBQADOLX02V.pcm' was compiled with module cache path '/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/debug/ModuleCache/3DBZ4DYOKALPZ', but the path is currently '/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/.build/arm64-apple-macosx/debug/ModuleCache/3DBZ4DYOKALPZ'
+1 error generated.
+[47/481] Compiling CSystem shims.c
+error: precompiled file '/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/.build/arm64-apple-macosx/debug/ModuleCache/3DBZ4DYOKALPZ/_Builtin_stdbool-2OQWMRBVRD4OJ.pcm' was compiled with module cache path '/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick/.build/arm64-apple-macosx/debug/ModuleCache/3DBZ4DYOKALPZ', but the path is currently '/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-universal-async/.build/arm64-apple-macosx/debug/ModuleCache/3DBZ4DYOKALPZ'
+1 error generated.
+[47/481] Compiling _AtomicsShims.c
+[47/481] Compiling CNIOWindows WSAStartup.c
+[47/481] Compiling RightClickProbePrivate RCPrivateExtensionProbe.m
+[47/481] Compiling CNIOPosix event_loop_id.c
+[47/481] Compiling CNIOWASI CNIOWASI.c
+[47/481] Compiling CNIOWindows shim.c
+[47/481] Compiling CNIOLinux shim.c
+[47/481] Compiling CNIOOpenBSD shim.c
+[47/481] Write swift-version--58304C5D6DBC2206.txt
+error: fatalError

@@ -1,0 +1,199 @@
+{
+  "scope": "Native runtime convergence; provider readiness and direct native OS reflection are distinct gates.",
+  "sourcePriorToControlCommit": "e481288",
+  "sevenCanonicalOperations": 7,
+  "providerSpecificAITools": 0,
+  "boundaries": [
+    {
+      "substrateExposingFailure": "Linux native runtime",
+      "genericRuntimeDeficiency": "Inherited URLSessionTaskDelegate default witness discarded bounded request completion even while actual native Foundation returned HTTP 200.",
+      "reusablePrimitive": "Concrete native delegate completion witness with bounded accumulator, cancellation and exactly-once finish.",
+      "thinProviderSpecificLayer": "None: configured acquired OpenAPI declaration is unchanged.",
+      "evidenceTurningGreen": [
+        "exact-pr51-native-linux-transport-red.log",
+        "native-linux-transport-green-retry.log",
+        "native-linux-seven-types-recheck.log",
+        "native-linux-bounded-http-controls.log"
+      ],
+      "transfer": "Descriptor acquisition, observer reads and invocation exchanges use the same bounded transport; Windows uses the same witness.",
+      "status": "GREEN for demonstrated Linux completion boundary; Windows transport still pending native gate"
+    },
+    {
+      "substrateExposingFailure": "Linux native test build after shared no-output completion update",
+      "genericRuntimeDeficiency": "New semantic acceptance fixture used Apple-only CryptoKit import and POSIX-only interpreter/permission provisioning.",
+      "reusablePrimitive": "Native fixture provisioning uses the same Crypto API, installed interpreter and actual host protected-reference backend.",
+      "thinProviderSpecificLayer": "Host interpreter path and private file permissions only; unchanged semantic ACK/observation assertions.",
+      "evidenceTurningGreen": [
+        "native-linux-types-recheck-fixed-path.log",
+        "native-linux-types-recheck-source-retry.log",
+        "native-macos-fixture-controls.log"
+      ],
+      "transfer": "Windows can run the same actual HTTP ACK and observation fixtures without skips.",
+      "status": "GREEN on Mac/Linux; Windows pending"
+    },
+    {
+      "substrateExposingFailure": "Windows native runtime",
+      "genericRuntimeDeficiency": "Protected configuration, signing and observer references had no native file-authority backend and intentionally denied acquisition.",
+      "reusablePrimitive": "Handle-bound regular-file, exact final path, actual owner/DACL validation, bounded read and immutable private copied artifacts.",
+      "thinProviderSpecificLayer": "Win32 filesystem security calls only; existing RCIR admission, currentContract and host observer remain shared.",
+      "evidenceTurningGreen": [],
+      "requiredNativeControls": [
+        "configured policy/signing/observer references",
+        "Everyone read/full-control denied",
+        "null DACL denied",
+        "parent directory junction denied",
+        "directory/oversize denied",
+        "copied bytes remain exact after source mutation",
+        "real seven-operation provider invocation"
+      ],
+      "transfer": "Protected references also underpin private origin trust and host authority without provider-specific tools.",
+      "status": "RED: C implementation and Mac/Linux controls do not prove native Windows behavior"
+    },
+    {
+      "substrateExposingFailure": "Linux/Windows direct native OS substrate acquisition",
+      "genericRuntimeDeficiency": "There is no native D-Bus/COM declared-contract compiler integrated in the current candidate.",
+      "reusablePrimitive": "Future native contract acquisition must retain existing CapabilityContract/RCIR and bind native owner/authority/lifecycle generations.",
+      "thinProviderSpecificLayer": "Documented Linux Introspectable XML or Windows ITypeInfo metadata plus typed native dispatch, not hardcoded commands.",
+      "evidenceTurningGreen": [],
+      "transfer": "Native graph mutation and ABI type fidelity pressure the same runtime used by descriptor protocols.",
+      "status": "RED: inspected documented boundaries only; not implemented or demonstrated"
+    },
+    {
+      "substrateExposingFailure": "Windows native Swift6.2 toolchain",
+      "genericRuntimeDeficiency": "Unconditional CoreFoundation boolean classification prevented shared ABI compilation on Windows.",
+      "reusablePrimitive": "Foundation JSON scalar classification preserves Bool separately from numeric0/1 without CoreFoundation module dependency.",
+      "thinProviderSpecificLayer": "None: shared typed JSON conversion and string-contract length validation.",
+      "evidenceTurningGreen": [
+        "native-macos-number-types-retry.log",
+        "native-linux-number-types-pipe-retry.log"
+      ],
+      "transfer": "The same typed values and contract constraints compile for every descriptor substrate.",
+      "status": "GREEN on Mac/Linux, RED on Windows until actual next native gate"
+    },
+    {
+      "substrateExposingFailure": "Linux bounded native child execution",
+      "genericRuntimeDeficiency": "Early stdin closure generated SIGPIPE13 and terminated the runtime rather than producing bounded child completion.",
+      "reusablePrimitive": "Thread-local SIGPIPE block/consume/restore around native pipe writes, with no process-wide signal change.",
+      "thinProviderSpecificLayer": "Linux POSIX pipe signal helper only; shared admitted process lifecycle and byte/deadline bounds remain unchanged.",
+      "evidenceTurningGreen": [
+        "native-linux-number-types-retry.log",
+        "native-linux-number-types-pipe-retry.log",
+        "native-macos-pipe-safety-recheck.log"
+      ],
+      "transfer": "Every host-selected child transport, including genuine WASM and native IPC, uses the same bounded process edge.",
+      "status": "GREEN for demonstrated Linux pipe boundary; not a claim that an unprovisioned WASM fixture passed"
+    },
+    {
+      "substrateExposingFailure": "Windows Swift6.2 MCP entry point",
+      "genericRuntimeDeficiency": "An unconditional Apple CoreFoundation import remained despite its run-loop calls already being Mac-only.",
+      "reusablePrimitive": "Native main-loop compilation boundary: Mac run loop and other-host completion semaphore retain their existing paths.",
+      "thinProviderSpecificLayer": "os(macOS) import guard only; no provider-specific behavior.",
+      "evidenceTurningGreen": [
+        "native-macos-mcp-import-boundary-retry.log"
+      ],
+      "rejectedNativeEvidence": "native-ci-windows-red-1c1940c.log",
+      "requiredNativeControls": "Next actual Windows build, protected references, full tests, release and real Core7 provider invocation.",
+      "transfer": "All descriptor/native providers share the same MCP stdio runtime.",
+      "status": "Mac build GREEN; Windows RED pending native execution"
+    }
+  ],
+  "nativeLinuxControls": {
+    "tests": 23,
+    "skipped": 0,
+    "failures": 0,
+    "additionalActualSocketControls": 5,
+    "additionalSocketFailures": 0
+  },
+  "nativeMacFixtureControls": {
+    "tests": 20,
+    "skipped": 0,
+    "failures": 0
+  },
+  "binaries": {
+    "Linux": {
+      "path": ".build/linux-native/debug/rightclick",
+      "SHA256": "2a755f50cc51d8d58bc3af12413d3de98980238c81f2cda040697bfb8d95689d"
+    },
+    "Mac": {
+      "path": ".build/debug/rightclick",
+      "SHA256": "5aa1e5a9f6de99eabda3315e131f60d5eb25784637744f6b3afda26a0c865c2d"
+    }
+  },
+  "sourceDigests": {
+    "Sources/RightClickCore/OriginPinnedHTTP.swift": "dc95771515189e0642fa5f9986a5b7816b5e098872b496968f1eda6341d15e22",
+    "Sources/RightClickHostFiles/HostFiles.c": "2ecdb122ab01eadfb82268e670823d13280293c2414b7c2981fa8181b32b644d",
+    "Tests/RightClickCoreTests/NativeBoundedHTTPTests.swift": "06238d07214f7da4d39d4e4b53b3c9955319f3a228b882204b7930ab0313a32f"
+  },
+  "nativeTypeProcessChecks": {
+    "Mac": {
+      "tests": 33,
+      "skippedExistingAbsentWASMFixture": 2,
+      "failures": 0
+    },
+    "Linux": {
+      "tests": 33,
+      "skippedExistingAbsentWASMFixture": 2,
+      "failures": 0
+    }
+  },
+  "nativeWindowsBaseline": {
+    "run": 37644529029,
+    "job": 112871729564,
+    "headSHA": "018c96cc812ad402f90df01027396d3780d145e7",
+    "actualPRMergeSHA": "1b5a566b0d32c828bdc36305422281233ce89fee",
+    "artifactID": 11493223724,
+    "status": "FAILED native source compile before ACL tests"
+  },
+  "nextExactHeadNativeRun": {
+    "run": 37648145831,
+    "sourceSHA": "1c1940c08733630837d470e574ff77a964d2a79a",
+    "status": "Windows failed MCP CoreFoundation import; Linux completed native integrated/release/stdio+HTTP gates; Mac failed RCIR Python fixture startup (missing port file)."
+  },
+  "nativeLinuxFullCI": {
+    "run": 37648145831,
+    "job": 112884189928,
+    "sourceSHA": "1c1940c08733630837d470e574ff77a964d2a79a",
+    "status": "SUCCESS",
+    "tests": 496,
+    "skipped": 22,
+    "failures": 0,
+    "scope": "Configured real-provider stdio and authenticated HTTP Core7 acceptance; accepted_unverified, not native D-Bus proof.",
+    "provenanceLimitation": "Acceptance checks actual runtime identity internally but old script stdout does not retain binary hash; next workflow uploads explicit toolchain/digest.",
+    "rawEvidence": "native-ci-linux-green-1c1940c.log",
+    "existingSkipReasons": [
+      "Genuine scoped Kafka broker not provisioned; no Kafka GREEN claimed.",
+      "Genuine scoped Kubernetes provider not provisioned; this skip is not substrate GREEN.",
+      "MOAT004_G1_SPEC_URL and MOAT004_G1_SPEC_SHA256 required.",
+      "MOAT004_G2_SPEC_PATH and MOAT004_G2_SPEC_URL required.",
+      "MOAT004_G3_SPEC_PATH required.",
+      "MOAT004_G4_SPEC_PATH required.",
+      "MOAT004_G6_EXPECTED_LOGIN required.",
+      "MOAT004_G6_SPEC_URL required.",
+      "NS004_OPENAPI_BASE_URL is required for the real-provider gate.",
+      "NS007_SOURCE_PORT and NS007_SINK_PORT required.",
+      "NS008_FIXTURE_PORT required.",
+      "Native Keychain adapter requires macOS",
+      "Native Keychain credential tests require macOS",
+      "RIGHTCLICK_GRPC_REAL_HOST required for real gRPC reflection acceptance.",
+      "Real component not provisioned; no source-race GREEN claimed by this skip.",
+      "Real component toolchain not provisioned; no WASM GREEN claimed by this skip."
+    ]
+  },
+  "nativeProvenanceInfrastructureRed": {
+    "run": 37651407101,
+    "sourceSHA": "82f7ec2232394049c89e6c424c3374ef0758404c",
+    "Windows": {
+      "job": 112895389904,
+      "failure": "Standalone Swift JIT failed missing WinSDK/CRT forced-load symbols before actual product compile.",
+      "repair": "Compile the availability probe with native swiftc and run its exe instead of JIT.",
+      "rawEvidence": "native-ci-windows-red-82f7ec2.log"
+    },
+    "Linux": {
+      "job": 112895390247,
+      "failure": "Explicit provenance git rev-parse hit Actions container checkout ownership protection before tests.",
+      "repair": "Per-command safe.directory binds exactly Actions host-owned GITHUB_WORKSPACE; no persistent/global wildcard trust.",
+      "rawEvidence": "native-ci-linux-red-82f7ec2.log"
+    },
+    "status": "Infrastructure gate repairs pending actual CI; no runtime GREEN claim"
+  }
+}

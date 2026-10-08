@@ -1,0 +1,140 @@
+{
+  "cases" : [
+    {
+      "actual" : 1,
+      "elapsed" : 0.0013072500005364418,
+      "expected" : 1,
+      "inputHex" : "31",
+      "pass" : true
+    },
+    {
+      "actual" : 65535,
+      "elapsed" : 6.4416672103106976e-05,
+      "expected" : 65535,
+      "inputHex" : "3635353335",
+      "pass" : true
+    },
+    {
+      "actual" : 1,
+      "elapsed" : 6.3000014051795006e-05,
+      "expected" : 1,
+      "inputHex" : "310a",
+      "pass" : true
+    },
+    {
+      "actual" : 65535,
+      "elapsed" : 6.9333356805145741e-05,
+      "expected" : 65535,
+      "inputHex" : "36353533350a",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.050659500062465668,
+      "expected" : 1,
+      "inputHex" : "310d0a",
+      "pass" : false
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.051284625078551471,
+      "expected" : 65535,
+      "inputHex" : "36353533350d0a",
+      "pass" : false
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.050775916664861143,
+      "expected" : -1,
+      "inputHex" : "",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.050238250056281686,
+      "expected" : -1,
+      "inputHex" : "30",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.051095625036396086,
+      "expected" : -1,
+      "inputHex" : "3635353336",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.05060333339497447,
+      "expected" : -1,
+      "inputHex" : "3132333435737566666978",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.050890583312138915,
+      "expected" : -1,
+      "inputHex" : "2d31",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.050678333267569542,
+      "expected" : -1,
+      "inputHex" : "31323334350a6578747261",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.051377958385273814,
+      "expected" : -1,
+      "inputHex" : "36353533350d",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.050651541678234935,
+      "expected" : -1,
+      "inputHex" : "36353533350d0d0a",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.05023712501861155,
+      "expected" : -1,
+      "inputHex" : "36353533350d0a6578747261",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.050902624963782728,
+      "expected" : -1,
+      "inputHex" : "36353533350d0a30",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.050883791642263532,
+      "expected" : -1,
+      "inputHex" : "31323334350d0a6578747261",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.05066820839419961,
+      "expected" : -1,
+      "inputHex" : "2031",
+      "pass" : true
+    },
+    {
+      "actual" : -1,
+      "elapsed" : 0.05089579161722213,
+      "expected" : -1,
+      "inputHex" : "3120",
+      "pass" : true
+    }
+  ],
+  "fail" : 2,
+  "pass" : 17,
+  "scope" : "Exact production fixture waitForPort body extracted with empty capture plumbing; actual native Foundation FileHandle\/Process\/temp markers. Not full integrated fixture\/Windows proof."
+}

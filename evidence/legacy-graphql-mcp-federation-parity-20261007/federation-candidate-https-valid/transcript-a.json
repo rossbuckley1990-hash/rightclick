@@ -1,0 +1,620 @@
+[
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2025-03-26",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "existing-federation-parity",
+          "version": "1"
+        }
+      }
+    },
+    "response": {
+      "id": 3,
+      "jsonrpc": "2.0",
+      "result": {
+        "capabilities": {
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "protocolVersion": "2025-03-26",
+        "serverInfo": {
+          "name": "rightclick",
+          "version": "0.2.3"
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "method": "tools/list"
+    },
+    "response": {
+      "id": 4,
+      "jsonrpc": "2.0",
+      "result": {
+        "tools": [
+          {
+            "description": "Report the exact RIGHTCLICK process serving this MCP connection: product version, invoked and resolved executable paths, executable SHA-256, PID, and transport.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_runtime"
+          },
+          {
+            "description": "Classify an object the way RIGHTCLICK sees it: kind, UTI, size, and basic metadata.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_inspect"
+          },
+          {
+            "description": "Ask RIGHTCLICK which discovered contextual capabilities apply to this object right now. Returns applicable capabilities reflected from the current environment.",
+            "inputSchema": {
+              "properties": {
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item"
+              ],
+              "type": "object"
+            },
+            "name": "context_actions"
+          },
+          {
+            "description": "Explain one contextual capability: provider, compatibility, side effects, confirmation, and support level.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_explain"
+          },
+          {
+            "description": "Invoke one capability discovered for this object. Provider acceptance is not semantic success. Callers may supply structured provider-independent verification predicates; verified postconditions establish succeeded or failed semantic outcome. Without verification, accepted remains explicitly unverified. External, destructive, and unknown actions stay awaiting_user unless confirmed is true.",
+            "inputSchema": {
+              "properties": {
+                "actionId": {
+                  "description": "Capability id or exact title returned by context_actions.",
+                  "type": "string"
+                },
+                "arguments": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Optional provider-independent structured capability arguments. Values are strings in the current schema slice.",
+                  "type": "object"
+                },
+                "confirmed": {
+                  "description": "Set true only after the user confirms an action that returns CONFIRMATION_REQUIRED.",
+                  "type": "boolean"
+                },
+                "contractSHA256": {
+                  "description": "Optional exact declaration fingerprint returned by context_actions/context_explain. Rejects changed contracts; it grants no authority. Omission retains legacy fresh resolution without a caller-held pin.",
+                  "type": "string"
+                },
+                "expectedOutput": {
+                  "description": "Legacy exact provider-returned-text postcondition. Prefer verification for generic semantic outcomes.",
+                  "type": "string"
+                },
+                "item": {
+                  "description": "File path, http(s) URL, or plain text.",
+                  "type": "string"
+                },
+                "verification": {
+                  "description": "Optional caller-declared semantic postconditions. RIGHTCLICK evaluates them against observable state after invocation; provider acceptance alone is not success.",
+                  "properties": {
+                    "predicates": {
+                      "description": "Required provider-independent postconditions.",
+                      "items": {
+                        "properties": {
+                          "bytes": {
+                            "description": "Optional byte threshold.",
+                            "type": "integer"
+                          },
+                          "height": {
+                            "description": "Optional expected image height.",
+                            "type": "integer"
+                          },
+                          "key": {
+                            "description": "Optional key, for example an extended-attribute name.",
+                            "type": "string"
+                          },
+                          "reference": {
+                            "description": "Optional observation reference. Currently 'before' for before/after predicates.",
+                            "type": "string"
+                          },
+                          "type": {
+                            "description": "Provider-independent observable predicate type.",
+                            "enum": [
+                              "text_equals",
+                              "file_exists",
+                              "file_readable",
+                              "file_sha256_equals",
+                              "file_sha256_differs",
+                              "file_size_less_than",
+                              "dimensions_equal",
+                              "xattr_present",
+                              "xattr_absent",
+                              "metadata_value_present",
+                              "metadata_value_absent"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Optional expected or forbidden exact value.",
+                            "type": "string"
+                          },
+                          "width": {
+                            "description": "Optional expected image width.",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "type"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "timeoutMilliseconds": {
+                      "description": "Optional bounded wait for observable consequences. RIGHTCLICK caps this at 60000 ms.",
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "predicates"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "item",
+                "actionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run"
+          },
+          {
+            "description": "Read a context_run execution. States: started, awaiting_user, unsupported, unavailable, rejected, accepted, succeeded, failed, cancelled, unknown. Provider acceptance or a sharing completion callback does not independently verify an external outcome.",
+            "inputSchema": {
+              "properties": {
+                "executionId": {
+                  "description": "executionId returned by context_run.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "executionId"
+              ],
+              "type": "object"
+            },
+            "name": "context_run_status"
+          },
+          {
+            "description": "List capability providers currently reflected by RIGHTCLICK from this environment.",
+            "inputSchema": {
+              "properties": {},
+              "type": "object"
+            },
+            "name": "context_providers"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 5,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"executablePath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableRealPath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableSHA256\" : \"c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12\",\n  \"pid\" : 95909,\n  \"platform\" : \"macOS\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"http\",\n  \"version\" : \"0.2.3\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "method": "tools/call",
+      "params": {
+        "name": "context_providers",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 6,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"ownedProofProjection\": {\"operation\": \"context_providers\", \"successfulRead\": true, \"omitted\": \"unrelated provider inventory/count\"}}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 7,
+      "method": "tools/call",
+      "params": {
+        "name": "context_inspect",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity"
+        }
+      }
+    },
+    "response": {
+      "id": 7,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"byteCount\" : 37,\n  \"display\" : \"RIGHTCLICK existing federation parity\",\n  \"isDirectory\" : false,\n  \"kind\" : \"text\",\n  \"text\" : \"RIGHTCLICK existing federation parity\",\n  \"typeDescription\" : \"Plain text\",\n  \"typeIdentifier\" : \"public.plain-text\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 8,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity"
+        }
+      }
+    },
+    "response": {
+      "id": 8,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"actions\": [], \"contentType\": \"public.plain-text\", \"item\": \"RIGHTCLICK existing federation parity\", \"kind\": \"text\"}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 18,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity"
+        }
+      }
+    },
+    "response": {
+      "id": 18,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"actions\": [{\"contractSHA256\": \"3e031de0ee7f44148064dde82641e43645302b0628538f2a477668f3c6aa1999\", \"explanation\": \"Read federation proof\", \"id\": \"federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\", \"inputTypes\": [\"public.plain-text\"], \"invocation\": \"interactive\", \"provider\": {\"name\": \"RIGHTCLICK Runtime B\"}, \"requiresConfirmation\": true, \"safety\": \"unknown\", \"source\": \"system\", \"supportLevel\": \"experimental\", \"title\": \"Read federation proof\"}], \"contentType\": \"public.plain-text\", \"item\": \"RIGHTCLICK existing federation parity\", \"kind\": \"text\"}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 19,
+      "method": "tools/call",
+      "params": {
+        "name": "context_explain",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity",
+          "actionId": "federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof"
+        }
+      }
+    },
+    "response": {
+      "id": 19,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"contractSHA256\" : \"3e031de0ee7f44148064dde82641e43645302b0628538f2a477668f3c6aa1999\",\n  \"effectAssessment\" : {\n    \"basis\" : \"unknown\",\n    \"dataSensitivity\" : \"unknown\",\n    \"executionBoundary\" : \"unknown\",\n    \"grantsAuthority\" : false,\n    \"stateAccess\" : \"unknown\",\n    \"verified\" : false\n  },\n  \"id\" : \"federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\",\n  \"inputs\" : [\n    \"public.plain-text\"\n  ],\n  \"invocation\" : \"interactive\",\n  \"metadata\" : {\n    \"federationPeerID\" : \"peer-b\",\n    \"federationRemoteActionID\" : \"openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\",\n    \"federationRemoteSource\" : \"system\",\n    \"federationRuntimeSHA256\" : \"c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12\"\n  },\n  \"output\" : [\n\n  ],\n  \"provider\" : {\n    \"name\" : \"RIGHTCLICK Runtime B\"\n  },\n  \"reflectorID\" : \"federation.peer.peer-b\",\n  \"requiresConfirmation\" : true,\n  \"safety\" : \"unknown\",\n  \"source\" : \"system\",\n  \"supportLevel\" : \"experimental\",\n  \"title\" : \"Read federation proof\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 20,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity",
+          "actionId": "federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof",
+          "arguments": {
+            "ref": "7a935fea719601492fe05beba1a4223c283eb350"
+          }
+        }
+      }
+    },
+    "response": {
+      "id": 20,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\",\n  \"events\" : [\n\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"No outcome observation.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"none\"\n  },\n  \"executionId\" : \"4998F055-BFA7-4539-B6B8-BF927DEF538C\",\n  \"message\" : \"CONFIRMATION_REQUIRED. Read federation proof is unknown.\",\n  \"state\" : \"awaiting_user\",\n  \"title\" : \"Read federation proof\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 21,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity",
+          "actionId": "federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof",
+          "arguments": {
+            "ref": "7a935fea719601492fe05beba1a4223c283eb350"
+          },
+          "confirmed": true
+        }
+      }
+    },
+    "response": {
+      "id": 21,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\",\n  \"events\" : [\n    \"HTTP GET https://raw.githubusercontent.com/rossbuckley1990-hash/rightclick/7a935fea719601492fe05beba1a4223c283eb350/fixtures/federation-proof/result.txt\",\n    \"provider returned 200\",\n    \"RCIR admitted generation=1\",\n    \"RCIR consumed lease=A26DEDAA-4166-4154-A74B-6E24E2FD20F7\",\n    \"RCIR task=00F3E10C-603B-4628-8DD4-1401A0EBBD4E outcome=unverified\",\n    \"Durable invocation journal is not enabled; this execution has volatile history.\",\n    \"federation peer peer-b\",\n    \"remote execution 35CBE926-865E-450D-A7DE-9EF48D697E61\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_returned_text\"\n  },\n  \"executionId\" : \"06D24825-93EE-46C5-8D57-216C5FA5D564\",\n  \"message\" : \"HTTP provider returned 200; semantic outcome is unverified.\",\n  \"output\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"A26DEDAA-4166-4154-A74B-6E24E2FD20F7\",\n    \"observationBoundary\" : \"No host observer configured; provider completion is unverified.\",\n    \"outcome\" : \"unverified\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxNDA3NzMwMjEzczY6ZXZlbnRzYTE6eDEyODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTQwNzcwMDUzM3M1OnZhbHVlczM2OlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PS3MxMDpmaW5pc2hlZEF0aTEzOjE3OTE0MDc3MDA1MzNzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxNDA3NzAwNTMzczEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OkEyNkRFREFBLTQxNjYtNDE1NC1BNzRCLTZFMjRFMkZEMjBGN3MxMTpvYnNlcnZhdGlvbm5zMTA6b2JzZXJ2ZWRBdG5zNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NDk1MDpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4MTM1OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMjpzOTphcmd1bWVudHNvMTpzMzpyZWZzNDA6N2E5MzVmZWE3MTk2MDE0OTJmZTA1YmViYTFhNDIyM2MyODNlYjM1MHM0Oml0ZW1zMzc6UklHSFRDTElDSyBleGlzdGluZyBmZWRlcmF0aW9uIHBhcml0eXM3OmJpbmRpbmd4NDAyMTpSSUdIVENMSUNLLVJDSVItQklORElORy0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzODpjb250cmFjdHgyMTE3OlJJR0hUQ0xJQ0stUkNJUi1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzMzphYml4MTc1NjpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gxOTc6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzI6czk6YXJndW1lbnRzbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMTpzMzpyZWZzNjpzdHJpbmdzODpyZXF1aXJlZGExOnMzOnJlZnM0Oml0ZW1zNjpzdHJpbmdzODpyZXF1aXJlZGEyOnM5OmFyZ3VtZW50c3M0Oml0ZW1zMTA6Y2FwYWJpbGl0eXMxMDk6b3BlbmFwaTo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyOmNjNzI4N2U1YmQ2ZjEyNGQ6cmVhZEZlZGVyYXRpb25Qcm9vZnMxMTpkZWNsYXJhdGlvbm82OnMxMDpib2R5U0hBMjU2bnMxMDpjYXBhYmlsaXR5bzExOnM2OmlucHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxMDppbnZvY2F0aW9uczExOmludGVyYWN0aXZlczg6bWV0YWRhdGFvOTpzMTU6YXJndW1lbnRzU2NoZW1hczEwNDp7ImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZSwicHJvcGVydGllcyI6eyJyZWYiOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsicmVmIl0sInR5cGUiOiJvYmplY3QifXM3OmJhc2VVUkxzMzM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tczY6bWV0aG9kczM6R0VUczExOm9wZXJhdGlvbklkczE5OnJlYWRGZWRlcmF0aW9uUHJvb2ZzNDpwYXRoczc1Oi9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrL3tyZWZ9L2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxNjpwcm92aWRlcklkZW50aXR5czY0OjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzMTk6cmVzcG9uc2VDb250ZW50VHlwZXMxMDp0ZXh0L3BsYWluczE5OnNwZWNpZmljYXRpb25TSEEyNTZzNjQ6NjI5NzM5NjI4NzIyMWFkZTk3MzU4MmRmZmU5MWEzN2UwOTZiYzcwYzg4Zjc0NjBmODkzMGI5NGQ4YTFhY2FiOHM5OnN1YnN0cmF0ZXM3Om9wZW5hcGlzNzpvdXRwdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czE2OnByb3ZpZGVyQnVuZGxlSURuczEyOnByb3ZpZGVyTmFtZXM0MzpSSUdIVENMSUNLIEZlZGVyYXRpb24gUmVtb3RlIFByb29mIFByb3ZpZGVyczIwOnJlcXVpcmVzQ29uZmlybWF0aW9uYjFzNjpzYWZldHlzNzp1bmtub3duczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxMjpleHBlcmltZW50YWxzNTp0aXRsZXMyMTpSZWFkIGZlZGVyYXRpb24gcHJvb2ZzMTQ6ZXhwZWN0ZWRPdXRwdXRuczY6bWV0aG9kczM6R0VUczEwOnJlcXVlc3RVUkxzMTQzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrLzdhOTM1ZmVhNzE5NjAxNDkyZmUwNWJlYmExYTQyMjNjMjgzZWIzNTAvZml4dHVyZXMvZmVkZXJhdGlvbi1wcm9vZi9yZXN1bHQudHh0czEyOnZlcmlmaWNhdGlvbm5zODpwcm92aWRlcnM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6cmVmbGVjdG9yczgyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM0OnJlYWRzODpyZXNvdXJjZXMxNDM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2svN2E5MzVmZWE3MTk2MDE0OTJmZTA1YmViYTFhNDIyM2MyODNlYjM1MC9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25uczk6ZGlzY292ZXJ5eDE2OTM6UklHSFRDTElDSy1SQ0lSLUdSQVBILURFQ0xBUkFUSU9OLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMzOmFiaXgxNTExOlJJR0hUQ0xJQ0stQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzc6czk6YXJndW1lbnRzeDE5NzpSSUdIVENMSUNLLVZBTFVFLTEAbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMjpzOTphcmd1bWVudHNvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8xOnMzOnJlZnM2OnN0cmluZ3M4OnJlcXVpcmVkYTE6czM6cmVmczQ6aXRlbXM2OnN0cmluZ3M4OnJlcXVpcmVkYTI6czk6YXJndW1lbnRzczQ6aXRlbXMxMDpjYXBhYmlsaXR5czEwOTpvcGVuYXBpOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTI6Y2M3Mjg3ZTViZDZmMTI0ZDpyZWFkRmVkZXJhdGlvblByb29mczExOmRlY2xhcmF0aW9ubzExOnM2OmlucHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxMDppbnZvY2F0aW9uczExOmludGVyYWN0aXZlczg6bWV0YWRhdGFvOTpzMTU6YXJndW1lbnRzU2NoZW1hczEwNDp7ImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZSwicHJvcGVydGllcyI6eyJyZWYiOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsicmVmIl0sInR5cGUiOiJvYmplY3QifXM3OmJhc2VVUkxzMzM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tczY6bWV0aG9kczM6R0VUczExOm9wZXJhdGlvbklkczE5OnJlYWRGZWRlcmF0aW9uUHJvb2ZzNDpwYXRoczc1Oi9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrL3tyZWZ9L2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxNjpwcm92aWRlcklkZW50aXR5czY0OjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzMTk6cmVzcG9uc2VDb250ZW50VHlwZXMxMDp0ZXh0L3BsYWluczE5OnNwZWNpZmljYXRpb25TSEEyNTZzNjQ6NjI5NzM5NjI4NzIyMWFkZTk3MzU4MmRmZmU5MWEzN2UwOTZiYzcwYzg4Zjc0NjBmODkzMGI5NGQ4YTFhY2FiOHM5OnN1YnN0cmF0ZXM3Om9wZW5hcGlzNzpvdXRwdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czE2OnByb3ZpZGVyQnVuZGxlSURuczEyOnByb3ZpZGVyTmFtZXM0MzpSSUdIVENMSUNLIEZlZGVyYXRpb24gUmVtb3RlIFByb29mIFByb3ZpZGVyczIwOnJlcXVpcmVzQ29uZmlybWF0aW9uYjFzNjpzYWZldHlzNzp1bmtub3duczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxMjpleHBlcmltZW50YWxzNTp0aXRsZXMyMTpSZWFkIGZlZGVyYXRpb24gcHJvb2ZzODpwcm92aWRlcnM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6cmVmbGVjdG9yczgyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOnM0OnJlYWRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMDpnZW5lcmF0aW9uaTE6MXM5OnByaW5jaXBhbHM5NDpsb2NhbC1vd25lcjpvcGVuYXBpLXJlZmxlY3Rvcjo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6ZXhwaXJlc0F0aTEzOjE3OTE0MDc3MzAyMTNzODppc3N1ZWRBdGkxMzoxNzkxNDA3NzAwMjEzczY6cG9saWN5eDQ1MjpSSUdIVENMSUNLLVJDSVItUE9MSUNZLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMxMDpwcmluY2lwYWxzYTE6czk0OmxvY2FsLW93bmVyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzODpyZXZpc2lvbnM4NTpsb2NhbC1jb25maXJtYXRpb24tMTo2M2M1OWVjNmM0NjE3YTZjYThlODI1NGYwMDcwNTQ5M2MxOTIzYjZmZGMxZGQ2NzZlN2M1YzlmYzA1YmIwZjU3czY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czQ6cmVhZHM4OnJlc291cmNlczE0MzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay83YTkzNWZlYTcxOTYwMTQ5MmZlMDViZWJhMWE0MjIzYzI4M2ViMzUwL2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHM2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM0OnJlYWRzODpyZXNvdXJjZXMxNDM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2svN2E5MzVmZWE3MTk2MDE0OTJmZTA1YmViYTFhNDIyM2MyODNlYjM1MC9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzMTU6c2VtYW50aWNPdXRjb21lczEwOnVudmVyaWZpZWRzOTpzdGFydGVkQXRpMTM6MTc5MTQwNzcwMDIxM3M2OnRhc2tJRHMzNjowMEYzRTEwQy02MDNCLTQ2MjgtOERENC0xNDAxQTBFQkJENEU=\",\n    \"taskID\" : \"00F3E10C-603B-4628-8DD4-1401A0EBBD4E\",\n    \"version\" : 1\n  },\n  \"state\" : \"accepted\",\n  \"title\" : \"Read federation proof\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 22,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "06D24825-93EE-46C5-8D57-216C5FA5D564"
+        }
+      }
+    },
+    "response": {
+      "id": 22,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\",\n  \"events\" : [\n    \"HTTP GET https://raw.githubusercontent.com/rossbuckley1990-hash/rightclick/7a935fea719601492fe05beba1a4223c283eb350/fixtures/federation-proof/result.txt\",\n    \"provider returned 200\",\n    \"RCIR admitted generation=1\",\n    \"RCIR consumed lease=A26DEDAA-4166-4154-A74B-6E24E2FD20F7\",\n    \"RCIR task=00F3E10C-603B-4628-8DD4-1401A0EBBD4E outcome=unverified\",\n    \"Durable invocation journal is not enabled; this execution has volatile history.\",\n    \"federation peer peer-b\",\n    \"remote execution 35CBE926-865E-450D-A7DE-9EF48D697E61\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"A 2xx HTTP response establishes provider acceptance only. The intended semantic outcome has not been independently verified.\",\n    \"outcomeVerified\" : false,\n    \"type\" : \"provider_returned_text\"\n  },\n  \"executionId\" : \"06D24825-93EE-46C5-8D57-216C5FA5D564\",\n  \"message\" : \"HTTP provider returned 200; semantic outcome is unverified.\",\n  \"output\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"A26DEDAA-4166-4154-A74B-6E24E2FD20F7\",\n    \"observationBoundary\" : \"No host observer configured; provider completion is unverified.\",\n    \"outcome\" : \"unverified\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxNDA3NzMwMjEzczY6ZXZlbnRzYTE6eDEyODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTQwNzcwMDUzM3M1OnZhbHVlczM2OlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PS3MxMDpmaW5pc2hlZEF0aTEzOjE3OTE0MDc3MDA1MzNzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxNDA3NzAwNTMzczEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OkEyNkRFREFBLTQxNjYtNDE1NC1BNzRCLTZFMjRFMkZEMjBGN3MxMTpvYnNlcnZhdGlvbm5zMTA6b2JzZXJ2ZWRBdG5zNTpwaGFzZXM5OmNvbXBsZXRlZHM3OnJlcXVlc3R4NDk1MDpSSUdIVENMSUNLLVJDSVItUkVRVUVTVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNjpzOTphcmd1bWVudHN4MTM1OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMjpzOTphcmd1bWVudHNvMTpzMzpyZWZzNDA6N2E5MzVmZWE3MTk2MDE0OTJmZTA1YmViYTFhNDIyM2MyODNlYjM1MHM0Oml0ZW1zMzc6UklHSFRDTElDSyBleGlzdGluZyBmZWRlcmF0aW9uIHBhcml0eXM3OmJpbmRpbmd4NDAyMTpSSUdIVENMSUNLLVJDSVItQklORElORy0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzODpjb250cmFjdHgyMTE3OlJJR0hUQ0xJQ0stUkNJUi1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNDpzMzphYml4MTc1NjpSSUdIVENMSUNLLUNPTlRSQUNULTEAUklHSFRDTElDSy1WQUxVRS0xAG83OnM5OmFyZ3VtZW50c3gxOTc6UklHSFRDTElDSy1WQUxVRS0xAG8zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzI6czk6YXJndW1lbnRzbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMTpzMzpyZWZzNjpzdHJpbmdzODpyZXF1aXJlZGExOnMzOnJlZnM0Oml0ZW1zNjpzdHJpbmdzODpyZXF1aXJlZGEyOnM5OmFyZ3VtZW50c3M0Oml0ZW1zMTA6Y2FwYWJpbGl0eXMxMDk6b3BlbmFwaTo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyOmNjNzI4N2U1YmQ2ZjEyNGQ6cmVhZEZlZGVyYXRpb25Qcm9vZnMxMTpkZWNsYXJhdGlvbm82OnMxMDpib2R5U0hBMjU2bnMxMDpjYXBhYmlsaXR5bzExOnM2OmlucHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxMDppbnZvY2F0aW9uczExOmludGVyYWN0aXZlczg6bWV0YWRhdGFvOTpzMTU6YXJndW1lbnRzU2NoZW1hczEwNDp7ImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZSwicHJvcGVydGllcyI6eyJyZWYiOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsicmVmIl0sInR5cGUiOiJvYmplY3QifXM3OmJhc2VVUkxzMzM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tczY6bWV0aG9kczM6R0VUczExOm9wZXJhdGlvbklkczE5OnJlYWRGZWRlcmF0aW9uUHJvb2ZzNDpwYXRoczc1Oi9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrL3tyZWZ9L2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxNjpwcm92aWRlcklkZW50aXR5czY0OjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzMTk6cmVzcG9uc2VDb250ZW50VHlwZXMxMDp0ZXh0L3BsYWluczE5OnNwZWNpZmljYXRpb25TSEEyNTZzNjQ6NjI5NzM5NjI4NzIyMWFkZTk3MzU4MmRmZmU5MWEzN2UwOTZiYzcwYzg4Zjc0NjBmODkzMGI5NGQ4YTFhY2FiOHM5OnN1YnN0cmF0ZXM3Om9wZW5hcGlzNzpvdXRwdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czE2OnByb3ZpZGVyQnVuZGxlSURuczEyOnByb3ZpZGVyTmFtZXM0MzpSSUdIVENMSUNLIEZlZGVyYXRpb24gUmVtb3RlIFByb29mIFByb3ZpZGVyczIwOnJlcXVpcmVzQ29uZmlybWF0aW9uYjFzNjpzYWZldHlzNzp1bmtub3duczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxMjpleHBlcmltZW50YWxzNTp0aXRsZXMyMTpSZWFkIGZlZGVyYXRpb24gcHJvb2ZzMTQ6ZXhwZWN0ZWRPdXRwdXRuczY6bWV0aG9kczM6R0VUczEwOnJlcXVlc3RVUkxzMTQzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrLzdhOTM1ZmVhNzE5NjAxNDkyZmUwNWJlYmExYTQyMjNjMjgzZWIzNTAvZml4dHVyZXMvZmVkZXJhdGlvbi1wcm9vZi9yZXN1bHQudHh0czEyOnZlcmlmaWNhdGlvbm5zODpwcm92aWRlcnM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6cmVmbGVjdG9yczgyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM0OnJlYWRzODpyZXNvdXJjZXMxNDM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2svN2E5MzVmZWE3MTk2MDE0OTJmZTA1YmViYTFhNDIyM2MyODNlYjM1MC9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25uczk6ZGlzY292ZXJ5eDE2OTM6UklHSFRDTElDSy1SQ0lSLUdSQVBILURFQ0xBUkFUSU9OLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMzOmFiaXgxNTExOlJJR0hUQ0xJQ0stQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzc6czk6YXJndW1lbnRzeDE5NzpSSUdIVENMSUNLLVZBTFVFLTEAbzM6czIwOmFkZGl0aW9uYWxQcm9wZXJ0aWVzYjBzNjpvYmplY3RvMjpzOTphcmd1bWVudHNvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8xOnMzOnJlZnM2OnN0cmluZ3M4OnJlcXVpcmVkYTE6czM6cmVmczQ6aXRlbXM2OnN0cmluZ3M4OnJlcXVpcmVkYTI6czk6YXJndW1lbnRzczQ6aXRlbXMxMDpjYXBhYmlsaXR5czEwOTpvcGVuYXBpOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTI6Y2M3Mjg3ZTViZDZmMTI0ZDpyZWFkRmVkZXJhdGlvblByb29mczExOmRlY2xhcmF0aW9ubzExOnM2OmlucHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxMDppbnZvY2F0aW9uczExOmludGVyYWN0aXZlczg6bWV0YWRhdGFvOTpzMTU6YXJndW1lbnRzU2NoZW1hczEwNDp7ImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjpmYWxzZSwicHJvcGVydGllcyI6eyJyZWYiOnsidHlwZSI6InN0cmluZyJ9fSwicmVxdWlyZWQiOlsicmVmIl0sInR5cGUiOiJvYmplY3QifXM3OmJhc2VVUkxzMzM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tczY6bWV0aG9kczM6R0VUczExOm9wZXJhdGlvbklkczE5OnJlYWRGZWRlcmF0aW9uUHJvb2ZzNDpwYXRoczc1Oi9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrL3tyZWZ9L2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxNjpwcm92aWRlcklkZW50aXR5czY0OjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzMTk6cmVzcG9uc2VDb250ZW50VHlwZXMxMDp0ZXh0L3BsYWluczE5OnNwZWNpZmljYXRpb25TSEEyNTZzNjQ6NjI5NzM5NjI4NzIyMWFkZTk3MzU4MmRmZmU5MWEzN2UwOTZiYzcwYzg4Zjc0NjBmODkzMGI5NGQ4YTFhY2FiOHM5OnN1YnN0cmF0ZXM3Om9wZW5hcGlzNzpvdXRwdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czE2OnByb3ZpZGVyQnVuZGxlSURuczEyOnByb3ZpZGVyTmFtZXM0MzpSSUdIVENMSUNLIEZlZGVyYXRpb24gUmVtb3RlIFByb29mIFByb3ZpZGVyczIwOnJlcXVpcmVzQ29uZmlybWF0aW9uYjFzNjpzYWZldHlzNzp1bmtub3duczY6c291cmNlczY6c3lzdGVtczEyOnN1cHBvcnRMZXZlbHMxMjpleHBlcmltZW50YWxzNTp0aXRsZXMyMTpSZWFkIGZlZGVyYXRpb24gcHJvb2ZzODpwcm92aWRlcnM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6cmVmbGVjdG9yczgyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOnM0OnJlYWRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMDpnZW5lcmF0aW9uaTE6MXM5OnByaW5jaXBhbHM5NDpsb2NhbC1vd25lcjpvcGVuYXBpLXJlZmxlY3Rvcjo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6ZXhwaXJlc0F0aTEzOjE3OTE0MDc3MzAyMTNzODppc3N1ZWRBdGkxMzoxNzkxNDA3NzAwMjEzczY6cG9saWN5eDQ1MjpSSUdIVENMSUNLLVJDSVItUE9MSUNZLTEAUklHSFRDTElDSy1WQUxVRS0xAG8zOnMxMDpwcmluY2lwYWxzYTE6czk0OmxvY2FsLW93bmVyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzODpyZXZpc2lvbnM4NTpsb2NhbC1jb25maXJtYXRpb24tMTo2M2M1OWVjNmM0NjE3YTZjYThlODI1NGYwMDcwNTQ5M2MxOTIzYjZmZGMxZGQ2NzZlN2M1YzlmYzA1YmIwZjU3czY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czQ6cmVhZHM4OnJlc291cmNlczE0MzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay83YTkzNWZlYTcxOTYwMTQ5MmZlMDViZWJhMWE0MjIzYzI4M2ViMzUwL2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHM2OnNjb3Blc2ExOm8yOnM2OmVmZmVjdHM0OnJlYWRzODpyZXNvdXJjZXMxNDM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2svN2E5MzVmZWE3MTk2MDE0OTJmZTA1YmViYTFhNDIyM2MyODNlYjM1MC9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzMTU6c2VtYW50aWNPdXRjb21lczEwOnVudmVyaWZpZWRzOTpzdGFydGVkQXRpMTM6MTc5MTQwNzcwMDIxM3M2OnRhc2tJRHMzNjowMEYzRTEwQy02MDNCLTQ2MjgtOERENC0xNDAxQTBFQkJENEU=\",\n    \"taskID\" : \"00F3E10C-603B-4628-8DD4-1401A0EBBD4E\",\n    \"version\" : 1\n  },\n  \"state\" : \"accepted\",\n  \"title\" : \"Read federation proof\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 23,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity",
+          "actionId": "federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof",
+          "arguments": {
+            "ref": "7a935fea719601492fe05beba1a4223c283eb350"
+          },
+          "confirmed": true,
+          "verification": {
+            "predicates": [
+              {
+                "type": "text_equals",
+                "value": "RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "response": {
+      "id": 23,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\",\n  \"events\" : [\n    \"HTTP GET https://raw.githubusercontent.com/rossbuckley1990-hash/rightclick/7a935fea719601492fe05beba1a4223c283eb350/fixtures/federation-proof/result.txt\",\n    \"provider returned 200\",\n    \"RCIR admitted generation=1\",\n    \"RCIR consumed lease=101AEDF4-1DBD-4977-8A7E-138A65A5A4F3\",\n    \"RCIR task=C2AECF1F-8F58-4302-8C12-9B5EBC18488D outcome=succeeded\",\n    \"Durable invocation journal is not enabled; this execution has volatile history.\",\n    \"federation peer peer-b\",\n    \"remote execution 3615E918-6F87-4EDE-8D34-31FB7AF93C64\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"Caller-declared returned-value postcondition; verifies returned bytes, not external effects.\",\n    \"outcomeVerified\" : true,\n    \"type\" : \"generic_postcondition\"\n  },\n  \"executionId\" : \"EA7F67A0-4724-4422-BA96-6CFE7D56229D\",\n  \"message\" : \"HTTP provider returned 200; semantic outcome is unverified.\",\n  \"output\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"101AEDF4-1DBD-4977-8A7E-138A65A5A4F3\",\n    \"observationBoundary\" : \"Caller-declared returned-value postcondition; no independent external effect observation.\",\n    \"outcome\" : \"succeeded\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxNDA3NzM1MDIxczY6ZXZlbnRzYTE6eDEyODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTQwNzcwNTI2NXM1OnZhbHVlczM2OlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PS3MxMDpmaW5pc2hlZEF0aTEzOjE3OTE0MDc3MDUyNjVzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxNDA3NzA1MjY1czEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OjEwMUFFREY0LTFEQkQtNDk3Ny04QTdFLTEzOEE2NUE1QTRGM3MxMTpvYnNlcnZhdGlvbngyMTpSSUdIVENMSUNLLVZBTFVFLTEAYjFzMTA6b2JzZXJ2ZWRBdGkxMzoxNzkxNDA3NzA1MjY1czU6cGhhc2VzOTpjb21wbGV0ZWRzNzpyZXF1ZXN0eDUxNDY6UklHSFRDTElDSy1SQ0lSLVJFUVVFU1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzY6czk6YXJndW1lbnRzeDEzNTpSSUdIVENMSUNLLVZBTFVFLTEAbzI6czk6YXJndW1lbnRzbzE6czM6cmVmczQwOjdhOTM1ZmVhNzE5NjAxNDkyZmUwNWJlYmExYTQyMjNjMjgzZWIzNTBzNDppdGVtczM3OlJJR0hUQ0xJQ0sgZXhpc3RpbmcgZmVkZXJhdGlvbiBwYXJpdHlzNzpiaW5kaW5neDQyMTc6UklHSFRDTElDSy1SQ0lSLUJJTkRJTkctMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czg6Y29udHJhY3R4MjMxMzpSSUdIVENMSUNLLVJDSVItQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czM6YWJpeDE4NDU6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4MTk3OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8yOnM5OmFyZ3VtZW50c28zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czM6cmVmczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzMzpyZWZzNDppdGVtczY6c3RyaW5nczg6cmVxdWlyZWRhMjpzOTphcmd1bWVudHNzNDppdGVtczEwOmNhcGFiaWxpdHlzMTA5Om9wZW5hcGk6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMjpjYzcyODdlNWJkNmYxMjRkOnJlYWRGZWRlcmF0aW9uUHJvb2ZzMTE6ZGVjbGFyYXRpb25vNjpzMTA6Ym9keVNIQTI1Nm5zMTA6Y2FwYWJpbGl0eW8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMxMDQ6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsicmVmIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbInJlZiJdLCJ0eXBlIjoib2JqZWN0In1zNzpiYXNlVVJMczMzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbXM2Om1ldGhvZHMzOkdFVHMxMTpvcGVyYXRpb25JZHMxOTpyZWFkRmVkZXJhdGlvblByb29mczQ6cGF0aHM3NTovcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay97cmVmfS9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzMTY6cHJvdmlkZXJJZGVudGl0eXM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczE5OnJlc3BvbnNlQ29udGVudFR5cGVzMTA6dGV4dC9wbGFpbnMxOTpzcGVjaWZpY2F0aW9uU0hBMjU2czY0OjYyOTczOTYyODcyMjFhZGU5NzM1ODJkZmZlOTFhMzdlMDk2YmM3MGM4OGY3NDYwZjg5MzBiOTRkOGExYWNhYjhzOTpzdWJzdHJhdGVzNzpvcGVuYXBpczc6b3V0cHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzNDM6UklHSFRDTElDSyBGZWRlcmF0aW9uIFJlbW90ZSBQcm9vZiBQcm92aWRlcnMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTI6ZXhwZXJpbWVudGFsczU6dGl0bGVzMjE6UmVhZCBmZWRlcmF0aW9uIHByb29mczE0OmV4cGVjdGVkT3V0cHV0bnM2Om1ldGhvZHMzOkdFVHMxMDpyZXF1ZXN0VVJMczE0MzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay83YTkzNWZlYTcxOTYwMTQ5MmZlMDViZWJhMWE0MjIzYzI4M2ViMzUwL2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxMjp2ZXJpZmljYXRpb254ODY6eyJwcmVkaWNhdGVzIjpbeyJ2YWx1ZSI6IlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PSyIsInR5cGUiOiJ0ZXh0X2VxdWFscyJ9XX1zODpwcm92aWRlcnM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6cmVmbGVjdG9yczgyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM0OnJlYWRzODpyZXNvdXJjZXMxNDM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2svN2E5MzVmZWE3MTk2MDE0OTJmZTA1YmViYTFhNDIyM2MyODNlYjM1MC9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25vMzpzODpleHBlY3RlZGIxczg6b2JzZXJ2ZXJzMzU6aG9zdDpyZXR1cm5lZC12YWx1ZS1wb3N0Y29uZGl0aW9uLTFzNjpzY2hlbWF4Mjk6UklHSFRDTElDSy1WQUxVRS0xAHM3OmJvb2xlYW5zOTpkaXNjb3Zlcnl4MTY5MzpSSUdIVENMSUNLLVJDSVItR1JBUEgtREVDTEFSQVRJT04tMQBSSUdIVENMSUNLLVZBTFVFLTEAbzM6czM6YWJpeDE1MTE6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4MTk3OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8yOnM5OmFyZ3VtZW50c28zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czM6cmVmczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzMzpyZWZzNDppdGVtczY6c3RyaW5nczg6cmVxdWlyZWRhMjpzOTphcmd1bWVudHNzNDppdGVtczEwOmNhcGFiaWxpdHlzMTA5Om9wZW5hcGk6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMjpjYzcyODdlNWJkNmYxMjRkOnJlYWRGZWRlcmF0aW9uUHJvb2ZzMTE6ZGVjbGFyYXRpb25vMTE6czY6aW5wdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czEwOmludm9jYXRpb25zMTE6aW50ZXJhY3RpdmVzODptZXRhZGF0YW85OnMxNTphcmd1bWVudHNTY2hlbWFzMTA0OnsiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlLCJwcm9wZXJ0aWVzIjp7InJlZiI6eyJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJyZWYiXSwidHlwZSI6Im9iamVjdCJ9czc6YmFzZVVSTHMzMzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb21zNjptZXRob2RzMzpHRVRzMTE6b3BlcmF0aW9uSWRzMTk6cmVhZEZlZGVyYXRpb25Qcm9vZnM0OnBhdGhzNzU6L3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2sve3JlZn0vZml4dHVyZXMvZmVkZXJhdGlvbi1wcm9vZi9yZXN1bHQudHh0czE2OnByb3ZpZGVySWRlbnRpdHlzNjQ6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnMxOTpyZXNwb25zZUNvbnRlbnRUeXBlczEwOnRleHQvcGxhaW5zMTk6c3BlY2lmaWNhdGlvblNIQTI1NnM2NDo2Mjk3Mzk2Mjg3MjIxYWRlOTczNTgyZGZmZTkxYTM3ZTA5NmJjNzBjODhmNzQ2MGY4OTMwYjk0ZDhhMWFjYWI4czk6c3Vic3RyYXRlczc6b3BlbmFwaXM3Om91dHB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczQzOlJJR0hUQ0xJQ0sgRmVkZXJhdGlvbiBSZW1vdGUgUHJvb2YgUHJvdmlkZXJzMjA6cmVxdWlyZXNDb25maXJtYXRpb25iMXM2OnNhZmV0eXM3OnVua25vd25zNjpzb3VyY2VzNjpzeXN0ZW1zMTI6c3VwcG9ydExldmVsczEyOmV4cGVyaW1lbnRhbHM1OnRpdGxlczIxOlJlYWQgZmVkZXJhdGlvbiBwcm9vZnM4OnByb3ZpZGVyczY0OjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzOTpyZWZsZWN0b3JzODI6b3BlbmFwaS1yZWZsZWN0b3I6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnM2OnJlc3VsdHgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczc6dmVyc2lvbmkxOjFzNzplZmZlY3RzYTE6czQ6cmVhZHM0OnRhc2tvNTpzMTE6Y2FuY2VsbGFibGViMHM3OmVsZW1lbnRuczg6bWF4Qnl0ZXNpNjoyNjIxNDRzOTptYXhFdmVudHNpMzoyNTZzNTpzaGFwZXM1OnVuYXJ5czEwOmdlbmVyYXRpb25pMToxczk6cHJpbmNpcGFsczk0OmxvY2FsLW93bmVyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzOTpleHBpcmVzQXRpMTM6MTc5MTQwNzczNTAyMXM4Omlzc3VlZEF0aTEzOjE3OTE0MDc3MDUwMjFzNjpwb2xpY3l4NDUyOlJJR0hUQ0xJQ0stUkNJUi1QT0xJQ1ktMQBSSUdIVENMSUNLLVZBTFVFLTEAbzM6czEwOnByaW5jaXBhbHNhMTpzOTQ6bG9jYWwtb3duZXI6b3BlbmFwaS1yZWZsZWN0b3I6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnM4OnJldmlzaW9uczg1OmxvY2FsLWNvbmZpcm1hdGlvbi0xOjYzYzU5ZWM2YzQ2MTdhNmNhOGU4MjU0ZjAwNzA1NDkzYzE5MjNiNmZkYzFkZDY3NmU3YzVjOWZjMDViYjBmNTdzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNDpyZWFkczg6cmVzb3VyY2VzMTQzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrLzdhOTM1ZmVhNzE5NjAxNDkyZmUwNWJlYmExYTQyMjNjMjgzZWIzNTAvZml4dHVyZXMvZmVkZXJhdGlvbi1wcm9vZi9yZXN1bHQudHh0czY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czQ6cmVhZHM4OnJlc291cmNlczE0MzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay83YTkzNWZlYTcxOTYwMTQ5MmZlMDViZWJhMWE0MjIzYzI4M2ViMzUwL2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxNTpzZW1hbnRpY091dGNvbWVzOTpzdWNjZWVkZWRzOTpzdGFydGVkQXRpMTM6MTc5MTQwNzcwNTAyMXM2OnRhc2tJRHMzNjpDMkFFQ0YxRi04RjU4LTQzMDItOEMxMi05QjVFQkMxODQ4OEQ=\",\n    \"taskID\" : \"C2AECF1F-8F58-4302-8C12-9B5EBC18488D\",\n    \"version\" : 1\n  },\n  \"state\" : \"succeeded\",\n  \"title\" : \"Read federation proof\",\n  \"verification\" : {\n    \"predicates\" : [\n      {\n        \"actual\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\",\n        \"evaluated\" : true,\n        \"message\" : \"Compared exact provider-returned text.\",\n        \"passed\" : true,\n        \"predicate\" : {\n          \"type\" : \"text_equals\",\n          \"value\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\"\n        }\n      }\n    ],\n    \"status\" : \"VERIFIED_SUCCESS\"\n  }\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 24,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "EA7F67A0-4724-4422-BA96-6CFE7D56229D"
+        }
+      }
+    },
+    "response": {
+      "id": 24,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\",\n  \"events\" : [\n    \"HTTP GET https://raw.githubusercontent.com/rossbuckley1990-hash/rightclick/7a935fea719601492fe05beba1a4223c283eb350/fixtures/federation-proof/result.txt\",\n    \"provider returned 200\",\n    \"RCIR admitted generation=1\",\n    \"RCIR consumed lease=101AEDF4-1DBD-4977-8A7E-138A65A5A4F3\",\n    \"RCIR task=C2AECF1F-8F58-4302-8C12-9B5EBC18488D outcome=succeeded\",\n    \"Durable invocation journal is not enabled; this execution has volatile history.\",\n    \"federation peer peer-b\",\n    \"remote execution 3615E918-6F87-4EDE-8D34-31FB7AF93C64\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"Caller-declared returned-value postcondition; verifies returned bytes, not external effects.\",\n    \"outcomeVerified\" : true,\n    \"type\" : \"generic_postcondition\"\n  },\n  \"executionId\" : \"EA7F67A0-4724-4422-BA96-6CFE7D56229D\",\n  \"message\" : \"HTTP provider returned 200; semantic outcome is unverified.\",\n  \"output\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"101AEDF4-1DBD-4977-8A7E-138A65A5A4F3\",\n    \"observationBoundary\" : \"Caller-declared returned-value postcondition; no independent external effect observation.\",\n    \"outcome\" : \"succeeded\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxNDA3NzM1MDIxczY6ZXZlbnRzYTE6eDEyODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTQwNzcwNTI2NXM1OnZhbHVlczM2OlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PS3MxMDpmaW5pc2hlZEF0aTEzOjE3OTE0MDc3MDUyNjVzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxNDA3NzA1MjY1czEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OjEwMUFFREY0LTFEQkQtNDk3Ny04QTdFLTEzOEE2NUE1QTRGM3MxMTpvYnNlcnZhdGlvbngyMTpSSUdIVENMSUNLLVZBTFVFLTEAYjFzMTA6b2JzZXJ2ZWRBdGkxMzoxNzkxNDA3NzA1MjY1czU6cGhhc2VzOTpjb21wbGV0ZWRzNzpyZXF1ZXN0eDUxNDY6UklHSFRDTElDSy1SQ0lSLVJFUVVFU1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzY6czk6YXJndW1lbnRzeDEzNTpSSUdIVENMSUNLLVZBTFVFLTEAbzI6czk6YXJndW1lbnRzbzE6czM6cmVmczQwOjdhOTM1ZmVhNzE5NjAxNDkyZmUwNWJlYmExYTQyMjNjMjgzZWIzNTBzNDppdGVtczM3OlJJR0hUQ0xJQ0sgZXhpc3RpbmcgZmVkZXJhdGlvbiBwYXJpdHlzNzpiaW5kaW5neDQyMTc6UklHSFRDTElDSy1SQ0lSLUJJTkRJTkctMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czg6Y29udHJhY3R4MjMxMzpSSUdIVENMSUNLLVJDSVItQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czM6YWJpeDE4NDU6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4MTk3OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8yOnM5OmFyZ3VtZW50c28zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czM6cmVmczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzMzpyZWZzNDppdGVtczY6c3RyaW5nczg6cmVxdWlyZWRhMjpzOTphcmd1bWVudHNzNDppdGVtczEwOmNhcGFiaWxpdHlzMTA5Om9wZW5hcGk6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMjpjYzcyODdlNWJkNmYxMjRkOnJlYWRGZWRlcmF0aW9uUHJvb2ZzMTE6ZGVjbGFyYXRpb25vNjpzMTA6Ym9keVNIQTI1Nm5zMTA6Y2FwYWJpbGl0eW8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMxMDQ6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsicmVmIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbInJlZiJdLCJ0eXBlIjoib2JqZWN0In1zNzpiYXNlVVJMczMzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbXM2Om1ldGhvZHMzOkdFVHMxMTpvcGVyYXRpb25JZHMxOTpyZWFkRmVkZXJhdGlvblByb29mczQ6cGF0aHM3NTovcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay97cmVmfS9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzMTY6cHJvdmlkZXJJZGVudGl0eXM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczE5OnJlc3BvbnNlQ29udGVudFR5cGVzMTA6dGV4dC9wbGFpbnMxOTpzcGVjaWZpY2F0aW9uU0hBMjU2czY0OjYyOTczOTYyODcyMjFhZGU5NzM1ODJkZmZlOTFhMzdlMDk2YmM3MGM4OGY3NDYwZjg5MzBiOTRkOGExYWNhYjhzOTpzdWJzdHJhdGVzNzpvcGVuYXBpczc6b3V0cHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzNDM6UklHSFRDTElDSyBGZWRlcmF0aW9uIFJlbW90ZSBQcm9vZiBQcm92aWRlcnMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTI6ZXhwZXJpbWVudGFsczU6dGl0bGVzMjE6UmVhZCBmZWRlcmF0aW9uIHByb29mczE0OmV4cGVjdGVkT3V0cHV0bnM2Om1ldGhvZHMzOkdFVHMxMDpyZXF1ZXN0VVJMczE0MzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay83YTkzNWZlYTcxOTYwMTQ5MmZlMDViZWJhMWE0MjIzYzI4M2ViMzUwL2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxMjp2ZXJpZmljYXRpb254ODY6eyJwcmVkaWNhdGVzIjpbeyJ2YWx1ZSI6IlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PSyIsInR5cGUiOiJ0ZXh0X2VxdWFscyJ9XX1zODpwcm92aWRlcnM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6cmVmbGVjdG9yczgyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM0OnJlYWRzODpyZXNvdXJjZXMxNDM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2svN2E5MzVmZWE3MTk2MDE0OTJmZTA1YmViYTFhNDIyM2MyODNlYjM1MC9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25vMzpzODpleHBlY3RlZGIxczg6b2JzZXJ2ZXJzMzU6aG9zdDpyZXR1cm5lZC12YWx1ZS1wb3N0Y29uZGl0aW9uLTFzNjpzY2hlbWF4Mjk6UklHSFRDTElDSy1WQUxVRS0xAHM3OmJvb2xlYW5zOTpkaXNjb3Zlcnl4MTY5MzpSSUdIVENMSUNLLVJDSVItR1JBUEgtREVDTEFSQVRJT04tMQBSSUdIVENMSUNLLVZBTFVFLTEAbzM6czM6YWJpeDE1MTE6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4MTk3OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8yOnM5OmFyZ3VtZW50c28zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czM6cmVmczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzMzpyZWZzNDppdGVtczY6c3RyaW5nczg6cmVxdWlyZWRhMjpzOTphcmd1bWVudHNzNDppdGVtczEwOmNhcGFiaWxpdHlzMTA5Om9wZW5hcGk6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMjpjYzcyODdlNWJkNmYxMjRkOnJlYWRGZWRlcmF0aW9uUHJvb2ZzMTE6ZGVjbGFyYXRpb25vMTE6czY6aW5wdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czEwOmludm9jYXRpb25zMTE6aW50ZXJhY3RpdmVzODptZXRhZGF0YW85OnMxNTphcmd1bWVudHNTY2hlbWFzMTA0OnsiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlLCJwcm9wZXJ0aWVzIjp7InJlZiI6eyJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJyZWYiXSwidHlwZSI6Im9iamVjdCJ9czc6YmFzZVVSTHMzMzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb21zNjptZXRob2RzMzpHRVRzMTE6b3BlcmF0aW9uSWRzMTk6cmVhZEZlZGVyYXRpb25Qcm9vZnM0OnBhdGhzNzU6L3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2sve3JlZn0vZml4dHVyZXMvZmVkZXJhdGlvbi1wcm9vZi9yZXN1bHQudHh0czE2OnByb3ZpZGVySWRlbnRpdHlzNjQ6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnMxOTpyZXNwb25zZUNvbnRlbnRUeXBlczEwOnRleHQvcGxhaW5zMTk6c3BlY2lmaWNhdGlvblNIQTI1NnM2NDo2Mjk3Mzk2Mjg3MjIxYWRlOTczNTgyZGZmZTkxYTM3ZTA5NmJjNzBjODhmNzQ2MGY4OTMwYjk0ZDhhMWFjYWI4czk6c3Vic3RyYXRlczc6b3BlbmFwaXM3Om91dHB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczQzOlJJR0hUQ0xJQ0sgRmVkZXJhdGlvbiBSZW1vdGUgUHJvb2YgUHJvdmlkZXJzMjA6cmVxdWlyZXNDb25maXJtYXRpb25iMXM2OnNhZmV0eXM3OnVua25vd25zNjpzb3VyY2VzNjpzeXN0ZW1zMTI6c3VwcG9ydExldmVsczEyOmV4cGVyaW1lbnRhbHM1OnRpdGxlczIxOlJlYWQgZmVkZXJhdGlvbiBwcm9vZnM4OnByb3ZpZGVyczY0OjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzOTpyZWZsZWN0b3JzODI6b3BlbmFwaS1yZWZsZWN0b3I6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnM2OnJlc3VsdHgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczc6dmVyc2lvbmkxOjFzNzplZmZlY3RzYTE6czQ6cmVhZHM0OnRhc2tvNTpzMTE6Y2FuY2VsbGFibGViMHM3OmVsZW1lbnRuczg6bWF4Qnl0ZXNpNjoyNjIxNDRzOTptYXhFdmVudHNpMzoyNTZzNTpzaGFwZXM1OnVuYXJ5czEwOmdlbmVyYXRpb25pMToxczk6cHJpbmNpcGFsczk0OmxvY2FsLW93bmVyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzOTpleHBpcmVzQXRpMTM6MTc5MTQwNzczNTAyMXM4Omlzc3VlZEF0aTEzOjE3OTE0MDc3MDUwMjFzNjpwb2xpY3l4NDUyOlJJR0hUQ0xJQ0stUkNJUi1QT0xJQ1ktMQBSSUdIVENMSUNLLVZBTFVFLTEAbzM6czEwOnByaW5jaXBhbHNhMTpzOTQ6bG9jYWwtb3duZXI6b3BlbmFwaS1yZWZsZWN0b3I6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnM4OnJldmlzaW9uczg1OmxvY2FsLWNvbmZpcm1hdGlvbi0xOjYzYzU5ZWM2YzQ2MTdhNmNhOGU4MjU0ZjAwNzA1NDkzYzE5MjNiNmZkYzFkZDY3NmU3YzVjOWZjMDViYjBmNTdzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNDpyZWFkczg6cmVzb3VyY2VzMTQzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrLzdhOTM1ZmVhNzE5NjAxNDkyZmUwNWJlYmExYTQyMjNjMjgzZWIzNTAvZml4dHVyZXMvZmVkZXJhdGlvbi1wcm9vZi9yZXN1bHQudHh0czY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czQ6cmVhZHM4OnJlc291cmNlczE0MzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay83YTkzNWZlYTcxOTYwMTQ5MmZlMDViZWJhMWE0MjIzYzI4M2ViMzUwL2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxNTpzZW1hbnRpY091dGNvbWVzOTpzdWNjZWVkZWRzOTpzdGFydGVkQXRpMTM6MTc5MTQwNzcwNTAyMXM2OnRhc2tJRHMzNjpDMkFFQ0YxRi04RjU4LTQzMDItOEMxMi05QjVFQkMxODQ4OEQ=\",\n    \"taskID\" : \"C2AECF1F-8F58-4302-8C12-9B5EBC18488D\",\n    \"version\" : 1\n  },\n  \"state\" : \"succeeded\",\n  \"title\" : \"Read federation proof\",\n  \"verification\" : {\n    \"predicates\" : [\n      {\n        \"actual\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\",\n        \"evaluated\" : true,\n        \"message\" : \"Compared exact provider-returned text.\",\n        \"passed\" : true,\n        \"predicate\" : {\n          \"type\" : \"text_equals\",\n          \"value\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\"\n        }\n      }\n    ],\n    \"status\" : \"VERIFIED_SUCCESS\"\n  }\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 26,
+      "method": "tools/call",
+      "params": {
+        "name": "context_actions",
+        "arguments": {
+          "item": "RIGHTCLICK existing federation parity"
+        }
+      }
+    },
+    "response": {
+      "id": 26,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\"actions\": [], \"contentType\": \"public.plain-text\", \"item\": \"RIGHTCLICK existing federation parity\", \"kind\": \"text\"}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 27,
+      "method": "tools/call",
+      "params": {
+        "name": "context_run_status",
+        "arguments": {
+          "executionId": "EA7F67A0-4724-4422-BA96-6CFE7D56229D"
+        }
+      }
+    },
+    "response": {
+      "id": 27,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"actionId\" : \"federation:peer-b:openapi:716b069afd729cb7e16aa9cdee354d5b67e899248c356dc6102b1bc4e4f855e2:cc7287e5bd6f124d:readFederationProof\",\n  \"events\" : [\n    \"HTTP GET https://raw.githubusercontent.com/rossbuckley1990-hash/rightclick/7a935fea719601492fe05beba1a4223c283eb350/fixtures/federation-proof/result.txt\",\n    \"provider returned 200\",\n    \"RCIR admitted generation=1\",\n    \"RCIR consumed lease=101AEDF4-1DBD-4977-8A7E-138A65A5A4F3\",\n    \"RCIR task=C2AECF1F-8F58-4302-8C12-9B5EBC18488D outcome=succeeded\",\n    \"Durable invocation journal is not enabled; this execution has volatile history.\",\n    \"federation peer peer-b\",\n    \"remote execution 3615E918-6F87-4EDE-8D34-31FB7AF93C64\"\n  ],\n  \"evidence\" : {\n    \"boundary\" : \"Caller-declared returned-value postcondition; verifies returned bytes, not external effects.\",\n    \"outcomeVerified\" : true,\n    \"type\" : \"generic_postcondition\"\n  },\n  \"executionId\" : \"EA7F67A0-4724-4422-BA96-6CFE7D56229D\",\n  \"message\" : \"HTTP provider returned 200; semantic outcome is unverified.\",\n  \"output\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\",\n  \"rcir\" : {\n    \"generation\" : 1,\n    \"leaseConsumed\" : true,\n    \"leaseID\" : \"101AEDF4-1DBD-4977-8A7E-138A65A5A4F3\",\n    \"observationBoundary\" : \"Caller-declared returned-value postcondition; no independent external effect observation.\",\n    \"outcome\" : \"succeeded\",\n    \"phase\" : \"completed\",\n    \"receipt\" : \"UklHSFRDTElDSy1SQ0lSLVJFQ0VJUFQtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzE0OnMyMzpjYW5jZWxsYXRpb25SZXF1ZXN0ZWRBdG5zODpkZWFkbGluZWkxMzoxNzkxNDA3NzM1MDIxczY6ZXZlbnRzYTE6eDEyODpSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czQ6a2luZHM5OmNvbXBsZXRlZHM4OnNlcXVlbmNlaTE6MXM0OnRpbWVpMTM6MTc5MTQwNzcwNTI2NXM1OnZhbHVlczM2OlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PS3MxMDpmaW5pc2hlZEF0aTEzOjE3OTE0MDc3MDUyNjVzMTk6bGFzdE9ic2VydmF0aW9uVGltZWkxMzoxNzkxNDA3NzA1MjY1czEyOmxhc3RTZXF1ZW5jZWkxOjFzNzpsZWFzZUlEczM2OjEwMUFFREY0LTFEQkQtNDk3Ny04QTdFLTEzOEE2NUE1QTRGM3MxMTpvYnNlcnZhdGlvbngyMTpSSUdIVENMSUNLLVZBTFVFLTEAYjFzMTA6b2JzZXJ2ZWRBdGkxMzoxNzkxNDA3NzA1MjY1czU6cGhhc2VzOTpjb21wbGV0ZWRzNzpyZXF1ZXN0eDUxNDY6UklHSFRDTElDSy1SQ0lSLVJFUVVFU1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzY6czk6YXJndW1lbnRzeDEzNTpSSUdIVENMSUNLLVZBTFVFLTEAbzI6czk6YXJndW1lbnRzbzE6czM6cmVmczQwOjdhOTM1ZmVhNzE5NjAxNDkyZmUwNWJlYmExYTQyMjNjMjgzZWIzNTBzNDppdGVtczM3OlJJR0hUQ0xJQ0sgZXhpc3RpbmcgZmVkZXJhdGlvbiBwYXJpdHlzNzpiaW5kaW5neDQyMTc6UklHSFRDTElDSy1SQ0lSLUJJTkRJTkctMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czg6Y29udHJhY3R4MjMxMzpSSUdIVENMSUNLLVJDSVItQ09OVFJBQ1QtMQBSSUdIVENMSUNLLVZBTFVFLTEAbzQ6czM6YWJpeDE4NDU6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4MTk3OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8yOnM5OmFyZ3VtZW50c28zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czM6cmVmczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzMzpyZWZzNDppdGVtczY6c3RyaW5nczg6cmVxdWlyZWRhMjpzOTphcmd1bWVudHNzNDppdGVtczEwOmNhcGFiaWxpdHlzMTA5Om9wZW5hcGk6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMjpjYzcyODdlNWJkNmYxMjRkOnJlYWRGZWRlcmF0aW9uUHJvb2ZzMTE6ZGVjbGFyYXRpb25vNjpzMTA6Ym9keVNIQTI1Nm5zMTA6Y2FwYWJpbGl0eW8xMTpzNjppbnB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTA6aW52b2NhdGlvbnMxMTppbnRlcmFjdGl2ZXM4Om1ldGFkYXRhbzk6czE1OmFyZ3VtZW50c1NjaGVtYXMxMDQ6eyJhZGRpdGlvbmFsUHJvcGVydGllcyI6ZmFsc2UsInByb3BlcnRpZXMiOnsicmVmIjp7InR5cGUiOiJzdHJpbmcifX0sInJlcXVpcmVkIjpbInJlZiJdLCJ0eXBlIjoib2JqZWN0In1zNzpiYXNlVVJMczMzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbXM2Om1ldGhvZHMzOkdFVHMxMTpvcGVyYXRpb25JZHMxOTpyZWFkRmVkZXJhdGlvblByb29mczQ6cGF0aHM3NTovcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay97cmVmfS9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzMTY6cHJvdmlkZXJJZGVudGl0eXM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczE5OnJlc3BvbnNlQ29udGVudFR5cGVzMTA6dGV4dC9wbGFpbnMxOTpzcGVjaWZpY2F0aW9uU0hBMjU2czY0OjYyOTczOTYyODcyMjFhZGU5NzM1ODJkZmZlOTFhMzdlMDk2YmM3MGM4OGY3NDYwZjg5MzBiOTRkOGExYWNhYjhzOTpzdWJzdHJhdGVzNzpvcGVuYXBpczc6b3V0cHV0c2ExOnMxNzpwdWJsaWMucGxhaW4tdGV4dHMxNjpwcm92aWRlckJ1bmRsZUlEbnMxMjpwcm92aWRlck5hbWVzNDM6UklHSFRDTElDSyBGZWRlcmF0aW9uIFJlbW90ZSBQcm9vZiBQcm92aWRlcnMyMDpyZXF1aXJlc0NvbmZpcm1hdGlvbmIxczY6c2FmZXR5czc6dW5rbm93bnM2OnNvdXJjZXM2OnN5c3RlbXMxMjpzdXBwb3J0TGV2ZWxzMTI6ZXhwZXJpbWVudGFsczU6dGl0bGVzMjE6UmVhZCBmZWRlcmF0aW9uIHByb29mczE0OmV4cGVjdGVkT3V0cHV0bnM2Om1ldGhvZHMzOkdFVHMxMDpyZXF1ZXN0VVJMczE0MzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay83YTkzNWZlYTcxOTYwMTQ5MmZlMDViZWJhMWE0MjIzYzI4M2ViMzUwL2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxMjp2ZXJpZmljYXRpb254ODY6eyJwcmVkaWNhdGVzIjpbeyJ2YWx1ZSI6IlJJR0hUQ0xJQ0tfRkVERVJBVElPTl9SRU1PVEVfT05MWV9PSyIsInR5cGUiOiJ0ZXh0X2VxdWFscyJ9XX1zODpwcm92aWRlcnM2NDo3MTZiMDY5YWZkNzI5Y2I3ZTE2YWE5Y2RlZTM1NGQ1YjY3ZTg5OTI0OGMzNTZkYzYxMDJiMWJjNGU0Zjg1NWUyczk6cmVmbGVjdG9yczgyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzNjpyZXN1bHR4Mjg6UklHSFRDTElDSy1WQUxVRS0xAHM2OnN0cmluZ3M3OnZlcnNpb25pMToxczc6ZWZmZWN0c2ExOm8yOnM2OmVmZmVjdHM0OnJlYWRzODpyZXNvdXJjZXMxNDM6aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2svN2E5MzVmZWE3MTk2MDE0OTJmZTA1YmViYTFhNDIyM2MyODNlYjM1MC9maXh0dXJlcy9mZWRlcmF0aW9uLXByb29mL3Jlc3VsdC50eHRzNDp0YXNrbzU6czExOmNhbmNlbGxhYmxlYjBzNzplbGVtZW50bnM4Om1heEJ5dGVzaTY6MjYyMTQ0czk6bWF4RXZlbnRzaTM6MjU2czU6c2hhcGVzNTp1bmFyeXMxMjp2ZXJpZmljYXRpb25vMzpzODpleHBlY3RlZGIxczg6b2JzZXJ2ZXJzMzU6aG9zdDpyZXR1cm5lZC12YWx1ZS1wb3N0Y29uZGl0aW9uLTFzNjpzY2hlbWF4Mjk6UklHSFRDTElDSy1WQUxVRS0xAHM3OmJvb2xlYW5zOTpkaXNjb3Zlcnl4MTY5MzpSSUdIVENMSUNLLVJDSVItR1JBUEgtREVDTEFSQVRJT04tMQBSSUdIVENMSUNLLVZBTFVFLTEAbzM6czM6YWJpeDE1MTE6UklHSFRDTElDSy1DT05UUkFDVC0xAFJJR0hUQ0xJQ0stVkFMVUUtMQBvNzpzOTphcmd1bWVudHN4MTk3OlJJR0hUQ0xJQ0stVkFMVUUtMQBvMzpzMjA6YWRkaXRpb25hbFByb3BlcnRpZXNiMHM2Om9iamVjdG8yOnM5OmFyZ3VtZW50c28zOnMyMDphZGRpdGlvbmFsUHJvcGVydGllc2IwczY6b2JqZWN0bzE6czM6cmVmczY6c3RyaW5nczg6cmVxdWlyZWRhMTpzMzpyZWZzNDppdGVtczY6c3RyaW5nczg6cmVxdWlyZWRhMjpzOTphcmd1bWVudHNzNDppdGVtczEwOmNhcGFiaWxpdHlzMTA5Om9wZW5hcGk6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMjpjYzcyODdlNWJkNmYxMjRkOnJlYWRGZWRlcmF0aW9uUHJvb2ZzMTE6ZGVjbGFyYXRpb25vMTE6czY6aW5wdXRzYTE6czE3OnB1YmxpYy5wbGFpbi10ZXh0czEwOmludm9jYXRpb25zMTE6aW50ZXJhY3RpdmVzODptZXRhZGF0YW85OnMxNTphcmd1bWVudHNTY2hlbWFzMTA0OnsiYWRkaXRpb25hbFByb3BlcnRpZXMiOmZhbHNlLCJwcm9wZXJ0aWVzIjp7InJlZiI6eyJ0eXBlIjoic3RyaW5nIn19LCJyZXF1aXJlZCI6WyJyZWYiXSwidHlwZSI6Im9iamVjdCJ9czc6YmFzZVVSTHMzMzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb21zNjptZXRob2RzMzpHRVRzMTE6b3BlcmF0aW9uSWRzMTk6cmVhZEZlZGVyYXRpb25Qcm9vZnM0OnBhdGhzNzU6L3Jvc3NidWNrbGV5MTk5MC1oYXNoL3JpZ2h0Y2xpY2sve3JlZn0vZml4dHVyZXMvZmVkZXJhdGlvbi1wcm9vZi9yZXN1bHQudHh0czE2OnByb3ZpZGVySWRlbnRpdHlzNjQ6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnMxOTpyZXNwb25zZUNvbnRlbnRUeXBlczEwOnRleHQvcGxhaW5zMTk6c3BlY2lmaWNhdGlvblNIQTI1NnM2NDo2Mjk3Mzk2Mjg3MjIxYWRlOTczNTgyZGZmZTkxYTM3ZTA5NmJjNzBjODhmNzQ2MGY4OTMwYjk0ZDhhMWFjYWI4czk6c3Vic3RyYXRlczc6b3BlbmFwaXM3Om91dHB1dHNhMTpzMTc6cHVibGljLnBsYWluLXRleHRzMTY6cHJvdmlkZXJCdW5kbGVJRG5zMTI6cHJvdmlkZXJOYW1lczQzOlJJR0hUQ0xJQ0sgRmVkZXJhdGlvbiBSZW1vdGUgUHJvb2YgUHJvdmlkZXJzMjA6cmVxdWlyZXNDb25maXJtYXRpb25iMXM2OnNhZmV0eXM3OnVua25vd25zNjpzb3VyY2VzNjpzeXN0ZW1zMTI6c3VwcG9ydExldmVsczEyOmV4cGVyaW1lbnRhbHM1OnRpdGxlczIxOlJlYWQgZmVkZXJhdGlvbiBwcm9vZnM4OnByb3ZpZGVyczY0OjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzOTpyZWZsZWN0b3JzODI6b3BlbmFwaS1yZWZsZWN0b3I6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnM2OnJlc3VsdHgyODpSSUdIVENMSUNLLVZBTFVFLTEAczY6c3RyaW5nczc6dmVyc2lvbmkxOjFzNzplZmZlY3RzYTE6czQ6cmVhZHM0OnRhc2tvNTpzMTE6Y2FuY2VsbGFibGViMHM3OmVsZW1lbnRuczg6bWF4Qnl0ZXNpNjoyNjIxNDRzOTptYXhFdmVudHNpMzoyNTZzNTpzaGFwZXM1OnVuYXJ5czEwOmdlbmVyYXRpb25pMToxczk6cHJpbmNpcGFsczk0OmxvY2FsLW93bmVyOm9wZW5hcGktcmVmbGVjdG9yOjcxNmIwNjlhZmQ3MjljYjdlMTZhYTljZGVlMzU0ZDViNjdlODk5MjQ4YzM1NmRjNjEwMmIxYmM0ZTRmODU1ZTJzOTpleHBpcmVzQXRpMTM6MTc5MTQwNzczNTAyMXM4Omlzc3VlZEF0aTEzOjE3OTE0MDc3MDUwMjFzNjpwb2xpY3l4NDUyOlJJR0hUQ0xJQ0stUkNJUi1QT0xJQ1ktMQBSSUdIVENMSUNLLVZBTFVFLTEAbzM6czEwOnByaW5jaXBhbHNhMTpzOTQ6bG9jYWwtb3duZXI6b3BlbmFwaS1yZWZsZWN0b3I6NzE2YjA2OWFmZDcyOWNiN2UxNmFhOWNkZWUzNTRkNWI2N2U4OTkyNDhjMzU2ZGM2MTAyYjFiYzRlNGY4NTVlMnM4OnJldmlzaW9uczg1OmxvY2FsLWNvbmZpcm1hdGlvbi0xOjYzYzU5ZWM2YzQ2MTdhNmNhOGU4MjU0ZjAwNzA1NDkzYzE5MjNiNmZkYzFkZDY3NmU3YzVjOWZjMDViYjBmNTdzNjpzY29wZXNhMTpvMjpzNjplZmZlY3RzNDpyZWFkczg6cmVzb3VyY2VzMTQzOmh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9yb3NzYnVja2xleTE5OTAtaGFzaC9yaWdodGNsaWNrLzdhOTM1ZmVhNzE5NjAxNDkyZmUwNWJlYmExYTQyMjNjMjgzZWIzNTAvZml4dHVyZXMvZmVkZXJhdGlvbi1wcm9vZi9yZXN1bHQudHh0czY6c2NvcGVzYTE6bzI6czY6ZWZmZWN0czQ6cmVhZHM4OnJlc291cmNlczE0MzpodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vcm9zc2J1Y2tsZXkxOTkwLWhhc2gvcmlnaHRjbGljay83YTkzNWZlYTcxOTYwMTQ5MmZlMDViZWJhMWE0MjIzYzI4M2ViMzUwL2ZpeHR1cmVzL2ZlZGVyYXRpb24tcHJvb2YvcmVzdWx0LnR4dHMxNTpzZW1hbnRpY091dGNvbWVzOTpzdWNjZWVkZWRzOTpzdGFydGVkQXRpMTM6MTc5MTQwNzcwNTAyMXM2OnRhc2tJRHMzNjpDMkFFQ0YxRi04RjU4LTQzMDItOEMxMi05QjVFQkMxODQ4OEQ=\",\n    \"taskID\" : \"C2AECF1F-8F58-4302-8C12-9B5EBC18488D\",\n    \"version\" : 1\n  },\n  \"state\" : \"succeeded\",\n  \"title\" : \"Read federation proof\",\n  \"verification\" : {\n    \"predicates\" : [\n      {\n        \"actual\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\",\n        \"evaluated\" : true,\n        \"message\" : \"Compared exact provider-returned text.\",\n        \"passed\" : true,\n        \"predicate\" : {\n          \"type\" : \"text_equals\",\n          \"value\" : \"RIGHTCLICK_FEDERATION_REMOTE_ONLY_OK\"\n        }\n      }\n    ],\n    \"status\" : \"VERIFIED_SUCCESS\"\n  }\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  },
+  {
+    "request": {
+      "jsonrpc": "2.0",
+      "id": 28,
+      "method": "tools/call",
+      "params": {
+        "name": "context_runtime",
+        "arguments": {}
+      }
+    },
+    "response": {
+      "id": 28,
+      "jsonrpc": "2.0",
+      "result": {
+        "content": [
+          {
+            "text": "{\n  \"agentABIProfiles\" : [\n    {\n      \"id\" : \"core\",\n      \"operations\" : [\n        \"context_runtime\",\n        \"context_providers\",\n        \"context_inspect\",\n        \"context_actions\",\n        \"context_explain\",\n        \"context_run\",\n        \"context_run_status\"\n      ],\n      \"version\" : 1\n    }\n  ],\n  \"executablePath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableRealPath\" : \"/tmp/rightclick-parity-candidate-c61f0cb2\",\n  \"executableSHA256\" : \"c61f0cb2518ad8f728dddeeef7e4dd3f91ac7e15a608a7262b038bef9fd86b12\",\n  \"pid\" : 95909,\n  \"platform\" : \"macOS\",\n  \"product\" : \"RIGHTCLICK\",\n  \"transport\" : \"http\",\n  \"version\" : \"0.2.3\"\n}",
+            "type": "text"
+          }
+        ],
+        "isError": false
+      }
+    }
+  }
+]

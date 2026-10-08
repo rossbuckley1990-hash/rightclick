@@ -1,0 +1,205 @@
+{
+  "independentCanonicalMathAndJournalAudit": "PASS",
+  "cases": 11,
+  "evidenceStage": "FINAL_ELEVEN",
+  "actualEffects": 7,
+  "rejectedExecutions": 6,
+  "signedReceiptsVerified": 3,
+  "unsignedAssertions": 4,
+  "policyClock": "OBSERVATION_TIME_FOR_EVIDENCE_REPLAY_ONLY",
+  "intermediatePolicyHistory": "UNSIGNED_FIXTURE_WRITE_JOURNAL_DIGESTS_AND_CURRENT_SNAPSHOT_MATCHED",
+  "unsignedAuthenticity": "NOT_ESTABLISHED",
+  "overallProgramme": "RED",
+  "results": [
+    {
+      "case": "testActiveIssuerControlProducesOneTrustedObservedEffect",
+      "requests": 1,
+      "effects": 1,
+      "separateObservations": 1,
+      "rejectedExecutions": 0,
+      "actuallySignedReceipts": 1,
+      "policyWriteHistoryRows": 1,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "VALID",
+          "canonicalClaims": "STRUCTURALLY_VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "separateEffectAndObserver": "MATCHED",
+          "boundArgumentsAndObservationBytes": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": true
+        }
+      ]
+    },
+    {
+      "case": "testLegalHostKeyRotationControlUsesFreshTrustedKey",
+      "requests": 2,
+      "effects": 2,
+      "separateObservations": 2,
+      "rejectedExecutions": 0,
+      "actuallySignedReceipts": 2,
+      "policyWriteHistoryRows": 2,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "VALID",
+          "canonicalClaims": "STRUCTURALLY_VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "separateEffectAndObserver": "MATCHED",
+          "boundArgumentsAndObservationBytes": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": true
+        },
+        {
+          "slot": 1,
+          "signature": "VALID",
+          "canonicalClaims": "STRUCTURALLY_VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "separateEffectAndObserver": "MATCHED",
+          "boundArgumentsAndObservationBytes": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": true
+        }
+      ]
+    },
+    {
+      "case": "testPreRevokedPolicyDeniesAdmissionWithZeroProviderEffects",
+      "requests": 0,
+      "effects": 0,
+      "separateObservations": 0,
+      "rejectedExecutions": 1,
+      "actuallySignedReceipts": 0,
+      "policyWriteHistoryRows": 2,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": []
+    },
+    {
+      "case": "testRevokedPolicyAfterAdmissionWithholdsSignatureAndRetainsRealTruth",
+      "requests": 1,
+      "effects": 1,
+      "separateObservations": 1,
+      "rejectedExecutions": 0,
+      "actuallySignedReceipts": 0,
+      "policyWriteHistoryRows": 2,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "UNSIGNED_RUNTIME_ASSERTION",
+          "canonicalClaims": "STRUCTURALLY_VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "separateEffectAndObserver": "MATCHED",
+          "boundArgumentsAndObservationBytes": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": null
+        }
+      ]
+    },
+    {
+      "case": "testRestoredOlderPolicyCannotResurrectObservedRevocation",
+      "requests": 1,
+      "effects": 1,
+      "separateObservations": 1,
+      "rejectedExecutions": 1,
+      "actuallySignedReceipts": 0,
+      "policyWriteHistoryRows": 3,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "UNSIGNED_RUNTIME_ASSERTION",
+          "canonicalClaims": "STRUCTURALLY_VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "separateEffectAndObserver": "MATCHED",
+          "boundArgumentsAndObservationBytes": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": null
+        }
+      ]
+    },
+    {
+      "case": "testDeletedPolicyAfterAdmissionPreservesObservedUnsignedTruth",
+      "requests": 1,
+      "effects": 1,
+      "separateObservations": 1,
+      "rejectedExecutions": 0,
+      "actuallySignedReceipts": 0,
+      "policyWriteHistoryRows": 1,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "UNSIGNED_RUNTIME_ASSERTION",
+          "canonicalClaims": "STRUCTURALLY_VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "separateEffectAndObserver": "MATCHED",
+          "boundArgumentsAndObservationBytes": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": null
+        }
+      ]
+    },
+    {
+      "case": "testMalformedPolicyBeforeAdmissionHasZeroProviderEffects",
+      "requests": 0,
+      "effects": 0,
+      "separateObservations": 0,
+      "rejectedExecutions": 1,
+      "actuallySignedReceipts": 0,
+      "policyWriteHistoryRows": 2,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": []
+    },
+    {
+      "case": "testActuallyExpiredKeyBeforeAdmissionHasZeroProviderEffects",
+      "requests": 0,
+      "effects": 0,
+      "separateObservations": 0,
+      "rejectedExecutions": 1,
+      "actuallySignedReceipts": 0,
+      "policyWriteHistoryRows": 2,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": []
+    },
+    {
+      "case": "testActualClockExpiryAfterHeldAdmissionWithholdsSignature",
+      "requests": 1,
+      "effects": 1,
+      "separateObservations": 1,
+      "rejectedExecutions": 0,
+      "actuallySignedReceipts": 0,
+      "policyWriteHistoryRows": 2,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": [
+        {
+          "slot": 0,
+          "signature": "UNSIGNED_RUNTIME_ASSERTION",
+          "canonicalClaims": "STRUCTURALLY_VALID",
+          "expectedTaskAndLease": "MATCHED",
+          "separateEffectAndObserver": "MATCHED",
+          "boundArgumentsAndObservationBytes": "MATCHED",
+          "currentPolicyAtReplayTimeAccepted": null
+        }
+      ]
+    },
+    {
+      "case": "testConfigurationRefreshRevokesPolicyBeforeFinalAdmissionHasZeroEffects",
+      "requests": 0,
+      "effects": 0,
+      "separateObservations": 0,
+      "rejectedExecutions": 1,
+      "actuallySignedReceipts": 0,
+      "policyWriteHistoryRows": 2,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": []
+    },
+    {
+      "case": "testConsumptionCallbackRevokesPolicyBeforeFinalAdmissionHasZeroEffects",
+      "requests": 0,
+      "effects": 0,
+      "separateObservations": 0,
+      "rejectedExecutions": 1,
+      "actuallySignedReceipts": 0,
+      "policyWriteHistoryRows": 2,
+      "policyHistoryDigests": "MATCHED",
+      "receipts": []
+    }
+  ]
+}
