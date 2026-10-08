@@ -34,11 +34,20 @@ jobs:
           swiftc .github/scripts/windows_discarded_stderr_probe.swift -o windows-discarded-stderr-probe.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Get-FileHash windows-discarded-stderr-probe.exe -Algorithm SHA256 | Format-List | Out-File windows-probe-binary-sha256.txt
+          swiftc .github/scripts/windows_stderr_cleanup_probe.swift -o windows-stderr-cleanup-probe.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-FileHash windows-stderr-cleanup-probe.exe -Algorithm SHA256 | Format-List | Out-File windows-probe-cleanup-binary-sha256.txt
       - name: Actual paired null stderr and owned drained pipe
         timeout-minutes: 2
         run: |
           $python = (Get-Command python.exe).Source
           python -u .github/scripts/windows_test_supervisor.py --prefix windows-null-stderr --progress --deadline-seconds 30 --heartbeat-seconds 5 -- .\windows-discarded-stderr-probe.exe $python
+          exit $LASTEXITCODE
+      - name: Retained descendant stderr does not extend owned closure
+        timeout-minutes: 2
+        run: |
+          $python = (Get-Command python.exe).Source
+          python -u .github/scripts/windows_test_supervisor.py --prefix windows-stderr-cleanup --progress --deadline-seconds 20 --heartbeat-seconds 1 -- .\windows-stderr-cleanup-probe.exe $python
           exit $LASTEXITCODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
@@ -51,3 +60,7 @@ jobs:
             windows-null-stderr-phase.json
             windows-null-stderr-events.jsonl
             windows-null-stderr-output.log
+            windows-stderr-cleanup-probe.json
+            windows-stderr-cleanup-phase.json
+            windows-stderr-cleanup-events.jsonl
+            windows-stderr-cleanup-output.log
