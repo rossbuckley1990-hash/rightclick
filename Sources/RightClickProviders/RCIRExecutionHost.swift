@@ -602,9 +602,16 @@ public final class RCIRExecutionHost {
                     // completion. A late acceptance/success return is not a
                     // second callback and must not destroy host adjudication.
                     // Explicit post-effect uncertainty still wins UNKNOWN.
-                    if record.state != .unknown, hasPendingFinalization(executionID: executionID) {
-                        if let live = activeExecutionStatus(executionID: executionID) { return live }
-                        if let terminal = ExecutionStore.shared.get(executionID), terminal.lifecycle?.terminal == true { return terminal }
+                    if hasPendingFinalization(executionID: executionID) {
+                        if [.started, .awaitingUser, .accepted, .succeeded].contains(record.state) {
+                            if let live = activeExecutionStatus(executionID: executionID) { return live }
+                            if let terminal = ExecutionStore.shared.get(executionID), terminal.lifecycle?.terminal == true { return terminal }
+                        } else {
+                            // Completion and a contradictory negative provider
+                            // return cannot establish a reliable effect outcome.
+                            _ = try markActiveTaskUnknown(executionID: executionID, now: now())
+                            if let terminal = ExecutionStore.shared.get(executionID) { return terminal }
+                        }
                     }
                     switch record.state {
                     case .started, .awaitingUser:

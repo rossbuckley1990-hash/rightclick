@@ -1608,8 +1608,8 @@ final class RCIRDeferredExecutionTests: XCTestCase {
         XCTAssertNotNil(terminal.rcir?.receipt)
     }
 
-    func testPendingSynchronousCompletionSurvivesLateAcceptedOrSucceededReturnButUnknownWins() throws {
-        for initialState in [ExecutionState.accepted, .succeeded, .unknown] {
+    func testPendingSynchronousCompletionSurvivesLateAcceptanceButContradictoryNegativeReturnBecomesUnknown() throws {
+        for initialState in [ExecutionState.accepted, .succeeded, .unknown, .failed, .cancelled, .rejected, .unavailable, .unsupported] {
             let directory = FileManager.default.temporaryDirectory.appendingPathComponent("rcir-late-initial-observer-" + UUID().uuidString)
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
@@ -1653,7 +1653,7 @@ final class RCIRDeferredExecutionTests: XCTestCase {
                     return .init(executionId: id, actionId: capability.id, state: initialState, message: "Late initial provider return")
                 }, resultValue: { _ in XCTFail("Pending typed completion must not be recorded twice"); return .string("wrong duplicate") })
             XCTAssertEqual(starts, 1)
-            if initialState == .unknown {
+            if ![ExecutionState.accepted, .succeeded].contains(initialState) {
                 XCTAssertEqual(initial.lifecycle?.terminal, true)
                 XCTAssertEqual(initial.state, .unknown)
                 XCTAssertEqual(initial.lifecycle?.verification, .unverified)
