@@ -139,18 +139,21 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
     private func project(_ data: Data, profile: String) throws {
         guard data.count <= 512,
               let value = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-              Set(value.keys) == Set(["present", "empty", "system32Match", "ownedParentMatch", "originalParentMatch", "units", "sha256"]),
+              Set(value.keys) == Set(["present", "empty", "system32Match", "system32ComponentPresent", "ownedParentMatch", "ownedParentComponentPresent", "originalParentMatch", "units", "sha256"]),
               let present = value["present"] as? Bool, let empty = value["empty"] as? Bool,
-              let system = value["system32Match"] as? Bool, let owned = value["ownedParentMatch"] as? Bool,
+              let system = value["system32Match"] as? Bool, let systemComponent = value["system32ComponentPresent"] as? Bool, let owned = value["ownedParentMatch"] as? Bool,
+              let component = value["ownedParentComponentPresent"] as? Bool,
               let original = value["originalParentMatch"] as? Bool,
               let units = value["units"] as? Int, (0...32_767).contains(units),
               let digest = value["sha256"] as? String,
               digest == "none" || (digest.count == 64 && digest.utf8.allSatisfy({ (48...57).contains($0) || (97...102).contains($0) })) else { throw RCIRError.unavailable }
         let hexDigest = digest.count == 64 && digest.utf8.allSatisfy({ (48...57).contains($0) || (97...102).contains($0) })
-        guard (present ? hexDigest : digest == "none" && units == 0 && !empty && !system && !owned && !original),
-              empty == (present && units == 0), !system || present && !empty,
-              !owned || present && !empty, !original || present else { throw RCIRError.unavailable }
-        print("NativePATHBoundary profile=\(profile) present=\(present) empty=\(empty) system32Match=\(system) ownedParentMatch=\(owned) originalParentMatch=\(original) units=\(units) sha256=\(digest) parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
+        guard (present ? hexDigest : digest == "none" && units == 0 && !empty && !system && !systemComponent && !owned && !component && !original),
+              empty == (present && units == 0), !system || present && !empty && systemComponent,
+              !systemComponent || present && !empty,
+              !owned || present && !empty && component,
+              !component || present && !empty, !original || present else { throw RCIRError.unavailable }
+        print("NativePATHBoundary profile=\(profile) present=\(present) empty=\(empty) system32Match=\(system) system32ComponentPresent=\(systemComponent) ownedParentMatch=\(owned) ownedParentComponentPresent=\(component) originalParentMatch=\(original) units=\(units) sha256=\(digest) parentAndStdoutClosed=true ownedGroupClosureClaimed=false")
     }
 
     func testOwnedNativePATHOriginCounterfactualPreservesShippingSourcesAndParentSnapshot() throws {
@@ -207,8 +210,9 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
               binary == (try CapabilityArtifactSnapshot.read(source: inputs.client, maximum: 8_388_608)),
               try inputs.frozenInputs.enumerated().allSatisfy({ try CapabilityArtifactSnapshot.read(source: $0.element.0, maximum: $0.element.1) == frozen[$0.offset] }) else { throw RCIRError.unavailable }
         try setPATH(original)
-        XCTAssertTrue(try readPATH().units == original.units, "NativePATHBoundary exact parent restoration mismatch")
-        print("NativePATHBoundary evidenceClosed unchangedBinary=true unchangedInputs=true sameArguments=true restoredParentExactUTF16=true productionSourcesUnchanged=true diagnosticOnly=true")
+        let restored = try readPATH().units == original.units
+        XCTAssertTrue(restored, "NativePATHBoundary exact parent restoration mismatch")
+        print("NativePATHBoundary evidenceClosed unchangedBinary=true unchangedInputs=true sameArguments=true restoredParentExactUTF16=\(restored) productionSourcesUnchanged=true diagnosticOnly=true")
     }
 
     private static let nativeProbe = #"""
@@ -219,6 +223,16 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
     #include <string.h>
     #include <wchar.h>
     #pragma comment(lib, "bcrypt.lib")
+    static int exact_component(const WCHAR *value, DWORD count, const WCHAR *expected) {
+        size_t expected_count = wcslen(expected); DWORD start = 0;
+        for (DWORD index = 0; index <= count; ++index) {
+            if (index == count || value[index] == L';') {
+                if (index - start == expected_count && memcmp(value + start, expected, expected_count*sizeof(WCHAR)) == 0) return 1;
+                start = index + 1;
+            }
+        }
+        return 0;
+    }
     static int digest_utf16(const WCHAR *value, DWORD count, char hex[65]) {
         BCRYPT_ALG_HANDLE algorithm = NULL; BCRYPT_HASH_HANDLE hash = NULL;
         ULONG length = 0, returned = 0; PUCHAR object = NULL; unsigned char result[32]; int status = 1;
@@ -239,6 +253,7 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
         if (argc != 3 || wcslen(argv[1]) > 4096 || wcslen(argv[2]) > 64) return 70;
         char control[65];
         if (digest_utf16(L"", 0, control) || strcmp(control, "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")) return 76;
+        if (!exact_component(L"A;B;C", 5, L"B") || exact_component(L"A;BC", 4, L"B")) return 77;
         SetLastError(ERROR_SUCCESS); DWORD needed = GetEnvironmentVariableW(L"PATH", NULL, 0), error = GetLastError();
         int present = needed != 0 || error == ERROR_SUCCESS; DWORD count = 0;
         if (needed > 32768 || (!needed && error != ERROR_SUCCESS && error != ERROR_ENVVAR_NOT_FOUND)) return 71;
@@ -252,10 +267,12 @@ final class WindowsPATHBoundaryDiagnosticTests: XCTestCase {
         size_t expected_count = wcslen(argv[2]);
         for (size_t i = 0; i < expected_count; ++i) { if (argv[2][i] > 127) return 75; expected[i] = (char)argv[2][i]; }
         expected[expected_count] = 0;
-        printf("{\"present\":%s,\"empty\":%s,\"system32Match\":%s,\"ownedParentMatch\":%s,\"originalParentMatch\":%s,\"units\":%lu,\"sha256\":\"%s\"}\n",
+        printf("{\"present\":%s,\"empty\":%s,\"system32Match\":%s,\"system32ComponentPresent\":%s,\"ownedParentMatch\":%s,\"ownedParentComponentPresent\":%s,\"originalParentMatch\":%s,\"units\":%lu,\"sha256\":\"%s\"}\n",
             present ? "true" : "false", present && count == 0 ? "true" : "false",
             present && count == wcslen(system) && memcmp(value, system, count*sizeof(WCHAR)) == 0 ? "true" : "false",
+            present && exact_component(value, count, system) ? "true" : "false",
             present && count == wcslen(argv[1]) && memcmp(value, argv[1], count*sizeof(WCHAR)) == 0 ? "true" : "false",
+            present && exact_component(value, count, argv[1]) ? "true" : "false",
             present && strcmp(hex, expected) == 0 ? "true" : "false", (unsigned long)count, hex);
         return 0;
     }
