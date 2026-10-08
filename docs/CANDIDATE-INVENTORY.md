@@ -5,14 +5,14 @@ binary and an observed execution establish different facts. Record each identity
 before describing a capability as available. This inventory is not the eleven
 substrate acceptance scorecard.
 
-Reconciliation snapshot on 2026-10-08, before the final composed release gate:
+Reconciliation snapshot on 2026-10-08, after the final composed Mac gate and before native Linux/public distribution gates:
 
 | Identity | Exact scope |
 | --- | --- |
 | Remote main | `381a87b53dbd0046f1acef1984587199da0e630c`; the direct A2A, Kafka, Kubernetes, WASM and D-Bus compiler files below are absent at this SHA |
 | Remote universal candidate | [PR49](https://github.com/rossbuckley1990-hash/rightclick/pull/49), `2525794c390d19d54871f1a9695462425fc13051`; implemented compiler paths and native proofs use the older Core layout |
 | Remote portable candidate | [PR99](https://github.com/rossbuckley1990-hash/rightclick/pull/99), `6a18aaae3ae3a15b9f6c78f189adc695ae11585a`; extracts the existing engine into portable modules, with macOS adapters and Linux composition |
-| Prepared reconciliation | Frozen foundation `403bf31868822bab4e0a66824fbbfd93f691d8a7` preserves the prepared PR99 integration. Reviewed profile, process, authority and fixture repairs are being composed with it. The final head, native results and package digest must be frozen separately before publication |
+| Reviewed reconciled code | `fe10f424e5584cd3e2c6a5cf1fcc9eacdb0ecc48`, Sources `6c624ad4503999360938fa0c8c083010f9fad7c0`, Tests `2371a0d45ef2f4c4d14dc555cd065b839f9d2dd2`; includes the frozen403 foundation and all reviewed profile/process/authority/fixture repairs. Its complete Mac run is1107:1076PASS/31SKIP/0FAIL; native Linux and distribution acceptance remain pending |
 | Installed and connected stable runtime | v0.2.2, serving PID `67552`, executable SHA256 `d31419fafc96e08c4a2db9d1b389320acb2835c1a901597244249772d7ac489d`, stdio; observed through `context_runtime` on 2026-10-08. This does not attest to candidate source |
 
 These remote and process values are snapshots. Refresh main, both PR heads,
@@ -47,8 +47,16 @@ The previous 252/DFD candidate has a full native Mac result of 1005 tests
 (970 passed, 35 skipped, zero failed), a Linux x86_64 result of 779 tests
 (751 passed, 28 skipped, zero failed), and separate actual D-Bus, A2A and MCP/WASM
 proofs. Their source, artifacts and independent audits are retained. They do not
-attest to the reconciled source: it needs fresh Mac and native Linux x86_64/arm64
-regression, lifecycle, authority, verification and receipt gates.
+attest to the reconciled source. The fresh fe10 Mac run independently passed1107
+cases (1076 passed,31 skipped,zero failed), preserving all970 previous252 passes.
+Four previously skipped native NS008 cases actually passed. The current result is
+source-bound by444 unchanged physical Git inputs and frozen executable SHA256
+`d35b4ece7ea1893142a067f96dc595162578cc749e232f18f9e1e13c9066b5b4`.
+The independent full Mac audit is SHA256
+`713504c4c5e3201476629c6c15984fcebd45392a6ab5927d012e310cf7e50961`.
+Fresh native Linux x86_64/arm64 and provider lifecycle, authority, verification
+and receipt gates remain pending. Valid-trust HTTPS bearer/redirect acceptance
+remains RED; the new invalid-certificate negative is a separate passing control.
 
 Windows is not a supported v0.2.3 release host. Actual protected-reference and
 native environment-boundary controls have been run, and authority failures were
@@ -57,11 +65,17 @@ the measured SDK dependency and remaining full-runtime/direct-reflection proofs
 remain explicit engineering work. Unsupported release scope does not turn these
 failures or the Windows goal row GREEN.
 
-Source method retention must include both PR99 and 252. Two intentional mappings
-require explicit review: conflicting policy identities are quarantined rather
-than resolved by first arrival, and Windows SDK acquisition uses the measured,
-explicit bounded system search rather than claiming search was unnecessary.
-Method-name retention alone does not prove unchanged assertions or native success.
+Source method retention includes1127 distinct names from both PR99 and252, with
+three intentional mappings: conflicting policy identities are quarantined rather
+than resolved by first arrival; Windows SDK acquisition uses measured explicit
+bounded system search; and the former default five-second specification test
+retains its assertions with an explicitly selected five-second budget while the
+host specification default becomes a finite30seconds. Ordinary HTTP reads remain
+5seconds and invocations remain bounded by10seconds. Source mapping does not
+imply unchanged assertions or execution: the SDK mapping remains Windows source
+scope. Actual Mac case retention is separately recorded with its executed-name
+mapping. [Historical proof paths](HISTORICAL-PROOF-INDEX.md) retain their original
+source dates and do not attest to this release.
 
 The packaged kind detector inventories 21 implementation kinds. Zero missing
 kinds proves source/package alignment, not all eleven substrates or a live provider
