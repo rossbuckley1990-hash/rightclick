@@ -16,6 +16,29 @@ final class PublicInvocationCredentialIsolationTests: XCTestCase {
     private var seededCookies: [HTTPCookie] = []
     private var seededCredentials: [(URLProtectionSpace, URLCredential)] = []
 
+    /// An ordinary test-host session explicitly permits its seeded same-origin
+    /// Basic credential; public runtime sessions must continue to reject it.
+    private final class AmbientControlDelegate: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
+        private let expectedSpace: URLProtectionSpace
+
+        init(space: URLProtectionSpace) { expectedSpace = space }
+
+        func urlSession(_ session: URLSession, task: URLSessionTask,
+            didReceive challenge: URLAuthenticationChallenge,
+            completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+            let space = challenge.protectionSpace
+            guard challenge.previousFailureCount == 0, !space.isProxy(),
+                  space.authenticationMethod == NSURLAuthenticationMethodHTTPBasic,
+                  space.host == expectedSpace.host, space.port == expectedSpace.port,
+                  space.protocol == expectedSpace.protocol, space.realm == expectedSpace.realm,
+                  let credential = URLCredentialStorage.shared.defaultCredential(for: expectedSpace) else {
+                completionHandler(.cancelAuthenticationChallenge, nil)
+                return
+            }
+            completionHandler(.useCredential, credential)
+        }
+    }
+
     override func setUpWithError() throws {
         fixture = try CredentialIsolationHTTPFixture()
         try seed(for: fixture)
@@ -62,7 +85,8 @@ final class PublicInvocationCredentialIsolationTests: XCTestCase {
     func testDummyAmbientCookieAndBasicCredentialsAreActiveForTheSameRealOrigin() throws {
         // Positive control: these same-origin stores can influence a normal
         // native session. Public runtime calls must explicitly isolate them.
-        let session = URLSession(configuration: .default)
+        let delegate = AmbientControlDelegate(space: try XCTUnwrap(seededCredentials.first?.0))
+        let session = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
         defer { session.invalidateAndCancel() }
         let done = DispatchSemaphore(value: 0), lock = NSLock()
         var status: Int?, failure: Error?
