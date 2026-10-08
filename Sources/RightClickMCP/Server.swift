@@ -488,7 +488,7 @@ private func handleTool(
     case "context_explain":
         let action = arguments?["actionId"]?.stringValue ?? ""
         let capability = try engine.call { try $0.describe(id: action, item: item) }
-        return RightClickJSON.encode(capability)
+        return RightClickJSON.encode(CapabilityExplanationView(capability))
     case "context_run":
         let action = arguments?["actionId"]?.stringValue ?? ""
         let confirmed =
