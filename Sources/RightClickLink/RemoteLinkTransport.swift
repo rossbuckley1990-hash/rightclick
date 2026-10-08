@@ -39,6 +39,7 @@ public final class RemoteLinkClient {
         var lifecycle: ExecutionLifecycle
         var events: [Int64: String] = [:]
         var resultDigest: String?
+        var environmentEvidenceDigest: String?
     }
     private let observationLock = NSLock()
     private var observations: [String: ObservedExecution] = [:]
@@ -95,7 +96,8 @@ public final class RemoteLinkClient {
         guard live.sequence >= seen.lifecycle.sequence else { throw RemoteLinkError.invalidSequence }
         if previous?.lifecycle.terminal == true {
             guard try RemoteWire.encode(seen.lifecycle) == RemoteWire.encode(live),
-                  seen.resultDigest == (try summary.result.map({ RemoteWire.digest(try $0.canonicalData()) }))
+                  seen.resultDigest == (try summary.result.map({ RemoteWire.digest(try $0.canonicalData()) })),
+                  seen.environmentEvidenceDigest == (try summary.environmentEvidence.map({ RemoteWire.digest(try RemoteWire.encode($0)) }))
             else { throw RemoteLinkError.inconsistentResult }
         }
         for event in summary.eventPage?.events ?? [] {
@@ -105,6 +107,7 @@ public final class RemoteLinkClient {
         }
         seen.lifecycle = live
         seen.resultDigest = try summary.result.map { RemoteWire.digest(try $0.canonicalData()) }
+        seen.environmentEvidenceDigest = try summary.environmentEvidence.map { RemoteWire.digest(try RemoteWire.encode($0)) }
         observations[live.executionID] = seen
     }
 

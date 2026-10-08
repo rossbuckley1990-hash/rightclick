@@ -62,6 +62,65 @@ extension RemoteExecutionSummary {
         } else {
             guard capabilities.isEmpty, runtime == nil else { throw RemoteLinkError.inconsistentResult }
         }
+        try validateEnvironmentEvidence()
+    }
+
+    /// Audit transport integrity only. The receiving parent must still pin its
+    /// independent observer authority and consume causal evidence durably.
+    func validateEnvironmentEvidence(trustedRuntimeKey: Data? = nil, request: RemoteExecutionRequest? = nil) throws {
+        guard let audit = environmentEvidence else { return }
+        do {
+            guard state != nil, policy == .evaluated, evidenceExecutionID != nil,
+                  try RemoteWire.encode(audit).count <= 32_768 else { throw RemoteLinkError.inconsistentResult }
+            try audit.validate()
+            if let enrollment = audit.runtimeEnrollment {
+                // Authenticate the certificate's bytes, without trusting its
+                // embedded issuer as independent approval or current authority.
+                _ = try enrollment.verify(trustedPublicKey: enrollment.certificate.issuerPublicKey,
+                    now: enrollment.certificate.verifiedAtMilliseconds)
+            }
+            guard let signed = audit.signedProof else {
+                guard audit.verificationCertificate == nil else { throw RemoteLinkError.inconsistentResult }
+                return
+            }
+            guard let enrollment = audit.runtimeEnrollment else { throw RemoteLinkError.inconsistentResult }
+            let claim = enrollment.certificate.claim, proof = signed.proof, binding = proof.binding
+            let pin = trustedRuntimeKey ?? signed.publicKey
+            try signed.verify(trustedPublicKey: pin, using: RCIREd25519Verifier())
+            guard binding.executionID == evidenceExecutionID, binding.environmentID == audit.environmentID,
+                  binding.runtimeID == RemoteWire.runtimeID(pin), binding.signerID == binding.runtimeID,
+                  claim.publicKey == pin, claim.runtimeID == binding.runtimeID,
+                  claim.manifest.executableSHA256 == binding.executableSHA256,
+                  proof.issuedAtMilliseconds >= claim.issuedAtMilliseconds,
+                  proof.expiresAtMilliseconds <= claim.handle.expiresAtMilliseconds,
+                  proof.observedAtMilliseconds <= completedAtMilliseconds else { throw RemoteLinkError.inconsistentResult }
+            let lineage = claim.handle.lineage
+            guard binding.parentEnvironmentID == lineage.parentEnvironmentID,
+                  binding.parentExecutionID == (lineage.parentEnvironmentID == nil ? nil : lineage.parentExecutionID),
+                  binding.parentRuntimeID == (lineage.parentEnvironmentID == nil ? nil : lineage.parentRuntimeID)
+            else { throw RemoteLinkError.inconsistentResult }
+            if let certificate = audit.verificationCertificate {
+                try certificate.verify(trustedHostPublicKey: certificate.publicKey, using: RCIREd25519Verifier())
+                let verified = certificate.verification
+                guard try verified.binding.canonicalData() == binding.canonicalData(),
+                      verified.proofDigest == (try proof.digest), verified.challengeNonce == proof.challengeNonce,
+                      verified.sequence == proof.sequence, verified.predicateID == proof.predicateID,
+                      verified.verifiedAtMilliseconds >= proof.observedAtMilliseconds,
+                      verified.verifiedAtMilliseconds <= completedAtMilliseconds,
+                      verified.expiresAtMilliseconds <= proof.expiresAtMilliseconds else { throw RemoteLinkError.inconsistentResult }
+            }
+            if let request {
+                if request.operation == .run {
+                    guard request.capabilityID == binding.capabilityID,
+                          try EnvironmentIdentity.environmentID(from: request.item) == audit.environmentID
+                    else { throw RemoteLinkError.inconsistentResult }
+                } else if request.operation == .status {
+                    guard request.capabilityID == binding.capabilityID, request.status?.executionID == binding.executionID
+                    else { throw RemoteLinkError.inconsistentResult }
+                } else { throw RemoteLinkError.inconsistentResult }
+            }
+        } catch let error as RemoteLinkError { throw error }
+        catch { throw RemoteLinkError.inconsistentResult }
     }
 
     private func validatePortableLifecycle() throws {

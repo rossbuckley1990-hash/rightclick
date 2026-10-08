@@ -7,6 +7,81 @@ public struct RemoteRuntimeRegistration {
     public let availability: RemoteRuntimeAvailability
 }
 
+/// Installed by the parent host. Neither observer keys nor admitted invocation
+/// expectations may come from the child response or contextual tool arguments.
+public struct RemoteEnvironmentVerificationPolicy {
+    public let trustedHostPublicKey: Data
+    private let expectationResolver: (RemoteExecutionRequest) throws -> ExecutionProofExpectation
+    private let failureResolver: ((RemoteExecutionRequest) throws -> Bool)?
+    private let now: () -> Int64
+
+    public init(trustedHostPublicKey: Data,
+                now: @escaping () -> Int64 = { Int64(Date().timeIntervalSince1970 * 1000) },
+                expectationResolver: @escaping (RemoteExecutionRequest) throws -> ExecutionProofExpectation,
+                failureResolver: ((RemoteExecutionRequest) throws -> Bool)? = nil) throws {
+        guard trustedHostPublicKey.count == 32 else { throw RemoteLinkError.unauthorized }
+        self.trustedHostPublicKey = trustedHostPublicKey; self.now = now; self.expectationResolver = expectationResolver
+        self.failureResolver = failureResolver
+    }
+
+    fileprivate func verify(_ summary: RemoteExecutionSummary, originalRequest: RemoteExecutionRequest,
+                            trustedRuntimeKey: Data) throws {
+        guard originalRequest.operation == .run, originalRequest.capabilityID == "environment:execute",
+              trustedHostPublicKey != trustedRuntimeKey else { throw EnvironmentEvidenceError.independentVerificationRequired }
+        if summary.state == .failed, summary.verification == .verifiedFailure {
+            // Failed full RCIR invocations cannot mint successful dependency
+            // proof authority. A parent-installed broker can instead check its
+            // immutable negative adjudication and exact admitted request locally.
+            guard summary.evidenceExecutionID == originalRequest.requestID.uuidString,
+                  summary.executionLifecycle?.executionID == originalRequest.requestID.uuidString,
+                  summary.observationBoundary == .externalState,
+                  now() >= summary.completedAtMilliseconds, now() >= originalRequest.issuedAtMilliseconds,
+                  try failureResolver?(originalRequest) == true else {
+                throw EnvironmentEvidenceError.independentVerificationRequired
+            }
+            return
+        }
+        guard summary.state == .succeeded, summary.verification == .verifiedSuccess,
+              let audit = summary.environmentEvidence, let signed = audit.signedProof,
+              let certificate = audit.verificationCertificate else {
+            throw EnvironmentEvidenceError.independentVerificationRequired
+        }
+        // This resolver reads the parent's durable admission and recompiles the
+        // original authenticated request, including predicates and dependencies.
+        let expectation = try expectationResolver(originalRequest)
+        let now = self.now()
+        let proof = signed.proof, verified = certificate.verification
+        try summary.validateEnvironmentEvidence(trustedRuntimeKey: trustedRuntimeKey, request: originalRequest)
+        try signed.verify(trustedPublicKey: trustedRuntimeKey, using: RCIREd25519Verifier())
+        try certificate.verify(trustedHostPublicKey: trustedHostPublicKey, using: RCIREd25519Verifier())
+        let expectedValueDigest = try ExecutionEvidenceDigest.capabilityValue(expectation.expectedValue)
+        guard expectation.binding.executionID == originalRequest.requestID.uuidString,
+              expectation.binding.capabilityID == originalRequest.capabilityID,
+              expectation.binding.environmentID == (try EnvironmentIdentity.environmentID(from: originalRequest.item)),
+              expectation.binding.runtimeID == RemoteWire.runtimeID(trustedRuntimeKey),
+              expectation.binding.keyID == ExecutionEvidenceDigest.sha256(trustedRuntimeKey),
+              try proof.binding.canonicalData() == expectation.binding.canonicalData(),
+              try verified.binding.canonicalData() == expectation.binding.canonicalData(),
+              proof.challengeNonce == expectation.challengeNonce, verified.challengeNonce == expectation.challengeNonce,
+              proof.sequence == expectation.expectedSequence, verified.sequence == expectation.expectedSequence,
+              proof.predicateID == expectation.predicateID, verified.predicateID == expectation.predicateID,
+              verified.proofDigest == (try proof.digest),
+              expectation.binding.responseDigest == expectedValueDigest,
+              verified.expectedValueDigest == expectedValueDigest, verified.observedValueDigest == expectedValueDigest,
+              verified.outcome == .succeeded else { throw EnvironmentEvidenceError.bindingMismatch }
+        guard now >= proof.observedAtMilliseconds, now < proof.expiresAtMilliseconds,
+              now < expectation.deadlineMilliseconds,
+              proof.issuedAtMilliseconds >= expectation.minimumIssuedAtMilliseconds,
+              proof.expiresAtMilliseconds <= expectation.deadlineMilliseconds,
+              now - proof.issuedAtMilliseconds <= expectation.maximumAgeMilliseconds,
+              now >= verified.verifiedAtMilliseconds, verified.verifiedAtMilliseconds >= proof.observedAtMilliseconds,
+              now < verified.expiresAtMilliseconds, verified.expiresAtMilliseconds <= proof.expiresAtMilliseconds,
+              now - verified.verifiedAtMilliseconds <= expectation.maximumAgeMilliseconds else {
+            throw EnvironmentEvidenceError.invalidTime
+        }
+    }
+}
+
 /// Explicit local enrollment pins keys separately from relay/catalog responses.
 /// Contextual catalogs expire, and routes always retain their original target.
 public final class RemoteRuntimeRegistry: @unchecked Sendable {
@@ -78,7 +153,7 @@ public final class RemoteRuntimeRegistry: @unchecked Sendable {
                 peer.catalogs.values.contains(where: { $0.expiresAt > now() }) ? .online : .stale)
         }.sorted { $0.descriptor.runtimeID < $1.descriptor.runtimeID }
     }
-    fileprivate func reflectors(item: String?) -> [any CapabilityReflector] {
+    fileprivate func reflectors(item: String?, environmentVerificationPolicy: RemoteEnvironmentVerificationPolicy?) -> [any CapabilityReflector] {
         lock.lock(); defer { lock.unlock() }
         return peers.values.compactMap { peer in
             guard peer.online else { return nil }
@@ -86,6 +161,7 @@ public final class RemoteRuntimeRegistry: @unchecked Sendable {
             guard let catalog, catalog.expiresAt > now() else { return nil }
             return RemoteRoutedReflector(client: peer.client, descriptor: peer.descriptor,
                 catalog: catalog.capabilities, itemKey: item.map(itemKey), expiresAt: catalog.expiresAt, now: now,
+                environmentVerificationPolicy: environmentVerificationPolicy,
                 isEnrolled: { [weak self] in self?.isEnrolled(peer.descriptor.runtimeID, client: peer.client, generation: peer.generation) == true },
                 failed: { [weak self] in self?.markOffline(runtimeID: peer.descriptor.runtimeID) })
         }
@@ -101,9 +177,14 @@ public final class RemoteRuntimeRegistry: @unchecked Sendable {
 public final class RemoteCapabilitySource: ContextualCapabilityReflectorSource {
     public let id = "rightclick.link"
     private let registry: RemoteRuntimeRegistry
-    public init(registry: RemoteRuntimeRegistry) { self.registry = registry }
-    public func reflectors() -> [any CapabilityReflector] { registry.reflectors(item: nil) }
-    public func reflectors(for item: ContentItem) -> [any CapabilityReflector] { registry.reflectors(item: Self.raw(item)) }
+    private let environmentVerificationPolicy: RemoteEnvironmentVerificationPolicy?
+    public init(registry: RemoteRuntimeRegistry, environmentVerificationPolicy: RemoteEnvironmentVerificationPolicy? = nil) {
+        self.registry = registry; self.environmentVerificationPolicy = environmentVerificationPolicy
+    }
+    public func reflectors() -> [any CapabilityReflector] { registry.reflectors(item: nil, environmentVerificationPolicy: environmentVerificationPolicy) }
+    public func reflectors(for item: ContentItem) -> [any CapabilityReflector] {
+        registry.reflectors(item: Self.raw(item), environmentVerificationPolicy: environmentVerificationPolicy)
+    }
     public func invalidateSnapshot() { registry.invalidate() }
     static func raw(_ item: ContentItem) -> String { item.text ?? item.url ?? item.path ?? item.display }
 }
@@ -117,6 +198,7 @@ private final class RemoteRoutedReflector: CapabilityRoutingReflector, Capabilit
     private let itemKey: String?
     private let expiresAt: Int64
     private let now: () -> Int64
+    private let environmentVerificationPolicy: RemoteEnvironmentVerificationPolicy?
     private let isEnrolled: () -> Bool
     private let failed: () -> Void
     private struct ExecutionHandle {
@@ -129,9 +211,12 @@ private final class RemoteRoutedReflector: CapabilityRoutingReflector, Capabilit
     private let executionLock = NSLock()
     private var executions: [String: ExecutionHandle] = [:]
     init(client: RemoteLinkClient, descriptor: RemoteRuntimeDescriptor, catalog: [RemoteCapabilityDescriptor],
-         itemKey: String?, expiresAt: Int64, now: @escaping () -> Int64, isEnrolled: @escaping () -> Bool, failed: @escaping () -> Void) {
+         itemKey: String?, expiresAt: Int64, now: @escaping () -> Int64,
+         environmentVerificationPolicy: RemoteEnvironmentVerificationPolicy?,
+         isEnrolled: @escaping () -> Bool, failed: @escaping () -> Void) {
         self.client = client; self.catalog = catalog; self.itemKey = itemKey; self.expiresAt = expiresAt
-        self.now = now; self.isEnrolled = isEnrolled; self.failed = failed
+        self.now = now; self.environmentVerificationPolicy = environmentVerificationPolicy
+        self.isEnrolled = isEnrolled; self.failed = failed
         id = "link:" + RemoteWire.digest(client.target.publicKey)
         executionEnvironment = .init(operatingSystem: descriptor.operatingSystem, architecture: descriptor.architecture)
     }
@@ -173,7 +258,7 @@ private final class RemoteRoutedReflector: CapabilityRoutingReflector, Capabilit
                 guard self.isEnrolled() else { throw RemoteLinkError.unavailable }
                 let summary = try await self.client.send(request).summary
                 guard self.isEnrolled() else { throw RemoteLinkError.unauthorized }
-                record = Self.record(summary, executionID: executionID, capability: capability, verification: verification)
+                record = self.record(summary, originalRequest: request, executionID: executionID, capability: capability, verification: verification)
             } catch {
                 self.failed()
                 record = ExecutionRecord(executionId: executionID, actionId: capability.id, state: .unknown,
@@ -201,7 +286,8 @@ private final class RemoteRoutedReflector: CapabilityRoutingReflector, Capabilit
         do {
             let summary = try await client.send(request).summary
             guard isEnrolled() else { throw RemoteLinkError.unauthorized }
-            let record = Self.record(summary, executionID: executionID, capability: handle.capability, verification: handle.verification)
+            let record = self.record(summary, originalRequest: handle.request, executionID: executionID,
+                capability: handle.capability, verification: handle.verification)
             store(record, executionID: executionID)
             return record
         } catch {
@@ -227,8 +313,17 @@ private final class RemoteRoutedReflector: CapabilityRoutingReflector, Capabilit
         executionLock.lock(); defer { executionLock.unlock() }
         executions[executionID]?.record = record; executions[executionID]?.pending = nil
     }
-    private static func record(_ summary: RemoteExecutionSummary, executionID: String,
+    private func record(_ summary: RemoteExecutionSummary, originalRequest: RemoteExecutionRequest, executionID: String,
                                capability: Capability, verification: VerificationSpec?) -> ExecutionRecord {
+        if originalRequest.capabilityID == "environment:execute" {
+            do {
+                guard let environmentVerificationPolicy else { throw EnvironmentEvidenceError.independentVerificationRequired }
+                try environmentVerificationPolicy.verify(summary, originalRequest: originalRequest,
+                    trustedRuntimeKey: client.target.publicKey)
+            } catch {
+                return unverifiedEnvironmentRecord(summary, executionID: executionID, capability: capability)
+            }
+        }
         let predicates = summary.verification == .verifiedSuccess ? (verification?.predicates ?? []).map {
             PredicateVerification(predicate: $0, evaluated: true, passed: true, message: "Authenticated execution-node observation.")
         } : []
@@ -236,10 +331,37 @@ private final class RemoteRoutedReflector: CapabilityRoutingReflector, Capabilit
             state: summary.state ?? .unknown, message: "Authenticated execution-node lifecycle: " + (summary.executionLifecycle?.phase.rawValue ?? summary.error?.rawValue ?? "completed"),
             result: summary.result, events: summary.evidenceExecutionID.map { ["remote evidence " + $0] } ?? [],
             evidence: OutcomeEvidence(type: "remote_" + summary.observationBoundary.rawValue,
-                boundary: "Enrolled execution-node assertion; canonical receipts and private observations remain on that node.",
+                boundary: originalRequest.capabilityID == "environment:execute" ?
+                    "Parent host independently adjudicated this exact admitted environment invocation." :
+                    "Enrolled execution-node assertion; canonical receipts and private observations remain on that node.",
                 outcomeVerified: summary.verification == .verifiedSuccess, observationBoundary: summary.observationBoundary),
             verification: OutcomeVerification(status: summary.verification, predicates: predicates),
-            rcirEvents: summary.eventPage?.events, rcirEventPage: summary.eventPage, lifecycle: summary.executionLifecycle)
+            rcirEvents: summary.eventPage?.events, rcirEventPage: summary.eventPage, lifecycle: summary.executionLifecycle,
+            environmentEvidence: summary.environmentEvidence)
+    }
+
+    private func unverifiedEnvironmentRecord(_ summary: RemoteExecutionSummary, executionID: String,
+                                             capability: Capability) -> ExecutionRecord {
+        let accepted = summary.providerAcceptance == .accepted
+        let active = summary.executionLifecycle?.terminal == false
+        let failedAssertion = summary.state == .failed
+        let unknown = summary.state == .unknown || (!accepted && !active && !failedAssertion)
+        let lifecycle = summary.executionLifecycle.map { live in
+            ExecutionLifecycle(version: live.version, executionID: live.executionID, originatingRequestID: live.originatingRequestID,
+                runtimeID: live.runtimeID, taskID: live.taskID, generation: live.generation, taskShape: live.taskShape,
+                phase: active ? live.phase : (unknown ? .unknown : (accepted ? .completed : .failed)),
+                semanticOutcome: unknown ? .unknown : .unverified, sequence: live.sequence, terminal: live.terminal,
+                providerAcceptance: live.providerAcceptance, verification: .unverified, observationBoundary: .none,
+                evidenceID: live.evidenceID, receiptAvailable: live.receiptAvailable, signedReceiptAvailable: live.signedReceiptAvailable)
+        }
+        return .init(executionId: executionID, actionId: capability.id, title: capability.title,
+            state: active ? (summary.state == .awaitingUser ? .awaitingUser : .started) : (unknown ? .unknown : (failedAssertion ? .failed : .accepted)),
+            message: "The execution node reported a result. Parent verification against its admitted request and independent observer is unavailable or did not match.",
+            result: summary.result, events: summary.evidenceExecutionID.map { ["unverified remote assertion " + $0] } ?? [],
+            evidence: .init(type: "remote_environment_assertion", boundary: "Child assertion retained for audit; parent outcome remains unverified.",
+                outcomeVerified: false, observationBoundary: OutcomeObservationBoundary.none), verification: .init(status: .unverified, predicates: []),
+            rcirEvents: summary.eventPage?.events, rcirEventPage: summary.eventPage, lifecycle: lifecycle,
+            environmentEvidence: summary.environmentEvidence)
     }
     private func routeID(_ capability: String) -> String { "remote:" + RemoteWire.digest(client.target.publicKey) + ":" + RemoteWire.digest(Data(capability.utf8)) }
 }

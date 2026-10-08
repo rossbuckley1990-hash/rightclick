@@ -178,6 +178,9 @@ public struct RemoteExecutionSummary: Codable {
     public var executionLifecycle: ExecutionLifecycle? = nil
     public var eventPage: RCIRExecutionEventPage? = nil
     public var result: CapabilityValue? = nil
+    /// Explicitly exported, non-secret signed audit data. Embedded observer keys
+    /// are not trust anchors and this view never grants dependency authority.
+    public var environmentEvidence: EnvironmentExecutionEvidence? = nil
 }
 
 public struct RemoteExecutionResult: Codable {
@@ -218,6 +221,7 @@ public struct SignedRemoteMessage: Codable {
               result.runtimeID == original.targetRuntimeID, result.deviceID == original.targetDeviceID,
               result.runtimeID == RemoteWire.runtimeID(trustedRuntimeKey),
               result.deviceID == RemoteWire.deviceID(trustedRuntimeKey) else { throw RemoteLinkError.wrongRuntime }
+        try result.summary.validateEnvironmentEvidence(trustedRuntimeKey: trustedRuntimeKey, request: original)
         if original.operation == .run, !result.reused, let live = result.summary.executionLifecycle {
             guard live.originatingRequestID == original.requestID.uuidString,
                   live.executionID == result.summary.evidenceExecutionID,
@@ -230,6 +234,7 @@ public struct SignedRemoteMessage: Codable {
             if result.summary.error == .invalidCursor {
                 guard result.summary.state == nil, result.summary.executionLifecycle == nil,
                       result.summary.eventPage == nil, result.summary.result == nil,
+                      result.summary.environmentEvidence == nil,
                       result.summary.evidenceExecutionID == nil, result.summary.runtime == nil,
                       result.summary.capabilities.isEmpty else { throw RemoteLinkError.inconsistentResult }
                 // Reached only after signature, exact poll digest, caller,

@@ -1,7 +1,8 @@
 # Nested child runtime enrollment design
 
-Status: investigation and proposed implementation contract; no live nested
-environment, enrollment, or cloud result is claimed by this document.
+Status: enrollment models/verifier implemented on the isolated feature; focused
+validation is pending. No live nested environment, enrollment, or cloud result
+is claimed by this document.
 
 ## Source and runtime boundary
 
@@ -228,6 +229,119 @@ because a crashed parent cannot promise cleanup from its own timer.
 No live cloud configuration, signer custody, deployed enrollment supervisor, or
 cross-machine nested proof was demonstrated during this design investigation.
 Those require separate implementation and exact test/runtime evidence.
+
+## Implemented enrollment API
+
+`RightClickProtocol/ChildRuntimeEnrollment.swift` defines immutable validated
+`ChildRuntimeClaim`, `SignedChildRuntimeClaim`, and a signed host enrollment
+certificate. Claims include the complete `EnvironmentHandle`, manifest,
+enrollment ID, child public key, challenge, issue time, and bounded expiry.
+Runtime/device IDs derive from the signed key. Canonical signing uses the existing
+Capability ABI value encoding and distinct claim/certificate domains; wire
+decoding is size/depth bounded and rejects noncanonical, duplicate, and unknown
+fields. `EphemeralChildRuntimeSigner` creates an Ed25519 key locally through the
+existing CryptoKit/Swift Crypto backend and provides no private-key export.
+
+`RightClickLink/ChildRuntimeEnrollmentVerifier.swift` checks a separately supplied
+bootstrap key against the claim and provider observation, compares the full
+host-pinned handle/lineage/manifest/enrollment ID/challenge, requires observable
+presence with runtime metadata, and rejects stale/future observations or expired
+claims. It returns an opaque `VerifiedChildRuntimeEnrollment`, whose initializer
+is private to that file. Its `certificate(using:)` signs a Protocol certificate
+under the host verification authority. Core can verify that certificate with a
+separately configured operator key without importing Link. That issuer may be the
+root broker observing a descendant; the child's signed lineage still binds its
+actual parent runtime and parent execution independently of certificate issuer.
+
+The verifier is intentionally stateless. It does not consume enrollment nonce,
+activate a runtime, issue authority, or establish semantic workload success.
+Core's protected environment journal must persist expected enrollment identity and
+challenge before bootstrap and atomically consume them before activation. A
+certificate's public initializer constructs untrusted data; only verification
+under the configured host key conveys host approval of enrollment. Neither
+certificate nor claim substitutes for exact caller approval or a capability lease.
+
+`ChildRuntimeEnrollmentTests` contains focused signature, pin, full binding,
+freshness, malformed wire, and certificate controls using the production verifier.
+Its observations are explicitly fake-provider evidence, not a cloud measurement.
+
+## Signed nested evidence over Link
+
+`RemoteExecutionSummary` optionally transports the bounded typed
+`EnvironmentExecutionEvidence` view already attached to the execution record.
+The existing node-owned `exportValueCapabilityIDs` grant gates this export.
+Private grants carry no enrollment certificate, child proof, or verification
+certificate. Complete signed envelopes fit the unchanged Link payload budget or
+are withheld; they are never truncated. Legacy summaries omit the optional field
+and keep their existing wire representation and outcome behavior.
+
+The signed Link result authenticates the complete audit view. Its receiver also
+verifies the child proof against the independently pinned Link target key and
+checks environment, runtime, executable SHA, enrollment key/manifest, lineage,
+capability, and original execution binding. A run's canonical environment URI
+must match its proof environment; a poll must match its original execution.
+For `environment:execute`, the dispatcher supplies the original authenticated
+Link request UUID as the node's execution UUID. Other capabilities retain their
+existing execution identity behavior. A parent runtime's local alias remains
+distinct. Generic routed status keeps
+these original signed identities intact. Terminal observation comparison also
+includes the complete evidence digest, preventing replacement beneath unchanged
+terminal state/result fields. Retained retries and status copy the original view
+without executing work again.
+
+Enrollment and observer certificates have their signatures checked for transport
+integrity, including full child-proof binding, nonce, sequence, predicate, and
+proof digest. An embedded observer public key is still not an authority pin.
+Transporting a valid observer signature alone neither promotes an outcome nor
+grants causal authority. `RemoteCapabilitySource` accepts a host-installed
+`RemoteEnvironmentVerificationPolicy` with a separately pinned observer key,
+parent clock, and expectation resolver. The resolver reads the parent broker's
+durable admitted invocation and recompiles its full contextual request digest,
+including original execution UUID, item, arguments, caller predicates, expected
+output, and host-installed dependencies. Initial results and status use that
+same original run request; poll envelopes cannot replace the admitted intent.
+
+For environment execution only, the parent requires complete signed proof and
+observer certificate. It verifies child/observer signatures under separate keys,
+exact full expected binding, original request UUID/environment/capability,
+response digest, nonce, sequence, predicate, expected and observed value digests,
+and proof/certificate freshness against the parent clock. A child cannot serve
+as its own observer, even when accidentally configured as the observer pin.
+Missing policy, private export, absent audit, untrusted observer, expired evidence,
+or any mismatch yields accepted/unverified or unknown; parent evidence and
+lifecycle cannot retain the child's successful classification. Signed child
+assertions remain audit data. Ordinary remote capabilities keep their original
+result behavior. Causal admission additionally uses the existing durable
+dependency validator; a verified display result never consumes or grants a lease.
+
+A host-installed optional `failureResolver` separately checks the original
+authenticated request against the broker's immutable full RCIR finalization and
+its independent negative observation. This can retain verified failure when the
+entire admitted invocation failed, including a caller postcondition. It cannot
+approve success and does not create a successful proof or verification
+certificate. Without that independent negative adjudication, a child's failure
+report remains failed/unverified and its parent lifecycle loses the verified
+failure classification. Unknown observations remain unknown.
+Historical status transports signed audit data without renewing its freshness or
+lease lifetime. Parent admission separately rejects stale or spent dependencies.
+
+Link terminal summaries remain immutable. Proof or certificates available before
+the first terminal projection can be exported and retained. Evidence added later
+to the Core environment journal cannot be appended to that already frozen Link
+summary; status retains its original bounded view, and missing audit remains
+unverified at the parent. There is no mutable terminal-evidence update protocol
+in this feature. This preserves existing replay and contradictory-terminal
+controls while limiting late audit availability.
+
+`RemoteEnvironmentEvidenceTests` exercises signed dispatcher/client transport,
+retry/status retention, private-grant redaction, forged nested signatures, wrong
+child keys, cross-environment substitution, unknown observer authority, validated
+decoding, and generic status alias preservation. Routed controls exercise child
+signed success without audit, private export, absent policy, self-observer and
+unrelated observer certificates, old valid proof under a fresh request, changed
+arguments/postconditions, and expired parent verification. Its provider and independent
+measurements are synthetic. These controls establish transport/integrity behavior
+and do not establish disposable cloud compute or an actual remote child process.
 
 ## Enrollment acceptance controls
 

@@ -18,6 +18,7 @@ public final class RemoteExecutionDispatcher {
                 grants: [RemoteCallerGrant], enabled: Bool = false, localApproval: (any RemoteLocalApproval)? = nil,
                 now: @escaping () -> Int64 = { Int64(Date().timeIntervalSince1970 * 1000) }) throws {
         guard grants.count <= 64, Set(grants.map(\.callerID)).count == grants.count else { throw RemoteLinkError.malformed }
+        guard engine.permitsExecutionNode(publicKey: identity.publicKey, runtimeID: identity.runtimeID) else { throw RemoteLinkError.wrongRuntime }
         self.engine = engine; self.identity = identity; self.ledger = ledger
         self.enabled = enabled; self.now = now
         self.localApproval = localApproval
@@ -50,7 +51,10 @@ public final class RemoteExecutionDispatcher {
         if request.operation != .runtime {
             do {
                 let item = try engine.inspect(request.item, allowFileInputs: false)
-                guard item.kind == "text" || item.kind == "web_url" else { throw RemoteLinkError.unauthorized }
+                // Canonical contextual environments are locators, never file or
+                // network input. Installed grants and the owning broker still
+                // independently enforce the caller's signed lease at dispatch.
+                guard item.kind == "text" || item.kind == "web_url" || item.kind == "environment" else { throw RemoteLinkError.unauthorized }
             } catch { throw RemoteLinkError.unauthorized }
         }
         if request.operation == .runtime || request.operation == .actions {
@@ -84,7 +88,8 @@ public final class RemoteExecutionDispatcher {
                         if confirmed, try ticket?.permits(request, capabilityDigest: request.capabilityDigest!, now: self.now()) != true { throw RemoteLinkError.unauthorized }
                         guard let current = self.grants[request.callerID], current.publicKey == grant.publicKey else { throw RemoteLinkError.unauthorized }
                         try self.authorize(request, grant: current)
-                    }, allowFileInputs: false)
+                    }, allowFileInputs: false,
+                    executionID: capability.id == "environment:execute" ? request.requestID : nil)
                 var projected = Self.project(record, request: request, runtimeID: identity.runtimeID,
                     exportsValues: grant.exportValueCapabilityIDs.contains(capability.id), now: now())
                 if let live = projected.executionLifecycle {
@@ -189,6 +194,7 @@ public final class RemoteExecutionDispatcher {
             var unknown = retained; unknown.state = .unknown
             if unknown.providerAcceptance != .accepted { unknown.providerAcceptance = .unknown }
             unknown.verification = .unverified; unknown.observationBoundary = .none; unknown.result = nil
+            unknown.environmentEvidence = nil
             unknown.error = .executionUncertain
             unknown.executionLifecycle = .init(executionID: previous.executionID,
                 originatingRequestID: previous.originatingRequestID, runtimeID: previous.runtimeID,
@@ -242,6 +248,7 @@ public final class RemoteExecutionDispatcher {
             }
             if live.providerAcceptance == .accepted { summary.lifecycle.append(.providerAccepted) }
             if live.terminal { summary.lifecycle.append(live.verification == .verifiedSuccess ? .verified : .unverified) }
+            projectEnvironmentEvidence(record, into: &summary, exportsValues: exportsValues)
             return summary
         }
         switch record.state {
@@ -286,6 +293,19 @@ public final class RemoteExecutionDispatcher {
                 summary.lifecycle.append(.providerRejected)
             }
         }
+        projectEnvironmentEvidence(record, into: &summary, exportsValues: exportsValues)
         return summary
+    }
+
+    private static func projectEnvironmentEvidence(_ record: ExecutionRecord, into summary: inout RemoteExecutionSummary, exportsValues: Bool) {
+        guard exportsValues, summary.policy == .evaluated, let audit = record.environmentEvidence,
+              ((try? RemoteWire.encode(audit).count) ?? Int.max) <= 32_768 else { return }
+        do { try audit.validate() } catch { return }
+        summary.environmentEvidence = audit
+        // Preserve complete signed envelopes or withhold them; never truncate.
+        // Reserve space for the result wrapper within the unchanged Link bound.
+        if ((try? RemoteWire.encode(summary).count) ?? Int.max) > RemoteWire.maximumPayloadBytes - 1024 {
+            summary.environmentEvidence = nil
+        }
     }
 }
