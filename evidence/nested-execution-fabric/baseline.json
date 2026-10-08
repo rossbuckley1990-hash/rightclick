@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-10-08T20:12:07.834361+00:00",
+  "protected_main_sha": "df6690d0fbd2030116736a15f2fd5dff46a21a19",
+  "protected_main_tree": "a0ec32e7a17afaf332318db88cfbd68d8cc2d4be",
+  "feature_branch": "feature/nested-execution-fabric",
+  "feature_base_sha": "d496cf1b240bc97a52dbb5a5a76f378fd183b074",
+  "public_mcp_operations": [
+    "context_runtime",
+    "context_inspect",
+    "context_actions",
+    "context_explain",
+    "context_run",
+    "context_run_status",
+    "context_providers"
+  ],
+  "original_checkout": "/Users/ross/rightclick",
+  "original_checkout_head": "738905589b2bfa2b3e92dbfc43ad88a597e1aec9",
+  "original_checkout_branch": "feature/bidirectional-ai-substrate",
+  "initial_feature_base_sha": "df6690d0fbd2030116736a15f2fd5dff46a21a19",
+  "main_test_counts": {
+    "executed": 611,
+    "passed": 583,
+    "failed": 0,
+    "skipped": 28
+  },
+  "portable_prerequisite": "Existing clean portable-bidirectional-fabric candidate, direct descendant of protected main; no new implementation yet.",
+  "candidate_mcp_operations": [
+    "context_runtime",
+    "context_inspect",
+    "context_actions",
+    "context_explain",
+    "context_run",
+    "context_run_status",
+    "context_providers"
+  ],
+  "implementation_test_counts": {
+    "executed": 774,
+    "passed": 745,
+    "failed": 0,
+    "skipped": 29
+  },
+  "baseline_decision": "User explicitly selected d496cf1b240bc97a52dbb5a5a76f378fd183b074 as implementation baseline; protected main tracked separately."
+}
