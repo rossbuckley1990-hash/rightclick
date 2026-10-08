@@ -238,22 +238,32 @@ final class RCIRLifecycleAdversarialTests: XCTestCase {
             attributes: [.posixPermissions: 0o700])
         defer { try? FileManager.default.removeItem(at: directory) }
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        let process = Process(); process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        process.arguments = ["python3", root.appendingPathComponent("scripts/rcir-observer-gate-test-provider.py").path,
+        let process = Process(); process.executableURL = URL(fileURLWithPath: "/usr/bin/python3")
+        process.arguments = [root.appendingPathComponent("scripts/rcir-observer-gate-test-provider.py").path,
             "--state-dir", directory.path]
-        process.standardOutput = FileHandle.nullDevice; process.standardError = FileHandle.nullDevice
+        let errorURL = directory.appendingPathComponent("observer.stderr.log")
+        XCTAssertTrue(FileManager.default.createFile(atPath: errorURL.path, contents: nil))
+        let errors = try FileHandle(forWritingTo: errorURL)
+        defer { try? errors.close() }
+        process.standardOutput = FileHandle.nullDevice; process.standardError = errors
         try process.run()
         defer { if process.isRunning { process.terminate(); process.waitUntilExit() } }
-        func awaitFile(_ name: String) throws {
+        @discardableResult func awaitFile(_ name: String) throws -> String {
             let deadline = Date().addingTimeInterval(3), file = directory.appendingPathComponent(name)
-            while !FileManager.default.fileExists(atPath: file.path) && Date() < deadline {
+            while Date() < deadline {
+                if let content = try? String(contentsOf: file, encoding: .utf8) {
+                    let value = content.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if name != "port" || Int(value).map({ (1...65535).contains($0) }) == true { return value }
+                }
                 Thread.sleep(forTimeInterval: 0.01)
             }
-            XCTAssertTrue(FileManager.default.fileExists(atPath: file.path), "Bounded observer fixture did not produce \(name)")
-            guard FileManager.default.fileExists(atPath: file.path) else { throw RightClickError("Observer gate fixture failed") }
+            let childState = process.isRunning ? "running" : "exit=\(process.terminationStatus)"
+            let childErrors = String((try? String(contentsOf: errorURL, encoding: .utf8))?.prefix(4096) ?? "")
+            let diagnostic = "Observer stage=\(name) exceeded unchanged 3s budget; child=\(childState); stderr=\(childErrors)"
+            XCTFail(diagnostic)
+            throw RightClickError(diagnostic)
         }
-        try awaitFile("port")
-        let port = try String(contentsOf: directory.appendingPathComponent("port"), encoding: .utf8)
+        let port = try awaitFile("port")
         let base = "http://127.0.0.1:" + port
         let host = RCIRExecutionHost(), id = UUID().uuidString
         let capability = Capability(id: "fixture:gated-observer", title: "Gated independent observer", source: .system,

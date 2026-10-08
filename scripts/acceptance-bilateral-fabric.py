@@ -277,10 +277,14 @@ def main() -> int:
     output.mkdir(parents=True, exist_ok=True)
     assert binary.is_file() and args.openssl, "Proof executable and OpenSSL are required"
     repository = Path(__file__).resolve().parent.parent
+    # CI containers mount this explicitly selected checkout with a different
+    # owner. Trust only this exact path for these two read-only provenance calls;
+    # do not mutate Git configuration or grant wildcard/global trust.
+    provenance_git = ["git", "-c", "safe.directory=" + str(repository)]
     metadata = {"binary": str(binary), "binarySHA256": hashlib.sha256(binary.read_bytes()).hexdigest(),
         "hostOS": platform.system(), "hostArchitecture": platform.machine(),
-        "gitHead": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repository, text=True).strip(),
-        "gitStatus": subprocess.check_output(["git", "status", "--short"], cwd=repository, text=True).splitlines(),
+        "gitHead": subprocess.check_output(provenance_git + ["rev-parse", "HEAD"], cwd=repository, text=True).strip(),
+        "gitStatus": subprocess.check_output(provenance_git + ["status", "--short"], cwd=repository, text=True).splitlines(),
         "deploymentScope": "Isolated processes and encrypted outbound loopback transport on one actual host; no cross-machine claim"}
     save(output / "provenance.json", metadata)
     processes = Processes(binary, output)
@@ -289,7 +293,16 @@ def main() -> int:
         # Keep the protected journal under the supplied workspace. Foundation on
         # macOS preserves different system aliases than pathlib.resolve(); a
         # workspace path avoids aliases without relaxing journal validation.
-        with tempfile.TemporaryDirectory(prefix="rightclick-bilateral-proof-", dir=output.parent) as temporary_name:
+        private_parent = output.parent
+        if platform.system() == "Linux" and any(parent.stat().st_uid not in (0, os.geteuid())
+                for parent in (output.parent, *output.parent.parents)):
+            # Container-mounted CI checkouts can belong to the external runner,
+            # rather than this execution node. Put private identities/journals
+            # under the canonical system temp directory, whose sticky parent is
+            # accepted by the unchanged ledger controls. Artifact output stays
+            # in the checkout; credentials never need checkout-owner trust.
+            private_parent = Path(tempfile.gettempdir()).resolve()
+        with tempfile.TemporaryDirectory(prefix="rightclick-bilateral-proof-", dir=private_parent) as temporary_name:
             temporary = Path(temporary_name).resolve()
             base = {key: value for key, value in os.environ.items() if not key.startswith("RIGHTCLICK_")}
             base.update(RIGHTCLICK_EXPERIENCE="off", XDG_CONFIG_HOME=str(temporary), XDG_STATE_HOME=str(temporary), CFFIXED_USER_HOME=str(temporary))
