@@ -36,7 +36,7 @@ jobs:
           printf '{"run_id":"%s","ref":"%s","sha":"%s","state":"STARTED"}\n' "${{ github.run_id }}" "${{ github.ref }}" "${{ github.sha }}" > "$EVIDENCE_DIR/run_started.json"
           git config user.name "RIGHTCLICK Experiment"
           git config user.email "rightclick-experiment@users.noreply.github.com"
-          git add "$EVIDENCE_DIR/run_started.json"
+          git add -A "$EVIDENCE_DIR"
           git commit -m "EXPERIMENT_STARTED run=${{ github.run_id }}"
           git push origin HEAD:"$GITHUB_REF_NAME"
 
@@ -75,20 +75,47 @@ jobs:
           git push origin HEAD:"$GITHUB_REF_NAME"
 
       - name: Bootstrap real ephemeral Kubernetes cluster
+        id: k8s_bootstrap
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
-          curl -fsSLo kind https://kind.sigs.k8s.io/dl/v0.27.0/kind-linux-amd64
-          chmod +x kind
-          sudo mv kind /usr/local/bin/kind
+          mkdir -p "$EVIDENCE_DIR"
+          exec > >(tee -a "$EVIDENCE_DIR/k8s-bootstrap.log") 2>&1
+          docker version
+          curl -fsSLo /tmp/kind https://kind.sigs.k8s.io/dl/v0.27.0/kind-linux-amd64
+          chmod +x /tmp/kind
+          sudo mv /tmp/kind /usr/local/bin/kind
+          kind version
           kind create cluster --name rc-fabric --wait 120s
           kind load docker-image rc-wasm-executor:local --name rc-fabric
+          echo "CLUSTER_DRIVER=kind" >> "$GITHUB_ENV"
           KIND_VERSION=$(kind version | tr -d '\n')
           DOCKER_VERSION=$(docker --version | tr -d '\n')
           KUBE_JSON=$(kubectl version -o json)
-          jq -n             --arg kind "$KIND_VERSION"             --arg docker "$DOCKER_VERSION"             --arg wasmtime "$WASMTIME_VERSION"             --argjson kubernetes "$KUBE_JSON"             '{kind:$kind,docker:$docker,wasmtime:$wasmtime,kubernetes:$kubernetes,substrate:"GitHub-hosted Ubuntu runner + kind"}'             > "$EVIDENCE_DIR/environment.json"
+          jq -n \
+            --arg kind "$KIND_VERSION" \
+            --arg docker "$DOCKER_VERSION" \
+            --arg wasmtime "$WASMTIME_VERSION" \
+            --argjson kubernetes "$KUBE_JSON" \
+            '{kind:$kind,docker:$docker,wasmtime:$wasmtime,kubernetes:$kubernetes,substrate:"GitHub-hosted Ubuntu runner + kind"}' \
+            > "$EVIDENCE_DIR/environment.json"
           kubectl get nodes -o wide | tee -a "$EVIDENCE_DIR/full-experiment.log"
 
+      - name: Checkpoint K8S_FAILED
+        if: steps.k8s_bootstrap.outcome == 'failure'
+        shell: bash
+        run: |
+          set -e
+          ERR=$(tail -n 5 "$EVIDENCE_DIR/k8s-bootstrap.log" 2>/dev/null | tr '\n' ' ' | tr -s ' ' | cut -c1-180)
+          git add -A "$EVIDENCE_DIR"
+          git commit -m "EXPERIMENT_STAGE K8S_FAILED run=${{ github.run_id }} :: $ERR"
+          git pull --rebase origin "$GITHUB_REF_NAME" || true
+          git push origin HEAD:"$GITHUB_REF_NAME" || true
+
+      - name: Abort after Kubernetes bootstrap failure
+        if: steps.k8s_bootstrap.outcome == 'failure'
+        run: exit 1
 
       - name: Checkpoint K8S_READY
         if: success()
@@ -279,7 +306,7 @@ jobs:
             echo "No evidence changes to commit."
             exit 0
           fi
-          MSG="EXPERIMENT_RESULT VERIFIED=${RESULT_VERIFIED:-unknown} OBSERVED=${OBSERVED:-unknown} EXPECTED=${EXPECTED:-unknown} RECOVERED=${RECOVERED:-unknown} A2A_HTTP=${A2A_HTTP:-unknown} WASM_SHA=${WASM_SHA:-unknown}"
+          MSG="EXPERIMENT_RESULT run=${{ github.run_id }} VERIFIED=${RESULT_VERIFIED:-unknown} OBSERVED=${OBSERVED:-unknown} EXPECTED=${EXPECTED:-unknown} RECOVERED=${RECOVERED:-unknown} A2A_HTTP=${A2A_HTTP:-unknown} WASM_SHA=${WASM_SHA:-unknown}"
           git commit -m "$MSG"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin HEAD:"$GITHUB_REF_NAME"
