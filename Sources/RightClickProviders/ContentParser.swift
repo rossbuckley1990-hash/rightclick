@@ -2,7 +2,7 @@ import Foundation
 import RightClickProtocol
 
 public enum ContentParser {
-    public static func parse(_ raw: String) throws -> ContentItem {
+    public static func parse(_ raw: String, allowFileInputs: Bool = true) throws -> ContentItem {
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty {
             throw RightClickError("Item is empty.")
@@ -15,6 +15,13 @@ public enum ContentParser {
                 typeIdentifier: "public.url",
                 typeDescription: PlatformHostDefaults.host.urlDescription
             )
+        }
+        if !allowFileInputs {
+            guard !looksLikePath(trimmed), !trimmed.lowercased().hasPrefix("file:") else {
+                throw RightClickError("File inputs are unavailable in this input scope.")
+            }
+            return ContentItem(kind: "text", display: trimmed, text: trimmed, typeIdentifier: "public.plain-text",
+                typeDescription: PlatformHostDefaults.host.plainTextDescription, byteCount: trimmed.lengthOfBytes(using: .utf8))
         }
         let expanded = (trimmed as NSString).expandingTildeInPath
         let candidate = URL(fileURLWithPath: expanded).standardizedFileURL

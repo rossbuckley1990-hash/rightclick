@@ -2,16 +2,16 @@ name: RCIR foundation (not universal runtime acceptance)
 on:
   pull_request:
     paths:
-      - 'Sources/RightClickCore/CapabilityABI.swift'
-      - 'Sources/RightClickCore/RCIR*.swift'
+      - 'Sources/RightClickProtocol/CapabilityABI.swift'
+      - 'Sources/RightClickProtocol/RCIR*.swift'
       - 'Tests/RightClickCoreTests/RCIR*Tests.swift'
       - 'scripts/test-rcir.sh'
       - '.github/workflows/rcir-foundation.yml'
   push:
     branches: [main]
     paths:
-      - 'Sources/RightClickCore/CapabilityABI.swift'
-      - 'Sources/RightClickCore/RCIR*.swift'
+      - 'Sources/RightClickProtocol/CapabilityABI.swift'
+      - 'Sources/RightClickProtocol/RCIR*.swift'
       - 'Tests/RightClickCoreTests/RCIR*Tests.swift'
       - 'scripts/test-rcir.sh'
       - '.github/workflows/rcir-foundation.yml'

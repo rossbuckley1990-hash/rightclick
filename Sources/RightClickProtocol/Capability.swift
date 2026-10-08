@@ -184,15 +184,19 @@ public enum ExecutionState: String, Codable, Sendable {
 }
 
 /// Describes what was observed, separately from the intended outcome.
+public enum OutcomeObservationBoundary: String, Codable, Sendable { case none, returnedValue, externalState }
 public struct OutcomeEvidence: Codable, Sendable, Equatable {
     public var type: String
     public var boundary: String
     public var outcomeVerified: Bool
+    public var observationBoundary: OutcomeObservationBoundary?
 
-    public init(type: String = "none", boundary: String = "No outcome observation.", outcomeVerified: Bool = false) {
+    public init(type: String = "none", boundary: String = "No outcome observation.", outcomeVerified: Bool = false,
+                observationBoundary: OutcomeObservationBoundary? = nil) {
         self.type = type
         self.boundary = boundary
         self.outcomeVerified = outcomeVerified
+        self.observationBoundary = observationBoundary
     }
 }
 

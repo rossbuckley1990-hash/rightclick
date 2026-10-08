@@ -308,6 +308,7 @@ final class MOAT004G5ExternalBearerAuthorityTests:
             )
     }
 
+    #if os(macOS)
     private func descriptor(
         port: Int,
         authScheme:
@@ -418,6 +419,9 @@ final class MOAT004G5ExternalBearerAuthorityTests:
         )
     }
 
+    #endif
+
+    #if os(macOS)
     func testExternalBearerMetadataBindsToExecutionOriginWithoutSecret()
         throws
     {
@@ -530,6 +534,8 @@ final class MOAT004G5ExternalBearerAuthorityTests:
             "authority_unavailable"
         )
     }
+
+    #endif
 
     #if os(macOS)
     func testExternalBearerUsesExistingOriginBoundKeychainStore()
@@ -667,6 +673,7 @@ final class MOAT004G5ExternalBearerAuthorityTests:
 
     #endif
 
+    #if os(macOS)
     func testExplicitEmptyOperationSecurityRemainsPublic()
         throws
     {
@@ -1112,4 +1119,6 @@ final class MOAT004G5ExternalBearerAuthorityTests:
             )
         )
     }
+    #endif
+
 }

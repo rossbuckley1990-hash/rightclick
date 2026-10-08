@@ -10,6 +10,29 @@ concurrency:
   group: portable-fabric-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  macos:
+    name: macOS arm64 regression
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Native platform and complete regression suite
+        run: |
+          set -euo pipefail
+          test "$(uname -m)" = arm64
+          swift --version | tee macos-toolchain.txt
+          swift test --force-resolved-versions --jobs 4 2>&1 | tee macos-tests.log
+          python3 scripts/acceptance-portable-fabric.py .build/debug/rightclick 2>&1 | tee macos-acceptance.log
+          git diff --exit-code -- Package.resolved
+      - name: Preserve evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: macos-fabric-${{ github.sha }}
+          path: |
+            macos-*.txt
+            macos-*.log
+          if-no-files-found: error
   linux:
     name: Linux ${{ matrix.arch }}
     strategy:

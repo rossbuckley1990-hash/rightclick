@@ -17,12 +17,13 @@ enum NativeRuntimeDefaults {
         #if os(macOS)
         return MacOSRuntimeServices.doctor()
         #else
-        return DoctorReport(macosVersion: ProcessInfo.processInfo.operatingSystemVersionString, macosBuild: "unavailable",
+        return DoctorReport(macosVersion: "unavailable", macosBuild: "unavailable",
             sharingDiscovery: "UNAVAILABLE", sharingExecution: "UNAVAILABLE", sharingSupportLevel: "unavailable",
             servicesDiscovery: "UNAVAILABLE", servicesExecution: "UNAVAILABLE", servicesSupportLevel: "unavailable",
             quickActionDiscovery: "UNAVAILABLE", quickActionExecution: "UNAVAILABLE", quickActionSupportLevel: "unavailable",
             serviceRegistrationCount: 0, actionExtensionCount: 0,
-            notes: ["Headless runtime: configured providers use the shared engine; native desktop catalogs are unavailable."])
+            notes: ["Portable runtime ready: OS=\(RuntimeEnvironment.current.operatingSystem.rawValue), architecture=\(RuntimeEnvironment.current.architecture).",
+                    "Configured providers use the shared engine; native desktop catalogs are unavailable."])
         #endif
     }
 }

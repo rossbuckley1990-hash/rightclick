@@ -91,3 +91,9 @@ public protocol CapabilityVerificationReflector:
         verification: VerificationSpec
     ) throws -> ExecutionRecord
 }
+
+/// Host-installed routing adapters own a fixed, explicitly enrolled node.
+/// Provider metadata alone cannot select a foreign execution environment.
+public protocol CapabilityRoutingReflector: CapabilityVerificationReflector {
+    var executionEnvironment: RuntimeEnvironment { get }
+}

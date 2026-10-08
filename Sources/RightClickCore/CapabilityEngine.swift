@@ -3,6 +3,13 @@ import RightClickProtocol
 import Foundation
 
 public final class CapabilityEngine {
+    private let hostExecutionLock = NSRecursiveLock()
+    /// Entry points sharing an engine must share this executor. Native callers
+    /// still preserve their main-thread requirement.
+    public func withExclusiveAccess<T>(_ body: () throws -> T) rethrows -> T {
+        hostExecutionLock.lock(); defer { hostExecutionLock.unlock() }
+        return try body()
+    }
     public let runtimeEnvironment: RuntimeEnvironment
     private let rcirHost: RCIRExecutionHost
     private let experience: CapabilityExperience?
@@ -65,6 +72,15 @@ public final class CapabilityEngine {
         PlatformHostDefaults.host.prepareApplication()
     }
 
+    private func supports(_ capability: Capability, item: ContentItem) -> Bool {
+        if runtimeEnvironment.supports(capability) { return true }
+        // A configured routing adapter owns the selected execution environment.
+        // Complete-contract revalidation still precedes invocation.
+        guard let owner = currentReflectors(for: item).first(where: { $0.id == capability.reflectorID }),
+              let route = owner as? any CapabilityRoutingReflector else { return false }
+        return route.executionEnvironment.supports(capability)
+    }
+
     /// Produce the reflector snapshot for this observation.
     ///
     /// Fixed reflectors remain present. Source-owned reflectors are
@@ -115,12 +131,12 @@ public final class CapabilityEngine {
         return current
     }
 
-    public func inspect(_ raw: String) throws -> ContentItem {
-        try ContentParser.parse(raw)
+    public func inspect(_ raw: String, allowFileInputs: Bool = true) throws -> ContentItem {
+        try ContentParser.parse(raw, allowFileInputs: allowFileInputs)
     }
 
-    public func capabilities(for raw: String) throws -> (item: ContentItem, capabilities: [Capability]) {
-        let item = try ContentParser.parse(raw)
+    public func capabilities(for raw: String, allowFileInputs: Bool = true) throws -> (item: ContentItem, capabilities: [Capability]) {
+        let item = try ContentParser.parse(raw, allowFileInputs: allowFileInputs)
         var reflected: [Capability] = []
 
         for reflector in currentReflectors(for: item) {
@@ -190,7 +206,7 @@ public final class CapabilityEngine {
             )
         }
 
-        guard runtimeEnvironment.supports(capability) else {
+        guard supports(capability, item: item) else {
             return RunResult(status: .unavailable, actionID: capability.id,
                 message: "This runtime does not satisfy the capability requirements.")
         }
@@ -415,12 +431,13 @@ public final class CapabilityEngine {
         expectedOutput: String? = nil,
         verification: VerificationSpec? = nil,
         expectedCapability: Capability? = nil,
-        admissionCheck: (() throws -> Void)? = nil
+        admissionCheck: (() throws -> Void)? = nil,
+        allowFileInputs: Bool = true
     ) throws -> ExecutionRecord {
         try admissionCheck?()
         let executionId = UUID().uuidString
         let (item, capabilities) =
-            try capabilities(for: raw)
+            try capabilities(for: raw, allowFileInputs: allowFileInputs)
 
         guard let capability =
             capabilities.first(where: {
@@ -444,8 +461,8 @@ public final class CapabilityEngine {
 
         // Link callers bind the exact current declaration, including owner,
         // policy and requirements. Local callers retain the legacy API default.
-        guard runtimeEnvironment.supports(capability),
-              expectedCapability.map({ CapabilityDispatchContract.withoutExperience($0) == CapabilityDispatchContract.withoutExperience(capability) }) ?? true else {
+        guard supports(capability, item: item),
+              try expectedCapability.map({ try CapabilityDispatchContract.canonicalData($0) == CapabilityDispatchContract.canonicalData(capability) }) ?? true else {
             let record = ExecutionRecord(executionId: executionId, actionId: id, state: .unavailable,
                 message: "The capability contract or runtime requirements changed.")
             ExecutionStore.shared.put(record)

@@ -156,6 +156,8 @@ public struct CapabilityView: Codable, Sendable {
     public var requiresConfirmation: Bool
     public var supportLevel: String
     public var explanation: String
+    public var runtimeRequirements: RuntimeRequirements?
+    public var executionRuntimeID: String?
 
     public init(_ capability: Capability) {
         id = capability.id
@@ -168,6 +170,8 @@ public struct CapabilityView: Codable, Sendable {
         requiresConfirmation = capability.requiresConfirmation
         supportLevel = capability.supportLevel.rawValue
         explanation = CapabilityExplanation.text(for: capability)
+        runtimeRequirements = capability.runtimeRequirements
+        executionRuntimeID = capability.metadata["link.runtimeID"]
     }
 }
 

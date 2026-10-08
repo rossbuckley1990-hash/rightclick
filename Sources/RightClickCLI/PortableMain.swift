@@ -23,7 +23,8 @@ struct RightClickPortableMain {
               rightclick inspect ITEM --json
               rightclick actions ITEM --json
               rightclick explain ACTION_ID ITEM --json
-              rightclick run ACTION_ID ITEM [--arguments JSON] [--expected-output TEXT] [--yes]
+              rightclick run ACTION_ID ITEM [--arguments JSON] [--expect-output TEXT] [--verify-json JSON] [--yes]
+              rightclick status EXECUTION_ID --json
               rightclick providers --json
               rightclick provider ...                Configured provider registry
 
@@ -40,15 +41,18 @@ struct RightClickPortableMain {
                 print(RightClickJSON.encode(engine.doctor())); return 0
             }
             var positional: [String] = []; var arguments: CapabilityArguments?
-            var expected: String?; var confirmed = false; var index = 0
+            var expected: String?; var verification: VerificationSpec?; var confirmed = false; var index = 0
             while index < rest.count {
                 switch rest[index] {
                 case "--json": break
-                case "--yes": confirmed = true
-                case "--arguments", "--expected-output":
+                case "--yes", "--confirmed": confirmed = true
+                case "--arguments", "--expected-output", "--expect-output", "--verify-json":
                     let flag = rest[index]; index += 1
                     guard index < rest.count else { throw RightClickError("Missing option value.") }
-                    if flag == "--expected-output" {
+                    if flag == "--verify-json" {
+                        guard verification == nil, rest[index].utf8.count <= 32_768 else { throw RightClickError("Duplicate or oversized verification option.") }
+                        verification = try JSONDecoder().decode(VerificationSpec.self, from: Data(rest[index].utf8))
+                    } else if flag == "--expected-output" || flag == "--expect-output" {
                         guard expected == nil else { throw RightClickError("Duplicate option.") }
                         expected = rest[index]
                     } else {
@@ -65,7 +69,7 @@ struct RightClickPortableMain {
                 }
                 index += 1
             }
-            guard command == "run" || (arguments == nil && expected == nil && !confirmed) else {
+            guard command == "run" || (arguments == nil && expected == nil && verification == nil && !confirmed) else {
                 throw RightClickError("Invocation options are only valid with run.")
             }
             switch command {
@@ -88,9 +92,14 @@ struct RightClickPortableMain {
             case "run":
                 guard positional.count == 2 else { throw RightClickError("run needs action ID and item.") }
                 let result = try engine.run(id: positional[0], item: positional[1], confirmed: confirmed,
-                    arguments: arguments, expectedOutput: expected)
+                    arguments: arguments, expectedOutput: expected, verification: verification)
                 print(RightClickJSON.encode(result))
-                return [.accepted, .verified].contains(result.status) ? 0 : 1
+                switch result.status {
+                case .accepted, .verified: return 0
+                case .confirmationRequired: return 3
+                case .unsupported, .unavailable: return 4
+                case .rejected, .failed, .unknown: return 1
+                }
             default: throw RightClickError("Unknown or host-specific command. Use rightclick help.")
             }
             return 0

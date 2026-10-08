@@ -427,7 +427,7 @@ final class OutcomeVerifierTests: XCTestCase {
         let verification = try OutcomeVerifier.verify(spec: spec, item: item, before: before, returnedText: nil)
         XCTAssertEqual(verification.status, .unverified)
         XCTAssertEqual(verification.predicates.count, 3)
-        XCTAssertTrue(verification.predicates.allSatisfy { $0.passed == nil })
+        XCTAssertTrue(verification.predicates.allSatisfy { !$0.evaluated && !$0.passed })
     }
     #endif
 

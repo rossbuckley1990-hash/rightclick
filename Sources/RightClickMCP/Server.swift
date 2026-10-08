@@ -14,7 +14,8 @@ import RightClickCore
 
 public enum RightClickMCPRuntime {
     public static func makeEngine(
-        startBrowsing: Bool = true
+        startBrowsing: Bool = true,
+        additionalSources: [any CapabilityReflectorSource] = []
     ) -> CapabilityEngine {
         var sources =
             CapabilityReflectorSourceDefaults
@@ -31,6 +32,7 @@ public enum RightClickMCPRuntime {
                 federation
             )
         }
+        sources.append(contentsOf: additionalSources)
 
         return CapabilityRuntimeDefaults
             .makeEngine(
@@ -143,7 +145,6 @@ final class StopFlag: @unchecked Sendable {
 
 final class EngineBox: @unchecked Sendable {
     let engine: CapabilityEngine
-    private let portableLock = NSRecursiveLock()
     init(_ engine: CapabilityEngine) { self.engine = engine }
 
     func call<T>(_ body: @escaping (CapabilityEngine) throws -> T) throws -> T {
@@ -151,20 +152,18 @@ final class EngineBox: @unchecked Sendable {
         // ShareKit creates NSWindows during perform(withItems:). DispatchQueue.main.sync
         // can run that block inline on the MCP worker, which AppKit then aborts.
         if pthread_main_np() != 0 {
-            return try body(engine)
+            return try self.engine.withExclusiveAccess { try body(self.engine) }
         }
         let box = MainResultBox<T>()
         let engine = self.engine
         DispatchQueue.main.async {
-            box.finish(Result { try body(engine) })
+            box.finish(Result { try engine.withExclusiveAccess { try body(engine) } })
         }
         return try box.wait()
         #else
         // The same engine is serialized on headless hosts without AppKit's
         // main-thread requirement.
-        portableLock.lock()
-        defer { portableLock.unlock() }
-        return try body(engine)
+        return try engine.withExclusiveAccess { try body(engine) }
         #endif
     }
 }
@@ -507,7 +506,7 @@ private func rightClickTools() -> [Tool] {
     ]
 }
 
-private func handleTool(
+func handleTool(
     _ name: String,
     arguments: [String: Value]?,
     engine: EngineBox,
