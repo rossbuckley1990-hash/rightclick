@@ -68,15 +68,20 @@ final class OpenAPIAcquisitionBoundsTests:
 
     private func acquire(
         port: Int,
-        path: String
+        path: String,
+        specificationDeadline: TimeInterval? = nil
     ) -> (
         source: BonjourOpenAPISource,
         elapsed: TimeInterval
     ) {
-        let source =
-            BonjourOpenAPISource(
-                startBrowsing: false
-            )
+        let source: BonjourOpenAPISource
+        if let specificationDeadline {
+            source = BonjourOpenAPISource(startBrowsing: false, specificationLoader: {
+                try OriginPinnedHTTP.loadOpenAPISpecification($0, deadline: specificationDeadline)
+            })
+        } else {
+            source = BonjourOpenAPISource(startBrowsing: false)
+        }
 
         let started =
             Date()
@@ -162,7 +167,9 @@ final class OpenAPIAcquisitionBoundsTests:
         )
     }
 
-    func testSpecificationAcquisitionHasFiveSecondDeadline()
+    // The host specification default intentionally changed to 30 seconds for
+    // large contracts. A host-selected narrower budget remains enforceable.
+    func testExplicitFiveSecondSpecificationBudgetRemainsEnforced()
         throws
     {
         let result =
@@ -170,7 +177,9 @@ final class OpenAPIAcquisitionBoundsTests:
                 port:
                     try fixturePort(),
                 path:
-                    "/slow-openapi.json"
+                    "/slow-openapi.json",
+                specificationDeadline:
+                    Self.acquisitionDeadline
             )
 
         XCTAssertTrue(
