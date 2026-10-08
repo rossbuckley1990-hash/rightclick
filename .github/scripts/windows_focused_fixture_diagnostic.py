@@ -14,7 +14,7 @@ import tarfile
 
 from windows_test_supervisor import supervise
 
-SOURCE = "f73633a32364c1626f0c47794b6758a8e99b9c63"
+SOURCE = "40a0c0d80eff1e3855e8633182feba94d5236075"
 SOURCES_TREE = "9716cb182db859368f47b603137189d3b257ca43"
 CERT_SHA = "1f10ec5ff26b0ef1fbb91248ac954cf15757e8782101f90abe05a171af58bf9d"
 BASELINE_SHA = "f576ed56efeeb2f1fe2b4a03384a8f9d11162faf3d0dae1eee80aae7a439e04a"
