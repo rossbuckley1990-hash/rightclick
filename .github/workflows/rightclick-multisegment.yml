@@ -1,0 +1,24 @@
+name: RIGHTCLICK multisegment evidence
+on:
+  push:
+    branches: [rightclick-readonly-web-provider]
+permissions:
+  contents: write
+jobs:
+  emit:
+    if: ${{ startsWith(github.event.head_commit.message, 'Emit RIGHTCLICK multisegment evidence') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - shell: bash
+        run: |
+          git config user.name "rightclick-evidence"
+          git config user.email "rightclick-evidence@users.noreply.github.com"
+          {
+            echo RIGHTCLICK_MULTISEGMENT
+            grep -n -C 14 -E 'multiSegmentPathArguments|multi.segment|multiSegment|x-rightclick' Sources/RightClickCore/OpenAPIReflector.swift Tests/RightClickCoreTests/OpenAPIReflectorTests.swift
+          } > /tmp/msg.txt
+          head -c 14000 /tmp/msg.txt > /tmp/bounded.txt
+          git commit --allow-empty -F /tmp/bounded.txt
+          git push origin HEAD:rightclick-readonly-web-provider
