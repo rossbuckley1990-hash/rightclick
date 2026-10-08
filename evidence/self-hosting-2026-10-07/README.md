@@ -96,3 +96,32 @@ independent observation establishes the state change
 There is no `github_merge_branch` top-level MCP tool in RIGHTCLICK.
 
 GitHub is one capability provider behind the same generic runtime.
+
+## Inspect the actual changes
+
+The resulting commit is available publicly:
+
+**[View commit fee4d5e](https://github.com/rossbuckley1990-hash/rightclick/commit/fee4d5efee2131ecb0eb9cccb19250752f51e25e)**
+
+The commit includes changes to:
+
+- `Sources/RightClickMCP/Federation.swift`
+- `Tests/RightClickMCPTests/FederationTests.swift`
+
+The recorded experiment merged:
+
+- Source branch: `moat-005-live-federation-proof`
+- Target branch: `feature/grpc-capability-reflection`
+
+The resulting branch head was:
+
+`fee4d5efee2131ecb0eb9cccb19250752f51e25e`
+
+Independent ancestry comparisons:
+
+- [First recorded ancestor](https://github.com/rossbuckley1990-hash/rightclick/compare/5f37e64b3294f50ddca0a42dff745f40125697bc...fee4d5efee2131ecb0eb9cccb19250752f51e25e)
+- [Second recorded ancestor](https://github.com/rossbuckley1990-hash/rightclick/compare/f87875de7c20fc1dc7ca8b4d71b9f2cbd8ff6b1f...fee4d5efee2131ecb0eb9cccb19250752f51e25e)
+
+The change was to the repository's source history.
+It was not an automatic deployment or live replacement
+of the running RIGHTCLICK executable.
