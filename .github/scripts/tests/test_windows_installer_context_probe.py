@@ -69,7 +69,7 @@ class ContextProbeTests(unittest.TestCase):
     def test_same_query_arguments_are_closed_and_workflow_owns_probe(self):
         self.assertEqual(p.ARGUMENTS,['-latest','-products','*','-requires',
             'Microsoft.VisualStudio.Component.VC.Tools.x86.x64','-property','installationPath'])
-        workflow=(ROOT/'.github/workflows/windows-five-case-focused-diagnostic.yml').read_text()
+        workflow=(ROOT/'.github/workflows/windows-installer-context-ab-probe.yml').read_text()
         self.assertIn('--deadline-seconds 45 --progress -- python -u .github/scripts/windows_installer_context_probe.py',workflow)
         self.assertIn('installer-context-safe/installer-context.json',workflow)
         self.assertNotIn('installer-context-safe/**',workflow)
