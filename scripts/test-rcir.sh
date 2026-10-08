@@ -6,10 +6,10 @@ command -v swift >/dev/null || { echo 'A Swift 6 toolchain is required.' >&2; ex
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/rightclick-rcir.XXXXXXXX")"
 trap 'rm -rf -- "$WORK"' EXIT
 mkdir -p "$WORK/Sources/RightClickCore" "$WORK/Tests/RightClickCoreTests"
-for name in CapabilityABI RCIR RCIRSignedReceipt; do
-    cp "$ROOT/Sources/RightClickProtocol/$name.swift" "$WORK/Sources/RightClickCore/"
+for name in CapabilityABI RCIR RCIRSignedReceipt RCIRAuthority; do
+    cp "$ROOT/Sources/RightClickProtocol/$name.swift" "$WORK/Sources/RightClickProtocol/"
 done
-for name in RCIRTests RCIRBoundaryTests RCIRIntegrationTests RCIRInvocationIsolationTests; do
+for name in RCIRTests RCIRBoundaryTests RCIRIntegrationTests RCIRInvocationIsolationTests RCIRUnitCompletionTests RCIRAuthorityTests; do
     sed '/@testable import RightClickProtocol/d; /@testable import RightClickProviders/d; /@testable import RightClickMacOS/d' "$ROOT/Tests/RightClickCoreTests/$name.swift" > "$WORK/Tests/RightClickCoreTests/$name.swift"
 done
 cat > "$WORK/Package.swift" <<'PACKAGE'
@@ -24,5 +24,5 @@ dependencies: [.package(url: "https://github.com/apple/swift-crypto.git", exact:
 PACKAGE
 swift --version
 printf '\nScope: exact ABI + RCIR foundation. No live providers or production engine.\n'
-printf 'Original frozen foundation: 61 portable tests + 2 CryptoKit tests. Additional invocation-isolation regressions are included.\n'
+printf 'Frozen foundation plus authority, unit completion and invocation isolation. This is separate from the complete product gate.\n'
 (cd "$WORK" && swift test)

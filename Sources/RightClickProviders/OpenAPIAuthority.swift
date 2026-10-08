@@ -59,6 +59,7 @@ public enum OpenAPIAuthorityStoreError:
     case invalidScheme
     case invalidCredential
     case keychain(Int32)
+    case unavailable
 
     public var errorDescription:
         String?
@@ -76,6 +77,8 @@ public enum OpenAPIAuthorityStoreError:
             return
                 "Bearer credential is empty, too large, or contains newline/control characters."
 
+        case .unavailable:
+            return "Secure credential storage is unavailable on this platform."
         case let .keychain(status):
             return PlatformHostDefaults.host.secretErrorDescription(status)
         }

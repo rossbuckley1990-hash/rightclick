@@ -2,6 +2,7 @@
 """Disposable loopback discovery provider. No credentials or remote exposure."""
 import argparse
 import http.server
+from fixture_http import LoopbackThreadingHTTPServer
 import json
 import pathlib
 
@@ -39,6 +40,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
         pass
 
 
-server = http.server.ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+server = LoopbackThreadingHTTPServer(("127.0.0.1", args.port), Handler)
 print(server.server_address[1], flush=True)
 server.serve_forever()

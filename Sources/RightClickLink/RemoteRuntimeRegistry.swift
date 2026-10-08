@@ -102,7 +102,10 @@ public final class RemoteCapabilitySource: ContextualCapabilityReflectorSource {
     static func raw(_ item: ContentItem) -> String { item.text ?? item.url ?? item.path ?? item.display }
 }
 
-private final class RemoteRoutedReflector: CapabilityRoutingReflector {
+private final class RemoteRoutedReflector: CapabilityRoutingReflector, CapabilityExecutionStatusReflector {
+    var routingOrigin: CapabilityRoutingOrigin {
+        .init(transport: "rightclick-link", executionRuntimeID: client.target.runtimeID)
+    }
     let id: String
     let executionEnvironment: RuntimeEnvironment
     let completionWaitSeconds: TimeInterval = 65
@@ -113,6 +116,18 @@ private final class RemoteRoutedReflector: CapabilityRoutingReflector {
     private let now: () -> Int64
     private let isEnrolled: () -> Bool
     private let failed: () -> Void
+    private struct OwnedExecution {
+        let capability: Capability
+        let item: String
+        let remoteCapabilityID: String
+        let contractDigest: String
+        let verification: VerificationSpec?
+        var remoteExecutionID: String?
+        var inFlight = true
+        var transportUncertain = false
+    }
+    private let executionLock = NSLock()
+    private var executions: [String: OwnedExecution] = [:]
     init(client: RemoteLinkClient, descriptor: RemoteRuntimeDescriptor, catalog: [RemoteCapabilityDescriptor],
          itemKey: String?, expiresAt: Int64, now: @escaping () -> Int64, isEnrolled: @escaping () -> Bool, failed: @escaping () -> Void) {
         self.client = client; self.catalog = catalog; self.itemKey = itemKey; self.expiresAt = expiresAt
@@ -148,30 +163,69 @@ private final class RemoteRoutedReflector: CapabilityRoutingReflector {
             capabilityDigest: entry.contractDigest, arguments: arguments, verification: verification)
         let initial = ExecutionRecord(executionId: executionID, actionId: capability.id, state: .started, message: "Requested enrolled RIGHTCLICK node.")
         ExecutionStore.shared.put(initial)
+        executionLock.lock()
+        executions = executions.filter { ExecutionStore.shared.get($0.key) != nil }
+        executions[executionID] = OwnedExecution(capability: capability, item: RemoteCapabilitySource.raw(item),
+            remoteCapabilityID: entry.id, contractDigest: entry.contractDigest, verification: verification)
+        executionLock.unlock()
         Task {
-            let record: ExecutionRecord
+            do {
+                guard self.isEnrolled(), self.expiresAt > self.now() else { throw RemoteLinkError.unavailable }
+                let summary = try await self.client.send(request).summary
+                guard self.isEnrolled() else { throw RemoteLinkError.unauthorized }
+                self.install(summary, executionID: executionID)
+            } catch { self.installUnknown(executionID) }
+        }
+        return initial
+    }
+    func executionStatus(_ executionID: String) -> ExecutionRecord? {
+        executionLock.lock()
+        guard var owned = executions[executionID], let retained = ExecutionStore.shared.get(executionID) else {
+            executionLock.unlock(); return nil
+        }
+        guard !owned.inFlight, let remoteID = owned.remoteExecutionID,
+              ([.started, .accepted, .awaitingUser].contains(retained.state) ||
+               (retained.state == .unknown && owned.transportUncertain)) else {
+            executionLock.unlock(); return retained
+        }
+        owned.inFlight = true; executions[executionID] = owned
+        executionLock.unlock()
+        let request = client.makeRequest(operation: .status, item: owned.item, capabilityID: owned.remoteCapabilityID,
+            capabilityDigest: owned.contractDigest, executionID: remoteID)
+        Task {
             do {
                 guard self.isEnrolled() else { throw RemoteLinkError.unavailable }
                 let summary = try await self.client.send(request).summary
                 guard self.isEnrolled() else { throw RemoteLinkError.unauthorized }
-                let predicates = summary.verification == .verifiedSuccess ? (verification?.predicates ?? []).map {
-                    PredicateVerification(predicate: $0, evaluated: true, passed: true, message: "Authenticated execution-node observation.")
-                } : []
-                record = ExecutionRecord(executionId: executionID, actionId: capability.id, title: capability.title,
-                    state: summary.state ?? .unknown, message: "Authenticated node result: " + (summary.error?.rawValue ?? "completed"),
-                    events: summary.evidenceExecutionID.map { ["remote evidence " + $0] } ?? [],
-                    evidence: OutcomeEvidence(type: "remote_" + summary.observationBoundary.rawValue,
-                        boundary: "Enrolled execution-node assertion; raw evidence remains on that node.", outcomeVerified: summary.verification == .verifiedSuccess,
-                        observationBoundary: summary.observationBoundary),
-                    verification: OutcomeVerification(status: summary.verification, predicates: predicates))
-            } catch {
-                self.failed()
-                record = ExecutionRecord(executionId: executionID, actionId: capability.id, state: .unknown,
-                    message: "Remote delivery or result integrity is uncertain. Do not retry on another node.")
-            }
-            ExecutionStore.shared.put(record)
+                self.install(summary, executionID: executionID)
+            } catch { self.installUnknown(executionID) }
         }
-        return initial
+        return retained
+    }
+    private func install(_ summary: RemoteExecutionSummary, executionID: String) {
+        executionLock.lock(); defer { executionLock.unlock() }
+        guard var owned = executions[executionID] else { return }
+        owned.remoteExecutionID = summary.evidenceExecutionID; owned.inFlight = false; owned.transportUncertain = false
+        executions[executionID] = owned
+        let predicates = summary.verification == .verifiedSuccess ? (owned.verification?.predicates ?? []).map {
+            PredicateVerification(predicate: $0, evaluated: true, passed: true, message: "Authenticated execution-node observation.")
+        } : []
+        let record = ExecutionRecord(executionId: executionID, actionId: owned.capability.id, title: owned.capability.title,
+            state: summary.state ?? .unknown, message: "Authenticated node result: " + (summary.error?.rawValue ?? summary.taskPhase ?? "completed"),
+            events: summary.evidenceExecutionID.map { ["remote evidence " + $0] } ?? [],
+            evidence: OutcomeEvidence(type: "remote_" + summary.observationBoundary.rawValue,
+                boundary: "Enrolled execution-node assertion; raw evidence remains on that node.",
+                outcomeVerified: summary.verification == .verifiedSuccess, observationBoundary: summary.observationBoundary),
+            verification: OutcomeVerification(status: summary.verification, predicates: predicates))
+        ExecutionStore.shared.put(record)
+    }
+    private func installUnknown(_ executionID: String) {
+        failed()
+        executionLock.lock(); defer { executionLock.unlock() }
+        guard var owned = executions[executionID] else { return }
+        owned.inFlight = false; owned.transportUncertain = true; executions[executionID] = owned
+        ExecutionStore.shared.put(ExecutionRecord(executionId: executionID, actionId: owned.capability.id, state: .unknown,
+            message: "Remote delivery, status or result integrity is uncertain. Do not retry on another node."))
     }
     private func routeID(_ capability: String) -> String { "remote:" + RemoteWire.digest(client.target.publicKey) + ":" + RemoteWire.digest(Data(capability.utf8)) }
 }

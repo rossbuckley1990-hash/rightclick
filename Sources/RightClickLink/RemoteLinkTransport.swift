@@ -38,7 +38,7 @@ public final class RemoteLinkClient {
         self.transport = transport; self.now = now
     }
     public func makeRequest(operation: RemoteOperation, item: String = "", capabilityID: String? = nil,
-        capabilityDigest: String? = nil, arguments: CapabilityArguments? = nil,
+        capabilityDigest: String? = nil, executionID: String? = nil, arguments: CapabilityArguments? = nil,
         verification: VerificationSpec? = nil, idempotencyKey: UUID = UUID()) -> RemoteExecutionRequest {
         let stamp = now()
         var random = SystemRandomNumberGenerator()
@@ -46,7 +46,7 @@ public final class RemoteLinkClient {
             expiresAtMilliseconds: stamp > Int64.max - 60_000 ? stamp : stamp + 60_000, targetRuntimeID: target.runtimeID,
             targetDeviceID: target.deviceID, callerID: RemoteWire.digest(identity.publicKey),
             nonce: Data((0..<32).map { _ in UInt8.random(in: .min ... .max, using: &random) }),
-            operation: operation, capabilityID: capabilityID, capabilityDigest: capabilityDigest,
+            operation: operation, capabilityID: capabilityID, capabilityDigest: capabilityDigest, executionID: executionID,
             item: item, arguments: arguments, verification: verification)
     }
     public func send(_ request: RemoteExecutionRequest) async throws -> RemoteExecutionResult {

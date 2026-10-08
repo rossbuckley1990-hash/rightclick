@@ -33,6 +33,7 @@ public struct RemoteExecutionRequest: Codable {
     public var operation: RemoteOperation
     public var capabilityID: String?
     public var capabilityDigest: String?
+    public var executionID: String?
     public var item: String
     public var arguments: CapabilityArguments?
     public var verification: VerificationSpec?
@@ -41,30 +42,34 @@ public struct RemoteExecutionRequest: Codable {
                 issuedAtMilliseconds: Int64, expiresAtMilliseconds: Int64,
                 targetRuntimeID: String, targetDeviceID: String, callerID: String,
                 nonce: Data, operation: RemoteOperation, capabilityID: String? = nil,
-                capabilityDigest: String? = nil, item: String,
+                capabilityDigest: String? = nil, executionID: String? = nil, item: String,
                 arguments: CapabilityArguments? = nil, verification: VerificationSpec? = nil) {
         self.requestID = requestID; self.idempotencyKey = idempotencyKey
         self.issuedAtMilliseconds = issuedAtMilliseconds; self.expiresAtMilliseconds = expiresAtMilliseconds
         self.targetRuntimeID = targetRuntimeID; self.targetDeviceID = targetDeviceID
         self.callerID = callerID; self.nonce = nonce; self.operation = operation
-        self.capabilityID = capabilityID; self.capabilityDigest = capabilityDigest
+        self.capabilityID = capabilityID; self.capabilityDigest = capabilityDigest; self.executionID = executionID
         self.item = item; self.arguments = arguments; self.verification = verification
     }
 
     func validate(now: Int64) throws {
         guard version == 1 else { throw RemoteLinkError.unsupportedVersion }
-        guard operation == .run || operation == .actions || operation == .runtime else { throw RemoteLinkError.unsupportedOperation }
+        guard operation == .run || operation == .actions || operation == .runtime || operation == .status else { throw RemoteLinkError.unsupportedOperation }
         guard nonce.count == 32, RemoteWire.isDigest(callerID),
               item.utf8.count <= 8192, (arguments?.count ?? 0) <= 64,
               arguments?.allSatisfy({ $0.key.utf8.count <= 256 && $0.value.utf8.count <= 8192 }) ?? true
         else { throw RemoteLinkError.malformed }
-        if operation == .run {
+        if operation == .run || operation == .status {
             guard let capabilityID, RemoteWire.isIdentifier(capabilityID),
                   let capabilityDigest, RemoteWire.isDigest(capabilityDigest) else { throw RemoteLinkError.malformed }
         } else {
             guard capabilityID == nil, capabilityDigest == nil, arguments == nil, verification == nil
             else { throw RemoteLinkError.malformed }
         }
+        if operation == .status {
+            guard let executionID, UUID(uuidString: executionID)?.uuidString == executionID,
+                  arguments == nil, verification == nil else { throw RemoteLinkError.malformed }
+        } else if executionID != nil { throw RemoteLinkError.malformed }
         if let verification {
             guard verification.predicates.allSatisfy({ $0.type == .textEquals && $0.key == nil && $0.reference == nil && $0.width == nil && $0.height == nil && $0.bytes == nil && ($0.value?.utf8.count ?? 0) <= 8192 }), (1...16).contains(verification.predicates.count),
                   (0...60_000).contains(verification.timeoutMilliseconds ?? 0) else { throw RemoteLinkError.malformed }
@@ -94,7 +99,7 @@ public struct RemoteCallerGrant {
     public var callerID: String { RemoteWire.digest(publicKey) }
 
     public init(publicKey: Data, operations: Set<RemoteOperation>, capabilityIDs: Set<String>) throws {
-        guard publicKey.count == 32, operations.isSubset(of: [.runtime, .actions, .run]),
+        guard publicKey.count == 32, operations.isSubset(of: [.runtime, .actions, .run, .status]),
               capabilityIDs.count <= 128, capabilityIDs.allSatisfy(RemoteWire.isIdentifier)
         else { throw RemoteLinkError.malformed }
         self.publicKey = publicKey; self.operations = operations; self.capabilityIDs = capabilityIDs
@@ -141,6 +146,8 @@ public struct RemoteExecutionSummary: Codable {
     public var observationBoundary: RemoteObservationBoundary = .none
     public var runtime: RemoteRuntimeDescriptor?
     public var evidenceExecutionID: String?
+    /// Closed RCIR task phase only; no provider task identifiers or receipt bytes.
+    public var taskPhase: String? = nil
     public var capabilities: [RemoteCapabilityDescriptor] = []
     public var lifecycle: [RemoteLifecycleState]
     public var error: RemoteLinkError?
@@ -185,6 +192,9 @@ public struct SignedRemoteMessage: Codable {
               result.runtimeID == original.targetRuntimeID, result.deviceID == original.targetDeviceID,
               result.runtimeID == RemoteWire.runtimeID(trustedRuntimeKey),
               result.deviceID == RemoteWire.deviceID(trustedRuntimeKey) else { throw RemoteLinkError.wrongRuntime }
+        if original.operation == .status {
+            guard result.summary.evidenceExecutionID == original.executionID else { throw RemoteLinkError.inconsistentResult }
+        }
         return result
     }
 

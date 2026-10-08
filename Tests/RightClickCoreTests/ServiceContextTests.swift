@@ -51,7 +51,7 @@ final class ServiceContextTests: XCTestCase {
     }
 
     func testFilePathContextEncodesPathRatherThanReadingFileContents() throws {
-        let file = FileManager.default.temporaryDirectory.appendingPathComponent("context-\(UUID().uuidString).txt")
+        let file = NativeHTTPFixture.temporaryDirectory.appendingPathComponent("context-\(UUID().uuidString).txt")
         try Data("THE FILE CONTENTS MUST NOT BE THE PATH PAYLOAD".utf8).write(to: file)
         defer { try? FileManager.default.removeItem(at: file) }
         let item = try ContentParser.parse(file.path)

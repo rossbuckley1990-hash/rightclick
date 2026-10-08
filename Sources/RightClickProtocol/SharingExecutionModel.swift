@@ -1,5 +1,3 @@
-import RightClickProviders
-import RightClickProtocol
 import Foundation
 
 /// Terminal rules for an asynchronous NSSharingService execution.

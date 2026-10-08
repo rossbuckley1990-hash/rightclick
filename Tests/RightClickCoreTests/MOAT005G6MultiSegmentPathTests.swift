@@ -828,7 +828,6 @@ final class MOAT005G6MultiSegmentPathTests:
         )
     }
 
-    #if os(macOS)
     func testFullFrozenGitHubContractDiscoversCreateOrUpdateContents()
         throws
     {
@@ -1026,7 +1025,7 @@ final class MOAT005G6MultiSegmentPathTests:
                 "author"
             ]
         )
-    }    #endif
+    }
 
 
 }

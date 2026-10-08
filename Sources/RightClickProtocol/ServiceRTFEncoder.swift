@@ -1,13 +1,11 @@
-import RightClickProviders
-import RightClickProtocol
 import Foundation
 
 /// Produces a minimal RTF document without placing UTF-8 bytes under an ANSI
 /// header. RTF Unicode escapes carry signed UTF-16 code units, including both
 /// halves of a supplementary-plane scalar. This is a presentation encoding;
 /// authority proofs must continue to use their canonical wire representation.
-enum ServiceRTFEncoder {
-    static func encode(_ text: String) -> Data {
+package enum ServiceRTFEncoder {
+    package static func encode(_ text: String) -> Data {
         var rtf = "{\\rtf1\\ansi\\ansicpg1252\\uc1 "
         for unit in text.utf16 {
             switch unit {

@@ -16,6 +16,7 @@ public enum OAuthOIDCAuthorityError: Error, LocalizedError {
     case invalidState
     case invalidTokenBundle(String)
     case keychain(Int32)
+    case unavailable
 
     public var errorDescription: String? {
         switch self {
@@ -35,6 +36,8 @@ public enum OAuthOIDCAuthorityError: Error, LocalizedError {
             return "OAuth state is empty, too large, or contains control characters."
         case let .invalidTokenBundle(reason):
             return "OAuth token bundle is invalid: \(reason)"
+        case .unavailable:
+            return "Secure credential storage is unavailable on this platform."
         case let .keychain(status):
             return PlatformHostDefaults.host.secretErrorDescription(status)
         }

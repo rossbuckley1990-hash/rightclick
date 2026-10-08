@@ -15,7 +15,7 @@ import XCTest
 
 final class OutcomeVerifierTests: XCTestCase {
     private func temporaryFile(_ name: String) throws -> URL {
-        let root = FileManager.default.temporaryDirectory
+        let root = NativeHTTPFixture.temporaryDirectory
             .appendingPathComponent(
                 "rightclick-outcome-verifier-\(UUID().uuidString)",
                 isDirectory: true

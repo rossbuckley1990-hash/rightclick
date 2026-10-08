@@ -8,10 +8,11 @@ public struct RCIRExecutionEvidence: Codable, Sendable {
     public let leaseConsumed: Bool
     public let phase: String
     public let outcome: String
-    public let receipt: String
+    public let receipt: String?
     public let signedReceipt: RCIRReceiptEnvelope?
+    public let taskEvents: [String]?
     public let observationBoundary: String
-    public init(version: Int, taskID: String, leaseID: String, generation: Int64, leaseConsumed: Bool, phase: String, outcome: String, receipt: String, signedReceipt: RCIRReceiptEnvelope?, observationBoundary: String) {
+    public init(version: Int, taskID: String, leaseID: String, generation: Int64, leaseConsumed: Bool, phase: String, outcome: String, receipt: String?, signedReceipt: RCIRReceiptEnvelope?, observationBoundary: String, taskEvents: [String]? = nil) {
         self.version = version
         self.taskID = taskID
         self.leaseID = leaseID
@@ -22,6 +23,7 @@ public struct RCIRExecutionEvidence: Codable, Sendable {
         self.receipt = receipt
         self.signedReceipt = signedReceipt
         self.observationBoundary = observationBoundary
+        self.taskEvents = taskEvents
     }
 }
 

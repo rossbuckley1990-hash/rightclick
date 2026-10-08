@@ -13,7 +13,7 @@ final class CapabilityExperienceLedgerTests: XCTestCase {
     private let now = Date(timeIntervalSince1970: 1_790_000_000)
 
     private func directory() throws -> URL {
-        let url = FileManager.default.temporaryDirectory.resolvingSymlinksInPath()
+        let url = NativeHTTPFixture.temporaryDirectory.resolvingSymlinksInPath()
             .appendingPathComponent("rightclick-experience-test-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false,
             attributes: [.posixPermissions: 0o700])

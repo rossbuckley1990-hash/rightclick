@@ -190,10 +190,23 @@ final class CapabilityExperienceTests: XCTestCase {
     }
 
     func testOnlyFingerprintsAndOutcomesPersistNotUserData() throws {
-        let url = FileManager.default.temporaryDirectory.resolvingSymlinksInPath()
+        let url = NativeHTTPFixture.temporaryDirectory.resolvingSymlinksInPath()
             .appendingPathComponent("rightclick-private-experience-" + UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: url) }
+#if os(Windows)
+        // Disk storage has no admitted Windows locking/ACL adapter. Assert
+        // abstention before checking the same payload-free advisory entries
+        // in memory; a successful in-memory run must not create a disk file.
+        XCTAssertThrowsError(try CapabilityExperienceLedger(directory: url)) { error in
+            guard case CapabilityExperienceError.unsafeStorage = error else {
+                return XCTFail("Unsupported private storage must fail closed.")
+            }
+        }
+        XCTAssertFalse(FileManager.default.fileExists(atPath: url.path))
+        let ledger = try CapabilityExperienceLedger()
+#else
         let ledger = try CapabilityExperienceLedger(directory: url)
+#endif
         let experience = CapabilityExperience(ledger: ledger, namespace: "PRIVATE_NAMESPACE")
         let cap = capability()
         var result = verified(cap)
@@ -201,7 +214,19 @@ final class CapabilityExperienceTests: XCTestCase {
         result.message = "PRIVATE_MESSAGE"
         result.verification?.predicates[0].actual = "PRIVATE_OBSERVATION"
         experience.observe(capability: cap, executionID: UUID().uuidString, result: result)
+#if os(Windows)
+        let data = String(decoding: try JSONEncoder().encode(ledger.entries()), as: UTF8.self)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: url.path))
+#else
         let data = try String(contentsOf: url.appendingPathComponent("experience.json"), encoding: .utf8)
+#endif
+        let entries = try ledger.entries()
+        XCTAssertEqual(entries.count, 1)
+        XCTAssertEqual(entries.first?.outcome, .predicatesVerified)
+        XCTAssertEqual(entries.first?.contractKey, experience.contractKey(for: cap))
+        let encodedEntries = try JSONEncoder().encode(entries)
+        let objects = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedEntries) as? [[String: Any]])
+        XCTAssertEqual(Set(try XCTUnwrap(objects.first).keys), ["executionID", "contractKey", "outcome", "observedAt"])
         for value in ["PRIVATE_NAMESPACE", "PRIVATE_OUTPUT", "PRIVATE_MESSAGE", "PRIVATE_OBSERVATION", "api.example", "Create record"] {
             XCTAssertFalse(data.contains(value), value)
         }

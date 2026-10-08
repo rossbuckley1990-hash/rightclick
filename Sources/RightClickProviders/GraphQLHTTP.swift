@@ -3,6 +3,9 @@ import FoundationNetworking
 #endif
 import RightClickProtocol
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 public enum GraphQLHTTP {
     static let maximumSchemaBytes =
@@ -243,7 +246,8 @@ public enum GraphQLHTTP {
         template:
             URLSession = .shared,
         deadline: TimeInterval,
-        maximumBytes: Int
+        maximumBytes: Int,
+        admitStart: ((_ start: () -> Void) throws -> Void)? = nil
     ) throws
         -> (
             response:
@@ -252,6 +256,11 @@ public enum GraphQLHTTP {
                 Data
         )
     {
+        if let admitStart {
+            let (data, response) = try OriginPinnedHTTP.exchange(request, maximumBytes: maximumBytes,
+                template: template, deadline: deadline, successfulStatusRequired: false, admitStart: admitStart)
+            return (response, data)
+        }
         precondition(
             maximumBytes > 0
         )

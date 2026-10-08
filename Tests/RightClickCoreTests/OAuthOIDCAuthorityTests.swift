@@ -360,6 +360,9 @@ final class OAuthOIDCAuthorityTests: XCTestCase {
 
     #if os(macOS)
     func testKeychainRoundTripIsBoundToExactAuthorityLease() throws {
+#if !canImport(Security)
+        throw XCTSkip("Native Keychain adapter requires macOS")
+#endif
         let unique =
             UUID()
                 .uuidString

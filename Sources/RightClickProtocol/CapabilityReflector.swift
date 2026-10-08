@@ -94,6 +94,29 @@ public protocol CapabilityVerificationReflector:
 
 /// Host-installed routing adapters own a fixed, explicitly enrolled node.
 /// Provider metadata alone cannot select a foreign execution environment.
-public protocol CapabilityRoutingReflector: CapabilityVerificationReflector {
+public struct CapabilityRoutingOrigin: Codable, Sendable, Equatable {
+    public let transport: String
+    public let executionRuntimeID: String?
+    public init(transport: String, executionRuntimeID: String? = nil) {
+        self.transport = transport; self.executionRuntimeID = executionRuntimeID
+    }
+}
+
+/// Trusted composition marker shared by transport adapters. Catalog payloads
+/// cannot make a local provider own a route or authorize another transport hop.
+public protocol CapabilityRemoteRoutingReflector: CapabilityReflector {
+    var routingOrigin: CapabilityRoutingOrigin { get }
+}
+
+public protocol CapabilityRoutingReflector: CapabilityVerificationReflector, CapabilityRemoteRoutingReflector {
     var executionEnvironment: RuntimeEnvironment { get }
+}
+public extension CapabilityRoutingReflector {
+    var routingOrigin: CapabilityRoutingOrigin { .init(transport: "remote") }
+}
+
+/// Optional retained-status adapter. The engine keeps ownership of the original
+/// invocation and current contract; status must not redispatch its effect.
+public protocol CapabilityExecutionStatusReflector: CapabilityRemoteRoutingReflector {
+    func executionStatus(_ executionID: String) -> ExecutionRecord?
 }

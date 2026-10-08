@@ -1,11 +1,9 @@
-import RightClickProviders
-import RightClickProtocol
 import Foundation
 
 /// A public invocation flag and returned data are observations, not success.
 /// An explicit caller postcondition can verify a returned-text task only.
-enum ServiceOutcome {
-    static func result(actionID: String, title: String, returned: Bool?,
+package enum ServiceOutcome {
+    package static func result(actionID: String, title: String, returned: Bool?,
                        pasteboardChanged: Bool, returnedText: String?, expectedOutput: String?, inputText: String? = nil) -> RunResult {
         guard let returned else {
             return RunResult(status: .unknown, actionID: actionID, title: title,

@@ -114,6 +114,12 @@ public final class CapabilityArtifactResolverRegistry {
             accepted
     }
 
+    /// Composition may reuse the accepted resolver, including its native owner
+    /// context, rather than constructing an independent discovery transport.
+    package func registeredResolver(kind: String) -> (any CapabilityArtifactResolver)? {
+        resolvers[Self.normalizedKind(kind)]
+    }
+
     public var supportedKinds:
         [String]
     {
@@ -277,6 +283,10 @@ public enum CapabilityArtifactResolverDefaults {
             [any CapabilityArtifactResolver] = [
                 OpenAPICapabilityArtifactResolver(),
                 GraphQLCapabilityArtifactResolver(),
+                MCPCapabilityArtifactResolver(),
+                WASMCapabilityArtifactResolver(),
+                KafkaCapabilityArtifactResolver(),
+                KubernetesCapabilityArtifactResolver(),
             ]
 
 #if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
@@ -875,7 +885,8 @@ public final class ConfiguredCapabilityArtifactSource:
             [String: String] =
                 ProcessInfo
                     .processInfo
-                    .environment
+                    .environment,
+        registry: CapabilityArtifactResolverRegistry = CapabilityArtifactResolverRegistry()
     ) -> ConfiguredCapabilityArtifactSource? {
         guard
             let raw =
@@ -903,8 +914,7 @@ public final class ConfiguredCapabilityArtifactSource:
         }
 
         return ConfiguredCapabilityArtifactSource(
-            descriptors:
-                descriptors
+            descriptors: descriptors, registry: registry
         )
     }
 

@@ -8,10 +8,38 @@ import Foundation
 /// Durable admission, separate from advisory experience. Reservations precede
 /// effects, survive restart, and are never evicted or retried automatically.
 public final class RemoteReplayLedger: @unchecked Sendable {
+    private struct Ownership: Codable {
+        let executionID: String
+        let callerDigest: String
+        let capabilityDigest: String
+        let capabilityIDHash: String
+        let itemHash: String
+        init(_ request: RemoteExecutionRequest) throws {
+            guard let capabilityID = request.capabilityID, RemoteWire.isIdentifier(capabilityID),
+                  let digest = request.capabilityDigest, RemoteWire.isDigest(digest),
+                  RemoteWire.isDigest(request.callerID) else { throw RemoteLinkError.malformed }
+            executionID = UUID().uuidString
+            callerDigest = request.callerID
+            capabilityDigest = digest
+            capabilityIDHash = RemoteWire.digest(Data(capabilityID.utf8))
+            itemHash = RemoteWire.digest(Data(request.item.utf8))
+        }
+        func permits(_ request: RemoteExecutionRequest) -> Bool {
+            callerDigest == request.callerID && capabilityDigest == request.capabilityDigest &&
+                capabilityIDHash == RemoteWire.digest(Data((request.capabilityID ?? "").utf8)) &&
+                itemHash == RemoteWire.digest(Data(request.item.utf8)) &&
+                (request.operation == .run || executionID == request.executionID)
+        }
+        var valid: Bool {
+            UUID(uuidString: executionID)?.uuidString == executionID &&
+                [callerDigest, capabilityDigest, capabilityIDHash, itemHash].allSatisfy(RemoteWire.isDigest)
+        }
+    }
     private struct Entry: Codable {
         let intentDigest: String
         let reservedAt: Int64
         var summary: RemoteExecutionSummary?
+        var ownership: Ownership? = nil
     }
     private struct Document: Codable {
         var version = 1
@@ -105,13 +133,35 @@ public final class RemoteReplayLedger: @unchecked Sendable {
             let previous = current.entries[idempotencyKey]
             if let previous, previous.intentDigest != intent { throw RemoteLinkError.idempotencyConflict }
             current.seen.formUnion([requestKey, nonceKey]); current.lastTime = now
-            if previous == nil { current.entries[idempotencyKey] = Entry(intentDigest: intent, reservedAt: now, summary: nil) }
+            if previous == nil { current.entries[idempotencyKey] = Entry(intentDigest: intent, reservedAt: now, summary: nil, ownership: request.operation == .run ? try Ownership(request) : nil) }
             if let previous {
                 return previous.summary ?? RemoteExecutionSummary(state: .unknown, policy: .evaluated,
-                    providerAcceptance: .unknown, lifecycle: [.requested, .authorized, .delivered, .unknown],
+                    providerAcceptance: .unknown, evidenceExecutionID: previous.ownership?.executionID,
+                    lifecycle: [.requested, .authorized, .delivered, .unknown],
                     error: .executionUncertain, completedAtMilliseconds: previous.reservedAt)
             }
             return nil
+        }
+    }
+
+    /// Ownership was persisted with the RUN intent before the engine can start.
+    /// Historical pre-extension entries have no ownership and deny status safely.
+    func executionID(forRun request: RemoteExecutionRequest) throws -> UUID {
+        guard request.operation == .run else { throw RemoteLinkError.unauthorized }
+        return try transaction { current in
+            let key = self.key("intent", request.callerID, request.idempotencyKey.uuidString)
+            guard let entry = current.entries[key], entry.intentDigest == (try request.intentDigest()),
+                  let owner = entry.ownership, owner.permits(request),
+                  let id = UUID(uuidString: owner.executionID) else { throw RemoteLinkError.unauthorized }
+            return id
+        }
+    }
+    func executionID(forStatus request: RemoteExecutionRequest) throws -> String {
+        guard request.operation == .status else { throw RemoteLinkError.unauthorized }
+        return try transaction { current in
+            let owners = current.entries.values.compactMap(\.ownership).filter { $0.permits(request) }
+            guard owners.count == 1 else { throw RemoteLinkError.unauthorized }
+            return owners[0].executionID
         }
     }
 
@@ -122,6 +172,8 @@ public final class RemoteReplayLedger: @unchecked Sendable {
             guard var entry = current.entries[idempotencyKey], entry.summary == nil,
                   entry.intentDigest == (try request.intentDigest()), summary.completedAtMilliseconds >= entry.reservedAt
             else { throw RemoteLinkError.storageUnavailable }
+            if let owner = entry.ownership, let returnedID = summary.evidenceExecutionID,
+               returnedID != owner.executionID { throw RemoteLinkError.storageUnavailable }
             entry.summary = summary; current.entries[idempotencyKey] = entry
         }
     }
@@ -255,7 +307,14 @@ public final class RemoteReplayLedger: @unchecked Sendable {
               document.seen.allSatisfy(RemoteWire.isDigest),
               document.entries.allSatisfy({ RemoteWire.isDigest($0.key) && RemoteWire.isDigest($0.value.intentDigest) &&
                   $0.value.reservedAt > 0 && $0.value.reservedAt <= document.lastTime }) else { throw RemoteLinkError.storageUnavailable }
+        var ownedIDs = Set<String>()
         for entry in document.entries.values {
+            if let owner = entry.ownership {
+                guard owner.valid, ownedIDs.insert(owner.executionID).inserted,
+                      entry.summary?.evidenceExecutionID.map({ $0 == owner.executionID }) ?? true else {
+                    throw RemoteLinkError.storageUnavailable
+                }
+            }
             if let summary = entry.summary {
                 guard summary.completedAtMilliseconds >= entry.reservedAt else { throw RemoteLinkError.storageUnavailable }
                 try summary.validate()

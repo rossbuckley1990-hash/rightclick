@@ -4,6 +4,13 @@ import Foundation
 
 public final class CapabilityEngine {
     private let hostExecutionLock = NSRecursiveLock()
+    private struct StatusOwner {
+        let reflector: any CapabilityExecutionStatusReflector
+        let capability: Capability
+        let item: ContentItem
+    }
+    private let statusOwnerLock = NSLock()
+    private var statusOwners: [String: StatusOwner] = [:]
     /// Entry points sharing an engine must share this executor. Native callers
     /// still preserve their main-thread requirement.
     public func withExclusiveAccess<T>(_ body: () throws -> T) rethrows -> T {
@@ -120,15 +127,29 @@ public final class CapabilityEngine {
         }
 
         var counts:
-            [String: Int] = [:]
+            [Data: Int] = [:]
 
         for reflector in candidates {
-            counts[reflector.id, default: 0] += 1
+            counts[Data(reflector.id.utf8), default: 0] += 1
         }
 
-        let current = candidates.filter { counts[$0.id] == 1 }
-        rcirHost.synchronize(owners: Set(current.map { $0.id }))
+        let current = candidates.filter { counts[Data($0.id.utf8)] == 1 }
+        rcirHost.synchronize(ownerBytes: Set(current.map { Data($0.id.utf8) }))
         return current
+    }
+
+    /// An arbitrary reflector can throw before or after starting an effect.
+    /// Release bookkeeping without converting an unobserved error into success
+    /// or claiming that no dispatch happened.
+    private func releaseReservationAfterThrow(_ executionID: String) {
+        ExecutionStore.shared.update(executionID) { record in
+            guard record.state == .started || record.state == .awaitingUser else { return }
+            record.state = .unknown
+            record.message = "The provider entry point threw; its effect was not independently established."
+            record.events.append("execution reservation released after thrown provider entry point")
+            record.evidence = OutcomeEvidence(type: "execution_error",
+                boundary: "A thrown provider entry point leaves the effect unknown; active capacity was released.")
+        }
     }
 
     public func inspect(_ raw: String, allowFileInputs: Bool = true) throws -> ContentItem {
@@ -136,6 +157,11 @@ public final class CapabilityEngine {
     }
 
     public func capabilities(for raw: String, allowFileInputs: Bool = true) throws -> (item: ContentItem, capabilities: [Capability]) {
+        let snapshot = try discoverySnapshot(for: raw, allowFileInputs: allowFileInputs)
+        return (snapshot.item, snapshot.capabilities)
+    }
+
+    private func discoverySnapshot(for raw: String, allowFileInputs: Bool = true) throws -> (item: ContentItem, capabilities: [Capability], quarantinedIDs: Set<Data>) {
         let item = try ContentParser.parse(raw, allowFileInputs: allowFileInputs)
         var reflected: [Capability] = []
 
@@ -151,6 +177,9 @@ public final class CapabilityEngine {
             for index in capabilities.indices {
                 capabilities[index].reflectorID =
                     reflector.id
+                // A provider cannot advertise its own accepted fingerprint.
+                capabilities[index].contractSHA256 = nil
+                capabilities[index].routingOrigin = (reflector as? any CapabilityRemoteRoutingReflector)?.routingOrigin
             }
 
             reflected.append(
@@ -158,7 +187,12 @@ public final class CapabilityEngine {
             )
         }
 
-        let fresh = dedupeCapabilities(reflected).map(CapabilityExperience.withoutExperience)
+        let catalog = CapabilitySelection.catalog(reflected)
+        let fresh = catalog.capabilities.map { capability in
+            var owned = capability.withoutDiscoveryAdvice()
+            owned.contractSHA256 = try? owned.discoveryContractSHA256()
+            return owned
+        }
         let combined = experience?.annotate(fresh) ?? fresh
         let order: [CapabilitySource: Int] = [.service: 0, .sharingService: 1, .actionExtension: 2, .system: 3]
         return (item, combined.sorted { lhs, rhs in
@@ -166,16 +200,13 @@ public final class CapabilityEngine {
             let right = order[rhs.source] ?? 9
             if left == right { return lhs.title.localizedCaseInsensitiveCompare(rhs.title) == .orderedAscending }
             return left < right
-        })
+        }, catalog.quarantinedIDs)
     }
 
     public func describe(id: String, item raw: String?) throws -> Capability {
         if let raw {
-            let (_, capabilities) = try capabilities(for: raw)
-            if let match = capabilities.first(where: { $0.id == id || $0.title == id }) {
-                return match
-            }
-            throw RightClickError("No capability \(id) applies to this item.")
+            let (_, capabilities, quarantinedIDs) = try discoverySnapshot(for: raw)
+            return try CapabilitySelection.resolve(id, from: capabilities, quarantinedIDs: quarantinedIDs)
         }
         return try NativeRuntimeDefaults.describe(id: id)
 
@@ -187,22 +218,26 @@ public final class CapabilityEngine {
         confirmed: Bool,
         arguments: CapabilityArguments? = nil,
         expectedOutput: String? = nil,
-        verification: VerificationSpec? = nil
+        verification: VerificationSpec? = nil,
+        contractSHA256: String? = nil
     ) throws -> RunResult {
         let executionId = UUID().uuidString
-        let (item, capabilities) =
-            try capabilities(for: raw)
+        if let contractSHA256, !CapabilityContract.isValidSHA256(contractSHA256) {
+            return RunResult(status: .rejected, actionID: id,
+                message: "Invalid contractSHA256. Supply the exact lowercase SHA-256 returned by discovery.")
+        }
+        let (item, capabilities, quarantinedIDs) =
+            try discoverySnapshot(for: raw)
 
-        guard let capability =
-            capabilities.first(where: {
-                $0.id == id || $0.title == id
-            })
-        else {
+        let capability: Capability
+        do {
+            capability = try selectedCapability(id: id, contractSHA256: contractSHA256, from: capabilities, quarantinedIDs: quarantinedIDs)
+        } catch {
             return RunResult(
                 status: .unavailable,
                 actionID: id,
                 message:
-                    "No discovered capability matches \(id) for this item."
+                    error.localizedDescription
             )
         }
 
@@ -225,6 +260,12 @@ public final class CapabilityEngine {
                 supportLevel:
                     capability.supportLevel
             )
+        }
+
+        if let issue = CapabilityArgumentPreflight.issue(for: capability, arguments: arguments) {
+            return RunResult(status: .failed, actionID: capability.id, title: capability.title,
+                message: issue.message, requiresConfirmation: capability.requiresConfirmation,
+                supportLevel: capability.supportLevel, evidence: issue.evidence)
         }
 
         if capability.requiresConfirmation
@@ -285,34 +326,44 @@ public final class CapabilityEngine {
             ]
         )
 
-        ExecutionStore.shared.put(initial)
+        guard ExecutionStore.shared.put(initial) else {
+            return RunResult(status: .rejected, actionID: capability.id, title: capability.title,
+                message: "Execution capacity is full; no provider was started.",
+                evidence: OutcomeEvidence(type: "execution_capacity",
+                    boundary: "Active execution bookkeeping could not be reserved before provider dispatch."))
+        }
 
         let startedRecord: ExecutionRecord
 
-        if let admitted = reflector as? any RCIRExecutionReflector {
-            startedRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
-                executionID: executionId, arguments: arguments, verification: verification,
-                expectedOutput: expectedOutput, host: rcirHost,
-                revalidate: { self.reflector(for: capability, item: item) != nil })
-        } else if let verification,
-           let verificationReflector
-        {
-            startedRecord =
-                try verificationReflector.begin(
-                    capability: capability,
-                    item: item,
-                    executionID: executionId,
-                    arguments: arguments,
-                    verification: verification
-                )
-        } else {
-            startedRecord =
-                try reflector.begin(
-                    capability: capability,
-                    item: item,
-                    executionID: executionId,
-                    arguments: arguments
-                )
+        do {
+            if let admitted = reflector as? any RCIRExecutionReflector {
+                startedRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+                    executionID: executionId, arguments: arguments, verification: verification,
+                    expectedOutput: expectedOutput, host: rcirHost,
+                    revalidate: { [weak self] in self?.reflector(for: capability, item: item) != nil })
+            } else if let verification,
+               let verificationReflector
+            {
+                startedRecord =
+                    try verificationReflector.begin(
+                        capability: capability,
+                        item: item,
+                        executionID: executionId,
+                        arguments: arguments,
+                        verification: verification
+                    )
+            } else {
+                startedRecord =
+                    try reflector.begin(
+                        capability: capability,
+                        item: item,
+                        executionID: executionId,
+                        arguments: arguments
+                    )
+            }
+        } catch {
+            releaseReservationAfterThrow(executionId)
+            throw error
         }
 
         var started = startedRecord
@@ -432,24 +483,75 @@ public final class CapabilityEngine {
         verification: VerificationSpec? = nil,
         expectedCapability: Capability? = nil,
         admissionCheck: (() throws -> Void)? = nil,
-        allowFileInputs: Bool = true
+        continuingAdmissionCheck: (() throws -> Void)? = nil,
+        allowFileInputs: Bool = true,
+        contractSHA256: String? = nil
+    ) throws -> ExecutionRecord {
+        try beginExecution(executionId: UUID().uuidString, id: id, item: raw, confirmed: confirmed, arguments: arguments,
+            expectedOutput: expectedOutput, verification: verification, expectedCapability: expectedCapability,
+            admissionCheck: admissionCheck, continuingAdmissionCheck: continuingAdmissionCheck,
+            allowFileInputs: allowFileInputs, contractSHA256: contractSHA256)
+    }
+
+    /// Link's durable host reservation assigns the identity before effects. This
+    /// seam is package-only; an untrusted request cannot select an execution ID.
+    package func beginReserved(
+        executionID: UUID,
+        id: String,
+        item raw: String,
+        confirmed: Bool,
+        arguments: CapabilityArguments? = nil,
+        expectedOutput: String? = nil,
+        verification: VerificationSpec? = nil,
+        expectedCapability: Capability? = nil,
+        admissionCheck: (() throws -> Void)? = nil,
+        continuingAdmissionCheck: (() throws -> Void)? = nil,
+        allowFileInputs: Bool = true,
+        contractSHA256: String? = nil
+    ) throws -> ExecutionRecord {
+        try beginExecution(executionId: executionID.uuidString, id: id, item: raw, confirmed: confirmed, arguments: arguments,
+            expectedOutput: expectedOutput, verification: verification, expectedCapability: expectedCapability,
+            admissionCheck: admissionCheck, continuingAdmissionCheck: continuingAdmissionCheck,
+            allowFileInputs: allowFileInputs, contractSHA256: contractSHA256)
+    }
+
+    private func beginExecution(
+        executionId: String,
+        id: String,
+        item raw: String,
+        confirmed: Bool,
+        arguments: CapabilityArguments? = nil,
+        expectedOutput: String? = nil,
+        verification: VerificationSpec? = nil,
+        expectedCapability: Capability? = nil,
+        admissionCheck: (() throws -> Void)? = nil,
+        continuingAdmissionCheck: (() throws -> Void)? = nil,
+        allowFileInputs: Bool = true,
+        contractSHA256: String? = nil
     ) throws -> ExecutionRecord {
         try admissionCheck?()
-        let executionId = UUID().uuidString
-        let (item, capabilities) =
-            try capabilities(for: raw, allowFileInputs: allowFileInputs)
+        guard ExecutionStore.shared.get(executionId) == nil else {
+            throw RightClickError("Execution identity is already retained; do not dispatch it again.")
+        }
+        if let contractSHA256, !CapabilityContract.isValidSHA256(contractSHA256) {
+            let record = ExecutionRecord(executionId: executionId, actionId: id, state: .rejected,
+                message: "Invalid contractSHA256. Supply the exact lowercase SHA-256 returned by discovery.")
+            ExecutionStore.shared.put(record)
+            return record
+        }
+        let (item, capabilities, quarantinedIDs) =
+            try discoverySnapshot(for: raw, allowFileInputs: allowFileInputs)
 
-        guard let capability =
-            capabilities.first(where: {
-                $0.id == id || $0.title == id
-            })
-        else {
+        let capability: Capability
+        do {
+            capability = try selectedCapability(id: id, contractSHA256: contractSHA256, from: capabilities, quarantinedIDs: quarantinedIDs)
+        } catch {
             let record = ExecutionRecord(
                 executionId: executionId,
                 actionId: id,
                 state: .unavailable,
                 message:
-                    "No discovered capability matches \(id) for this item."
+                    error.localizedDescription
             )
 
             ExecutionStore.shared.put(
@@ -484,6 +586,13 @@ public final class CapabilityEngine {
                 record
             )
 
+            return record
+        }
+
+        if let issue = CapabilityArgumentPreflight.issue(for: capability, arguments: arguments) {
+            let record = ExecutionRecord(executionId: executionId, actionId: capability.id,
+                title: capability.title, state: .failed, message: issue.message, evidence: issue.evidence)
+            ExecutionStore.shared.put(record)
             return record
         }
 
@@ -554,39 +663,58 @@ public final class CapabilityEngine {
             ]
         )
 
-        ExecutionStore.shared.put(initial)
+        guard ExecutionStore.shared.put(initial) else {
+            return ExecutionRecord(executionId: executionId, actionId: capability.id, title: capability.title,
+                state: .rejected, message: "Execution capacity is full; no provider was started.",
+                evidence: OutcomeEvidence(type: "execution_capacity",
+                    boundary: "Active execution bookkeeping could not be reserved before provider dispatch."))
+        }
 
         var providerRecord: ExecutionRecord
 
         try admissionCheck?()
+        do {
+            if let admitted = reflector as? any RCIRExecutionReflector {
+                providerRecord = try rcirHost.withExecutionAuthorization(executionID: executionId,
+                    start: admissionCheck, continuing: continuingAdmissionCheck) {
+                    try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
+                    executionID: executionId, arguments: arguments, verification: verification,
+                    expectedOutput: expectedOutput, host: rcirHost,
+                    revalidate: { [weak self] in
+                        guard let self else { return false }
+                        return self.reflector(for: capability, item: item) != nil
+                    })
+                }
+            } else if let verification,
+               let verificationReflector
+            {
+                providerRecord =
+                    try verificationReflector.begin(
+                        capability: capability,
+                        item: item,
+                        executionID: executionId,
+                        arguments: arguments,
+                        verification: verification
+                    )
+            } else {
+                providerRecord =
+                    try reflector.begin(
+                        capability: capability,
+                        item: item,
+                        executionID: executionId,
+                        arguments: arguments
+                    )
+            }
+        } catch {
+            releaseReservationAfterThrow(executionId)
+            throw error
+        }
 
-        if let admitted = reflector as? any RCIRExecutionReflector {
-            providerRecord = try admitted.admittedBegin(capability: capability, admissionOwner: capability, item: item,
-                executionID: executionId, arguments: arguments, verification: verification,
-                expectedOutput: expectedOutput, host: rcirHost,
-                revalidate: {
-                    do { try admissionCheck?(); return self.reflector(for: capability, item: item) != nil }
-                    catch { return false }
-                })
-        } else if let verification,
-           let verificationReflector
-        {
-            providerRecord =
-                try verificationReflector.begin(
-                    capability: capability,
-                    item: item,
-                    executionID: executionId,
-                    arguments: arguments,
-                    verification: verification
-                )
-        } else {
-            providerRecord =
-                try reflector.begin(
-                    capability: capability,
-                    item: item,
-                    executionID: executionId,
-                    arguments: arguments
-                )
+        if let statusReflector = reflector as? any CapabilityExecutionStatusReflector {
+            statusOwnerLock.lock()
+            statusOwners = statusOwners.filter { ExecutionStore.shared.get($0.key) != nil }
+            statusOwners[executionId] = StatusOwner(reflector: statusReflector, capability: capability, item: item)
+            statusOwnerLock.unlock()
         }
 
         providerRecord.executionId =
@@ -677,13 +805,25 @@ public final class CapabilityEngine {
         return final
     }
 
+    /// Identity selection precedes pin comparison. Neither an optional pin nor
+    /// a title collision may silently choose among conflicting declarations.
+    private func selectedCapability(id: String, contractSHA256: String?, from capabilities: [Capability], quarantinedIDs: Set<Data>) throws -> Capability {
+        let capability = try CapabilitySelection.resolve(id, from: capabilities, quarantinedIDs: quarantinedIDs)
+        if let contractSHA256, capability.contractSHA256 != contractSHA256 {
+            throw CapabilitySelectionError.contractMismatch
+        }
+        return capability
+    }
+
     private func reflector(
         for capability: Capability,
         item: ContentItem
     ) -> (any CapabilityReflector)? {
-        guard let reflector = currentReflectors(for: item).first(where: {
-            $0.id == capability.reflectorID
-        }), let current = try? reflector.capabilities(for: item) else {
+        let owners = currentReflectors(for: item).filter {
+            $0.id.utf8.elementsEqual(capability.reflectorID.utf8)
+        }
+        guard owners.count == 1, let reflector = owners.first,
+              let current = try? reflector.capabilities(for: item) else {
             return nil
         }
 
@@ -691,7 +831,7 @@ public final class CapabilityEngine {
         // selected during this invocation. A stable reflector ID alone is
         // not authority to dispatch a changed endpoint, schema or safety rule.
         // Check only the selected owner's catalog, not every provider again.
-        let matches = current.filter { $0.id == capability.id }
+        let matches = current.filter { $0.id.utf8.elementsEqual(capability.id.utf8) }
         guard !matches.isEmpty else { return nil }
 
         // These are local, structured snapshots, not signed protocol proofs.
@@ -702,12 +842,13 @@ public final class CapabilityEngine {
         // Experience is engine-owned advisory output, not provider authority.
         // Normalize only its reserved namespace on both snapshots. Every
         // endpoint, schema, origin, policy and other metadata byte still binds.
-        guard let expected = try? encoder.encode(CapabilityExperience.withoutExperience(capability)) else { return nil }
+        guard let expected = try? encoder.encode(capability.withoutDiscoveryAdvice()) else { return nil }
 
         for var candidate in matches {
             // As in discovery, only the engine assigns reflector ownership.
             candidate.reflectorID = reflector.id
-            guard let actual = try? encoder.encode(CapabilityExperience.withoutExperience(candidate)), actual == expected else {
+            candidate.routingOrigin = (reflector as? any CapabilityRemoteRoutingReflector)?.routingOrigin
+            guard let actual = try? encoder.encode(candidate.withoutDiscoveryAdvice()), actual == expected else {
                 return nil
             }
         }
@@ -924,12 +1065,21 @@ public final class CapabilityEngine {
     }
 
     public func executionStatus(_ executionId: String) -> ExecutionRecord {
-        ExecutionStore.shared.get(executionId) ?? ExecutionRecord(
-            executionId: executionId,
-            actionId: "",
-            state: .unknown,
-            message: "No execution with that id."
-        )
+        withExclusiveAccess {
+            statusOwnerLock.lock()
+            let owner = statusOwners[executionId]
+            statusOwnerLock.unlock()
+            if let owner, let retained = ExecutionStore.shared.get(executionId),
+               [.started, .accepted, .awaitingUser, .unknown].contains(retained.state) {
+                // Retained status belongs to the original routing adapter, not
+                // a newly selected catalog entry. A discovery TTL cannot revoke
+                // already admitted work; the adapter and execution node recheck
+                // current enrollment, ownership, contract, policy and authority.
+                if let refreshed = owner.reflector.executionStatus(executionId) { return refreshed }
+            }
+            return rcirHost.status(executionId) ?? ExecutionStore.shared.get(executionId) ?? rcirHost.recoveredStatus(executionId) ?? ExecutionRecord(
+                executionId: executionId, actionId: "", state: .unknown, message: "No execution with that id.")
+        }
     }
 
     public func providers() -> [ProviderSummary] {
