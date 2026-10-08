@@ -4,6 +4,7 @@ import RightClickProtocol
 import RightClickCore
 import RightClickProviders
 @testable import RightClickLink
+@testable import RightClickMCP
 
 private final class LifecycleAdversarialTransport: RemoteLinkTransport {
     var response: (Data) throws -> Data
@@ -11,7 +12,7 @@ private final class LifecycleAdversarialTransport: RemoteLinkTransport {
     func exchange(_ request: Data, targetRuntimeID: String) async throws -> Data { try response(request) }
 }
 
-private final class LifecycleAdversarialProvider: RCIRExecutionReflector {
+final class LifecycleAdversarialProvider: RCIRExecutionReflector {
     let id = "fixture:adversarial-deferred-owner"
     let sentinel = "TEST-ONLY-PRIVATE-PROVIDER-OBSERVATION"
     var effects = 0
@@ -51,7 +52,7 @@ private final class LifecycleAdversarialProvider: RCIRExecutionReflector {
 }
 
 @MainActor
-private final class LifecycleAdversarialFixture {
+final class LifecycleAdversarialFixture {
     let directory: URL
     let provider = LifecycleAdversarialProvider()
     let caller: RemoteNodeIdentity
@@ -61,7 +62,7 @@ private final class LifecycleAdversarialFixture {
     let dispatcher: RemoteExecutionDispatcher
     let relay = SimulatedLinkRelay()
     let client: RemoteLinkClient
-    init(statusAllowed: Bool = true) throws {
+    init(statusAllowed: Bool = true, maximumRequests: Int = 1024, additionalGrants: [RemoteCallerGrant] = []) throws {
         directory = FileManager.default.temporaryDirectory.appendingPathComponent("rightclick-lifecycle-adversarial-" + UUID().uuidString)
             .standardizedFileURL.resolvingSymlinksInPath()
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true,
@@ -70,10 +71,12 @@ private final class LifecycleAdversarialFixture {
         node = try .init(signer: RCIREd25519Signer(rawPrivateKey: Data(repeating: 22, count: 32)))
         engine = CapabilityEngine(reflectors: [provider], experience: nil,
             runtimeEnvironment: .init(operatingSystem: .linux, architecture: "x86_64"))
-        ledger = try .init(directory: directory.appendingPathComponent("journal"), runtimeID: node.runtimeID)
+        ledger = try .init(directory: directory.appendingPathComponent("journal"), runtimeID: node.runtimeID,
+            maximumRequests: maximumRequests)
         let operations: Set<RemoteOperation> = statusAllowed ? [.runtime, .actions, .run, .status] : [.run]
         let grant = try RemoteCallerGrant(publicKey: caller.publicKey, operations: operations, capabilityIDs: [provider.capability.id])
-        dispatcher = try .init(engine: engine, identity: node, ledger: ledger, grants: [grant], enabled: true, now: { 1_000 })
+        dispatcher = try .init(engine: engine, identity: node, ledger: ledger, grants: [grant] + additionalGrants,
+            enabled: true, now: { 1_000 })
         client = try .init(identity: caller, trustedRuntimeKey: node.publicKey, transport: relay, now: { 1_000 })
     }
     deinit { try? FileManager.default.removeItem(at: directory) }
@@ -409,4 +412,77 @@ final class RemoteLifecycleAdversarialTests: XCTestCase {
         XCTAssertEqual(terminal.summary.verification, .unverified)
         XCTAssertEqual(fixture.provider.effects, 1)
     }
+
+    @MainActor func testMCPRoutedLiveExecutionRecoversAfterTransportLossAndSameClientReenrollment() async throws {
+        let fixture = try LifecycleAdversarialFixture(); try await fixture.connect()
+        let registry = RemoteRuntimeRegistry(now: { 1_000 })
+        try await registry.enroll(fixture.client, item: "fixture")
+        let caller = CapabilityEngine(reflectors: [], reflectorSources: [RemoteCapabilitySource(registry: registry)],
+            experience: nil, runtimeEnvironment: .init(operatingSystem: .linux, architecture: "x86_64"))
+        let capability = try XCTUnwrap(caller.capabilities(for: "fixture").capabilities.first)
+        let box = EngineBox(caller)
+        let initialJSON = try await handleToolRefreshing("context_run", arguments: ["item": .string("fixture"),
+            "actionId": .string(capability.id)], engine: box, transport: "stdio")
+        let initial = try JSONDecoder().decode(ExecutionRecord.self, from: Data(initialJSON.utf8))
+        func status() async throws -> ExecutionRecord {
+            let json = try await handleToolRefreshing("context_run_status", arguments: ["executionId": .string(initial.executionId)],
+                engine: box, transport: "stdio")
+            return try JSONDecoder().decode(ExecutionRecord.self, from: Data(json.utf8))
+        }
+        let live = try await status()
+        XCTAssertEqual(live.lifecycle?.terminal, false)
+        let targetExecutionID = try XCTUnwrap(live.lifecycle?.executionID)
+        XCTAssertNotEqual(targetExecutionID, initial.executionId, "Caller retains its own alias for the target-owned execution")
+        XCTAssertEqual(fixture.provider.effects, 1)
+
+        await fixture.relay.disconnect(runtimeID: fixture.node.runtimeID)
+        let lost = try await status()
+        XCTAssertEqual(lost.state, .unknown)
+        XCTAssertEqual(registry.registrations().first?.availability, .offline)
+        try await fixture.connect()
+        try await registry.enroll(fixture.client, item: "fixture")
+        XCTAssertEqual(registry.registrations().first?.availability, .online)
+        try fixture.provider.emit(.working)
+        let recovered = try await status()
+        XCTAssertEqual(recovered.lifecycle?.executionID, targetExecutionID)
+        XCTAssertEqual(recovered.lifecycle?.phase, .working)
+        XCTAssertEqual(recovered.lifecycle?.terminal, false)
+        try fixture.provider.emit(.completed(.string(fixture.provider.sentinel)))
+        let terminal = try await status()
+        XCTAssertEqual(terminal.lifecycle?.executionID, targetExecutionID)
+        XCTAssertEqual(terminal.lifecycle?.terminal, true)
+        XCTAssertEqual(terminal.lifecycle?.receiptAvailable, true)
+        XCTAssertEqual(terminal.lifecycle?.verification, .unverified)
+        XCTAssertEqual(terminal.rcirEventPage?.events.map(\.kind), ["accepted", "working", "completed"])
+        XCTAssertEqual(fixture.provider.effects, 1, "Observation recovery must never create another provider effect")
+    }
+
+    @MainActor func testMCPRoutedExecutionCannotResurrectAfterExplicitRemovalAndSameClientReenrollment() async throws {
+        let fixture = try LifecycleAdversarialFixture(); try await fixture.connect()
+        let registry = RemoteRuntimeRegistry(now: { 1_000 })
+        try await registry.enroll(fixture.client, item: "fixture")
+        let caller = CapabilityEngine(reflectors: [], reflectorSources: [RemoteCapabilitySource(registry: registry)],
+            experience: nil, runtimeEnvironment: .init(operatingSystem: .linux, architecture: "x86_64"))
+        let capability = try XCTUnwrap(caller.capabilities(for: "fixture").capabilities.first)
+        let box = EngineBox(caller)
+        let initialJSON = try await handleToolRefreshing("context_run", arguments: ["item": .string("fixture"),
+            "actionId": .string(capability.id)], engine: box, transport: "stdio")
+        let initial = try JSONDecoder().decode(ExecutionRecord.self, from: Data(initialJSON.utf8))
+        let liveJSON = try await handleToolRefreshing("context_run_status", arguments: ["executionId": .string(initial.executionId)],
+            engine: box, transport: "stdio")
+        let live = try JSONDecoder().decode(ExecutionRecord.self, from: Data(liveJSON.utf8))
+        XCTAssertEqual(live.lifecycle?.terminal, false)
+        registry.remove(runtimeID: fixture.node.runtimeID)
+        try await registry.enroll(fixture.client, item: "fixture")
+        XCTAssertEqual(registry.registrations().first?.availability, .online)
+        try fixture.provider.emit(.completed(.string(fixture.provider.sentinel)))
+        do {
+            _ = try await handleToolRefreshing("context_run_status", arguments: ["executionId": .string(initial.executionId)],
+                engine: box, transport: "stdio")
+            XCTFail("Explicitly removed enrollment resurrected an old execution owner")
+        } catch { XCTAssertEqual(error as? RemoteLinkError, .unavailable) }
+        XCTAssertEqual(fixture.provider.effects, 1)
+    }
+
+
 }

@@ -14,7 +14,7 @@ public final class RemoteRuntimeRegistry: @unchecked Sendable {
     private struct Peer {
         let client: RemoteLinkClient
         let descriptor: RemoteRuntimeDescriptor
-        var generation: UUID
+        let generation: UUID
         var catalogs: [String: Catalog] = [:]
         var online = true
     }
@@ -55,11 +55,15 @@ public final class RemoteRuntimeRegistry: @unchecked Sendable {
         guard peers.count < 16 || peers[descriptor.runtimeID] != nil else { throw RemoteLinkError.limitExceeded }
         var peer = peers[descriptor.runtimeID] ?? Peer(client: client, descriptor: descriptor, generation: token)
         guard peer.client === client,
+              peer.descriptor.runtimeID == descriptor.runtimeID,
+              peer.descriptor.deviceID == descriptor.deviceID,
               peer.descriptor.operatingSystem == descriptor.operatingSystem,
               peer.descriptor.architecture == descriptor.architecture,
               peer.catalogs.count < 8 || peer.catalogs[itemKey(item)] != nil else { throw RemoteLinkError.idempotencyConflict }
         peer.catalogs[itemKey(item)] = Catalog(capabilities: capabilities, expiresAt: expires)
-        if !peer.online { peer.generation = token }
+        // Authenticated re-enrollment of this same peer restores observation of
+        // its existing executions. Explicit removal discards the peer, so a
+        // later enrollment receives a new generation and cannot revive owners.
         peer.online = true; peers[descriptor.runtimeID] = peer
     }
     public func remove(runtimeID: String) {

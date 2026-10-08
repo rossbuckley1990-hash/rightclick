@@ -19,11 +19,14 @@ public final class RemoteReplayLedger: @unchecked Sendable {
         var retainedEvents: [RCIRExecutionEvent]?
     }
     private struct Document: Codable {
-        var version = 1
+        var version = 2
         let runtimeID: String
         var lastTime: Int64 = 0
         var seen: Set<String> = []
         var entries: [String: Entry] = [:]
+        // Only signed, nonconsequential observations expire. Consequential
+        // request identities and reservations above are never removed.
+        var observations: [String: Int64]? = [:]
     }
     private let lock = NSLock()
     private let directory: URL
@@ -99,13 +102,17 @@ public final class RemoteReplayLedger: @unchecked Sendable {
     /// including after process death, and never enters the engine again.
     func reserve(_ request: RemoteExecutionRequest, now: Int64) throws -> RemoteExecutionSummary? {
         guard request.targetRuntimeID == runtimeID else { throw RemoteLinkError.wrongRuntime }
+        guard request.operation == .run else { throw RemoteLinkError.unsupportedOperation }
         let intent = try request.intentDigest()
         return try transaction { current in
             guard now >= current.lastTime else { throw RemoteLinkError.clockRollback }
             let requestKey = self.key("request", request.callerID, request.requestID.uuidString)
             let nonceKey = self.key("nonce", request.callerID, request.nonce.base64EncodedString())
             let idempotencyKey = self.key("intent", request.callerID, request.idempotencyKey.uuidString)
-            guard !current.seen.contains(requestKey), !current.seen.contains(nonceKey) else { throw RemoteLinkError.replay }
+            current.observations = current.observations?.filter { $0.value > now } ?? [:]
+            guard !current.seen.contains(requestKey), !current.seen.contains(nonceKey),
+                  current.observations?[requestKey] == nil, current.observations?[nonceKey] == nil
+            else { throw RemoteLinkError.replay }
             guard current.seen.count + 2 <= self.maximumRequests * 2 else { throw RemoteLinkError.limitExceeded }
             let previous = current.entries[idempotencyKey]
             if let previous, previous.intentDigest != intent { throw RemoteLinkError.idempotencyConflict }
@@ -117,6 +124,26 @@ public final class RemoteReplayLedger: @unchecked Sendable {
                     error: .executionUncertain, completedAtMilliseconds: previous.reservedAt)
             }
             return nil
+        }
+    }
+
+    /// Observations retain envelope replay protection across process restart,
+    /// without permanently consuming the consequential execution budget. An
+    /// expired original envelope cannot validate; its digest may then be removed.
+    func reserveObservation(_ request: RemoteExecutionRequest, now: Int64) throws {
+        guard request.targetRuntimeID == runtimeID else { throw RemoteLinkError.wrongRuntime }
+        guard [.runtime, .actions, .status].contains(request.operation) else { throw RemoteLinkError.unsupportedOperation }
+        try request.validate(now: now)
+        try transaction { current in
+            guard now >= current.lastTime else { throw RemoteLinkError.clockRollback }
+            let keys = [self.key("request", request.callerID, request.requestID.uuidString),
+                        self.key("nonce", request.callerID, request.nonce.base64EncodedString())]
+            var observations = current.observations?.filter { $0.value > now } ?? [:]
+            guard keys.allSatisfy({ !current.seen.contains($0) && observations[$0] == nil })
+            else { throw RemoteLinkError.replay }
+            guard observations.count + keys.count <= 2048 else { throw RemoteLinkError.limitExceeded }
+            for key in keys { observations[key] = request.expiresAtMilliseconds }
+            current.observations = observations; current.lastTime = now
         }
     }
 
@@ -135,7 +162,9 @@ public final class RemoteReplayLedger: @unchecked Sendable {
     func hasSeenEnvelope(_ request: RemoteExecutionRequest) throws -> Bool {
         try transaction { current in
             current.seen.contains(self.key("request", request.callerID, request.requestID.uuidString)) ||
-            current.seen.contains(self.key("nonce", request.callerID, request.nonce.base64EncodedString()))
+            current.seen.contains(self.key("nonce", request.callerID, request.nonce.base64EncodedString())) ||
+            current.observations?[self.key("request", request.callerID, request.requestID.uuidString)] != nil ||
+            current.observations?[self.key("nonce", request.callerID, request.nonce.base64EncodedString())] != nil
         }
     }
 
@@ -196,6 +225,10 @@ public final class RemoteReplayLedger: @unchecked Sendable {
         guard marker >= 0 else { throw RemoteLinkError.storageUnavailable }
         defer { close(marker) }; try validateMarker(marker)
         var document = try load()
+        // Validated v1 history is preserved byte-for-byte in its fields. Old
+        // permanent seen entries are never reclassified or evicted on upgrade.
+        document.version = 2
+        document.observations = document.observations ?? [:]
         let result = try body(&document)
         try validateLocation()
         try save(document)
@@ -307,12 +340,21 @@ public final class RemoteReplayLedger: @unchecked Sendable {
         let document: Document
         do { document = try JSONDecoder().decode(Document.self, from: readAll(fd, maximum: maximumBytes)) }
         catch { throw RemoteLinkError.storageUnavailable }
-        guard document.version == 1, document.runtimeID == runtimeID, document.lastTime >= 0,
+        guard (document.version == 1 || document.version == 2), document.runtimeID == runtimeID, document.lastTime >= 0,
               document.seen.count <= 2048, document.seen.count % 2 == 0,
               document.entries.count <= document.seen.count / 2, document.entries.count <= 1024,
               document.seen.allSatisfy(RemoteWire.isDigest),
               document.entries.allSatisfy({ RemoteWire.isDigest($0.key) && RemoteWire.isDigest($0.value.intentDigest) &&
                   $0.value.reservedAt > 0 && $0.value.reservedAt <= document.lastTime }) else { throw RemoteLinkError.storageUnavailable }
+        if document.version == 1 {
+            guard document.observations == nil || document.observations?.isEmpty == true else { throw RemoteLinkError.storageUnavailable }
+        } else {
+            guard let observations = document.observations, observations.count <= 2048,
+                  observations.count % 2 == 0, observations.allSatisfy({
+                      RemoteWire.isDigest($0.key) && $0.value > 0 &&
+                      ($0.value <= document.lastTime || $0.value - document.lastTime <= 60_000)
+                  }) else { throw RemoteLinkError.storageUnavailable }
+        }
         for entry in document.entries.values {
             if let summary = entry.summary {
                 guard summary.completedAtMilliseconds >= entry.reservedAt else { throw RemoteLinkError.storageUnavailable }

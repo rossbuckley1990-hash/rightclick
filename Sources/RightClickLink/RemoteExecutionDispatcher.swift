@@ -13,8 +13,6 @@ public final class RemoteExecutionDispatcher {
     private let localApproval: (any RemoteLocalApproval)?
     private var grants: [String: RemoteCallerGrant]
     private var activeExecutions: Set<String> = []
-    private var observationEnvelopes: [String: Int64] = [:]
-    private var lastObservationTime: Int64 = 0
 
     public init(engine: CapabilityEngine, identity: RemoteNodeIdentity, ledger: RemoteReplayLedger,
                 grants: [RemoteCallerGrant], enabled: Bool = false, localApproval: (any RemoteLocalApproval)? = nil,
@@ -44,10 +42,6 @@ public final class RemoteExecutionDispatcher {
         try request.validate(now: admittedAt)
         guard request.targetRuntimeID == identity.runtimeID, request.targetDeviceID == identity.deviceID else { throw RemoteLinkError.wrongRuntime }
         try authorize(request, grant: grant)
-        observationEnvelopes = observationEnvelopes.filter { $0.value > admittedAt }
-        let observationalKeys = ["request:" + request.callerID + ":" + request.requestID.uuidString,
-                                 "nonce:" + request.callerID + ":" + request.nonce.base64EncodedString()]
-        guard observationalKeys.allSatisfy({ observationEnvelopes[$0] == nil }) else { throw RemoteLinkError.replay }
         if request.operation == .status {
             return try statusResult(for: request, grant: grant, admittedAt: admittedAt)
         }
@@ -58,6 +52,9 @@ public final class RemoteExecutionDispatcher {
                 let item = try engine.inspect(request.item, allowFileInputs: false)
                 guard item.kind == "text" || item.kind == "web_url" else { throw RemoteLinkError.unauthorized }
             } catch { throw RemoteLinkError.unauthorized }
+        }
+        if request.operation == .runtime || request.operation == .actions {
+            return try discoveryResult(for: request, grant: grant, admittedAt: admittedAt)
         }
         if let previous = try ledger.reserve(request, now: admittedAt) {
             var retained = previous
@@ -72,20 +69,6 @@ public final class RemoteExecutionDispatcher {
         var enteredEngine = false
         do {
             switch request.operation {
-            case .runtime:
-                let descriptor = RemoteRuntimeDescriptor(version: 1, runtimeID: identity.runtimeID,
-                    deviceID: identity.deviceID, operatingSystem: engine.runtimeEnvironment.operatingSystem,
-                    architecture: engine.runtimeEnvironment.architecture, operations: grant.operations.sorted { $0.rawValue < $1.rawValue })
-                summary = RemoteExecutionSummary(runtime: descriptor, lifecycle: [.requested, .authorized, .delivered, .discovered], completedAtMilliseconds: now())
-            case .actions:
-                let capabilities = try engine.capabilities(for: request.item, allowFileInputs: false).capabilities
-                let exported = try capabilities.filter { grant.capabilityIDs.contains($0.id) && !$0.id.hasPrefix("remote:") && engine.runtimeEnvironment.supports($0) }.map { capability in
-                    RemoteCapabilityDescriptor(id: capability.id, contractDigest: try Self.contractDigest(capability),
-                        title: capability.title, safety: capability.safety, invocation: capability.invocation,
-                        supportLevel: capability.supportLevel, runtimeRequirements: capability.runtimeRequirements,
-                        requiresConfirmation: capability.requiresConfirmation)
-                }
-                summary = RemoteExecutionSummary(capabilities: exported, lifecycle: [.requested, .authorized, .delivered, .discovered], completedAtMilliseconds: now())
             case .run:
                 guard let capability = try engine.capabilities(for: request.item, allowFileInputs: false).capabilities.first(where: { $0.id == request.capabilityID && !$0.id.hasPrefix("remote:") }),
                       try Self.contractDigest(capability) == request.capabilityDigest else { throw RemoteLinkError.unavailable }
@@ -132,6 +115,26 @@ public final class RemoteExecutionDispatcher {
         guard grant.operations.contains(request.operation),
               (request.operation != .run && request.operation != .status) || request.capabilityID.map(grant.capabilityIDs.contains) == true else { throw RemoteLinkError.unauthorized }
     }
+    private func discoveryResult(for request: RemoteExecutionRequest, grant: RemoteCallerGrant, admittedAt: Int64) throws -> Data {
+        try ledger.reserveObservation(request, now: admittedAt)
+        let summary: RemoteExecutionSummary
+        if request.operation == .runtime {
+            let descriptor = RemoteRuntimeDescriptor(version: 1, runtimeID: identity.runtimeID,
+                deviceID: identity.deviceID, operatingSystem: engine.runtimeEnvironment.operatingSystem,
+                architecture: engine.runtimeEnvironment.architecture, operations: grant.operations.sorted { $0.rawValue < $1.rawValue })
+            summary = RemoteExecutionSummary(runtime: descriptor, lifecycle: [.requested, .authorized, .delivered, .discovered], completedAtMilliseconds: now())
+        } else {
+            let capabilities = try engine.capabilities(for: request.item, allowFileInputs: false).capabilities
+            let exported = try capabilities.filter { grant.capabilityIDs.contains($0.id) && !$0.id.hasPrefix("remote:") && engine.runtimeEnvironment.supports($0) }.map { capability in
+                RemoteCapabilityDescriptor(id: capability.id, contractDigest: try Self.contractDigest(capability),
+                    title: capability.title, safety: capability.safety, invocation: capability.invocation,
+                    supportLevel: capability.supportLevel, runtimeRequirements: capability.runtimeRequirements,
+                    requiresConfirmation: capability.requiresConfirmation)
+            }
+            summary = RemoteExecutionSummary(capabilities: exported, lifecycle: [.requested, .authorized, .delivered, .discovered], completedAtMilliseconds: now())
+        }
+        return try result(for: request, summary: summary, reused: false)
+    }
     private func result(for request: RemoteExecutionRequest, summary: RemoteExecutionSummary, reused: Bool) throws -> Data {
         try summary.validate()
         let result = RemoteExecutionResult(version: 1, requestID: request.requestID,
@@ -141,14 +144,7 @@ public final class RemoteExecutionDispatcher {
         return try SignedRemoteMessage.seal(result, domain: RemoteWire.resultDomain, signer: identity)
     }
     private func statusResult(for request: RemoteExecutionRequest, grant: RemoteCallerGrant, admittedAt: Int64) throws -> Data {
-        // Cache applies only to nonconsequential observations. Expired envelopes
-        // can never validate again; consequential journal entries never expire.
-        guard admittedAt >= lastObservationTime else { throw RemoteLinkError.clockRollback }
-        observationEnvelopes = observationEnvelopes.filter { $0.value > admittedAt }
-        let keys = ["request:" + request.callerID + ":" + request.requestID.uuidString,
-                    "nonce:" + request.callerID + ":" + request.nonce.base64EncodedString()]
-        guard keys.allSatisfy({ observationEnvelopes[$0] == nil }), try !ledger.hasSeenEnvelope(request) else { throw RemoteLinkError.replay }
-        guard observationEnvelopes.count + 2 <= 2048 else { throw RemoteLinkError.limitExceeded }
+        guard try !ledger.hasSeenEnvelope(request) else { throw RemoteLinkError.replay }
         let summary: RemoteExecutionSummary
         do { summary = try currentStatus(for: request, grant: grant) }
         catch let error as RCIRError where error == .invalidSequence || error == .invalidLimit {
@@ -157,8 +153,9 @@ public final class RemoteExecutionDispatcher {
             summary = RemoteExecutionSummary(lifecycle: [.requested, .authorized, .delivered, .unknown],
                 error: .invalidCursor, completedAtMilliseconds: admittedAt)
         }
-        for key in keys { observationEnvelopes[key] = request.expiresAtMilliseconds }
-        lastObservationTime = admittedAt
+        // Failed original-owner binding never reserves an observation. Valid
+        // pages and signed cursor errors retain durable envelope replay guards.
+        try ledger.reserveObservation(request, now: admittedAt)
         return try result(for: request, summary: summary, reused: true)
     }
 
