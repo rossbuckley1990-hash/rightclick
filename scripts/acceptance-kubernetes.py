@@ -25,7 +25,7 @@ def main():
     args = parser.parse_args(); out = args.output.resolve(); out.mkdir(parents=True, exist_ok=True)
     report, client = {"runKind": "NEW_RUN", "controls": {}}, args.client.resolve()
     with tempfile.TemporaryDirectory(prefix="rightclick-kubernetes-acceptance-") as temporary:
-        tmp = pathlib.Path(temporary); writer, reader = tmp / "writer.json", tmp / "reader.json"
+        tmp = pathlib.Path(temporary).resolve(); writer, reader = tmp / "writer.json", tmp / "reader.json"
         writer.write_bytes((args.lab / "scoped.kubeconfig").read_bytes()); writer.chmod(0o600)
         reader.write_bytes((args.lab / "observer.kubeconfig").read_bytes()); reader.chmod(0o600)
         config_bytes = json.loads(writer.read_text()); endpoint = config_bytes["clusters"][0]["cluster"]["server"]
