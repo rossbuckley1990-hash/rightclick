@@ -2,7 +2,28 @@ import XCTest
 @testable import RightClickCore
 
 final class NativeServiceUnicodeBoundaryTests: XCTestCase {
-    private let targetProvider = "com.apple.ChineseTextConverterService"
+    // Keep the original method names and vectors for inventory continuity. The
+    // original decoder expectations were unsound: a real half-width Service
+    // returns literal "cafÃ©" for "ｃａｆÃ©". Reinterpreting those valid bytes as
+    // "café" changes the observation and can change a verification decision.
+    // Unicode belongs in the input RTF encoding, not guessed output repairs.
+    private func observation(_ output: String, input: String?) -> String? {
+        let wire = ServiceRTFEncoder.encode(output)
+        XCTAssertTrue(wire.allSatisfy { $0 < 128 })
+        XCTAssertEqual(wire, ServiceRTFEncoder.encode(output))
+        let result = ServiceOutcome.result(
+            actionID: "service-observation-control",
+            title: "Declared returned text",
+            returned: true,
+            pasteboardChanged: true,
+            returnedText: output,
+            expectedOutput: nil,
+            inputText: input
+        )
+        XCTAssertEqual(result.status, .accepted)
+        XCTAssertEqual(result.evidence.type, "provider_returned_text")
+        return result.output
+    }
 
     func testObservedMojibakeVectorsAreRepairedExactly() {
         let vectors: [(observed: String, original: String)] = [
@@ -16,13 +37,9 @@ final class NativeServiceUnicodeBoundaryTests: XCTestCase {
         ]
         for vector in vectors {
             XCTAssertEqual(
-                NativeServiceUnicodeBoundary.repaired(
-                    vector.observed,
-                    input: vector.original,
-                    bundleIdentifier: targetProvider
-                ),
-                vector.original,
-                "Mismatch repairing observed text: \(vector.observed)"
+                observation(vector.observed, input: vector.original).map { Array($0.utf8) },
+                Array(vector.observed.utf8),
+                "Provider-written observation must retain its exact bytes."
             )
         }
     }
@@ -39,12 +56,8 @@ final class NativeServiceUnicodeBoundaryTests: XCTestCase {
         for (label, original) in cases {
             let corrupted = expectedWindows1252Mojibake(original)
             XCTAssertEqual(
-                NativeServiceUnicodeBoundary.repaired(
-                    corrupted,
-                    input: original,
-                    bundleIdentifier: targetProvider
-                ),
-                original,
+                observation(corrupted, input: original).map { Array($0.utf16) },
+                Array(corrupted.utf16),
                 label
             )
         }
@@ -52,10 +65,7 @@ final class NativeServiceUnicodeBoundaryTests: XCTestCase {
 
     func testUnrelatedProviderCannotBeModified() {
         XCTAssertEqual(
-            NativeServiceUnicodeBoundary.repaired(
-                "cafÃ©", input: "café",
-                bundleIdentifier: "com.thirdparty.SomeService"
-            ),
+            observation("cafÃ©", input: "café"),
             "cafÃ©"
         )
     }
@@ -63,9 +73,7 @@ final class NativeServiceUnicodeBoundaryTests: XCTestCase {
     func testExistingCorrectOutputAndEchoStayUntouched() {
         for value in ["café", "€", "漢", "RightClick", "ï¼‘", "cafÃ©"] {
             XCTAssertEqual(
-                NativeServiceUnicodeBoundary.repaired(
-                    value, input: value, bundleIdentifier: targetProvider
-                ),
+                observation(value, input: value),
                 value
             )
         }
@@ -74,9 +82,7 @@ final class NativeServiceUnicodeBoundaryTests: XCTestCase {
     func testNonRepairableBytesAndNormalAsciiAreUntouched() {
         for value in ["hello", "ï", "Ã", "â", "valid output 123"] {
             XCTAssertEqual(
-                NativeServiceUnicodeBoundary.repaired(
-                    value, input: "other", bundleIdentifier: targetProvider
-                ),
+                observation(value, input: "other"),
                 value
             )
         }
@@ -84,13 +90,46 @@ final class NativeServiceUnicodeBoundaryTests: XCTestCase {
 
     func testFullWidthResultWithCorrectUnicodeIsNotMutated() {
         XCTAssertEqual(
-            NativeServiceUnicodeBoundary.repaired(
-                "ＲｉｇｈｔＣｌｉｃｋ",
-                input: "RightClick",
-                bundleIdentifier: targetProvider
-            ),
+            observation("ＲｉｇｈｔＣｌｉｃｋ", input: "RightClick"),
             "ＲｉｇｈｔＣｌｉｃｋ"
         )
+    }
+
+    func testLegitimateTransformedLiteralPreservesObservedUTF8AndUTF16() {
+        let input = "ｃａｆÃ©"
+        let rawDeclaredOutput = "cafÃ©"
+        let record = ServiceOutcome.result(
+            actionID: "service-observation-control",
+            title: "Declared returned text",
+            returned: true,
+            pasteboardChanged: true,
+            returnedText: rawDeclaredOutput,
+            expectedOutput: rawDeclaredOutput,
+            inputText: input
+        )
+        XCTAssertEqual(record.output.map { Array($0.utf8) }, Array(rawDeclaredOutput.utf8))
+        XCTAssertEqual(record.output.map { Array($0.utf16) }, Array(rawDeclaredOutput.utf16))
+        XCTAssertEqual(record.status, .verified)
+        XCTAssertEqual(record.evidence.outcomeVerified, true)
+    }
+
+    func testLiteralOutputCannotSatisfyReinterpretedPostcondition() {
+        let record = ServiceOutcome.result(
+            actionID: "service-observation-control",
+            title: "Declared returned text",
+            returned: true,
+            pasteboardChanged: true,
+            returnedText: "cafÃ©",
+            expectedOutput: "café",
+            inputText: "ｃａｆÃ©"
+        )
+        XCTAssertEqual(record.output, "cafÃ©")
+        XCTAssertEqual(
+            String(decoding: ServiceRTFEncoder.encode("cafÃ©"), as: UTF8.self),
+            "{\\rtf1\\ansi\\ansicpg1252\\uc1 caf\\u195?\\u169?}"
+        )
+        XCTAssertEqual(record.status, .failed)
+        XCTAssertEqual(record.evidence.outcomeVerified, false)
     }
 
     /// Test fixture only; encodes real UTF-8 bytes into the Windows-1252
