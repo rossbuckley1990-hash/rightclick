@@ -1,0 +1,39 @@
+name: RIGHTCLICK Alien Cloud First Contact macOS 15
+on:
+  push:
+    branches:
+      - experiment/alien-cloud-first-contact-20261007
+    paths:
+      - '.github/workflows/alien-cloud-macos15.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cloud-first-contact:
+    runs-on: macos-15
+    timeout-minutes: 40
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Build actual RIGHTCLICK from pinned source
+        shell: bash
+        run: |
+          set -euo pipefail
+          swift --version
+          swift build --product rightclick --force-resolved-versions
+      - name: Use only RIGHTCLICK seven public MCP operations for novel cloud mutations
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/alien-cloud-evidence"
+          python3 scripts/experiments/alien-cloud-first-contact.py .build/debug/rightclick "$RUNNER_TEMP/alien-cloud-evidence"
+      - name: Preserve raw transcripts and remote readback independently
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: alien-cloud-macos15-${{ github.sha }}
+          path: ${{ runner.temp }}/alien-cloud-evidence
+          if-no-files-found: warn
+          retention-days: 7
+

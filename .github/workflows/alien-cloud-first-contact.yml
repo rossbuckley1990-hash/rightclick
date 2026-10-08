@@ -1,0 +1,43 @@
+name: RIGHTCLICK Alien Cloud First Contact
+on:
+  push:
+    branches:
+      - experiment/alien-cloud-first-contact-20261007
+    paths:
+      - '.github/workflows/alien-cloud-first-contact.yml'
+      - 'scripts/experiments/alien-cloud-first-contact.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: alien-cloud-first-contact-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover-execute-verify:
+    name: Seven-operation external cloud proof
+    runs-on: macos-26
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact experiment SHA
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Attest source, compile RIGHTCLICK and test unknown third-party cloud
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "SOURCE_SHA=$GITHUB_SHA"
+          sw_vers
+          swift --version
+          swift build --product rightclick --force-resolved-versions
+          mkdir -p "$RUNNER_TEMP/alien-cloud-evidence"
+          python3 scripts/experiments/alien-cloud-first-contact.py .build/debug/rightclick "$RUNNER_TEMP/alien-cloud-evidence"
+      - name: Preserve independent receipts and both MCP tool transcripts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: alien-cloud-first-contact-${{ github.sha }}
+          path: ${{ runner.temp }}/alien-cloud-evidence
+          if-no-files-found: warn
+          retention-days: 7

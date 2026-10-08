@@ -1,0 +1,35 @@
+name: RIGHTCLICK Alien Cloud First Contact Intel
+on:
+  push:
+    branches:
+      - experiment/alien-cloud-first-contact-20261007
+    paths:
+      - '.github/workflows/alien-cloud-first-contact-intel.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  first-contact-intel:
+    name: Independent macOS Intel first-contact attempt
+    runs-on: macos-26-intel
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Build and run same seven-operation remote API proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "SOURCE_SHA=$GITHUB_SHA"
+          sw_vers
+          swift --version
+          swift build --product rightclick --force-resolved-versions
+          mkdir -p "$RUNNER_TEMP/alien-cloud-evidence"
+          python3 scripts/experiments/alien-cloud-first-contact.py .build/debug/rightclick "$RUNNER_TEMP/alien-cloud-evidence"
+      - name: Archive raw transcripts and independent remote observations
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: alien-cloud-intel-${{ github.sha }}
+          path: ${{ runner.temp }}/alien-cloud-evidence
+          if-no-files-found: warn
+          retention-days: 7
