@@ -5,6 +5,21 @@ import XCTest
 /// Controlled stale observations expose a causal binding deficiency. These are
 /// shared-runtime regressions, never claims of genuine Kafka/Kubernetes GREEN.
 final class InvocationBindingTests: XCTestCase {
+    /// Failures retain only a fixed stage and host process measurements. Fixture
+    /// paths, configurations, credentials, arguments and output never enter it.
+    private struct StageFailure: Error, CustomStringConvertible {
+        enum Stage: String { case fixtureProvisioning, resolverAcquisition, contextualDiscovery, invocation }
+        let stage: Stage
+        let kind: String
+        let kafkaStage: String?
+        let processOutcome: String?
+        let started: Bool?
+        let terminationStatus: Int32?
+        let bootstrap: NativeHTTPFixture.PythonClientBootstrapFailure?
+        var description: String {
+            "InvocationBindingFixture stage=\(stage.rawValue) kind=\(kind) kafkaStage=\(kafkaStage ?? "none") processOutcome=\(processOutcome ?? "none") started=\(started.map(String.init) ?? "none") exit=\(terminationStatus.map(String.init) ?? "none") bootstrap=[\(bootstrap?.description ?? "none")]"
+        }
+    }
     private func fixture(mode: String, substrate: String) throws -> (URL, [String: String]) {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent("invocation-binding-" + UUID().uuidString)
         try NativeHTTPFixture.createPrivateDirectory(directory)
@@ -46,17 +61,38 @@ final class InvocationBindingTests: XCTestCase {
         return (directory, environment)
     }
     private func exercise(_ substrate: String, mode: String) throws -> ExecutionRecord {
-        let (directory, environment) = try fixture(mode: mode, substrate: substrate)
-        defer { try? NativeHTTPFixture.remove(directory) }
-        let endpoint = substrate == "kafka" ? "kafka://127.0.0.1:19092" : "https://127.0.0.1:16443"
-        let descriptor = CapabilityArtifactDescriptor(id: "controlled", kind: substrate, endpointURL: endpoint)
-        let reflector = try substrate == "kafka" ? KafkaCapabilityArtifactResolver(environment: environment).resolve(descriptor) :
-            KubernetesCapabilityArtifactResolver(environment: environment).resolve(descriptor)
-        let item = try ContentParser.parse("controlled causality")
-        let capability = try XCTUnwrap(reflector.capabilities(for: item).first)
-        let arguments = substrate == "kafka" ? ["key": "repeated-challenge", "payload": "matching-prior-value"] :
-            ["name": "repeated-name", "challenge": "repeated-challenge", "value": "matching-prior-value"]
-        return try reflector.begin(capability: capability, item: item, executionID: UUID().uuidString, arguments: arguments)
+        var stage = StageFailure.Stage.fixtureProvisioning
+        var diagnostic: KafkaCapabilityArtifactResolver.Diagnostic?
+        var processDiagnostic: BoundedCapabilityProcess.Diagnostic?
+        do {
+            let (directory, environment) = try fixture(mode: mode, substrate: substrate)
+            defer { try? NativeHTTPFixture.remove(directory) }
+            let endpoint = substrate == "kafka" ? "kafka://127.0.0.1:19092" : "https://127.0.0.1:16443"
+            let descriptor = CapabilityArtifactDescriptor(id: "controlled", kind: substrate, endpointURL: endpoint)
+            stage = .resolverAcquisition
+            let reflector = try substrate == "kafka" ? KafkaCapabilityArtifactResolver(environment: environment,
+                diagnostic: {
+                    diagnostic = $0
+                    if let process = $0.process { processDiagnostic = process }
+                }).resolve(descriptor) :
+                KubernetesCapabilityArtifactResolver(environment: environment).resolve(descriptor)
+            stage = .contextualDiscovery
+            let item = try ContentParser.parse("controlled causality")
+            let capability = try XCTUnwrap(reflector.capabilities(for: item).first)
+            let arguments = substrate == "kafka" ? ["key": "repeated-challenge", "payload": "matching-prior-value"] :
+                ["name": "repeated-name", "challenge": "repeated-challenge", "value": "matching-prior-value"]
+            stage = .invocation
+            return try reflector.begin(capability: capability, item: item, executionID: UUID().uuidString, arguments: arguments)
+        } catch {
+            // Associated descriptor messages may contain data; retain only the
+            // unassociated RCIR/ABI enums, otherwise a fixed unknown label.
+            let kind = (error as? RCIRError).map { String(describing: $0) } ??
+                (error as? CapabilityABIError).map { String(describing: $0) } ?? "other"
+            throw StageFailure(stage: stage, kind: kind, kafkaStage: diagnostic?.stage.rawValue,
+                processOutcome: processDiagnostic?.outcome.rawValue, started: processDiagnostic?.started,
+                terminationStatus: processDiagnostic?.terminationStatus,
+                bootstrap: error as? NativeHTTPFixture.PythonClientBootstrapFailure)
+        }
     }
     func testMatchingStaleKafkaRecordCannotVerifyCurrentAppend() throws {
         let record = try exercise("kafka", mode: "stale")
