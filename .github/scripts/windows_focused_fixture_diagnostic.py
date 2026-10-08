@@ -24,6 +24,8 @@ FILTER = "InvocationBindingTests|CapabilityExecutableSnapshotPoolTests|RCIRRecei
 EXPORTS = ["runtime-records.json", "requested-policy-matrix.json", "trust-results.json",
            "key-0-public.raw", "key-1-public.raw", "requests.jsonl", "effects.jsonl",
            "observations.jsonl", "polls.jsonl"]
+PHASE_LOGS = {"build": "build-output.log", "discovery": "discovery-output.log",
+              "focused": "focused-test-output.log"}
 MAX_FILE = 8 * 1024 * 1024
 MAX_TOTAL = 24 * 1024 * 1024
 SAFE = Path("focused-safe")
@@ -174,7 +176,7 @@ def archive(files, destination):
     manifest = {}
     with tarfile.open(destination, "w", format=tarfile.USTAR_FORMAT) as tar:
         for name, path in files:
-            if (name not in ["focused-test-output.log", *EXPORTS] or name in manifest
+            if (name not in [*PHASE_LOGS.values(), *EXPORTS] or name in manifest
                     or unsafe_path(path) or not path.is_file()):
                 raise ValueError("owned_file_type")
             size = path.stat().st_size
@@ -299,9 +301,10 @@ def main():
     finally:
         try:
             files = []
-            log = PRIVATE / "focused-output.log"
-            if log.exists():
-                files.append(("focused-test-output.log", log))
+            for phase, name in PHASE_LOGS.items():
+                log = PRIVATE / (phase + "-output.log")
+                if log.exists():
+                    files.append((name, log))
             export = PRIVATE / "trust-export"
             if export.exists():
                 if unsafe_path(export) or not export.is_dir():

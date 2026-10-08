@@ -125,6 +125,21 @@ class CollectorTests(unittest.TestCase):
         with patch.object(d, 'MAX_TOTAL', 9), self.assertRaises(ValueError):
             d.archive([('trust-results.json', file), ('runtime-records.json', file)], self.root / 'two.tar')
 
+    def test_all_phase_logs_are_encrypted_whitelist_inputs_even_before_tests(self):
+        files = []
+        for phase, name in d.PHASE_LOGS.items():
+            path = self.root / (phase + '-output.log')
+            path.write_bytes((phase + '-private-control-sentinel').encode())
+            files.append((name, path))
+        archived = self.root / 'phase-logs.tar'
+        manifest = d.archive(files, archived)
+        self.assertEqual(set(manifest), {'build-output.log', 'discovery-output.log',
+                                        'focused-test-output.log'})
+        with tarfile.open(archived) as tar:
+            self.assertEqual({entry.name for entry in tar}, set(manifest))
+        with self.assertRaises(ValueError):
+            d.archive([('controller-output.log', files[0][1])], self.root / 'unlisted.tar')
+
     def test_symlink_parent_or_native_junction_rejected(self):
         file = self.root / 'owned.json'
         file.write_bytes(b'owned')
