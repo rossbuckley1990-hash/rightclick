@@ -10,6 +10,7 @@ final class InvocationBindingTests: XCTestCase {
     private struct StageFailure: Error, CustomStringConvertible {
         enum Stage: String { case fixtureProvisioning, resolverAcquisition, contextualDiscovery, invocation }
         let stage: Stage
+        let substrate: String
         let kind: String
         let kafkaStage: String?
         let processOutcome: String?
@@ -17,7 +18,7 @@ final class InvocationBindingTests: XCTestCase {
         let terminationStatus: Int32?
         let bootstrap: NativeHTTPFixture.PythonClientBootstrapFailure?
         var description: String {
-            "InvocationBindingFixture stage=\(stage.rawValue) kind=\(kind) kafkaStage=\(kafkaStage ?? "none") processOutcome=\(processOutcome ?? "none") started=\(started.map(String.init) ?? "none") exit=\(terminationStatus.map(String.init) ?? "none") bootstrap=[\(bootstrap?.description ?? "none")]"
+            "InvocationBindingFixture stage=\(stage.rawValue) substrate=\(substrate) kind=\(kind) kafkaStage=\(kafkaStage ?? "none") processOutcome=\(processOutcome ?? "none") started=\(started.map(String.init) ?? "none") exit=\(terminationStatus.map(String.init) ?? "none") bootstrap=[\(bootstrap?.description ?? "none")]"
         }
     }
     private func fixture(mode: String, substrate: String) throws -> (URL, [String: String]) {
@@ -88,7 +89,8 @@ final class InvocationBindingTests: XCTestCase {
             // unassociated RCIR/ABI enums, otherwise a fixed unknown label.
             let kind = (error as? RCIRError).map { String(describing: $0) } ??
                 (error as? CapabilityABIError).map { String(describing: $0) } ?? "other"
-            throw StageFailure(stage: stage, kind: kind, kafkaStage: diagnostic?.stage.rawValue,
+            throw StageFailure(stage: stage, substrate: substrate == "kafka" ? "kafka" : "kubernetes",
+                kind: kind, kafkaStage: diagnostic?.stage.rawValue,
                 processOutcome: processDiagnostic?.outcome.rawValue, started: processDiagnostic?.started,
                 terminationStatus: processDiagnostic?.terminationStatus,
                 bootstrap: error as? NativeHTTPFixture.PythonClientBootstrapFailure)
