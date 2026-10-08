@@ -65,7 +65,6 @@ public struct RCIREd25519Signer: RCIRReceiptSigning {
 public struct RCIREd25519Verifier: RCIRReceiptVerifying {
     public init() {}
     public func verify(signature: Data, payload: Data, publicKey: Data) throws -> Bool {
-    public func verify(signature: Data, payload: Data, publicKey: Data) throws -> Bool {
         try Curve25519.Signing.PublicKey(rawRepresentation: publicKey).isValidSignature(signature, for: payload)
     }
 }

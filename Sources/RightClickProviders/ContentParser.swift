@@ -47,7 +47,6 @@ public enum ContentParser {
     }
 
     private static func looksLikePath(_ raw: String) -> Bool {
-    private static func looksLikePath(_ raw: String) -> Bool {
         raw.hasPrefix("/") || raw.hasPrefix("~") || raw.hasPrefix("./") || raw.hasPrefix("../")
     }
 }

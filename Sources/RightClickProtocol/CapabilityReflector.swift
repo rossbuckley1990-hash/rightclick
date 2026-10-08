@@ -88,7 +88,6 @@ public protocol CapabilityVerificationReflector:
         item: ContentItem,
         executionID: String,
         arguments: CapabilityArguments?,
-        arguments: CapabilityArguments?,
         verification: VerificationSpec
     ) throws -> ExecutionRecord
 }

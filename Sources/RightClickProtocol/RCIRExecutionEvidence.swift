@@ -36,7 +36,6 @@ public struct RCIRReceiptEnvelope: Codable, Sendable {
         self.algorithm = algorithm
         self.payload = payload
         self.signature = signature
-        self.signature = signature
         self.publicKey = publicKey
     }
 }

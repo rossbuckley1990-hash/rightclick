@@ -145,7 +145,6 @@ public struct OutcomeSnapshot: Codable, Sendable, Equatable {
         self.fileSize = fileSize
         self.width = width
         self.height = height
-        self.height = height
         self.metadataValues = metadataValues
     }
 }
