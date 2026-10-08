@@ -227,6 +227,15 @@ public struct SignedRemoteMessage: Codable {
             }
         }
         if let query = original.status {
+            if result.summary.error == .invalidCursor {
+                guard result.summary.state == nil, result.summary.executionLifecycle == nil,
+                      result.summary.eventPage == nil, result.summary.result == nil,
+                      result.summary.evidenceExecutionID == nil, result.summary.runtime == nil,
+                      result.summary.capabilities.isEmpty else { throw RemoteLinkError.inconsistentResult }
+                // Reached only after signature, exact poll digest, caller,
+                // target/device and idempotency binding have authenticated.
+                throw RemoteLinkError.invalidCursor
+            }
             guard let lifecycle = result.summary.executionLifecycle,
                   lifecycle.executionID == query.executionID,
                   lifecycle.originatingRequestID == query.originatingRequestID.uuidString,

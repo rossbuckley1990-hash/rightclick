@@ -299,6 +299,10 @@ public final class EncryptedOutboundLinkHostSession: @unchecked Sendable {
         default: throw RemoteLinkError.unsupportedOperation
         }
     }
+    fileprivate func reject(_ frame: BrokerFrame, channel: Channel) {
+        EncryptedLinkWire.write(.init(kind: .error, runtimeID: identity.runtimeID,
+            routeID: frame.routeID), channel: channel)
+    }
     private func finishRequest() { lock.lock(); inFlight -= 1; lock.unlock() }
 }
 
@@ -307,8 +311,14 @@ private final class HostHandler: ChannelInboundHandler {
     private let host: EncryptedOutboundLinkHostSession
     init(_ host: EncryptedOutboundLinkHostSession) { self.host = host }
     func channelRead(context: ChannelHandlerContext, data: NIOAny) {
-        do { try host.receive(RemoteWire.decode(BrokerFrame.self, unwrapInboundIn(data), maximum: EncryptedLinkWire.maximumFrameBytes), channel: context.channel) }
-        catch { context.close(promise: nil) }
+        let frame: BrokerFrame
+        do { frame = try RemoteWire.decode(BrokerFrame.self, unwrapInboundIn(data), maximum: EncryptedLinkWire.maximumFrameBytes) }
+        catch { context.close(promise: nil); return }
+        do { try host.receive(frame, channel: context.channel) }
+        catch {
+            if frame.kind == .hello || frame.kind == .exchange { host.reject(frame, channel: context.channel) }
+            else { context.close(promise: nil) }
+        }
     }
     func channelInactive(context: ChannelHandlerContext) { host.disconnected(context.channel) }
     func errorCaught(context: ChannelHandlerContext, error: Error) { context.close(promise: nil) }

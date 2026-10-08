@@ -149,7 +149,14 @@ public final class RemoteExecutionDispatcher {
                     "nonce:" + request.callerID + ":" + request.nonce.base64EncodedString()]
         guard keys.allSatisfy({ observationEnvelopes[$0] == nil }), try !ledger.hasSeenEnvelope(request) else { throw RemoteLinkError.replay }
         guard observationEnvelopes.count + 2 <= 2048 else { throw RemoteLinkError.limitExceeded }
-        let summary = try currentStatus(for: request, grant: grant)
+        let summary: RemoteExecutionSummary
+        do { summary = try currentStatus(for: request, grant: grant) }
+        catch let error as RCIRError where error == .invalidSequence || error == .invalidLimit {
+            // A malformed page query does not change an admitted execution's
+            // outcome or transport presence. Sign an opaque, poll-bound error.
+            summary = RemoteExecutionSummary(lifecycle: [.requested, .authorized, .delivered, .unknown],
+                error: .invalidCursor, completedAtMilliseconds: admittedAt)
+        }
         for key in keys { observationEnvelopes[key] = request.expiresAtMilliseconds }
         lastObservationTime = admittedAt
         return try result(for: request, summary: summary, reused: true)

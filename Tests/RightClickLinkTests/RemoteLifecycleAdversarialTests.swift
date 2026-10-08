@@ -387,4 +387,26 @@ final class RemoteLifecycleAdversarialTests: XCTestCase {
         XCTAssertEqual(retained.summary.state, .unknown)
         XCTAssertEqual(fixture.provider.effects, 1)
     }
+
+    @MainActor func testProviderInputRequiredIsLiveAndCannotBecomeConfirmationBypass() async throws {
+        let fixture = try LifecycleAdversarialFixture()
+        let run = try fixture.run(), initial = try fixture.handle(run)
+        let id = try XCTUnwrap(initial.summary.executionLifecycle?.executionID)
+        try fixture.provider.emit(.working)
+        try fixture.provider.emit(.inputRequired)
+        let input = try fixture.handle(fixture.client.makeStatusRequest(for: run, executionID: id))
+        XCTAssertEqual(input.summary.state, .awaitingUser)
+        XCTAssertEqual(input.summary.policy, .evaluated, "Provider input is distinct from host policy confirmation")
+        XCTAssertEqual(input.summary.providerAcceptance, .accepted)
+        XCTAssertEqual(input.summary.executionLifecycle?.phase, .inputRequired)
+        XCTAssertEqual(input.summary.executionLifecycle?.terminal, false)
+        XCTAssertThrowsError(try fixture.provider.emit(.completed(.string("not-yet-resumed"))))
+        try fixture.provider.emit(.working)
+        try fixture.provider.emit(.completed(.string("resumed")))
+        let terminal = try fixture.handle(fixture.client.makeStatusRequest(for: run, executionID: id))
+        XCTAssertEqual(terminal.summary.executionLifecycle?.terminal, true)
+        XCTAssertEqual(terminal.summary.providerAcceptance, .accepted)
+        XCTAssertEqual(terminal.summary.verification, .unverified)
+        XCTAssertEqual(fixture.provider.effects, 1)
+    }
 }
