@@ -1,6 +1,7 @@
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
+import Foundation
 import RightClickProtocol
 #if canImport(CryptoKit)
 import CryptoKit
@@ -12,7 +13,6 @@ import Darwin
 #else
 import Glibc
 #endif
-import Foundation
 
 /// Optional generic execution edge. Substrate compilers retain their existing
 /// transports; the engine supplies the common admission owner and live graph.
@@ -85,16 +85,189 @@ public final class RCIRExecutionHost {
     var beforeConsume: ((RCIRLease) throws -> Void)?
     var beforeStart: ((RCIRLease, (_ enqueue: () -> Void) throws -> Void, () -> Void) throws -> Void)?
 
+    private struct ActiveTask {
+        var task: RCIRTask
+        let generation: Int64
+        let signer: (any RCIRReceiptSigning)?
+        let observationBoundary: String
+        let title: String?
+    }
+    private let activeTaskLock = NSLock()
+    private var activeTasks: [String: ActiveTask] = [:]
+    private let maximumActiveTasks = 1_024
+
     public init() {}
+
+    /// Called only after admission succeeds, before any provider callback.
+    func registerActiveTask(_ task: RCIRTask, executionID: String,
+                                   generation: Int64? = nil,
+                                   signer: (any RCIRReceiptSigning)? = nil,
+                                   observationBoundary: String? = nil) throws {
+        guard !executionID.isEmpty, executionID.utf8.count <= 4096,
+              executionID.rangeOfCharacter(from: .controlCharacters) == nil,
+              !executionID.contains("*") else { throw RCIRError.invalidIdentity }
+        guard task.lease.binding.contract.task.shape != .unary else { throw RCIRError.unsupportedTaskShape }
+        guard !task.terminal else { throw RCIRError.invalidTransition }
+        activeTaskLock.lock(); defer { activeTaskLock.unlock() }
+        guard activeTasks[executionID] == nil, ExecutionStore.shared.get(executionID)?.lifecycle?.terminal != true else {
+            throw RCIRError.invalidTransition
+        }
+        guard activeTasks.count < maximumActiveTasks else { throw RCIRError.invalidLimit }
+        activeTasks[executionID] = ActiveTask(task: task, generation: generation ?? task.lease.binding.generation,
+            signer: signer, observationBoundary: observationBoundary ?? "No host observer configured; provider completion is unverified.", title: nil)
+    }
+
+    public func activeExecutionStatus(executionID: String) -> ExecutionRecord? {
+        activeTaskLock.lock(); defer { activeTaskLock.unlock() }
+        guard var active = activeTasks[executionID] else { return nil }
+        do {
+            try active.task.checkDeadline(now: max(now(), active.task.lastObservationTime))
+            if active.task.terminal {
+                let record = try terminalRecord(active, executionID: executionID)
+                try ExecutionStore.shared.putTerminal(record, events: active.task.typedEvents)
+                activeTasks[executionID] = nil
+                return record
+            }
+            activeTasks[executionID] = active
+            return try snapshot(active, executionID: executionID)
+        } catch {
+            return nil
+        }
+    }
+
+    public func activeEventPage(executionID: String, after cursor: Int64 = 0, limit: Int = 64,
+                                maximumBytes: Int = 262_144) throws -> RCIRExecutionEventPage? {
+        activeTaskLock.lock(); let task = activeTasks[executionID]?.task; activeTaskLock.unlock()
+        guard let task else { return nil }
+        return try task.statusEventPage(after: cursor, limit: limit, maximumBytes: maximumBytes)
+    }
+
+    @discardableResult
+    public func recordActiveTaskEvent(executionID: String, event: RCIRTaskEvent, now: Int64) throws -> RCIRTask? {
+        activeTaskLock.lock(); defer { activeTaskLock.unlock() }
+        guard var active = activeTasks[executionID] else { throw RCIRError.unavailable }
+        do {
+            try active.task.record(event, sequence: active.task.sequence + 1, now: now)
+        } catch {
+            // A deadline check may already have mutated the task. Overflow means
+            // observation is incomplete; no event is dropped to pretend success.
+            if error as? RCIRError == .bufferFull || error as? CapabilityABIError == .limitExceeded || active.task.terminal {
+                try active.task.providerDisappeared(now: now)
+                let record = try terminalRecord(active, executionID: executionID)
+                try ExecutionStore.shared.putTerminal(record, events: active.task.typedEvents)
+                activeTasks[executionID] = nil
+            }
+            throw error
+        }
+        if active.task.terminal {
+            let record = try terminalRecord(active, executionID: executionID)
+            try ExecutionStore.shared.putTerminal(record, events: active.task.typedEvents)
+            activeTasks[executionID] = nil
+            return active.task
+        }
+        activeTasks[executionID] = active
+        return nil
+    }
+
+    @discardableResult
+    public func markActiveTaskUnknown(executionID: String, now: Int64) throws -> RCIRTask? {
+        activeTaskLock.lock(); defer { activeTaskLock.unlock() }
+        guard var active = activeTasks[executionID] else { return nil }
+        try active.task.providerDisappeared(now: now)
+        let record = try terminalRecord(active, executionID: executionID)
+        try ExecutionStore.shared.putTerminal(record, events: active.task.typedEvents)
+        activeTasks[executionID] = nil
+        return active.task
+    }
+
+    public func requestActiveTaskCancellation(executionID: String, now: Int64) throws {
+        activeTaskLock.lock(); defer { activeTaskLock.unlock() }
+        guard var active = activeTasks[executionID] else { throw RCIRError.unavailable }
+        try active.task.requestCancellation(now: now)
+        activeTasks[executionID] = active
+    }
+
+    public func retainTerminalHistory(_ task: RCIRTask, executionID: String) {
+        guard task.terminal else { return }
+        try? ExecutionStore.shared.putRCIRHistory(task.typedEvents, executionId: executionID)
+    }
 
     public func synchronize(owners: Set<String>) {
         for binding in admission.discover() where !owners.contains(binding.contract.abi.reflectorID) {
             admission.withdraw(reflectorID: binding.contract.abi.reflectorID)
         }
+        activeTaskLock.lock()
+        let removed = activeTasks.filter { !owners.contains($0.value.task.lease.binding.contract.abi.reflectorID) }.map(\.key)
+        activeTaskLock.unlock()
+        for executionID in removed { _ = try? markActiveTaskUnknown(executionID: executionID, now: now()) }
     }
 
-    func execute(abi: CapabilityContract, discovery: CapabilityContract, arguments: CapabilityValue,
-                 scope: RCIRScope, capability: Capability, executionID: String,
+    private func lifecycle(_ active: ActiveTask, executionID: String, receipt: Bool, signed: Bool) -> ExecutionLifecycle {
+        let task = active.task
+        let acceptance: ExecutionProviderAcceptance
+        if task.typedEvents.contains(where: { $0.kind == "accepted" || $0.kind == "completed" }) { acceptance = .accepted }
+        else if task.phase == .unknown { acceptance = .unknown }
+        else if task.phase == .failed { acceptance = .rejected }
+        else { acceptance = .unknown }
+        return .init(executionID: executionID, originatingRequestID: executionID, taskID: task.id.uuidString,
+            generation: active.generation, taskShape: task.lease.binding.contract.task.shape,
+            phase: task.phase, semanticOutcome: task.outcome, sequence: task.sequence, terminal: task.terminal,
+            providerAcceptance: acceptance, verification: task.outcome == .succeeded ? .verifiedSuccess : (task.outcome == .failed ? .verifiedFailure : .unverified),
+            observationBoundary: .none, evidenceID: task.terminal ? task.id.uuidString : nil,
+            receiptAvailable: receipt, signedReceiptAvailable: signed)
+    }
+
+    private func snapshot(_ active: ActiveTask, executionID: String) throws -> ExecutionRecord {
+        let task = active.task
+        let state: ExecutionState
+        switch task.phase {
+        case .completed: state = task.outcome == .succeeded ? .succeeded : (task.outcome == .failed ? .failed : .accepted)
+        case .failed: state = .failed
+        case .cancelled: state = .cancelled
+        case .unknown: state = .unknown
+        case .inputRequired: state = .awaitingUser
+        default: state = .started
+        }
+        return .init(executionId: executionID, actionId: task.lease.binding.contract.abi.capabilityID,
+            title: active.title, state: state, message: task.terminal ? "Provider lifecycle ended; semantic outcome remains independently adjudicated." : "Provider execution is live.",
+            result: task.result, events: ["RCIR task=\(task.id.uuidString) phase=\(task.phase.rawValue)"],
+            evidence: .init(type: task.terminal ? "rcir_terminal" : "rcir_live", boundary: active.observationBoundary),
+            rcirEvents: task.typedEvents, rcirEventPage: try task.statusEventPage(),
+            lifecycle: lifecycle(active, executionID: executionID, receipt: false, signed: false))
+    }
+
+    private func terminalRecord(_ original: ActiveTask, executionID: String) throws -> ExecutionRecord {
+        var active = original
+        var signed: RCIRSignedReceipt?
+        var signingFailed = false
+        do { signed = try active.signer.map { try RCIRSignedReceipt.sign(active.task, using: $0) } }
+        catch {
+            // Receipt-signing failure occurs after an effect may exist. Keep
+            // all accepted events, terminalize UNKNOWN, and retain safe unsigned
+            // evidence without rereading or rotating the admitted signer.
+            try active.task.finalizationFailed(now: max(now(), active.task.lastObservationTime))
+            signingFailed = true
+        }
+        let task = active.task
+        var record = try snapshot(active, executionID: executionID)
+        let payload = try task.receiptData()
+        let envelope = try signed.map { try JSONDecoder().decode(RCIRReceiptEnvelope.self, from: $0.wireData()) }
+        let boundary = signingFailed ? "Admission-time receipt signing failed; retained unsigned history cannot attest the external outcome. Do not retry blindly." : active.observationBoundary
+        record.rcir = .init(version: 1, taskID: task.id.uuidString, leaseID: task.lease.id.uuidString,
+            generation: active.generation, leaseConsumed: true, phase: task.phase.rawValue,
+            outcome: task.outcome.rawValue, receipt: payload.base64EncodedString(), signedReceipt: envelope,
+            observationBoundary: boundary)
+        if signingFailed {
+            record.message = "Receipt finalization failed after provider dispatch; the outcome is unknown."
+            record.evidence = .init(type: "rcir_signing_failed", boundary: boundary)
+        }
+        record.lifecycle = lifecycle(active, executionID: executionID, receipt: true, signed: envelope != nil)
+        return record
+    }
+
+    public func execute(abi: CapabilityContract, discovery: CapabilityContract, arguments: CapabilityValue,
+                 scope: RCIRScope, taskModel: RCIRTaskModel = .init(),
+                 capability: Capability, executionID: String,
                  argumentStrings: CapabilityArguments?, item: ContentItem,
                  verification: VerificationSpec?, expectedOutput: String?, target: URL,
                  authority: @escaping () -> Set<RCIRScope>, revalidate: @escaping () -> Bool,
@@ -122,7 +295,12 @@ public final class RCIRExecutionHost {
                     schema: .object(properties: ["external": .string, "returned": .boolean], required: ["external", "returned"]),
                     expected: .object(["external": .string(observation.expected), "returned": .boolean(true)]))
             } else { combinedObserverContract = observerContract }
-            let contract = RCIRContract(abi: abi, scopes: [scope], verification: combinedObserverContract)
+            let contract = RCIRContract(
+                abi: abi,
+                scopes: [scope],
+                task: taskModel,
+                verification: combinedObserverContract
+            )
             let principal = "local-owner:" + abi.reflectorID
             let binding = try admission.publishInvocation(contract, discovery: discovery, authenticatedPrincipal: principal)
             func policy(_ config: RCIRHostConfiguration) throws -> RCIRPolicy {
@@ -137,6 +315,16 @@ public final class RCIRExecutionHost {
             let signer = try config.signingKeyFile.map {
                 try RCIREd25519Signer(rawPrivateKey: RCIRHostConfiguration.protectedRead($0, maximum: 32))
             }
+
+            let deferredObservationBoundary =
+                observation == nil
+                    ? (
+                        returnedPostcondition == nil
+                            ? "No host observer configured; provider completion is unverified."
+                            : "Caller-declared returned-value postcondition; no independent external effect observation."
+                    )
+                    : "Separate same-origin read-back, same service trust source; missing observation remains unverified."
+
             let lease = try admission.issue(binding, arguments: arguments, authority: authority(),
                                             policy: policy(config), now: now())
             var task = try RCIRTask(lease: lease, startedAt: now(), deadline: now() + 30_000)
@@ -156,20 +344,124 @@ public final class RCIRExecutionHost {
                             self.admission.withdraw(reflectorID: abi.reflectorID)
                             throw RCIRError.staleBinding
                         }
-                        try self.admission.consumeAndStart(lease, arguments: self.consumptionArguments(arguments), authority: authority(),
-                            policy: policy(self.configuration()), now: self.now()) {
+                        var deferredRegistrationError: Error?
+
+                        try self.admission.consumeAndStart(
+                            lease,
+                            arguments:
+                                self.consumptionArguments(
+                                    arguments
+                                ),
+                            authority:
+                                authority(),
+                            policy:
+                                policy(
+                                    self.configuration()
+                                ),
+                            now:
+                                self.now()
+                        ) {
+                            if taskModel.shape != .unary {
+                                do {
+                                    try self.registerActiveTask(
+                                        task,
+                                        executionID:
+                                            executionID,
+                                        generation:
+                                            binding.generation,
+                                        signer:
+                                            signer,
+                                        observationBoundary:
+                                            deferredObservationBoundary
+                                    )
+                                } catch {
+                                    deferredRegistrationError =
+                                        error
+
+                                    // Lease consumption has succeeded, but no
+                                    // provider code may run without a live RCIR
+                                    // task available for synchronous callbacks.
+                                    return
+                                }
+                            }
+
                             dispatched = true
                             enqueue()
+                        }
+
+                        if let deferredRegistrationError {
+                            throw deferredRegistrationError
                         }
                     }
                     if let hook = self.beforeStart { try hook(lease, admit, start) }
                     else { try admit(start) }
                 }
             } catch {
-                if !dispatched { throw error }
+                if !dispatched {
+                    throw error
+                }
+
                 // A transport error after dispatch can hide a completed effect.
-                record = ExecutionRecord(executionId: executionID, actionId: capability.id,
-                    state: .unknown, message: "Dispatch failed after admission; the external outcome is unknown.")
+                // Deferred execution was already registered before provider
+                // start, so terminate that live task UNKNOWN rather than leave
+                // an orphan in the active registry.
+                if
+                    taskModel.shape != .unary,
+                    let unknownTask =
+                        try? markActiveTaskUnknown(
+                            executionID:
+                                executionID,
+                            now:
+                                now()
+                        )
+                {
+                    task = unknownTask
+                }
+
+                record = ExecutionRecord(
+                    executionId:
+                        executionID,
+                    actionId:
+                        capability.id,
+                    state:
+                        .unknown,
+                    message:
+                        "Dispatch failed after admission; the external outcome is unknown."
+                )
+            }
+            if taskModel.shape != .unary {
+                // A synchronous callback can finish before dispatch returns.
+                // Its immutable publication takes precedence over that late
+                // initial record, and is already receipt-bearing.
+                if let terminal = ExecutionStore.shared.get(executionID), terminal.lifecycle?.terminal == true {
+                    return terminal
+                }
+                if !revalidate() || !currentContract() {
+                    admission.withdraw(reflectorID: abi.reflectorID)
+                    _ = try markActiveTaskUnknown(executionID: executionID, now: now())
+                } else {
+                    switch record.state {
+                    case .started, .awaitingUser:
+                        if var live = activeExecutionStatus(executionID: executionID) {
+                            live.title = record.title ?? capability.title
+                            live.message = record.message
+                            live.output = record.output
+                            live.events.append(contentsOf: record.events)
+                            return live
+                        }
+                    case .accepted, .succeeded:
+                        do { _ = try recordActiveTaskEvent(executionID: executionID, event: .completed(resultValue(record)), now: now()) }
+                        catch { _ = try? markActiveTaskUnknown(executionID: executionID, now: now()) }
+                    case .unknown:
+                        _ = try markActiveTaskUnknown(executionID: executionID, now: now())
+                    case .cancelled:
+                        _ = try recordActiveTaskEvent(executionID: executionID, event: .cancelled, now: now())
+                    default:
+                        _ = try recordActiveTaskEvent(executionID: executionID, event: .failed, now: now())
+                    }
+                }
+                guard let terminal = ExecutionStore.shared.get(executionID) else { throw RCIRError.unavailable }
+                return terminal
             }
             if !revalidate() || !currentContract() {
                 admission.withdraw(reflectorID: abi.reflectorID)
@@ -180,7 +472,9 @@ public final class RCIRExecutionHost {
                 try task.providerDisappeared(now: now())
             } else if record.state == .accepted || record.state == .succeeded {
                 do {
-                    try task.record(.completed(resultValue(record)), sequence: 1, now: now())
+                    let completedResult = try resultValue(record)
+                    try task.record(.completed(completedResult), sequence: 1, now: now())
+                    record.result = completedResult
                 } catch {
                     record.state = .unknown
                     try task.providerDisappeared(now: now())
@@ -193,7 +487,7 @@ public final class RCIRExecutionHost {
                         var complete = true
                         if let returnedPostcondition {
                             let result = try OutcomeVerifier.verify(spec: returnedPostcondition, item: item,
-                                before: OutcomeVerifier.snapshot(item: item), returnedText: record.output)
+                                before: OutcomeVerifier.snapshot(item: item), returnedText: record.output, returnedResult: record.result)
                             record.verification = result
                             complete = result.status == .verifiedSuccess || result.status == .verifiedFailure
                             observed = .object(["external": .string(text), "returned": .boolean(result.status == .verifiedSuccess)])
@@ -215,7 +509,7 @@ public final class RCIRExecutionHost {
                     }
                 } else if task.phase == .completed, let returnedPostcondition {
                     let result = try OutcomeVerifier.verify(spec: returnedPostcondition, item: item,
-                        before: OutcomeVerifier.snapshot(item: item), returnedText: record.output)
+                        before: OutcomeVerifier.snapshot(item: item), returnedText: record.output, returnedResult: record.result)
                     record.verification = result
                     if result.status == .verifiedSuccess || result.status == .verifiedFailure {
                         try task.verify(observerID: "host:returned-value-postcondition-1", now: now()) { _, _ in
@@ -223,7 +517,7 @@ public final class RCIRExecutionHost {
                         }
                         record.state = task.outcome == .succeeded ? .succeeded : .failed
                         record.evidence = OutcomeEvidence(type: "generic_postcondition",
-                            boundary: "Caller-declared returned-value postcondition; verifies returned bytes, not external effects.",
+                            boundary: "Caller-declared returned-value postcondition; verifies ABI-validated returned value, not external effects.",
                             outcomeVerified: task.outcome == .succeeded)
                     }
                 }
@@ -245,8 +539,26 @@ public final class RCIRExecutionHost {
                     : "Separate same-origin read-back, same service trust source; missing observation remains unverified.")
             record.events.append(contentsOf: ["RCIR admitted generation=\(binding.generation)",
                 "RCIR consumed lease=\(lease.id.uuidString)", "RCIR task=\(task.id.uuidString) outcome=\(task.outcome.rawValue)"])
+            record.rcirEvents = task.typedEvents
+            record.rcirEventPage = try task.statusEventPage()
+            if task.phase == .completed, task.outcome == .unverified { record.state = .accepted }
+            let boundary: OutcomeObservationBoundary = observation != nil && task.outcome != .unverified ? .externalState
+                : (returnedPostcondition != nil && task.outcome != .unverified ? .returnedValue : .none)
+            record.lifecycle = .init(executionID: executionID, originatingRequestID: executionID,
+                taskID: task.id.uuidString, generation: binding.generation, taskShape: taskModel.shape,
+                phase: task.phase, semanticOutcome: task.outcome, sequence: task.sequence, terminal: task.terminal,
+                providerAcceptance: task.phase == .unknown ? .unknown : (task.phase == .completed ? .accepted : .rejected),
+                verification: task.outcome == .succeeded ? .verifiedSuccess : (task.outcome == .failed ? .verifiedFailure : .unverified),
+                observationBoundary: boundary, evidenceID: task.id.uuidString,
+                receiptAvailable: true, signedReceiptAvailable: envelope != nil)
+            try ExecutionStore.shared.putTerminal(record, events: task.typedEvents)
+
             return record
         } catch {
+            if dispatched {
+                _ = try? markActiveTaskUnknown(executionID: executionID, now: now())
+                if let terminal = ExecutionStore.shared.get(executionID), terminal.lifecycle?.terminal == true { return terminal }
+            }
             return ExecutionRecord(executionId: executionID, actionId: capability.id, title: capability.title,
                 state: dispatched ? .unknown : .rejected,
                 message: dispatched ? "RCIR bookkeeping failed after dispatch; the external outcome is unknown. Do not retry blindly." : "RCIR admission failed: \(error)",
