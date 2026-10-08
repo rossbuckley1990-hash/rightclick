@@ -2,6 +2,9 @@
 import PackageDescription
 
 #if os(macOS)
+let nativeHostDependencies: [Target.Dependency] = ["RightClickMacOSHost"]
+let nativeCoreDependencies: [Target.Dependency] = ["RightClickMacOS"]
+let nativeTestDependencies: [Target.Dependency] = ["RightClickMacOS", "RightClickMacOSHost"]
 let nativeProducts: [Product] = [
     .library(name: "RightClickMacOS", targets: ["RightClickMacOS"]),
     .executable(name: "rightclick-probe", targets: ["RightClickProbe"]),
@@ -23,6 +26,9 @@ let nativeTargets: [Target] = [
 let cliExclusions: [String] = ["PortableMain.swift"]
 let coreTestExclusions: [String] = []
 #else
+let nativeHostDependencies: [Target.Dependency] = []
+let nativeCoreDependencies: [Target.Dependency] = []
+let nativeTestDependencies: [Target.Dependency] = []
 let nativeProducts: [Product] = []
 let nativeTargets: [Target] = []
 let cliExclusions = [
@@ -46,19 +52,15 @@ let crypto: Target.Dependency = .product(name: "Crypto", package: "swift-crypto"
 let protocolDependencies: [Target.Dependency] = [crypto]
 let providerDependencies: [Target.Dependency] = [
     "RightClickProtocol", "RightClickARD", crypto,
-    .target(name: "RightClickMacOSHost", condition: .when(platforms: [.macOS])),
     .product(name: "GRPC", package: "grpc-swift"), .product(name: "SwiftProtobuf", package: "swift-protobuf"),
     .product(name: "NIOCore", package: "swift-nio"), .product(name: "NIOPosix", package: "swift-nio"),
-]
+] + nativeHostDependencies
 let coreDependencies: [Target.Dependency] = [
     "RightClickProtocol", "RightClickProviders", crypto,
-    .target(name: "RightClickMacOS", condition: .when(platforms: [.macOS])),
-]
+] + nativeCoreDependencies
 let testDependencies: [Target.Dependency] = [
     "RightClickARD", "RightClickCore", "RightClickProtocol", "RightClickProviders", crypto,
-    .target(name: "RightClickMacOS", condition: .when(platforms: [.macOS])),
-    .target(name: "RightClickMacOSHost", condition: .when(platforms: [.macOS])),
-]
+] + nativeTestDependencies
 let package = Package(
     name: "rightclick-mcp", platforms: [.macOS(.v14)],
     products: [
