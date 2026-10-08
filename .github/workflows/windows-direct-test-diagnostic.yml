@@ -1,6 +1,7 @@
-# CI-only direct native full-suite diagnosis of the same frozen39b test/source closure.
+# CI-only full native validation of the exact reviewed repaired source closure.
+# The source pin must be frozen before this diagnostic branch is published.
 # This is supplementary evidence; the retained normal SwiftPM result stays separate.
-name: Windows direct full-suite diagnostics
+name: Windows repaired direct full-suite diagnostics
 on:
   push:
     branches: ['codex/windows-test-direct-diagnostic-*']
@@ -79,7 +80,7 @@ jobs:
           $uniqueCount = @($testNames | Sort-Object -Unique).Count
           @{ source = (git rev-parse HEAD); logLines = $lines.Count; testNames = $testNames.Count; uniqueTestNames = $uniqueCount } |
             ConvertTo-Json | Set-Content -Encoding utf8 windows-test-discovery-summary.json
-          if ($testNames.Count -ne 666 -or $uniqueCount -ne 666) { throw 'Frozen suite discovery does not match all 666 distinct tests.' }
+          if ($testNames.Count -ne 674 -or $uniqueCount -ne 674) { throw 'Repaired suite discovery does not match all 674 distinct tests.' }
       - name: Prove exact native runner and complete inventory
         timeout-minutes: 5
         run: |

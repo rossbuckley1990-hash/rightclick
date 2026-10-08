@@ -23,7 +23,7 @@ class DirectProofTests(unittest.TestCase):
     def test_actual_inventory_names_must_equal_discovery_and_remain_unique(self):
         data = inventory()
         names = direct.dump_names(data)
-        self.assertEqual(len(names), 666)
+        self.assertEqual(len(names), direct.EXPECTED_COUNT)
         self.assertEqual(names, direct.discovery_names('\n'.join(sorted(names))))
         data['tests'][0]['tests'][0]['tests'][-1]['name'] = 'test0'
         with self.assertRaises(ValueError):
@@ -48,24 +48,47 @@ class DirectProofTests(unittest.TestCase):
 
     def test_full_completion_requires_every_start_finish_and_zero_failures(self):
         expected = direct.dump_names(inventory())
-        starts = ["Test Case 'SampleTests.test%d' started at date" % i for i in range(666)]
-        finishes = ["Test Case 'SampleTests.test%d' passed (0.001 seconds)" % i for i in range(666)]
-        summary = 'Executed 666 tests, with 0 failures (0 unexpected)'
+        starts = ["Test Case 'SampleTests.test%d' started at date" % i for i in range(direct.EXPECTED_COUNT)]
+        finishes = ["Test Case 'SampleTests.test%d' passed (0.001 seconds)" % i for i in range(direct.EXPECTED_COUNT)]
+        summary = 'Executed %d tests, with 0 failures (0 unexpected)' % direct.EXPECTED_COUNT
         full = '\n'.join(starts + finishes + [summary])
-        self.assertEqual(direct.completed_xctest(full, expected)['completed'], 666)
+        self.assertEqual(direct.completed_xctest(full, expected)['completed'], direct.EXPECTED_COUNT)
         for bad in (full.replace(starts[-1], ''), full.replace(finishes[-1], ''),
                     full.replace(finishes[-1], finishes[-1].replace('passed', 'failed')),
-                    full.replace(summary, 'Executed 665 tests, with 0 failures (0 unexpected)')):
+                    full.replace(summary, 'Executed %d tests, with 0 failures (0 unexpected)' % (direct.EXPECTED_COUNT - 1)),
+                    full.replace(finishes[-1], finishes[0])):
             with self.assertRaises(ValueError):
                 direct.completed_xctest(bad, expected)
 
     def test_supported_platform_skips_are_counted_without_losing_cases(self):
         expected = direct.dump_names(inventory())
-        rows = ["Test Case 'SampleTests.test%d' started" % i for i in range(666)]
+        rows = ["Test Case 'SampleTests.test%d' started" % i for i in range(direct.EXPECTED_COUNT)]
         rows += ["Test Case 'SampleTests.test%d' %s (0.001 seconds)" %
-                 (i, 'skipped' if i < 35 else 'passed') for i in range(666)]
-        rows += ['Executed 666 tests, with 35 tests skipped and 0 failures (0 unexpected)']
+                 (i, 'skipped' if i < 35 else 'passed') for i in range(direct.EXPECTED_COUNT)]
+        rows += ['Executed %d tests, with 35 tests skipped and 0 failures (0 unexpected)' % direct.EXPECTED_COUNT]
         self.assertEqual(direct.completed_xctest('\n'.join(rows), expected)['skipped'], 35)
+
+    def test_reviewed_native_baseline_has_every_original_distinct_test(self):
+        baseline = direct.baseline_names()
+        self.assertEqual(len(baseline), 666)
+        current = baseline | {'RightClickCoreTests.NewControlTests/testNewControl'}
+        retained = direct.require_baseline_preserved(current, baseline)
+        self.assertTrue(retained['baselineAllNamesPreserved'])
+        self.assertEqual(retained['additionalTestNames'], 1)
+        # Keeping the count constant by replacing a baseline test is still RED.
+        changed = set(current)
+        changed.remove(sorted(baseline)[0])
+        changed.add('RightClickCoreTests.NewControlTests/testReplacement')
+        self.assertEqual(len(changed), len(current))
+        with self.assertRaises(ValueError):
+            direct.require_baseline_preserved(changed, baseline)
+
+    def test_original_native_baseline_pin_rejects_tampering(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'baseline.json'
+            path.write_text('{"names": []}', encoding='utf-8')
+            with self.assertRaises(ValueError):
+                direct.baseline_names(path)
 
     def test_sdk_plist_selects_exact_installed_dll_directories_and_rejects_missing(self):
         with tempfile.TemporaryDirectory() as tmp:

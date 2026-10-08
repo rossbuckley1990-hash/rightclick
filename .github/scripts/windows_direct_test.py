@@ -13,12 +13,14 @@ import sys
 
 from windows_test_supervisor import supervise
 
-RELEASE_SOURCE = '39b37afbcc288eb07c5fe341b506f35ebb77e361'
-EXPECTED_COUNT = 666
+RELEASE_SOURCE = '78ea5a6b6e7cbb59eaaac06dcf9cc47451589073'
+EXPECTED_COUNT = 674
 TRIPLE = 'x86_64-unknown-windows-msvc'
 SOURCE_INPUTS = ['Package.swift', 'Package.resolved', 'LICENSE', 'Sources', 'Tests',
                  'Vendor', 'fixtures', 'packaging', 'scripts']
 NAME = re.compile(r'^RightClick\w+Tests\.\w+/\w+$')
+BASELINE_COUNT = 666
+BASELINE_SHA256 = '469aa3ffc281dba40691650a7ed13b5117f99512e857bc4c4421269d1d8d6df6'
 
 
 def sha256(path):
@@ -28,6 +30,30 @@ def sha256(path):
 
 def write_json(path, data):
     Path(path).write_text(json.dumps(data, indent=2) + '\n', encoding='utf-8')
+
+
+def baseline_names(path=Path('.github/windows-native-baseline-tests.json')):
+    # Preserve the actual original discovery/native dump intersection, rather
+    # than accepting an unchanged count after dropping a formerly covered test.
+    if sha256(path) != BASELINE_SHA256:
+        raise ValueError('baseline_provenance')
+    data = json.loads(path.read_text(encoding='utf-8'))
+    names = data.get('names')
+    if (not isinstance(names, list) or len(names) != BASELINE_COUNT
+            or any(not isinstance(name, str) or not NAME.fullmatch(name) for name in names)
+            or len(set(names)) != BASELINE_COUNT):
+        raise ValueError('baseline_inventory')
+    return set(names)
+
+
+def require_baseline_preserved(names, baseline=None):
+    baseline = baseline_names() if baseline is None else baseline
+    if not baseline.issubset(names):
+        raise ValueError('baseline_test_removed')
+    return {'baselineInventoryCount': len(baseline),
+            'baselineAllNamesPreserved': True,
+            'additionalTestNames': len(names - baseline),
+            'baselineInventorySHA256': BASELINE_SHA256}
 
 
 def discovery_names(text):
@@ -137,7 +163,7 @@ def completed_xctest(text, expected):
         raise ValueError('incomplete_finishes')
     if any(state == 'failed' for _, state in finishes):
         raise ValueError('test_failure')
-    if not re.search(r'Executed 666 tests, with (?:\d+ tests? skipped and )?0 failures \(0 unexpected\)', text):
+    if not re.search(r'Executed ' + str(EXPECTED_COUNT) + r' tests, with (?:\d+ tests? skipped and )?0 failures \(0 unexpected\)', text):
         raise ValueError('missing_full_summary')
     return {'started': len(starts), 'completed': len(finishes),
             'skipped': sum(state == 'skipped' for _, state in finishes), 'failures': 0}
@@ -157,6 +183,7 @@ def main():
         record.update(metadata)
         write_json(record_path, record)
         expected = discovery_names(Path('windows-test-discovery.log').read_text(encoding='utf-8-sig'))
+        record.update(require_baseline_preserved(expected))
         binary = metadata['binary']
         if args.phase == 'inventory':
             code = supervise([binary, '--dump-tests-json'], 'windows-direct-inventory', 120, 10, True)
