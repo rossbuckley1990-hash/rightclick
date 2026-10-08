@@ -358,6 +358,9 @@ public enum OriginPinnedHTTP {
 
         let configuration = credentialFree ? URLSessionConfiguration.ephemeral : template.configuration
         if credentialFree {
+            // Preserve an explicitly supplied transport adapter while keeping
+            // ambient cookies, credentials and caches outside the exchange.
+            configuration.protocolClasses = template.configuration.protocolClasses
             configuration.httpCookieStorage = nil
             configuration.httpShouldSetCookies = false
             configuration.urlCredentialStorage = nil
@@ -399,13 +402,22 @@ public enum OriginPinnedHTTP {
         request.timeoutInterval =
             deadline
 
-        let task =
-            session.dataTask(
-                with: request
-            )
-
-        if let admitStart { try admitStart { task.resume() } }
-        else { task.resume() }
+        // Admission may revalidate provider contracts using other requests.
+        // Create this task only at the admitted start so its network deadline
+        // cannot expire while those checks still prohibit provider dispatch.
+        let taskLock = NSLock()
+        var startedTask: URLSessionDataTask?
+        let start = {
+            taskLock.lock(); defer { taskLock.unlock() }
+            guard startedTask == nil else { return }
+            let task = session.dataTask(with: request)
+            startedTask = task
+            task.resume()
+        }
+        if let admitStart { try admitStart(start) }
+        else { start() }
+        taskLock.lock(); let selectedTask = startedTask; taskLock.unlock()
+        guard let task = selectedTask else { throw RCIRError.unavailable }
 
         let deadlineMilliseconds =
             Int(

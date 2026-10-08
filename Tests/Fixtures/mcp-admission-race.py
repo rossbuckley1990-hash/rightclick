@@ -5,8 +5,10 @@ This is a protocol fixture, not the official-SDK product acceptance proof.
 """
 import json
 import pathlib
+import ssl
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from socketserver import TCPServer
 
 directory = pathlib.Path(sys.argv[1])
 schema = {"type": "object", "properties": {"challenge": {"type": "string"}},
@@ -16,6 +18,12 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, *args):
         pass
     def do_POST(self):
+        token = directory / "expected-token.private"
+        if token.exists() and self.headers.get("Authorization") != "Bearer " + token.read_text():
+            self.send_response(401)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         message = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
         method = message["method"]
         if method == "notifications/initialized":
@@ -46,7 +54,23 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
-server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+class NumericLoopbackServer(ThreadingHTTPServer):
+    def server_bind(self):
+        # This owned protocol fixture needs no reverse DNS before publishing
+        # its actual bound socket. The production discovery path is unchanged.
+        if self.server_address[0] != "127.0.0.1":
+            raise ValueError("fixture_requires_numeric_loopback")
+        TCPServer.server_bind(self)
+        self.server_name = "127.0.0.1"
+        self.server_port = self.server_address[1]
+
+server = NumericLoopbackServer(("127.0.0.1", 0), Handler)
 server.daemon_threads = True
-(directory / "port").write_text(str(server.server_port))
+if (directory / "certificate.pem").exists():
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    context.load_cert_chain(directory / "certificate.pem", directory / "tls-key.private")
+    server.socket = context.wrap_socket(server.socket, server_side=True)
+pending = directory / "port.tmp"
+pending.write_text(str(server.server_port))
+pending.replace(directory / "port")
 server.serve_forever()

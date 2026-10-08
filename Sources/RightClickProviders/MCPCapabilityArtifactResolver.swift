@@ -8,7 +8,8 @@ import FoundationNetworking
 /// become capability data; they never enter RIGHTCLICK's AI tool registry.
 public final class MCPCapabilityArtifactResolver: CapabilityArtifactResolver {
     public let kind = "mcp"
-    public init() {}
+    private let session: URLSession
+    public init(session: URLSession = .shared) { self.session = session }
 
     public func resolve(_ descriptor: CapabilityArtifactDescriptor) throws -> any CapabilityReflector {
         guard descriptor.kind == kind, descriptor.specificationURL == nil, descriptor.inlineData == nil,
@@ -16,7 +17,8 @@ public final class MCPCapabilityArtifactResolver: CapabilityArtifactResolver {
               let endpoint = CapabilityArtifactURLPolicy.httpURL(raw) else {
             throw CapabilityArtifactResolutionError.invalidDescriptor("MCP requires only a safe endpointURL.")
         }
-        let session = try MCPDescriptorSession(endpoint: endpoint, authorityScheme: descriptor.authorityScheme)
+        let sessionTemplate = self.session
+        let session = try MCPDescriptorSession(endpoint: endpoint, authorityScheme: descriptor.authorityScheme, session: sessionTemplate)
         let catalog = try session.catalog()
         let declarationData = try JSONSerialization.data(withJSONObject: catalog, options: [.sortedKeys])
         let digest = CapabilityJSON.digest(declarationData)
@@ -33,7 +35,7 @@ public final class MCPCapabilityArtifactResolver: CapabilityArtifactResolver {
                          "authorityScheme": descriptor.authorityScheme ?? "none"],
             available: {
                 guard session.authorityAvailable(),
-                      let current = try? MCPDescriptorSession(endpoint: endpoint, authorityScheme: descriptor.authorityScheme),
+                      let current = try? MCPDescriptorSession(endpoint: endpoint, authorityScheme: descriptor.authorityScheme, session: sessionTemplate),
                       let catalog = try? current.catalog(),
                       let bytes = try? JSONSerialization.data(withJSONObject: catalog, options: [.sortedKeys]),
                       current.authorityAvailable(), session.authorityAvailable() else { return false }
@@ -41,7 +43,7 @@ public final class MCPCapabilityArtifactResolver: CapabilityArtifactResolver {
             }, invoke: { name, input, admit in
                 // Reacquire the true provider interface immediately before use.
                 // Descriptor drift cannot reuse the old action or lease.
-                let current = try MCPDescriptorSession(endpoint: endpoint, authorityScheme: descriptor.authorityScheme)
+                let current = try MCPDescriptorSession(endpoint: endpoint, authorityScheme: descriptor.authorityScheme, session: sessionTemplate)
                 let latest = try JSONSerialization.data(withJSONObject: current.catalog(), options: [.sortedKeys])
                 guard CapabilityJSON.digest(latest) == digest else { throw RCIRError.staleBinding }
                 return try current.call(name: name, input: input, admit: admit)
@@ -60,9 +62,11 @@ private final class MCPDescriptorSession {
     private var sequence = 0
     private let origin: String
     private let selectedToken: String?
+    private let session: URLSession
 
-    init(endpoint: URL, authorityScheme: String?) throws {
+    init(endpoint: URL, authorityScheme: String?, session: URLSession) throws {
         self.endpoint = endpoint; self.authorityScheme = authorityScheme
+        self.session = session
         let canonicalOrigin = try GraphQLHTTP.canonicalOrigin(endpoint)
         self.origin = canonicalOrigin
         self.selectedToken = authorityScheme.flatMap { GraphQLHTTP.bearerToken(origin: canonicalOrigin, schemeName: $0) }
@@ -97,7 +101,7 @@ private final class MCPDescriptorSession {
             request.setValue("Bearer " + selectedToken, forHTTPHeaderField: "Authorization")
         }
         request.httpBody = try JSONSerialization.data(withJSONObject: object, options: [.sortedKeys])
-        let (data, response) = try OriginPinnedHTTP.exchange(request, credentialIsolated: true, admitStart: admit)
+        let (data, response) = try OriginPinnedHTTP.exchange(request, template: session, credentialIsolated: true, admitStart: admit)
         if let identifier = response.value(forHTTPHeaderField: "MCP-Session-Id") {
             guard identifier.utf8.count <= 256, identifier.rangeOfCharacter(from: .controlCharacters) == nil else { throw CapabilityABIError.invalidWire }
             sessionID = identifier
