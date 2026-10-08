@@ -22,6 +22,45 @@ SPEC.loader.exec_module(proof)
 
 
 class Helpers(unittest.TestCase):
+    def test_git_provenance_scopes_trust_to_exact_resolved_checkout(self):
+        repository = pathlib.Path("/tmp/fixture-checkout")
+        with mock.patch.object(proof.subprocess, "check_output", return_value="fixture-head\n") as command:
+            self.assertEqual(proof.git_output(repository, "rev-parse", "HEAD", text=True), "fixture-head\n")
+        command.assert_called_once_with(["git", "-c", "safe.directory=" + str(repository.resolve()),
+            "-C", str(repository.resolve()), "rev-parse", "HEAD"], text=True)
+
+    def test_git_provenance_survives_different_owner_without_global_writes(self):
+        with tempfile.TemporaryDirectory(prefix="rightclick-git-provenance-only-") as temporary:
+            root = pathlib.Path(temporary).resolve()
+            repository = root / "fixture-checkout"
+            repository.mkdir()
+            global_configuration = root / "global.gitconfig"
+            global_configuration.write_text("[safe]\n\tdirectory =\n")
+            environment = dict(os.environ, GIT_CONFIG_GLOBAL=str(global_configuration), GIT_CONFIG_NOSYSTEM="1")
+            for name in tuple(environment):
+                if name == "GIT_CONFIG_COUNT" or name.startswith(("GIT_CONFIG_KEY_", "GIT_CONFIG_VALUE_")):
+                    environment.pop(name)
+            subprocess.run(["git", "init", "--quiet", str(repository)], env=environment, check=True, capture_output=True, timeout=10)
+            (repository / "Package.swift").write_text("// fixture-only provenance input\n")
+            subprocess.run(["git", "-C", str(repository), "add", "Package.swift"], env=environment, check=True, capture_output=True, timeout=10)
+            subprocess.run(["git", "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                "-C", str(repository), "commit", "--quiet", "-m", "Fixture-only provenance"],
+                env=environment, check=True, capture_output=True, timeout=10)
+            before = global_configuration.read_bytes()
+            environment["GIT_TEST_ASSUME_DIFFERENT_OWNER"] = "1"
+            rejected = subprocess.run(["git", "-C", str(repository), "rev-parse", "HEAD"],
+                env=environment, capture_output=True, timeout=10)
+            self.assertEqual(rejected.returncode, 128)
+            self.assertIn(b"dubious ownership", rejected.stderr)
+            with mock.patch.dict(os.environ, environment, clear=True):
+                head = proof.git_output(repository, "rev-parse", "HEAD", text=True).strip()
+                self.assertRegex(head, r"^[0-9a-f]{40,64}$")
+                self.assertEqual(proof.git_output(repository, "status", "--porcelain", text=True), "")
+                self.assertEqual(proof.source_content_digest(repository)["fileCount"], 1)
+                (repository / "Package.swift").write_text("// changed fixture-only input\n")
+                self.assertIn("Package.swift", proof.git_output(repository, "status", "--porcelain", text=True))
+            self.assertEqual(global_configuration.read_bytes(), before)
+
     def test_exact_substitution_preserves_integer_type(self):
         self.assertEqual(proof.substitute({"offset": "${offset}", "argv": "prefix-${offset}"}, {"offset": 3}), {"offset": 3, "argv": "prefix-3"})
 
@@ -401,6 +440,25 @@ class WireFixtures(unittest.TestCase):
 
     def observe(self, family, nonce):
         return "http://127.0.0.1:" + self.observer + "/observe/" + family + "/" + nonce
+
+    def test_numeric_loopback_fixture_is_ready_with_reverse_dns_forbidden(self):
+        # HTTPServer's default bind calls getfqdn even for a numeric address.
+        # Exercise the genuine child/health path while forbidding that dependency.
+        script = '''import pathlib,runpy,socket,sys
+fixture,root=sys.argv[1:]
+def forbidden(*_args,**_kwargs):
+ raise AssertionError("Numeric owned fixture must not perform reverse DNS")
+socket.getfqdn=forbidden
+sys.path.insert(0,str(pathlib.Path(fixture).parent))
+sys.argv=[fixture,root,"observer"]
+runpy.run_path(fixture,run_name="__main__")
+'''
+        private = self.root / "dns-independent"
+        private.mkdir(mode=0o700)
+        port = self.processes.start("dns-independent", [sys.executable, "-c", script,
+            str(SCRIPTS / "coexistence-fixture.py"), str(private)], private / "observer-port", True)
+        self.assertEqual(json.loads(proof.read_http("http://127.0.0.1:" + port + "/health")), {"ready": "observer"})
+        self.assertEqual((private / "observer-port").stat().st_mode & 0o777, 0o600)
 
     def test_actual_openapi_contract_mutation_and_separate_observation(self):
         spec = json.loads(proof.read_http("http://127.0.0.1:" + self.http + "/openapi.json"))

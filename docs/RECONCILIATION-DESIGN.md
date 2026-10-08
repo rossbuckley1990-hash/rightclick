@@ -170,3 +170,41 @@ Run the unchanged verifier suite with `RIGHTCLICK_PUBLIC_RECEIPT_EVIDENCE`,
 `RIGHTCLICK_ACK_RECEIPT_EVIDENCE`, and `RIGHTCLICK_AUTHORITY_RECEIPT_EVIDENCE` pointing
 to those outputs. Without generated inputs the suite fails; it does not manufacture
 receipts, claim skipped tests passed, or fetch private historical evidence.
+
+## Final review hardening
+
+Local caller-grant revocation shares the owning Core engine executor with all
+Link grant reads, including background retained RCIR status on headless hosts.
+The actual held A2A regression proves revocation cannot overlap that executor;
+a subsequent poll withholds revoked authority without resending the effect.
+The product composes one Core executor with one RCIR host. Independently sharing
+a host across unrelated engines is not a supported runtime composition.
+
+MCP credential fixtures use actual HTTPS with a disposable fixture certificate,
+host/expiry/chain validation and an exact leaf pin before sending a synthetic
+credential. Only native Keychain failures may skip Mac credential provisioning;
+an invalid origin is a test failure. A host-selected URLSession adapter remains
+credential-isolated: its protocol classes are preserved, while ambient cookie,
+credential and cache stores remain disabled. Remote descriptors cannot select
+this adapter. Default MCP construction continues to use the shared template.
+
+The bounded HTTP task is created and resumed at the admitted enqueue boundary,
+not before potentially expensive contract/authority revalidation. Native
+Foundation otherwise starts the request deadline at task creation, permitting a
+request to expire before its effect is authorized. The network deadline remains
+unchanged. Repeated enqueue callbacks create one task; withheld enqueue sends no
+request. Provider acceptance continues to require separate outcome verification.
+
+Native fixture corrections preserve the execution-node controls. The D-Bus
+fixture's top directory permits only its existing writer group to read ancestor
+names; private writer files and the original bus policy/principals stay intact.
+The scoped Kafka lab extracts the actual ELF client from its pinned owned
+container and checks its identity, digest and version. Coexistence provenance
+trusts only the explicitly selected checkout for each Git command, and numeric
+loopback fixture binding reuses the existing DNS-independent server.
+
+Readiness failures retain the original deadline and fail closed. Public logs
+include fixed stage labels and numeric measurements only. Raw startup stderr
+remains in bounded owner-private diagnostics. The earlier hosted ACK startup
+failure had no retained causal diagnostics, so its cause is unproven; the next
+native run is an independent required gate, not a retrospectively passing result.

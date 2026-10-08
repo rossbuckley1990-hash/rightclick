@@ -61,6 +61,20 @@ final class NativeFixtureReadinessTests: XCTestCase {
         }
     }
 
+    func testUnlaunchedChildFailsWithoutReadingUnavailableTerminationStatus() throws {
+        let directory = NativeHTTPFixture.temporaryDirectory.appendingPathComponent("native-unlaunched-" + UUID().uuidString)
+        try NativeHTTPFixture.createPrivateDirectory(directory)
+        defer { try? NativeHTTPFixture.remove(directory) }
+        let marker = directory.appendingPathComponent("port")
+        let process = Process()
+        XCTAssertThrowsError(try NativeHTTPFixture.waitForPort(marker, process: process)) { error in
+            guard case NativeHTTPFixture.ReadinessError.exitedBeforeReadiness = error else {
+                return XCTFail("Unlaunched fixture must fail readiness safely")
+            }
+        }
+        XCTAssertThrowsError(try NativeHTTPFixture.waitForPort(marker, process: process, timeout: 0))
+    }
+
     func testMaximumTCPPortWithSingleTerminatingNewlineIsAccepted() throws {
         try fixture("import pathlib,sys,time; pathlib.Path(sys.argv[1]).write_text('65535\\n'); time.sleep(3)") { marker, process in
             XCTAssertEqual(try NativeHTTPFixture.waitForPort(marker, process: process), 65535)

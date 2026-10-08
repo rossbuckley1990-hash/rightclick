@@ -10,7 +10,8 @@ import json
 import pathlib
 import re
 import socket
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler
+from fixture_http import LoopbackThreadingHTTPServer
 
 
 def valid(value):
@@ -115,7 +116,7 @@ def http_server(root, role):
                 return self.reply({"error": "absent"}, 404)
             except (KeyError, ValueError, TypeError):
                 return self.reply({"error": "invalid bounded request"}, 400)
-    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    server = LoopbackThreadingHTTPServer(("127.0.0.1", 0), Handler)
     server.daemon_threads = True
     ready(root, role, server.server_port)
     server.serve_forever()

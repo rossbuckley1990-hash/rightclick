@@ -95,6 +95,9 @@ enum NativeHTTPFixture {
             if retain { persist() }
             else { try? FileManager.default.removeItem(at: directory) }
         }
+        var byteCount: Int {
+            lock.lock(); defer { lock.unlock() }; return totalBytes
+        }
         func closeParentWriter() { try? pipe.fileHandleForWriting.close() }
     }
 
@@ -131,9 +134,20 @@ enum NativeHTTPFixture {
     /// return only a decimal TCP port; never construct an incomplete URL.
     static func waitForPort(_ file: URL, process: Process, timeout: TimeInterval = 3) throws -> UInt16 {
         var ready = false
+        let started = ProcessInfo.processInfo.systemUptime
+        // Fixed stage labels and byte counts diagnose hosted readiness failures
+        // without exporting paths, marker contents, arguments, or private stderr.
+        var markerStage = "missing"
+        var markerBytes = 0
         defer {
             captureLock.lock(); let capture = captures.removeValue(forKey: ObjectIdentifier(process)); captureLock.unlock()
-            if !ready { capture?.requestRetention() }
+            if !ready {
+                capture?.requestRetention()
+                let elapsedMilliseconds = Int(max(0, ProcessInfo.processInfo.systemUptime - started) * 1_000)
+                let running = process.isRunning
+                let exit = !running && process.processIdentifier > 0 ? String(process.terminationStatus) : "none"
+                print("NativeFixtureReadiness stage=\(markerStage) elapsedMillis=\(elapsedMilliseconds) markerBytes=\(markerBytes) stderrBytes=\(capture?.byteCount ?? 0) running=\(running) exit=\(exit)")
+            }
         }
         guard timeout > 0, timeout <= 3 else { throw ReadinessError.invalidPortBeforeDeadline }
         let deadline = ProcessInfo.processInfo.systemUptime + timeout
@@ -143,7 +157,10 @@ enum NativeHTTPFixture {
                 defer { try? handle.close() }
                 // Five decimal digits plus CRLF is the longest valid marker.
                 // Read one more byte so a valid prefix cannot hide trailing data.
+                markerStage = "unreadable"
                 if let bytes = try? handle.read(upToCount: 8) {
+                    markerBytes = bytes.count
+                    markerStage = bytes.isEmpty ? "empty" : "invalid"
                     let digits: Data.SubSequence
                     if bytes.suffix(2).elementsEqual([13, 10]) { digits = bytes.dropLast(2) }
                     else if bytes.last == 10 { digits = bytes.dropLast() }

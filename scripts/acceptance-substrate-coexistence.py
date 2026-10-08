@@ -44,8 +44,16 @@ def sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def git_output(repository, *arguments, **options):
+    # This is the explicitly selected trusted fixture checkout. Container proof
+    # processes may have a different UID; scope trust to this command/path only.
+    repository = repository.resolve()
+    return subprocess.check_output(["git", "-c", "safe.directory=" + str(repository),
+        "-C", str(repository), *arguments], **options)
+
+
 def source_content_digest(repository):
-    paths = subprocess.check_output(["git", "-C", str(repository), "ls-files", "-z", "--cached", "--others", "--exclude-standard"])
+    paths = git_output(repository, "ls-files", "-z", "--cached", "--others", "--exclude-standard")
     digest = hashlib.sha256()
     count = 0
     for encoded in sorted(set(paths.split(b"\x00")) - {b""}):
@@ -517,8 +525,8 @@ def main():
     parser.add_argument("--compile-evidence", type=pathlib.Path)
     args = parser.parse_args()
     args.repository = args.repository.resolve()
-    source_head = subprocess.check_output(["git", "-C", str(args.repository), "rev-parse", "HEAD"], text=True).strip()
-    source_clean = not subprocess.check_output(["git", "-C", str(args.repository), "status", "--porcelain"], text=True).strip()
+    source_head = git_output(args.repository, "rev-parse", "HEAD", text=True).strip()
+    source_clean = not git_output(args.repository, "status", "--porcelain", text=True).strip()
     source_content = source_content_digest(args.repository)
     canonical = load_module("canonical", args.repository / "scripts/canonical-mcp-proof-client.py")
     receipt = load_module("receipt", args.repository / "scripts/verify-rcir-receipt.py")
