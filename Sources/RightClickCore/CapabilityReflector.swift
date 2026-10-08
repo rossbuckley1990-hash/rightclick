@@ -163,21 +163,11 @@ private final class MacOSServiceReflector: CapabilityReflector {
         item: ContentItem,
         executionID: String
     ) throws -> ExecutionRecord {
-        var result = ServiceCatalog.perform(
+        let result = ServiceCatalog.perform(
             capabilityID: capability.id,
             item: item,
             expectedOutput: nil
         )
-
-        // Repair the observed text-converter pasteboard encoding boundary only.
-        // Preserve status, provider acceptance and independent outcome policy.
-        if let observed = result.output {
-            result.output = NativeServiceUnicodeBoundary.repaired(
-                observed,
-                input: item.text,
-                bundleIdentifier: capability.provider?.bundleIdentifier
-            )
-        }
 
         return reflectorRecord(
             from: result,
