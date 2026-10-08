@@ -81,23 +81,35 @@ final class NativeFixtureReadinessTests: XCTestCase {
             Set(try FileManager.default.contentsOfDirectory(at: temporary, includingPropertiesForKeys: nil)
                 .filter { $0.lastPathComponent.hasPrefix("rightclick-native-fixture-stderr-") })
         }
-        let before = try retainedDirectories()
-        try fixture("import os,time; os.write(2,b'fixture-private-canary-'+b'x'*100000); time.sleep(3)") { marker, process in
-            XCTAssertThrowsError(try NativeHTTPFixture.waitForPort(marker, process: process, timeout: 0.1))
-            let created = try retainedDirectories().subtracting(before)
-            XCTAssertEqual(created.count, 1)
-            let directory = try XCTUnwrap(created.first)
-            defer { try? NativeHTTPFixture.remove(directory) }
-            let privateFile = directory.appendingPathComponent("stderr.private")
-            let bytes = try Data(contentsOf: privateFile)
-            XCTAssertEqual(bytes.count, 65_536)
-            XCTAssertTrue(bytes.starts(with: Data("fixture-private-canary-".utf8)))
+        // Readiness failure and asynchronous diagnostic capture are separate
+        // observations. A slow child still cannot invent a ready TCP port.
+        for startupDelay in [0.0, 0.25] {
+            let before = try retainedDirectories()
+            try fixture("import os,time; time.sleep(\(startupDelay)); os.write(2,b'fixture-private-canary-'+b'x'*100000); time.sleep(3)") { marker, process in
+                XCTAssertThrowsError(try NativeHTTPFixture.waitForPort(marker, process: process, timeout: 0.1))
+                let created = try retainedDirectories().subtracting(before)
+                XCTAssertEqual(created.count, 1)
+                let directory = try XCTUnwrap(created.first)
+                defer { try? NativeHTTPFixture.remove(directory) }
+                let privateFile = directory.appendingPathComponent("stderr.private")
+                let deadline = ProcessInfo.processInfo.systemUptime + 3
+                var bytes = Data()
+                repeat {
+                    let handle = try FileHandle(forReadingFrom: privateFile)
+                    bytes = try handle.read(upToCount: 65_537) ?? Data()
+                    try handle.close()
+                    if bytes.count == 65_536 { break }
+                    Thread.sleep(forTimeInterval: min(0.01, max(0, deadline - ProcessInfo.processInfo.systemUptime)))
+                } while ProcessInfo.processInfo.systemUptime < deadline
+                XCTAssertEqual(bytes.count, 65_536)
+                XCTAssertTrue(bytes.starts(with: Data("fixture-private-canary-".utf8)))
 #if !os(Windows)
-            let directoryMode = try XCTUnwrap(FileManager.default.attributesOfItem(atPath: directory.path)[.posixPermissions] as? NSNumber)
-            let fileMode = try XCTUnwrap(FileManager.default.attributesOfItem(atPath: privateFile.path)[.posixPermissions] as? NSNumber)
-            XCTAssertEqual(directoryMode.intValue, 0o700)
-            XCTAssertEqual(fileMode.intValue, 0o600)
+                let directoryMode = try XCTUnwrap(FileManager.default.attributesOfItem(atPath: directory.path)[.posixPermissions] as? NSNumber)
+                let fileMode = try XCTUnwrap(FileManager.default.attributesOfItem(atPath: privateFile.path)[.posixPermissions] as? NSNumber)
+                XCTAssertEqual(directoryMode.intValue, 0o700)
+                XCTAssertEqual(fileMode.intValue, 0o600)
 #endif
+            }
         }
     }
 }
