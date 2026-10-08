@@ -1,3 +1,5 @@
+import RightClickProviders
+import RightClickProtocol
 import Foundation
 
 /// Built-in environment-level capability discovery sources.
@@ -12,15 +14,12 @@ public enum CapabilityReflectorSourceDefaults {
             [any CapabilityReflectorSource] = [
                 ConfiguredOpenAPISource(),
 
-                BonjourOpenAPISource(
-                    startBrowsing:
-                        startBrowsing
-                ),
-                BonjourGraphQLSource(
-                    startBrowsing:
-                        startBrowsing
-                ),
             ]
+
+#if os(macOS)
+        sources.append(BonjourOpenAPISource(startBrowsing: startBrowsing))
+        sources.append(BonjourGraphQLSource(startBrowsing: startBrowsing))
+#endif
 
         if let configuredArtifacts =
             ConfiguredCapabilityArtifactSource
@@ -42,7 +41,7 @@ public enum CapabilityReflectorSourceDefaults {
         }
 #endif
 
-#if canImport(GRPC) && canImport(SwiftProtobuf) && canImport(NIOCore) && canImport(NIOPosix)
+#if os(macOS)
         sources.append(
             BonjourGRPCSource(
                 startBrowsing:

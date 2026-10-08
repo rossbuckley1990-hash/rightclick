@@ -1,4 +1,13 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -356,6 +365,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual((effectRows().first?["body"] as? [String: String])?["value"]?.utf8.count, 80_000)
     }
 
+    #if os(macOS)
     func testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation() throws {
         let entered = DispatchSemaphore(value: 0), unblock = DispatchSemaphore(value: 0)
         let finished = DispatchSemaphore(value: 0), loaderLock = NSLock()
@@ -391,6 +401,8 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertTrue(effectRows().isEmpty)
     }
 
+    #endif
+
     func testCredentialFreeObserverCannotInheritInvocationCookie() throws {
         let name = "RCIR_DISPOSABLE_" + UUID().uuidString.replacingOccurrences(of: "-", with: "")
         let cookie = try XCTUnwrap(HTTPCookie(properties: [.name: name, .value: "fixture-only",
@@ -410,6 +422,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual(row["disposableAuthCookieReceived"] as? Bool, false)
     }
 
+    #if os(macOS)
     func testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery() throws {
         let bytes = specification()
         let descriptor = BonjourOpenAPIServiceDescriptor(instanceName: "disposable-incarnation",
@@ -433,6 +446,9 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual((effectRows().first?["body"] as? [String: String])?["id"], "new-incarnation")
     }
 
+    #endif
+
+    #if os(macOS)
     func testBonjourReappearanceAfterDispatchPreservesUnknown() throws {
         let bytes = specification()
         let descriptor = BonjourOpenAPIServiceDescriptor(instanceName: "disposable-post-dispatch",
@@ -452,5 +468,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual(result.state, .unknown)
         XCTAssertEqual(result.rcir?.outcome, "unknown")
         XCTAssertEqual(effectRows().count, 1)
-    }
+    }    #endif
+
+
 }

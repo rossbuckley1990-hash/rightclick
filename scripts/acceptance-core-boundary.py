@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile actual production core without SwiftPM, MCP SDK or an MCP server.
+"""Compile a direct client of the actual Core product without an MCP server.
 Compare an existing direct entry, CLI and concrete MCP acceptance evidence.
 Uses the already-authorised local returned-text regression, no external action.
 """
@@ -19,9 +19,10 @@ sources = sorted((root / "Sources/RightClickCore").glob("*.swift"))
 assert sources and all("import MCP" not in source.read_text() for source in sources)
 harness = r'''
 import Foundation
+import RightClickCore
 @main struct CoreAcceptance {
     static func main() throws {
-        let engine = CapabilityEngine()
+        let engine = CapabilityRuntimeDefaults.makeEngine(startBrowsing: false)
         let (_, actions) = try engine.capabilities(for: "RightClick")
         let unapproved = try engine.run(id: "AirDrop", item: "https://example.com/rightclick-policy", confirmed: false)
         let verified = try engine.run(id: "service:com.apple.ChineseTextConverterService:convertTextToFullWidth",
@@ -37,13 +38,20 @@ import Foundation
 '''
 with tempfile.TemporaryDirectory(prefix="rightclick-neutral-core-") as directory:
     work = pathlib.Path(directory)
-    entry = work / "Entry.swift"
+    entry = work / "Sources/CoreAcceptance/Entry.swift"
+    entry.parent.mkdir(parents=True)
     entry.write_text(harness)
-    executable = work / "neutral-core"
-    command = ["xcrun", "swiftc", "-swift-version", "5", "-parse-as-library",
-               "-module-cache-path", str(work / "modules"), "-framework", "AppKit",
-               *map(str, sources), str(entry), "-o", str(executable)]
-    compile_result = subprocess.run(command, capture_output=True, text=True, timeout=120)
+    manifest = '''// swift-tools-version: 6.2
+import PackageDescription
+let package = Package(name: "CoreAcceptance", platforms: [.macOS(.v14)],
+    dependencies: [.package(name: "rightclick-mcp", path: %s)], targets: [
+    .executableTarget(name: "CoreAcceptance", dependencies: [.product(name: "RightClickCore", package: "rightclick-mcp")],
+        swiftSettings: [.swiftLanguageMode(.v5), .unsafeFlags(["-parse-as-library"])])])
+''' % json.dumps(str(root))
+    (work / "Package.swift").write_text(manifest)
+    executable = work / ".build/debug/CoreAcceptance"
+    command = ["swift", "build", "--package-path", str(work), "--product", "CoreAcceptance"]
+    compile_result = subprocess.run(command, capture_output=True, text=True, timeout=600)
     (evidence / "compile.txt").write_text(compile_result.stdout + compile_result.stderr)
     assert compile_result.returncode == 0, compile_result.stderr
     process = subprocess.run([str(executable)], capture_output=True, text=True, timeout=90)
@@ -78,7 +86,7 @@ for record in mcp["records"]:
 
 result = {"direct": direct, "cliVerified": cli_verified,
           "equivalence": "PASS: contextual identity/types/support/policy and returned-text outcome evidence across direct, CLI, stdio and HTTP",
-          "boundary": "Actual core sources compiled independently without MCP SDK or server. No hypothetical client support claimed.",
+          "boundary": "Direct client depends only on actual Core product, with no MCP import or server. Uses the same default source composition as CLI/MCP.",
           "sources": {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},
           "candidateSHA256": mcp["sha256"]}
 (evidence / "results.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n")

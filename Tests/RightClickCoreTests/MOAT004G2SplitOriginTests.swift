@@ -1,8 +1,15 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
 import XCTest
 
 @testable import RightClickCore
 
+#if os(macOS)
 final class MOAT004G2SplitOriginTests:
     XCTestCase
 {
@@ -732,3 +739,5 @@ final class MOAT004G2SplitOriginTests:
         )
     }
 }
+
+#endif

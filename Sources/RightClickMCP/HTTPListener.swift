@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 import MCP
 import Network
@@ -211,3 +212,4 @@ private struct RightClickListenerError: Error, CustomStringConvertible {
     var description: String
     init(_ description: String) { self.description = description }
 }
+#endif

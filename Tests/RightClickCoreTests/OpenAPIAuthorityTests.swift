@@ -1,6 +1,20 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+#if os(macOS)
 import Security
+#endif
 import XCTest
+#if os(Linux)
+import Glibc
+#endif
 @testable import RightClickCore
 
 final class OpenAPIAuthorityTests:
@@ -11,6 +25,26 @@ final class OpenAPIAuthorityTests:
 
     private var keychainAccounts:
         [String] = []
+
+    #if os(Linux)
+    private var previousAuthorityBindings: String?
+    private var testAuthorityBindings: [String: [String: String]] = [:]
+
+    override func setUp() {
+        super.setUp()
+        previousAuthorityBindings = ProcessInfo.processInfo.environment[RuntimeEnvironmentAuthority.environmentKey]
+        XCTAssertEqual(setenv(RuntimeEnvironmentAuthority.environmentKey, "[]", 1), 0)
+    }
+
+    private func updateTestAuthorityBindings() throws {
+        let rows = testAuthorityBindings.values.sorted {
+            ($0["origin"] ?? "", $0["schemeName"] ?? "") < ($1["origin"] ?? "", $1["schemeName"] ?? "")
+        }
+        let data = try JSONSerialization.data(withJSONObject: rows, options: [.sortedKeys])
+        let json = try XCTUnwrap(String(data: data, encoding: .utf8))
+        XCTAssertEqual(setenv(RuntimeEnvironmentAuthority.environmentKey, json, 1), 0)
+    }
+    #endif
 
     final class StubURLProtocol:
         URLProtocol
@@ -173,6 +207,14 @@ final class OpenAPIAuthorityTests:
         keychainAccounts =
             []
 
+        #if os(Linux)
+        if let previousAuthorityBindings {
+            XCTAssertEqual(setenv(RuntimeEnvironmentAuthority.environmentKey, previousAuthorityBindings, 1), 0)
+        } else {
+            XCTAssertEqual(unsetenv(RuntimeEnvironmentAuthority.environmentKey), 0)
+        }
+        #endif
+
         super.tearDown()
     }
 
@@ -206,6 +248,7 @@ final class OpenAPIAuthorityTests:
     private func deleteBearerToken(
         account: String
     ) {
+        #if os(macOS)
         let query:
             [String: Any] = [
                 kSecClass as String:
@@ -221,6 +264,13 @@ final class OpenAPIAuthorityTests:
         SecItemDelete(
             query as CFDictionary
         )
+        #elseif os(Linux)
+        if let binding = testAuthorityBindings.removeValue(forKey: account),
+           let name = binding["tokenEnvironment"] {
+            XCTAssertEqual(unsetenv(name), 0)
+        }
+        XCTAssertNoThrow(try updateTestAuthorityBindings())
+        #endif
     }
 
     private func deleteBearerToken(
@@ -243,6 +293,7 @@ final class OpenAPIAuthorityTests:
         origin: String,
         schemeName: String
     ) throws {
+        #if os(macOS)
         let account =
             authorityAccount(
                 origin:
@@ -298,6 +349,17 @@ final class OpenAPIAuthorityTests:
         keychainAccounts.append(
             account
         )
+        #elseif os(Linux)
+        // Same exact origin/scheme contract, backed by an explicitly named
+        // environment credential on this host instead of macOS Keychain.
+        let account = authorityAccount(origin: origin, schemeName: schemeName)
+        deleteBearerToken(account: account)
+        let name = "RIGHTCLICK_TEST_BEARER_" + UUID().uuidString.replacingOccurrences(of: "-", with: "")
+        testAuthorityBindings[account] = ["origin": origin, "schemeName": schemeName, "tokenEnvironment": name]
+        XCTAssertEqual(setenv(name, token, 1), 0)
+        try updateTestAuthorityBindings()
+        keychainAccounts.append(account)
+        #endif
     }
 
     private func specification(

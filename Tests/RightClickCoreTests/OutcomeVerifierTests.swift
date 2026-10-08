@@ -1,7 +1,15 @@
-import CoreGraphics
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
+#if os(macOS)
+import CoreGraphics
 import ImageIO
 import UniformTypeIdentifiers
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -65,6 +73,7 @@ final class OutcomeVerifierTests: XCTestCase {
         return text
     }
 
+    #if os(macOS)
     private func makeJPEG(
         at url: URL,
         metadataValue: String
@@ -142,6 +151,8 @@ final class OutcomeVerifierTests: XCTestCase {
         )
     }
 
+    #endif
+
     func testNoPostconditionsCannotBecomeSuccess() throws {
         let item = ContentItem(
             kind: "text",
@@ -215,6 +226,7 @@ final class OutcomeVerifierTests: XCTestCase {
         )
     }
 
+    #if os(macOS)
     func testXattrRemovalAndUnchangedBytesVerifySuccess() throws {
         let file = try temporaryFile("fixture.jpg")
 
@@ -285,6 +297,9 @@ final class OutcomeVerifierTests: XCTestCase {
         )
     }
 
+    #endif
+
+    #if os(macOS)
     func testMetadataValueStillPresentIsVerifiedFailure() throws {
         let marker =
             "RIGHTCLICK-NORTHSTAR003-METADATA-UNIT"
@@ -349,6 +364,8 @@ final class OutcomeVerifierTests: XCTestCase {
         )
     }
 
+    #endif
+
     func testAnyFalseRequiredPredicateMakesWholeOutcomeFail() throws {
         let file = try temporaryFile("ordinary.txt")
 
@@ -395,6 +412,24 @@ final class OutcomeVerifierTests: XCTestCase {
             [true, false]
         )
     }
+
+    #if os(Linux)
+    func testUnavailableNativeObservationsCannotVerifySuccess() throws {
+        let file = try temporaryFile("unobservable.jpg")
+        try Data("fixture bytes".utf8).write(to: file)
+        let item = ContentItem(kind: "image", display: file.path, path: file.path, typeIdentifier: "public.jpeg")
+        let before = try OutcomeVerifier.snapshot(item: item)
+        let spec = VerificationSpec(predicates: [
+            VerificationPredicate(type: .xattrAbsent, key: "user.rightclick.fixture"),
+            VerificationPredicate(type: .dimensionsEqual, width: 2, height: 2),
+            VerificationPredicate(type: .metadataValueAbsent, value: "fixture-marker"),
+        ])
+        let verification = try OutcomeVerifier.verify(spec: spec, item: item, before: before, returnedText: nil)
+        XCTAssertEqual(verification.status, .unverified)
+        XCTAssertEqual(verification.predicates.count, 3)
+        XCTAssertTrue(verification.predicates.allSatisfy { $0.passed == nil })
+    }
+    #endif
 
     func testVerificationSpecRoundTripsThroughJSON() throws {
         let original = VerificationSpec(

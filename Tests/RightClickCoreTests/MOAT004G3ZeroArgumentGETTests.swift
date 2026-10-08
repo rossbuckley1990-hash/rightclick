@@ -1,4 +1,13 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import XCTest
 
 @testable import RightClickCore
@@ -687,6 +696,7 @@ final class MOAT004G3ZeroArgumentGETTests:
         )
     }
 
+    #if os(macOS)
     func testFrozenGitHubAuthenticatedUserStillDoesNotReflectUntilG4()
         throws
     {
@@ -808,5 +818,7 @@ final class MOAT004G3ZeroArgumentGETTests:
             target,
             "G3 must not accidentally implement G4 response compatibility."
         )
-    }
+    }    #endif
+
+
 }

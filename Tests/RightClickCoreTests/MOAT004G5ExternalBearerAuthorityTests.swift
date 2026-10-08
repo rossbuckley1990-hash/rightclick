@@ -1,5 +1,13 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
+#if os(macOS)
 import Security
+#endif
 import XCTest
 
 @testable import RightClickCore
@@ -98,6 +106,7 @@ final class MOAT004G5ExternalBearerAuthorityTests:
     private func deleteBearerToken(
         account: String
     ) {
+        #if os(macOS)
         let query:
             [String: Any] = [
                 kSecClass as String:
@@ -113,6 +122,7 @@ final class MOAT004G5ExternalBearerAuthorityTests:
         SecItemDelete(
             query as CFDictionary
         )
+        #endif
     }
 
     private func deleteBearerToken(
@@ -130,6 +140,7 @@ final class MOAT004G5ExternalBearerAuthorityTests:
         )
     }
 
+    #if os(macOS)
     private func saveBearerToken(
         _ token: String,
         origin: String,
@@ -186,6 +197,8 @@ final class MOAT004G5ExternalBearerAuthorityTests:
             account
         )
     }
+
+    #endif
 
     private func responseSchema()
         -> [String: Any]
@@ -518,6 +531,7 @@ final class MOAT004G5ExternalBearerAuthorityTests:
         )
     }
 
+    #if os(macOS)
     func testExternalBearerUsesExistingOriginBoundKeychainStore()
         throws
     {
@@ -584,6 +598,9 @@ final class MOAT004G5ExternalBearerAuthorityTests:
         )
     }
 
+    #endif
+
+    #if os(macOS)
     func testCredentialForDifferentOriginIsNotUsed()
         throws
     {
@@ -647,6 +664,8 @@ final class MOAT004G5ExternalBearerAuthorityTests:
             "authority_unavailable"
         )
     }
+
+    #endif
 
     func testExplicitEmptyOperationSecurityRemainsPublic()
         throws

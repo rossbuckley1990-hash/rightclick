@@ -1,4 +1,10 @@
+import RightClickProviders
+import RightClickProtocol
+#if canImport(CryptoKit)
 import CryptoKit
+#else
+import Crypto
+#endif
 import Foundation
 
 /// Learns observations about freshly discovered contracts, never permissions.
@@ -88,8 +94,6 @@ public final class CapabilityExperience: @unchecked Sendable {
     }
 
     public static func withoutExperience(_ capability: Capability) -> Capability {
-        var clean = capability
-        clean.metadata = clean.metadata.filter { !$0.key.hasPrefix("experience.") }
-        return clean
+        CapabilityDispatchContract.withoutExperience(capability)
     }
 }

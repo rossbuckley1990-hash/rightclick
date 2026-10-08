@@ -1,3 +1,5 @@
+import RightClickProviders
+import RightClickProtocol
 import Foundation
 #if canImport(Darwin)
 import Darwin

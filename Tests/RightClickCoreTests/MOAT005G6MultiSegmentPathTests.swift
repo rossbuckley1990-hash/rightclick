@@ -1,4 +1,13 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import XCTest
 
 @testable import RightClickCore
@@ -819,6 +828,7 @@ final class MOAT005G6MultiSegmentPathTests:
         )
     }
 
+    #if os(macOS)
     func testFullFrozenGitHubContractDiscoversCreateOrUpdateContents()
         throws
     {
@@ -1016,5 +1026,7 @@ final class MOAT005G6MultiSegmentPathTests:
                 "author"
             ]
         )
-    }
+    }    #endif
+
+
 }

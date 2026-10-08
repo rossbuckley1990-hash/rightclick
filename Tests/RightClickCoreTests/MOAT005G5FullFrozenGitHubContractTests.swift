@@ -1,8 +1,15 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
 import XCTest
 
 @testable import RightClickCore
 
+#if os(macOS)
 final class MOAT005G5FullFrozenGitHubContractTests:
     XCTestCase
 {
@@ -329,3 +336,5 @@ final class MOAT005G5FullFrozenGitHubContractTests:
         )
     }
 }
+
+#endif

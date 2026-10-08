@@ -14,7 +14,7 @@ import re
 import tarfile
 
 root = pathlib.Path(__file__).resolve().parent.parent
-version = re.search(r'current = "([0-9]+\.[0-9]+\.[0-9]+)"', (root / "Sources/RightClickCore/ProductSurface.swift").read_text())[1]
+version = re.search(r'current = "([0-9]+\.[0-9]+\.[0-9]+)"', (root / "Sources/RightClickProviders/ProductSurface.swift").read_text())[1]
 output = root / "dist" / f"rightclick-{version}-source.tar.gz"
 # Durably record substrate kinds inside the immutable source asset so
 # detect-bottle-alignment.py can inventory a published bottle without guessing.

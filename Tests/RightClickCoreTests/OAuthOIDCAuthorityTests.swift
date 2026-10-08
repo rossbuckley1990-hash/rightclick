@@ -1,3 +1,9 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
 import XCTest
 
@@ -352,6 +358,7 @@ final class OAuthOIDCAuthorityTests: XCTestCase {
         )
     }
 
+    #if os(macOS)
     func testKeychainRoundTripIsBoundToExactAuthorityLease() throws {
         let unique =
             UUID()
@@ -462,6 +469,8 @@ final class OAuthOIDCAuthorityTests: XCTestCase {
                 )
         )
     }
+
+    #endif
 
     func testLoopbackRedirectAndSecretValidationFailClosed() throws {
         let metadata =

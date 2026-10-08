@@ -28,6 +28,15 @@ import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
+# Preserve old published trees while recognizing the extracted target layout.
+def source_candidates(path: str) -> list[str]:
+    if not path.startswith("Sources/RightClickCore/"):
+        return [path]
+    filename = pathlib.Path(path).name
+    moved_name = "MacOSCapabilityReflectors.swift" if filename == "CapabilityReflector.swift" else filename
+    return [path, "Sources/RightClickProtocol/" + filename,
+            "Sources/RightClickProviders/" + filename, "Sources/RightClickMacOS/" + moved_name]
+
 # Stable kind IDs. Detection uses durable source fingerprints so a renamed
 # helper file cannot silently drop a substrate from the bottle contract.
 KIND_RULES: list[dict[str, object]] = [
@@ -191,7 +200,7 @@ def read_text(path: pathlib.Path) -> str:
 def inventory_tree(root: pathlib.Path) -> dict[str, object]:
     version_match = re.search(
         r'current = "([0-9]+\.[0-9]+\.[0-9]+)"',
-        read_text(root / "Sources/RightClickCore/ProductSurface.swift"),
+        "\n".join(read_text(root / p) for p in source_candidates("Sources/RightClickCore/ProductSurface.swift")),
     )
     version = version_match.group(1) if version_match else None
     present: list[dict[str, object]] = []
@@ -199,7 +208,7 @@ def inventory_tree(root: pathlib.Path) -> dict[str, object]:
 
     for rule in KIND_RULES:
         kind_id = str(rule["id"])
-        files = [root / pathlib.Path(p) for p in rule.get("any_files", [])]  # type: ignore[arg-type]
+        files = [root / pathlib.Path(candidate) for p in rule.get("any_files", []) for candidate in source_candidates(p)]  # type: ignore[arg-type]
         file_hit = any(p.is_file() for p in files) if files else True
         pattern_hit = True
         patterns = list(rule.get("any_patterns", []))  # type: ignore[arg-type]
