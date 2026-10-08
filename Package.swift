@@ -82,43 +82,47 @@ let coreDependencies: [Target.Dependency] = [
 let testDependencies: [Target.Dependency] = [
     "RightClickARD", "RightClickCore", "RightClickProtocol", "RightClickProviders", crypto,
 ] + nativeTestDependencies
+// Keep host composition explicitly typed for the declared Swift 6.2 toolchain.
+let packageProducts: [Product] = [
+    .library(name: "RightClickARD", targets: ["RightClickARD"]),
+    .library(name: "RightClickProtocol", targets: ["RightClickProtocol"]),
+    .library(name: "RightClickCore", targets: ["RightClickCore"]),
+    .library(name: "RightClickLink", targets: ["RightClickLink"]),
+    .executable(name: "rightclick", targets: ["RightClickCLI"]),
+    .executable(name: "rightclick-ard-probe", targets: ["RightClickARDProbe"]),
+] + nativeProducts
+let packageDependencies: [Package.Dependency] = [
+    mcpDependency,
+    .package(url: "https://github.com/grpc/grpc-swift.git", exact: "1.26.2"),
+    .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.28.1"),
+    .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
+    .package(url: "https://github.com/apple/swift-crypto.git", exact: "5.0.0"),
+]
+let packageTargets: [Target] = [
+    .target(name: "RightClickHostFiles", publicHeadersPath: "include",
+        linkerSettings: [.linkedLibrary("Advapi32", .when(platforms: [.windows])), .linkedLibrary("pthread", .when(platforms: [.linux]))]),
+    .target(name: "RightClickARD", swiftSettings: [.swiftLanguageMode(.v5)]),
+    .target(name: "RightClickProtocol", dependencies: protocolDependencies, swiftSettings: [.swiftLanguageMode(.v5)]),
+    .target(name: "RightClickProviders", dependencies: providerDependencies, swiftSettings: [.swiftLanguageMode(.v5)]),
+    .target(name: "RightClickCore", dependencies: coreDependencies, swiftSettings: [.swiftLanguageMode(.v5)]),
+    .target(name: "RightClickLink", dependencies: ["RightClickCore", crypto], swiftSettings: [.swiftLanguageMode(.v5)]),
+    .target(name: "RightClickMCP", dependencies: ["RightClickCore", crypto,
+        mcpProduct, .product(name: "NIOHTTP1", package: "swift-nio"),
+        .product(name: "NIOCore", package: "swift-nio"),
+        .product(name: "NIOPosix", package: "swift-nio")], swiftSettings: [.swiftLanguageMode(.v5)],
+        linkerSettings: [.linkedFramework("Network", .when(platforms: [.macOS]))]),
+    .executableTarget(name: "RightClickCLI", dependencies: ["RightClickCore", "RightClickMCP"], exclude: cliExclusions,
+        swiftSettings: [.swiftLanguageMode(.v5), .unsafeFlags(["-parse-as-library"])]),
+    .executableTarget(name: "RightClickARDProbe", dependencies: ["RightClickARD"], swiftSettings: [.swiftLanguageMode(.v5)]),
+    .testTarget(name: "RightClickARDTests", dependencies: ["RightClickARD"], swiftSettings: [.swiftLanguageMode(.v5)]),
+    .testTarget(name: "RightClickLinkTests", dependencies: testDependencies + ["RightClickLink", "RightClickMCP"], swiftSettings: [.swiftLanguageMode(.v5)]),
+    .testTarget(name: "RightClickCoreTests", dependencies: testDependencies, exclude: coreTestExclusions + unsupportedGRPCTests,
+        swiftSettings: [.swiftLanguageMode(.v5)]),
+    .testTarget(name: "RightClickMCPTests", dependencies: testDependencies + ["RightClickMCP"], swiftSettings: [.swiftLanguageMode(.v5)]),
+] + nativeTargets
 let package = Package(
     name: "rightclick-mcp", platforms: [.macOS(.v14)],
-    products: [
-        .library(name: "RightClickARD", targets: ["RightClickARD"]),
-        .library(name: "RightClickProtocol", targets: ["RightClickProtocol"]),
-        .library(name: "RightClickCore", targets: ["RightClickCore"]),
-        .library(name: "RightClickLink", targets: ["RightClickLink"]),
-        .executable(name: "rightclick", targets: ["RightClickCLI"]),
-        .executable(name: "rightclick-ard-probe", targets: ["RightClickARDProbe"]),
-    ] + nativeProducts,
-    dependencies: [
-        mcpDependency,
-        .package(url: "https://github.com/grpc/grpc-swift.git", exact: "1.26.2"),
-        .package(url: "https://github.com/apple/swift-protobuf.git", from: "1.28.1"),
-        .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
-        .package(url: "https://github.com/apple/swift-crypto.git", exact: "5.0.0"),
-    ],
-    targets: [
-        .target(name: "RightClickHostFiles", publicHeadersPath: "include",
-            linkerSettings: [.linkedLibrary("Advapi32", .when(platforms: [.windows])), .linkedLibrary("pthread", .when(platforms: [.linux]))]),
-        .target(name: "RightClickARD", swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "RightClickProtocol", dependencies: protocolDependencies, swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "RightClickProviders", dependencies: providerDependencies, swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "RightClickCore", dependencies: coreDependencies, swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "RightClickLink", dependencies: ["RightClickCore", crypto], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .target(name: "RightClickMCP", dependencies: ["RightClickCore", crypto,
-            mcpProduct, .product(name: "NIOHTTP1", package: "swift-nio"),
-            .product(name: "NIOCore", package: "swift-nio"),
-            .product(name: "NIOPosix", package: "swift-nio")], swiftSettings: [.swiftLanguageMode(.v5)],
-            linkerSettings: [.linkedFramework("Network", .when(platforms: [.macOS]))]),
-        .executableTarget(name: "RightClickCLI", dependencies: ["RightClickCore", "RightClickMCP"], exclude: cliExclusions,
-            swiftSettings: [.swiftLanguageMode(.v5), .unsafeFlags(["-parse-as-library"])]),
-        .executableTarget(name: "RightClickARDProbe", dependencies: ["RightClickARD"], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .testTarget(name: "RightClickARDTests", dependencies: ["RightClickARD"], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .testTarget(name: "RightClickLinkTests", dependencies: testDependencies + ["RightClickLink", "RightClickMCP"], swiftSettings: [.swiftLanguageMode(.v5)]),
-        .testTarget(name: "RightClickCoreTests", dependencies: testDependencies, exclude: coreTestExclusions + unsupportedGRPCTests,
-            swiftSettings: [.swiftLanguageMode(.v5)]),
-        .testTarget(name: "RightClickMCPTests", dependencies: testDependencies + ["RightClickMCP"], swiftSettings: [.swiftLanguageMode(.v5)]),
-    ] + nativeTargets
+    products: packageProducts,
+    dependencies: packageDependencies,
+    targets: packageTargets
 )
