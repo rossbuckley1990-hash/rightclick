@@ -110,6 +110,50 @@ struct FabricProcessMain {
             try await Task.sleep(for: .seconds(3600)); await broker.shutdown(); return
         }
         let node = try identity()
+        if mode == "retry-proof" {
+            guard let targetKey = Data(base64Encoded: try flag("--target-public-key")) else { throw RightClickError("Invalid target key.") }
+            let transport = try EncryptedOutboundLinkTransport(identity: node, trustedRuntimeKey: targetKey,
+                host: "127.0.0.1", port: number("--broker-port"), group: group)
+            let client = try RemoteLinkClient(identity: node, trustedRuntimeKey: targetKey, transport: transport)
+            let discovered = try await client.send(client.makeRequest(operation: .actions, item: "portable proof"))
+            guard let capability = discovered.summary.capabilities.first(where: { $0.id == "fixture:portable-deferred" }) else {
+                throw RightClickError("Acceptance capability was not discovered.")
+            }
+            let key = UUID()
+            func fresh() -> RemoteExecutionRequest {
+                client.makeRequest(operation: .run, item: "portable proof", capabilityID: capability.id,
+                    capabilityDigest: capability.contractDigest, idempotencyKey: key)
+            }
+            let original = fresh()
+            let first = try await client.send(original)
+            guard let live = first.summary.executionLifecycle, !live.terminal else { throw RightClickError("Retry proof did not begin live.") }
+            var replayRejected = false
+            do { _ = try await client.send(original) }
+            catch { replayRejected = true }
+            guard replayRejected else { throw RightClickError("Exact signed request replay was accepted.") }
+            let retry = try await client.send(fresh())
+            guard retry.reused, retry.summary.executionLifecycle?.executionID == live.executionID else {
+                throw RightClickError("Fresh same-intent retry did not retain the original execution.")
+            }
+            var terminal: RemoteExecutionResult?
+            for _ in 0..<100 {
+                let status = try await client.send(client.makeStatusRequest(for: original, executionID: live.executionID))
+                if status.summary.executionLifecycle?.terminal == true { terminal = status; break }
+                try await Task.sleep(for: .milliseconds(100))
+            }
+            guard let terminal, terminal.summary.executionLifecycle?.phase == .completed,
+                terminal.summary.executionLifecycle?.signedReceiptAvailable == true,
+                try terminal.summary.result?.canonicalData() == CapabilityValue.integer(7).canonicalData() else {
+                throw RightClickError("Retry proof did not retain typed terminal evidence.")
+            }
+            let retained = try await client.send(fresh())
+            guard retained.reused, retained.summary.executionLifecycle?.executionID == live.executionID,
+                retained.summary.executionLifecycle?.terminal == true else { throw RightClickError("Terminal retry was not reused.") }
+            print(RightClickJSON.encode(RetryOutput(first: first, retry: retry, terminal: terminal,
+                retained: retained, exactReplayRejected: replayRejected)))
+            try await group.shutdownGracefully()
+            return
+        }
         let mcpPort = try number("--mcp-port")
         let engine: CapabilityEngine
         if mode == "local" || mode == "target" {
@@ -144,4 +188,11 @@ struct FabricProcessMain {
             token: ProcessInfo.processInfo.environment["RIGHTCLICK_MCP_TOKEN"] ?? "")
     }
     private struct IdentityOutput: Codable { let publicKey: String; let runtimeID: String; let deviceID: String }
+    private struct RetryOutput: Codable {
+        let first: RemoteExecutionResult
+        let retry: RemoteExecutionResult
+        let terminal: RemoteExecutionResult
+        let retained: RemoteExecutionResult
+        let exactReplayRejected: Bool
+    }
 }

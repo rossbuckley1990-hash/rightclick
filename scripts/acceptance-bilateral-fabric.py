@@ -128,6 +128,18 @@ class Processes:
             out.close(); err.close()
         self.running.clear()
 
+    def finite(self, role: str, arguments: list[str], environment: dict) -> dict:
+        out = (self.output / f"{role}.stdout.log").open("w")
+        err = (self.output / f"{role}.stderr.log").open("w")
+        process = subprocess.Popen([str(self.executable)] + arguments, env=environment, stdout=out, stderr=err)
+        self.running.append((process, out, err))
+        self.inventory.append({"role": role, "pid": process.pid, "arguments": arguments, "listener": None})
+        save(self.output / "processes.json", self.inventory)
+        process.wait(timeout=30)
+        out.flush(); err.flush()
+        assert process.returncode == 0, f"{role} exited {process.returncode}; see its stderr log"
+        return json.loads((self.output / f"{role}.stdout.log").read_text())
+
 
 def identity(executable: Path, key: Path, environment: dict) -> dict:
     result = subprocess.run([str(executable), "identity", "--key", str(key)], env=environment,
@@ -289,11 +301,16 @@ def main() -> int:
             save(output / "public-identities.json", pins)
             token = uuid.uuid4().hex + uuid.uuid4().hex
             secret = "TEST-ONLY-EXECUTION-NODE-CREDENTIAL-" + uuid.uuid4().hex
+            host_environments = {}
             def host_environment(role):
+                if role in host_environments:
+                    return host_environments[role]
                 config = temporary / (role + ".json")
                 protected(config, json.dumps({"version": 1, "revision": "bilateral-proof-1",
                     "deniedCapabilities": [], "signingKeyFile": str(keys[role])}).encode())
-                return dict(base, RIGHTCLICK_MCP_TOKEN=token, RIGHTCLICK_RCIR_CONFIG=str(config), RIGHTCLICK_FABRIC_PROOF_SECRET=secret)
+                environment = dict(base, RIGHTCLICK_MCP_TOKEN=token, RIGHTCLICK_RCIR_CONFIG=str(config), RIGHTCLICK_FABRIC_PROOF_SECRET=secret)
+                host_environments[role] = environment
+                return environment
             if args.mode in ["all", "local"]:
                 listener, effects = port(), temporary / "local-effects.txt"
                 processes.launch("local", ["local", "--key", str(keys["local"]), "--mcp-port", str(listener), "--effects", str(effects)], host_environment("local"), listener)
@@ -331,10 +348,43 @@ def main() -> int:
                 summary["proofs"]["distributedActualProcesses"] = result
                 save(output / "distributed-proof.json", result)
                 print("PASS two actual isolated RIGHTCLICK runtimes + outbound encrypted broker: discovery/routing, live -> working -> terminal, node pin, typed integer7, target credential retained, effects=1", flush=True)
+
+                # A separate fresh target epoch demonstrates consequential
+                # retransmission/reuse, distinct from repeated MCP observation.
+                processes.stop()
+                retry_broker, retry_target = port(), port()
+                retry_effects = temporary / "retry-effects.txt"
+                processes.launch("retry-broker", ["broker", "--port", str(retry_broker)], base, retry_broker)
+                processes.launch("retry-target", ["target", "--key", str(keys["target"]), "--mcp-port", str(retry_target),
+                    "--broker-port", str(retry_broker), "--caller-public-key", pins["caller"]["publicKey"],
+                    "--ledger", str(temporary / "retry-journal"), "--effects", str(retry_effects)], host_environment("target"), retry_target)
+                retry = processes.finite("retry-caller", ["retry-proof", "--key", str(keys["caller"]),
+                    "--broker-port", str(retry_broker), "--target-public-key", pins["target"]["publicKey"]], base)
+                assert retry["exactReplayRejected"] is True
+                responses = [retry[name] for name in ["first", "retry", "terminal", "retained"]]
+                execution_ids = [response["summary"]["executionLifecycle"]["executionID"] for response in responses]
+                assert len(set(execution_ids)) == 1, "Retry changed execution identity"
+                assert responses[0]["summary"]["executionLifecycle"]["terminal"] is False
+                assert responses[1]["reused"] is True and responses[3]["reused"] is True
+                assert responses[2]["summary"]["result"] == ["integer", "7"]
+                assert responses[3]["summary"]["executionLifecycle"]["terminal"] is True
+                assert all(response["idempotencyKey"] == responses[0]["idempotencyKey"] for response in responses)
+                assert all(response["runtimeID"] == pins["target"]["runtimeID"] for response in responses)
+                assert int(retry_effects.read_text()) == 1, "Consequential retry redispatched provider"
+                assert secret not in json.dumps(retry), "Fixture credential escaped in retry results"
+                retry["effectCount"] = 1
+                retry["originalExecutionIdentityRetained"] = True
+                retry_target_client = MCP(retry_target, token, output / "retry-execution-node-mcp-wire.json")
+                retry_target_client.initialize()
+                retry_record = retry_target_client.call("context_run_status", {"executionId": execution_ids[0]})
+                retry["receiptVerification"] = receipt_check(retry_record, pins["target"], temporary, args.openssl)
+                save(output / "retry-proof.json", retry)
+                summary["proofs"]["actualProcessConsequentialRetries"] = retry
+                print("PASS actual-process exact replay rejected; fresh same-intent live and terminal retries retain one execution/idempotency identity; effects=1", flush=True)
             summary["status"] = "PASS"
             summary["limitations"] = ["Actual proof processes run on one host; cross-machine deployment is not demonstrated.",
                 "Provider completion remains semantically unverified; cryptographic authentication does not prove an external postcondition.",
-                "Repeated status observation effects=1 is demonstrated here; consequential same-intent retries require the separate Link duplicate/reconnect proof."]
+                "Same-intent consequential retries are demonstrated in a separate fresh target epoch; no automatic cross-node failover is attempted."]
             return 0
     except Exception as error:
         summary["status"] = "FAIL"
