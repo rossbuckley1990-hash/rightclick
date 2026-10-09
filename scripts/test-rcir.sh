@@ -6,17 +6,18 @@ command -v swift >/dev/null || { echo 'A Swift 6 toolchain is required.' >&2; ex
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/rightclick-rcir.XXXXXXXX")"
 trap 'rm -rf -- "$WORK"' EXIT
 mkdir -p "$WORK/Sources/RightClickCore" "$WORK/Tests/RightClickCoreTests"
-for name in CapabilityABI RCIR RCIRSignedReceipt; do
-    cp "$ROOT/Sources/RightClickCore/$name.swift" "$WORK/Sources/RightClickCore/"
+for name in CapabilityABI RCIR RCIRExecutionEvents RCIRSignedReceipt; do
+    cp "$ROOT/Sources/RightClickProtocol/$name.swift" "$WORK/Sources/RightClickCore/"
 done
 for name in RCIRTests RCIRBoundaryTests RCIRIntegrationTests RCIRInvocationIsolationTests; do
-    cp "$ROOT/Tests/RightClickCoreTests/$name.swift" "$WORK/Tests/RightClickCoreTests/"
+    sed '/@testable import RightClickProtocol/d; /@testable import RightClickProviders/d; /@testable import RightClickMacOS/d' "$ROOT/Tests/RightClickCoreTests/$name.swift" > "$WORK/Tests/RightClickCoreTests/$name.swift"
 done
 cat > "$WORK/Package.swift" <<'PACKAGE'
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 import PackageDescription
-let package = Package(name: "RightClickRCIRValidation", platforms: [.macOS(.v14)], targets: [
-    .target(name: "RightClickCore", swiftSettings: [.swiftLanguageMode(.v5)]),
+let package = Package(name: "RightClickRCIRValidation", platforms: [.macOS(.v14)],
+dependencies: [.package(url: "https://github.com/apple/swift-crypto.git", exact: "5.0.0")], targets: [
+    .target(name: "RightClickCore", dependencies: [.product(name: "Crypto", package: "swift-crypto", condition: .when(platforms: [.linux]))], swiftSettings: [.swiftLanguageMode(.v5)]),
     .testTarget(name: "RightClickCoreTests", dependencies: ["RightClickCore"],
                 swiftSettings: [.swiftLanguageMode(.v5)])
 ])

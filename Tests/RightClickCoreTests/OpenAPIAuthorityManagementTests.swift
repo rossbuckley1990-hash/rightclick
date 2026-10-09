@@ -1,3 +1,9 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -12,6 +18,7 @@ final class OpenAPIAuthorityManagementTests:
         + ".invalid"
     }
 
+    #if os(macOS)
     func testManagementStoreWritesTheExactAccountExecutionReads()
         throws
     {
@@ -185,6 +192,8 @@ final class OpenAPIAuthorityManagementTests:
             secondPresent
         )
     }
+
+    #endif
 
     func testAuthorityManagementRequiresCredentialFreeHTTPSOrigin()
         throws

@@ -1,7 +1,14 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import XCTest
 @testable import RightClickCore
 
 final class AcquisitionTests: XCTestCase {
+    #if os(macOS)
     func testServiceAppearsAndDisappearsWithTheBundle() throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent("rightclick-test-\(UUID().uuidString)", isDirectory: true)
         let app = root.appendingPathComponent("Example.service")
@@ -130,6 +137,8 @@ final class AcquisitionTests: XCTestCase {
         XCTAssertFalse(ServiceCatalog.accepts(record, item: text))
     }
 
+    #endif
+
     func testDuplicateIDsCollapse() {
         let capability = Capability(
             id: "service:dev.example:one",
@@ -155,11 +164,14 @@ final class AcquisitionTests: XCTestCase {
         XCTAssertTrue(policy.requiresConfirmation)
     }
 
+    #if os(macOS)
     func testStaleServiceIDFails() {
         let item = ContentItem(kind: "text", display: "hello", text: "hello", typeIdentifier: "public.plain-text")
         let result = ServiceCatalog.perform(capabilityID: "service:missing.provider:nope", item: item)
         XCTAssertEqual(result.status, .unavailable)
     }
+
+    #endif
 
     func testDirectoryAndURLClassification() throws {
         let directory = FileManager.default.temporaryDirectory

@@ -1,4 +1,13 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -84,6 +93,15 @@ final class RCIRProductionDispatchTests: XCTestCase {
                                 arguments: ["id": name, "value": "requested"])
     }
 
+    func testSuccessfulBoundedProviderAcquisitionSignalsTaskCompletion() throws {
+        let bytes = specification()
+        try bytes.write(to: directory.appendingPathComponent("spec.json"))
+        let started = Date()
+        XCTAssertEqual(try OriginPinnedHTTP.loadOpenAPISpecification(base.appendingPathComponent("openapi.json")), bytes)
+        XCTAssertLessThan(Date().timeIntervalSince(started), OriginPinnedHTTP.acquisitionDeadline)
+        XCTAssertTrue(effectRows().isEmpty)
+    }
+
     func testPublicBeginConsumesOneLeaseAndRetainsTaskEvidence() throws {
         let result = try invoke()
         XCTAssertEqual(result.state, .accepted)
@@ -164,20 +182,19 @@ final class RCIRProductionDispatchTests: XCTestCase {
 
     func testCompetingConsumersStartAtMostOneRealRequest() throws {
         host.beforeStart = { _, admit, enqueue in
-            // Swift's closure lifetime is bounded by the group wait below.
+            // Synchronous concurrentPerform releases its work before returning.
+            // DispatchGroup.leave could wake the caller before an async work
+            // item's captured closures were destroyed, violating this scope.
             withoutActuallyEscaping(admit) { admit in
                 withoutActuallyEscaping(enqueue) { enqueue in
-                    let group = DispatchGroup(); let lock = NSLock()
+                    let lock = NSLock()
                     var permitted = 0; var replayed = 0
-                    for _ in 0..<2 {
-                        group.enter()
-                        DispatchQueue.global().async {
-                            defer { group.leave() }
-                            do { try admit(enqueue); lock.lock(); permitted += 1; lock.unlock() }
-                            catch { lock.lock(); replayed += 1; lock.unlock() }
-                        }
+                    let started = Date()
+                    DispatchQueue.concurrentPerform(iterations: 2) { _ in
+                        do { try admit(enqueue); lock.lock(); permitted += 1; lock.unlock() }
+                        catch { lock.lock(); replayed += 1; lock.unlock() }
                     }
-                    XCTAssertEqual(group.wait(timeout: .now() + 3), .success)
+                    XCTAssertLessThan(Date().timeIntervalSince(started), 3, "Competing consumers must finish within the original three-second bound")
                     XCTAssertEqual(permitted, 1); XCTAssertEqual(replayed, 1)
                 }
             }
@@ -356,6 +373,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual((effectRows().first?["body"] as? [String: String])?["value"]?.utf8.count, 80_000)
     }
 
+    #if os(macOS)
     func testRemovedInFlightBonjourAcquisitionCannotRestoreInvocation() throws {
         let entered = DispatchSemaphore(value: 0), unblock = DispatchSemaphore(value: 0)
         let finished = DispatchSemaphore(value: 0), loaderLock = NSLock()
@@ -391,6 +409,8 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertTrue(effectRows().isEmpty)
     }
 
+    #endif
+
     func testCredentialFreeObserverCannotInheritInvocationCookie() throws {
         let name = "RCIR_DISPOSABLE_" + UUID().uuidString.replacingOccurrences(of: "-", with: "")
         let cookie = try XCTUnwrap(HTTPCookie(properties: [.name: name, .value: "fixture-only",
@@ -410,6 +430,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual(row["disposableAuthCookieReceived"] as? Bool, false)
     }
 
+    #if os(macOS)
     func testBonjourReappearanceCannotReviveLeaseWithoutIntermediateDiscovery() throws {
         let bytes = specification()
         let descriptor = BonjourOpenAPIServiceDescriptor(instanceName: "disposable-incarnation",
@@ -433,6 +454,9 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual((effectRows().first?["body"] as? [String: String])?["id"], "new-incarnation")
     }
 
+    #endif
+
+    #if os(macOS)
     func testBonjourReappearanceAfterDispatchPreservesUnknown() throws {
         let bytes = specification()
         let descriptor = BonjourOpenAPIServiceDescriptor(instanceName: "disposable-post-dispatch",
@@ -452,5 +476,7 @@ final class RCIRProductionDispatchTests: XCTestCase {
         XCTAssertEqual(result.state, .unknown)
         XCTAssertEqual(result.rcir?.outcome, "unknown")
         XCTAssertEqual(effectRows().count, 1)
-    }
+    }    #endif
+
+
 }

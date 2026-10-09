@@ -2,14 +2,14 @@ name: Capability ABI portable tests
 on:
   pull_request:
     paths:
-      - 'Sources/RightClickCore/CapabilityABI.swift'
+      - 'Sources/RightClickProtocol/CapabilityABI.swift'
       - 'Tests/RightClickCoreTests/CapabilityABI*Tests.swift'
       - 'scripts/test-capability-abi.sh'
       - '.github/workflows/capability-abi.yml'
   push:
     branches: [main]
     paths:
-      - 'Sources/RightClickCore/CapabilityABI.swift'
+      - 'Sources/RightClickProtocol/CapabilityABI.swift'
       - 'Tests/RightClickCoreTests/CapabilityABI*Tests.swift'
       - 'scripts/test-capability-abi.sh'
       - '.github/workflows/capability-abi.yml'

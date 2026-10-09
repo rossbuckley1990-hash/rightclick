@@ -1,3 +1,9 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
 import XCTest
 @testable import RightClickCore
@@ -6,6 +12,7 @@ final class VerificationIntegrationTests: XCTestCase {
     private let fullWidthID =
         "service:com.apple.ChineseTextConverterService:convertTextToFullWidth"
 
+    #if os(macOS)
     func testRunPromotesAcceptedInvocationToVerifiedSuccess() throws {
         let engine = CapabilityEngine()
 
@@ -194,6 +201,8 @@ final class VerificationIntegrationTests: XCTestCase {
             1
         )
     }
+
+    #endif
 
     func testVerificationSpecTimeoutRoundTripsThroughJSON() throws {
         let original = VerificationSpec(

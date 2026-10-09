@@ -1,3 +1,9 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import XCTest
 @testable import RightClickCore
 
@@ -105,6 +111,7 @@ final class CapabilityRuntimeDefaultsTests:
                 }
             )
 
+        #if os(macOS)
         XCTAssertEqual(
             sources.count,
             4
@@ -137,6 +144,10 @@ final class CapabilityRuntimeDefaultsTests:
                 $0 is BonjourGRPCSource
             }
         )
+        #else
+        XCTAssertEqual(sources.count, 1)
+        XCTAssertEqual(sourceIDs, Set(["configured.openapi"]))
+        #endif
     }
 
     func testRuntimeDefaultsConsumeLiveSuppliedSource()

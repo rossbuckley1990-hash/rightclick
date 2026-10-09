@@ -1,8 +1,16 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
 import XCTest
 @testable import RightClickCore
 #if canImport(CryptoKit)
 import CryptoKit
+#elseif canImport(Crypto)
+import Crypto
 #endif
 
 final class RCIRIntegrationTests: XCTestCase {
@@ -105,7 +113,7 @@ final class RCIRIntegrationTests: XCTestCase {
         XCTAssertEqual(t.outcome, .unverified)
         XCTAssertTrue(try t.receiptData().starts(with: Data("RIGHTCLICK-RCIR-RECEIPT-1\0".utf8)))
     }
-    #if canImport(CryptoKit)
+    #if canImport(CryptoKit) || canImport(Crypto)
     func testRealCryptoKitSignatureAndPinnedKey() throws {
         let key = Curve25519.Signing.PrivateKey()
         let signer = try RCIREd25519Signer(rawPrivateKey: key.rawRepresentation)

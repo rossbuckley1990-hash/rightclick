@@ -1,0 +1,403 @@
+#if canImport(Darwin)
+import Darwin
+#else
+import Glibc
+#endif
+import Foundation
+import RightClickProtocol
+
+/// Durable admission, separate from advisory experience. Reservations precede
+/// effects, survive restart, and are never evicted or retried automatically.
+public final class RemoteReplayLedger: @unchecked Sendable {
+    private struct Entry: Codable {
+        let intentDigest: String
+        let reservedAt: Int64
+        var summary: RemoteExecutionSummary?
+        var originatingRequestID: UUID?
+        var capabilityID: String?
+        var capabilityDigest: String?
+        var retainedEvents: [RCIRExecutionEvent]?
+    }
+    private struct Document: Codable {
+        var version = 2
+        let runtimeID: String
+        var lastTime: Int64 = 0
+        var seen: Set<String> = []
+        var entries: [String: Entry] = [:]
+        // Only signed, nonconsequential observations expire. Consequential
+        // request identities and reservations above are never removed.
+        var observations: [String: Int64]? = [:]
+    }
+    private let lock = NSLock()
+    private let directory: URL
+    private let directoryFD: Int32
+    private let parentFD: Int32
+    private let lockFD: Int32
+    private let runtimeID: String
+    private let maximumRequests: Int
+    private let maximumBytes = 2_097_152
+
+    /// The parent must already exist. Provisioning is explicit, never normal
+    /// startup. Missing history after provisioning is a permanent denial.
+    public init(directory: URL, runtimeID: String, maximumRequests: Int = 1024) throws {
+        guard (1...1024).contains(maximumRequests), RemoteWire.isIdentifier(runtimeID), directory.isFileURL,
+              directory.path == directory.standardizedFileURL.resolvingSymlinksInPath().path else {
+            throw RemoteLinkError.storageUnavailable
+        }
+        try Self.validateTrustedAncestors(directory.deletingLastPathComponent())
+        let parent = open(directory.deletingLastPathComponent().path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC)
+        guard parent >= 0 else { throw RemoteLinkError.storageUnavailable }
+        let created = mkdirat(parent, directory.lastPathComponent, 0o700) == 0
+        guard created || errno == EEXIST else { close(parent); throw RemoteLinkError.storageUnavailable }
+        let fd = openat(parent, directory.lastPathComponent, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC)
+        guard fd >= 0 else { close(parent); throw RemoteLinkError.storageUnavailable }
+        var info = stat()
+        guard fstat(fd, &info) == 0, info.st_uid == geteuid(), info.st_mode & 0o077 == 0,
+              info.st_mode & S_IFMT == S_IFDIR, Self.hasProtectedACL(fd), !created || fsync(parent) == 0 else {
+            close(fd); close(parent); throw RemoteLinkError.storageUnavailable
+        }
+        var writer = openat(fd, "link.lock", O_RDWR | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0o600)
+        let newLock = writer >= 0
+        if writer < 0 && errno == EEXIST { writer = openat(fd, "link.lock", O_RDWR | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC) }
+        guard writer >= 0 else { close(fd); close(parent); throw RemoteLinkError.storageUnavailable }
+        self.directory = directory; directoryFD = fd; parentFD = parent; lockFD = writer
+        self.runtimeID = runtimeID; self.maximumRequests = maximumRequests
+        // A throwing fully initialized class runs deinit and closes descriptors.
+        try validateFile(writer, maximum: 0)
+        guard flock(writer, LOCK_EX | LOCK_NB) == 0 else { throw RemoteLinkError.storageUnavailable }
+        defer { _ = flock(writer, LOCK_UN) }
+        try validateLocation(requireAnchor: false)
+        let anchor = openat(parentFD, anchorName, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        if anchor >= 0 {
+            defer { close(anchor) }; try validateAnchor(anchor)
+            guard !created else { throw RemoteLinkError.storageUnavailable }
+        } else {
+            guard errno == ENOENT, created, newLock else { throw RemoteLinkError.storageUnavailable }
+            let anchor = openat(parentFD, anchorName, O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0o600)
+            guard anchor >= 0 else { throw RemoteLinkError.storageUnavailable }
+            defer { close(anchor) }
+            try writeAll(anchorData(), to: anchor)
+            guard fsync(anchor) == 0, fsync(parentFD) == 0 else { throw RemoteLinkError.storageUnavailable }
+        }
+        let marker = openat(fd, "link.initialized", O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        if marker >= 0 {
+            defer { close(marker) }
+            try validateMarker(marker)
+            _ = try load()
+        } else {
+            // Existing lock/history without a marker is an ambiguous incomplete
+            // provisioning attempt. Never reinterpret it as an empty ledger.
+            guard errno == ENOENT, newLock, created else { throw RemoteLinkError.storageUnavailable }
+            let marker = openat(fd, "link.initialized", O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0o600)
+            guard marker >= 0 else { throw RemoteLinkError.storageUnavailable }
+            defer { close(marker) }
+            try writeAll(Data(runtimeID.utf8), to: marker)
+            guard fsync(marker) == 0, fsync(writer) == 0, fsync(fd) == 0 else { throw RemoteLinkError.storageUnavailable }
+            try save(Document(runtimeID: runtimeID))
+        }
+    }
+    deinit { close(lockFD); close(directoryFD); close(parentFD) }
+
+    /// nil identifies the unique winner. An unresolved reservation is unknown,
+    /// including after process death, and never enters the engine again.
+    func reserve(_ request: RemoteExecutionRequest, now: Int64) throws -> RemoteExecutionSummary? {
+        guard request.targetRuntimeID == runtimeID else { throw RemoteLinkError.wrongRuntime }
+        guard request.operation == .run else { throw RemoteLinkError.unsupportedOperation }
+        let intent = try request.intentDigest()
+        return try transaction { current in
+            guard now >= current.lastTime else { throw RemoteLinkError.clockRollback }
+            let requestKey = self.key("request", request.callerID, request.requestID.uuidString)
+            let nonceKey = self.key("nonce", request.callerID, request.nonce.base64EncodedString())
+            let idempotencyKey = self.key("intent", request.callerID, request.idempotencyKey.uuidString)
+            current.observations = current.observations?.filter { $0.value > now } ?? [:]
+            guard !current.seen.contains(requestKey), !current.seen.contains(nonceKey),
+                  current.observations?[requestKey] == nil, current.observations?[nonceKey] == nil
+            else { throw RemoteLinkError.replay }
+            guard current.seen.count + 2 <= self.maximumRequests * 2 else { throw RemoteLinkError.limitExceeded }
+            let previous = current.entries[idempotencyKey]
+            if let previous, previous.intentDigest != intent { throw RemoteLinkError.idempotencyConflict }
+            current.seen.formUnion([requestKey, nonceKey]); current.lastTime = now
+            if previous == nil { current.entries[idempotencyKey] = Entry(intentDigest: intent, reservedAt: now, summary: nil, originatingRequestID: request.requestID, capabilityID: request.capabilityID, capabilityDigest: request.capabilityDigest, retainedEvents: nil) }
+            if let previous {
+                return previous.summary ?? RemoteExecutionSummary(state: .unknown, policy: .evaluated,
+                    providerAcceptance: .unknown, lifecycle: [.requested, .authorized, .delivered, .unknown],
+                    error: .executionUncertain, completedAtMilliseconds: previous.reservedAt)
+            }
+            return nil
+        }
+    }
+
+    /// Observations retain envelope replay protection across process restart,
+    /// without permanently consuming the consequential execution budget. An
+    /// expired original envelope cannot validate; its digest may then be removed.
+    func reserveObservation(_ request: RemoteExecutionRequest, now: Int64) throws {
+        guard request.targetRuntimeID == runtimeID else { throw RemoteLinkError.wrongRuntime }
+        guard [.runtime, .actions, .status].contains(request.operation) else { throw RemoteLinkError.unsupportedOperation }
+        try request.validate(now: now)
+        try transaction { current in
+            guard now >= current.lastTime else { throw RemoteLinkError.clockRollback }
+            let keys = [self.key("request", request.callerID, request.requestID.uuidString),
+                        self.key("nonce", request.callerID, request.nonce.base64EncodedString())]
+            var observations = current.observations?.filter { $0.value > now } ?? [:]
+            guard keys.allSatisfy({ !current.seen.contains($0) && observations[$0] == nil })
+            else { throw RemoteLinkError.replay }
+            guard observations.count + keys.count <= 2048 else { throw RemoteLinkError.limitExceeded }
+            for key in keys { observations[key] = request.expiresAtMilliseconds }
+            current.observations = observations; current.lastTime = now
+        }
+    }
+
+    func complete(_ request: RemoteExecutionRequest, summary: RemoteExecutionSummary, events: [RCIRExecutionEvent]? = nil) throws {
+        try summary.validate()
+        try transaction { current in
+            let idempotencyKey = self.key("intent", request.callerID, request.idempotencyKey.uuidString)
+            guard var entry = current.entries[idempotencyKey], entry.summary == nil,
+                  entry.intentDigest == (try request.intentDigest()), summary.completedAtMilliseconds >= entry.reservedAt
+            else { throw RemoteLinkError.storageUnavailable }
+            entry.summary = summary; entry.summary?.eventPage = nil
+            entry.retainedEvents = events; current.entries[idempotencyKey] = entry
+        }
+    }
+
+    func hasSeenEnvelope(_ request: RemoteExecutionRequest) throws -> Bool {
+        try transaction { current in
+            current.seen.contains(self.key("request", request.callerID, request.requestID.uuidString)) ||
+            current.seen.contains(self.key("nonce", request.callerID, request.nonce.base64EncodedString())) ||
+            current.observations?[self.key("request", request.callerID, request.requestID.uuidString)] != nil ||
+            current.observations?[self.key("nonce", request.callerID, request.nonce.base64EncodedString())] != nil
+        }
+    }
+
+    /// Reads only the original caller's exact admitted run. Observation never
+    /// reserves another executable intent or consumes execution authority.
+    func statusSnapshot(_ request: RemoteExecutionRequest) throws -> (RemoteExecutionSummary, [RCIRExecutionEvent]?) {
+        try transaction { current in
+            let entry = try self.boundEntry(request, in: current)
+            guard let summary = entry.summary else { throw RemoteLinkError.executionUncertain }
+            return (summary, entry.retainedEvents)
+        }
+    }
+
+    /// Live snapshots advance monotonically; terminal snapshots are immutable.
+    func updateExecution(_ request: RemoteExecutionRequest, summary: RemoteExecutionSummary,
+                         events: [RCIRExecutionEvent]? = nil) throws {
+        try summary.validate()
+        try transaction { current in
+            var entry = try self.boundEntry(request, in: current)
+            guard let previous = entry.summary, let old = previous.executionLifecycle,
+                  let next = summary.executionLifecycle,
+                  old.executionID == next.executionID, old.taskID == next.taskID,
+                  old.originatingRequestID == next.originatingRequestID,
+                  old.runtimeID == next.runtimeID, old.generation == next.generation,
+                  old.taskShape == next.taskShape else { throw RemoteLinkError.staleGeneration }
+            guard next.sequence >= old.sequence else { throw RemoteLinkError.invalidSequence }
+            if old.terminal {
+                guard try RemoteWire.encode(old) == RemoteWire.encode(next),
+                      try RemoteWire.encode(previous.result) == RemoteWire.encode(summary.result)
+                else { throw RemoteLinkError.inconsistentResult }
+                return
+            }
+            entry.summary = summary; entry.summary?.eventPage = nil
+            if let events { entry.retainedEvents = events }
+            current.entries[self.key("intent", request.callerID, request.idempotencyKey.uuidString)] = entry
+        }
+    }
+
+    private func boundEntry(_ request: RemoteExecutionRequest, in document: Document) throws -> Entry {
+        guard request.operation == .status, let query = request.status,
+              let entry = document.entries[key("intent", request.callerID, request.idempotencyKey.uuidString)],
+              entry.originatingRequestID == query.originatingRequestID,
+              entry.capabilityID == request.capabilityID, entry.capabilityDigest == request.capabilityDigest,
+              entry.summary?.executionLifecycle?.executionID == query.executionID
+        else { throw RemoteLinkError.unauthorized }
+        return entry
+    }
+
+    private func key(_ domain: String, _ caller: String, _ value: String) -> String {
+        RemoteWire.digest(Data((domain + "\0" + runtimeID + "\0" + caller + "\0" + value).utf8))
+    }
+    private func transaction<T>(_ body: (inout Document) throws -> T) throws -> T {
+        lock.lock(); defer { lock.unlock() }
+        guard flock(lockFD, LOCK_EX | LOCK_NB) == 0 else { throw RemoteLinkError.storageUnavailable }
+        defer { _ = flock(lockFD, LOCK_UN) }
+        try validateLocation()
+        let marker = openat(directoryFD, "link.initialized", O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        guard marker >= 0 else { throw RemoteLinkError.storageUnavailable }
+        defer { close(marker) }; try validateMarker(marker)
+        var document = try load()
+        // Validated v1 history is preserved byte-for-byte in its fields. Old
+        // permanent seen entries are never reclassified or evicted on upgrade.
+        document.version = 2
+        document.observations = document.observations ?? [:]
+        let result = try body(&document)
+        try validateLocation()
+        try save(document)
+        return result
+    }
+    private var anchorName: String { ".rightclick-link-" + RemoteWire.digest(Data((runtimeID + "\0" + directory.lastPathComponent).utf8)) + ".initialized" }
+    private func anchorData() throws -> Data {
+        var info = stat(), writer = stat()
+        guard fstat(directoryFD, &info) == 0, fstat(lockFD, &writer) == 0 else { throw RemoteLinkError.storageUnavailable }
+        return Data((runtimeID + "\0" + String(info.st_dev) + ":" + String(info.st_ino) +
+            "\0" + String(writer.st_dev) + ":" + String(writer.st_ino)).utf8)
+    }
+    private func validateAnchor(_ fd: Int32) throws {
+        try validateFile(fd, maximum: 1024)
+        guard try readAll(fd, maximum: 1024) == anchorData() else { throw RemoteLinkError.storageUnavailable }
+    }
+    private func validateLocation(requireAnchor: Bool = true) throws {
+        guard directory.path == directory.standardizedFileURL.resolvingSymlinksInPath().path else { throw RemoteLinkError.storageUnavailable }
+        try Self.validateTrustedAncestors(directory.deletingLastPathComponent())
+        let currentParent = open(directory.deletingLastPathComponent().path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC)
+        guard currentParent >= 0 else { throw RemoteLinkError.storageUnavailable }
+        defer { close(currentParent) }
+        try sameFile(currentParent, parentFD)
+        let current = openat(parentFD, directory.lastPathComponent, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC)
+        guard current >= 0 else { throw RemoteLinkError.storageUnavailable }
+        defer { close(current) }; try sameFile(current, directoryFD)
+        var info = stat()
+        guard fstat(directoryFD, &info) == 0, info.st_uid == geteuid(), info.st_mode & 0o077 == 0,
+              Self.hasProtectedACL(directoryFD) else { throw RemoteLinkError.storageUnavailable }
+        let namedLock = openat(directoryFD, "link.lock", O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        guard namedLock >= 0 else { throw RemoteLinkError.storageUnavailable }
+        defer { close(namedLock) }
+        try validateFile(lockFD, maximum: 0); try sameFile(namedLock, lockFD)
+        if requireAnchor {
+            let anchor = openat(parentFD, anchorName, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+            guard anchor >= 0 else { throw RemoteLinkError.storageUnavailable }
+            defer { close(anchor) }; try validateAnchor(anchor)
+        }
+    }
+    /// Every ancestor must resist replacement by another local UID. Root-owned
+    /// sticky temporary directories are safe; writable non-sticky directories
+    /// and directories owned by other users are not trusted journal locations.
+    private static func validateTrustedAncestors(_ parent: URL) throws {
+        // Foundation keeps macOS system aliases such as /var in some URL
+        // representations. Inspect the actual POSIX ancestry, never those aliases.
+        guard let resolved = realpath(parent.path, nil) else { throw RemoteLinkError.storageUnavailable }
+        defer { free(resolved) }
+        let resolvedPath = String(cString: resolved)
+        var path = "/"
+        for component in ["/"] + (resolvedPath as NSString).pathComponents.dropFirst() {
+            if component != "/" { path = (path as NSString).appendingPathComponent(component) }
+            let fd = open(path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC)
+            guard fd >= 0 else { throw RemoteLinkError.storageUnavailable }
+            var info = stat()
+            let valid = fstat(fd, &info) == 0 && (info.st_uid == 0 || info.st_uid == geteuid()) &&
+                (info.st_mode & 0o022 == 0 || (info.st_uid == 0 && info.st_mode & 0o1000 != 0)) && hasProtectedACL(fd)
+            close(fd)
+            guard valid else { throw RemoteLinkError.storageUnavailable }
+        }
+    }
+    private static func hasProtectedACL(_ fd: Int32) -> Bool {
+        #if os(macOS)
+        // macOS ACL grants need not appear in POSIX mode bits. Deny any
+        // extended write/delete/security grant, including inherited grants.
+        guard let acl = acl_get_fd_np(fd, ACL_TYPE_EXTENDED) else { return errno == ENOENT }
+        defer { acl_free(UnsafeMutableRawPointer(acl)) }
+        var entry: acl_entry_t?
+        var selector = Int32(ACL_FIRST_ENTRY.rawValue)
+        var count = 0
+        while acl_get_entry(acl, selector, &entry) == 0 {
+            guard let entry, count < 1024 else { return false }
+            count += 1; selector = Int32(ACL_NEXT_ENTRY.rawValue)
+            var tag = acl_tag_t(rawValue: 0)
+            guard acl_get_tag_type(entry, &tag) == 0 else { return false }
+            if tag == ACL_EXTENDED_ALLOW {
+                var permissions: acl_permset_t?
+                guard acl_get_permset(entry, &permissions) == 0, let permissions else { return false }
+                for permission in [ACL_WRITE_DATA, ACL_APPEND_DATA, ACL_DELETE, ACL_DELETE_CHILD,
+                    ACL_WRITE_ATTRIBUTES, ACL_WRITE_EXTATTRIBUTES, ACL_WRITE_SECURITY, ACL_CHANGE_OWNER] {
+                    guard acl_get_perm_np(permissions, permission) == 0 else { return false }
+                }
+            }
+        }
+        return errno == EINVAL
+        #else
+        // Linux ACL effective write grants are reflected by the POSIX mask
+        // bits already rejected above; no additional libacl dependency.
+        return true
+        #endif
+    }
+    private func sameFile(_ left: Int32, _ right: Int32) throws {
+        var a = stat(), b = stat()
+        guard fstat(left, &a) == 0, fstat(right, &b) == 0, a.st_dev == b.st_dev, a.st_ino == b.st_ino else { throw RemoteLinkError.storageUnavailable }
+    }
+    private func validateFile(_ fd: Int32, maximum: Int) throws {
+        var info = stat()
+        guard fstat(fd, &info) == 0, info.st_mode & S_IFMT == S_IFREG, info.st_uid == geteuid(),
+              info.st_mode & 0o077 == 0, info.st_nlink == 1, info.st_size >= 0, info.st_size <= maximum,
+              Self.hasProtectedACL(fd) else { throw RemoteLinkError.storageUnavailable }
+    }
+    private func validateMarker(_ fd: Int32) throws {
+        try validateFile(fd, maximum: 512)
+        guard try readAll(fd, maximum: 512) == Data(runtimeID.utf8) else { throw RemoteLinkError.storageUnavailable }
+    }
+    private func load() throws -> Document {
+        let fd = openat(directoryFD, "link.json", O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        guard fd >= 0 else { throw RemoteLinkError.storageUnavailable }
+        defer { close(fd) }; try validateFile(fd, maximum: maximumBytes)
+        let document: Document
+        do { document = try JSONDecoder().decode(Document.self, from: readAll(fd, maximum: maximumBytes)) }
+        catch { throw RemoteLinkError.storageUnavailable }
+        guard (document.version == 1 || document.version == 2), document.runtimeID == runtimeID, document.lastTime >= 0,
+              document.seen.count <= 2048, document.seen.count % 2 == 0,
+              document.entries.count <= document.seen.count / 2, document.entries.count <= 1024,
+              document.seen.allSatisfy(RemoteWire.isDigest),
+              document.entries.allSatisfy({ RemoteWire.isDigest($0.key) && RemoteWire.isDigest($0.value.intentDigest) &&
+                  $0.value.reservedAt > 0 && $0.value.reservedAt <= document.lastTime }) else { throw RemoteLinkError.storageUnavailable }
+        if document.version == 1 {
+            guard document.observations == nil || document.observations?.isEmpty == true else { throw RemoteLinkError.storageUnavailable }
+        } else {
+            guard let observations = document.observations, observations.count <= 2048,
+                  observations.count % 2 == 0, observations.allSatisfy({
+                      RemoteWire.isDigest($0.key) && $0.value > 0 &&
+                      ($0.value <= document.lastTime || $0.value - document.lastTime <= 60_000)
+                  }) else { throw RemoteLinkError.storageUnavailable }
+        }
+        for entry in document.entries.values {
+            if let summary = entry.summary {
+                guard summary.completedAtMilliseconds >= entry.reservedAt else { throw RemoteLinkError.storageUnavailable }
+                try summary.validate()
+            }
+        }
+        return document
+    }
+    private func readAll(_ fd: Int32, maximum: Int) throws -> Data {
+        var bytes = [UInt8](repeating: 0, count: maximum + 1), count = 0
+        while count < bytes.count {
+            let n = bytes.withUnsafeMutableBytes { read(fd, $0.baseAddress!.advanced(by: count), $0.count - count) }
+            if n < 0 { if errno == EINTR { continue }; throw RemoteLinkError.storageUnavailable }
+            if n == 0 { break }; count += n
+        }
+        guard count <= maximum else { throw RemoteLinkError.storageUnavailable }
+        return Data(bytes.prefix(count))
+    }
+    private func writeAll(_ data: Data, to fd: Int32) throws {
+        try data.withUnsafeBytes { bytes in
+            var offset = 0
+            while offset < bytes.count {
+                let n = write(fd, bytes.baseAddress!.advanced(by: offset), bytes.count - offset)
+                if n < 0 { if errno == EINTR { continue }; throw RemoteLinkError.storageUnavailable }
+                guard n > 0 else { throw RemoteLinkError.storageUnavailable }; offset += n
+            }
+        }
+    }
+    private func save(_ document: Document) throws {
+        let data = try RemoteWire.encode(document)
+        guard data.count <= maximumBytes else { throw RemoteLinkError.limitExceeded }
+        // One fixed crash staging file; inspect before removing under the lock.
+        let stale = openat(directoryFD, "link.staging", O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC)
+        if stale >= 0 {
+            defer { close(stale) }; try validateFile(stale, maximum: maximumBytes)
+            guard unlinkat(directoryFD, "link.staging", 0) == 0 else { throw RemoteLinkError.storageUnavailable }
+        } else if errno != ENOENT { throw RemoteLinkError.storageUnavailable }
+        let fd = openat(directoryFD, "link.staging", O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0o600)
+        guard fd >= 0 else { throw RemoteLinkError.storageUnavailable }
+        defer { close(fd); _ = unlinkat(directoryFD, "link.staging", 0) }
+        try writeAll(data, to: fd)
+        guard fsync(fd) == 0, renameat(directoryFD, "link.staging", directoryFD, "link.json") == 0, fsync(directoryFD) == 0 else {
+            throw RemoteLinkError.storageUnavailable
+        }
+    }
+}

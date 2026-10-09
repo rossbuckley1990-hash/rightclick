@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 import MCP
 import Network
@@ -36,6 +37,11 @@ final class MCPHTTPListener: @unchecked Sendable {
         }
         listener.start(queue: .global(qos: .userInitiated))
         self.listener = listener
+    }
+
+    func stop() {
+        listener?.cancel()
+        listener = nil
     }
 
     private func handle(_ connection: NWConnection) async {
@@ -211,3 +217,4 @@ private struct RightClickListenerError: Error, CustomStringConvertible {
     var description: String
     init(_ description: String) { self.description = description }
 }
+#endif

@@ -30,6 +30,26 @@ RIGHTCLICK distinguishes provider acceptance from verified outcome
 
 **Stable:** v0.2.2 · Apple Silicon · macOS 14+ · Homebrew · MCP · Apache-2.0
 
+**Source candidate:** portable Core and the same seven-operation MCP on macOS
+and Linux, with native Mac features behind an adapter. Linux source builds and
+container validation are separate from the published Mac Homebrew release.
+See [portable setup and supported platforms](docs/PORTABLE-FABRIC.md#start-a-portable-runtime).
+Authenticated multi-runtime routing is currently an embedding library with a
+simulated outbound relay; a deployable network Link and enrollment UI are the
+next step. This candidate does not yet connect a cloud agent to a real Mac over
+the internet.
+
+```mermaid
+flowchart TD
+  AI --> MCP[RIGHTCLICK: seven generic operations]
+  MCP --> Graph[Core capability graph and existing execution engine]
+  Graph --> API[Portable OpenAPI / GraphQL / gRPC providers]
+  Graph --> Mac[Optional macOS adapter]
+  Graph --> Link[Enrolled runtime routing: Link foundation]
+  Link --> Node[Compatible execution node]
+  Node --> Authority[Local credentials, policy and independent verification]
+```
+
 <img src="docs/media/rightclick-hero-architecture.gif" alt="Supplied RIGHTCLICK 0.2.2 architecture illustration showing OpenAPI, GraphQL and gRPC behind one generic interface" width="960">
 
 Architecture illustration, not an execution transcript. [Media provenance](docs/media/README.md).

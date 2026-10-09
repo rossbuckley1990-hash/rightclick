@@ -1,4 +1,13 @@
+@testable import RightClickProtocol
+@testable import RightClickProviders
+#if os(macOS)
+@testable import RightClickMacOS
+@testable import RightClickMacOSHost
+#endif
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import XCTest
 
 @testable import RightClickCore
@@ -732,6 +741,7 @@ final class MOAT004G4JSONSyntaxFallbackTests:
         )
     }
 
+    #if os(macOS)
     func testFrozenGitHubUserReflectsForFirstTimeButHasNoExternalAuthorityYet()
         throws
     {
@@ -895,5 +905,7 @@ final class MOAT004G4JSONSyntaxFallbackTests:
                 ],
             "G5 owns external authority. G4 must not invent it."
         )
-    }
+    }    #endif
+
+
 }
