@@ -1,0 +1,63 @@
+name: RIGHTCLICK Project Phoenix film (isolated)
+on:
+  push:
+    branches:
+      - demo/project-phoenix-video-20261009
+    paths:
+      - .github/workflows/project-phoenix-film.yml
+      - promo/project-phoenix-film/render.R
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: phoenix-film-20261009
+  cancel-in-progress: false
+
+jobs:
+  produce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout isolated film branch
+        uses: actions/checkout@v4
+
+      - name: Install free R, FFmpeg, offline voice and font dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends r-base-core ffmpeg espeak-ng fonts-dejavu-core libcairo2
+
+      - name: Render complete narrated concept video with R
+        shell: bash
+        run: |
+          set -euo pipefail
+          Rscript promo/project-phoenix-film/render.R
+
+      - name: Verify resulting audio and video independently with FFprobe
+        shell: bash
+        run: |
+          set -euo pipefail
+          video=promo/project-phoenix-film/output/RIGHTCLICK-PROJECT-PHOENIX.mp4
+          test -s "$video"
+          test -s promo/project-phoenix-film/output/EVIDENCE-BOUNDARY.txt
+          ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height,r_frame_rate -of default=noprint_wrappers=1 "$video"
+          ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of default=noprint_wrappers=1 "$video"
+          seconds="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$video")"
+          awk -v d="$seconds" 'BEGIN { if (d < 150 || d > 500) exit 1 }'
+          du -h "$video"
+          sha256sum "$video"
+
+      - name: Commit produced film only to isolated demo branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add promo/project-phoenix-film/output/RIGHTCLICK-PROJECT-PHOENIX.mp4
+          git add promo/project-phoenix-film/output/EVIDENCE-BOUNDARY.txt
+          git diff --cached --quiet && exit 0
+          git commit -m 'demo: render verifiable Project Phoenix concept film [skip ci]'
+          git push origin HEAD:refs/heads/demo/project-phoenix-video-20261009
