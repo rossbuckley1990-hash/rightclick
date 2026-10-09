@@ -31,7 +31,7 @@ public struct RCIRScope: Sendable, Hashable {
     }
 }
 
-public enum RCIRTaskShape: String, Sendable {
+public enum RCIRTaskShape: String, Sendable, Codable {
     case unary, deferred, serverStream, clientStream, duplex
 }
 
@@ -315,8 +315,8 @@ public final class RCIRAdmission: @unchecked Sendable {
     }
 }
 
-public enum RCIRTaskPhase: String, Sendable { case started, accepted, working, inputRequired, cancelRequested, completed, failed, cancelled, unknown }
-public enum RCIRSemanticOutcome: String, Sendable { case unverified, succeeded, failed, unknown }
+public enum RCIRTaskPhase: String, Sendable, Codable { case started, accepted, working, inputRequired, cancelRequested, completed, failed, cancelled, unknown }
+public enum RCIRSemanticOutcome: String, Sendable, Codable { case unverified, succeeded, failed, unknown }
 public enum RCIRTaskEvent: Sendable {
     case accepted, working, inputRequired, chunk(CapabilityValue), completed(CapabilityValue), failed, cancelled
 }
@@ -358,6 +358,7 @@ public struct RCIRTask: Sendable {
     public private(set) var sequence: Int64 = 0
     public private(set) var eventCount: Int = 0
     private var events: [Data] = []
+    private var statusEvents: [RCIRExecutionEvent] = []
     private var usedBytes = 0
     private var lastTime: Int64
     private var finishedAt: Int64?
@@ -373,7 +374,7 @@ public struct RCIRTask: Sendable {
         self.lastTime = startedAt
     }
 
-    private var terminal: Bool { [.completed, .failed, .cancelled, .unknown].contains(phase) }
+    public var terminal: Bool { [.completed, .failed, .cancelled, .unknown].contains(phase) }
     private func time(_ now: Int64) throws {
         guard now >= lastTime else { throw RCIRError.invalidTime }
     }
@@ -419,7 +420,9 @@ public struct RCIRTask: Sendable {
         ]).canonicalData()
         guard eventCount < model.maxEvents, data.count <= model.maxBytes - usedBytes else { throw RCIRError.bufferFull }
         // Commit only after every shape, transition, sequence and budget check.
-        events.append(data); usedBytes += data.count; eventCount += 1
+        events.append(data)
+        statusEvents.append(.init(sequence: sequence, time: now, kind: kind, value: value))
+        usedBytes += data.count; eventCount += 1
         self.sequence = sequence; phase = next; lastTime = now
         if terminal { finishedAt = now }
         // No provider event can promote semantic outcome to succeeded.
@@ -434,6 +437,7 @@ public struct RCIRTask: Sendable {
     }
 
     public mutating func checkDeadline(now: Int64) throws {
+        guard !terminal else { return }
         try time(now)
         if !terminal, now >= deadline {
             phase = .unknown; outcome = .unknown; finishedAt = now
@@ -442,11 +446,20 @@ public struct RCIRTask: Sendable {
     }
 
     public mutating func providerDisappeared(now: Int64) throws {
+        guard !terminal else { return }
         try time(now)
         if !terminal {
             phase = .unknown; outcome = .unknown; finishedAt = now
         }
         lastTime = now
+    }
+
+    /// Host bookkeeping failure before publication can conservatively lower a
+    /// task to UNKNOWN. It never reopens work or erases accepted provider events.
+    public mutating func finalizationFailed(now: Int64) throws {
+        guard phase != .unknown else { return }
+        try time(now)
+        phase = .unknown; outcome = .unknown; finishedAt = now; lastTime = now
     }
 
     /// Only the host invokes this with an independently configured observer.
@@ -484,6 +497,18 @@ public struct RCIRTask: Sendable {
         let end = min(events.count, start + limit)
         return RCIREventPage(events: Array(events[start..<end]), nextCursor: Int64(end),
                              hasMore: end < events.count, terminal: terminal)
+    }
+
+    public func statusEventPage(after cursor: Int64 = 0, limit: Int = 64,
+                                maximumBytes: Int = 262_144) throws -> RCIRExecutionEventPage {
+        try rcirExecutionEventPage(statusEvents, after: cursor, limit: limit,
+                                  maximumBytes: maximumBytes, terminal: terminal)
+    }
+
+    public var typedEvents: [RCIRExecutionEvent] { statusEvents }
+    public var lastObservationTime: Int64 { lastTime }
+    public var result: CapabilityValue? {
+        return statusEvents.last(where: { $0.kind == "completed" })?.value
     }
 
     /// Canonical bytes to sign; a checksum is NOT a signature. This is a runtime

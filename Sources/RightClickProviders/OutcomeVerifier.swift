@@ -61,7 +61,8 @@ public enum OutcomeVerifier {
         spec: VerificationSpec,
         item: ContentItem,
         before: OutcomeSnapshot,
-        returnedText: String?
+        returnedText: String?,
+        returnedResult: CapabilityValue? = nil
     ) throws -> OutcomeVerification {
         guard !spec.predicates.isEmpty else {
             return OutcomeVerification(
@@ -79,7 +80,8 @@ public enum OutcomeVerifier {
                 predicate: $0,
                 before: before,
                 after: after,
-                returnedText: returnedText
+                returnedText: returnedText,
+                returnedResult: returnedResult
             )
         }
 
@@ -115,7 +117,8 @@ public enum OutcomeVerifier {
         spec: VerificationSpec,
         item: ContentItem,
         before: OutcomeSnapshot,
-        returnedText: String?
+        returnedText: String?,
+        returnedResult: CapabilityValue? = nil
     ) throws -> OutcomeVerification {
         let requested = spec.timeoutMilliseconds ?? 0
 
@@ -134,7 +137,8 @@ public enum OutcomeVerifier {
             spec: spec,
             item: item,
             before: before,
-            returnedText: returnedText
+            returnedText: returnedText,
+            returnedResult: returnedResult
         )
 
         guard timeoutMilliseconds > 0 else {
@@ -171,7 +175,8 @@ public enum OutcomeVerifier {
                 spec: spec,
                 item: item,
                 before: before,
-                returnedText: returnedText
+                returnedText: returnedText,
+                returnedResult: returnedResult
             )
         }
 
@@ -182,7 +187,8 @@ public enum OutcomeVerifier {
         predicate: VerificationPredicate,
         before: OutcomeSnapshot,
         after: OutcomeSnapshot,
-        returnedText: String?
+        returnedText: String?,
+        returnedResult: CapabilityValue?
     ) -> PredicateVerification {
         switch predicate.type {
         case .textEquals:
@@ -205,6 +211,60 @@ public enum OutcomeVerifier {
                 passed: returnedText == expected,
                 actual: returnedText,
                 message: "Compared exact provider-returned text."
+            )
+
+        case .resultPathEquals:
+            guard
+                let key = predicate.key,
+                !key.isEmpty
+            else {
+                return unknown(
+                    predicate,
+                    "result_path_equals requires key"
+                )
+            }
+
+            guard let expected = predicate.value else {
+                return unknown(
+                    predicate,
+                    "result_path_equals requires value"
+                )
+            }
+
+            guard let returnedResult else {
+                return unknown(
+                    predicate,
+                    "Provider returned no typed result to inspect"
+                )
+            }
+
+            guard case let .object(object) = returnedResult else {
+                return unknown(
+                    predicate,
+                    "Typed provider result is not an object"
+                )
+            }
+
+            guard let resolved = object[key] else {
+                return unknown(
+                    predicate,
+                    "Requested result path was not observable"
+                )
+            }
+
+            guard case let .string(actual) = resolved else {
+                return unknown(
+                    predicate,
+                    "Requested result path did not resolve to a string"
+                )
+            }
+
+            return result(
+                predicate,
+                passed: actual == expected,
+                actual: actual,
+                message:
+                    "Compared exact ABI-validated provider result value."
             )
 
         case .fileExists:

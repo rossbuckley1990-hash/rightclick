@@ -12,6 +12,7 @@ public final class CapabilityEngine {
     }
     public let runtimeEnvironment: RuntimeEnvironment
     private let rcirHost: RCIRExecutionHost
+    private var statusReflectors: [String: any CapabilityExecutionStatusReflector] = [:]
     private let experience: CapabilityExperience?
     private let fixedReflectors:
         [any CapabilityReflector]
@@ -287,6 +288,10 @@ public final class CapabilityEngine {
 
         ExecutionStore.shared.put(initial)
 
+        if let statusOwner = reflector as? any CapabilityExecutionStatusReflector {
+            statusReflectors[executionId] = statusOwner
+        }
+
         let startedRecord: ExecutionRecord
 
         if let admitted = reflector as? any RCIRExecutionReflector {
@@ -327,6 +332,7 @@ public final class CapabilityEngine {
         }
 
         ExecutionStore.shared.put(started)
+        started = ExecutionStore.shared.get(executionId) ?? started
 
         if reflector.completionWaitSeconds > 0,
            Thread.isMainThread,
@@ -556,6 +562,10 @@ public final class CapabilityEngine {
 
         ExecutionStore.shared.put(initial)
 
+        if let statusOwner = reflector as? any CapabilityExecutionStatusReflector {
+            statusReflectors[executionId] = statusOwner
+        }
+
         var providerRecord: ExecutionRecord
 
         try admissionCheck?()
@@ -603,6 +613,7 @@ public final class CapabilityEngine {
         ExecutionStore.shared.put(
             providerRecord
         )
+        providerRecord = ExecutionStore.shared.get(executionId) ?? providerRecord
 
         // Asynchronous reflectors remain started. Verification
         // cannot adjudicate an outcome that has not reached an
@@ -664,17 +675,21 @@ public final class CapabilityEngine {
                 ),
             message: result.message,
             output: result.output,
+            result: providerRecord.result,
             events: providerRecord.events,
             evidence: result.evidence,
             verification:
                 result.verification,
-            rcir: result.rcir
+            rcir: result.rcir,
+            rcirEvents: providerRecord.rcirEvents,
+            rcirEventPage: providerRecord.rcirEventPage,
+            lifecycle: providerRecord.lifecycle
         )
 
         ExecutionStore.shared.put(final)
         experience?.observe(capability: capability, executionID: executionId, result: result)
 
-        return final
+        return ExecutionStore.shared.get(executionId) ?? final
     }
 
     private func reflector(
@@ -799,7 +814,8 @@ public final class CapabilityEngine {
                 boundary:
                     "Compared provider-written, declared text output with the caller's exact expected text. This verifies only that returned-text outcome, not external side effects.",
                 outcomeVerified:
-                    matched
+                    matched,
+                observationBoundary: .returnedValue
             )
 
         result.message =
@@ -845,9 +861,13 @@ public final class CapabilityEngine {
             title: record.title,
             message: record.message,
             output: record.output,
+            result: record.result,
             evidence: record.evidence,
             verification: record.verification,
-            rcir: record.rcir
+            rcir: record.rcir,
+            rcirEvents: record.rcirEvents,
+            rcirEventPage: record.rcirEventPage,
+            lifecycle: record.lifecycle
         )
     }
 
@@ -871,11 +891,19 @@ public final class CapabilityEngine {
                 spec: spec,
                 item: item,
                 before: before,
-                returnedText: providerResult.output
+                returnedText: providerResult.output,
+                returnedResult: providerResult.result
             )
 
         var result = providerResult
         result.verification = verification
+        let evaluated = verification.predicates.filter(\.evaluated)
+        let observationBoundary: OutcomeObservationBoundary = evaluated.isEmpty ? .none :
+            evaluated.contains { $0.predicate.type != .textEquals && $0.predicate.type != .resultPathEquals }
+                ? .externalState : .returnedValue
+        let boundary = observationBoundary == .returnedValue
+            ? "Evaluated caller-declared postconditions against provider-returned text or typed result bytes. Only the returned value was observed."
+            : "Evaluated caller-declared postconditions against independent host observations and any requested returned values after invocation."
 
         switch verification.status {
         case .verifiedSuccess:
@@ -885,9 +913,9 @@ public final class CapabilityEngine {
 
             result.evidence = OutcomeEvidence(
                 type: "generic_postcondition",
-                boundary:
-                    "Evaluated provider-independent caller-declared postconditions against observable state after invocation.",
-                outcomeVerified: true
+                boundary: boundary,
+                outcomeVerified: true,
+                observationBoundary: observationBoundary
             )
 
         case .verifiedFailure:
@@ -897,9 +925,9 @@ public final class CapabilityEngine {
 
             result.evidence = OutcomeEvidence(
                 type: "generic_postcondition",
-                boundary:
-                    "Evaluated provider-independent caller-declared postconditions against observable state after invocation. The intended outcome was not established.",
-                outcomeVerified: false
+                boundary: boundary + " The intended outcome was not established.",
+                outcomeVerified: false,
+                observationBoundary: observationBoundary
             )
 
         case .unverified:
@@ -924,12 +952,58 @@ public final class CapabilityEngine {
     }
 
     public func executionStatus(_ executionId: String) -> ExecutionRecord {
-        ExecutionStore.shared.get(executionId) ?? ExecutionRecord(
+        let live = rcirHost.activeExecutionStatus(executionID: executionId)
+        let stored = ExecutionStore.shared.get(executionId)
+        if stored?.lifecycle?.terminal == true { return stored! }
+        return live ?? stored ?? ExecutionRecord(
             executionId: executionId,
             actionId: "",
             state: .unknown,
             message: "No execution with that id."
         )
+    }
+
+    /// The same bounded history applies to local and routed execution.
+    public func executionStatus(_ executionId: String, cursor: Int64, limit: Int,
+                                maximumBytes: Int = 262_144) throws -> ExecutionRecord {
+        guard cursor >= 0 else { throw RCIRError.invalidSequence }
+        guard (1...256).contains(limit), (1...262_144).contains(maximumBytes) else { throw RCIRError.invalidLimit }
+        // Each owner captures lifecycle, result and bounded event history from
+        // the same immutable snapshot. Completion or a working callback cannot
+        // mix a newer page with an older lifecycle while this call is reading.
+        let live = try rcirHost.activeExecutionStatus(executionID: executionId,
+            after: cursor, limit: limit, maximumBytes: maximumBytes)
+        let retained = try ExecutionStore.shared.statusSnapshot(executionId: executionId,
+            after: cursor, limit: limit, maximumBytes: maximumBytes)
+        // Terminal publication precedes live removal. Prefer retained completion
+        // if it raced the live capture; otherwise that coherent live snapshot
+        // remains a valid observation of the earlier point in time.
+        if retained?.lifecycle?.terminal == true { return retained! }
+        if let live { return live }
+        if let retained { return retained }
+        return ExecutionRecord(executionId: executionId, actionId: "", state: .unknown,
+            message: "No execution with that id.")
+    }
+
+    /// Captured before dispatch, so later discovery cannot change execution's owner.
+    public func executionStatusReflector(_ executionId: String) -> (any CapabilityExecutionStatusReflector)? {
+        withExclusiveAccess { statusReflectors[executionId] }
+    }
+
+    /// Transport waits happen outside the engine lock and never redispatch.
+    public func refreshedExecutionStatus(_ executionId: String, cursor: Int64 = 0,
+        limit: Int = 64, maximumBytes: Int = 262_144) async throws -> ExecutionRecord {
+        guard cursor >= 0 else { throw RCIRError.invalidSequence }
+        guard (1...256).contains(limit), (1...262_144).contains(maximumBytes) else { throw RCIRError.invalidLimit }
+        if let owner = executionStatusReflector(executionId),
+           let refreshed = try await owner.executionStatus(executionID: executionId, cursor: cursor,
+               limit: limit, maximumBytes: maximumBytes) {
+            ExecutionStore.shared.put(refreshed)
+            return refreshed
+        }
+        return try withExclusiveAccess {
+            try executionStatus(executionId, cursor: cursor, limit: limit, maximumBytes: maximumBytes)
+        }
     }
 
     public func providers() -> [ProviderSummary] {

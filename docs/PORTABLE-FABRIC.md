@@ -80,7 +80,7 @@ do not require a Mac. Native Services and Sharing require macOS 14 or later.
 ```sh
 git clone https://github.com/rossbuckley1990-hash/rightclick
 cd rightclick
-git checkout feature/portable-fabric-foundation
+git checkout feature/portable-bidirectional-fabric
 swift build -c release --product rightclick --force-resolved-versions --jobs 4
 .build/release/rightclick doctor --json
 .build/release/rightclick mcp
@@ -150,17 +150,38 @@ and remote graph. Capabilities retain requirements and execution-node ownership;
 requirements are compatibility constraints, not authorization. No relay may
 select a different node or silently fall back after uncertainty.
 
-The implemented `SimulatedLinkRelay` has no sockets. Nodes attach by establishing
-the simulated outbound session; offline nodes return unavailable. A future
-WebSocket/HTTP2/QUIC/private-network adapter implements caller-side
-`RemoteLinkTransport` and an outbound host receive/send session feeding
-`RemoteExecutionDispatcher.handle`.
-Deployment still needs authenticated TLS sessions, pairing, reconnect/backpressure,
-revocation UX and host approval UI. Signatures provide integrity, not encryption:
-requests contain input/arguments, so any real relay needs confidentiality and
-explicit data-sharing consent. The shipped binary has no network-Link startup
-or enrollment command. A cloud agent can run portable RIGHTCLICK today from
-this source; reaching a real Mac's Xcode or apps over the internet is deferred.
+`SimulatedLinkRelay` remains the deterministic transport for security controls.
+`EncryptedOutboundLinkTransport`, its outbound host session and bounded broker
+also provide real portable NIO sockets. A pinned Ed25519 target signs a fresh
+ephemeral X25519 challenge; HKDF derives separate ChaChaPoly request/response
+keys. The broker sees routing metadata and encrypted bodies. Signed execution
+requests and lifecycle responses remain independently authenticated inside that
+channel. The host and caller both connect outbound. Each exchange is attempted
+once; reconnect creates a fresh authenticated session and never retries an
+uncertain consequential request automatically.
+
+Authenticated re-enrollment of the same pinned client after temporary transport
+loss retains existing execution owners. Explicit removal creates a new
+enrollment generation and old owners remain invalid. Discovery and status have
+a separate durable expiry-scoped replay window; they do not consume permanent
+execution reservations. Ledger v2 preserves every historical v1 consequential
+and observation entry already in permanent history and denies unsupported
+downgrades rather than discarding that history.
+
+This is an opt-in embedding transport with a dedicated acceptance executable,
+not automated production enrollment. Internet deployment still needs operator
+pairing, revocation and approval interfaces, service supervision and availability
+controls. It does not claim a TLS implementation or a deployed cross-machine
+service. The normal CLI has no network-Link startup or enrollment command.
+
+The genuine two-machine acceptance is gated on an owner-supplied independent
+Ubuntu 24.04 x86_64 SSH host. Another process, local VM/container or tunnel back
+to the caller is not a substitute. The current strict freshness checks assume
+closely synchronized clocks; signed hello expiry and request admission can deny
+authentic traffic under clock skew. Record offset during host preflight and keep
+the checks intact. The proof fixture's short live duration and once-only
+connection/enrollment are also acceptance composition limits: existing library
+reconnect tests do not establish automatic proof-executable reconnection.
 
 Request v1 authenticates exact canonical bytes with Ed25519, domain separation,
 caller, target runtime/device, unique request ID, 32-byte nonce, bounded 60-second
@@ -195,17 +216,24 @@ and capability bytes until expiry; it cannot approve a substituted request.
 There is no deployed approval UI or continuation protocol. An awaiting-user
 summary is durably cached, so later approval currently requires a new explicit
 host-reviewed request, not replay of the pending envelope. RCIR host policy is
-rechecked at provider admission. Provider secrets, raw diagnostics, result text
-and private observation values are excluded from remote summaries.
+rechecked at provider admission. Provider secrets, raw diagnostics and private
+observation values are excluded from remote summaries. Typed result/event values
+are redacted by default. An execution-node grant may export explicitly selected
+public capabilities, with both canonical and JSON value sizes bounded to 8 KiB.
+Full canonical RCIR receipts remain on the execution node.
 
 Signed summaries keep provider acceptance, verification and observation boundary
 separate. Returned-value checks prove returned bytes only; host-selected external
 readback proves independently observed state. A node signature authenticates the
 node's assertion, not a compromised node's honesty. Contradictory lifecycle or
-verification fields fail integrity validation. Async provider execution that
-has not finished at dispatch returns unknown; a remote status/subscription
-protocol is intentionally deferred. Link never fabricates success after a lost
-response or reruns an ambiguous consequential action.
+verification fields fail integrity validation. Deferred execution returns a live
+identity; the existing `context_run_status` polls authenticated lifecycle pages
+through the same generic Core interface used locally. Polls bind the original
+caller, request, idempotency key, target runtime/device, contract, execution and
+cursor. Sequence replay, gaps, substituted generations and terminal reopening
+fail closed. Lost execution responses become UNKNOWN; a fresh same-intent retry
+may recover retained status but cannot dispatch the action again. True push
+subscriptions remain future transport work beneath these same seven operations.
 
 ## Threat model and automated demonstrations
 
@@ -225,4 +253,13 @@ engine, an authenticated node and independent observation. Separate real HTTP
 tests exercise the actual OpenAPI/RCIR policy and readback paths. Tests print
 effect counters for duplicate retry and durable restart. They do not claim a
 real cross-machine network deployment. Run the portable acceptance script above
-for actual Linux-only startup/provider/verification evidence in native CI.
+for actual Linux startup/provider/verification evidence in native CI.
+
+`python3 scripts/acceptance-bilateral-fabric.py .build/debug/rightclick-fabric-proof --output-dir bilateral-evidence`
+additionally launches actual isolated runtime processes and an encrypted outbound
+broker on loopback. It records local and remote live→working→terminal MCP pages,
+independently verifies the target receipt, rejects transport tampering and exercises
+exact replay plus fresh same-intent retries with an effect counter of one.
+Source/binary digests and process identities are recorded. This proves real
+process/socket behavior on one host; it is not evidence of two machines or internet
+deployment. See `BILATERAL-CONTRACT.md` for lifecycle and admission invariants.

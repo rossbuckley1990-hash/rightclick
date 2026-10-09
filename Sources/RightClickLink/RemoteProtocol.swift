@@ -10,6 +10,7 @@ public enum RemoteLinkError: String, Error, Codable {
     case disabled, malformed, inconsistentResult, limitExceeded, unsupportedVersion, unsupportedOperation
     case unauthenticated, unauthorized, wrongRuntime, expired, replay, idempotencyConflict
     case storageUnavailable, clockRollback, unavailable, connectionLost, executionUncertain
+    case invalidCursor, staleGeneration, invalidSequence
 }
 
 /// The existing seven operation names remain the protocol vocabulary. v1 admits
@@ -36,35 +37,40 @@ public struct RemoteExecutionRequest: Codable {
     public var item: String
     public var arguments: CapabilityArguments?
     public var verification: VerificationSpec?
+    public var status: RemoteStatusQuery?
 
     public init(requestID: UUID = UUID(), idempotencyKey: UUID = UUID(),
                 issuedAtMilliseconds: Int64, expiresAtMilliseconds: Int64,
                 targetRuntimeID: String, targetDeviceID: String, callerID: String,
                 nonce: Data, operation: RemoteOperation, capabilityID: String? = nil,
                 capabilityDigest: String? = nil, item: String,
-                arguments: CapabilityArguments? = nil, verification: VerificationSpec? = nil) {
+                arguments: CapabilityArguments? = nil, verification: VerificationSpec? = nil, status: RemoteStatusQuery? = nil) {
         self.requestID = requestID; self.idempotencyKey = idempotencyKey
         self.issuedAtMilliseconds = issuedAtMilliseconds; self.expiresAtMilliseconds = expiresAtMilliseconds
         self.targetRuntimeID = targetRuntimeID; self.targetDeviceID = targetDeviceID
         self.callerID = callerID; self.nonce = nonce; self.operation = operation
         self.capabilityID = capabilityID; self.capabilityDigest = capabilityDigest
-        self.item = item; self.arguments = arguments; self.verification = verification
+        self.item = item; self.arguments = arguments; self.verification = verification; self.status = status
     }
 
     func validate(now: Int64) throws {
         guard version == 1 else { throw RemoteLinkError.unsupportedVersion }
-        guard operation == .run || operation == .actions || operation == .runtime else { throw RemoteLinkError.unsupportedOperation }
+        guard operation == .run || operation == .actions || operation == .runtime || operation == .status else { throw RemoteLinkError.unsupportedOperation }
         guard nonce.count == 32, RemoteWire.isDigest(callerID),
               item.utf8.count <= 8192, (arguments?.count ?? 0) <= 64,
               arguments?.allSatisfy({ $0.key.utf8.count <= 256 && $0.value.utf8.count <= 8192 }) ?? true
         else { throw RemoteLinkError.malformed }
-        if operation == .run {
+        if operation == .run || operation == .status {
             guard let capabilityID, RemoteWire.isIdentifier(capabilityID),
                   let capabilityDigest, RemoteWire.isDigest(capabilityDigest) else { throw RemoteLinkError.malformed }
         } else {
             guard capabilityID == nil, capabilityDigest == nil, arguments == nil, verification == nil
             else { throw RemoteLinkError.malformed }
         }
+        if operation == .status {
+            guard let status, item.isEmpty, arguments == nil, verification == nil else { throw RemoteLinkError.malformed }
+            try status.validate()
+        } else if status != nil { throw RemoteLinkError.malformed }
         if let verification {
             guard verification.predicates.allSatisfy({ $0.type == .textEquals && $0.key == nil && $0.reference == nil && $0.width == nil && $0.height == nil && $0.bytes == nil && ($0.value?.utf8.count ?? 0) <= 8192 }), (1...16).contains(verification.predicates.count),
                   (0...60_000).contains(verification.timeoutMilliseconds ?? 0) else { throw RemoteLinkError.malformed }
@@ -85,19 +91,43 @@ public struct RemoteExecutionRequest: Codable {
     }
 }
 
-/// A grant is provisioned on the Mac, never read from a relay/request. Public
+/// Observation requests carry no provider inputs or consent. Their envelope has
+/// fresh request/nonce identities while these fields retain the admitted run.
+public struct RemoteStatusQuery: Codable {
+    public var originatingRequestID: UUID
+    public var executionID: String
+    public var cursor: Int64
+    public var limit: Int
+    public var maximumBytes: Int
+    public init(originatingRequestID: UUID, executionID: String, cursor: Int64 = 0,
+                limit: Int = 64, maximumBytes: Int = 16_384) {
+        self.originatingRequestID = originatingRequestID; self.executionID = executionID
+        self.cursor = cursor; self.limit = limit; self.maximumBytes = maximumBytes
+    }
+    func validate() throws {
+        guard UUID(uuidString: executionID)?.uuidString == executionID,
+              cursor >= 0, (1...256).contains(limit), (1...16_384).contains(maximumBytes)
+        else { throw RemoteLinkError.invalidCursor }
+    }
+}
+
+/// A grant is provisioned on the execution node, never read from a relay/request. Public
 /// keys authenticate callers; exact capability IDs independently restrict them.
 public struct RemoteCallerGrant {
     public let publicKey: Data
     public let operations: Set<RemoteOperation>
     public let capabilityIDs: Set<String>
+    /// Operator-selected public typed values. Raw diagnostics and receipts never export.
+    public let exportValueCapabilityIDs: Set<String>
     public var callerID: String { RemoteWire.digest(publicKey) }
 
-    public init(publicKey: Data, operations: Set<RemoteOperation>, capabilityIDs: Set<String>) throws {
-        guard publicKey.count == 32, operations.isSubset(of: [.runtime, .actions, .run]),
-              capabilityIDs.count <= 128, capabilityIDs.allSatisfy(RemoteWire.isIdentifier)
+    public init(publicKey: Data, operations: Set<RemoteOperation>, capabilityIDs: Set<String>, exportValueCapabilityIDs: Set<String> = []) throws {
+        guard publicKey.count == 32, operations.isSubset(of: [.runtime, .actions, .run, .status]),
+              capabilityIDs.count <= 128, capabilityIDs.allSatisfy(RemoteWire.isIdentifier),
+              exportValueCapabilityIDs.isSubset(of: capabilityIDs)
         else { throw RemoteLinkError.malformed }
         self.publicKey = publicKey; self.operations = operations; self.capabilityIDs = capabilityIDs
+        self.exportValueCapabilityIDs = exportValueCapabilityIDs
     }
 }
 
@@ -145,6 +175,9 @@ public struct RemoteExecutionSummary: Codable {
     public var lifecycle: [RemoteLifecycleState]
     public var error: RemoteLinkError?
     public var completedAtMilliseconds: Int64
+    public var executionLifecycle: ExecutionLifecycle? = nil
+    public var eventPage: RCIRExecutionEventPage? = nil
+    public var result: CapabilityValue? = nil
 }
 
 public struct RemoteExecutionResult: Codable {
@@ -185,6 +218,32 @@ public struct SignedRemoteMessage: Codable {
               result.runtimeID == original.targetRuntimeID, result.deviceID == original.targetDeviceID,
               result.runtimeID == RemoteWire.runtimeID(trustedRuntimeKey),
               result.deviceID == RemoteWire.deviceID(trustedRuntimeKey) else { throw RemoteLinkError.wrongRuntime }
+        if original.operation == .run, !result.reused, let live = result.summary.executionLifecycle {
+            guard live.originatingRequestID == original.requestID.uuidString,
+                  live.executionID == result.summary.evidenceExecutionID,
+                  live.runtimeID == original.targetRuntimeID else { throw RemoteLinkError.inconsistentResult }
+            if result.summary.eventPage != nil {
+                try result.summary.validatePage(after: 0, limit: 64, maximumBytes: 16_384)
+            }
+        }
+        if let query = original.status {
+            if result.summary.error == .invalidCursor {
+                guard result.summary.state == nil, result.summary.executionLifecycle == nil,
+                      result.summary.eventPage == nil, result.summary.result == nil,
+                      result.summary.evidenceExecutionID == nil, result.summary.runtime == nil,
+                      result.summary.capabilities.isEmpty else { throw RemoteLinkError.inconsistentResult }
+                // Reached only after signature, exact poll digest, caller,
+                // target/device and idempotency binding have authenticated.
+                throw RemoteLinkError.invalidCursor
+            }
+            guard let lifecycle = result.summary.executionLifecycle,
+                  lifecycle.executionID == query.executionID,
+                  lifecycle.originatingRequestID == query.originatingRequestID.uuidString,
+                  lifecycle.runtimeID == original.targetRuntimeID,
+                  let page = result.summary.eventPage else { throw RemoteLinkError.inconsistentResult }
+            try result.summary.validatePage(after: query.cursor, limit: query.limit, maximumBytes: query.maximumBytes)
+            guard page.terminal == lifecycle.terminal else { throw RemoteLinkError.inconsistentResult }
+        }
         return result
     }
 

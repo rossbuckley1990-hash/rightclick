@@ -23,6 +23,7 @@ jobs:
           swift --version | tee macos-toolchain.txt
           swift test --force-resolved-versions --jobs 4 2>&1 | tee macos-tests.log
           python3 scripts/acceptance-portable-fabric.py .build/debug/rightclick 2>&1 | tee macos-acceptance.log
+          python3 scripts/acceptance-bilateral-fabric.py .build/debug/rightclick-fabric-proof --output-dir macos-bilateral-evidence 2>&1 | tee macos-bilateral.log
           git diff --exit-code -- Package.resolved
       - name: Preserve evidence
         if: always()
@@ -32,6 +33,7 @@ jobs:
           path: |
             macos-*.txt
             macos-*.log
+            macos-bilateral-evidence/
           if-no-files-found: error
   linux:
     name: Linux ${{ matrix.arch }}
@@ -51,7 +53,7 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
-      - run: apt-get update && apt-get install -y python3 ca-certificates
+      - run: apt-get update && apt-get install -y python3 ca-certificates openssl
       - name: Source and native platform
         run: |
           set -euo pipefail
@@ -82,6 +84,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/acceptance-portable-fabric.py .build/release/rightclick 2>&1 | tee linux-acceptance.log
+          python3 scripts/acceptance-bilateral-fabric.py .build/debug/rightclick-fabric-proof --output-dir linux-bilateral-evidence 2>&1 | tee linux-bilateral.log
       - name: Preserve evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -91,4 +94,5 @@ jobs:
             linux-*.txt
             linux-*.json
             linux-*.log
+            linux-bilateral-evidence/
           if-no-files-found: error

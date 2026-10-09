@@ -39,6 +39,11 @@ final class MCPHTTPListener: @unchecked Sendable {
         self.listener = listener
     }
 
+    func stop() {
+        listener?.cancel()
+        listener = nil
+    }
+
     private func handle(_ connection: NWConnection) async {
         do {
             let raw = try await readRequest(from: connection)

@@ -27,6 +27,11 @@ final class MCPHTTPListener {
                 }
             }.bind(host: "127.0.0.1", port: Int(port)).wait()
     }
+
+    func stop() {
+        try? channel?.close().wait()
+        channel = nil
+    }
     deinit { channel?.close(promise: nil); group.shutdownGracefully { _ in } }
 }
 

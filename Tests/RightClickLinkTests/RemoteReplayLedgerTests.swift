@@ -260,7 +260,7 @@ final class RemoteReplayLedgerTests: XCTestCase {
             XCTAssertNil(try ledger.reserve(fixture.request(), now: 1_000))
             var document = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: fixture.child("link.json"))) as? [String: Any])
             switch field {
-            case "version": document[field] = 2
+            case "version": document[field] = Int.max
             case "runtimeID": document[field] = "runtime:substituted"
             case "lastTime": document[field] = -1
             case "seen": document[field] = [String(repeating: "a", count: 64)]

@@ -45,7 +45,19 @@ public enum RightClickMCPRuntime {
 }
 
 public enum RightClickMCPMain {
-    public static func run(_ args: [String]) -> Int {
+    /// Portable asynchronous host composition; the listener remains loopback
+    /// only, with the same seven definitions and authenticated MCP dispatcher.
+    public static func serveHTTP(engine: CapabilityEngine, port: UInt16, token: String) async throws {
+        guard port > 0, !token.isEmpty else { throw RightClickError("HTTP MCP requires a port and token.") }
+        let dispatcher = HTTPRequestDispatcher(engine: EngineBox(engine), token: token, port: port)
+        let listener = MCPHTTPListener(port: port, path: "/mcp") { await dispatcher.handle($0) }
+        try listener.start()
+        defer { listener.stop() }
+        fputs("RIGHTCLICK HTTP MCP listening on http://127.0.0.1:\(port)/mcp\n", stderr)
+        try await Task.sleep(for: .seconds(60 * 60 * 24 * 365))
+    }
+
+    public static func run(_ args: [String], engine: CapabilityEngine? = nil) -> Int {
         let http = args.contains("--http")
         let port: UInt16
         if args.contains("--port") {
@@ -63,7 +75,7 @@ public enum RightClickMCPMain {
         let token = flag(args, "--token") ?? ProcessInfo.processInfo.environment["RIGHTCLICK_MCP_TOKEN"]
         StartupLog.record(transport: http ? "http" : "stdio")
         let box = EngineBox(
-            RightClickMCPRuntime.makeEngine()
+            engine ?? RightClickMCPRuntime.makeEngine()
         )
         if http {
             guard let token, !token.isEmpty else {
@@ -272,7 +284,7 @@ final class HTTPMCPServer {
 
 /// Stateless Streamable HTTP. Each request gets a new MCP server and transport.
 /// The shared engine keeps execution records across those requests.
-private actor HTTPRequestDispatcher {
+actor HTTPRequestDispatcher {
     private let engine: EngineBox
     private let token: String
     private let resource: URL
@@ -334,7 +346,7 @@ private func registerTools(
     }
     await server.withMethodHandler(CallTool.self) { params in
         do {
-            let text = try handleTool(
+            let text = try await handleToolRefreshing(
                 params.name,
                 arguments: params.arguments,
                 engine: engine,
@@ -378,6 +390,7 @@ private func rightClickTools() -> [Tool] {
                 "description": .string("Provider-independent observable predicate type."),
                 "enum": .array([
                     .string("text_equals"),
+                    .string("result_path_equals"),
                     .string("file_exists"),
                     .string("file_readable"),
                     .string("file_sha256_equals"),
@@ -491,6 +504,12 @@ private func rightClickTools() -> [Tool] {
                 "type": .string("object"),
                 "properties": .object([
                     "executionId": schemaString("executionId returned by context_run."),
+                    "cursor": .object(["type": .string("integer"), "minimum": .int(0),
+                        "description": .string("Last consumed event sequence. Defaults to 0.")]),
+                    "limit": .object(["type": .string("integer"), "minimum": .int(1), "maximum": .int(256),
+                        "description": .string("Maximum events in this page. Defaults to 64.")]),
+                    "maximumBytes": .object(["type": .string("integer"), "minimum": .int(1), "maximum": .int(262_144),
+                        "description": .string("Maximum encoded event bytes in this page. Defaults to 262144.")]),
                 ]),
                 "required": .array([.string("executionId")]),
             ])
@@ -600,12 +619,50 @@ func handleTool(
 
         return RightClickJSON.encode(record)
     case "context_run_status":
-        let executionId = arguments?["executionId"]?.stringValue ?? ""
-        let record = try engine.call { $0.executionStatus(executionId) }
+        let page = try statusArguments(arguments)
+        let record = try engine.call { try $0.executionStatus(page.id, cursor: page.cursor,
+            limit: page.limit, maximumBytes: page.bytes) }
         return RightClickJSON.encode(record)
     default:
         throw RightClickError("Unknown tool \(name).")
     }
+}
+
+/// Both MCP transports refresh through the portable status interface. The
+/// synchronous handler remains available to local embedding callers.
+func handleToolRefreshing(_ name: String, arguments: [String: Value]?, engine: EngineBox,
+                          transport: String) async throws -> String {
+    guard name == "context_run_status" else {
+        return try handleTool(name, arguments: arguments, engine: engine, transport: transport)
+    }
+    let page = try statusArguments(arguments)
+    if let owner = try engine.call({ $0.executionStatusReflector(page.id) }),
+       let record = try await owner.executionStatus(executionID: page.id, cursor: page.cursor,
+           limit: page.limit, maximumBytes: page.bytes) {
+        ExecutionStore.shared.put(record)
+        return RightClickJSON.encode(record)
+    }
+    return try engine.call {
+        RightClickJSON.encode(try $0.executionStatus(page.id, cursor: page.cursor,
+            limit: page.limit, maximumBytes: page.bytes))
+    }
+}
+
+private func statusArguments(_ arguments: [String: Value]?) throws -> (id: String, cursor: Int64, limit: Int, bytes: Int) {
+    guard let id = arguments?["executionId"]?.stringValue, !id.isEmpty else {
+        throw RightClickError("executionId is required.")
+    }
+    func bounded(_ key: String, default fallback: Int, range: ClosedRange<Int>) throws -> Int {
+        guard let supplied = arguments?[key] else { return fallback }
+        guard case let .int(value) = supplied, range.contains(value) else {
+            if key == "cursor" { throw RightClickError("cursor must be an integer greater than or equal to 0.") }
+            throw RightClickError("\(key) must be an integer from \(range.lowerBound) through \(range.upperBound).")
+        }
+        return value
+    }
+    return (id, Int64(try bounded("cursor", default: 0, range: 0...Int.max)),
+        try bounded("limit", default: 64, range: 1...256),
+        try bounded("maximumBytes", default: 262_144, range: 1...262_144))
 }
 
 private struct ContextActionsPayload: Codable {
