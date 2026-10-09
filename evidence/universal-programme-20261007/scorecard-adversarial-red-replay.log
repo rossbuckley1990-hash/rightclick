@@ -1,0 +1,352 @@
+SYNTHETIC structural controls only; no programme acceptance evidence.
+Historical pre-fix validator was NOT separately retained at the first RED run.
+This replay uses source reconstructed later from the tool transcript.
+Exact reconstructed bytes match the SHA256 already pinned in scorecard-adversarial-red.log.
+Validator SHA256 4fc9fda2a0fc2a865fd8cf5ed597e11c1581544138390304df79fe92c2c98e55
+Original frozen controls SHA256 284aae27f0aed4d9e97367a6a87273184e780ca3b222f12079980244b6433f4b
+test_complete_synthetic_structure_is_not_real_acceptance (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_complete_synthetic_structure_is_not_real_acceptance) ... ok
+test_duplicate_manifest_keys_are_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_duplicate_manifest_keys_are_rejected) ... FAIL
+test_duplicate_report_keys_are_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_duplicate_report_keys_are_rejected) ... FAIL
+test_green_stage_must_use_its_world_and_matching_proof_role (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_green_stage_must_use_its_world_and_matching_proof_role) ... 
+  test_green_stage_must_use_its_world_and_matching_proof_role (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_green_stage_must_use_its_world_and_matching_proof_role) (evidence='evidence/windows/receipt_verification.json') ... FAIL
+  test_green_stage_must_use_its_world_and_matching_proof_role (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_green_stage_must_use_its_world_and_matching_proof_role) (evidence='evidence/macos/restricted_agent_acceptance.json') ... FAIL
+test_manifest_is_parsed_from_exact_checked_bytes_after_path_replacement (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_manifest_is_parsed_from_exact_checked_bytes_after_path_replacement) ... ERROR
+test_manifest_tool_counter_requires_exact_integer_zero (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_manifest_tool_counter_requires_exact_integer_zero) ... 
+  test_manifest_tool_counter_requires_exact_integer_zero (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_manifest_tool_counter_requires_exact_integer_zero) (counter='False') ... FAIL
+  test_manifest_tool_counter_requires_exact_integer_zero (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_manifest_tool_counter_requires_exact_integer_zero) (counter='0.0') ... FAIL
+test_missing_and_added_tools_are_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_missing_and_added_tools_are_rejected) ... ok
+test_missing_required_proof_kind_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_missing_required_proof_kind_is_rejected) ... ok
+test_missing_runtime_attestation_or_provenance_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_missing_runtime_attestation_or_provenance_is_rejected) ... 
+  test_missing_runtime_attestation_or_provenance_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_missing_runtime_attestation_or_provenance_is_rejected) (role='runtime_attestation') ... FAIL
+  test_missing_runtime_attestation_or_provenance_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_missing_runtime_attestation_or_provenance_is_rejected) (role='binary_provenance') ... FAIL
+test_proof_roles_cannot_reuse_the_same_supporting_artifact (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_proof_roles_cannot_reuse_the_same_supporting_artifact) ... FAIL
+test_reference_source_binary_and_session_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_reference_source_binary_and_session_mismatch_is_rejected) ... ok
+test_report_requires_pass_outcome_and_supporting_artifact (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_requires_pass_outcome_and_supporting_artifact) ... 
+  test_report_requires_pass_outcome_and_supporting_artifact (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_requires_pass_outcome_and_supporting_artifact) (field='outcome') ... FAIL
+  test_report_requires_pass_outcome_and_supporting_artifact (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_requires_pass_outcome_and_supporting_artifact) (field='supporting_artifacts') ... FAIL
+test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) ... 
+  test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='source_commit') ... FAIL
+  test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='binary_sha256') ... FAIL
+  test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='session_id') ... FAIL
+  test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='kind') ... FAIL
+  test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='substrate') ... FAIL
+test_required_async_world_cannot_be_declared_inapplicable (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_cannot_be_declared_inapplicable) ... 
+  test_required_async_world_cannot_be_declared_inapplicable (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_cannot_be_declared_inapplicable) (world='a2a') ... FAIL
+  test_required_async_world_cannot_be_declared_inapplicable (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_cannot_be_declared_inapplicable) (world='grpc') ... FAIL
+  test_required_async_world_cannot_be_declared_inapplicable (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_cannot_be_declared_inapplicable) (world='kafka') ... FAIL
+  test_required_async_world_cannot_be_declared_inapplicable (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_cannot_be_declared_inapplicable) (world='kubernetes') ... FAIL
+test_required_async_world_needs_stream_lifecycle_proof (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_needs_stream_lifecycle_proof) ... 
+  test_required_async_world_needs_stream_lifecycle_proof (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_needs_stream_lifecycle_proof) (world='a2a') ... FAIL
+  test_required_async_world_needs_stream_lifecycle_proof (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_needs_stream_lifecycle_proof) (world='grpc') ... FAIL
+  test_required_async_world_needs_stream_lifecycle_proof (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_needs_stream_lifecycle_proof) (world='kafka') ... FAIL
+  test_required_async_world_needs_stream_lifecycle_proof (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_needs_stream_lifecycle_proof) (world='kubernetes') ... FAIL
+test_runtime_attestation_and_binary_provenance_must_match_manifest (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_runtime_attestation_and_binary_provenance_must_match_manifest) ... 
+  test_runtime_attestation_and_binary_provenance_must_match_manifest (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_runtime_attestation_and_binary_provenance_must_match_manifest) (role='runtime_attestation', field='executableSHA256') ... FAIL
+  test_runtime_attestation_and_binary_provenance_must_match_manifest (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_runtime_attestation_and_binary_provenance_must_match_manifest) (role='runtime_attestation', field='session_id') ... FAIL
+  test_runtime_attestation_and_binary_provenance_must_match_manifest (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_runtime_attestation_and_binary_provenance_must_match_manifest) (role='binary_provenance', field='source_commit') ... FAIL
+  test_runtime_attestation_and_binary_provenance_must_match_manifest (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_runtime_attestation_and_binary_provenance_must_match_manifest) (role='binary_provenance', field='binary_sha256') ... FAIL
+test_source_file_cannot_masquerade_as_acceptance_report (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_source_file_cannot_masquerade_as_acceptance_report) ... FAIL
+test_supporting_artifact_drift_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_supporting_artifact_drift_is_rejected) ... FAIL
+test_unrelated_source_file_cannot_establish_green_stage (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_unrelated_source_file_cannot_establish_green_stage) ... FAIL
+
+======================================================================
+ERROR: test_manifest_is_parsed_from_exact_checked_bytes_after_path_replacement (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_manifest_is_parsed_from_exact_checked_bytes_after_path_replacement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 185, in test_manifest_is_parsed_from_exact_checked_bytes_after_path_replacement
+    result = fixture.validate()
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 148, in validate
+    return GATE.validate(self.scorecard, self.root, require_green=True)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/evidence/universal-programme-20261007/scorecard-adversarial-red-validator-reconstructed.py", line 96, in validate
+    require(manifest.get("model_visible_operations") == operations and manifest.get("provider_specific_tools_added") == 0,
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            "acceptance tool catalogue differs from the canonical surface")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/evidence/universal-programme-20261007/scorecard-adversarial-red-validator-reconstructed.py", line 33, in require
+    raise InvalidScorecard(message)
+reconstructed_red_validator.InvalidScorecard: acceptance tool catalogue differs from the canonical surface
+
+======================================================================
+FAIL: test_duplicate_manifest_keys_are_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_duplicate_manifest_keys_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 332, in test_duplicate_manifest_keys_are_rejected
+    with self.assertRaises((GATE.InvalidScorecard, ValueError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'reconstructed_red_validator.InvalidScorecard'>, <class 'ValueError'>) not raised
+
+======================================================================
+FAIL: test_duplicate_report_keys_are_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_duplicate_report_keys_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 339, in test_duplicate_report_keys_are_rejected
+    with self.assertRaises((GATE.InvalidScorecard, ValueError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'reconstructed_red_validator.InvalidScorecard'>, <class 'ValueError'>) not raised
+
+======================================================================
+FAIL: test_green_stage_must_use_its_world_and_matching_proof_role (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_green_stage_must_use_its_world_and_matching_proof_role) (evidence='evidence/windows/receipt_verification.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 207, in test_green_stage_must_use_its_world_and_matching_proof_role
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_green_stage_must_use_its_world_and_matching_proof_role (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_green_stage_must_use_its_world_and_matching_proof_role) (evidence='evidence/macos/restricted_agent_acceptance.json')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 207, in test_green_stage_must_use_its_world_and_matching_proof_role
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_manifest_tool_counter_requires_exact_integer_zero (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_manifest_tool_counter_requires_exact_integer_zero) (counter='False')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 236, in test_manifest_tool_counter_requires_exact_integer_zero
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_manifest_tool_counter_requires_exact_integer_zero (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_manifest_tool_counter_requires_exact_integer_zero) (counter='0.0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 236, in test_manifest_tool_counter_requires_exact_integer_zero
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_missing_runtime_attestation_or_provenance_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_missing_runtime_attestation_or_provenance_is_rejected) (role='runtime_attestation')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 325, in test_missing_runtime_attestation_or_provenance_is_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_missing_runtime_attestation_or_provenance_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_missing_runtime_attestation_or_provenance_is_rejected) (role='binary_provenance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 325, in test_missing_runtime_attestation_or_provenance_is_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_proof_roles_cannot_reuse_the_same_supporting_artifact (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_proof_roles_cannot_reuse_the_same_supporting_artifact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 295, in test_proof_roles_cannot_reuse_the_same_supporting_artifact
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_report_requires_pass_outcome_and_supporting_artifact (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_requires_pass_outcome_and_supporting_artifact) (field='outcome')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 287, in test_report_requires_pass_outcome_and_supporting_artifact
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_report_requires_pass_outcome_and_supporting_artifact (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_requires_pass_outcome_and_supporting_artifact) (field='supporting_artifacts')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 287, in test_report_requires_pass_outcome_and_supporting_artifact
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='source_commit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 267, in test_report_source_binary_session_kind_and_world_mismatch_is_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='binary_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 267, in test_report_source_binary_session_kind_and_world_mismatch_is_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='session_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 267, in test_report_source_binary_session_kind_and_world_mismatch_is_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='kind')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 267, in test_report_source_binary_session_kind_and_world_mismatch_is_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_report_source_binary_session_kind_and_world_mismatch_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_report_source_binary_session_kind_and_world_mismatch_is_rejected) (field='substrate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 267, in test_report_source_binary_session_kind_and_world_mismatch_is_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_required_async_world_cannot_be_declared_inapplicable (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_cannot_be_declared_inapplicable) (world='a2a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 216, in test_required_async_world_cannot_be_declared_inapplicable
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_required_async_world_cannot_be_declared_inapplicable (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_cannot_be_declared_inapplicable) (world='grpc')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 216, in test_required_async_world_cannot_be_declared_inapplicable
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_required_async_world_cannot_be_declared_inapplicable (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_cannot_be_declared_inapplicable) (world='kafka')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 216, in test_required_async_world_cannot_be_declared_inapplicable
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_required_async_world_cannot_be_declared_inapplicable (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_cannot_be_declared_inapplicable) (world='kubernetes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 216, in test_required_async_world_cannot_be_declared_inapplicable
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_required_async_world_needs_stream_lifecycle_proof (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_needs_stream_lifecycle_proof) (world='a2a')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 228, in test_required_async_world_needs_stream_lifecycle_proof
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_required_async_world_needs_stream_lifecycle_proof (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_needs_stream_lifecycle_proof) (world='grpc')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 228, in test_required_async_world_needs_stream_lifecycle_proof
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_required_async_world_needs_stream_lifecycle_proof (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_needs_stream_lifecycle_proof) (world='kafka')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 228, in test_required_async_world_needs_stream_lifecycle_proof
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_required_async_world_needs_stream_lifecycle_proof (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_required_async_world_needs_stream_lifecycle_proof) (world='kubernetes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 228, in test_required_async_world_needs_stream_lifecycle_proof
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_runtime_attestation_and_binary_provenance_must_match_manifest (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_runtime_attestation_and_binary_provenance_must_match_manifest) (role='runtime_attestation', field='executableSHA256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 316, in test_runtime_attestation_and_binary_provenance_must_match_manifest
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_runtime_attestation_and_binary_provenance_must_match_manifest (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_runtime_attestation_and_binary_provenance_must_match_manifest) (role='runtime_attestation', field='session_id')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 316, in test_runtime_attestation_and_binary_provenance_must_match_manifest
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_runtime_attestation_and_binary_provenance_must_match_manifest (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_runtime_attestation_and_binary_provenance_must_match_manifest) (role='binary_provenance', field='source_commit')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 316, in test_runtime_attestation_and_binary_provenance_must_match_manifest
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_runtime_attestation_and_binary_provenance_must_match_manifest (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_runtime_attestation_and_binary_provenance_must_match_manifest) (role='binary_provenance', field='binary_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 316, in test_runtime_attestation_and_binary_provenance_must_match_manifest
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_source_file_cannot_masquerade_as_acceptance_report (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_source_file_cannot_masquerade_as_acceptance_report)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 194, in test_source_file_cannot_masquerade_as_acceptance_report
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_supporting_artifact_drift_is_rejected (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_supporting_artifact_drift_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 301, in test_supporting_artifact_drift_is_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_unrelated_source_file_cannot_establish_green_stage (Tests.test_universal_scorecard_adversarial.UniversalScorecardAdversarialTests.test_unrelated_source_file_cannot_establish_green_stage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_adversarial.py", line 199, in test_unrelated_source_file_cannot_establish_green_stage
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+----------------------------------------------------------------------
+Ran 19 tests in 4.274s
+
+FAILED (failures=31, errors=1)

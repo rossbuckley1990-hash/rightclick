@@ -1,0 +1,20 @@
+SYNTHETIC structural control only; no programme acceptance evidence.
+Case-insensitive physical-file alias control frozen after previous protected-read fixes.
+Validator snapshot: evidence/universal-programme-20261007/scorecard-case-alias-red-validator.py
+Validator SHA256 cebe5e59e20806ce496987bd0baffb9c87c4aeeb0f0bb450de04e0b871fe615c
+Control SHA256 d6c5e465cdd195a0243a7c135e1c8b7c8c26136f064292816977e32e6fe1b557
+test_case_alias_cannot_reuse_another_roles_supporting_artifact (Tests.test_universal_scorecard_case_alias.UniversalScorecardCaseAliasTests.test_case_alias_cannot_reuse_another_roles_supporting_artifact) ... FAIL
+
+======================================================================
+FAIL: test_case_alias_cannot_reuse_another_roles_supporting_artifact (Tests.test_universal_scorecard_case_alias.UniversalScorecardCaseAliasTests.test_case_alias_cannot_reuse_another_roles_supporting_artifact)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_case_alias.py", line 33, in test_case_alias_cannot_reuse_another_roles_supporting_artifact
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.049s
+
+FAILED (failures=1)

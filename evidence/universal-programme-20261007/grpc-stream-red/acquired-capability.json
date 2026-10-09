@@ -1,0 +1,33 @@
+{
+  "id" : "grpc:7d1e5b6e94df1cee571df279633f487ae59ab3f7e5e0aae68cf92d1915c1ee18:1656c7c9590e7297:rightclick.pressure.Streams.Read",
+  "inputs" : [
+    "public.plain-text"
+  ],
+  "invocation" : "unsupported",
+  "metadata" : {
+    "callType" : "server_streaming",
+    "descriptorSHA256" : "8492d5d93a10a060ccdfed8786a9bb696de9182443e9644ab273af69ef8e3b64",
+    "endpoint" : "grpc:\/\/127.0.0.1:59601",
+    "invocationLimitation" : "Streaming gRPC methods are reflected but not executable in the current bounded unary slice.",
+    "method" : "Read",
+    "providerIdentity" : "7d1e5b6e94df1cee571df279633f487ae59ab3f7e5e0aae68cf92d1915c1ee18",
+    "requestType" : "rightclick.pressure.Request",
+    "responseType" : "rightclick.pressure.Element",
+    "resultValidation" : "protobuf_descriptor",
+    "rpcPath" : "\/rightclick.pressure.Streams\/Read",
+    "service" : "rightclick.pressure.Streams",
+    "substrate" : "grpc"
+  },
+  "output" : [
+    "public.json"
+  ],
+  "provider" : {
+    "name" : "gRPC 127.0.0.1:59601"
+  },
+  "reflectorID" : "grpc-reflector:7d1e5b6e94df1cee571df279633f487ae59ab3f7e5e0aae68cf92d1915c1ee18",
+  "requiresConfirmation" : true,
+  "safety" : "unknown",
+  "source" : "system",
+  "supportLevel" : "experimental",
+  "title" : "gRPC rightclick.pressure.Streams\/Read"
+}

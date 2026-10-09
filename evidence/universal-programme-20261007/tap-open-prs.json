@@ -1,0 +1,35 @@
+[
+  {
+    "baseRefName": "main",
+    "headRefName": "codex/portable-distribution",
+    "headRefOid": "180d2e4fc0e67d9575701b2da61f626ba7985f56",
+    "isDraft": false,
+    "mergeable": "MERGEABLE",
+    "number": 11,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37658263789/job/112918880927",
+        "name": "test-bot (macos-26)",
+        "startedAt": "2026-10-07T17:28:03Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "brew test-bot"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:20:22Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/homebrew-tap/actions/runs/37658264064/job/112918882994",
+        "name": "distribution-invariants",
+        "startedAt": "2026-10-07T17:20:16Z",
+        "status": "COMPLETED",
+        "workflowName": "RIGHTCLICK distribution guard"
+      }
+    ],
+    "title": "Separate portable runtime support from the Homebrew distribution adapter",
+    "url": "https://github.com/rossbuckley1990-hash/homebrew-tap/pull/11"
+  }
+]

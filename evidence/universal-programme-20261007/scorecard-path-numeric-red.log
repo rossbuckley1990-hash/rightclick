@@ -1,0 +1,91 @@
+SYNTHETIC structural controls only; no programme acceptance evidence.
+Pre-fix validator snapshot: evidence/universal-programme-20261007/scorecard-path-numeric-red-validator.py
+Validator SHA256 b18701ed4d0abeefd3b870c077d9b92e19de939a036d01b6bad16794dc81db02
+Controls SHA256 b94edaca56d65f47ed800a825d015ba9e2d0b1b41fbaf0a42a8921e62b42ca2d
+Original frozen controls SHA256 284aae27f0aed4d9e97367a6a87273184e780ca3b222f12079980244b6433f4b
+test_evidence_cannot_escape_after_resolve_before_read (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_evidence_cannot_escape_after_resolve_before_read) ... FAIL
+test_manifest_with_overflowing_extra_measurement_is_rejected (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_manifest_with_overflowing_extra_measurement_is_rejected) ... FAIL
+test_one_role_cannot_duplicate_support_with_normalized_alias (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_one_role_cannot_duplicate_support_with_normalized_alias) ... FAIL
+test_overflowing_json_exponents_are_rejected (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_overflowing_json_exponents_are_rejected) ... 
+  test_overflowing_json_exponents_are_rejected (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_overflowing_json_exponents_are_rejected) (raw=b'{"measurement":1e999}') ... FAIL
+  test_overflowing_json_exponents_are_rejected (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_overflowing_json_exponents_are_rejected) (raw=b'{"measurement":-1e999}') ... FAIL
+  test_overflowing_json_exponents_are_rejected (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_overflowing_json_exponents_are_rejected) (raw=b'{"nested":{"measurement":[1e999]}}') ... FAIL
+test_supporting_artifact_cannot_reuse_in_repository_symlink_alias (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_supporting_artifact_cannot_reuse_in_repository_symlink_alias) ... FAIL
+test_supporting_artifact_cannot_reuse_normalized_path_alias (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_supporting_artifact_cannot_reuse_normalized_path_alias) ... FAIL
+
+======================================================================
+FAIL: test_evidence_cannot_escape_after_resolve_before_read (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_evidence_cannot_escape_after_resolve_before_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_path_numeric.py", line 89, in test_evidence_cannot_escape_after_resolve_before_read
+    with self.assertRaises((GATE.InvalidScorecard, OSError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'scorecard_adversarial_gate.InvalidScorecard'>, <class 'OSError'>) not raised
+
+======================================================================
+FAIL: test_manifest_with_overflowing_extra_measurement_is_rejected (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_manifest_with_overflowing_extra_measurement_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_path_numeric.py", line 66, in test_manifest_with_overflowing_extra_measurement_is_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_one_role_cannot_duplicate_support_with_normalized_alias (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_one_role_cannot_duplicate_support_with_normalized_alias)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_path_numeric.py", line 52, in test_one_role_cannot_duplicate_support_with_normalized_alias
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_overflowing_json_exponents_are_rejected (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_overflowing_json_exponents_are_rejected) (raw=b'{"measurement":1e999}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_path_numeric.py", line 59, in test_overflowing_json_exponents_are_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_overflowing_json_exponents_are_rejected (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_overflowing_json_exponents_are_rejected) (raw=b'{"measurement":-1e999}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_path_numeric.py", line 59, in test_overflowing_json_exponents_are_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_overflowing_json_exponents_are_rejected (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_overflowing_json_exponents_are_rejected) (raw=b'{"nested":{"measurement":[1e999]}}')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_path_numeric.py", line 59, in test_overflowing_json_exponents_are_rejected
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_supporting_artifact_cannot_reuse_in_repository_symlink_alias (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_supporting_artifact_cannot_reuse_in_repository_symlink_alias)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_path_numeric.py", line 43, in test_supporting_artifact_cannot_reuse_in_repository_symlink_alias
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+======================================================================
+FAIL: test_supporting_artifact_cannot_reuse_normalized_path_alias (Tests.test_universal_scorecard_path_numeric.UniversalScorecardPathNumericTests.test_supporting_artifact_cannot_reuse_normalized_path_alias)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ross/.codex/.chatgpt-projects/g-p-6ac33d82393c8191a661a30d2e144882/work/rightclick-programme/Tests/test_universal_scorecard_path_numeric.py", line 31, in test_supporting_artifact_cannot_reuse_normalized_path_alias
+    with self.assertRaises(GATE.InvalidScorecard):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: InvalidScorecard not raised
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.770s
+
+FAILED (failures=8)

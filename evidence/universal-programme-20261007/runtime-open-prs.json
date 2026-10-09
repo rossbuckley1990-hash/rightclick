@@ -1,0 +1,506 @@
+[
+  {
+    "baseRefName": "main",
+    "headRefName": "docs/rcir-g2-acceptance-20261007",
+    "headRefOid": "f245682cb9244a77f047202da3e8fabc02103042",
+    "isDraft": false,
+    "mergeable": "MERGEABLE",
+    "number": 50,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37658638175/job/112920156986",
+        "name": "test",
+        "startedAt": "2026-10-07T17:23:08Z",
+        "status": "QUEUED",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:27:57Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37658638175/job/112920157336",
+        "name": "macOS ARD runtime gates",
+        "startedAt": "2026-10-07T17:23:37Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:24:23Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37658638175/job/112920157199",
+        "name": "Linux ARD portable acquisition",
+        "startedAt": "2026-10-07T17:23:10Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      }
+    ],
+    "title": "Record accepted RCIR runtime and source-package evidence",
+    "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/50"
+  },
+  {
+    "baseRefName": "main",
+    "headRefName": "feature/universal-async-proof-20261007",
+    "headRefOid": "2dd7bd2fafbbaa994812d1bc904730b74aa74816",
+    "isDraft": true,
+    "mergeable": "UNKNOWN",
+    "number": 49,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:17:59Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109358/job/112915259081",
+        "name": "linux",
+        "startedAt": "2026-10-07T17:12:06Z",
+        "status": "COMPLETED",
+        "workflowName": "Portable runtime"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:18:39Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109090/job/112914896305",
+        "name": "a2a-real-lifecycle",
+        "startedAt": "2026-10-07T17:12:17Z",
+        "status": "COMPLETED",
+        "workflowName": "Universal async pressure"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:20:29Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657100802/job/112914869152",
+        "name": "a2a-real-lifecycle",
+        "startedAt": "2026-10-07T17:15:02Z",
+        "status": "COMPLETED",
+        "workflowName": "Universal async pressure"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109075/job/112915274043",
+        "name": "production",
+        "startedAt": "2026-10-07T17:22:33Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "RCIR production OpenAPI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109998/job/112914913278",
+        "name": "test",
+        "startedAt": "2026-10-07T17:21:47Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:11:15Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109958/job/112914901572",
+        "name": "relay",
+        "startedAt": "2026-10-07T17:11:16Z",
+        "status": "COMPLETED",
+        "workflowName": "Ephemeral native Windows TLS proof relay"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:11:59Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109156/job/112914897281",
+        "name": "portable",
+        "startedAt": "2026-10-07T17:11:17Z",
+        "status": "COMPLETED",
+        "workflowName": "Capability ABI portable tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:24:30Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109465/job/112914898555",
+        "name": "genuine-mcp-wasm",
+        "startedAt": "2026-10-07T17:15:05Z",
+        "status": "COMPLETED",
+        "workflowName": "Descriptor interface runtime proof"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:12:35Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109101/job/112914896156",
+        "name": "linux-kafka-kubernetes",
+        "startedAt": "2026-10-07T17:11:17Z",
+        "status": "COMPLETED",
+        "workflowName": "Isolated universal-runtime proof lab"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:20:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109311/job/112915107522",
+        "name": "native-linux-dbus",
+        "startedAt": "2026-10-07T17:11:45Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Linux D-Bus runtime"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:11:42Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109226/job/112914896981",
+        "name": "native-reference-boundary",
+        "startedAt": "2026-10-07T17:11:17Z",
+        "status": "COMPLETED",
+        "workflowName": "Native Windows protected-reference diagnostics"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:12:04Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109257/job/112914901869",
+        "name": "portable",
+        "startedAt": "2026-10-07T17:11:18Z",
+        "status": "COMPLETED",
+        "workflowName": "RCIR foundation (not universal runtime acceptance)"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:24:22Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109358/job/112915258207",
+        "name": "windows",
+        "startedAt": "2026-10-07T17:12:06Z",
+        "status": "COMPLETED",
+        "workflowName": "Portable runtime"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:12:18Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109101/job/112914896593",
+        "name": "native-windows",
+        "startedAt": "2026-10-07T17:11:17Z",
+        "status": "COMPLETED",
+        "workflowName": "Isolated universal-runtime proof lab"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:21:37Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109257/job/112914901152",
+        "name": "apple-cryptography",
+        "startedAt": "2026-10-07T17:20:41Z",
+        "status": "COMPLETED",
+        "workflowName": "RCIR foundation (not universal runtime acceptance)"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:23:29Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109998/job/112914913617",
+        "name": "macOS ARD runtime gates",
+        "startedAt": "2026-10-07T17:18:46Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:26:45Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109358/job/112915257914",
+        "name": "macos",
+        "startedAt": "2026-10-07T17:12:37Z",
+        "status": "COMPLETED",
+        "workflowName": "Portable runtime"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:13:00Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37657109998/job/112914913765",
+        "name": "Linux ARD portable acquisition",
+        "startedAt": "2026-10-07T17:11:55Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      }
+    ],
+    "title": "Converge portable RCIR execution, authority and verified substrate paths",
+    "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/49"
+  },
+  {
+    "baseRefName": "main",
+    "headRefName": "docs/verified-adoption-20261007",
+    "headRefOid": "d0d03eb7a996ed6a04ea34d256109f21cafe9a17",
+    "isDraft": false,
+    "mergeable": "MERGEABLE",
+    "number": 40,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37658627389/job/112920118832",
+        "name": "test",
+        "startedAt": "2026-10-07T17:24:38Z",
+        "status": "IN_PROGRESS",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37658627389/job/112920119379",
+        "name": "macOS ARD runtime gates",
+        "startedAt": "2026-10-07T17:23:02Z",
+        "status": "QUEUED",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T17:24:15Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37658627389/job/112920119431",
+        "name": "Linux ARD portable acquisition",
+        "startedAt": "2026-10-07T17:23:05Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      }
+    ],
+    "title": "docs: verified capabilities, evidence-led README, supplied GIFs and agent guide",
+    "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/40"
+  },
+  {
+    "baseRefName": "main",
+    "headRefName": "feature/semantic-preflight-001",
+    "headRefOid": "14af1eabd26a2c8bb38c6b9124ca96c96dd4f31e",
+    "isDraft": false,
+    "mergeable": "MERGEABLE",
+    "number": 39,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T09:26:34Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37599774056/job/112721502782",
+        "name": "test",
+        "startedAt": "2026-10-07T09:20:28Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T09:24:09Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37599774056/job/112721503101",
+        "name": "macOS ARD runtime gates",
+        "startedAt": "2026-10-07T09:20:29Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T09:21:28Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37599774056/job/112721502981",
+        "name": "Linux ARD portable acquisition",
+        "startedAt": "2026-10-07T09:20:24Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      }
+    ],
+    "title": "feat: add capability argument preflight",
+    "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/39"
+  },
+  {
+    "baseRefName": "main",
+    "headRefName": "feature/portable-runtime-001",
+    "headRefOid": "a41c2775ac3ba00b05773af3fe428357cc0b7fca",
+    "isDraft": false,
+    "mergeable": "UNKNOWN",
+    "number": 37,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T12:18:28Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929644/job/112787329487",
+        "name": "prepare",
+        "startedAt": "2026-10-07T12:17:28Z",
+        "status": "COMPLETED",
+        "workflowName": "Final portable guard repair and validation"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T12:23:51Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929622/job/112787905983",
+        "name": "Native linux candidate",
+        "startedAt": "2026-10-07T12:18:57Z",
+        "status": "COMPLETED",
+        "workflowName": "Portable runtime"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T12:31:06Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929622/job/112787906519",
+        "name": "Native macos candidate",
+        "startedAt": "2026-10-07T12:19:03Z",
+        "status": "COMPLETED",
+        "workflowName": "Portable runtime"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T12:29:39Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929622/job/112787905898",
+        "name": "Native windows candidate",
+        "startedAt": "2026-10-07T12:18:57Z",
+        "status": "COMPLETED",
+        "workflowName": "Portable runtime"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T12:18:29Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929644/job/112787745280",
+        "name": "Native ${{ matrix.id }} candidate",
+        "startedAt": "2026-10-07T12:18:29Z",
+        "status": "COMPLETED",
+        "workflowName": "Final portable guard repair and validation"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T12:31:06Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929622/job/112792822003",
+        "name": "clean-linux",
+        "startedAt": "2026-10-07T12:31:07Z",
+        "status": "COMPLETED",
+        "workflowName": "Portable runtime"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T12:18:29Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37619929644/job/112787746458",
+        "name": "clean-linux",
+        "startedAt": "2026-10-07T12:18:29Z",
+        "status": "COMPLETED",
+        "workflowName": "Final portable guard repair and validation"
+      }
+    ],
+    "title": "feat(runtime): portable shared Core/MCP with Linux and Windows host adapters",
+    "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/37"
+  },
+  {
+    "baseRefName": "main",
+    "headRefName": "feat/reviewed-contract-pins",
+    "headRefOid": "21ec3d3199c537eea332a36c52c38553b811f389",
+    "isDraft": false,
+    "mergeable": "CONFLICTING",
+    "number": 35,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T08:36:35Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37594375944/job/112703267229",
+        "name": "test",
+        "startedAt": "2026-10-07T08:32:04Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T08:35:49Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37594375944/job/112703266903",
+        "name": "macOS ARD runtime gates",
+        "startedAt": "2026-10-07T08:32:04Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-07T08:33:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37594375944/job/112703267148",
+        "name": "Linux ARD portable acquisition",
+        "startedAt": "2026-10-07T08:31:57Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      }
+    ],
+    "title": "Feat/reviewed contract pins",
+    "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/35"
+  },
+  {
+    "baseRefName": "main",
+    "headRefName": "promotion/v030-typed-openapi-github-write",
+    "headRefOid": "48794f62c95d3a779dc7cd1fc53528191e574f02",
+    "isDraft": true,
+    "mergeable": "CONFLICTING",
+    "number": 14,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-06T20:54:51Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37529522597/job/112495015297",
+        "name": "test",
+        "startedAt": "2026-10-06T20:50:57Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      }
+    ],
+    "title": "experiment: preserve v0.3 typed OpenAPI continuation",
+    "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/14"
+  },
+  {
+    "baseRefName": "main",
+    "headRefName": "feat/developer-magnet",
+    "headRefOid": "2cad342927e98a9a875929df161ab8048fec6837",
+    "isDraft": false,
+    "mergeable": "UNKNOWN",
+    "number": 1,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-05T11:44:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37304185419/job/111743769754",
+        "name": "test",
+        "startedAt": "2026-10-05T11:38:08Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-05T11:42:40Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rossbuckley1990-hash/rightclick/actions/runs/37304176906/job/111743740957",
+        "name": "test",
+        "startedAt": "2026-10-05T11:38:03Z",
+        "status": "COMPLETED",
+        "workflowName": "macOS tests"
+      }
+    ],
+    "title": "Developer magnet: README, llms.txt, live MCP example, Pages",
+    "url": "https://github.com/rossbuckley1990-hash/rightclick/pull/1"
+  }
+]

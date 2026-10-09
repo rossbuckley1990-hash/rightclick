@@ -1,0 +1,734 @@
+{
+  "version": 1,
+  "objective_sha256": "ae479acc820cd90f63672f2a066b876b839b19c42f077fe2bcdd173501915d83",
+  "main_source": "d953f1a34675a65cf47abd67c4d678069b6536b5",
+  "convergence_branch": "feature/universal-async-proof-20261007",
+  "audited_candidate": "2dd7bd2fafbbaa994812d1bc904730b74aa74816",
+  "canonical_operations": [
+    "context_runtime",
+    "context_providers",
+    "context_inspect",
+    "context_actions",
+    "context_explain",
+    "context_run",
+    "context_run_status"
+  ],
+  "provider_specific_top_level_tools_added": 0,
+  "columns": [
+    "acquisition",
+    "common_abi",
+    "authority",
+    "policy",
+    "execution",
+    "async_stream",
+    "independent_verification",
+    "receipt",
+    "withdrawal",
+    "real_world_proof"
+  ],
+  "restricted_agent_experiment": {
+    "status": "RED",
+    "evidence": null,
+    "remaining": "One fresh AI, exactly seven model-visible operations, all eleven real substrate worlds, same source/binary/session, independently verified effects and receipts, provider withdrawal and stale binding denial while remaining providers continue."
+  },
+  "substrates": [
+    {
+      "id": "macos",
+      "name": "macOS application",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/CapabilityReflector.swift",
+        "sha256": "d8b01038448cdd43e7807de58ba1b1602b33e059f65836003e420d726b14625c"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Native discovery/execution exist; common RCIR admission/signing coverage, disappearance and the final restricted agent remain unproven."
+    },
+    {
+      "id": "windows",
+      "name": "Windows machine",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/RuntimePlatform.swift",
+        "sha256": "47485af96b9c80de5d0aa95750da8abf09d7e76ee4fe4799ae71c69323818036"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Native build/protected-reference work is active; direct typed Windows capability acquisition and live generation withdrawal remain RED."
+    },
+    {
+      "id": "linux",
+      "name": "Linux service",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/DBusCapabilityArtifactResolver.swift",
+        "sha256": "070b97058390b2181737c399f4eb19a0505942936f0a3bd0fa3c3d2032c7ab6f"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Native D-Bus candidate and seven-operation engineering acceptance exist; final-source restricted-agent effect/authority/receipt/withdrawal integration remains unproven."
+    },
+    {
+      "id": "openapi",
+      "name": "REST / OpenAPI",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/OpenAPIReflector.swift",
+        "sha256": "506155f0b45701044553bc7f96170b582e21cfe4c9bf70c1e873c4a7a9dfe038"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Production RCIR readback and signed engineering proofs exist; final multi-substrate restricted-agent experiment and issuer least-authority coverage remain unproven."
+    },
+    {
+      "id": "graphql",
+      "name": "GraphQL API",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/GraphQLReflector.swift",
+        "sha256": "b3211c7ef3d1674d75af97e0d21f3e59082dd6637d28039207f3cc9cf9c1e09e"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Generic acquisition/transport exist; production typed objects, independent semantic observations and final restricted-agent proof remain RED."
+    },
+    {
+      "id": "grpc",
+      "name": "gRPC service",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/GRPCReflector.swift",
+        "sha256": "5a247a94a05f4143b73d021218ed2c20cfb623ee03af5e0128454b0d8974af3d"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Reflection/unary transport exist; genuine server/client/duplex streaming is excluded at common admission and remains RED."
+    },
+    {
+      "id": "mcp",
+      "name": "MCP server",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/MCPCapabilityArtifactResolver.swift",
+        "sha256": "29bf0a67db3f1520d81510567dcf5e769373e89bbc789ff87a9b66c9febf46e4"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Actual bounded tools acquisition/execution candidate exists; broader arbitrary-server compatibility and same-agent final proof remain unproven."
+    },
+    {
+      "id": "a2a",
+      "name": "A2A agent",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/A2AReflector.swift",
+        "sha256": "c357822fd0e900f6aadc80285fad980b5f736d9e62ab539e1026b399aaac2e21"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Deferred task and independent observer engineering proof exists; streaming/cancel/production identity and final same-agent proof remain RED."
+    },
+    {
+      "id": "kafka",
+      "name": "Kafka / event system",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/KafkaCapabilityArtifactResolver.swift",
+        "sha256": "2b70054d0f04c1875a3b12c099fef1c595925fc38b830139ae5f4f71d5bb38de"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Real scoped broker produce/readback candidate exists; consume/subscribe/stream lifecycle, load stability and final restricted proof remain RED."
+    },
+    {
+      "id": "kubernetes",
+      "name": "Kubernetes cluster",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/KubernetesCapabilityArtifactResolver.swift",
+        "sha256": "b8579411e9b43e02afa4cd2eb7e931ec90aba764d4647c3cd50845a4d4164bfd"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Real namespace-scoped ConfigMap create/readback candidate exists; generic discovery/OpenAPI/CRDs/watch and unseen operator withdrawal remain RED."
+    },
+    {
+      "id": "wasm",
+      "name": "WASM component",
+      "status": "RED",
+      "implementation_reference": {
+        "path": "Sources/RightClickCore/WASMCapabilityArtifactResolver.swift",
+        "sha256": "1c7d87fd966fcd25c49966b3fad5887eb498dd513f35ca82a017b40efabb2e5f"
+      },
+      "stages": {
+        "acquisition": {
+          "status": "RED",
+          "evidence": []
+        },
+        "common_abi": {
+          "status": "RED",
+          "evidence": []
+        },
+        "authority": {
+          "status": "RED",
+          "evidence": []
+        },
+        "policy": {
+          "status": "RED",
+          "evidence": []
+        },
+        "execution": {
+          "status": "RED",
+          "evidence": []
+        },
+        "async_stream": {
+          "status": "RED",
+          "evidence": []
+        },
+        "independent_verification": {
+          "status": "RED",
+          "evidence": []
+        },
+        "receipt": {
+          "status": "RED",
+          "evidence": []
+        },
+        "withdrawal": {
+          "status": "RED",
+          "evidence": []
+        },
+        "real_world_proof": {
+          "status": "RED",
+          "evidence": []
+        }
+      },
+      "supporting_evidence": [
+        {
+          "path": "docs/UNIVERSAL-RUNTIME-ACCEPTANCE.md",
+          "sha256": "167674ee5d434b9763e23aea338a33b68da43c2766c9ab2bed54b9c00a2b6536"
+        },
+        {
+          "path": "docs/INTEGRATED-RUNTIME-EVIDENCE-20261007.md",
+          "sha256": "0191f165f8a669ada3f0834fa2b27ff04bf093a33ff99a7d85323ff98296dc68"
+        }
+      ],
+      "remaining": "Genuine component string-export proof exists; richer WIT/resources/async and final live appearance/removal restricted-agent proof remain unproven."
+    }
+  ],
+  "expansion_gate": "Eleven-substrate restricted-agent experiment must be GREEN before additional capability-language compilers.",
+  "release_gate": {
+    "status": "RED",
+    "remaining": [
+      "Reviewed compatible convergence on main",
+      "Complete native/portable/platform/adversarial test matrix",
+      "Same-agent real eleven-substrate acceptance",
+      "Receipt signatures and independent outcomes verified",
+      "Immutable release/assets/checksums",
+      "Tap/formula/bottle metadata aligned",
+      "Clean installation and client attachment",
+      "Serving executable path/version/SHA from context_runtime",
+      "Released capability execution and independent outcome verification"
+    ]
+  },
+  "latest_convergence_snapshot": "38b27e45e9f566588b398ace20ca3ed07a529da3"
+}
